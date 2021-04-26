@@ -1,0 +1,55 @@
+{
+  "name": "cypass-manager",
+  "version": "0.0.1",
+  "description": "An awesome project",
+  "main": "./dist/main/index.js",
+  "scripts": {
+    "dev": "node .electron-nuxt/dev.js",
+    "build": "node .electron-nuxt/build.js",
+    "build-mac": "node .electron-nuxt/build.js",
+    "test": "",
+    "lint": "node_modules/.bin/eslint --ext .js,.vue,.ts -f ./node_modules/eslint-friendly-formatter ./src",
+    "lint:fix": "yarn run lint -- --fix",
+    "preinstall": "node .electron-nuxt/check-engines.js",
+    "postinstall": "electron-builder install-app-deps & yarn run lint:fix"
+  },
+  "keywords": [],
+  "author": "sonnh@cystack.net <sonnh@cystack.net>",
+  "license": "MIT",
+  "homepage": "https://github.com/michalzaq12/electron-nuxt/blob/master/README.md",
+  "engines": {
+    "node": ">=12.13.0"
+  },
+  "resolutions": {
+    "@types/node": "12.12.6"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "5.15.3",
+    "@nuxt/typescript-build": "2.1.0",
+    "@nuxtjs/eslint-config-typescript": "6.0.0",
+    "@nuxtjs/tailwindcss": "^4.0.3",
+    "@xpda-dev/core": "^0.1.6",
+    "@xpda-dev/electron-builder": "^0.2.1",
+    "@xpda-dev/electron-launcher": "^0.3.0",
+    "@xpda-dev/webpack-step": "^0.1.2",
+    "browser-env": "3.3.0",
+    "cross-env": "7.0.3",
+    "deepmerge": "4.2.2",
+    "electron": "12.0.4",
+    "electron-builder": "22.10.5",
+    "electron-devtools-installer": "3.1.1",
+    "element-ui": "2.15.1",
+    "eslint": "7.24.0",
+    "eslint-friendly-formatter": "4.0.1",
+    "eslint-loader": "4.0.2",
+    "node-sass": "4.14.1",
+    "nuxt": "2.15.4",
+    "postcss": "^8.2.10",
+    "sass-loader": "10.0.2",
+    "webpack": "4.44.2",
+    "webpack-node-externals": "2.5.2"
+  },
+  "dependencies": {
+    "nuxt-i18n": "^6.26.0"
+  }
+}

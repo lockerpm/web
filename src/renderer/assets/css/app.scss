@@ -1,0 +1,16 @@
+$color-aside: #0B2339;
+
+.bg-aside {
+  background: #0B2339
+}
+
+.btn {
+  @apply text-sm font-semibold px-4 py-3 focus:ring-0 focus:outline-none rounded;
+  &.btn-default {
+    @apply bg-black-200 border-black-100;
+  }
+  &.btn-primary {
+    @apply bg-primary text-white;
+  }
+}
+
