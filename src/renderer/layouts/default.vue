@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col sm:flex-row">
-    <div class="w-60 h-screen bg-aside relative min-h-500px min-w-60">
+    <div class="w-60 h-screen bg-aside relative min-h-500px min-w-60 fixed">
       <div class="mt-10 px-8">
         <img class="h-6" src="~assets/images/logo/logo_white.svg">
       </div>
 
       <nav class="mt-10">
-        <nuxt-link v-for="(item, index) in menu" :key="index" :to="{name: item.routeName}"
+        <nuxt-link v-for="(item, index) in menu" :key="index" :to="localePath({name: item.routeName})"
                    class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold "
                    active-class="bg-white bg-opacity-20 text-white"
                    exact
@@ -27,14 +27,17 @@
         </a>
       </div>
     </div>
-    <div class="flex-1">
+    <div class="flex-1 pl-60">
       <nuxt />
     </div>
   </div>
 </template>
 
 <script>
-import { remote } from 'electron'
+if (process.env.CS_ENV !== 'web') {
+  // eslint-disable-next-line no-var
+  var { remote } = require('electron')
+}
 
 export default {
   components: {
@@ -83,7 +86,9 @@ export default {
   },
   methods: {
     openURL (url) {
-      remote.shell.openExternal(url)
+      if (remote) {
+        remote.shell.openExternal(url)
+      }
     }
   }
 }
