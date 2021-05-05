@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "node .electron-nuxt/dev.js",
     "build": "node .electron-nuxt/build.js",
-    "build-mac": "node .electron-nuxt/build.js",
+    "build-mac": "node .electron-nuxt/build.js --mac",
     "test": "",
     "lint": "node_modules/.bin/eslint --ext .js,.vue,.ts -f ./node_modules/eslint-friendly-formatter ./src",
     "lint:fix": "yarn run lint -- --fix",
     "preinstall": "node .electron-nuxt/check-engines.js",
     "postinstall": "electron-builder install-app-deps & yarn run lint:fix",
-    "dev-web": "cross-env CS_ENV=web nuxt ./src/renderer/",
+    "dev-web": "cross-env CS_ENV=web NODE_OPTIONS=--max_old_space_size=4096 nuxt ./src/renderer/ --port 3011",
     "build-web": "cross-env CS_ENV=web nuxt build ./src/renderer/",
     "start-web": "pm2 -v && pm2 start --no-daemon ecosystem.config.js"
   },
@@ -27,10 +27,13 @@
     "@types/node": "12.12.6"
   },
   "devDependencies": {
+    "@angular/core": "9",
+    "@angular/router": "9",
     "@fortawesome/fontawesome-free": "5.15.3",
     "@nuxt/typescript-build": "2.1.0",
     "@nuxtjs/eslint-config-typescript": "6.0.0",
     "@nuxtjs/tailwindcss": "^4.0.3",
+    "@types/node": "^15.0.2",
     "@xpda-dev/core": "^0.1.6",
     "@xpda-dev/electron-builder": "^0.2.1",
     "@xpda-dev/electron-launcher": "^0.3.0",
@@ -51,8 +54,22 @@
     "webpack-node-externals": "2.5.2"
   },
   "dependencies": {
+    "@microsoft/signalr": "^5.0.5",
+    "@microsoft/signalr-protocol-msgpack": "^5.0.5",
+    "@nuxtjs/axios": "^5.13.1",
+    "@nuxtjs/moment": "^1.6.1",
+    "big-integer": "^1.6.48",
+    "browser-hrtime": "^1.1.8",
+    "cookie-universal-nuxt": "^2.1.4",
+    "duo_web_sdk": "git+https://github.com/duosecurity/duo_web_sdk.git#5f9a1a8598d2cda494c4f5ee0e38b31474abfee9",
     "element-ui": "2.15.1",
+    "lunr": "^2.3.9",
+    "node-forge": "^0.10.0",
     "nuxt": "2.15.4",
-    "nuxt-i18n": "^6.26.0"
+    "nuxt-i18n": "^6.26.0",
+    "papaparse": "^5.3.0",
+    "sweetalert2": "^10.16.7",
+    "tldjs": "^2.3.1",
+    "zxcvbn": "^4.4.2"
   }
 }

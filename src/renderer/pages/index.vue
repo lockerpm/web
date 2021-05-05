@@ -18,15 +18,58 @@
     </div>
     <div class="border-t-1 bg-black-300 fixed bottom-0 flex items-center justify-center border-0 border-t py-2 w-[calc(100%-15rem)] bg-grey-500 border-black-600">
       <span class="mr-3">Bạn còn 14 ngày trong thời gian dùng thử.</span>
-      <button class="btn btn-primary">Nâng cấp ngay</button>
+      <button class="btn btn-primary" @click="createKey">Nâng cấp ngay</button>
     </div>
   </div>
 </template>
 
 <script>
+// import { cryptoService } from '../jslib/init'
 export default {
   data () {
-    return {}
+    return {
+      cryptoService: null
+    }
+  },
+  mounted () {
+  },
+  methods: {
+    // async createKey () {
+    //   // eslint-disable-next-line new-cap
+    //   const masterPassword = '1234567891'
+    //   try {
+    //     const key = await cryptoService.makeKey(masterPassword, 'sonnh1995@gmail.com', 0, 100000)
+    //     console.log(key)
+    //     const encKey = await cryptoService.makeEncKey(key)
+    //     console.log(encKey)
+    //     const hashedPassword = await cryptoService.hashPassword(masterPassword, key)
+    //     console.log(hashedPassword)
+    //     const keys = await cryptoService.makeKeyPair(encKey[0])
+    //     console.log(keys)
+    //     this.postRegister(hashedPassword, null, encKey[1].encryptedString, 0, 100000, '', keys)
+    //   } catch (e) {
+    //     console.log(e)
+    //   }
+    // },
+    // postRegister (masterPasswordHash, masterPasswordHint, key, kdf, kdfIterations, referenceData, keys) {
+    //   this.$axios.$post('cystack_platform/pm/users/register', {
+    //     name: 'Nguyen Hong Son',
+    //     email: 'sonnh1995@gmail.com',
+    //     masterPasswordHash,
+    //     masterPasswordHint,
+    //     key,
+    //     kdf,
+    //     kdfIterations,
+    //     referenceData,
+    //     keys: {
+    //       public_key: keys[0],
+    //       encryptedPrivateKey: key[0].encryptedString
+    //     }
+    //   })
+    //     .then(res => {
+    //       console.log(res)
+    //     })
+    // }
   }
 }
 </script>

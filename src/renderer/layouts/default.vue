@@ -84,6 +84,9 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.$store.dispatch('LoadCurrentUser')
+  },
   methods: {
     openURL (url) {
       if (remote) {
