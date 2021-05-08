@@ -42,7 +42,8 @@
     "types": [
       "@nuxt/types"
     ],
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "suppressImplicitAnyIndexErrors": true
   },
   "exclude": [
     "../../node_modules",

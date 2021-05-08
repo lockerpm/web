@@ -42,6 +42,7 @@ if (process.env.CS_ENV !== 'web') {
 export default {
   components: {
   },
+  middleware: ['notAuthenticated'],
   data () {
     return {
       externalContent: '',
@@ -84,8 +85,16 @@ export default {
       ]
     }
   },
+  watch: {
+    '$store.state.userPw' (newValue) {
+      if (newValue.is_pwd_manager === false) {
+        this.$router.push(this.localeRoute({ name: 'set-master-password' }))
+      }
+    }
+  },
   mounted () {
     this.$store.dispatch('LoadCurrentUser')
+    this.$store.dispatch('LoadCurrentUserPw')
   },
   methods: {
     openURL (url) {

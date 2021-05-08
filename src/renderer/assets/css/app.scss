@@ -1,16 +1,37 @@
+@import "./element-variables";
+@import "components/button";
+@import "components/form";
+
 $color-aside: #0B2339;
 
 .bg-aside {
   background: #0B2339
 }
 
-.btn {
-  @apply text-sm font-semibold px-4 py-3 focus:ring-0 focus:outline-none rounded;
-  &.btn-default {
-    @apply bg-black-200 border-black-100;
-  }
-  &.btn-primary {
-    @apply bg-primary text-white;
-  }
+
+html {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  @apply text-sm;
+  @apply text-black-700;
+  @apply lg:text-sm;
+  @apply md:text-sm;
+  -ms-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+#__nuxt {
+  @apply h-full
+}
+#__layout {
+  @apply flex flex-col h-full
 }
 
+.el-input__inner {
+  height: 44px;
+  line-height: 44px;
+}

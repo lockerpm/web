@@ -16,7 +16,8 @@ export const state = () => ({
   currentPath: '/',
   isDev: 'dev',
   environment: 'dev',
-  loading: false
+  loading: false,
+  userPw: {}
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -43,6 +44,9 @@ export const mutations = {
   UPDATE_USER (state, user) {
     state.user = user
   },
+  UPDATE_USER_PW (state, user) {
+    state.userPw = user
+  },
   UPDATE_USER_INTERCOM (state, userIntercom) {
     state.userIntercom = userIntercom
   },
@@ -61,7 +65,7 @@ export const mutations = {
 }
 export const actions = {
   nuxtServerInit ({ commit }, { app, isDev }) {
-    const state = app.$cookies.get('cloud_partner_store') || {
+    const state = app.$cookies.get('cs_locker_store') || {
       auth: {
         isLoggedIn: false,
         accessToken: null
@@ -69,14 +73,36 @@ export const actions = {
       user: {
         language: 'en'
       },
-      currentPath: '/'
+      currentPath: '/',
+      userPw: {}
     }
 
     commit('SET_AUTH', state.auth)
     commit('UPDATE_USER', state.user)
+    commit('UPDATE_USER_PW', state.userPw)
     const environment = isDev ? 'dev' : (process.env.environment || '')
     commit('UPDATE_DEV', environment)
     commit('UPDATE_PATH', state.currentPath)
+  },
+  nuxtClientInit ({ commit }, { app, isDev }) {
+    // if (process.env.CS_ENV !== 'web') {
+    //   const state = app.$cookies.get('cs_locker_store') || {
+    //     auth: {
+    //       isLoggedIn: false,
+    //       accessToken: null
+    //     },
+    //     user: {
+    //       language: 'en'
+    //     },
+    //     currentPath: '/'
+    //   }
+    //
+    //   commit('SET_AUTH', state.auth)
+    //   commit('UPDATE_USER', state.user)
+    //   const environment = isDev ? 'dev' : (process.env.environment || '')
+    //   commit('UPDATE_DEV', environment)
+    //   commit('UPDATE_PATH', state.currentPath)
+    // }
   },
   SetLang ({ commit, state }, payload) {
     commit('SET_LANG', payload)
@@ -95,6 +121,12 @@ export const actions = {
     return this.$axios.$get('me').then(res => {
       commit('UPDATE_USER', res)
       commit('SET_LANG', res.language)
+      return res
+    })
+  },
+  LoadCurrentUserPw ({ commit }) {
+    return this.$axios.$get('/cystack_platform/pm/users/me').then(res => {
+      commit('UPDATE_USER_PW', res)
       return res
     })
   },

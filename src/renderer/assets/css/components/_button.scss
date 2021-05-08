@@ -1,0 +1,64 @@
+.btn {
+  @apply px-8 py-2.5 whitespace-nowrap text-sm font-semibold rounded-md text-black-700;
+  cursor: pointer;
+  &.btn-icon {
+    @apply p-2.5;
+    &.icon {
+      @apply text-black-500;
+    }
+  }
+  &.btn-lg {
+    @apply py-3.5;
+  }
+}
+.btn-primary {
+  @apply bg-primary hover:bg-opacity-90 text-white;
+  &.btn-clean {
+    @apply bg-transparent text-primary
+  }
+}
+.btn-primary-reserve {
+  @apply text-primary hover:bg-opacity-[0.9] bg-white;
+}
+.btn-green {
+  @apply bg-green text-white;
+}
+.btn-red {
+  @apply bg-red text-white;
+}
+.btn-secondary {
+  @apply bg-black-50 bg-opacity-80;
+}
+.btn-default {
+  @apply bg-black-50 bg-opacity-25 border border-black-100;
+}
+button:focus {
+  outline: none;
+}
+button.btn:disabled {
+  @apply bg-opacity-50
+}
+.btn-group {
+  @apply relative inline-flex align-middle border border-black-200 rounded-md;
+  &.btn-group-sm {
+    .btn {
+      @apply py-1 px-4 text-black-500 font-medium;
+      border-radius: 0.375rem;
+    }
+  }
+  .btn:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    @apply border-r border-white
+  }
+  .btn:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .btn {
+    @apply border-0 focus:bg-black-200 focus:border-white focus:border focus:rounded-md focus:text-black-700;
+    &.active {
+      @apply bg-black-200 border border-white text-black-700;
+    }
+  }
+}

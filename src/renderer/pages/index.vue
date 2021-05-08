@@ -24,52 +24,17 @@
 </template>
 
 <script>
-// import { cryptoService } from '../jslib/init'
 export default {
+  // middleware: 'notAuthenticated',
   data () {
     return {
       cryptoService: null
     }
   },
   mounted () {
+    console.log(this.$cryptoService)
   },
   methods: {
-    // async createKey () {
-    //   // eslint-disable-next-line new-cap
-    //   const masterPassword = '1234567891'
-    //   try {
-    //     const key = await cryptoService.makeKey(masterPassword, 'sonnh1995@gmail.com', 0, 100000)
-    //     console.log(key)
-    //     const encKey = await cryptoService.makeEncKey(key)
-    //     console.log(encKey)
-    //     const hashedPassword = await cryptoService.hashPassword(masterPassword, key)
-    //     console.log(hashedPassword)
-    //     const keys = await cryptoService.makeKeyPair(encKey[0])
-    //     console.log(keys)
-    //     this.postRegister(hashedPassword, null, encKey[1].encryptedString, 0, 100000, '', keys)
-    //   } catch (e) {
-    //     console.log(e)
-    //   }
-    // },
-    // postRegister (masterPasswordHash, masterPasswordHint, key, kdf, kdfIterations, referenceData, keys) {
-    //   this.$axios.$post('cystack_platform/pm/users/register', {
-    //     name: 'Nguyen Hong Son',
-    //     email: 'sonnh1995@gmail.com',
-    //     masterPasswordHash,
-    //     masterPasswordHint,
-    //     key,
-    //     kdf,
-    //     kdfIterations,
-    //     referenceData,
-    //     keys: {
-    //       public_key: keys[0],
-    //       encryptedPrivateKey: key[0].encryptedString
-    //     }
-    //   })
-    //     .then(res => {
-    //       console.log(res)
-    //     })
-    // }
   }
 }
 </script>
