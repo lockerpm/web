@@ -10,7 +10,7 @@ module.exports = {
     },
     fontSize: {
       xs: ['.75rem', { lineHeight: '1.25rem' }], // Small text 12px
-      sm: ['.75rem', { lineHeight: '1.375rem' }], // Small text 12px
+      sm: ['.875rem', { lineHeight: '1.375rem' }], // Small text 12px
       base: ['.875rem', { lineHeight: '1.5rem' }], // 16px
       'head-7': ['.75rem', { lineHeight: '1.1875rem' }], // Heading 7 14px
       'head-6': ['1rem', { lineHeight: '1.3125rem' }], // Heading 6 16px
@@ -28,6 +28,7 @@ module.exports = {
         50: '#DBDFE1',
         100: '#E3E7EB',
         200: '#E6E6E8',
+        250: '#F7F8F8',
         300: '#F3F5F8',
         400: '#CFD6E4', // 3 bg
         500: '#717C8D',

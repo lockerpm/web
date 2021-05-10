@@ -11,7 +11,7 @@ Vue.mixin({
     currentUser () { return this.$store.state.user },
     environment () { return this.$store.state.environment },
     isLoggedIn () {
-      return this.$store.state.auth.isLoggedIn
+      return this.$store.state.isLoggedIn
     }
   },
   mounted () {
@@ -62,12 +62,15 @@ Vue.mixin({
         this.$i18n.locale = value
       })
     },
-    logout () {
-      this.$axios.$post('/users/logout').then(res => {
-        this.$cookies.remove('boarding')
-        this.$store.commit('CLEAR_ALL_DATA')
-        this.$router.push(this.localeRoute({ name: 'dashboard' }))
-      })
+    async logout () {
+      console.log('###### LOG OUT')
+      await this.$axios.$post('/users/logout')
+      await this.$cookies.remove('cs_locker_token')
+      this.$store.commit('UPDATE_IS_LOGGEDIN', false)
+      this.$router.push(this.localeRoute({ name: 'login' }))
+    },
+    async lock () {
+      await this.$vaultTimeoutService.lock()
     },
     randomString () {
       return nanoid()
@@ -87,28 +90,34 @@ Vue.mixin({
         const key = await this.$cryptoService.makeKey(masterPassword, email, 0, 100000)
         const hashedPassword = await this.$cryptoService.hashPassword(masterPassword, key)
         console.log(hashedPassword)
+        return hashedPassword
       } catch (e) {
+        return ''
       }
     },
     async login () {
-      const email = 'sonnh1995@gmail.com'
-      const masterPassword = '12345678'
-      const key = await this.$cryptoService.makeKey(masterPassword, email, 0, 100000)
-      const hashedPassword = await this.$cryptoService.hashPassword(masterPassword, key)
-      this.$axios.$post('cystack_platform/pm/users/session', {
+      const key = await this.$cryptoService.makeKey(this.masterPassword, this.currentUser.email, 0, 100000)
+      const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
+      const res = await this.$axios.$post('cystack_platform/pm/users/session', {
         client_id: 'web',
         password: hashedPassword,
         device_name: 'chrome',
         device_type: 9,
         device_identifier: this.$cookies.get('device_id')
-      }).then(async res => {
-        await this.$tokenService.setTokens(res.access_token, res.refresh_token)
-        await this.$userService.setInformation(this.$tokenService.getUserId(), '', 0, 1000000)
-        await this.$cryptoService.setKey(key)
-        await this.$cryptoService.setKeyHash(hashedPassword)
-        await this.$cryptoService.setEncKey(res.key)
-        await this.$cryptoService.setEncPrivateKey(res.private_key)
       })
-    },
+      this.$messagingService.send('loggedIn')
+      await this.$tokenService.setTokens(res.access_token, res.refresh_token)
+      await this.$userService.setInformation(this.$tokenService.getUserId(), this.currentUser.email, 0, 100000)
+      await this.$cryptoService.setKey(key)
+      await this.$cryptoService.setKeyHash(hashedPassword)
+      await this.$cryptoService.setEncKey(res.key)
+      await this.$cryptoService.setEncPrivateKey(res.private_key)
+
+      if (this.$vaultTimeoutService != null) {
+        this.$vaultTimeoutService.biometricLocked = false
+      }
+      // this.$messagingService.send('unlocked')
+      this.$router.push(this.localeRoute({ path: this.$store.state.previousPath }))
+    }
   }
 })

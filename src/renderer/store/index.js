@@ -1,8 +1,5 @@
 export const state = () => ({
-  auth: {
-    isLoggedIn: false,
-    accessToken: null
-  },
+  isLoggedIn: false,
   user: {
     email: null,
     language: 'vi'
@@ -14,21 +11,26 @@ export const state = () => ({
   },
   userIntercom: {},
   currentPath: '/',
+  previousPath: '',
   isDev: 'dev',
   environment: 'dev',
   loading: false,
-  userPw: {}
+  userPw: {},
+  isLoggedInPw: false
 })
 export const mutations = {
   SET_LANG (state, payload) {
     state.user.language = payload
   },
   SET_AUTH (state, auth) {
-    state.auth = auth
+    state.isLoggedIn = auth
+  },
+  UPDATE_IS_LOGGEDIN (state, value) {
+    state.isLoggedIn = value
   },
   CLEAR_ALL_DATA (state) {
     // Auth
-    state.auth.isLoggedIn = false
+    state.isLoggedIn = false
     // // User
     state.user.full_name = ''
     state.user.email = ''
@@ -53,6 +55,9 @@ export const mutations = {
   UPDATE_PATH (state, target) {
     state.currentPath = target
   },
+  UPDATE_PREVIOUS_PATH (state, target) {
+    state.previousPath = target || '/dashboard'
+  },
   UPDATE_NOTIFICATION (state, payload) {
     state.notifications = payload
   },
@@ -61,53 +66,35 @@ export const mutations = {
   },
   UPDATE_LOADING (state, loading) {
     state.loading = loading
+  },
+  UPDATE_IS_LOGGEDIN_PW (state, value) {
+    state.isLoggedInPw = value
   }
 }
 export const actions = {
   nuxtServerInit ({ commit }, { app, isDev }) {
     const state = app.$cookies.get('cs_locker_store') || {
-      auth: {
-        isLoggedIn: false,
-        accessToken: null
-      },
+      isLoggedIn: false,
       user: {
         language: 'en'
       },
       currentPath: '/',
+      previousPath: '/dashboard',
       userPw: {}
     }
 
-    commit('SET_AUTH', state.auth)
+    commit('UPDATE_IS_LOGGEDIN', state.isLoggedIn)
     commit('UPDATE_USER', state.user)
     commit('UPDATE_USER_PW', state.userPw)
     const environment = isDev ? 'dev' : (process.env.environment || '')
     commit('UPDATE_DEV', environment)
     commit('UPDATE_PATH', state.currentPath)
-  },
-  nuxtClientInit ({ commit }, { app, isDev }) {
-    // if (process.env.CS_ENV !== 'web') {
-    //   const state = app.$cookies.get('cs_locker_store') || {
-    //     auth: {
-    //       isLoggedIn: false,
-    //       accessToken: null
-    //     },
-    //     user: {
-    //       language: 'en'
-    //     },
-    //     currentPath: '/'
-    //   }
-    //
-    //   commit('SET_AUTH', state.auth)
-    //   commit('UPDATE_USER', state.user)
-    //   const environment = isDev ? 'dev' : (process.env.environment || '')
-    //   commit('UPDATE_DEV', environment)
-    //   commit('UPDATE_PATH', state.currentPath)
-    // }
+    commit('UPDATE_PREVIOUS_PATH', state.previousPath)
   },
   SetLang ({ commit, state }, payload) {
     commit('SET_LANG', payload)
     return new Promise(resolve => {
-      if (state.auth.isLoggedIn) {
+      if (state.isLoggedIn) {
         const data = Object.assign({}, state.user)
         data.language = payload
         // eslint-disable-next-line no-undef

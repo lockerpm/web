@@ -18,7 +18,7 @@ export default function ({ store, $axios, app, isDev }) {
       if (err.response.status === 401) {
         app.$cookies.remove('cs_locker_token')
         $axios.setToken(false)
-        store.commit('SET_AUTH', { accessToken: '', isLoggedIn: false })
+        store.commit('UPDATE_IS_LOGGEDIN', false)
       }
       if (err.response.status === 403) {
         // app.$cookies.remove('cloud_token')

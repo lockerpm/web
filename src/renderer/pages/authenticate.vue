@@ -18,15 +18,11 @@ export default {
   },
   methods: {
     loginByToken () {
-      const auth = {
-        isLoggedIn: true,
-        accessToken: ''
-      }
       this.$store.commit('UPDATE_LOADING', true)
-      setTimeout(() => {
-        this.$axios.setToken(this.$route.query.token, 'Bearer')
-        this.$cookies.set('cs_locker_token', this.$route.query.token, { path: '/', ...this.environment === '' ? { secure: true } : { secure: false } })
-        this.$store.commit('SET_AUTH', auth) // mutating to store for client rendering
+      setTimeout(async () => {
+        await this.$axios.setToken(this.$route.query.token, 'Bearer')
+        await this.$cookies.set('cs_locker_token', this.$route.query.token, { path: '/', ...this.environment === '' ? { secure: true } : { secure: false } })
+        this.$store.commit('UPDATE_IS_LOGGEDIN', true)
         if (this.$route.query.return_url && isString(this.$route.query.return_url)) {
           this.$router.replace(this.localePath({ path: this.$route.query.return_url }))
         } else {

@@ -15,10 +15,10 @@
         <button class="btn btn-default mr-4">Thêm danh mục</button>
         <button class="btn btn-default">Nhập danh mục</button>
         <div>
-          <button class="btn btn-default" @click="login">login</button>
           <button class="btn btn-default" @click="getSyncData">Sync Server</button>
           <button class="btn btn-default" @click="getCiphers">getCiphers</button>
           <button class="btn btn-default" @click="logout">Logout</button>
+          <button class="btn btn-default" @click="test">Test</button>
         </div>
 
         <div>{{ ciphers }}</div>
@@ -40,7 +40,7 @@ export default {
   components: {
     addEditCipher
   },
-  middleware: 'notAuthenticated',
+  middleware: 'LoggedIn',
   data () {
     return {
       cryptoService: null,
@@ -54,7 +54,6 @@ export default {
   created () {
   },
   mounted () {
-    this.genKey('sonnh1995@gmail.com', '12345678')
   },
   methods: {
     async createKey () {
@@ -93,33 +92,6 @@ export default {
           console.log(res)
         })
     },
-    async login () {
-      const email = 'sonnh1995@gmail.com'
-      const masterPassword = '12345678'
-      const key = await this.$cryptoService.makeKey(masterPassword, email, 0, 100000)
-      const hashedPassword = await this.$cryptoService.hashPassword(masterPassword, key)
-      this.$axios.$post('cystack_platform/pm/users/session', {
-        client_id: 'web',
-        password: hashedPassword,
-        device_name: 'chrome',
-        device_type: 9,
-        device_identifier: this.$cookies.get('device_id')
-      }).then(async res => {
-        await this.$tokenService.setTokens(res.access_token, res.refresh_token)
-        await this.$userService.setInformation(this.$tokenService.getUserId(), '', 0, 1000000)
-        await this.$cryptoService.setKey(key)
-        await this.$cryptoService.setKeyHash(hashedPassword)
-        await this.$cryptoService.setEncKey(res.key)
-        await this.$cryptoService.setEncPrivateKey(res.private_key)
-      })
-    },
-    setAuth (value) {
-      const auth = {
-        isLoggedIn: value,
-        accessToken: ''
-      }
-      this.$store.commit('SET_AUTH', auth)
-    },
     getSyncData () {
       this.$axios.$get('cystack_platform/pm/sync')
         .then(async res => {
@@ -140,6 +112,10 @@ export default {
       this.ciphers = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null)
       // this.ciphers = await this.$cipherService.getAllDecrypted()
       console.log(this.ciphers)
+    },
+    async test () {
+      const locked = await this.$vaultTimeoutService.isLocked()
+      console.log(locked)
     }
   }
 }

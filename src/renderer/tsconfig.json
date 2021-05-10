@@ -30,13 +30,13 @@
         "./jslib/src/*"
       ],
       "@angular/*": [
-        ".../../node_modules/@angular/*"
+        "../../node_modules/@angular/*"
       ],
       "node": [
         "../../node_modules/@types/node"
       ],
       "duo_web_sdk": [
-        "../../node_modules/duo_web_sdk"
+        "../../../node_modules/duo_web_sdk"
       ]
     },
     "types": [

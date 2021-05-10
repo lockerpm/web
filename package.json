@@ -75,6 +75,7 @@
     "papaparse": "^5.3.0",
     "sweetalert2": "^10.16.7",
     "tldjs": "^2.3.1",
+    "vue-async-computed": "^3.9.0",
     "vuex-persistedstate": "2.7.1",
     "zxcvbn": "^4.4.2"
   }

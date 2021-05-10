@@ -32,7 +32,7 @@ import { SyncService } from '../jslib/src/services/sync.service';
 import { TokenService } from '../jslib/src/services/token.service';
 // import { TotpService } from '../jslib/src/services/totp.service';
 import { UserService } from '../jslib/src/services/user.service';
-// import { VaultTimeoutService } from '../jslib/src/services/vaultTimeout.service';
+import { VaultTimeoutService } from '../jslib/src/services/vaultTimeout.service';
 import { WebCryptoFunctionService } from '../jslib/src/services/webCryptoFunction.service';
 
 // import { ApiService as ApiServiceAbstraction } from '../jslib/src/abstractions/api.service';
@@ -66,7 +66,7 @@ import { SyncService as SyncServiceAbstraction } from '../jslib/src/abstractions
 // import { TokenService as TokenServiceAbstraction } from '../jslib/src/abstractions/token.service';
 // import { TotpService as TotpServiceAbstraction } from '../jslib/src/abstractions/totp.service';
 // import { UserService as UserServiceAbstraction } from '../jslib/src/abstractions/user.service';
-// import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from '../jslib/src/abstractions/vaultTimeout.service';
+import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from '../jslib/src/abstractions/vaultTimeout.service';
 // import { PasswordRepromptService } from '../jslib/src/services/passwordReprompt.service';
 
 const i18nService = new I18nService(window.navigator.language, 'locales');
@@ -99,9 +99,9 @@ searchService = new SearchService(cipherService, consoleLogService, i18nService)
 const policyService = new PolicyService(userService, storageService);
 const sendService = new SendService(cryptoService, userService, apiService, fileUploadService, storageService,
     i18nService, cryptoFunctionService);
-// const vaultTimeoutService = new VaultTimeoutService(cipherService, folderService, collectionService,
-//     cryptoService, platformUtilsService, storageService, messagingService, searchService, userService, tokenService,
-//     null, async () => messagingService.send('logout', { expired: false }));
+const vaultTimeoutService = new VaultTimeoutService(cipherService, folderService, collectionService,
+    cryptoService, platformUtilsService, storageService, messagingService, searchService, userService, tokenService,
+    null, async () => messagingService.send('logout', { expired: false }));
 const syncService = new SyncService(userService, apiService, settingsService, folderService,
     cipherService, cryptoService, collectionService, storageService, messagingService, policyService,
     sendService, async (expired: boolean) => messagingService.send('logout', { expired: expired }));
@@ -122,8 +122,48 @@ const containerService = new ContainerService(cryptoService);
 // const passwordRepromptService = new PasswordRepromptService(i18nService, cryptoService, platformUtilsService);
 
 containerService.attachToWindow(window);
+const BroadcasterSubscriptionId = 'AppComponent'
+const IdleTimeout = 60000 * 10 // 10 minutes
 
-export default ({ app }, inject) => {
+export default async ({ app, store }, inject) => {
+    await (storageService as HtmlStorageService).init();
+    vaultTimeoutService.init(true);
+    broadcasterService.subscribe(BroadcasterSubscriptionId, async message => {
+        console.log(message)
+        switch (message.command) {
+            case 'loggedIn':
+                store.commit('UPDATE_IS_LOGGEDIN_PW', true)
+                break
+            case 'loggedOut':
+            case 'unlocked':
+                console.log('unlocked')
+                console.log(app.localeRoute({ path: store.state.previousPath }))
+                app.router.push(app.localeRoute({ path: store.state.previousPath }))
+                break
+            case 'authBlocked':
+            case 'logout':
+                console.log('logout')
+                break
+            case 'lockVault':
+                console.log('lockVault')
+                break
+            case 'locked':
+                console.log('locked')
+                break
+            case 'lockedUrl':
+            case 'syncStarted':
+            case 'syncCompleted':
+            case 'upgradeOrganization':
+            case 'premiumRequired':
+            case 'emailVerificationRequired':
+            case 'showToast':
+            case 'setFullWidth':
+            default:
+                break
+        }
+    })
+
+
     inject('cryptoService', cryptoService)
     inject('cipherService', cipherService)
     inject('userService', userService)
@@ -131,4 +171,9 @@ export default ({ app }, inject) => {
     inject('tokenService', tokenService)
     inject('searchService', searchService)
     inject('containerService', containerService)
+    inject('platformUtilsService', platformUtilsService)
+    inject('vaultTimeoutService', vaultTimeoutService)
+    inject('broadcasterService', broadcasterService)
+    inject('messagingService', messagingService)
+
 }

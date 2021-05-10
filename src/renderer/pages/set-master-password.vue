@@ -48,6 +48,7 @@
 <script>
 export default {
   layout: 'blank',
+  middleware: ['LoggedIn', 'HaveAccountService'],
   data () {
     return {
       masterPassword: '',
@@ -79,33 +80,25 @@ export default {
         const encKey = await this.$cryptoService.makeEncKey(key)
         const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
         const keys = await this.$cryptoService.makeKeyPair(encKey[0])
-        this.postRegister(hashedPassword, this.masterPasswordHint, encKey[1].encryptedString, 0, 100000, '', keys)
-      } catch (e) {
-        console.log(e)
-        this.loading = false
-      }
-    },
-    async postRegister (masterPasswordHash, masterPasswordHint,
-      key, kdf, kdfIterations, referenceData, keys) {
-      try {
         await this.$axios.$post('cystack_platform/pm/users/register', {
           name: this.currentUser.full_name,
           email: this.currentUser.email,
-          master_password_hash: masterPasswordHash,
-          master_password_hint: masterPasswordHint,
-          key,
-          kdf,
-          kdfIterations,
-          referenceData,
+          master_password_hash: hashedPassword,
+          master_password_hint: this.masterPasswordHint,
+          key: encKey[1].encryptedString,
+          kdf: 0,
+          kdfIterations: 100000,
+          referenceData: '',
           keys: {
             public_key: keys[0],
             encrypted_private_key: keys[1].encryptedString
           }
         })
         this.notify(this.$t('master_password.create_success'), 'success')
+        this.$store.commit('UPDATE_USER_PW', { ...this.$store.state.userPw, is_pwd_manager: true })
         await this.login()
-        this.$router.push(this.localeRoute({ name: 'dashboard' }))
       } catch (e) {
+        console.log(e)
         this.notify(this.$t('master_password.create_failed'), 'success')
       } finally {
         this.loading = false

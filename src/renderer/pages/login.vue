@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  layout: 'blank',
+  layout: 'authenticate',
   middleware: 'preventToUser',
   fetch ({ redirect, store, isDev }) {
     const environment = isDev ? 'dev' : process.env.environment
