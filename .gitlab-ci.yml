@@ -1,0 +1,71 @@
+before_script:
+  - git clone ${CONFIG_REPO} ${CONFIG_DIR}
+  - chmod +x ${SCRIPT_DEPLOY}
+  - source ${SCRIPT_DEPLOY}
+
+stages:
+  - build
+  - deploy
+  - clean
+
+build_staging:
+  stage: build
+  script:
+    - staging_build
+  tags:
+    - cs_monitoring
+  only:
+    - dev
+    - tags
+
+deploy_staging:
+  stage: deploy
+  script:
+    - cs_monitoring
+  tags:
+    - cs_app
+  only:
+    - dev
+    - tags
+
+clean_staging:
+  stage: clean
+  script:
+    - clean
+  when: always
+  tags:
+    - cs_monitoring
+  only:
+    - dev
+    - tags
+
+build_production:
+  stage: build
+  script:
+    - production_build
+  tags:
+    - cs_app
+  only:
+    - master
+    - tags
+
+deploy_production:
+  stage: deploy
+  script:
+    - production_deploy
+  tags:
+    - cs_app
+  only:
+    - master
+    - tags
+
+clean_production:
+  stage: clean
+  script:
+    - clean
+  when: always
+  tags:
+    - cs_app
+  only:
+    - master
+    - tags
