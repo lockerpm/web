@@ -44,7 +44,6 @@ if (process.env.CS_ENV !== 'web') {
   var { remote } = require('electron')
 }
 const BroadcasterSubscriptionId = 'AppComponent'
-const IdleTimeout = 60000 * 10 // 10 minutes
 
 export default {
   components: {

@@ -31,7 +31,6 @@
 
 <script>
 import { CipherType } from '../../jslib/src/enums'
-import { CipherRequest } from '../../jslib/src/models/request'
 export default {
   data () {
     return {

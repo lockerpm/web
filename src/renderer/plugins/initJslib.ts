@@ -11,7 +11,7 @@ import { AppIdService } from '../jslib/src/services/appId.service';
 // import { AuthService } from '../jslib/src/services/auth.service';
 import { CipherService } from '../jslib/src/services/cipher.service';
 import { CollectionService } from '../jslib/src/services/collection.service';
-import { ConsoleLogService } from '../services/consoleLog.service';
+import { ConsoleLogService } from '../jslib/src/services/consoleLog.service';
 // import { ConstantsService } from '../jslib/src/services/constants.service';
 import { ContainerService } from '../jslib/src/services/container.service';
 import { CryptoService } from '../jslib/src/services/crypto.service';
@@ -123,7 +123,7 @@ const containerService = new ContainerService(cryptoService);
 
 containerService.attachToWindow(window);
 const BroadcasterSubscriptionId = 'AppComponent'
-const IdleTimeout = 60000 * 10 // 10 minutes
+// const IdleTimeout = 60000 * 10 // 10 minutes
 
 export default async ({ app, store }, inject) => {
     await (storageService as HtmlStorageService).init();
