@@ -20,11 +20,12 @@
           <button class="btn btn-default" @click="logout">Logout</button>
           <button class="btn btn-default" @click="test">Test</button>
         </div>
-
-        <div>{{ ciphers }}</div>
         <div>
           <addEditCipher />
         </div>
+      </div>
+      <div>
+        <pre>{{ ciphers }}</pre>
       </div>
     </div>
     <div class="border-t-1 bg-black-300 fixed bottom-0 flex items-center justify-center border-0 border-t py-2 w-[calc(100%-15rem)] bg-grey-500 border-black-600">
@@ -45,8 +46,7 @@ export default {
     return {
       cryptoService: null,
       data: {},
-      ciphers: [],
-      deleted: false,
+      deleted: true,
       filter: null,
       searchText: ''
     }
@@ -54,6 +54,18 @@ export default {
   created () {
   },
   mounted () {
+  },
+  asyncComputed: {
+    ciphers: {
+      async get () {
+        const deletedFilter = c => {
+          console.log(c.isDeleted)
+          return c.isDeleted === this.deleted
+        }
+        return await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null)
+      },
+      watch: ['$store.state.syncedCiphers']
+    }
   },
   methods: {
     async createKey () {
@@ -108,10 +120,8 @@ export default {
         })
     },
     async getCiphers () {
-      const deletedFilter = c => c.isDeleted === this.deleted
-      this.ciphers = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null)
-      // this.ciphers = await this.$cipherService.getAllDecrypted()
-      console.log(this.ciphers)
+      console.log(await this.$cipherService.getAllDecrypted())
+      console.log(await this.$cipherService.getAll())
     },
     async test () {
       const locked = await this.$vaultTimeoutService.isLocked()

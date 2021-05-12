@@ -67,6 +67,7 @@ export default {
       if (this.errors) {
         this.invalidPinAttempts++
         if (this.invalidPinAttempts >= 5) {
+          await this.logout()
           this.$messagingService.send('logout')
         }
       }

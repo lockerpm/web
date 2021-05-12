@@ -102,12 +102,14 @@ export default {
       if (newValue === true) {
         this.$router.push(this.localeRoute({ name: 'lock' }))
       }
+      if (newValue === false) {
+        this.getSyncData()
+      }
     }
   },
   mounted () {
     this.$store.dispatch('LoadCurrentUser')
     this.$store.dispatch('LoadCurrentUserPw')
-    this.getSyncData()
   },
   asyncComputed: {
     async locked () {
@@ -137,8 +139,10 @@ export default {
         await this.$syncService.syncPolicies(res.policies)
         await this.$syncService.setLastSync(new Date())
         this.$messagingService.send('syncCompleted', { successfully: true })
+        this.$store.commit('UPDATE_SYNCED_CIPHERS', true)
       } catch (e) {
         this.$messagingService.send('syncCompleted', { successfully: false })
+        this.$store.commit('UPDATE_SYNCED_CIPHERS', false)
       }
     }
   }
