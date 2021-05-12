@@ -57,8 +57,8 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('LoadCurrentUser')
-    this.$store.dispatch('LoadCurrentUserPw')
+    // this.$store.dispatch('LoadCurrentUser')
+    // this.$store.dispatch('LoadCurrentUserPw')
   },
   methods: {
     openURL (url) {

@@ -1,7 +1,8 @@
-// const Cookie = process.client ? require('js-cookie') : undefined
+import https from 'https'
 
 export default function ({ store, $axios, app, isDev }) {
   const environment = isDev ? 'dev' : process.env.environment
+  $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.interceptors.request.use(request => {
     // Get token from auth.js store
     // const token = store.state.auth.accessToken

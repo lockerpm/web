@@ -112,6 +112,7 @@ export const actions = {
     return this.$axios.$get('me').then(res => {
       commit('UPDATE_USER', res)
       commit('SET_LANG', res.language)
+      console.log(2)
       return res
     })
   },

@@ -24,13 +24,29 @@
           <addEditCipher />
         </div>
       </div>
-      <div>
-        <pre>{{ ciphers }}</pre>
-      </div>
+      <client-only>
+        <el-table
+          ref="multipleTable"
+          :data="ciphers ? ciphers : []"
+          style="width: 100%"
+        >
+          <el-table-column
+            type="selection"
+            width="55"
+          />
+          <el-table-column
+            label="Name"
+          >
+            <template slot-scope="scope">
+              {{ scope.row.name }}
+            </template>
+          </el-table-column>
+        </el-table>
+      </client-only>
     </div>
     <div class="border-t-1 bg-black-300 fixed bottom-0 flex items-center justify-center border-0 border-t py-2 w-[calc(100%-15rem)] bg-grey-500 border-black-600">
       <span class="mr-3">Bạn còn 14 ngày trong thời gian dùng thử.</span>
-      <button class="btn btn-primary" @click="createKey">Nâng cấp ngay</button>
+      <button class="btn btn-primary" @click="deleted = !deleted">Nâng cấp ngay</button>
     </div>
   </div>
 </template>
@@ -46,7 +62,7 @@ export default {
     return {
       cryptoService: null,
       data: {},
-      deleted: true,
+      deleted: false,
       filter: null,
       searchText: ''
     }
@@ -59,12 +75,11 @@ export default {
     ciphers: {
       async get () {
         const deletedFilter = c => {
-          console.log(c.isDeleted)
           return c.isDeleted === this.deleted
         }
-        return await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null)
+        return await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
       },
-      watch: ['$store.state.syncedCiphers']
+      watch: ['$store.state.syncedCiphers', 'deleted', 'searchText', 'filter']
     }
   },
   methods: {

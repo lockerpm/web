@@ -10,19 +10,23 @@
       </div>
       <div class="inline-block mb-8 select-none">
         <div class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto">
-          <img :src="currentUser.avatar" alt="" class="w-[28px] h-[28px] rounded-full mr-2">
+          <client-only>
+            <img :src="currentUser.avatar" alt="" class="w-[28px] h-[28px] rounded-full mr-2">
+          </client-only>
           <div class="mr-2">{{ currentUser.email }}</div>
         </div>
       </div>
-      <div class="form-group !mb-4">
-        <input v-model="masterPassword" class="form-control"
-               placeholder="Nhập mật khẩu tổng"
-               :name="randomString()" autocomplete="new-password"
-               :class="[errors ? 'is-invalid' :'']"
-               type="password"
-        ></input>
-        <div class="invalid-feedback">{{ $t('errors.invalid_password') }}</div>
-      </div>
+      <form @submit.prevent="setMasterPass">
+        <div class="form-group !mb-4">
+          <input v-model="masterPassword" class="form-control"
+                 placeholder="Nhập mật khẩu tổng"
+                 :name="randomString()" autocomplete="new-password"
+                 :class="[errors ? 'is-invalid' :'']"
+                 type="password"
+          ></input>
+          <div class="invalid-feedback">{{ $t('errors.invalid_password') }}</div>
+        </div>
+      </form>
       <div class="form-group">
         <div class="grid lg:grid-cols-2 grid-cols-1 gap-2">
           <button class="btn btn-primary w-full" :disabled="loading"
