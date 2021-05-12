@@ -4,13 +4,13 @@ WORKDIR /app
 
 RUN groupadd -r cystack && useradd -m -r -g cystack -s /usr/sbin/nologin -c "CyStack user" cystack
 
+RUN npm install pm2 -g
+
 COPY ./src/ /app/src/
 
 COPY .electron-nuxt/ /app/.electron-nuxt/
 
 COPY package.json /app
-
-RUN npm install pm2 -g
 
 RUN yarn install
 
