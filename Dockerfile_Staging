@@ -6,13 +6,11 @@ RUN groupadd -r cystack && useradd -m -r -g cystack -s /usr/sbin/nologin -c "CyS
 
 COPY ./src/ /app
 
-COPY .electron-nuxt/ /app
+COPY .electron-nuxt/ /app/.electron-nuxt/
 
 COPY package.json /app
 
 RUN npm install pm2 -g
-
-RUN ls -la /app
 
 RUN yarn install
 
