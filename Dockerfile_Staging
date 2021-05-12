@@ -6,7 +6,7 @@ RUN groupadd -r cystack && useradd -m -r -g cystack -s /usr/sbin/nologin -c "CyS
 
 COPY ./src/ /app
 
-COPY ./.electron-nuxt/ /app
+COPY .electron-nuxt/ /app
 
 COPY package.json /app
 
