@@ -10,6 +10,16 @@ COPY . /app
 
 RUN yarn install
 
+ENV NODE_ENV=production
+
+ENV CS_ENVIRONMENT=staging
+
+ENV BASE_URL=http://locker.staging.cystack.org
+
+ENV BASE_ID_URL=https://id.cystack.net
+
+ENV BASE_API_URL=http://gateway.staging.cystack.org/v3
+
 RUN yarn run build-web
 
 EXPOSE 3011
