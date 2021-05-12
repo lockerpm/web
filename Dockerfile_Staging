@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN groupadd -r cystack && useradd -m -r -g cystack -s /usr/sbin/nologin -c "CyStack user" cystack
 
-COPY ./src/ /app
+COPY ./src/ /app/src/
 
 COPY .electron-nuxt/ /app/.electron-nuxt/
 
