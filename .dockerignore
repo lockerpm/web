@@ -1,0 +1,5 @@
+.git*
+*docker*
+.csconfig
+*README*
+*Docker*
