@@ -46,7 +46,7 @@
 <script>
 export default {
   layout: 'blank',
-  middleware: ['LoggedIn', 'NotHaveAccountService'],
+  middleware: ['NotHaveAccountService'],
   data () {
     return {
       invalidPinAttempts: 0,

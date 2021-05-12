@@ -48,7 +48,7 @@ const BroadcasterSubscriptionId = 'AppComponent'
 export default {
   components: {
   },
-  middleware: ['LoggedIn', 'NotHaveAccountService'],
+  middleware: ['LoggedIn', 'UserInfo', 'NotHaveAccountService'],
   data () {
     return {
       externalContent: '',

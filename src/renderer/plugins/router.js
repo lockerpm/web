@@ -5,10 +5,10 @@ export default ({ store, app }) => {
       store.commit('UPDATE_PATH', toRoute.fullPath)
       store.commit('UPDATE_PREVIOUS_PATH', fromRoute.fullPath)
     }
-    if (store.state.isLoggedIn) {
-      await store.dispatch('LoadCurrentUser')
-      await store.dispatch('LoadCurrentUserPw')
-    }
+    // if (store.state.isLoggedIn) {
+    //   await store.dispatch('LoadCurrentUser')
+    //   await store.dispatch('LoadCurrentUserPw')
+    // }
     next()
   })
 }

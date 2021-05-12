@@ -48,7 +48,7 @@
 <script>
 export default {
   layout: 'blank',
-  middleware: ['LoggedIn', 'HaveAccountService'],
+  middleware: ['HaveAccountService'],
   data () {
     return {
       masterPassword: '',

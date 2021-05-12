@@ -96,7 +96,7 @@ export const actions = {
     commit('UPDATE_PREVIOUS_PATH', state.previousPath)
   },
   nuxtClientInit ({ commit }, { app, isDev }) {
-    if (process.env.CS_ENV === 'web') {
+    if (process.env.CS_ENV === 'electron') {
       const state = app.$cookies.get('cs_locker_store') || {
         isLoggedIn: false,
         user: {

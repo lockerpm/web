@@ -13,7 +13,7 @@ if (process.env.CS_ENV !== 'web') {
 export default {
   components: {
   },
-  middleware: ['LoggedIn'],
+  middleware: ['LoggedIn', 'UserInfo'],
   data () {
     return {
       externalContent: '',
