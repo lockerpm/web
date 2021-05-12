@@ -22,9 +22,9 @@ build_staging:
 deploy_staging:
   stage: deploy
   script:
-    - cs_monitoring
+    - staging_deploy
   tags:
-    - cs_app
+    - cs_monitoring
   only:
     - dev
     - tags
