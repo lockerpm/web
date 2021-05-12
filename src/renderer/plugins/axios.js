@@ -1,6 +1,6 @@
 import https from 'https'
 
-export default function ({ store, $axios, app, isDev }) {
+export default function ({ store, $axios, app, isDev, redirect }) {
   const environment = isDev ? 'dev' : process.env.environment
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.interceptors.request.use(request => {
@@ -20,6 +20,7 @@ export default function ({ store, $axios, app, isDev }) {
         app.$cookies.remove('cs_locker_token')
         $axios.setToken(false)
         store.commit('UPDATE_IS_LOGGEDIN', false)
+        redirect(302, '/')
       }
       if (err.response.status === 403) {
         // app.$cookies.remove('cloud_token')

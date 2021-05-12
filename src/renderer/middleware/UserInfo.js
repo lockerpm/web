@@ -1,6 +1,5 @@
-export default async ({ store, route }) => {
+export default async ({ store }) => {
   if (store.state.isLoggedIn) {
-    console.log(route.name)
     await store.dispatch('LoadCurrentUser')
     await store.dispatch('LoadCurrentUserPw')
   }

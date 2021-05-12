@@ -119,21 +119,6 @@ export default {
           console.log(res)
         })
     },
-    getSyncData () {
-      this.$axios.$get('cystack_platform/pm/sync')
-        .then(async res => {
-          this.data = res
-          const userId = await this.$userService.getUserId()
-
-          await this.$syncService.syncProfile(res.profile)
-          await this.$syncService.syncFolders(userId, res.folders)
-          await this.$syncService.syncCollections(res.collections)
-          await this.$syncService.syncCiphers(userId, res.ciphers)
-          await this.$syncService.syncSends(userId, res.sends)
-          await this.$syncService.syncSettings(userId, res.domains)
-          await this.$syncService.syncPolicies(res.policies)
-        })
-    },
     async getCiphers () {
       console.log(await this.$cipherService.getAllDecrypted())
       console.log(await this.$cipherService.getAll())

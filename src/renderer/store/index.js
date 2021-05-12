@@ -95,6 +95,27 @@ export const actions = {
     commit('UPDATE_PATH', state.currentPath)
     commit('UPDATE_PREVIOUS_PATH', state.previousPath)
   },
+  nuxtClientInit ({ commit }, { app, isDev }) {
+    if (process.env.CS_ENV === 'web') {
+      const state = app.$cookies.get('cs_locker_store') || {
+        isLoggedIn: false,
+        user: {
+          language: 'en'
+        },
+        currentPath: '/',
+        previousPath: '/dashboard',
+        userPw: {}
+      }
+
+      commit('UPDATE_IS_LOGGEDIN', state.isLoggedIn)
+      commit('UPDATE_USER', state.user)
+      commit('UPDATE_USER_PW', state.userPw)
+      const environment = isDev ? 'dev' : (process.env.environment || '')
+      commit('UPDATE_DEV', environment)
+      commit('UPDATE_PATH', state.currentPath)
+      commit('UPDATE_PREVIOUS_PATH', state.previousPath)
+    }
+  },
   SetLang ({ commit, state }, payload) {
     commit('SET_LANG', payload)
     return new Promise(resolve => {
@@ -112,7 +133,6 @@ export const actions = {
     return this.$axios.$get('me').then(res => {
       commit('UPDATE_USER', res)
       commit('SET_LANG', res.language)
-      console.log(2)
       return res
     })
   },
@@ -128,12 +148,6 @@ export const actions = {
       commit('UPDATE_USER_INTERCOM', res)
       // eslint-disable-next-line no-undef
       Intercom('update')
-    })
-  },
-  LoadTargets ({ commit }) {
-    return this.$axios.$get('targets?paging=0').then(res => {
-      commit('UPDATE_TARGETS', res)
-      return res
     })
   },
   LoadNotification ({ commit }) {

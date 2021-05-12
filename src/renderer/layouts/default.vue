@@ -123,26 +123,6 @@ export default {
       if (remote) {
         remote.shell.openExternal(url)
       }
-    },
-    async getSyncData () {
-      try {
-        this.$messagingService.send('syncStarted')
-        const res = await this.$axios.$get('cystack_platform/pm/sync')
-        const userId = await this.$userService.getUserId()
-        await this.$syncService.syncProfile(res.profile)
-        await this.$syncService.syncFolders(userId, res.folders)
-        await this.$syncService.syncCollections(res.collections)
-        await this.$syncService.syncCiphers(userId, res.ciphers)
-        await this.$syncService.syncSends(userId, res.sends)
-        await this.$syncService.syncSettings(userId, res.domains)
-        await this.$syncService.syncPolicies(res.policies)
-        await this.$syncService.setLastSync(new Date())
-        this.$messagingService.send('syncCompleted', { successfully: true })
-        this.$store.commit('UPDATE_SYNCED_CIPHERS', true)
-      } catch (e) {
-        this.$messagingService.send('syncCompleted', { successfully: false })
-        this.$store.commit('UPDATE_SYNCED_CIPHERS', false)
-      }
     }
   }
 }

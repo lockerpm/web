@@ -96,28 +96,52 @@ Vue.mixin({
       }
     },
     async login () {
-      const key = await this.$cryptoService.makeKey(this.masterPassword, this.currentUser.email, 0, 100000)
-      const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
-      const res = await this.$axios.$post('cystack_platform/pm/users/session', {
-        client_id: 'web',
-        password: hashedPassword,
-        device_name: 'chrome',
-        device_type: 9,
-        device_identifier: this.$cookies.get('device_id')
-      })
-      this.$messagingService.send('loggedIn')
-      await this.$tokenService.setTokens(res.access_token, res.refresh_token)
-      await this.$userService.setInformation(this.$tokenService.getUserId(), this.currentUser.email, 0, 100000)
-      await this.$cryptoService.setKey(key)
-      await this.$cryptoService.setKeyHash(hashedPassword)
-      await this.$cryptoService.setEncKey(res.key)
-      await this.$cryptoService.setEncPrivateKey(res.private_key)
+      try {
+        const key = await this.$cryptoService.makeKey(this.masterPassword, this.currentUser.email, 0, 100000)
+        const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
+        const res = await this.$axios.$post('cystack_platform/pm/users/session', {
+          client_id: 'web',
+          password: hashedPassword,
+          device_name: 'chrome',
+          device_type: 9,
+          device_identifier: this.$cookies.get('device_id') || this.randomString()
+        })
+        this.$messagingService.send('loggedIn')
+        await this.$tokenService.setTokens(res.access_token, res.refresh_token)
+        await this.$userService.setInformation(this.$tokenService.getUserId(), this.currentUser.email, 0, 100000)
+        await this.$cryptoService.setKey(key)
+        await this.$cryptoService.setKeyHash(hashedPassword)
+        await this.$cryptoService.setEncKey(res.key)
+        await this.$cryptoService.setEncPrivateKey(res.private_key)
 
-      if (this.$vaultTimeoutService != null) {
-        this.$vaultTimeoutService.biometricLocked = false
+        if (this.$vaultTimeoutService != null) {
+          this.$vaultTimeoutService.biometricLocked = false
+        }
+        // this.$messagingService.send('unlocked')
+        this.$router.push(this.localeRoute({ path: this.$store.state.previousPath }))
+      } catch (e) {
+        this.notify('Xác thực thông tin thất bại', 'warning')
       }
-      // this.$messagingService.send('unlocked')
-      this.$router.push(this.localeRoute({ path: this.$store.state.previousPath }))
+    },
+    async getSyncData () {
+      try {
+        this.$messagingService.send('syncStarted')
+        const res = await this.$axios.$get('cystack_platform/pm/sync')
+        const userId = await this.$userService.getUserId()
+        await this.$syncService.syncProfile(res.profile)
+        await this.$syncService.syncFolders(userId, res.folders)
+        await this.$syncService.syncCollections(res.collections)
+        await this.$syncService.syncCiphers(userId, res.ciphers)
+        await this.$syncService.syncSends(userId, res.sends)
+        await this.$syncService.syncSettings(userId, res.domains)
+        await this.$syncService.syncPolicies(res.policies)
+        await this.$syncService.setLastSync(new Date())
+        this.$messagingService.send('syncCompleted', { successfully: true })
+        this.$store.commit('UPDATE_SYNCED_CIPHERS', true)
+      } catch (e) {
+        this.$messagingService.send('syncCompleted', { successfully: false })
+        this.$store.commit('UPDATE_SYNCED_CIPHERS', false)
+      }
     }
   }
 })
