@@ -8,17 +8,17 @@ RUN npm install pm2 -g
 
 COPY . /app
 
-RUN yarn install
+RUN yarn
 
 ENV NODE_ENV=production
 
 ENV CS_ENVIRONMENT=staging
 
-ENV BASE_URL=http://locker.staging.cystack.org
+ENV BASE_URL=https://locker.staging.cystack.org
 
 ENV BASE_ID_URL=https://id.cystack.net
 
-ENV BASE_API_URL=http://gateway.staging.cystack.org/v3
+ENV BASE_API_URL=https://gateway.staging.cystack.org/v3
 
 RUN yarn run build-web
 
