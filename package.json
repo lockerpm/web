@@ -4,7 +4,7 @@
   "description": "An awesome project",
   "main": "./dist/main/index.js",
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS=--max_old_space_size=4096 node .electron-nuxt/dev.js",
+    "dev": "cross-env NODE_OPTIONS=--max_old_space_size=4096 node .electron-nuxt/dev.js -c nuxt.config.electron.js",
     "build": "node .electron-nuxt/build.js",
     "build-mac": "node .electron-nuxt/build.js --mac",
     "test": "",
