@@ -1,4 +1,3 @@
 .git*
-.docker*
-docker*
+*docker*
 .csconfig
