@@ -1,5 +1,5 @@
 before_script:
-  - git submodule init
+  - git submodule update --init --recursive
   - ls -la src/renderer/jslib
   - git clone ${CONFIG_REPO} ${CONFIG_DIR}
   - chmod +x ${SCRIPT_DEPLOY}
