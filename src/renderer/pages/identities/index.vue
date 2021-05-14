@@ -1,9 +1,9 @@
 <template>
-  <ListCipher :deleted="true" />
+  <ListCipher type="Identity" />
 </template>
 
 <script>
-import ListCipher from '../components/cipher/ListCipher'
+import ListCipher from '../../components/cipher/ListCipher'
 export default {
   components: {
     ListCipher

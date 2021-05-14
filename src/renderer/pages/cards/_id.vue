@@ -1,5 +1,5 @@
 <template>
-  <DetailCipher type="Login" />
+  <DetailCipher type="Card" />
 </template>
 
 <script>

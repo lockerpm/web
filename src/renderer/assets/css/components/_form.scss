@@ -30,6 +30,15 @@
     &.form-control-solid {
       @apply bg-black-50
     }
+    &:disabled {
+      background-color: #F5F7FA;
+      border-color: #E4E7ED;
+      color: #C0C4CC;
+      cursor: not-allowed;
+    }
+    &~.input-group-append {
+      background-color: #F5F7FA;
+    }
   }
   .form-control.is-invalid {
     @apply border-danger
@@ -40,7 +49,6 @@
   .is-invalid~.invalid-feedback, .is-invalid~.invalid-tooltip, .was-validated :invalid~.invalid-feedback, .was-validated :invalid~.invalid-tooltip {
     display: block;
   }
-
   .input-group {
     @apply relative flex flex-wrap items-stretch w-full border border-black-200 rounded focus:ring-0 focus-within:border-primary focus:outline-none;
     .form-control {

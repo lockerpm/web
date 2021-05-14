@@ -163,13 +163,48 @@ Vue.mixin({
             }
           } catch (e) {
             console.log(e)
-            return '<i class="fa fa-globe-asia"></i>'
+            return this.getIconDefaultCipher('Login', size)
           }
         }
-        return '<i class="fa fa-globe-asia"></i>'
+        return this.getIconDefaultCipher('Login', size)
+      case CipherType.SecureNote:
+        return this.getIconDefaultCipher('SecureNote', size)
+      case CipherType.Card:
+        return this.getIconDefaultCipher('Card', size)
+      case CipherType.Identity:
+        return this.getIconDefaultCipher('Identity', size)
       default:
         return ''
       }
+    },
+    getIconDefaultCipher (type, size = 70) {
+      return `<img  src="${require(`~/assets/images/icons/icon_${type}.svg`)}" style="width: ${size}px; height: ${size}px" alt="" class="rounded mx-auto"/>`
+    },
+    routerCipher (cipher, callbackDeleted) {
+      if (cipher.isDeleted) {
+        callbackDeleted(cipher)
+        return
+      }
+
+      let name = ''
+      switch (cipher.type) {
+      case CipherType.Login:
+        name = 'passwords'
+        break
+      case CipherType.SecureNote:
+        name = 'notes'
+        break
+      case CipherType.Card:
+        name = 'cards'
+        break
+      case CipherType.Identity:
+        name = 'identities'
+        break
+      }
+      this.$router.push(this.localeRoute({
+        name: name + '-id',
+        params: { id: cipher.id }
+      }))
     },
     openNewTab (link) {
       window.open(link, '_blank')
