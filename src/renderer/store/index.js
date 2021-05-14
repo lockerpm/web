@@ -17,7 +17,7 @@ export const state = () => ({
   loading: false,
   userPw: {},
   isLoggedInPw: false,
-  syncedCiphers: false
+  syncedCiphersToggle: false
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -71,8 +71,8 @@ export const mutations = {
   UPDATE_IS_LOGGEDIN_PW (state, value) {
     state.isLoggedInPw = value
   },
-  UPDATE_SYNCED_CIPHERS (state, value) {
-    state.syncedCiphers = value
+  UPDATE_SYNCED_CIPHERS (state) {
+    state.syncedCiphersToggle = !state.syncedCiphersToggle
   }
 }
 export const actions = {

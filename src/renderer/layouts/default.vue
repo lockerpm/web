@@ -30,7 +30,6 @@
           </div>
         </div>
         <div class="flex-1 pl-60">
-          isLocked: {{ locked }}
           <nuxt />
         </div>
       </template>
@@ -74,9 +73,9 @@ export default {
           icon: 'cards'
         },
         {
-          label: 'profile',
-          routeName: 'profile',
-          icon: 'profile'
+          label: 'identities',
+          routeName: 'identities',
+          icon: 'identities'
         },
         {
           label: 'shares',

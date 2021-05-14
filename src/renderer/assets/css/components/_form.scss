@@ -3,12 +3,12 @@
   text-align: left;
   width: 100%;
   margin-top: .25rem;
-  @apply text-red
+  @apply text-danger
 }
 
 .form-group {
   label {
-    @apply mb-2 text-xs block
+    @apply mb-1.5 block
   }
   input {
     @apply focus-visible:ring-0 focus-visible:outline-none
@@ -20,7 +20,7 @@
     @apply focus:ring-0 focus:border-primary block w-full text-sm border-black-200 rounded text-black-700 placeholder-black-500 border px-4 py-3;
     line-height: 1.315rem;
     letter-spacing: -0.01em;
-    height: 44px;
+    height: 40px;
     &.form-control-sm {
       height: 36px;
       @apply pl-7 pr-12  py-1.5;
@@ -32,7 +32,7 @@
     }
   }
   .form-control.is-invalid {
-    @apply border-red
+    @apply border-danger
   }
   .invalid-feedback, .valid-feedback {
     @apply text-xs

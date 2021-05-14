@@ -10,6 +10,13 @@
   &.btn-lg {
     @apply py-3.5;
   }
+  &.btn-xs {
+    padding: 0.2rem;
+    @apply rounded-xs w-[1.75rem] h-[1.75rem]
+  }
+  &.btn-action {
+
+  }
 }
 .btn-primary {
   @apply bg-primary hover:bg-opacity-90 text-white;
@@ -20,11 +27,11 @@
 .btn-primary-reserve {
   @apply text-primary hover:bg-opacity-[0.9] bg-white;
 }
-.btn-green {
-  @apply bg-green text-white;
+.btn-success {
+  @apply bg-success text-white;
 }
-.btn-red {
-  @apply bg-red text-white;
+.btn-danger {
+  @apply bg-danger text-white;
 }
 .btn-secondary {
   @apply bg-black-50 bg-opacity-80;
@@ -61,4 +68,8 @@ button.btn:disabled {
       @apply bg-black-200 border border-white text-black-700;
     }
   }
+}
+
+.el-dropdown-menu__item:not(.is-disabled):hover, .el-dropdown-menu__item:focus {
+  @apply text-black-700 bg-black-100
 }

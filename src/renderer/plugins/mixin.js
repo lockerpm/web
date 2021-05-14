@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import { nanoid } from 'nanoid'
+import extractDomain from 'extract-domain'
+import { CipherType } from '../jslib/src/enums'
 
 Vue.mixin({
   data () {
@@ -71,6 +73,7 @@ Vue.mixin({
     },
     async lock () {
       await this.$vaultTimeoutService.lock()
+      this.$router.push(this.localeRoute({ name: 'lock' }))
     },
     randomString () {
       return nanoid()
@@ -102,8 +105,8 @@ Vue.mixin({
         const res = await this.$axios.$post('cystack_platform/pm/users/session', {
           client_id: 'web',
           password: hashedPassword,
-          device_name: 'chrome',
-          device_type: 9,
+          device_name: this.$platformUtilsService.getDeviceString(),
+          device_type: this.$platformUtilsService.getDevice(),
           device_identifier: this.$cookies.get('device_id') || this.randomString()
         })
         this.$messagingService.send('loggedIn')
@@ -118,7 +121,7 @@ Vue.mixin({
           this.$vaultTimeoutService.biometricLocked = false
         }
         // this.$messagingService.send('unlocked')
-        this.$router.push(this.localeRoute({ path: this.$store.state.previousPath }))
+        this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/dashboard' : this.$store.state.currentPath }))
       } catch (e) {
         this.notify('Xác thực thông tin thất bại', 'warning')
       }
@@ -137,11 +140,54 @@ Vue.mixin({
         await this.$syncService.syncPolicies(res.policies)
         await this.$syncService.setLastSync(new Date())
         this.$messagingService.send('syncCompleted', { successfully: true })
-        this.$store.commit('UPDATE_SYNCED_CIPHERS', true)
+        this.$store.commit('UPDATE_SYNCED_CIPHERS')
       } catch (e) {
         this.$messagingService.send('syncCompleted', { successfully: false })
-        this.$store.commit('UPDATE_SYNCED_CIPHERS', false)
+        this.$store.commit('UPDATE_SYNCED_CIPHERS')
       }
+    },
+    async getFolders () {
+      this.folders = await this.$folderService.getAllDecrypted()
+    },
+    clipboardSuccessHandler () {
+      this.notify(this.$t('common.copied'), 'success')
+    },
+    getIconCipher (cipher, size = 70) {
+      switch (cipher.type) {
+      case CipherType.Login:
+        if (cipher.login && cipher.login.uris && cipher.login.uris.length) {
+          try {
+            const domain = extractDomain(cipher.login.uris[0]._uri)
+            if (domain) {
+              return `<img src="//logo.clearbit.com/${domain}?size=${size}" alt="${domain}" class="rounded mx-auto"/>`
+            }
+          } catch (e) {
+            console.log(e)
+            return '<i class="fa fa-globe-asia"></i>'
+          }
+        }
+        return '<i class="fa fa-globe-asia"></i>'
+      default:
+        return ''
+      }
+    },
+    openNewTab (link) {
+      window.open(link, '_blank')
     }
   }
+})
+
+Vue.filter('filterPassword', function (value, showPassword) {
+  if (value && !showPassword) {
+    let result = ''
+    for (let i = 0; i < value.length; i++) {
+      result += '*'
+    }
+    return result
+  }
+  return value
+})
+
+Vue.filter('filterString', function (value) {
+  return value
 })

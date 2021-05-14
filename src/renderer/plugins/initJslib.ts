@@ -22,7 +22,7 @@ import { FileUploadService } from '../jslib/src/services/fileUpload.service';
 import { FolderService } from '../jslib/src/services/folder.service';
 import { ImportService } from '../jslib/src/services/import.service';
 // import { NotificationsService } from '../jslib/src/services/notifications.service';
-// import { PasswordGenerationService } from '../jslib/src/services/passwordGeneration.service';
+import { PasswordGenerationService } from '../jslib/src/services/passwordGeneration.service';
 import { PolicyService } from '../jslib/src/services/policy.service';
 import { SearchService } from '../jslib/src/services/search.service';
 import { SendService } from '../jslib/src/services/send.service';
@@ -51,9 +51,9 @@ import { FolderService as FolderServiceAbstraction } from '../jslib/src/abstract
 // import { ImportService as ImportServiceAbstraction } from '../jslib/src/abstractions/import.service';
 // import { MessagingService as MessagingServiceAbstraction } from '../jslib/src/abstractions/messaging.service';
 // import { NotificationsService as NotificationsServiceAbstraction } from '../jslib/src/abstractions/notifications.service';
-// import {
-//     PasswordGenerationService as PasswordGenerationServiceAbstraction,
-// } from '../jslib/src/abstractions/passwordGeneration.service';
+import {
+    PasswordGenerationService as PasswordGenerationServiceAbstraction,
+} from '../jslib/src/abstractions/passwordGeneration.service';
 // import { PasswordRepromptService as PasswordRepromptServiceAbstraction } from '../jslib/src/abstractions/passwordReprompt.service';
 // import { PlatformUtilsService as PlatformUtilsServiceAbstraction } from '../jslib/src/abstractions/platformUtils.service';
 // import { PolicyService as PolicyServiceAbstraction } from '../jslib/src/abstractions/policy.service';
@@ -105,7 +105,7 @@ const vaultTimeoutService = new VaultTimeoutService(cipherService, folderService
 const syncService = new SyncService(userService, apiService, settingsService, folderService,
     cipherService, cryptoService, collectionService, storageService, messagingService, policyService,
     sendService, async (expired: boolean) => messagingService.send('logout', { expired: expired }));
-// const passwordGenerationService = new PasswordGenerationService(cryptoService, storageService, policyService);
+const passwordGenerationService = new PasswordGenerationService(cryptoService, storageService, policyService);
 // const totpService = new TotpService(storageService, cryptoFunctionService);
 const containerService = new ContainerService(cryptoService);
 // const authService = new AuthService(cryptoService, apiService,
@@ -163,7 +163,6 @@ export default async ({ app, store }, inject) => {
         }
     })
 
-
     inject('cryptoService', cryptoService)
     inject('cipherService', cipherService)
     inject('userService', userService)
@@ -175,5 +174,7 @@ export default async ({ app, store }, inject) => {
     inject('vaultTimeoutService', vaultTimeoutService)
     inject('broadcasterService', broadcasterService)
     inject('messagingService', messagingService)
+    inject('folderService', folderService)
+    inject('passwordGenerationService', passwordGenerationService)
 
 }

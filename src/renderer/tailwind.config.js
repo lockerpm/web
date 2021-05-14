@@ -50,15 +50,15 @@ module.exports = {
         800: '#1e40af',
         900: '#1e3a8a'
       },
-      yellow: {
+      warning: {
         DEFAULT: '#FF9800',
         ...colors.yellow
       },
-      green: {
+      success: {
         DEFAULT: '#26BE56',
         ...colors.green
       },
-      red: {
+      danger: {
         DEFAULT: '#F54F64',
         ...colors.red
       },
@@ -68,6 +68,7 @@ module.exports = {
     },
     extend: {
       borderRadius: {
+        xs: '2px',
         sm: '4px',
         DEFAULT: '5px'
       }

@@ -50,7 +50,7 @@ export default {
   data () {
     return {
       invalidPinAttempts: 0,
-      masterPassword: '',
+      masterPassword: '12345678',
       loading: false,
       errors: false
     }
