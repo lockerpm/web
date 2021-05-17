@@ -1,6 +1,3 @@
-import {CipherRequest} from "jslib/models/request";
-import {CipherType} from "jslib/enums";
-
 export const CipherMixin = {
   methods: {
     async deleteCipher (cipher) {
@@ -11,11 +8,11 @@ export const CipherMixin = {
       }).then(async () => {
         try {
           await this.$axios.$delete(`cystack_platform/pm/ciphers/${cipher.id}`)
-          this.notify(`Xóa vĩnh viễn ${cipher.type}  thành công`, 'success')
+          this.notify(`Xóa vĩnh viễn ${this.type}  thành công`, 'success')
           this.getSyncData()
           this.$emit('deleted-cipher')
         } catch (e) {
-          this.notify(`Xóa vĩnh viễn ${cipher.type} thất bại`, 'warning')
+          this.notify(`Xóa vĩnh viễn ${this.type} thất bại`, 'warning')
           console.log(e)
         } finally {
           this.loadingPost = false
@@ -66,22 +63,6 @@ export const CipherMixin = {
       }).catch(() => {
 
       })
-    },
-    async putCipher (cipher) {
-      try {
-        const cipherEnc = await this.$cipherService.encrypt(cipher)
-        const data = new CipherRequest(cipherEnc)
-        await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, data)
-        this.notify(`Cập nhật ${CipherType[this.type]} thành công`, 'success')
-        this.closeDialog()
-        this.getSyncData()
-        this.$emit('updated-cipher')
-      } catch (e) {
-        this.notify(`Cập nhật ${CipherType[this.type]} thất bại`, 'warning')
-        console.log(e)
-      } finally {
-        this.loadingPost = false
-      }
-    },
+    }
   }
 }
