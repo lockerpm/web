@@ -8,7 +8,7 @@
 
 .form-group {
   label {
-    @apply mb-1.5 block
+    @apply mb-1.5 block font-semibold text-black
   }
   input {
     @apply focus-visible:ring-0 focus-visible:outline-none

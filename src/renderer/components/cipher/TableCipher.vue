@@ -135,10 +135,8 @@
 <script>
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import { CipherType } from '../../jslib/src/enums'
-import { CipherMixin } from '../../plugins/cipherMixin'
 export default {
   components: { AddEditCipher },
-  mixins: [CipherMixin],
   props: {
     type: {
       type: String,

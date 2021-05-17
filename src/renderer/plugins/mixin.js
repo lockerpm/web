@@ -5,8 +5,7 @@ import { CipherType } from '../jslib/src/enums'
 
 Vue.mixin({
   data () {
-    return {
-    }
+    return { folders: [] }
   },
   computed: {
     language () { return this.$store.state.user.language },
