@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col relative">
-    <div class="flex-grow lg:px-28 pt-5 px-10 mb-20">
+  <div class="flex flex-col flex-grow relative">
+    <div class="flex-grow lg:px-28 py-8 px-10 mb-20">
       <div class="flex items-center justify-between">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="localeRoute({name: 'passwords'})">

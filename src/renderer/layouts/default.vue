@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col sm:flex-row">
+  <div class="flex flex-col sm:flex-row flex-grow">
     <client-only>
       <template v-if="!locked">
-        <div class="w-60 h-screen bg-aside relative min-h-500px min-w-60 fixed">
+        <div class="w-60 h-screen bg-aside relative min-h-500px min-w-60 fixed border-0 border-b border-black-200">
           <div class="mt-10 px-8">
             <img class="h-6" src="~assets/images/logo/logo_white.svg">
           </div>
@@ -29,7 +29,8 @@
             </a>
           </div>
         </div>
-        <div class="flex-1 pl-60">
+        <div class="flex-1 pl-60 flex flex-col">
+          <Header />
           <nuxt />
         </div>
       </template>
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+import Header from '../components/Header'
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
   var { remote } = require('electron')
@@ -46,6 +48,7 @@ const BroadcasterSubscriptionId = 'AppComponent'
 
 export default {
   components: {
+    Header
   },
   middleware: ['LoggedIn', 'UserInfo', 'NotHaveAccountService'],
   data () {

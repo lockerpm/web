@@ -8,23 +8,24 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold">
-        {{ isDeleted ? 'Khôi phục mật khẩu' : cipher.id ? 'Chỉnh sửa mật khẩu' : 'Thêm mật khẩu' }}
+        {{ isDeleted ? `Khôi phục ${type}` : cipher.id ? `Chỉnh sửa ${type}` : `Thêm ${type}` }}
       </div>
     </div>
     <div class="text-left">
+      <div class="form-group !mb-8">
+        <label for="">Tên <span class="text-danger">*</span></label>
+        <input v-model="cipher.name" type="text" class="form-control"
+               :class="{'is-invalid': errors.name}"
+               placeholder=""
+               :disabled="isDeleted"
+        >
+      </div>
       <template v-if="cipher.type === CipherType.Login">
-        <div class="form-group">
-          <label for="">Tên <span class="text-danger">*</span></label>
-          <input v-model="cipher.name" type="text" class="form-control"
-                 placeholder="Name*"
-                 :disabled="isDeleted"
-          >
-        </div>
         <div class="mb-4 text-black-700 text-head-6 font-semibold">Chi tiết đăng nhập</div>
         <div class="form-group">
           <label for="">Email hoặc Username</label>
           <input v-model="cipher.login.username" type="text" class="form-control mb-4"
-                 placeholder="Username"
+                 placeholder=""
                  :disabled="isDeleted"
           >
         </div>
@@ -57,35 +58,240 @@
           <label for="">Địa chỉ Website</label>
           <div v-for="(item, index) in cipher.login.uris" :key="index">
             <input v-model="item.uri" type="text" class="form-control"
-                   placeholder="Địa chỉ website"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+        </div>
+      </template>
+      <template v-if="cipher.type === CipherType.Card">
+        <div class="mb-4 text-black-700 text-head-6 font-semibold">Chi tiết thẻ</div>
+        <div class="form-group">
+          <label for="">Tên chủ thẻ <span class="text-danger">*</span></label>
+          <input v-model="cipher.card.cardholderName" type="text" class="form-control"
+                 :class="{'is-invalid': errors.card && errors.card.cardholderName}"
+                 placeholder=""
+                 :disabled="isDeleted"
+          >
+        </div>
+        <div class="form-group">
+          <label for="">Thương hiệu</label>
+          <el-select v-model="cipher.card.brand" placeholder=""
+                     class="w-full"
+                     :disabled="isDeleted"
+          >
+            <el-option
+              v-for="item in cardBrandOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.value"
+            />
+          </el-select>
+        </div>
+        <div class="form-group">
+          <label for="">Số thẻ thẻ</label>
+          <input v-model="cipher.card.number" type="text" class="form-control"
+                 placeholder=""
+                 :disabled="isDeleted"
+          >
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="form-group">
+            <label for="">Tháng hết hạn</label>
+            <el-select v-model="cipher.card.expMonth" placeholder=""
+                       class="w-full"
+                       :disabled="isDeleted"
+            >
+              <el-option
+                v-for="(item, index) in cardExpMonthOptions"
+                :key="index"
+                :label="item.name"
+                :value="item.value"
+              />
+            </el-select>
+          </div>
+          <div class="form-group">
+            <label for="">Năm hết hạn</label>
+            <input v-model="cipher.card.expYear" type="text" class="form-control"
+                   placeholder="ex. 2025"
                    :disabled="isDeleted"
             >
           </div>
         </div>
         <div class="form-group">
-          <label for="">Khác</label>
-          <el-select v-model="cipher.folder_id" placeholder="Chọn thư mục"
-                     class="w-full mb-4"
-                     :disabled="isDeleted"
-          >
-            <el-option
-              v-for="item in folders"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-          <el-input v-model="cipher.notes"
-                    type="textarea"
-                    :rows="5"
-                    placeholder="Ghi chú"
-          />
+          <label for="">CVV</label>
+          <div class="input-group">
+            <input v-model="cipher.card.code"
+                   :type="showCardCode ? 'text' : 'password'"
+                   class="form-control"
+                   autocomplete="new-password"
+                   :disabled="isDeleted"
+            >
+            <div class="input-group-append !bg-transparent">
+              <button class="btn btn-icon" @click="showCardCode = !showCardCode">
+                <i class="far"
+                   :class="{'fa-eye': !showCardCode, 'fa-eye-slash': showCardCode}"
+                />
+              </button>
+            </div>
+          </div>
         </div>
       </template>
+      <template v-if="cipher.type === CipherType.Identity">
+        <div class="mb-4 text-black-700 text-head-6 font-semibold">Thông tin cá nhân</div>
+        <div class="grid grid-cols-2 gap-x-2 mb-4">
+          <div class="form-group">
+            <label for="">Tước hiệu</label>
+            <el-select v-model="cipher.identity.title" placeholder=""
+                       class="w-full"
+                       :disabled="isDeleted"
+            >
+              <el-option
+                v-for="(item, index) in identityTitleOptions"
+                :key="index"
+                :label="item.name"
+                :value="item.value"
+              />
+            </el-select>
+          </div>
+          <div />
+          <div class="form-group">
+            <label for="">Tên</label>
+            <input v-model="cipher.identity.firstName" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group">
+            <label for="">Họ</label>
+            <input v-model="cipher.identity.lastName" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group">
+            <label for="">Username</label>
+            <input v-model="cipher.identity.username" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group">
+            <label for="">Công ty</label>
+            <input v-model="cipher.identity.company" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group col-span-2">
+            <label for="">Email</label>
+            <input v-model="cipher.identity.email" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group">
+            <label for="">Số điện thoại</label>
+            <input v-model="cipher.identity.phone" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group">
+            <label for="">Số CMT</label>
+            <input v-model="cipher.identity.ssn" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group">
+            <label for="">Số hộ chiếu</label>
+            <input v-model="cipher.identity.passportNumber" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group">
+            <label for="">Số bằng lái xe</label>
+            <input v-model="cipher.identity.licenseNumber" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+        </div>
+        <div class="mb-4 text-black-700 text-head-6 font-semibold">Thông tin liên lạc</div>
+        <div class="grid grid-cols-2 gap-x-2 mb-4">
+          <div class="form-group col-span-2">
+            <label for="">Địa chỉ 1</label>
+            <input v-model="cipher.identity.address1" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group col-span-2">
+            <label for="">Địa chỉ 2</label>
+            <input v-model="cipher.identity.address2" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group">
+            <label for="">Thành phố</label>
+            <input v-model="cipher.identity.city" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group">
+            <label for="">Quận/Huyện</label>
+            <input v-model="cipher.identity.state" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group">
+            <label for="">Mã bưu chính</label>
+            <input v-model="cipher.identity.postalCode" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+          <div class="form-group">
+            <label for="">Quốc gia</label>
+            <input v-model="cipher.identity.country" type="text" class="form-control"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+          </div>
+        </div>
+      </template>
+      <div v-if="cipher.type !== CipherType.SecureNote" class="mb-4 text-black-700 text-head-6 font-semibold">Khác</div>
+      <div class="form-group">
+        <label for="">Ghi chú</label>
+        <el-input v-model="cipher.notes"
+                  type="textarea"
+                  :rows="5"
+                  placeholder=""
+        />
+      </div>
+      <div class="form-group">
+        <label for="">Thư mục</label>
+        <el-select v-model="cipher.folder_id" placeholder="Chọn thư mục"
+                   class="w-full mb-4"
+                   :disabled="isDeleted"
+        >
+          <el-option
+            v-for="item in folders"
+            :key="item.id"
+            :label="item.name || 'No folder'"
+            :value="item.id"
+          />
+        </el-select>
+      </div>
     </div>
-    <div slot="footer" class="dialog-footer flex items-center justify-between">
-      <div>
-        <button class="btn btn-icon !text-danger">
+    <div slot="footer" class="dialog-footer flex items-center text-left">
+      <div class="flex-grow">
+        <button v-if="cipher.id" class="btn btn-icon !text-danger">
           <i class="fa fa-trash-alt" />
         </button>
       </div>
@@ -113,10 +319,13 @@
 </template>
 
 <script>
-import { CipherType } from '../../jslib/src/enums'
+import { CipherType, SecureNoteType } from '../../jslib/src/enums'
 import { Cipher } from '../../jslib/src/models/domain'
 import { CipherRequest } from '../../jslib/src/models/request'
+import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView } from '../../jslib/src/models/view'
+import { CipherMixin } from '../../plugins/cipherMixin'
 export default {
+  mixins: [CipherMixin],
   props: {
     type: {
       type: String,
@@ -128,9 +337,11 @@ export default {
       cipher: new Cipher({ type: CipherType[this.type] }),
       folders: [],
       showPassword: false,
+      showCardCode: false,
       dialogVisible: false,
       loadingPost: false,
-      CipherType
+      CipherType,
+      errors: {}
     }
   },
   computed: {
@@ -156,6 +367,32 @@ export default {
         { name: this.$t('other'), value: 'Other' }
       ]
     },
+    cardExpMonthOptions () {
+      return [
+        { name: '-- ' + this.$t('select') + ' --', value: null },
+        { name: '01 - ' + this.$t('january'), value: '1' },
+        { name: '02 - ' + this.$t('february'), value: '2' },
+        { name: '03 - ' + this.$t('march'), value: '3' },
+        { name: '04 - ' + this.$t('april'), value: '4' },
+        { name: '05 - ' + this.$t('may'), value: '5' },
+        { name: '06 - ' + this.$t('june'), value: '6' },
+        { name: '07 - ' + this.$t('july'), value: '7' },
+        { name: '08 - ' + this.$t('august'), value: '8' },
+        { name: '09 - ' + this.$t('september'), value: '9' },
+        { name: '10 - ' + this.$t('october'), value: '10' },
+        { name: '11 - ' + this.$t('november'), value: '11' },
+        { name: '12 - ' + this.$t('december'), value: '12' }
+      ]
+    },
+    identityTitleOptions () {
+      return [
+        { name: '-- ' + this.$t('select') + ' --', value: null },
+        { name: this.$t('mr'), value: this.$t('mr') },
+        { name: this.$t('mrs'), value: this.$t('mrs') },
+        { name: this.$t('ms'), value: this.$t('ms') },
+        { name: this.$t('dr'), value: this.$t('dr') }
+      ]
+    },
     isDeleted () {
       return !!this.cipher.deletedDate
     }
@@ -169,7 +406,16 @@ export default {
       if (data.id) {
         this.cipher = new Cipher({ ...data }, true)
       } else {
-        this.cipher = new Cipher({ type: CipherType[this.type] })
+        this.cipher = new CipherView()
+        this.cipher.organizationId = this.organizationId == null ? null : this.organizationId
+        this.cipher.folderId = this.folderId
+        this.cipher.type = CipherType[this.type]
+        this.cipher.login = new LoginView()
+        this.cipher.login.uris = [new LoginUriView()]
+        this.cipher.card = new CardView()
+        this.cipher.identity = new IdentityView()
+        this.cipher.secureNote = new SecureNoteView()
+        this.cipher.secureNote.type = SecureNoteType.Generic
       }
     },
     closeDialog () {
@@ -178,35 +424,16 @@ export default {
     async postCipher () {
       try {
         this.loadingPost = true
+        this.errors = {}
         const cipher = await this.$cipherService.encrypt(this.cipher)
-        await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
-          name: cipher.name ? cipher.name.encryptedString : null,
-          folder_id: cipher.folderId,
-          team_id: null,
-          fields: [],
-          login: {
-            username: cipher.login && cipher.login.username ? cipher.login.username.encryptedString : null,
-            password: cipher.login && cipher.login.password ? cipher.login.password.encryptedString : null,
-            totp: cipher.login && cipher.login.totp ? cipher.login.totp.encryptedString : null,
-            uris: (cipher.login && cipher.login.uris)
-              ? cipher.login.uris.map(u => (
-                {
-                  uri: (u.uri != null ? u.uri.encryptedString : null),
-                  match: (u.match != null ? u.match : null)
-                }))
-              : null
-          },
-          notes: cipher.notes ? cipher.notes.encryptedString : null,
-          type: cipher.type,
-          favorite: cipher.favorite,
-          lastKnownRevisionDate: cipher.revisionDate,
-          reprompt: cipher.reprompt
-        })
-        this.notify('Thêm mật khẩu thành công', 'success')
+        const data = new CipherRequest(cipher)
+        await this.$axios.$post('cystack_platform/pm/ciphers/vaults', data)
+        this.notify(`Thêm ${CipherType[this.type]} thành công`, 'success')
         this.closeDialog()
         this.getSyncData()
       } catch (e) {
-        this.notify('Thêm mật khẩu thất bại', 'warning')
+        this.notify(`Thêm ${CipherType[this.type]} thất bại`, 'warning')
+        this.errors = e.response && e.response.data && e.response.data.details
         console.log(e)
       } finally {
         this.loadingPost = false
@@ -217,54 +444,12 @@ export default {
         const cipherEnc = await this.$cipherService.encrypt(this.cipher)
         const data = new CipherRequest(cipherEnc)
         await this.$axios.$put(`cystack_platform/pm/ciphers/${this.cipher.id}`, data)
-        this.notify('Cập nhật mật khẩu thành công', 'success')
+        this.notify(`Cập nhật ${CipherType[this.type]} thành công`, 'success')
         this.closeDialog()
         this.getSyncData()
         this.$emit('updated-cipher')
       } catch (e) {
-        this.notify('Cập nhật mật khẩu thất bại', 'warning')
-        console.log(e)
-      } finally {
-        this.loadingPost = false
-      }
-    },
-    async restoreCipher () {
-      try {
-        await this.$axios.$put(`cystack_platform/pm/ciphers/${this.cipher.id}/restore`)
-        this.notify('Khôi phục mật khẩu thành công', 'success')
-        this.closeDialog()
-        this.getSyncData()
-        this.$emit('updated-cipher')
-      } catch (e) {
-        this.notify('Khôi phục mật khẩu thất bại', 'warning')
-        console.log(e)
-      } finally {
-        this.loadingPost = false
-      }
-    },
-    async deleteCipher () {
-      try {
-        await this.$axios.$delete(`cystack_platform/pm/ciphers/${this.cipher.id}`)
-        this.notify('Xóa vĩnh viễn mật khẩu thành công', 'success')
-        this.closeDialog()
-        this.getSyncData()
-        this.$emit('updated-cipher')
-      } catch (e) {
-        this.notify('Xóa vĩnh viễn mật khẩu thất bại', 'warning')
-        console.log(e)
-      } finally {
-        this.loadingPost = false
-      }
-    },
-    async moveTrashCipher () {
-      try {
-        await this.$axios.$put(`cystack_platform/pm/ciphers/${this.cipher.id}/delete`)
-        this.notify('Xóa mật khẩu thành công', 'success')
-        this.closeDialog()
-        this.getSyncData()
-        this.$emit('updated-cipher')
-      } catch (e) {
-        this.notify('Xóa mật khẩu thất bại', 'warning')
+        this.notify(`Cập nhật ${CipherType[this.type]} thất bại`, 'warning')
         console.log(e)
       } finally {
         this.loadingPost = false
