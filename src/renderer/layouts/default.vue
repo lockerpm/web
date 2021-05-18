@@ -11,7 +11,6 @@
             <nuxt-link v-for="(item, index) in menu" :key="index" :to="localePath({name: item.routeName})"
                        class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold "
                        active-class="bg-white bg-opacity-20 text-white"
-                       exact
             >
               <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="" class="mr-2">
 

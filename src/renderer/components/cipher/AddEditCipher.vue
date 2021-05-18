@@ -407,7 +407,7 @@ export default {
   },
   data () {
     return {
-      cipher: new Cipher({ type: CipherType[this.type] }),
+      cipher: new CipherView(),
       folders: [],
       showPassword: false,
       showCardCode: false,
@@ -475,7 +475,7 @@ export default {
   },
   methods: {
     async openDialog (data, editMode = '') {
-      await this.getFolders()
+      this.folders = await this.getFolders()
       this.editMode = editMode
       this.dialogVisible = true
       if (data.id || this.editMode) {
@@ -619,7 +619,7 @@ export default {
       this.$refs.addEditFolder.openDialog()
     },
     async handleCreatedFolder (id) {
-      this.folders = this.getFolders()
+      this.folders = await this.getFolders()
       this.cipher.folderId = id
     }
   }

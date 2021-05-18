@@ -1,5 +1,5 @@
 <template>
-  <ListCipher type="Identity" />
+  <ListCipher type="Identity" route-name="identities" />
 </template>
 
 <script>

@@ -146,7 +146,7 @@ Vue.mixin({
       }
     },
     async getFolders () {
-      this.folders = await this.$folderService.getAllDecrypted()
+      return await this.$folderService.getAllDecrypted()
     },
     clipboardSuccessHandler () {
       this.notify(this.$t('common.copied'), 'success')

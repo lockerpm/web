@@ -22,15 +22,16 @@
         </div>
       </div>
     </div>
-    <ListCipher route-name="dashboard" />
+    <div class="border-t-1 bg-black-300 fixed bottom-0 flex items-center justify-center border-0 border-t py-2 w-[calc(100%-15rem)] bg-grey-500 border-black-600">
+      <span class="mr-3">Bạn còn 14 ngày trong thời gian dùng thử.</span>
+      <button class="btn btn-primary" @click="deleted = !deleted">Nâng cấp ngay</button>
+    </div>
   </div>
 </template>
 
 <script>
-import ListCipher from '../components/cipher/ListCipher'
 export default {
   components: {
-    ListCipher
   },
   data () {
     return {

@@ -1,5 +1,5 @@
 <template>
-  <ListCipher type="Card" />
+  <ListCipher type="Card" route-name="cards" />
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <DetailCipher type="SecureNote" />
+  <DetailCipher type="SecureNote" route-name="notes" />
 </template>
 
 <script>

@@ -1,13 +1,13 @@
 <template>
-  <div class="flex items-center text-danger" :class="{
+  <div class="flex items-center" :class="{
     'text-success': score === 4,
     'text-primary': score === 3,
     'text-warning': score === 2,
     'text-danger': score === 1 || score === 0,
-    'text-black-600': score === 10,
+    'text-black': score === 10,
   }"
   >
-    <div class="mr-3">
+    <div v-if="score !==10" class="mr-3">
       <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
         <g id="icon-check" fill="currentColor">
           <path d="M6.65625 10.9453L4 8.25781L4.9375 7.32031L6.65625 9.03906L11.0625 4.66406L12 5.60156L6.65625 10.9453ZM8 0.257813L2 2.94531L2 6.94531Q2 8.75781 2.78125 10.4453Q3.5625 12.1328 4.9375 13.3203Q6.3125 14.5078 8 14.9453Q9.6875 14.5078 11.0625 13.3203Q12.4375 12.1328 13.2188 10.4453Q14 8.75781 14 6.94531L14 2.94531L8 0.257813Z" />

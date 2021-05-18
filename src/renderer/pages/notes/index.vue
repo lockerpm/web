@@ -1,5 +1,5 @@
 <template>
-  <ListCipher type="SecureNote" />
+  <ListCipher type="SecureNote" route-name="notes" />
 </template>
 
 <script>

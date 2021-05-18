@@ -3,7 +3,7 @@
     <div class="flex-grow lg:px-28 py-8 px-10 mb-20">
       <div class="flex items-center justify-between">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="localeRoute({name: 'passwords'})">
+          <el-breadcrumb-item :to="localeRoute({name: routeName})">
             {{ $t(`enum.${type}`) }}
           </el-breadcrumb-item>
           <el-breadcrumb-item>{{ cipher.name }}</el-breadcrumb-item>
@@ -39,60 +39,63 @@
             {{ cipher.name }}
           </div>
         </div>
-        <div v-if="cipher.type === CipherType.Login" class="cipher-items">
-          <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">Email or Username</div>
-            <div class="col-span-4 font-semibold">
-              {{ cipher.login.username }}
+        <div class="cipher-items">
+          <template v-if="cipher.type === CipherType.Login">
+            <TextHaveCopy label="Email or Username" :text="cipher.login.username" />
+            <TextHaveCopy label="Password" :text="cipher.login.password" should-hide />
+            <div class="grid md:grid-cols-6 cipher-item">
+              <div class="">Password Security</div>
+              <div class="col-span-4 font-semibold">
+                <PasswordStrength :score="passwordStrength.score" />
+              </div>
             </div>
-            <div class="text-right">
-              <button v-clipboard:copy="cipher.login.username"
-                      v-clipboard:success="clipboardSuccessHandler"
-                      class="btn btn-icon btn-xs btn-action"
-              >
-                <i class="far fa-copy" />
-              </button>
+            <div v-for="(item, index) in cipher.login.uris"
+                 :key="index"
+                 class="grid md:grid-cols-6 cipher-item"
+            >
+              <div class="">Website Address</div>
+              <div class="col-span-4 font-semibold">
+                {{ item.uri }}
+              </div>
+              <div class="text-right">
+                <button v-if="item.canLaunch" class="btn btn-icon btn-xs btn-action" @click="openNewTab(item.uri)">
+                  <i class="fas fa-external-link-square-alt" />
+                </button>
+              </div>
+            </div>
+          </template>
+          <template v-if="cipher.type === CipherType.Card">
+            <TextHaveCopy label="Tên chủ thẻ" :text="cipher.card.cardholderName" />
+            <TextHaveCopy label="Thương hiệu" :text="cipher.card.brand" />
+            <TextHaveCopy label="Số thẻ" :text="cipher.card.number" />
+            <TextHaveCopy label="Tháng Hết hạn" :text="cipher.card.expMonth" />
+            <TextHaveCopy label="Năm Hết hạn" :text="cipher.card.expYear" />
+            <TextHaveCopy label="CVV" :text="cipher.card.code" should-hide />
+          </template>
+          <template v-if="cipher.type === CipherType.Identity">
+            <TextHaveCopy label="Tước hiệu" :text="cipher.identity.title" />
+            <TextHaveCopy label="Tên" :text="cipher.identity.firstName" />
+            <TextHaveCopy label="Họ" :text="cipher.identity.lastName" />
+            <TextHaveCopy label="Username" :text="cipher.identity.username" />
+            <TextHaveCopy label="Email" :text="cipher.identity.email" />
+            <TextHaveCopy label="Công ty" :text="cipher.identity.company" />
+            <TextHaveCopy label="Số CMT" :text="cipher.identity.ssn" />
+            <TextHaveCopy label="Số hộ chiếu" :text="cipher.identity.passportNumber" />
+            <TextHaveCopy label="Bằng lái xe" :text="cipher.identity.licenseNumber" />
+            <TextHaveCopy label="Địa chỉ 1" :text="cipher.identity.address1" />
+            <TextHaveCopy label="Địa chỉ 2" :text="cipher.identity.address2" />
+            <TextHaveCopy label="Thành phố/Tỉnh" :text="cipher.identity.city" />
+            <TextHaveCopy label="Quận/Huyện" :text="cipher.identity.state" />
+            <TextHaveCopy label="Mã bưu chính" :text="cipher.identity.postalCode" />
+            <TextHaveCopy label="Quốc gia" :text="cipher.identity.country" />
+          </template>
+          <TextHaveCopy label="Notes" :text="cipher.notes" />
+          <div class="grid md:grid-cols-6 cipher-item">
+            <div class="">Folder</div>
+            <div class="col-span-4 font-semibold flex items-center">
+              <img src="~/assets/images/icons/folder.svg" alt="" class="mr-3"> {{ folder.name || 'No folder' }}
             </div>
           </div>
-          <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">Password</div>
-            <div class="col-span-4 font-semibold">
-              {{ cipher.login.password | filterPassword(showPassword) }}
-            </div>
-            <div class="text-right">
-              <button class="btn btn-icon btn-xs btn-action" @click="showPassword = !showPassword">
-                <i class="far"
-                   :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
-                />
-              </button>
-              <button v-clipboard:copy="cipher.login.password"
-                      v-clipboard:success="clipboardSuccessHandler"
-                      class="btn btn-icon btn-xs btn-action"
-              >
-                <i class="far fa-copy" />
-              </button>
-            </div>
-          </div>
-          <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">Password Security</div>
-            <div class="col-span-4 font-semibold">
-              <PasswordStrength :score="passwordStrength.score" />
-            </div>
-          </div>
-          <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">Website Address</div>
-            <div class="col-span-4 font-semibold">
-              {{ cipher.login && cipher.login.uris && cipher.login.uris.length && cipher.login.uris[0]._uri }}
-            </div>
-            <div class="text-right">
-              <button class="btn btn-icon btn-xs btn-action" @click="openNewTab(cipher.login && cipher.login.uris && cipher.login.uris.length && cipher.login.uris[0]._uri)">
-                <i class="fas fa-external-link-square-alt" />
-              </button>
-            </div>
-          </div>
-        </div>
-        <div v-else>
-          <pre>{{ cipher }}</pre>
         </div>
       </client-only>
     </div>
@@ -102,34 +105,50 @@
 
 <script>
 import debounce from 'lodash/debounce'
+import find from 'lodash/find'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import PasswordStrength from '../../components/cipher/PasswordStrength'
 import { Cipher } from '../../jslib/src/models/domain'
 import { CipherType } from '../../jslib/src/enums'
+import { CipherView } from '../../jslib/src/models/view'
+import TextHaveCopy from '../../components/cipher/TextHaveCopy'
+import { CipherResponse } from '../../jslib/src/models/response'
 
 export default {
   components: {
+    TextHaveCopy,
     AddEditCipher,
     PasswordStrength
   },
   props: {
     type: {
       type: String,
-      default: 'Login'
+      default: ''
+    },
+    routeName: {
+      type: String,
+      default: 'passwords'
     }
   },
   data () {
     return {
-      cipher: new Cipher({ type: CipherType[this.type] }),
+      cipher: new CipherView({ type: CipherType[this.type] }),
       showPassword: false,
       passwordStrength: {},
-      CipherType
+      CipherType,
+      folders: []
+    }
+  },
+  computed: {
+    folder () {
+      return find(this.folders, e => e.id === this.cipher.folderId) || {}
     }
   },
   created () {
   },
   mounted () {
     this.getCipher()
+    this.getFolders()
   },
   methods: {
     addEdit () {
@@ -138,12 +157,16 @@ export default {
     getCipher () {
       this.$axios.$get(`cystack_platform/pm/ciphers/${this.$route.params.id}`)
         .then(async res => {
+          res = new CipherResponse(res)
           const cipher = new Cipher(res, false)
           this.cipher = await cipher.decrypt()
-          this.passwordStrength = this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack'])
+          if (this.cipher.type === CipherType.Login) {
+            this.passwordStrength = this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
+          }
         })
-        .catch(() => {
-          this.$router.push(this.localeRoute({ name: 'passwords' }))
+        .catch(e => {
+          console.log(e)
+          // this.$router.push(this.localeRoute({ name: 'passwords' }))
         })
     },
     checkPassword: debounce(function (password) {

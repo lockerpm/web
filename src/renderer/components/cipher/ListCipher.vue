@@ -1,23 +1,43 @@
 <template>
   <div class="flex flex-col flex-grow relative">
     <div class="flex-grow lg:px-28 py-10 px-10 mb-20">
-      <div class="flex items-center justify-between">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="localeRoute({name: 'passwords'})">
-            {{ $t(`enum.${type}`) }}
-          </el-breadcrumb-item>
-        </el-breadcrumb>
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex-grow">
+          <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="localeRoute({name: routeName})">
+              {{ routeName !=='dashboard' ? $t(`enum.${type}`) : 'Folders' }}
+            </el-breadcrumb-item>
+          </el-breadcrumb>
+        </div>
         <div class="header-actions">
           <el-dropdown trigger="click">
             <div class="text-sm text-black-600 font-semibold">
               Sắp xếp theo <i class="el-icon-caret-bottom el-icon--right" />
             </div>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>Tên</el-dropdown-item>
-              <el-dropdown-item>Thời gian cập nhật</el-dropdown-item>
+              <el-dropdown-item @click.native="changeSort('name', 'asc')">Tên tăng dần</el-dropdown-item>
+              <el-dropdown-item @click.native="changeSort('name', 'desc')">Tên giảm dần</el-dropdown-item>
+              <el-dropdown-item @click.native="changeSort('revisionDate', 'asc')">Thời gian tăng dần</el-dropdown-item>
+              <el-dropdown-item @click.native="changeSort('revisionDate', 'desc')">Thời gian giảm dần</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
+      </div>
+
+      <div v-if="routeName === 'dashboard' && folders"
+           class="mb-5"
+      >
+        <client-only>
+          <div class="grid grid-cols-4 md:grid-cols-4 xl:grid-cols-5 gap-6 ">
+            <div v-for="item in folders"
+                 :key="item.id"
+                 class="px-4 py-6 flex items-center cursor-pointer rounded border border-[#E6E6E8]"
+            >
+              <img src="~/assets/images/icons/folderSolid.svg" alt="" class="mr-2">
+              <div class="font-semibold">{{ item.name }} ({{ item.ciphersCount }})</div>
+            </div>
+          </div>
+        </client-only>
       </div>
       <client-only>
         <el-table
@@ -32,6 +52,7 @@
             width="55"
           />
           <el-table-column
+            prop="name"
             label=""
           >
             <template slot="header" slot-scope="scope">
@@ -174,6 +195,7 @@
 
 <script>
 import cloneDeep from 'lodash/cloneDeep'
+import orderBy from 'lodash/orderBy'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import { CipherType } from '../../jslib/src/enums'
 export default {
@@ -188,6 +210,10 @@ export default {
     deleted: {
       type: Boolean,
       default: false
+    },
+    routeName: {
+      type: String,
+      default: 'passwords'
     }
   },
   data () {
@@ -198,7 +224,9 @@ export default {
       searchText: '',
       CipherType,
       multipleSelection: [],
-      loading: false
+      loading: false,
+      orderField: 'name', // revisionDate
+      orderDirection: 'asc'
     }
   },
   created () {
@@ -211,9 +239,23 @@ export default {
         const deletedFilter = c => {
           return c.isDeleted === this.deleted
         }
-        return await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+        const result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+        return orderBy(result, [c => this.orderField === 'name' ? c.name.toLowerCase() : c.revisionDate], [this.orderDirection])
       },
-      watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter']
+      watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
+    },
+    folders: {
+      async get () {
+        let folders = await this.$folderService.getAllDecrypted() || []
+        folders = folders.filter(f => f.id)
+        folders.forEach(f => {
+          const ciphers = this.ciphers && (this.ciphers.filter(c => c.folderId === f.id) || [])
+          f.ciphersCount = ciphers.length
+        })
+        console.log(folders)
+        return folders
+      },
+      watch: ['$store.state.syncedCiphersToggle', 'searchText', 'orderField', 'orderDirection', 'ciphers']
     }
   },
   methods: {
@@ -304,6 +346,10 @@ export default {
       })
     },
     async moveFolders (ids = []) {
+    },
+    changeSort (orderField, orderDirection) {
+      this.orderField = orderField
+      this.orderDirection = orderDirection
     }
   }
 }
