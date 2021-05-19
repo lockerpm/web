@@ -80,6 +80,13 @@ export default {
         const encKey = await this.$cryptoService.makeEncKey(key)
         const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
         const keys = await this.$cryptoService.makeKeyPair(encKey[0])
+
+        // default org
+        const shareKey = await this.$cryptoService.makeShareKey()
+        const orgKey = shareKey[0].encryptedString
+        const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
+        const collectionName = collection.encryptedString
+
         await this.$axios.$post('cystack_platform/pm/users/register', {
           name: this.currentUser.full_name,
           email: this.currentUser.email,
@@ -92,7 +99,9 @@ export default {
           keys: {
             public_key: keys[0],
             encrypted_private_key: keys[1].encryptedString
-          }
+          },
+          org_key: orgKey,
+          collection_name: collectionName
         })
         this.notify(this.$t('master_password.create_success'), 'success')
         this.$store.commit('UPDATE_USER_PW', { ...this.$store.state.userPw, is_pwd_manager: true })

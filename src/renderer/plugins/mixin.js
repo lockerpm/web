@@ -94,7 +94,6 @@ Vue.mixin({
       try {
         const key = await this.$cryptoService.makeKey(masterPassword, email, 0, 100000)
         const hashedPassword = await this.$cryptoService.hashPassword(masterPassword, key)
-        console.log(hashedPassword)
         return hashedPassword
       } catch (e) {
         return ''
@@ -164,7 +163,6 @@ Vue.mixin({
               return `<img src="//logo.clearbit.com/${domain}?size=${size}" alt="${domain}" class="rounded mx-auto"/>`
             }
           } catch (e) {
-            console.log(e)
             return this.getIconDefaultCipher('Login', size)
           }
         }
@@ -196,7 +194,6 @@ Vue.mixin({
         return
       }
       if (this.getRouteBaseName() === 'dashboard-folders-folderId') {
-        console.log('dashboard-folders-folderId')
         this.$router.push(this.localeRoute({
           name: 'dashboard-folders-folderId-id',
           params: { ...this.$route.params, id: cipher.id }
