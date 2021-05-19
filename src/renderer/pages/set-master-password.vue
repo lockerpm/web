@@ -76,7 +76,10 @@ export default {
     async setMasterPass () {
       this.loading = true
       try {
-        const key = await this.$cryptoService.makeKey(this.masterPassword, this.currentUser.email, 0, 100000)
+        const kdf = 0
+        const kdfIterations = 100000
+        const referenceData = ''
+        const key = await this.$cryptoService.makeKey(this.masterPassword, this.currentUser.email, kdf, kdfIterations)
         const encKey = await this.$cryptoService.makeEncKey(key)
         const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
         const keys = await this.$cryptoService.makeKeyPair(encKey[0])
@@ -93,9 +96,9 @@ export default {
           master_password_hash: hashedPassword,
           master_password_hint: this.masterPasswordHint,
           key: encKey[1].encryptedString,
-          kdf: 0,
-          kdfIterations: 100000,
-          referenceData: '',
+          kdf,
+          kdf_iterations: kdfIterations,
+          reference_data: referenceData,
           keys: {
             public_key: keys[0],
             encrypted_private_key: keys[1].encryptedString
