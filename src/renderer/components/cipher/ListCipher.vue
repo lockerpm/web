@@ -15,7 +15,7 @@
               </el-breadcrumb-item>
             </template>
             <template v-else-if="getRouteBaseName() ==='dashboard'">
-              Folders
+              <span class="font-medium">Folders</span>
             </template>
             <template v-else>
               <el-breadcrumb-item

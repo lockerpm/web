@@ -458,7 +458,6 @@ export default {
         this.errors = {}
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
-        data.folderId = this.$route.params.folderId || null
 
         await this.$axios.$post('cystack_platform/pm/ciphers/vaults', data)
         this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'success')
@@ -583,7 +582,6 @@ export default {
     newCipher (type) {
       this.cipher = new CipherView()
       this.cipher.organizationId = this.organizationId == null ? null : this.organizationId
-      this.cipher.folderId = this.folderId
       this.cipher.type = CipherType[type]
       this.cipher.login = new LoginView()
       this.cipher.login.uris = [new LoginUriView()]
@@ -591,6 +589,7 @@ export default {
       this.cipher.identity = new IdentityView()
       this.cipher.secureNote = new SecureNoteView()
       this.cipher.secureNote.type = SecureNoteType.Generic
+      this.cipher.folderId = this.$route.params.folderId || null
     },
     handleChangeType (type) {
       this.newCipher(type)
