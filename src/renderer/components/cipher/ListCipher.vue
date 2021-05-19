@@ -4,9 +4,26 @@
       <div class="flex items-center justify-between mb-5">
         <div class="flex-grow">
           <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="localeRoute({name: routeName})">
-              {{ routeName !=='dashboard' ? $t(`enum.${type}`) : 'Folders' }}
-            </el-breadcrumb-item>
+            <template v-if="getRouteBaseName() === 'dashboard-folders-folderId'">
+              <el-breadcrumb-item
+                :to="localeRoute({name: 'dashboard'})"
+              >
+                {{ $t('sidebar.dashboard') }}
+              </el-breadcrumb-item>
+              <el-breadcrumb-item class="flex items-center">
+                {{ folder.name }}
+              </el-breadcrumb-item>
+            </template>
+            <template v-else-if="getRouteBaseName() ==='dashboard'">
+              Folders
+            </template>
+            <template v-else>
+              <el-breadcrumb-item
+                :to="localeRoute({name: routeName})"
+              >
+                {{ $t(`enum.${type}`) }}
+              </el-breadcrumb-item>
+            </template>
           </el-breadcrumb>
         </div>
         <div class="header-actions">
@@ -14,35 +31,80 @@
             <div class="text-sm text-black-600 font-semibold">
               Sắp xếp theo <i class="el-icon-caret-bottom el-icon--right" />
             </div>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="changeSort('name', 'asc')">Tên tăng dần</el-dropdown-item>
-              <el-dropdown-item @click.native="changeSort('name', 'desc')">Tên giảm dần</el-dropdown-item>
-              <el-dropdown-item @click.native="changeSort('revisionDate', 'asc')">Thời gian tăng dần</el-dropdown-item>
-              <el-dropdown-item @click.native="changeSort('revisionDate', 'desc')">Thời gian giảm dần</el-dropdown-item>
+            <el-dropdown-menu slot="dropdown" class="w-[200px] ">
+              <el-dropdown-item
+                class="flex items-center justify-between"
+                @click.native="changeSort('name', 'asc')"
+              >
+                <span>Tên tăng dần</span>
+                <i v-if="orderString==='name_asc'" class="fa fa-check" />
+              </el-dropdown-item>
+              <el-dropdown-item
+                class="flex items-center justify-between"
+                @click.native="changeSort('name', 'desc')"
+              >
+                <span>Tên giảm dần</span>
+                <i v-if="orderString==='name_desc'" class="fa fa-check" />
+              </el-dropdown-item>
+              <el-dropdown-item
+                class="flex items-center justify-between"
+                @click.native="changeSort('revisionDate', 'asc')"
+              >
+                <span>Thời gian tăng dần</span>
+                <i v-if="orderString==='revisionDate_asc'" class="fa fa-check" />
+              </el-dropdown-item>
+              <el-dropdown-item
+                class="flex items-center justify-between"
+                @click.native="changeSort('revisionDate', 'desc')"
+              >
+                <span>Thời gian giảm dần</span>
+                <i v-if="orderString==='revisionDate_desc'" class="fa fa-check" />
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
       </div>
 
-      <div v-if="routeName === 'dashboard' && folders"
+      <div v-if="getRouteBaseName() === 'dashboard' && folders"
            class="mb-5"
       >
         <client-only>
           <div class="grid grid-cols-4 md:grid-cols-4 xl:grid-cols-5 gap-6 ">
             <div v-for="item in folders"
                  :key="item.id"
-                 class="px-4 py-6 flex items-center cursor-pointer rounded border border-[#E6E6E8]"
+                 class="px-4 py-6 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+                 :class="{'border-primary': selectedFolder.id === item.id}"
+                 @click="selectedFolder = item"
+                 @dblclick="routerFolder(item)"
+                 @contextmenu.prevent="$refs.menu.open($event, item)"
             >
               <img src="~/assets/images/icons/folderSolid.svg" alt="" class="mr-2">
               <div class="font-semibold">{{ item.name }} ({{ item.ciphersCount }})</div>
             </div>
+            <component :is="context" ref="menu"
+                       class="el-dropdown-menu" @close="closeContextEvent"
+                       @open="openContextEvent"
+            >
+              <template #default>
+                <li class="el-dropdown-menu__item w-[200px]"
+                    @click.prevent="addEditFolder(selectedFolder)"
+                >
+                  Đổi tên
+                </li>
+                <li class="el-dropdown-menu__item"
+                    @click.prevent="deleteFolder(selectedFolder)"
+                >
+                  <span class="text-danger">Xóa</span>
+                </li>
+              </template>
+            </component>
           </div>
         </client-only>
       </div>
       <client-only>
         <el-table
           ref="multipleTable"
-          :data="ciphers ? ciphers : []"
+          :data="filteredCiphers || []"
           style="width: 100%"
           row-class-name="hover-table-row"
           @selection-change="handleSelectionChange"
@@ -55,7 +117,7 @@
             prop="name"
             label=""
           >
-            <template slot="header" slot-scope="scope">
+            <template slot="header">
               <div v-if="multipleSelection.length" class="flex items-center ">
                 <div class="text-black mr-8">
                   {{ multipleSelection.length }} mục được chọn
@@ -91,7 +153,7 @@
                 <div class="text-[34px] mr-3" v-html="getIconCipher(scope.row, 34)" />
                 <div>
                   <a class="text-black font-semibold" @click="routerCipher(scope.row, addEdit)">
-                    {{ scope.row.name }}
+                    {{ scope.row.name }} <i v-if="scope.row.organizationId" class="fa fa-share-alt" />
                   </a>
                   <div>
                     {{ scope.row.subTitle }}
@@ -184,11 +246,42 @@
         </el-table>
       </client-only>
     </div>
-    <AddEditCipher ref="addEditCipherDialog" :type="type" />
+    <AddEditCipher ref="addEditCipherDialog" :route-name="routeName" />
+    <AddEditFolder ref="addEditFolder" />
     <div class="fixed bottom-[50px] right-[55px]">
-      <button class="btn btn-fab rounded-full flex items-center justify-center" @click="addEdit({})">
+      <button v-if="routeName !== 'dashboard'" class="btn btn-fab rounded-full flex items-center justify-center"
+              @click="addEdit({})"
+      >
         <i class="fas fa-plus text-[24px]" />
       </button>
+      <el-popover
+        v-else
+        placement="right-end"
+        width="200"
+        trigger="click"
+        popper-class="!p-0"
+      >
+        <div class="text-black">
+          <div class="px-5 pt-5 text-xs">Tạo</div>
+          <ul class="el-dropdown-menu !static !border-0 !shadow-none">
+            <li class="el-dropdown-menu__item font-semibold !text-black"
+                @click="addEditFolder({})"
+            >
+              Tạo thư mục
+            </li>
+            <li class="el-dropdown-menu__item font-semibold !text-black"
+                @click="addEdit({})"
+            >
+              Tạo danh mục
+            </li>
+          </ul>
+        </div>
+        <button slot="reference"
+                class="btn btn-fab rounded-full flex items-center justify-center"
+        >
+          <i class="fas fa-plus text-[24px]" />
+        </button>
+      </el-popover>
     </div>
   </div>
 </template>
@@ -196,17 +289,17 @@
 <script>
 import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy'
+import find from 'lodash/find'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
+import AddEditFolder from '../../components/cipher/AddEditFolder'
 import { CipherType } from '../../jslib/src/enums'
 export default {
   components: {
-    AddEditCipher
+    AddEditCipher,
+    AddEditFolder,
+    VueContext: () => import('../../plugins/vue-context')
   },
   props: {
-    type: {
-      type: String,
-      default: null
-    },
     deleted: {
       type: Boolean,
       default: false
@@ -214,24 +307,64 @@ export default {
     routeName: {
       type: String,
       default: 'passwords'
+    },
+    filter: {
+      type: Function,
+      default: null
     }
   },
   data () {
     return {
       cryptoService: null,
       data: {},
-      filter: this.type ? c => c.type === CipherType[this.type] : null,
       searchText: '',
       CipherType,
       multipleSelection: [],
       loading: false,
       orderField: 'name', // revisionDate
-      orderDirection: 'asc'
+      orderDirection: 'asc',
+      selectedFolder: {},
+      context: '',
+      openedContextRow: null
+    }
+  },
+  computed: {
+    folder () {
+      if (this.folders) {
+        return find(this.folders, e => e.id === this.$route.params.folderId) || {}
+      }
+      return {}
+    },
+    orderString () {
+      return `${this.orderField}_${this.orderDirection}`
+    },
+    type () {
+      switch (this.routeName) {
+      case 'passwords':
+        return 'Login'
+      case 'notes':
+        return 'SecureNote'
+      case 'cards':
+        return 'Card'
+      case 'identities':
+        return 'Identity'
+      case 'dashboard':
+        return 'Login'
+      default:
+        return 'Login'
+      }
+    },
+    filteredCiphers () {
+      if (this.getRouteBaseName() === 'dashboard' && this.ciphers) {
+        return this.ciphers.filter(e => !e.folderId)
+      }
+      return this.ciphers || []
     }
   },
   created () {
   },
   mounted () {
+    this.context = 'VueContext'
   },
   asyncComputed: {
     ciphers: {
@@ -240,7 +373,8 @@ export default {
           return c.isDeleted === this.deleted
         }
         const result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-        return orderBy(result, [c => this.orderField === 'name' ? c.name.toLowerCase() : c.revisionDate], [this.orderDirection])
+
+        return orderBy(result, [c => this.orderField === 'name' ? c.name.toLowerCase() : c.revisionDate], [this.orderDirection]) || []
       },
       watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
     },
@@ -250,12 +384,11 @@ export default {
         folders = folders.filter(f => f.id)
         folders.forEach(f => {
           const ciphers = this.ciphers && (this.ciphers.filter(c => c.folderId === f.id) || [])
-          f.ciphersCount = ciphers.length
+          f.ciphersCount = ciphers && ciphers.length
         })
-        console.log(folders)
         return folders
       },
-      watch: ['$store.state.syncedCiphersToggle', 'searchText', 'orderField', 'orderDirection', 'ciphers']
+      watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
     }
   },
   methods: {
@@ -350,6 +483,24 @@ export default {
     changeSort (orderField, orderDirection) {
       this.orderField = orderField
       this.orderDirection = orderDirection
+    },
+    routerFolder (item) {
+      this.$router.push(this.localeRoute({
+        name: 'dashboard-folders-folderId',
+        params: { folderId: item.id }
+      }))
+    },
+    closeContextEvent () {
+      this.openedContextRow = null
+    },
+    openContextEvent (event, data) {
+      this.selectedFolder = data
+    },
+    addEditFolder (folder) {
+      this.$refs.addEditFolder.openDialog(folder)
+    },
+    deleteFolder (folder) {
+      this.$refs.addEditFolder.deleteFolder(folder)
     }
   }
 }

@@ -81,6 +81,7 @@
     "tldjs": "^2.3.1",
     "valid-url": "^1.0.9",
     "vue-async-computed": "^3.9.0",
+    "vue-clickaway": "^2.2.2",
     "vue-clipboard2": "^0.3.1",
     "vuex-persistedstate": "2.7.1",
     "zxcvbn": "^4.4.2"

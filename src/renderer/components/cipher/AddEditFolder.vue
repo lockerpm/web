@@ -8,7 +8,7 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold">
-        Tạo thư mục
+        {{ folder.id ? 'Cập nhật thư mục' : 'Tạo thư mục' }}
       </div>
     </div>
     <div class="text-left">
@@ -83,7 +83,7 @@ export default {
       }
     },
     async deleteFolder (folder) {
-      this.$confirm('Are you sure you want to permanently delete this item?', 'Warning', {
+      this.$confirm(this.$tc('data.notifications.delete_selected_desc', 1), this.$t('common.warning'), {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
@@ -93,8 +93,10 @@ export default {
           await this.$axios.$delete(`cystack_platform/pm/folders/${folder.id}`)
           this.getSyncData()
           this.closeDialog()
+          this.notify(this.$tc('data.notifications.delete_success', 1, { type: this.$t('common.folder') }), 'success')
         } catch (e) {
           this.errors = e.response && e.response.data && e.response.data.details
+          this.notify(this.$tc('data.notifications.delete_failed', 1, { type: this.$t('common.folder') }), 'success')
         } finally {
           this.loading = false
         }
@@ -107,7 +109,7 @@ export default {
         this.loading = true
         const folderEnc = await this.$folderService.encrypt(folder)
         const data = new FolderRequest(folderEnc)
-        await this.$axios.$post(`cystack_platform/pm/folders/${folder.id}`, data)
+        await this.$axios.$put(`cystack_platform/pm/folders/${folder.id}`, data)
         await this.getSyncData()
         this.closeDialog()
       } catch (e) {

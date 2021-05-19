@@ -16,44 +16,7 @@ export default {
   middleware: ['LoggedIn', 'UserInfo'],
   data () {
     return {
-      externalContent: '',
-      menu: [
-        {
-          label: 'all',
-          routeName: 'dashboard',
-          icon: 'all'
-        },
-        {
-          label: 'passwords',
-          routeName: 'passwords',
-          icon: 'passwords'
-        },
-        {
-          label: 'notes',
-          routeName: 'notes',
-          icon: 'notes'
-        },
-        {
-          label: 'cards',
-          routeName: 'cards',
-          icon: 'cards'
-        },
-        {
-          label: 'profile',
-          routeName: 'profile',
-          icon: 'profile'
-        },
-        {
-          label: 'shares',
-          routeName: 'shares',
-          icon: 'shares'
-        },
-        {
-          label: 'trash',
-          routeName: 'trash',
-          icon: 'trash'
-        }
-      ]
+      externalContent: ''
     }
   },
   mounted () {

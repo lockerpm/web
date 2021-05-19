@@ -3,10 +3,29 @@
     <div class="flex-grow lg:px-28 py-8 px-10 mb-20">
       <div class="flex items-center justify-between">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="localeRoute({name: routeName})">
-            {{ $t(`enum.${type}`) }}
+          <template v-if="getRouteBaseName() === 'dashboard-folders-folderId-id'">
+            <el-breadcrumb-item
+              :to="localeRoute({name: 'dashboard'})"
+            >
+              {{ $t('sidebar.dashboard') }}
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              class="flex items-center"
+              :to="localeRoute({name: 'dashboard-folders-folderId', params: $route.params.folderId})"
+            >
+              {{ folder.name }}
+            </el-breadcrumb-item>
+          </template>
+          <template v-else>
+            <el-breadcrumb-item
+              :to="localeRoute({name: routeName})"
+            >
+              {{ $t(`sidebar.${routeName}`) }}
+            </el-breadcrumb-item>
+          </template>
+          <el-breadcrumb-item>
+            {{ cipher.name }}
           </el-breadcrumb-item>
-          <el-breadcrumb-item>{{ cipher.name }}</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="header-actions">
           <button class="btn btn-icon btn-xs btn-action"
@@ -106,6 +125,7 @@
 <script>
 import debounce from 'lodash/debounce'
 import find from 'lodash/find'
+import orderBy from 'lodash/orderBy'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import PasswordStrength from '../../components/cipher/PasswordStrength'
 import { Cipher } from '../../jslib/src/models/domain'
@@ -132,11 +152,10 @@ export default {
   },
   data () {
     return {
-      cipher: new CipherView({ type: CipherType[this.type] }),
+      cipher: new CipherView(),
       showPassword: false,
       passwordStrength: {},
-      CipherType,
-      folders: []
+      CipherType
     }
   },
   computed: {
@@ -148,13 +167,21 @@ export default {
   },
   mounted () {
     this.getCipher()
-    this.getFolders()
+  },
+  asyncComputed: {
+    folders: {
+      async get () {
+        return await this.$folderService.getAllDecrypted() || []
+      },
+      watch: ['$store.state.syncedCiphersToggle']
+    }
   },
   methods: {
     addEdit () {
       this.$refs.addEditCipherDialog.openDialog(this.cipher)
     },
-    getCipher () {
+    async getCipher () {
+      this.folders = await this.getFolders()
       this.$axios.$get(`cystack_platform/pm/ciphers/${this.$route.params.id}`)
         .then(async res => {
           res = new CipherResponse(res)

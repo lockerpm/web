@@ -22,7 +22,7 @@
 
   }
   &.btn-fab {
-    @apply w-[3.75rem] h-[3.75rem] rounded-full;
+    @apply w-[3.75rem] h-[3.75rem] rounded-full bg-white;
     box-shadow: 0px 6px 16px rgba(54,62,67,0.1);
   }
 }

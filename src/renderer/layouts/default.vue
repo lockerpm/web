@@ -28,7 +28,7 @@
             </a>
           </div>
         </div>
-        <div class="flex-1 pl-60 flex flex-col">
+        <div class="pl-60 w-full">
           <Header />
           <nuxt />
         </div>

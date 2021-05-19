@@ -13,6 +13,9 @@ Vue.mixin({
     environment () { return this.$store.state.environment },
     isLoggedIn () {
       return this.$store.state.isLoggedIn
+    },
+    isAllPage () {
+      return this.getRouteBaseName() === 'dashboard'
     }
   },
   mounted () {
@@ -182,6 +185,22 @@ Vue.mixin({
     routerCipher (cipher, callbackDeleted) {
       if (cipher.isDeleted) {
         callbackDeleted(cipher)
+        return
+      }
+
+      if (this.getRouteBaseName() === 'dashboard') {
+        this.$router.push(this.localeRoute({
+          name: 'dashboard-id',
+          params: { id: cipher.id }
+        }))
+        return
+      }
+      if (this.getRouteBaseName() === 'dashboard-folders-folderId') {
+        console.log('dashboard-folders-folderId')
+        this.$router.push(this.localeRoute({
+          name: 'dashboard-folders-folderId-id',
+          params: { ...this.$route.params, id: cipher.id }
+        }))
         return
       }
 
