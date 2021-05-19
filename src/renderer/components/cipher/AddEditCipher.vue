@@ -13,7 +13,9 @@
         </div>
       </div>
       <div class="text-left">
-        <div v-if="routeName==='dashboard'" class="form-group">
+        <div v-if="routeName==='dashboard' && !cipher.id"
+             class="form-group"
+        >
           <label for="">Kiểu danh mục</label>
           <el-select v-model="cipher.type" placeholder=""
                      class="w-full"
@@ -573,7 +575,7 @@ export default {
       this.cipher.login.password = await this.$passwordGenerationService.generatePassword(options)
     },
     addFolder () {
-      this.$refs.addEditFolder.openDialog()
+      this.$refs.addEditFolder.openDialog({})
     },
     async handleCreatedFolder (id) {
       this.folders = await this.getFolders()

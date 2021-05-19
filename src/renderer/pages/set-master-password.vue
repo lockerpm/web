@@ -71,10 +71,12 @@ export default {
     }
   },
   mounted () {
+    console.log(this.localeRoute({ path: this.$store.state.currentPath }))
   },
   methods: {
     async setMasterPass () {
       this.loading = true
+      await this.clearKeys()
       try {
         const kdf = 0
         const kdfIterations = 100000
@@ -84,12 +86,16 @@ export default {
         const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
         const keys = await this.$cryptoService.makeKeyPair(encKey[0])
 
+        console.log(encKey)
+        await this.$cryptoService.setKey(key)
+        await this.$cryptoService.setKeyHash(hashedPassword)
+        await this.$cryptoService.setEncKey(encKey[1].encryptedString)
+        await this.$cryptoService.setEncPrivateKey(keys[1].encryptedString)
         // default org
         const shareKey = await this.$cryptoService.makeShareKey()
         const orgKey = shareKey[0].encryptedString
         const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
         const collectionName = collection.encryptedString
-
         await this.$axios.$post('cystack_platform/pm/users/register', {
           name: this.currentUser.full_name,
           email: this.currentUser.email,
@@ -110,6 +116,7 @@ export default {
         this.$store.commit('UPDATE_USER_PW', { ...this.$store.state.userPw, is_pwd_manager: true })
         await this.login()
       } catch (e) {
+        console.log(e)
         this.notify(this.$t('master_password.create_failed'), 'warning')
       } finally {
         this.loading = false

@@ -101,6 +101,7 @@ Vue.mixin({
     },
     async login () {
       try {
+        await this.clearKeys()
         const key = await this.$cryptoService.makeKey(this.masterPassword, this.currentUser.email, 0, 100000)
         const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
         const res = await this.$axios.$post('cystack_platform/pm/users/session', {
@@ -126,6 +127,9 @@ Vue.mixin({
       } catch (e) {
         this.notify('Xác thực thông tin thất bại', 'warning')
       }
+    },
+    async clearKeys () {
+      await this.$cryptoService.clearKeys()
     },
     async getSyncData () {
       try {

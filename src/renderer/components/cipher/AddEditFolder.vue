@@ -56,7 +56,13 @@ export default {
       folder: {},
       loading: false,
       dialogVisible: false,
-      errors: {}
+      errors: {},
+      redirect: false
+    }
+  },
+  computed: {
+    shouldRedirect () {
+      return this.getRouteBaseName() === 'dashboard'
     }
   },
   methods: {
@@ -76,6 +82,9 @@ export default {
         await this.getSyncData()
         this.closeDialog()
         this.$emit('created-folder', res.id)
+        if (this.shouldRedirect) {
+          this.$router.push(this.localeRoute({ name: 'dashboard-folders-folderId', params: { folderId: res.id } }))
+        }
       } catch (e) {
         this.errors = e.response && e.response.data && e.response.data.details
       } finally {

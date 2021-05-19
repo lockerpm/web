@@ -69,6 +69,7 @@
               </div>
             </div>
             <div v-for="(item, index) in cipher.login.uris"
+                 v-show="item.uri"
                  :key="index"
                  class="grid md:grid-cols-6 cipher-item"
             >

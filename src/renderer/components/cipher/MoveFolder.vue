@@ -121,7 +121,7 @@ export default {
       }
     },
     addFolder () {
-      this.$refs.addEditFolder.openDialog()
+      this.$refs.addEditFolder.openDialog({})
     },
     async handleCreatedFolder (id) {
       this.folders = await this.getFolders()

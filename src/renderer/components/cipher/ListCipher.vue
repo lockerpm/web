@@ -246,7 +246,7 @@
         </el-table>
       </client-only>
     </div>
-    <AddEditCipher ref="addEditCipherDialog" :route-name="routeName" />
+    <AddEditCipher ref="addEditCipherDialog" :route-name="routeName" :type="type" />
     <AddEditFolder ref="addEditFolder" />
     <div class="fixed bottom-[50px] right-[55px]">
       <button v-if="routeName !== 'dashboard'" class="btn btn-fab rounded-full flex items-center justify-center"
