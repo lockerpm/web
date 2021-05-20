@@ -3,7 +3,6 @@
     <div class="">{{ label }}</div>
     <div class="col-span-4 font-semibold">
       <span v-if="text">{{ text | filterPassword(showPassword) }}</span>
-      <span v-else>N/A</span>
     </div>
     <div v-if="text" class="text-right">
       <button v-if="shouldHide" class="btn btn-icon btn-xs btn-action"

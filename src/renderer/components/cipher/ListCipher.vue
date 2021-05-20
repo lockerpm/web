@@ -17,6 +17,12 @@
             <template v-else-if="getRouteBaseName() ==='dashboard'">
               <span class="font-medium">Folders</span>
             </template>
+            <template v-else-if="getRouteBaseName() ==='shares'">
+              <span class="font-medium">Shares</span>
+            </template>
+            <template v-else-if="getRouteBaseName() ==='trash'">
+              <span class="font-medium">Trash</span>
+            </template>
             <template v-else>
               <el-breadcrumb-item
                 :to="localeRoute({name: routeName})"
@@ -69,17 +75,18 @@
            class="mb-5"
       >
         <client-only>
-          <div class="grid grid-cols-4 md:grid-cols-4 xl:grid-cols-5 gap-6 ">
+          <div class="grid grid-cols-4 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
             <div v-for="item in folders"
                  :key="item.id"
                  class="px-4 py-6 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
                  :class="{'border-primary': selectedFolder.id === item.id}"
+                 :title="item.name"
                  @click="selectedFolder = item"
                  @dblclick="routerFolder(item)"
                  @contextmenu.prevent="$refs.menu.open($event, item)"
             >
               <img src="~/assets/images/icons/folderSolid.svg" alt="" class="mr-2">
-              <div class="font-semibold">{{ item.name }} ({{ item.ciphersCount }})</div>
+              <div class="font-semibold truncate">{{ item.name }} ({{ item.ciphersCount }})</div>
             </div>
             <component :is="context" ref="menu"
                        class="el-dropdown-menu" @close="closeContextEvent"
@@ -220,10 +227,10 @@
                       <el-dropdown-item divided @click.native="cloneCipher(scope.row)">
                         {{ $t('common.clone') }}
                       </el-dropdown-item>
-                      <el-dropdown-item>
+                      <el-dropdown-item @click.native="shareItem(scope.row)">
                         {{ $t('common.share') }}
                       </el-dropdown-item>
-                      <el-dropdown-item @click.native="moveFolder(scope.row)">
+                      <el-dropdown-item @click.native="moveFolders([scope.row.id])">
                         {{ $t('common.move_folder') }}
                       </el-dropdown-item>
                       <el-dropdown-item divided @click.native="moveTrashCipher(scope.row)">
@@ -248,6 +255,8 @@
     </div>
     <AddEditCipher ref="addEditCipherDialog" :route-name="routeName" :type="type" />
     <AddEditFolder ref="addEditFolder" />
+    <ShareCipher ref="shareCipher" />
+    <MoveFolder ref="moveFolder" />
     <div class="fixed bottom-[50px] right-[55px]">
       <button v-if="routeName !== 'dashboard'" class="btn btn-fab rounded-full flex items-center justify-center"
               @click="addEdit({})"
@@ -292,11 +301,16 @@ import orderBy from 'lodash/orderBy'
 import find from 'lodash/find'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import AddEditFolder from '../../components/cipher/AddEditFolder'
+import ShareCipher from '../../components/cipher/ShareCipher'
+import MoveFolder from '../../components/cipher/MoveFolder'
 import { CipherType } from '../../jslib/src/enums'
+
 export default {
   components: {
     AddEditCipher,
     AddEditFolder,
+    ShareCipher,
+    MoveFolder,
     VueContext: () => import('../../plugins/vue-context')
   },
   props: {
@@ -412,8 +426,8 @@ export default {
       delete _cipher.id
       this.$refs.addEditCipherDialog.openDialog(_cipher, 'full')
     },
-    moveFolder (cipher) {
-      this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher), 'moveFolder')
+    moveFolders (ids) {
+      this.$refs.moveFolder.openDialog(ids)
     },
     async deleteCiphers (ids = []) {
       this.$confirm(this.$tc('data.notifications.delete_selected_desc', ids.length), this.$t('common.warning'), {
@@ -478,8 +492,6 @@ export default {
 
       })
     },
-    async moveFolders (ids = []) {
-    },
     changeSort (orderField, orderDirection) {
       this.orderField = orderField
       this.orderDirection = orderDirection
@@ -501,6 +513,9 @@ export default {
     },
     deleteFolder (folder) {
       this.$refs.addEditFolder.deleteFolder(folder)
+    },
+    shareItem (cipher) {
+      this.$refs.shareCipher.openDialog(cipher)
     }
   }
 }

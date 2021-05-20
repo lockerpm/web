@@ -1,5 +1,5 @@
 <template>
-  <ListCipher type="Login" route-name="dashboard" />
+  <ListCipher route-name="dashboard" />
 </template>
 
 <script>
@@ -11,8 +11,6 @@ export default {
   mounted () {
   },
   methods: {
-    async test () {
-    }
   }
 }
 </script>

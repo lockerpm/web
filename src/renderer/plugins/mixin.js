@@ -10,6 +10,7 @@ Vue.mixin({
   computed: {
     language () { return this.$store.state.user.language },
     currentUser () { return this.$store.state.user },
+    currentUserPw () { return this.$store.state.userPw },
     environment () { return this.$store.state.environment },
     isLoggedIn () {
       return this.$store.state.isLoggedIn

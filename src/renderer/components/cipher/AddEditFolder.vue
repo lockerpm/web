@@ -86,7 +86,7 @@ export default {
           this.$router.push(this.localeRoute({ name: 'dashboard-folders-folderId', params: { folderId: res.id } }))
         }
       } catch (e) {
-        this.errors = e.response && e.response.data && e.response.data.details
+        this.errors = (e.response && e.response.data && e.response.data.details) || {}
       } finally {
         this.loading = false
       }
@@ -104,7 +104,7 @@ export default {
           this.closeDialog()
           this.notify(this.$tc('data.notifications.delete_success', 1, { type: this.$t('common.folder') }), 'success')
         } catch (e) {
-          this.errors = e.response && e.response.data && e.response.data.details
+          this.errors = (e.response && e.response.data && e.response.data.details) || {}
           this.notify(this.$tc('data.notifications.delete_failed', 1, { type: this.$t('common.folder') }), 'success')
         } finally {
           this.loading = false
@@ -122,7 +122,7 @@ export default {
         await this.getSyncData()
         this.closeDialog()
       } catch (e) {
-        this.errors = e.response && e.response.data && e.response.data.details
+        this.errors = (e.response && e.response.data && e.response.data.details) || {}
       } finally {
         this.loading = false
       }

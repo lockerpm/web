@@ -86,7 +86,6 @@ export default {
         const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
         const keys = await this.$cryptoService.makeKeyPair(encKey[0])
 
-        console.log(encKey)
         await this.$cryptoService.setKey(key)
         await this.$cryptoService.setKeyHash(hashedPassword)
         await this.$cryptoService.setEncKey(encKey[1].encryptedString)

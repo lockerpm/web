@@ -467,7 +467,7 @@ export default {
         this.getSyncData()
       } catch (e) {
         this.notify(this.$tc('data.notifications.create_failed', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'warning')
-        this.errors = e.response && e.response.data && e.response.data.details
+        this.errors = (e.response && e.response.data && e.response.data.details) || {}
         console.log(e)
       } finally {
         this.loadingPost = false

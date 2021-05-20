@@ -14,20 +14,20 @@
       </div>
       <div>
         <div class="form-group">
-          <label for="">Thư mục</label>
-          <el-select v-model="cipher.folderId" placeholder="Chọn thư mục"
+          <label for="">{{ $t('data.notifications.move_selected_desc', {count: ids.length}) }}</label>
+          <el-select v-model="folderId" placeholder="Chọn thư mục"
                      class="w-full"
                      :disabled="isDeleted"
           >
             <el-option
               v-for="item in folders"
               :key="item.id"
-              :label="item.name || 'No folder'"
+              :label="item.name"
               :value="item.id"
             >
               <div class="flex items-center">
                 <img src="~/assets/images/icons/folder.svg" alt="" class="mr-2.5">
-                <div class="font-semibold text-black">{{ item.name || 'No folder' }}</div>
+                <div class="text-black">{{ item.name || 'No folder' }}</div>
               </div>
             </el-option>
             <el-option value="" @click.native="addFolder">
@@ -48,8 +48,8 @@
             Cancel
           </button>
           <button class="btn btn-primary"
-                  :disabled="loadingPost"
-                  @click="putCipher(cipher)"
+                  :disabled="loading"
+                  @click="putCiphersFolder(cipher)"
           >
             {{ $t('common.update') }}
           </button>
@@ -78,13 +78,13 @@ export default {
   },
   data () {
     return {
-      cipher: new CipherView(),
+      cipher: {},
       folders: [],
       dialogVisible: false,
-      loadingPost: false,
-      CipherType,
+      loading: false,
       errors: {},
-      ids: []
+      ids: [],
+      folderId: ''
     }
   },
   computed: {
@@ -95,29 +95,25 @@ export default {
     async openDialog (data) {
       this.folders = await this.getFolders()
       this.dialogVisible = true
-      if (data.id) {
-        this.cipher = new Cipher({ ...data }, true)
-      } else {
-        this.ids = data
-      }
+      this.ids = data
     },
     closeDialog () {
       this.dialogVisible = false
     },
     async putCiphersFolder () {
       try {
-        const cipherEnc = await this.$cipherService.encrypt(cipher)
-        const data = new CipherRequest(cipherEnc)
-        await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, data)
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'success')
+        await this.$axios.$put('cystack_platform/pm/ciphers/move', {
+          ids: this.ids,
+          folderId: this.folderId
+        })
+        this.notify(this.$tc('data.notifications.move_success', this.ids.length), 'success')
         this.closeDialog()
         this.getSyncData()
-        this.$emit('updated-cipher')
       } catch (e) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.move_failed', this.ids.length), 'warning')
         console.log(e)
       } finally {
-        this.loadingPost = false
+        this.loading = false
       }
     },
     addFolder () {

@@ -55,6 +55,8 @@ export default {
       errors: false
     }
   },
+  mounted () {
+  },
   methods: {
     async setMasterPass () {
       this.loading = true

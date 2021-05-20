@@ -1,11 +1,18 @@
 <template>
-  <div>Chào mừng bạn đến mới CyPass Manager</div>
+  <div>
+    <ListCipher :filter="c => c.organizationId === currentUserPw.default_personal_id" />
+  </div>
 </template>
 
 <script>
+import ListCipher from '../components/cipher/ListCipher'
 export default {
-  data () {
-    return {}
+  components: {
+    ListCipher
+  },
+  mounted () {
+  },
+  methods: {
   }
 }
 </script>

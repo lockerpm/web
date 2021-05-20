@@ -118,3 +118,7 @@ a {
 .v-context>li>a{display:block;padding:.5rem 1.5rem;font-weight:400;color:#212529;text-decoration:none;white-space:nowrap;background-color:transparent;border:0}
 .v-context>li>a:focus,.v-context>li>a:hover{text-decoration:none;background-color: #e6f5f5;color: #33b2b1;}
 .v-context:focus,.v-context>li>a:focus{outline:0}
+
+.el-dialog__body {
+  word-break: break-word;
+}
