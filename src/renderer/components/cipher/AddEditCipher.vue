@@ -309,7 +309,7 @@
             >
               <div class="flex items-center">
                 <img src="~/assets/images/icons/folder.svg" alt="" class="mr-2.5">
-                <div class="font-semibold text-black">{{ item.name || 'No folder' }}</div>
+                <div class="text-black">{{ item.name || 'No folder' }}</div>
               </div>
             </el-option>
             <el-option value="" @click.native="addFolder">

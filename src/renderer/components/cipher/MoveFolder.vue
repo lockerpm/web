@@ -22,7 +22,7 @@
             <el-option
               v-for="item in folders"
               :key="item.id"
-              :label="item.name"
+              :label="item.name || 'No Folder'"
               :value="item.id"
             >
               <div class="flex items-center">
