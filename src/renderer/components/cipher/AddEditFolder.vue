@@ -92,7 +92,7 @@ export default {
       }
     },
     async deleteFolder (folder) {
-      this.$confirm(this.$tc('data.notifications.delete_selected_desc', 1), this.$t('common.warning'), {
+      this.$confirm(this.$t('data.notifications.deleted_folder'), this.$t('common.warning'), {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'

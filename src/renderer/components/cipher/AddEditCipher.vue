@@ -336,13 +336,13 @@
             Cancel
           </button>
           <button v-if="isDeleted" class="btn btn-primary"
-                  :disabled="loadingPost"
+                  :disabled="loading"
                   @click="restoreCipher"
           >
             {{ $t('common.restore') }}
           </button>
           <button v-else class="btn btn-primary"
-                  :disabled="loadingPost"
+                  :disabled="loading"
                   @click="cipher.id ?putCipher(cipher):postCipher(cipher)"
           >
             {{ cipher.id ? $t('common.update') : $t('common.add') }}
@@ -381,7 +381,7 @@ export default {
       showPassword: false,
       showCardCode: false,
       dialogVisible: false,
-      loadingPost: false,
+      loading: false,
       CipherType,
       errors: {}
     }
@@ -389,10 +389,10 @@ export default {
   computed: {
     options () {
       return [
-        { name: this.$t('typeLogin'), value: CipherType.Login },
-        { name: this.$t('typeCard'), value: CipherType.Card },
-        { name: this.$t('typeIdentity'), value: CipherType.Identity },
-        { name: this.$t('typeSecureNote'), value: CipherType.SecureNote }
+        { name: this.$t('enum.Login'), value: CipherType.Login },
+        { name: this.$t('enum.Card'), value: CipherType.Card },
+        { name: this.$t('enum.Identity'), value: CipherType.Identity },
+        { name: this.$t('enum.SecureNote'), value: CipherType.SecureNote }
       ]
     },
     cardBrandOptions () {
@@ -442,10 +442,10 @@ export default {
   mounted () {
   },
   methods: {
-    async openDialog (data) {
+    async openDialog (data, cloneMode) {
       this.folders = await this.getFolders()
       this.dialogVisible = true
-      if (data.id) {
+      if (data.id || cloneMode) {
         this.cipher = new Cipher({ ...data }, true)
       } else {
         this.newCipher(this.type)
@@ -456,7 +456,7 @@ export default {
     },
     async postCipher (cipher) {
       try {
-        this.loadingPost = true
+        this.loading = true
         this.errors = {}
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
@@ -470,7 +470,7 @@ export default {
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
         console.log(e)
       } finally {
-        this.loadingPost = false
+        this.loading = false
       }
     },
     async putCipher (cipher) {
@@ -486,70 +486,67 @@ export default {
         this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'warning')
         console.log(e)
       } finally {
-        this.loadingPost = false
+        this.loading = false
       }
     },
-    async deleteCipher (cipher) {
-      this.$confirm(this.$tc('data.notifications.delete_selected_desc', 1), this.$t('common.warning'), {
+    async deleteCiphers (ids) {
+      this.$confirm(this.$tc('data.notifications.delete_selected_desc', ids.length), this.$t('common.warning'), {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(async () => {
         try {
-          await this.$axios.$delete(`cystack_platform/pm/ciphers/${cipher.id}`)
-          this.notify(this.$tc('data.notifications.delete_success', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'success')
-          this.closeDialog()
+          this.loading = true
+          await this.$axios.$put('cystack_platform/pm/ciphers/permanent_delete', { ids })
+          this.notify(this.$tc('data.notifications.delete_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
           this.getSyncData()
-          this.$emit('deleted-cipher')
         } catch (e) {
-          this.notify(this.$tc('data.notifications.delete_failed', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'warning')
+          this.notify(this.$tc('data.notifications.delete_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
           console.log(e)
         } finally {
-          this.loadingPost = false
+          this.loading = false
         }
       }).catch(() => {
 
       })
     },
-    async moveTrashCipher (cipher) {
-      this.$confirm(this.$tc('data.notifications.trash_selected_desc', 1), this.$t('common.warning'), {
+    async moveTrashCiphers (ids) {
+      this.$confirm(this.$tc('data.notifications.trash_selected_desc', ids.length, { count: ids.length }), this.$t('common.warning'), {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(async () => {
         try {
-          await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}/delete`)
-          this.notify(this.$tc('data.notifications.trash_success', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'success')
+          this.loading = true
+          await this.$axios.$put('cystack_platform/pm/ciphers/delete', { ids })
+          this.notify(this.$tc('data.notifications.trash_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
           this.getSyncData()
-          this.$emit('trashed-cipher')
         } catch (e) {
-          this.notify(this.$tc('data.notifications.trash_failed', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'warning')
+          this.notify(this.$tc('data.notifications.trash_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
           console.log(e)
         } finally {
-          this.loadingPost = false
+          this.loading = false
         }
       }).catch(() => {
 
       })
     },
-    async restoreCipher (cipher) {
-      console.log(cipher)
-      this.$confirm(this.$tc('data.notifications.restore_selected_desc', 1), this.$t('common.warning'), {
+    async restoreCiphers (ids) {
+      this.$confirm(this.$tc('data.notifications.restore_selected_desc', ids.length), this.$t('common.warning'), {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(async () => {
         try {
-          await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}/restore`)
-          this.notify(this.$tc('data.notifications.delete_success', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'success')
-          this.closeDialog()
+          this.loading = true
+          await this.$axios.$put('cystack_platform/pm/ciphers/restore', { ids })
+          this.notify(this.$tc('data.notifications.restore_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
           this.getSyncData()
-          this.$emit('restored-cipher')
         } catch (e) {
-          this.notify(this.$tc('data.notifications.delete_failed', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'warning')
+          this.notify(this.$tc('data.notifications.restore_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
           console.log(e)
         } finally {
-          this.loadingPost = false
+          this.loading = false
         }
       }).catch(() => {
 

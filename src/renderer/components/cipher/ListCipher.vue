@@ -85,8 +85,8 @@
                  @dblclick="routerFolder(item)"
                  @contextmenu.prevent="$refs.menu.open($event, item)"
             >
-              <img src="~/assets/images/icons/folderSolid.svg" alt="" class="mr-2">
-              <div class="font-semibold truncate">{{ item.name }} ({{ item.ciphersCount }})</div>
+              <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
+              <div class="font-semibold truncate select-none">{{ item.name }} ({{ item.ciphersCount }})</div>
             </div>
             <component :is="context" ref="menu"
                        class="el-dropdown-menu" @close="closeContextEvent"
@@ -157,9 +157,15 @@
             </template>
             <template slot-scope="scope">
               <div class="flex items-center">
-                <div class="text-[34px] mr-3" v-html="getIconCipher(scope.row, 34)" />
+                <div class="text-[34px] mr-3"
+                     :class="{'filter grayscale': scope.row.isDeleted}"
+                     v-html="getIconCipher(scope.row, 34)"
+                />
                 <div>
-                  <a class="text-black font-semibold" @click="routerCipher(scope.row, addEdit)">
+                  <a class="text-black font-semibold"
+                     :class="{'opacity-80': scope.row.isDeleted}"
+                     @click="routerCipher(scope.row, addEdit)"
+                  >
                     {{ scope.row.name }} <i v-if="scope.row.organizationId" class="fa fa-share-alt" />
                   </a>
                   <div>
@@ -233,15 +239,15 @@
                       <el-dropdown-item @click.native="moveFolders([scope.row.id])">
                         {{ $t('common.move_folder') }}
                       </el-dropdown-item>
-                      <el-dropdown-item divided @click.native="moveTrashCipher(scope.row)">
+                      <el-dropdown-item divided @click.native="moveTrashCiphers([scope.row.id])">
                         <span class="text-danger">{{ $t('common.delete') }}</span>
                       </el-dropdown-item>
                     </template>
                     <template v-else>
-                      <el-dropdown-item divided @click.native="restoreCipher(scope.row)">
+                      <el-dropdown-item divided @click.native="restoreCiphers([scope.row.id])">
                         {{ $t('common.restore') }}
                       </el-dropdown-item>
-                      <el-dropdown-item @click.native="deleteCipher(scope.row)">
+                      <el-dropdown-item @click.native="deleteCiphers([scope.row.id])">
                         <span class="text-danger">{{ $t('common.permanently_delete') }}</span>
                       </el-dropdown-item>
                     </template>
@@ -424,73 +430,19 @@ export default {
     cloneCipher (cipher) {
       const _cipher = cloneDeep(cipher)
       delete _cipher.id
-      this.$refs.addEditCipherDialog.openDialog(_cipher, 'full')
+      this.$refs.addEditCipherDialog.openDialog(_cipher, true)
     },
     moveFolders (ids) {
       this.$refs.moveFolder.openDialog(ids)
     },
-    async deleteCiphers (ids = []) {
-      this.$confirm(this.$tc('data.notifications.delete_selected_desc', ids.length), this.$t('common.warning'), {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(async () => {
-        try {
-          this.loading = true
-          await this.$axios.$put('cystack_platform/pm/ciphers/permanent_delete', { ids })
-          this.notify(this.$tc('data.notifications.delete_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
-          this.getSyncData()
-        } catch (e) {
-          this.notify(this.$tc('data.notifications.delete_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
-          console.log(e)
-        } finally {
-          this.loading = false
-        }
-      }).catch(() => {
-
-      })
+    deleteCiphers (ids) {
+      this.$refs.addEditCipherDialog.deleteCiphers(ids)
     },
-    async restoreCiphers (ids = []) {
-      this.$confirm(this.$tc('data.notifications.restore_selected_desc', ids.length), this.$t('common.warning'), {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(async () => {
-        try {
-          this.loading = true
-          await this.$axios.$put('cystack_platform/pm/ciphers/restore', { ids })
-          this.notify(this.$tc('data.notifications.restore_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
-          this.getSyncData()
-        } catch (e) {
-          this.notify(this.$tc('data.notifications.restore_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
-          console.log(e)
-        } finally {
-          this.loading = false
-        }
-      }).catch(() => {
-
-      })
+    restoreCiphers (ids) {
+      this.$refs.addEditCipherDialog.restoreCiphers(ids)
     },
-    async moveTrashCiphers (ids = []) {
-      this.$confirm(this.$tc('data.notifications.trash_selected_desc', ids.length, { count: ids.length }), this.$t('common.warning'), {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(async () => {
-        try {
-          this.loading = true
-          await this.$axios.$put('cystack_platform/pm/ciphers/delete', { ids })
-          this.notify(this.$tc('data.notifications.trash_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
-          this.getSyncData()
-        } catch (e) {
-          this.notify(this.$tc('data.notifications.trash_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
-          console.log(e)
-        } finally {
-          this.loading = false
-        }
-      }).catch(() => {
-
-      })
+    moveTrashCiphers (ids) {
+      this.$refs.addEditCipherDialog.moveTrashCiphers(ids)
     },
     changeSort (orderField, orderDirection) {
       this.orderField = orderField
