@@ -96,7 +96,7 @@
             >
               <template #default>
                 <li class="el-dropdown-menu__item w-[200px]"
-                    @click.prevent="addEditFolder(selectedFolder)"
+                    @click.prevent="addEditFolder(selectedFolder, false)"
                 >
                   Đổi tên
                 </li>
@@ -282,7 +282,7 @@
           <div class="px-5 pt-5 text-xs">Tạo</div>
           <ul class="el-dropdown-menu !static !border-0 !shadow-none">
             <li class="el-dropdown-menu__item font-semibold !text-black"
-                @click="addEditFolder({})"
+                @click="addEditFolder({}, true)"
             >
               Tạo thư mục
             </li>
@@ -393,6 +393,9 @@ export default {
       if (this.getRouteBaseName() === 'dashboard') {
         return this.folders && !this.folders.length && !haveCipher
       }
+      if (this.getRouteBaseName() === 'dashboard-folders-folderId') {
+        return false
+      }
       return !haveCipher
     }
   },
@@ -475,8 +478,8 @@ export default {
     openContextEvent (event, data) {
       this.selectedFolder = data
     },
-    addEditFolder (folder) {
-      this.$refs.addEditFolder.openDialog(folder)
+    addEditFolder (folder, shouldRedirect = false) {
+      this.$refs.addEditFolder.openDialog(folder, shouldRedirect)
     },
     deleteFolder (folder) {
       this.$refs.addEditFolder.deleteFolder(folder)

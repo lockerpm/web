@@ -318,7 +318,7 @@
                 <div class="text-black">{{ item.name || 'No folder' }}</div>
               </div>
             </el-option>
-            <el-option value="" @click.native="addFolder">
+            <el-option value="" @click.native="addFolder( false)">
               <div class="flex items-center">
                 <img src="~/assets/images/icons/folderAdd.svg" alt="" class="mr-2.5">
                 <div class="text-black">Thêm thư mục</div>
@@ -582,8 +582,8 @@ export default {
       const options = (await this.$passwordGenerationService.getOptions())[0]
       this.cipher.login.password = await this.$passwordGenerationService.generatePassword(options)
     },
-    addFolder () {
-      this.$refs.addEditFolder.openDialog({})
+    addFolder (shouldRedirect = false) {
+      this.$refs.addEditFolder.openDialog({}, shouldRedirect)
     },
     async handleCreatedFolder (id) {
       this.folders = await this.getFolders()

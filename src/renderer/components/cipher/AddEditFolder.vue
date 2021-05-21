@@ -58,17 +58,16 @@ export default {
       loading: false,
       dialogVisible: false,
       errors: {},
-      redirect: false
+      redirect: false,
+      shouldRedirect: false
     }
   },
   computed: {
-    shouldRedirect () {
-      return this.getRouteBaseName() === 'dashboard'
-    }
   },
   methods: {
-    openDialog (folder = {}) {
+    openDialog (folder = {}, shouldRedirect = false) {
       this.dialogVisible = true
+      this.shouldRedirect = shouldRedirect
       this.folder = { ...folder }
     },
     closeDialog () {
