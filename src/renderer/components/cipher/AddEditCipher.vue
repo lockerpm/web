@@ -10,7 +10,12 @@
     >
       <div slot="title">
         <div class="text-head-5 text-black-700 font-semibold">
-          {{ isDeleted ? `${$t('common.restore')} ${$t(`type.${type}`)}` : cipher.id ? `${$t('common.edit')} ${$t(`type.${type}`)}` : `${$t('common.add')} ${$t(`type.${type}`)}` }}
+          <span v-if="cipher.id">
+            {{ isDeleted ? $t('common.restore') : $t('common.edit') }} {{ $tc(`type.${cipher.type}`, 1) }}
+          </span>
+          <span v-else>
+            {{ $t('common.add') }} {{ $tc(`type.${type}`, 1) }}
+          </span>
         </div>
       </div>
       <div class="text-left">
@@ -325,7 +330,7 @@
       <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow">
           <button v-if="cipher.id" class="btn btn-icon !text-danger"
-                  @click="cipher.isDeleted ? deleteCipher(cipher) : moveTrashCipher(cipher)"
+                  @click="isDeleted ? deleteCiphers([cipher.id]) : moveTrashCiphers([cipher.id])"
           >
             <i class="fa fa-trash-alt" />
           </button>
@@ -338,7 +343,7 @@
           </button>
           <button v-if="isDeleted" class="btn btn-primary"
                   :disabled="loading"
-                  @click="restoreCipher"
+                  @click="restoreCiphers([cipher.id])"
           >
             {{ $t('common.restore') }}
           </button>
@@ -502,6 +507,7 @@ export default {
           await this.$axios.$put('cystack_platform/pm/ciphers/permanent_delete', { ids })
           this.notify(this.$tc('data.notifications.delete_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
           this.getSyncData()
+          this.closeDialog()
           this.$emit('reset-selection')
         } catch (e) {
           this.notify(this.$tc('data.notifications.delete_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')

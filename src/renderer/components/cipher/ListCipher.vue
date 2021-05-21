@@ -30,7 +30,7 @@
               <el-breadcrumb-item
                 :to="localeRoute({name: routeName})"
               >
-                {{ $t(`enum.${type}`) }}
+                {{ $tc(`type.${type}`, 2) }}
               </el-breadcrumb-item>
             </template>
           </el-breadcrumb>
