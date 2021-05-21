@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col flex-column-fluid relative">
-    <NoCipher v-if="!filteredCiphers.length" :type="type"
+    <NoCipher v-if="shouldRenderNoCipher" :type="type"
               @add-cipher="addEdit({})"
     />
     <div v-else class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
@@ -387,6 +387,13 @@ export default {
         return this.ciphers.filter(e => !e.folderId)
       }
       return this.ciphers || []
+    },
+    shouldRenderNoCipher () {
+      const haveCipher = this.filteredCiphers.length
+      if (this.getRouteBaseName() === 'dashboard') {
+        return this.folders && !this.folders.length && !haveCipher
+      }
+      return !haveCipher
     }
   },
   created () {

@@ -395,10 +395,10 @@ export default {
   computed: {
     typeOptions () {
       return [
-        { name: this.$t('type.Login'), value: CipherType.Login },
-        { name: this.$t('type.Card'), value: CipherType.Card },
-        { name: this.$t('type.Identity'), value: CipherType.Identity },
-        { name: this.$t('type.SecureNote'), value: CipherType.SecureNote }
+        { name: this.$tc('type.Login', 1), value: CipherType.Login },
+        { name: this.$tc('type.Card', 1), value: CipherType.Card },
+        { name: this.$tc('type.Identity', 1), value: CipherType.Identity },
+        { name: this.$tc('type.SecureNote', 1), value: CipherType.SecureNote }
       ]
     },
     cardBrandOptions () {
