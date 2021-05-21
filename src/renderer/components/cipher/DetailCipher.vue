@@ -27,7 +27,7 @@
             {{ cipher.name }}
           </el-breadcrumb-item>
         </el-breadcrumb>
-        <div class="header-actions">
+        <div v-if="!isSharedItem(cipher)" class="header-actions">
           <button class="btn btn-icon btn-xs btn-action"
                   @click="addEdit"
           >
@@ -119,21 +119,17 @@
         </div>
       </client-only>
     </div>
-    <AddEditCipher ref="addEditCipherDialog" @updated-cipher="getCipher" />
+    <AddEditCipher ref="addEditCipherDialog" @updated-cipher="getSyncData" />
   </div>
 </template>
 
 <script>
 import debounce from 'lodash/debounce'
 import find from 'lodash/find'
-import orderBy from 'lodash/orderBy'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import PasswordStrength from '../../components/cipher/PasswordStrength'
-import { Cipher } from '../../jslib/src/models/domain'
 import { CipherType } from '../../jslib/src/enums'
-import { CipherView } from '../../jslib/src/models/view'
 import TextHaveCopy from '../../components/cipher/TextHaveCopy'
-import { CipherResponse } from '../../jslib/src/models/response'
 
 export default {
   components: {
@@ -153,7 +149,7 @@ export default {
   },
   data () {
     return {
-      cipher: new CipherView(),
+      // cipher: {},
       showPassword: false,
       passwordStrength: {},
       CipherType
@@ -162,17 +158,28 @@ export default {
   computed: {
     folder () {
       return find(this.folders, e => e.id === this.cipher.folderId) || {}
+    },
+    cipher () {
+      return find(this.ciphers, e => e.id === this.$route.params.id) || {}
     }
   },
   created () {
   },
   mounted () {
-    this.getCipher()
   },
   asyncComputed: {
     folders: {
       async get () {
         return await this.$folderService.getAllDecrypted() || []
+      },
+      watch: ['$store.state.syncedCiphersToggle']
+    },
+    ciphers: {
+      async get () {
+        const deletedFilter = c => {
+          return c.isDeleted === false
+        }
+        return await this.$searchService.searchCiphers('', [null, deletedFilter], null) || []
       },
       watch: ['$store.state.syncedCiphersToggle']
     }
@@ -182,20 +189,20 @@ export default {
       this.$refs.addEditCipherDialog.openDialog(this.cipher)
     },
     async getCipher () {
-      this.folders = await this.getFolders()
-      this.$axios.$get(`cystack_platform/pm/ciphers/${this.$route.params.id}`)
-        .then(async res => {
-          res = new CipherResponse(res)
-          const cipher = new Cipher(res, false)
-          this.cipher = await cipher.decrypt()
-          if (this.cipher.type === CipherType.Login) {
-            this.passwordStrength = this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
-          }
-        })
-        .catch(e => {
-          console.log(e)
-          // this.$router.push(this.localeRoute({ name: 'passwords' }))
-        })
+      // this.folders = await this.getFolders()
+      // this.$axios.$get(`cystack_platform/pm/ciphers/${this.$route.params.id}`)
+      //   .then(async res => {
+      //     res = new CipherResponse(res)
+      //     const cipher = new Cipher(res, false)
+      //     this.cipher = await cipher.decrypt()
+      //     if (this.cipher.type === CipherType.Login) {
+      //       this.passwordStrength = this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
+      //     }
+      //   })
+      //   .catch(e => {
+      //     console.log(e)
+      //     // this.$router.push(this.localeRoute({ name: 'passwords' }))
+      //   })
     },
     checkPassword: debounce(function (password) {
       return this.$passwordGenerationService.passwordStrength(String(password), ['cystack']) || {}

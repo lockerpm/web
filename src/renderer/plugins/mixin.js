@@ -232,6 +232,12 @@ Vue.mixin({
         params: { id: cipher.id }
       }))
     },
+    isSharedItem (c) {
+      return c.organizationId !== this.currentUserPw.default_personal_id
+    },
+    isSharingItem (c) {
+      return c.organizationId === this.currentUserPw.default_personal_id && c.collectionIds.length > 1
+    },
     openNewTab (link) {
       window.open(link, '_blank')
     }

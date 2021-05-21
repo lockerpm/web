@@ -448,13 +448,15 @@ export default {
   mounted () {
   },
   methods: {
-    async openDialog (data, cloneMode) {
+    async openDialog (data, cloneMode = false) {
       this.folders = await this.getFolders()
       this.dialogVisible = true
       if (data.id || cloneMode) {
         this.cipher = new Cipher({ ...data }, true)
-      } else {
+      } else if (Cipher[this.type]) {
         this.newCipher(this.type)
+      } else {
+        this.newCipher('Login')
       }
     },
     closeDialog () {
@@ -465,6 +467,8 @@ export default {
       try {
         this.loading = true
         this.errors = {}
+        cipher.organizationId = this.currentUserPw.default_personal_id
+        cipher.collectionIds = [this.currentUserPw.default_folder_id]
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
 
@@ -485,12 +489,12 @@ export default {
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
         await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, data)
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'success')
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
         this.closeDialog()
         this.getSyncData()
         this.$emit('updated-cipher')
       } catch (e) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
         console.log(e)
       } finally {
         this.loading = false

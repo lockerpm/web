@@ -96,10 +96,17 @@ export default {
             name
           }
         }))
-        await this.$axios.$post(`cystack_platform/pm/ciphers/${cipher.id}/share`, {
+        const response = await this.$axios.$post(`cystack_platform/pm/ciphers/${cipher.id}/share`, {
           members
         })
+        const keys = await Promise.all(response.members_public_key.map(async member => {
+          const key = await this.generateOrgKey(member.public_key)
+          return { ...member, key }
+        }))
+
+        await this.putShareKeys(cipher.id, keys)
         await this.getSyncData()
+
         this.closeDialog()
       } catch (e) {
         console.log(e)
@@ -118,6 +125,17 @@ export default {
         return false
       })
       this.inputedMembers = uniq(this.inputedMembers)
+    },
+    async putShareKeys (id, keys) {
+      return await this.$axios.$put(`cystack_platform/pm/ciphers/${id}/share`, {
+        keys
+      })
+    },
+    async generateOrgKey (publicKey) {
+      const pk = new Uint8Array(Buffer.from(publicKey, 'base64'))
+      const orgKey = await this.$cryptoService.getOrgKey(this.currentUserPw.default_personal_id)
+      const key = await this.$cryptoService.rsaEncrypt(orgKey.key, pk.buffer)
+      return key.encryptedString
     }
   }
 }

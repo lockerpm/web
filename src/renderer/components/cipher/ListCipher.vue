@@ -125,6 +125,7 @@
           <el-table-column
             prop="name"
             label=""
+            show-overflow-tooltip
           >
             <template slot="header">
               <div v-if="multipleSelection.length" class="flex items-center ">
@@ -159,22 +160,31 @@
             </template>
             <template slot-scope="scope">
               <div class="flex items-center">
-                <div class="text-[34px] mr-3"
+                <div class="text-[34px] mr-3 flex-shrink-0"
                      :class="{'filter grayscale': scope.row.isDeleted}"
                      v-html="getIconCipher(scope.row, 34)"
                 />
-                <div>
-                  <a class="text-black font-semibold"
+                <div class="flex flex-col">
+                  <a class="text-black font-semibold truncate"
                      :class="{'opacity-80': scope.row.isDeleted}"
                      @click="routerCipher(scope.row, addEdit)"
                   >
-                    {{ scope.row.name }} <i v-if="scope.row.organizationId" class="fa fa-share-alt" />
+                    {{ scope.row.name }} <i v-if="isSharedItem(scope.row) || isSharingItem(scope.row)" class="fa fa-share-alt" />
                   </a>
                   <div>
                     {{ scope.row.subTitle }}
                   </div>
                 </div>
               </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label=""
+            width="200"
+          >
+            <template slot-scope="scope">
+              <span v-if="isSharedItem(scope.row)">Được share</span>
+              <span v-if="isSharingItem(scope.row)">Đi share</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -198,8 +208,7 @@
                 >
                   <i class="fas fa-external-link-square-alt" />
                 </button>
-
-                <el-dropdown trigger="click" :hide-on-click="false">
+                <el-dropdown v-if="!isSharedItem(scope.row)" trigger="click" :hide-on-click="false">
                   <button class="btn btn-icon btn-xs hover:bg-black-400">
                     <i class="fas fa-ellipsis-h" />
                   </button>
@@ -349,7 +358,8 @@ export default {
       orderDirection: 'asc',
       selectedFolder: {},
       context: '',
-      openedContextRow: null
+      openedContextRow: null,
+      publicKey: ''
     }
   },
   computed: {
@@ -397,6 +407,9 @@ export default {
         return false
       }
       return !haveCipher
+    },
+    shouldRenderShare () {
+      return (this.getRouteBaseName() === 'shares')
     }
   },
   created () {
@@ -432,15 +445,6 @@ export default {
   methods: {
     addEdit (cipher) {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
-    },
-    deleteCipher (cipher) {
-      this.$refs.addEditCipherDialog.deleteCipher(cipher)
-    },
-    restoreCipher (cipher) {
-      this.$refs.addEditCipherDialog.restoreCipher(cloneDeep(cipher))
-    },
-    moveTrashCipher (cipher) {
-      this.$refs.addEditCipherDialog.moveTrashCipher(cloneDeep(cipher))
     },
     handleSelectionChange (val) {
       this.multipleSelection = val
