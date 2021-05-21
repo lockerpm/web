@@ -473,11 +473,11 @@ export default {
         const data = new CipherRequest(cipherEnc)
 
         await this.$axios.$post('cystack_platform/pm/ciphers/vaults', data)
-        this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'success')
+        this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
         this.closeDialog()
         this.getSyncData()
       } catch (e) {
-        this.notify(this.$tc('data.notifications.create_failed', 1, { type: this.$tc(`type.${CipherType[this.type]}`, 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.create_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
         console.log(e)
       } finally {
