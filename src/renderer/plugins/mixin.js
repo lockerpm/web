@@ -178,12 +178,18 @@ Vue.mixin({
         return this.getIconDefaultCipher('Card', size)
       case CipherType.Identity:
         return this.getIconDefaultCipher('Identity', size)
+      case 'Shares':
+        return this.getIconDefaultCipher('Shares', size)
+      case 'Trash':
+        return this.getIconDefaultCipher('Trash', size)
+      case 'Dashboard':
+        return this.getIconDefaultCipher('Dashboard', size)
       default:
         return ''
       }
     },
     getIconDefaultCipher (type, size = 70) {
-      return `<img  src="${require(`~/assets/images/icons/icon_${type}.svg`)}" style="width: ${size}px; height: ${size}px" alt="" class="rounded mx-auto"/>`
+      return `<img  src="${require(`~/assets/images/icons/icon_${type}.svg`)}" style="height: ${size}px" alt="" class="rounded mx-auto"/>`
     },
     routerCipher (cipher, callbackDeleted) {
       if (cipher.isDeleted) {

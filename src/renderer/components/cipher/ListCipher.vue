@@ -1,6 +1,9 @@
 <template>
-  <div class="flex flex-col flex-grow relative">
-    <div class="flex-grow lg:px-28 py-10 px-10 mb-20">
+  <div class="flex flex-col flex-column-fluid relative">
+    <NoCipher v-if="!filteredCiphers.length" :type="type"
+              @add-cipher="addEdit({})"
+    />
+    <div v-else class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <div class="flex items-center justify-between mb-5">
         <div class="flex-grow">
           <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -70,7 +73,6 @@
           </el-dropdown>
         </div>
       </div>
-
       <div v-if="getRouteBaseName() === 'dashboard' && folders"
            class="mb-5"
       >
@@ -260,9 +262,9 @@
       </client-only>
     </div>
     <AddEditCipher ref="addEditCipherDialog" :route-name="routeName" :type="type" />
-    <AddEditFolder ref="addEditFolder" />
+    <AddEditFolder ref="addEditFolder" @reset-selection="multipleSelection = []" />
     <ShareCipher ref="shareCipher" />
-    <MoveFolder ref="moveFolder" />
+    <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
     <div class="fixed bottom-[50px] right-[55px]">
       <button v-if="routeName !== 'dashboard'" class="btn btn-fab rounded-full flex items-center justify-center"
               @click="addEdit({})"
@@ -309,6 +311,7 @@ import AddEditCipher from '../../components/cipher/AddEditCipher'
 import AddEditFolder from '../../components/cipher/AddEditFolder'
 import ShareCipher from '../../components/cipher/ShareCipher'
 import MoveFolder from '../../components/cipher/MoveFolder'
+import NoCipher from '../../components/cipher/NoCipher'
 import { CipherType } from '../../jslib/src/enums'
 
 export default {
@@ -317,6 +320,7 @@ export default {
     AddEditFolder,
     ShareCipher,
     MoveFolder,
+    NoCipher,
     VueContext: () => import('../../plugins/vue-context')
   },
   props: {
@@ -369,9 +373,13 @@ export default {
       case 'identities':
         return 'Identity'
       case 'dashboard':
-        return 'Login'
+        return 'Dashboard'
+      case 'shares':
+        return 'Shares'
+      case 'trash':
+        return 'Trash'
       default:
-        return 'Login'
+        return null
       }
     },
     filteredCiphers () {
@@ -394,7 +402,7 @@ export default {
         }
         const result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
 
-        return orderBy(result, [c => this.orderField === 'name' ? c.name.toLowerCase() : c.revisionDate], [this.orderDirection]) || []
+        return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
       },
       watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
     },

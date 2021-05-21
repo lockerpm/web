@@ -6,6 +6,7 @@
       destroy-on-close
       top="10vh"
       custom-class="locker-dialog"
+      :close-on-click-modal="false"
     >
       <div slot="title">
         <div class="text-head-5 text-black-700 font-semibold">
@@ -17,7 +18,6 @@
           <label for="">{{ $t('data.notifications.move_selected_desc', {count: ids.length}) }}</label>
           <el-select v-model="folderId" placeholder="Chọn thư mục"
                      class="w-full"
-                     :disabled="isDeleted"
           >
             <el-option
               v-for="item in folders"
@@ -109,6 +109,7 @@ export default {
         this.notify(this.$tc('data.notifications.move_success', this.ids.length), 'success')
         this.closeDialog()
         this.getSyncData()
+        this.$emit('reset-selection')
       } catch (e) {
         this.notify(this.$tc('data.notifications.move_failed', this.ids.length), 'warning')
         console.log(e)

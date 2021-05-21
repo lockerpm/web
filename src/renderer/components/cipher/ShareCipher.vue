@@ -5,6 +5,7 @@
     destroy-on-close
     top="5vh"
     custom-class="locker-dialog"
+    :close-on-click-modal="false"
   >
     <div slot="title">
       <div class="flex items-center">
@@ -88,19 +89,20 @@ export default {
       try {
         this.loading = true
         const orgKey = await this.$cryptoService.getOrgKey(this.currentUserPw.default_personal_id)
-        const members = this.members.map(async e => {
+        const members = await Promise.all(this.members.map(async e => {
           const name = (await this.$cryptoService.encrypt(e, orgKey)).encryptedString
           return {
             username: e,
             name
           }
-        })
+        }))
         await this.$axios.$post(`cystack_platform/pm/ciphers/${cipher.id}/share`, {
           members
         })
         await this.getSyncData()
         this.closeDialog()
       } catch (e) {
+        console.log(e)
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
       } finally {
         this.loading = false

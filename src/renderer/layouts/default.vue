@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col sm:flex-row flex-grow">
+  <div class="flex flex-col sm:flex-row flex-1">
     <client-only>
       <template v-if="!locked">
         <div class="w-60 h-screen bg-aside relative min-h-500px min-w-60 fixed border-0 border-b border-black-200">
@@ -28,7 +28,7 @@
             </a>
           </div>
         </div>
-        <div class="pl-60 w-full">
+        <div class="pl-60 flex flex-col flex-row-fluid">
           <Header />
           <nuxt />
         </div>

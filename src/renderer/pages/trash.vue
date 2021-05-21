@@ -1,5 +1,5 @@
 <template>
-  <ListCipher :deleted="true" />
+  <ListCipher route-name="trash" :deleted="true" />
 </template>
 
 <script>

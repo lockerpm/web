@@ -6,10 +6,11 @@
       destroy-on-close
       top="5vh"
       custom-class="locker-dialog"
+      :close-on-click-modal="false"
     >
       <div slot="title">
         <div class="text-head-5 text-black-700 font-semibold">
-          {{ isDeleted ? `Khôi phục ${type}` : cipher.id ? `Chỉnh sửa ${type}` : `Thêm ${type}` }}
+          {{ isDeleted ? `${$t('common.restore')} ${$t(`type.${type}`)}` : cipher.id ? `${$t('common.edit')} ${$t(`type.${type}`)}` : `${$t('common.add')} ${$t(`type.${type}`)}` }}
         </div>
       </div>
       <div class="text-left">
@@ -23,7 +24,7 @@
                      :change="handleChangeType"
           >
             <el-option
-              v-for="(item, index) in options"
+              v-for="(item, index) in typeOptions"
               :key="index"
               :label="item.name"
               :value="item.value"
@@ -387,12 +388,12 @@ export default {
     }
   },
   computed: {
-    options () {
+    typeOptions () {
       return [
-        { name: this.$t('enum.Login'), value: CipherType.Login },
-        { name: this.$t('enum.Card'), value: CipherType.Card },
-        { name: this.$t('enum.Identity'), value: CipherType.Identity },
-        { name: this.$t('enum.SecureNote'), value: CipherType.SecureNote }
+        { name: this.$t('type.Login'), value: CipherType.Login },
+        { name: this.$t('type.Card'), value: CipherType.Card },
+        { name: this.$t('type.Identity'), value: CipherType.Identity },
+        { name: this.$t('type.SecureNote'), value: CipherType.SecureNote }
       ]
     },
     cardBrandOptions () {
@@ -455,6 +456,7 @@ export default {
       this.dialogVisible = false
     },
     async postCipher (cipher) {
+      if (!cipher.name) { return }
       try {
         this.loading = true
         this.errors = {}
@@ -500,6 +502,7 @@ export default {
           await this.$axios.$put('cystack_platform/pm/ciphers/permanent_delete', { ids })
           this.notify(this.$tc('data.notifications.delete_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
           this.getSyncData()
+          this.$emit('reset-selection')
         } catch (e) {
           this.notify(this.$tc('data.notifications.delete_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
           console.log(e)
@@ -521,9 +524,10 @@ export default {
           await this.$axios.$put('cystack_platform/pm/ciphers/delete', { ids })
           this.notify(this.$tc('data.notifications.trash_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
           this.getSyncData()
+          this.$emit('trashed-cipher')
         } catch (e) {
           this.notify(this.$tc('data.notifications.trash_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
-          console.log(e)
+          this.$emit('reset-selection')
         } finally {
           this.loading = false
         }
@@ -542,6 +546,7 @@ export default {
           await this.$axios.$put('cystack_platform/pm/ciphers/restore', { ids })
           this.notify(this.$tc('data.notifications.restore_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
           this.getSyncData()
+          this.$emit('reset-selection')
         } catch (e) {
           this.notify(this.$tc('data.notifications.restore_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
           console.log(e)

@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <ListCipher :filter="c => c.organizationId === currentUserPw.default_personal_id" />
-  </div>
+  <ListCipher route-name="shares" :filter="c => c.organizationId === currentUserPw.default_personal_id" />
 </template>
 
 <script>
