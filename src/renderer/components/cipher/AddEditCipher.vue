@@ -327,7 +327,7 @@
           </el-select>
         </div>
       </div>
-      <div slot="footer" class="dialog-footer flex items-center text-left">
+      <div v-if="!isSharedItem(cipher)" slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow">
           <button v-if="cipher.id" class="btn btn-icon !text-danger"
                   @click="isDeleted ? deleteCiphers([cipher.id]) : moveTrashCiphers([cipher.id])"

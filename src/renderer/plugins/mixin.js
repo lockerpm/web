@@ -2,7 +2,7 @@ import Vue from 'vue'
 import { nanoid } from 'nanoid'
 import extractDomain from 'extract-domain'
 import { CipherType } from '../jslib/src/enums'
-
+import { SyncResponse } from '../jslib/src/models/response'
 Vue.mixin({
   data () {
     return { folders: [] }
@@ -17,7 +17,8 @@ Vue.mixin({
     },
     isAllPage () {
       return this.getRouteBaseName() === 'dashboard'
-    }
+    },
+    searchText () { return this.$store.state.searchText }
   },
   mounted () {
   },
@@ -135,7 +136,9 @@ Vue.mixin({
     async getSyncData () {
       try {
         this.$messagingService.send('syncStarted')
-        const res = await this.$axios.$get('cystack_platform/pm/sync')
+        let res = await this.$axios.$get('cystack_platform/pm/sync')
+        res = new SyncResponse(res)
+
         const userId = await this.$userService.getUserId()
         await this.$syncService.syncProfile(res.profile)
         await this.$syncService.syncFolders(userId, res.folders)

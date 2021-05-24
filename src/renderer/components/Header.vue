@@ -1,7 +1,13 @@
 <template>
   <div class="lg:px-28 px-10 h-[60px] flex items-center border-0 border-b border-black-200">
     <div class="flex-grow">
-      <div class="text-black-600"><i class="fa fa-search mr-4" />Tìm kiếm</div>
+      <div class="text-black-600">
+        <i class="fa fa-search mr-4" />
+        <input type="text" :value="searchText"
+               class="w-1/2 focus:border-0 border-0"
+               @input="handleSearch"
+        >
+      </div>
     </div>
     <div class="">
       <el-dropdown trigger="click">
@@ -38,7 +44,12 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 export default {
-
+  methods: {
+    handleSearch: debounce(function (e) {
+      this.$store.commit('UPDATE_SEARCH', e.target.value)
+    }, 800)
+  }
 }
 </script>

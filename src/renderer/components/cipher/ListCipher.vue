@@ -350,7 +350,6 @@ export default {
     return {
       cryptoService: null,
       data: {},
-      searchText: '',
       CipherType,
       multipleSelection: [],
       loading: false,

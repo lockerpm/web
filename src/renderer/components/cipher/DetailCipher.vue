@@ -53,6 +53,7 @@
       </div>
       <client-only>
         <div class="mt-20 mb-9 text-center">
+          {{ cipher.ssn }}
           <div class="mb-4 text-[70px]" v-html="getIconCipher(cipher)" />
           <div class="text-head-4 font-medium">
             {{ cipher.name }}
