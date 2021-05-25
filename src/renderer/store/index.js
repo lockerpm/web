@@ -18,7 +18,8 @@ export const state = () => ({
   userPw: {},
   isLoggedInPw: false,
   syncedCiphersToggle: false,
-  searchText: ''
+  searchText: '',
+  teams: []
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -44,6 +45,7 @@ export const mutations = {
       unread_count: 0,
       count: 0
     }
+    state.teams = []
   },
   UPDATE_USER (state, user) {
     state.user = user
@@ -58,7 +60,7 @@ export const mutations = {
     state.currentPath = target
   },
   UPDATE_PREVIOUS_PATH (state, target) {
-    state.previousPath = target || '/dashboard'
+    state.previousPath = target || '/vault'
   },
   UPDATE_NOTIFICATION (state, payload) {
     state.notifications = payload
@@ -77,6 +79,9 @@ export const mutations = {
   },
   UPDATE_SEARCH (state, value) {
     state.searchText = value
+  },
+  UPDATE_TEAMS (state, value) {
+    state.teams = value
   }
 }
 export const actions = {
@@ -87,8 +92,9 @@ export const actions = {
         language: 'en'
       },
       currentPath: '/',
-      previousPath: '/dashboard',
-      userPw: {}
+      previousPath: '/vault',
+      userPw: {},
+      teams: []
     }
 
     commit('UPDATE_IS_LOGGEDIN', state.isLoggedIn)
@@ -98,6 +104,7 @@ export const actions = {
     commit('UPDATE_DEV', environment)
     commit('UPDATE_PATH', state.currentPath)
     commit('UPDATE_PREVIOUS_PATH', state.previousPath)
+    commit('UPDATE_TEAMS', state.teams)
   },
   nuxtClientInit ({ commit }, { app, isDev }) {
     if (process.env.CS_ENV === 'electron') {
@@ -107,7 +114,7 @@ export const actions = {
           language: 'en'
         },
         currentPath: '/',
-        previousPath: '/dashboard',
+        previousPath: '/vault',
         userPw: {}
       }
 
@@ -158,6 +165,12 @@ export const actions = {
     // const user = context.state.user
     return this.$axios.$get('notifications?scope=cloud').then(res => {
       commit('UPDATE_NOTIFICATION', res)
+    })
+  },
+  LoadTeams ({ commit }) {
+    return this.$axios.$get('cystack_platform/pm/teams').then(res => {
+      commit('UPDATE_TEAMS', res)
+      return res
     })
   }
 }

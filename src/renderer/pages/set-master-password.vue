@@ -1,35 +1,73 @@
 <template>
   <div class="flex flex-grow flex-col items-center">
-    <div class="mt-[5.625rem] mb-5">
+    <div class="mt-[3rem] mb-5">
       <img src="~assets/images/logo/logo_black.svg" alt="" class="h-[1.875rem]">
     </div>
     <div class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center">
-      <div class="text-head-4 font-semibold mb-2.5">Xác nhận tài khoản</div>
-      <div class="text-base mb-[1.875rem]">
-        Mật khẩu tổng là mật khẩu mở khóa dữ liệu của bạn. <br>
-        Vui lòng không chia sẻ mật khẩu này với bất kì ai.
+      <div class="text-head-4 font-semibold mb-2.5">Tạo Master Key</div>
+      <div class="text-base text-black-600 mb-4">
+        Master Key là mật khẩu mở khóa Locker của bạn. Đây là mật khẩu duy nhất bạn cần nhớ để truy cập tất cả các mật khẩu khác được lưu trữ trong Locker. Vui lòng không chia sẻ mật khẩu này với bất kỳ ai.
       </div>
-      <div class="form-group !mb-4">
-        <input v-model="masterPassword" class="form-control"
-               placeholder="Nhập mật khẩu tổng"
-               :name="randomString()" autocomplete="new-password"
-               type="password"
-        ></input>
+      <div class="inline-block mb-8 select-none">
+        <div class="flex items-center">
+          <div class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto">
+            <client-only>
+              <img :src="currentUser.avatar" alt="" class="w-[28px] h-[28px] rounded-full mr-2">
+            </client-only>
+            <div class="mr-2">{{ currentUser.email }}</div>
+          </div>
+          <button class="btn btn-sm btn-clean btn-primary !px-3 !font-normal"
+                  @click="logout"
+          >
+            Đăng xuất
+          </button>
+        </div>
       </div>
-      <div class="form-group !mb-4">
-        <input v-model="masterPasswordRe" class="form-control"
-               placeholder="Nhập lại mật khẩu tổng"
-               :class="[errors.masterPasswordRe ? 'is-invalid' :'']"
-               type="password"
-               name="repassword"
-        ></input>
-        <div class="invalid-feedback">{{ $t('errors.confirm_password') }}</div>
-      </div>
-      <div class="form-group !mb-8">
-        <input v-model="masterPasswordHint" class="form-control"
-               placeholder="Gợi ý mật khẩu tổng (tùy chọn)"
-               type=""
-        ></input>
+      <div class="text-left">
+        <div class="form-group !mb-4">
+          <label for="">Nhập Master Key</label>
+          <div class="input-group mb-1.5">
+            <input v-model="masterPassword"
+                   :type="showPassword ? 'text' : 'password'"
+                   class="form-control"
+                   :name="randomString()" autocomplete="new-password"
+            >
+            <div class="input-group-append !bg-white">
+              <button class="btn btn-icon" @click="showPassword = !showPassword">
+                <i class="far"
+                   :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+                />
+              </button>
+            </div>
+          </div>
+          <PasswordStrengthBar v-if="masterPassword" :score="passwordStrength.score" />
+        </div>
+        <div class="form-group !mb-4">
+          <label for="">Xác nhận Master Key</label>
+          <div class="input-group" :class="[errors.masterRePassword ? 'is-invalid' :'']">
+            <input v-model="masterRePassword"
+                   :type="showRePassword ? 'text' : 'password'"
+                   class="form-control"
+                   name="repassword"
+                   placeholder=""
+            >
+            <div class="input-group-append !bg-white">
+              <button class="btn btn-icon" @click="showRePassword = !showRePassword">
+                <i class="far"
+                   :class="{'fa-eye': !showRePassword, 'fa-eye-slash': showRePassword}"
+                />
+              </button>
+            </div>
+          </div>
+          <div class="invalid-feedback">{{ $t('errors.confirm_password') }}</div>
+        </div>
+        <div class="form-group !mb-8">
+          <label for="">Gợi ý mật khẩu (tuỳ chọn)</label>
+          <input v-model="masterPasswordHint" class="form-control"
+                 placeholder=""
+                 type="text"
+          ></input>
+        </div>
       </div>
       <div class="form-group !mb-4">
         <button class="btn btn-primary w-full" :disabled="loading"
@@ -39,39 +77,45 @@
         </button>
       </div>
       <div class="md:w-[320px] text-black-600 mx-auto">
-        Lưu ý: CyStack không thể xem, không thể lưu trữ, cũng như không thể cấp lại mật khẩu tổng trong trường hợp bạn quên hoặc đánh mất.
+        Lưu ý: CyStack không thể xem, không thể lưu trữ, cũng như không thể cấp lại Master Key trong trường hợp bạn quên hoặc đánh mất.
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import PasswordStrengthBar from '../components/password/PasswordStrengthBar'
 export default {
+  components: { PasswordStrengthBar },
   layout: 'blank',
   middleware: ['HaveAccountService'],
   data () {
     return {
       masterPassword: '',
-      masterPasswordRe: '',
+      masterRePassword: '',
       masterPasswordHint: '',
       loading: false,
       errors: {
-      }
+      },
+      showPassword: false,
+      showRePassword: false
     }
   },
   computed: {
+    passwordStrength () {
+      return this.$passwordGenerationService.passwordStrength(this.masterPassword, ['cystack']) || {}
+    }
   },
   watch: {
-    masterPasswordRe (newValue) {
-      if (this.masterPassword && newValue && this.masterPasswordRe !== newValue) {
-        this.errors.masterPasswordRe = 1
+    masterRePassword (newValue) {
+      if (this.masterPassword && newValue && this.masterRePassword !== newValue) {
+        this.errors.masterRePassword = 1
       } else {
-        this.errors.masterPasswordRe = 0
+        this.errors.masterRePassword = 0
       }
     }
   },
   mounted () {
-    console.log(this.localeRoute({ path: this.$store.state.currentPath }))
   },
   methods: {
     async setMasterPass () {
@@ -91,10 +135,10 @@ export default {
         await this.$cryptoService.setEncKey(encKey[1].encryptedString)
         await this.$cryptoService.setEncPrivateKey(keys[1].encryptedString)
         // default org
-        const shareKey = await this.$cryptoService.makeShareKey()
-        const orgKey = shareKey[0].encryptedString
-        const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
-        const collectionName = collection.encryptedString
+        // const shareKey = await this.$cryptoService.makeShareKey()
+        // const orgKey = shareKey[0].encryptedString
+        // const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
+        // const collectionName = collection.encryptedString
         await this.$axios.$post('cystack_platform/pm/users/register', {
           name: this.currentUser.full_name,
           email: this.currentUser.email,
@@ -108,8 +152,7 @@ export default {
             public_key: keys[0],
             encrypted_private_key: keys[1].encryptedString
           },
-          org_key: orgKey,
-          collection_name: collectionName
+          score: this.passwordStrength.score
         })
         this.notify(this.$t('master_password.create_success'), 'success')
         this.$store.commit('UPDATE_USER_PW', { ...this.$store.state.userPw, is_pwd_manager: true })

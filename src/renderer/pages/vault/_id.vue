@@ -1,5 +1,5 @@
 <template>
-  <DetailCipher route-name="dashboard" />
+  <DetailCipher route-name="vault" />
 </template>
 
 <script>

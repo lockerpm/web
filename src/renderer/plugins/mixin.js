@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { nanoid } from 'nanoid'
 import extractDomain from 'extract-domain'
+import find from 'lodash/find'
 import { CipherType } from '../jslib/src/enums'
 import { SyncResponse } from '../jslib/src/models/response'
 Vue.mixin({
@@ -16,9 +17,13 @@ Vue.mixin({
       return this.$store.state.isLoggedIn
     },
     isAllPage () {
-      return this.getRouteBaseName() === 'dashboard'
+      return this.getRouteBaseName() === 'vault'
     },
-    searchText () { return this.$store.state.searchText }
+    searchText () { return this.$store.state.searchText },
+    teams () { return this.$store.state.teams },
+    currentOrg () {
+      return find(this.teams, team => team.id === this.$route.params.teamId) || {}
+    }
   },
   mounted () {
   },
@@ -125,7 +130,7 @@ Vue.mixin({
           this.$vaultTimeoutService.biometricLocked = false
         }
         // this.$messagingService.send('unlocked')
-        this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/dashboard' : this.$store.state.currentPath }))
+        this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/vault' : this.$store.state.currentPath }))
       } catch (e) {
         this.notify('Xác thực thông tin thất bại', 'warning')
       }
@@ -185,7 +190,7 @@ Vue.mixin({
         return this.getIconDefaultCipher('Shares', size)
       case 'Trash':
         return this.getIconDefaultCipher('Trash', size)
-      case 'Dashboard':
+      case 'Vault':
         return this.getIconDefaultCipher('Dashboard', size)
       default:
         return ''
@@ -200,16 +205,16 @@ Vue.mixin({
         return
       }
 
-      if (this.getRouteBaseName() === 'dashboard') {
+      if (this.getRouteBaseName() === 'vault') {
         this.$router.push(this.localeRoute({
-          name: 'dashboard-id',
+          name: 'vault-id',
           params: { id: cipher.id }
         }))
         return
       }
-      if (this.getRouteBaseName() === 'dashboard-folders-folderId') {
+      if (this.getRouteBaseName() === 'vault-folders-folderId') {
         this.$router.push(this.localeRoute({
-          name: 'dashboard-folders-folderId-id',
+          name: 'vault-folders-folderId-id',
           params: { ...this.$route.params, id: cipher.id }
         }))
         return
@@ -235,11 +240,15 @@ Vue.mixin({
         params: { id: cipher.id }
       }))
     },
-    isSharedItem (c) {
-      return c.organizationId !== this.currentUserPw.default_personal_id
+    getTeam (teams, orgId) {
+      return find(teams, e => e.organization_id === orgId) || {}
     },
-    isSharingItem (c) {
-      return c.organizationId === this.currentUserPw.default_personal_id && c.collectionIds.length > 1
+    canManageItem (teams, item) {
+      const team = this.getTeam(teams, item.organizationId)
+      if (team.organization_id) {
+        return ['owner', 'admin'].includes(team.role)
+      }
+      return true
     },
     openNewTab (link) {
       window.open(link, '_blank')

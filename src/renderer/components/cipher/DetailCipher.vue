@@ -3,15 +3,15 @@
     <div class="flex-grow lg:px-28 py-8 px-10 mb-20">
       <div class="flex items-center justify-between">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <template v-if="getRouteBaseName() === 'dashboard-folders-folderId-id'">
+          <template v-if="getRouteBaseName() === 'vault-folders-folderId-id'">
             <el-breadcrumb-item
-              :to="localeRoute({name: 'dashboard'})"
+              :to="localeRoute({name: 'vault'})"
             >
               {{ $t('sidebar.dashboard') }}
             </el-breadcrumb-item>
             <el-breadcrumb-item
               class="flex items-center"
-              :to="localeRoute({name: 'dashboard-folders-folderId', params: $route.params.folderId})"
+              :to="localeRoute({name: 'vault-folders-folderId', params: $route.params.folderId})"
             >
               {{ folder.name }}
             </el-breadcrumb-item>
@@ -27,7 +27,7 @@
             {{ cipher.name }}
           </el-breadcrumb-item>
         </el-breadcrumb>
-        <div v-if="!isSharedItem(cipher)" class="header-actions">
+        <div v-if="canManageItem(teams, cipher)" class="header-actions">
           <button class="btn btn-icon btn-xs btn-action"
                   @click="addEdit"
           >
@@ -128,7 +128,7 @@
 import debounce from 'lodash/debounce'
 import find from 'lodash/find'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
-import PasswordStrength from '../../components/cipher/PasswordStrength'
+import PasswordStrength from '../password/PasswordStrength'
 import { CipherType } from '../../jslib/src/enums'
 import TextHaveCopy from '../../components/cipher/TextHaveCopy'
 
@@ -152,7 +152,6 @@ export default {
     return {
       // cipher: {},
       showPassword: false,
-      passwordStrength: {},
       CipherType
     }
   },
@@ -162,6 +161,12 @@ export default {
     },
     cipher () {
       return find(this.ciphers, e => e.id === this.$route.params.id) || {}
+    },
+    passwordStrength () {
+      if (this.cipher.login) {
+        return this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
+      }
+      return {}
     }
   },
   created () {

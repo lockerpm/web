@@ -19,10 +19,10 @@
         </div>
       </div>
       <div class="text-left">
-        <div v-if="routeName==='dashboard' && !cipher.id"
+        <div v-if="['vault', 'shares'].includes(routeName) && !cipher.id"
              class="form-group"
         >
-          <label for="">Kiểu danh mục</label>
+          <label for="">Kiểu mục</label>
           <el-select v-model="cipher.type" placeholder=""
                      class="w-full"
                      :disabled="isDeleted"
@@ -65,7 +65,7 @@
                      autocomplete="new-password"
                      :disabled="isDeleted"
               >
-              <div class="input-group-append">
+              <div class="input-group-append !bg-white">
                 <button class="btn btn-icon" @click="showPassword = !showPassword">
                   <i class="far"
                      :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
@@ -75,7 +75,7 @@
             </div>
             <div v-if="!isDeleted" class="text-right">
               <button class="btn btn-clean !text-primary !pb-0"
-                      @click="generatePassword"
+                      @click="onGeneratePassword"
               >
                 Tạo mật khẩu ngẫu nhiên
               </button>
@@ -302,7 +302,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="">Thư mục</label>
+          <label for="">Thư mục cá nhân</label>
           <el-select v-model="cipher.folderId" placeholder="Chọn thư mục"
                      class="w-full mb-4"
                      :disabled="isDeleted"
@@ -326,8 +326,41 @@
             </el-option>
           </el-select>
         </div>
+        <template v-if="ownershipOptions.length">
+          <div class="mb-4 text-black-700 text-head-6 font-semibold">Ownership</div>
+          <div class="form-group">
+            <label for="">Ai sở hữu mục này ?</label>
+            <el-select v-model="cipher.organizationId" placeholder=""
+                       class="w-full"
+                       :disabled="isDeleted || !!cipher.id"
+                       @change="handleChangeOrg"
+            >
+              <el-option
+                v-for="(item, index) in ownershipOptions"
+                :key="index"
+                :label="item.name"
+                :value="item.organization_id"
+              />
+            </el-select>
+          </div>
+          <div v-if="cipher.organizationId" class="form-group">
+            <div class="flex items-center justify-between" />
+            <label for="">Folders Team</label>
+            <div>
+              Only team users with access to these collections will be able to see this item. Choose at least 1 folder.
+            </div>
+            <el-checkbox-group v-model="cipher.collectionIds" :min="1">
+              <el-checkbox v-for="(item, index) in writeableCollections"
+                           :key="index"
+                           :label="item.id"
+              >
+                {{ item.name }}
+              </el-checkbox>
+            </el-checkbox-group>
+          </div>
+        </template>
       </div>
-      <div v-if="!isSharedItem(cipher)" slot="footer" class="dialog-footer flex items-center text-left">
+      <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow">
           <button v-if="cipher.id" class="btn btn-icon !text-danger"
                   @click="isDeleted ? deleteCiphers([cipher.id]) : moveTrashCiphers([cipher.id])"
@@ -365,7 +398,7 @@ import { CipherType, SecureNoteType } from '../../jslib/src/enums'
 import { Cipher } from '../../jslib/src/models/domain'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView } from '../../jslib/src/models/view'
-import AddEditFolder from './AddEditFolder'
+import AddEditFolder from '../folder/AddEditFolder'
 export default {
   components: {
     AddEditFolder
@@ -389,7 +422,9 @@ export default {
       dialogVisible: false,
       loading: false,
       CipherType,
-      errors: {}
+      errors: {},
+      writeableCollections: [],
+      cloneMode: false
     }
   },
   computed: {
@@ -443,6 +478,22 @@ export default {
     },
     isDeleted () {
       return !!this.cipher.deletedDate
+    },
+    passwordStrength () {
+      if (this.cipher.login) {
+        return this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
+      }
+      return {}
+    },
+    ownershipOptions () {
+      const teams = this.teams.filter(e => ['owner', 'admin'].includes(e.role))
+      if (teams.length) {
+        return [{ name: this.currentUser.email, organization_id: null }, ...teams]
+      }
+      return []
+    },
+    allowOwnershipAssignment () {
+      return (!this.cipher.id || this.cloneMode) && this.ownershipOptions && this.ownershipOptions.length > 1
     }
   },
   mounted () {
@@ -451,8 +502,10 @@ export default {
     async openDialog (data, cloneMode = false) {
       this.folders = await this.getFolders()
       this.dialogVisible = true
-      if (data.id || cloneMode) {
+      this.cloneMode = cloneMode
+      if (data.id || this.cloneMode) {
         this.cipher = new Cipher({ ...data }, true)
+        this.writeableCollections = await this.getWritableCollections(this.cipher.organizationId)
       } else if (Cipher[this.type]) {
         this.newCipher(this.type)
       } else {
@@ -467,12 +520,13 @@ export default {
       try {
         this.loading = true
         this.errors = {}
-        cipher.organizationId = this.currentUserPw.default_personal_id
-        cipher.collectionIds = [this.currentUserPw.default_folder_id]
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
-
-        await this.$axios.$post('cystack_platform/pm/ciphers/vaults', data)
+        await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
+          ...data,
+          score: this.passwordStrength.score,
+          collectionIds: cipher.collectionIds
+        })
         this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
         this.closeDialog()
         this.getSyncData()
@@ -488,7 +542,11 @@ export default {
       try {
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
-        await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, data)
+        await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, {
+          ...data,
+          score: this.passwordStrength.score,
+          collectionIds: cipher.collectionIds
+        })
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
         this.closeDialog()
         this.getSyncData()
@@ -581,6 +639,7 @@ export default {
       } else {
         this.onGeneratePassword()
       }
+      this.onGeneratePassword()
     },
     async onGeneratePassword () {
       const options = (await this.$passwordGenerationService.getOptions())[0]
@@ -604,10 +663,27 @@ export default {
       this.cipher.secureNote = new SecureNoteView()
       this.cipher.secureNote.type = SecureNoteType.Generic
       this.cipher.folderId = this.$route.params.folderId || null
+      this.cipher.collectionIds = []
     },
     handleChangeType (type) {
       this.newCipher(type)
+    },
+    async handleChangeOrg (orgId) {
+      this.cipher.folderId = null
+      if (orgId) {
+        this.writeableCollections = await this.getWritableCollections(orgId)
+        if (this.writeableCollections.length) {
+          this.cipher.collectionIds = [this.writeableCollections[0].id]
+        }
+      } else {
+        this.cipher.collectionIds = []
+      }
+    },
+    async getWritableCollections (orgId) {
+      const allCollections = await this.$collectionService.getAllDecrypted()
+      return allCollections.filter(c => !c.readOnly && c.organizationId === orgId)
     }
+
   }
 }
 </script>

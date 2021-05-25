@@ -8,12 +8,12 @@
           </div>
 
           <nav class="mt-10">
-            <nuxt-link v-for="(item, index) in menu" :key="index" :to="localePath({name: item.routeName})"
+            <nuxt-link v-for="(item, index) in menu"
+                       :key="index" :to="localePath({name: item.routeName, params: $route.params})"
                        class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold "
                        active-class="bg-white bg-opacity-20 text-white"
+                       :exact="item.exact"
             >
-              <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="" class="mr-2">
-
               <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
             </nuxt-link>
           </nav>
@@ -26,7 +26,7 @@
 
               <span class="mx-4 font-medium">Support</span>
             </a>
-            <nuxt-link :to="localeRoute({name: 'admin-teamId', params: {teamId: 'ygxy65'}})" class="text-white">Admin</nuxt-link>
+            <nuxt-link :to="localeRoute({name: 'vault'})" class="text-white">Vault</nuxt-link>
           </div>
         </div>
         <div class="pl-60 flex flex-col flex-row-fluid">
@@ -56,39 +56,29 @@ export default {
       externalContent: '',
       menu: [
         {
-          label: 'all',
-          routeName: 'vault',
-          icon: 'all'
+          label: 'dashboard',
+          routeName: 'admin-teamId',
+          exact: true
         },
         {
-          label: 'passwords',
-          routeName: 'passwords',
-          icon: 'passwords'
+          label: 'users',
+          routeName: 'admin-teamId-users'
         },
         {
-          label: 'notes',
-          routeName: 'notes',
-          icon: 'notes'
+          label: 'groups',
+          routeName: 'admin-teamId-groups'
         },
         {
-          label: 'cards',
-          routeName: 'cards',
-          icon: 'cards'
+          label: 'shared_folders',
+          routeName: 'admin-teamId-shared-folders'
         },
         {
-          label: 'identities',
-          routeName: 'identities',
-          icon: 'identities'
+          label: 'logs',
+          routeName: 'admin-teamId-activity-logs'
         },
         {
-          label: 'shares',
-          routeName: 'shares',
-          icon: 'shares'
-        },
-        {
-          label: 'trash',
-          routeName: 'trash',
-          icon: 'trash'
+          label: 'settings',
+          routeName: 'admin-teamId-settings'
         }
       ]
     }
@@ -104,7 +94,6 @@ export default {
         this.$router.push(this.localeRoute({ name: 'lock' }))
       }
       if (newValue === false) {
-        this.$store.dispatch('LoadTeams')
         this.getSyncData()
       }
     }

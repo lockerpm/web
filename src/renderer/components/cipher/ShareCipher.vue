@@ -14,27 +14,37 @@
       </div>
     </div>
     <div class="text-left">
-      <div class="form-group">
-        <label for="">Gửi tới</label>
-        <el-select
-          v-model="members"
-          multiple
-          filterable
-          allow-create
-          placeholder="example@cystack.net"
-          class="w-full"
-          @change="checkEmail"
+      <div v-if="isBelongToTeam" class="mb-3">
+        Only team users with access to these folders will be able to see this item. Choose at least 1 folder.
+      </div>
+      <div v-else class="mb-3">
+        Choose a team that you wish to share this item with. Sharing transfers ownership of the item to the team. You will no longer be the direct owner of this item once it has been shared.
+      </div>
+      <div v-if="!isBelongToTeam" class="form-group">
+        <label for="">Team</label>
+        <el-select v-model="cipher.organizationId" placeholder=""
+                   class="w-full"
+                   @change="handleChangeOrg"
         >
           <el-option
-            v-for="(item, index) in inputedMembers"
+            v-for="(item, index) in ownershipOptions"
             :key="index"
-            :label="item"
-            :value="item"
+            :label="item.name"
+            :value="item.organization_id"
           />
         </el-select>
-        <div class="invalid-feedback">
-          {{ errors.name && errors.name[0] }}
-        </div>
+      </div>
+      <div v-if="cipher.organizationId" class="form-group">
+        <div class="flex items-center justify-between" />
+        <label for="">Folders Team</label>
+        <el-checkbox-group v-model="cipher.collectionIds" :min="1">
+          <el-checkbox v-for="(item, index) in writeableCollections"
+                       :key="index"
+                       :label="item.id"
+          >
+            {{ item.name }}
+          </el-checkbox>
+        </el-checkbox-group>
       </div>
     </div>
     <div slot="footer" class="dialog-footer flex items-center text-left">
@@ -46,10 +56,10 @@
           Cancel
         </button>
         <button class="btn btn-primary"
-                :disabled="loading || !members.length"
-                @click="shareItem(cipher)"
+                :disabled="loading || !cipher.collectionIds.length"
+                @click="shareCipher(cipher)"
         >
-          {{ $t('common.share') }}
+          {{ isBelongToTeam ? $t('common.update') : $t('common.share') }}
         </button>
       </div>
     </div>
@@ -57,85 +67,89 @@
 </template>
 
 <script>
-import filter from 'lodash/filter'
-import uniq from 'lodash/uniq'
+
+import { CipherRequest } from '../../jslib/src/models/request'
+import { CipherType } from '../../jslib/src/enums'
+
 export default {
   data () {
     return {
-      cipher: {},
+      cipher: {
+        collectionIds: []
+      },
+      originCipher: {},
       loading: false,
       dialogVisible: false,
       errors: {},
-      redirect: false,
-      email: '',
-      members: [],
-      inputedMembers: []
+      writeableCollections: []
     }
   },
   computed: {
-    shouldRedirect () {
-      return this.getRouteBaseName() === 'dashboard'
+    ownershipOptions () {
+      return this.teams.filter(e => ['owner', 'admin'].includes(e.role))
+    },
+    isBelongToTeam () {
+      return this.originCipher.organizationId
+    },
+    passwordStrength () {
+      if (this.cipher.login) {
+        return this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
+      }
+      return {}
     }
   },
   methods: {
-    openDialog (cipher = {}) {
+    async openDialog (cipher = {}) {
       this.dialogVisible = true
+      this.originCipher = { ...cipher }
       this.cipher = { ...cipher }
+      await this.handleChangeOrg(this.cipher.organizationId)
     },
     closeDialog () {
       this.dialogVisible = false
     },
-    async shareItem (cipher) {
+    async shareCipher (cipher) {
       try {
         this.loading = true
-        const orgKey = await this.$cryptoService.getOrgKey(this.currentUserPw.default_personal_id)
-        const members = await Promise.all(this.members.map(async e => {
-          const name = (await this.$cryptoService.encrypt(e, orgKey)).encryptedString
-          return {
-            username: e,
-            name
-          }
-        }))
-        const response = await this.$axios.$post(`cystack_platform/pm/ciphers/${cipher.id}/share`, {
-          members
+        const cipherEnc = await this.$cipherService.encrypt(cipher)
+        const data = new CipherRequest(cipherEnc)
+        const url = this.isBelongToTeam ? `cystack_platform/pm/ciphers/${cipher.id}` : `cystack_platform/pm/ciphers/${cipher.id}/share`
+        await this.$axios.$put(url, {
+          ...data,
+          score: this.passwordStrength.score,
+          collectionIds: cipher.collectionIds
         })
-        const keys = await Promise.all(response.members_public_key.map(async member => {
-          const key = await this.generateOrgKey(member.public_key)
-          return { ...member, key }
-        }))
-
-        await this.putShareKeys(cipher.id, keys)
-        await this.getSyncData()
-
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
         this.closeDialog()
+        this.getSyncData()
+        this.$emit('updated-cipher')
       } catch (e) {
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
         console.log(e)
-        this.errors = (e.response && e.response.data && e.response.data.details) || {}
       } finally {
         this.loading = false
       }
     },
-    checkEmail (item) {
-      const emailCheck = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
-      this.members = filter(item, e => {
-        if (emailCheck.test(e)) {
-          this.inputedMembers.push(e)
-          return true
-        }
-        return false
-      })
-      this.inputedMembers = uniq(this.inputedMembers)
-    },
-    async putShareKeys (id, keys) {
-      return await this.$axios.$put(`cystack_platform/pm/ciphers/${id}/share`, {
-        keys
-      })
-    },
     async generateOrgKey (publicKey) {
       const pk = new Uint8Array(Buffer.from(publicKey, 'base64'))
-      const orgKey = await this.$cryptoService.getOrgKey(this.currentUserPw.default_personal_id)
+      const orgKey = await this.$cryptoService.getOrgKey('095ccf45-983d-4fc1-951c-ad330073de93')
       const key = await this.$cryptoService.rsaEncrypt(orgKey.key, pk.buffer)
       return key.encryptedString
+    },
+    async handleChangeOrg (orgId) {
+      this.cipher.folderId = null
+      if (orgId) {
+        this.writeableCollections = await this.getWritableCollections(orgId)
+        if (this.writeableCollections.length && !this.isBelongToTeam) {
+          this.cipher.collectionIds = [this.writeableCollections[0].id]
+        }
+      } else {
+        this.cipher.collectionIds = []
+      }
+    },
+    async getWritableCollections (orgId) {
+      const allCollections = await this.$collectionService.getAllDecrypted()
+      return allCollections.filter(c => !c.readOnly && c.organizationId === orgId)
     }
   }
 }

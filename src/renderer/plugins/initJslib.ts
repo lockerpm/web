@@ -175,6 +175,7 @@ export default async ({ app, store }, inject) => {
     inject('broadcasterService', broadcasterService)
     inject('messagingService', messagingService)
     inject('folderService', folderService)
+    inject('collectionService', collectionService)
     inject('passwordGenerationService', passwordGenerationService)
 
 }

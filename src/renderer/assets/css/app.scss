@@ -155,3 +155,6 @@ a {
   border-radius: 2px;
   background: rgba(0, 0, 0, 0.05);
 }
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  @apply text-black
+}

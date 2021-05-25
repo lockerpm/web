@@ -26,7 +26,7 @@ export default {
         if (this.$route.query.return_url && isString(this.$route.query.return_url)) {
           this.$router.replace(this.localePath({ path: this.$route.query.return_url }))
         } else {
-          this.$router.replace(this.localePath({ name: 'dashboard' }))
+          this.$router.replace(this.localePath({ name: 'vault' }))
         }
         this.$store.commit('UPDATE_LOADING', false)
       }, 300)

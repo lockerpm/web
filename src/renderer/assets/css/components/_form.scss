@@ -61,6 +61,7 @@
     }
     .input-group-append, .input-group-prepend {
       display: flex;
+      border-radius: 5px;
     }
     .input-group-append, .input-group-prepend {
       margin-left: -1px;
@@ -79,6 +80,9 @@
       width: 1px;
       box-sizing: border-box;
       @apply bg-black-300
+    }
+    &.is-invalid {
+      @apply border-danger;
     }
   }
 }

@@ -1,12 +1,12 @@
 <template>
-  <ListCipher route-name="dashboard" />
+  <div>
+    Trang settings
+  </div>
 </template>
 
 <script>
-import ListCipher from '../../components/cipher/ListCipher'
 export default {
   components: {
-    ListCipher
   },
   mounted () {
   },

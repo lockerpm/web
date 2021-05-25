@@ -6,7 +6,7 @@
 export default {
   layout: 'authenticate',
   asyncData ({ redirect }) {
-    redirect(302, '/dashboard')
+    redirect(302, '/vault')
   },
   data () {
     return {

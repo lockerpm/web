@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center" :class="{
     'text-success': score === 4,
-    'text-primary': score === 3,
+    'text-info': score === 3,
     'text-warning': score === 2,
     'text-danger': score === 1 || score === 0,
     'text-black': score === 10,

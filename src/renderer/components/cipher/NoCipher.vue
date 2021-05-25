@@ -47,7 +47,7 @@ export default {
       return this.type !== 'Shares' && this.type !== 'Trash'
     },
     shouldRenderBtnImport () {
-      return this.type === 'Login' || this.type === 'Dashboard'
+      return this.type === 'Login' || this.type === 'Vault'
     }
   }
 }

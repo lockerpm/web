@@ -14,6 +14,32 @@
     </div>
     <div class="text-left">
       <div class="form-group">
+        <label for="">Team</label>
+        <el-select v-model="team" placeholder=""
+                   :class="{'is-invalid': errors.team}"
+                   value-key="id"
+                   class="w-full"
+                   :disabled="folder.id"
+        >
+          <el-option
+            v-for="item in teams"
+            :key="item.id"
+            :label="item.name"
+            :value="item"
+            :disabled="!canManage(item)"
+          >
+            <div class="flex items-center justify-between">
+              <div>{{ item.name }}</div>
+              <div>{{ item.role }}</div>
+            </div>
+          </el-option>
+        </el-select>
+        <div class="invalid-feedback">
+          {{ errors.team && errors.team[0] }}
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="">Tên thư mục</label>
         <input v-model="folder.name" type="text" class="form-control"
                :class="{'is-invalid': errors.name}"
                placeholder=""
@@ -49,7 +75,6 @@
 </template>
 
 <script>
-import { FolderRequest } from '../../jslib/src/models/request'
 
 export default {
   data () {
@@ -59,7 +84,8 @@ export default {
       dialogVisible: false,
       errors: {},
       redirect: false,
-      shouldRedirect: false
+      shouldRedirect: false,
+      team: {}
     }
   },
   computed: {
@@ -76,14 +102,14 @@ export default {
     async postFolder (folder) {
       try {
         this.loading = true
-        const folderEnc = await this.$folderService.encrypt(folder)
-        const data = new FolderRequest(folderEnc)
-        const res = await this.$axios.$post('cystack_platform/pm/folders', data)
+        const orgKey = await this.$cryptoService.getOrgKey(this.team.organization_id)
+        const name = (await this.$cryptoService.encrypt(folder.name, orgKey)).encryptedString
+        const res = await this.$axios.$post(`cystack_platform/pm/teams/${this.team.id}/folders`, { name })
         await this.getSyncData()
         this.closeDialog()
-        this.$emit('created-folder', res.id)
+        this.$emit('created-team-folder', res.id)
         if (this.shouldRedirect) {
-          this.$router.push(this.localeRoute({ name: 'dashboard-folders-folderId', params: { folderId: res.id } }))
+          this.$router.push(this.localeRoute({ name: 'vault-folders-folderId', params: { folderId: res.id } }))
         }
       } catch (e) {
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
@@ -126,6 +152,9 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    canManage (team) {
+      return ['owner', 'admin'].includes(team.role)
     }
   }
 }
