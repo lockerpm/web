@@ -20,7 +20,7 @@ Vue.mixin({
       return this.getRouteBaseName() === 'vault'
     },
     searchText () { return this.$store.state.searchText },
-    teams () { return this.$store.state.teams },
+    teams () { return this.$store.state.teams || [] },
     currentOrg () {
       return find(this.teams, team => team.id === this.$route.params.teamId) || {}
     }

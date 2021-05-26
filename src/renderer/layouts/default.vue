@@ -301,7 +301,7 @@ export default {
       window.onkeypress = () => this.recordActivity()
     },
     reconnectSocket () {
-      const token = this.$cookies.get('cs_platform_token')
+      const token = this.$cookies.get('cs_locker_token')
       this.$connect(this.sanitizeUrl(`${process.env.wsUrl}/cystack_platform/pm/sync?token=${token}`), {
         format: 'json',
         reconnection: true,
