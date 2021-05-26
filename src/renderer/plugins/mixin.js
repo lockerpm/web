@@ -76,12 +76,24 @@ Vue.mixin({
     async logout () {
       console.log('###### LOG OUT')
       await this.$axios.$post('/users/logout')
+      await this.$cryptoService.clearKeys()
+      await this.$userService.clear()
       await this.$cookies.remove('cs_locker_token')
       this.$store.commit('UPDATE_IS_LOGGEDIN', false)
       this.$router.push(this.localeRoute({ name: 'login' }))
     },
     async lock () {
-      await this.$vaultTimeoutService.lock()
+      await Promise.all([
+        this.$cryptoService.clearKey(),
+        this.$cryptoService.clearOrgKeys(true),
+        this.$cryptoService.clearKeyPair(true),
+        this.$cryptoService.clearEncKey(true)
+      ])
+
+      this.$folderService.clearCache()
+      this.$cipherService.clearCache()
+      this.$collectionService.clearCache()
+      this.$searchService.clearIndex()
       this.$router.push(this.localeRoute({ name: 'lock' }))
     },
     randomString () {
@@ -241,17 +253,25 @@ Vue.mixin({
       }))
     },
     getTeam (teams, orgId) {
-      return find(teams, e => e.organization_id === orgId) || {}
+      return find(teams, e => e.id === orgId) || {}
     },
     canManageItem (teams, item) {
       const team = this.getTeam(teams, item.organizationId)
       if (team.organization_id) {
-        return ['owner', 'admin'].includes(team.role)
+        return ['owner', 'admin', 'manager'].includes(team.role)
       }
       return true
     },
     openNewTab (link) {
       window.open(link, '_blank')
+    },
+    sanitizeUrl (connectionUrl) {
+      if (connectionUrl.startsWith('//')) {
+        const scheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
+        connectionUrl = `${scheme}:${connectionUrl}`
+      }
+
+      return connectionUrl
     }
   }
 })

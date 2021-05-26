@@ -108,7 +108,7 @@ export default {
   },
   watch: {
     masterRePassword (newValue) {
-      if (this.masterPassword && newValue && this.masterRePassword !== newValue) {
+      if (this.masterPassword && newValue && this.masterPassword !== newValue) {
         this.errors.masterRePassword = 1
       } else {
         this.errors.masterRePassword = 0

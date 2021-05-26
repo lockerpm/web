@@ -158,3 +158,28 @@ a {
 .el-checkbox__input.is-checked + .el-checkbox__label {
   @apply text-black
 }
+.banner-invitation {
+
+}
+.el-table {
+  @apply text-black
+}
+.el-table thead {
+  @apply font-semibold text-black-600
+}
+
+.setting-wrapper {
+  @apply border border-black-200 rounded mb-6 last:mb-0;
+  .setting-section {
+    @apply px-8 py-6 last:border-b-0 border-0 border-b border-black-200;
+    .setting-title {
+      @apply text-lg font-semibold;
+    }
+    .setting-description {
+      @apply text-black-600;
+    }
+    .setting-section-header {
+      @apply flex items-center justify-between;
+    }
+  }
+}

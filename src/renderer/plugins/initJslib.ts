@@ -104,7 +104,7 @@ const vaultTimeoutService = new VaultTimeoutService(cipherService, folderService
     null, async () => messagingService.send('logout', { expired: false }));
 const syncService = new SyncService(userService, apiService, settingsService, folderService,
     cipherService, cryptoService, collectionService, storageService, messagingService, policyService,
-    sendService, async (expired: boolean) => messagingService.send('logout', { expired: expired }));
+    sendService, async (expired: boolean) => messagingService.send('logout-11111', { expired: expired }));
 const passwordGenerationService = new PasswordGenerationService(cryptoService, storageService, policyService);
 // const totpService = new TotpService(storageService, cryptoFunctionService);
 const containerService = new ContainerService(cryptoService);
@@ -122,46 +122,11 @@ const containerService = new ContainerService(cryptoService);
 // const passwordRepromptService = new PasswordRepromptService(i18nService, cryptoService, platformUtilsService);
 
 containerService.attachToWindow(window);
-const BroadcasterSubscriptionId = 'AppComponent'
 // const IdleTimeout = 60000 * 10 // 10 minutes
 
 export default async ({ app, store }, inject) => {
     await (storageService as HtmlStorageService).init();
     vaultTimeoutService.init(true);
-    broadcasterService.subscribe(BroadcasterSubscriptionId, async message => {
-        console.log(message)
-        switch (message.command) {
-            case 'loggedIn':
-                store.commit('UPDATE_IS_LOGGEDIN_PW', true)
-                break
-            case 'loggedOut':
-            case 'unlocked':
-                console.log('unlocked')
-                console.log(app.localeRoute({ path: store.state.previousPath }))
-                app.router.push(app.localeRoute({ path: store.state.previousPath }))
-                break
-            case 'authBlocked':
-            case 'logout':
-                console.log('logout')
-                break
-            case 'lockVault':
-                console.log('lockVault')
-                break
-            case 'locked':
-                console.log('locked')
-                break
-            case 'lockedUrl':
-            case 'syncStarted':
-            case 'syncCompleted':
-            case 'upgradeOrganization':
-            case 'premiumRequired':
-            case 'emailVerificationRequired':
-            case 'showToast':
-            case 'setFullWidth':
-            default:
-                break
-        }
-    })
 
     inject('cryptoService', cryptoService)
     inject('cipherService', cipherService)
@@ -177,5 +142,6 @@ export default async ({ app, store }, inject) => {
     inject('folderService', folderService)
     inject('collectionService', collectionService)
     inject('passwordGenerationService', passwordGenerationService)
+    inject('storageService', storageService)
 
 }

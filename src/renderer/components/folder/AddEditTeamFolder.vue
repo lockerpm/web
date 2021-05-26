@@ -13,13 +13,12 @@
       </div>
     </div>
     <div class="text-left">
-      <div class="form-group">
+      <div v-if="!folder.id" class="form-group">
         <label for="">Team</label>
-        <el-select v-model="team" placeholder=""
+        <el-select v-model="folder.organizationId" placeholder=""
                    :class="{'is-invalid': errors.team}"
                    value-key="id"
                    class="w-full"
-                   :disabled="folder.id"
         >
           <el-option
             v-for="item in teams"
@@ -102,15 +101,29 @@ export default {
     async postFolder (folder) {
       try {
         this.loading = true
-        const orgKey = await this.$cryptoService.getOrgKey(this.team.organization_id)
+        const orgKey = await this.$cryptoService.getOrgKey(folder.organizationId)
         const name = (await this.$cryptoService.encrypt(folder.name, orgKey)).encryptedString
-        const res = await this.$axios.$post(`cystack_platform/pm/teams/${this.team.id}/folders`, { name })
+        const res = await this.$axios.$post(`cystack_platform/pm/teams/${folder.organizationId}/folders`, { name })
         await this.getSyncData()
         this.closeDialog()
         this.$emit('created-team-folder', res.id)
         if (this.shouldRedirect) {
           this.$router.push(this.localeRoute({ name: 'vault-folders-folderId', params: { folderId: res.id } }))
         }
+      } catch (e) {
+        this.errors = (e.response && e.response.data && e.response.data.details) || {}
+      } finally {
+        this.loading = false
+      }
+    },
+    async putFolder (folder) {
+      try {
+        this.loading = true
+        const orgKey = await this.$cryptoService.getOrgKey(folder.organizationId)
+        const name = (await this.$cryptoService.encrypt(folder.name, orgKey)).encryptedString
+        await this.$axios.$put(`cystack_platform/pm/teams/${folder.id}/folders/${folder.id}`, { name })
+        await this.getSyncData()
+        this.closeDialog()
       } catch (e) {
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
       } finally {
@@ -125,33 +138,21 @@ export default {
       }).then(async () => {
         try {
           this.loading = true
-          await this.$axios.$delete(`cystack_platform/pm/folders/${folder.id}`)
-          this.getSyncData()
+          await this.$axios.$post(`cystack_platform/pm/folders/${folder.id}`, {
+            delete_items: false
+          })
+          await this.getSyncData()
           this.closeDialog()
           this.notify(this.$tc('data.notifications.delete_success', 1, { type: this.$t('common.folder') }), 'success')
         } catch (e) {
           this.errors = (e.response && e.response.data && e.response.data.details) || {}
-          this.notify(this.$tc('data.notifications.delete_failed', 1, { type: this.$t('common.folder') }), 'success')
+          this.notify(this.$tc('data.notifications.delete_failed', 1, { type: this.$t('common.folder') }), 'warning')
         } finally {
           this.loading = false
         }
       }).catch(() => {
 
       })
-    },
-    async putFolder (folder) {
-      try {
-        this.loading = true
-        const folderEnc = await this.$folderService.encrypt(folder)
-        const data = new FolderRequest(folderEnc)
-        await this.$axios.$put(`cystack_platform/pm/folders/${folder.id}`, data)
-        await this.getSyncData()
-        this.closeDialog()
-      } catch (e) {
-        this.errors = (e.response && e.response.data && e.response.data.details) || {}
-      } finally {
-        this.loading = false
-      }
     },
     canManage (team) {
       return ['owner', 'admin'].includes(team.role)

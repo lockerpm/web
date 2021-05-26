@@ -20,6 +20,8 @@ ENV BASE_ID_URL=https://id.cystack.net
 
 ENV BASE_API_URL=https://gateway.staging.cystack.org/v3
 
+ENV WS_URL=wss://gateway.staging.cystack.org/ws
+
 RUN yarn run build-web
 
 ENV HOST 0.0.0.0

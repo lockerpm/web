@@ -12,6 +12,7 @@ module.exports = {
       xs: ['.75rem', { lineHeight: '1.25rem' }], // Small text 12px
       sm: ['.875rem', { lineHeight: '1.375rem' }], // Small text 12px
       base: ['.875rem', { lineHeight: '1.5rem' }], // 16px
+      lg: ['1rem', { lineHeight: '1.5rem' }], // 16px,
       'head-7': ['.75rem', { lineHeight: '1.1875rem' }], // Heading 7 14px
       'head-6': ['1rem', { lineHeight: '1.3125rem' }], // Heading 6 16px
       'head-5': ['1.5rem', { lineHeight: '2rem' }], // Heading 5 24px

@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-col flex-column-fluid relative">
-    <button class="btn btn-primary" @click="upgradeTeam">Nâng cấp Team</button>
     <NoCipher v-if="shouldRenderNoCipher" :type="type"
               @add-cipher="addEdit({})"
     />
@@ -85,7 +84,7 @@
         </div>
       </div>
       <div v-if="getRouteBaseName() === 'vault' && folders"
-           class="mb-5"
+           class="mb-10"
       >
         <client-only>
           <div class="grid grid-cols-4 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
@@ -102,8 +101,8 @@
               <div class="font-semibold break-all select-none">{{ item.name }} ({{ item.ciphersCount }})</div>
             </div>
             <component :is="context" ref="menu"
-                       class="el-dropdown-menu" @close="closeContextEvent"
-                       @open="openContextEvent"
+                       class="el-dropdown-menu"
+                       @open="openContextFolder"
             >
               <template #default>
                 <li class="el-dropdown-menu__item w-[200px]"
@@ -122,43 +121,53 @@
         </client-only>
       </div>
       <div v-if="getRouteBaseName() === 'vault' && collections"
-           class="mb-5"
+           class="mb-10"
       >
         <client-only>
-          <div class="grid grid-cols-4 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
-            <div v-for="item in collections"
-                 :key="item.id"
-                 class="px-4 py-6 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                 :class="{'border-primary': selectedFolder.id === item.id}"
-                 :title="`${item.name} (${item.ciphersCount})`"
-                 @click="selectedFolder = item"
-                 @dblclick="routerCollection(item)"
-                 @contextmenu.prevent="$refs.menu.open($event, item)"
-            >
-              <div class="flex items-center">
-                <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
-                <div class="font-semibold truncate select-none">{{ item.name }} ({{ item.ciphersCount }})</div>
-              </div>
-              <div class="ml-8">{{ getTeam(teams, item.organizationId).name }}</div>
+          <template v-for="(value, key) in filteredCollection">
+            <div class="mb-5 font-medium">
+              {{ getTeam(teams, key).name }}
             </div>
-            <component :is="context" ref="menu"
-                       class="el-dropdown-menu" @close="closeContextEvent"
-                       @open="openContextEvent"
-            >
-              <template #default>
-                <li class="el-dropdown-menu__item w-[200px]"
-                    @click.prevent="addEditFolder(selectedFolder, false)"
-                >
-                  Đổi tên
-                </li>
-                <li class="el-dropdown-menu__item"
-                    @click.prevent="deleteFolder(selectedFolder)"
-                >
-                  <span class="text-danger">Xóa</span>
-                </li>
-              </template>
-            </component>
-          </div>
+            <div :key="key" class="grid grid-cols-4 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
+              <div v-for="item in value"
+                   :key="item.id"
+                   class="px-4 py-6 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+                   :class="{'border-primary': selectedFolder.id === item.id}"
+                   :title="`${item.name} (${item.ciphersCount})`"
+                   @click="selectedFolder = item"
+                   @dblclick="routerCollection(item)"
+                   @contextmenu.prevent="canManageItem(teams, item) ? $refs.menuTeam.open($event, item) : null"
+              >
+                <div class="flex items-center">
+                  <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
+                  <div class="font-semibold truncate select-none">{{ item.name }} ({{ item.ciphersCount }})</div>
+                </div>
+              </div>
+              <component :is="context" ref="menuTeam"
+                         class="el-dropdown-menu"
+                         @open="openContextTeamFolder"
+              >
+                <template #default>
+                  <li class="el-dropdown-menu__item w-[200px]"
+                      @click.prevent="addEditTeamFolder(selectedFolder, false)"
+                  >
+                    Đổi tên
+                  </li>
+                  <li class="el-dropdown-menu__item w-[200px]">
+                    User Access
+                  </li>
+                  <li class="el-dropdown-menu__item w-[200px]">
+                    Group Access
+                  </li>
+                  <li class="el-dropdown-menu__item"
+                      @click.prevent="deleteTeamFolder(selectedFolder)"
+                  >
+                    <span class="text-danger">Xóa</span>
+                  </li>
+                </template>
+              </component>
+            </div>
+          </template>
         </client-only>
       </div>
       <client-only>
@@ -375,7 +384,7 @@
           </ul>
         </div>
         <button slot="reference"
-                class="btn btn-fab rounded-full flex items-center justify-center"
+                class="btn btn-fab rounded-full flex items-center justify-center btn-primary"
         >
           <i class="fas fa-plus text-[24px]" />
         </button>
@@ -388,6 +397,7 @@
 import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy'
 import find from 'lodash/find'
+import groupBy from 'lodash/groupBy'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import AddEditFolder from '../folder/AddEditFolder'
 import AddEditTeamFolder from '../folder/AddEditTeamFolder'
@@ -431,7 +441,6 @@ export default {
       orderDirection: 'asc',
       selectedFolder: {},
       context: '',
-      openedContextRow: null,
       publicKey: ''
     }
   },
@@ -447,6 +456,9 @@ export default {
         return find(this.collections, e => e.id === this.$route.params.folderId) || {}
       }
       return {}
+    },
+    filteredCollection () {
+      return groupBy(this.collections, 'organizationId')
     },
     orderString () {
       return `${this.orderField}_${this.orderDirection}`
@@ -579,10 +591,10 @@ export default {
         params: { folderId: item.id }
       }))
     },
-    closeContextEvent () {
-      this.openedContextRow = null
+    openContextFolder (event, data) {
+      this.selectedFolder = data
     },
-    openContextEvent (event, data) {
+    openContextTeamFolder (event, data) {
       this.selectedFolder = data
     },
     addEditFolder (folder, shouldRedirect = false) {
@@ -594,20 +606,11 @@ export default {
     deleteFolder (folder) {
       this.$refs.addEditFolder.deleteFolder(folder)
     },
+    deleteTeamFolder (folder) {
+      this.$refs.addEditTeamFolder.deleteFolder(folder)
+    },
     shareItem (cipher) {
       this.$refs.shareCipher.openDialog(cipher)
-    },
-    async upgradeTeam () {
-      // default org
-      const shareKey = await this.$cryptoService.makeShareKey()
-      const orgKey = shareKey[0].encryptedString
-      const collection = await this.$cryptoService.encrypt('defaultCollection' + this.currentUser.email, shareKey[1])
-      const collectionName = collection.encryptedString
-      this.$axios.$post('/cystack_platform/pm/teams', {
-        name: this.currentUser.email + ' team',
-        key: orgKey,
-        collection_name: collectionName
-      })
     }
   }
 }
