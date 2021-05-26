@@ -8,7 +8,7 @@
     :close-on-click-modal="false"
   >
     <div slot="title">
-      <div class="text-head-5 text-black-700 font-semibold">
+      <div class="text-head-5 text-black-700 font-semibold truncate">
         Change Master Password
       </div>
     </div>

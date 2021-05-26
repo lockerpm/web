@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="dialogVisible"
-    width="435px"
+    width="575px"
     destroy-on-close
     top="5vh"
     custom-class="locker-dialog"
@@ -9,7 +9,7 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
-        User access {{ group.name }}
+        Users access {{ folder.name }}
       </div>
     </div>
     <div class="text-left">
@@ -50,7 +50,7 @@
         </button>
         <button class="btn btn-primary"
                 :disabled="loading"
-                @click="putGroupUsers(group)"
+                @click="putTeamFolderUsers(folder)"
         >
           {{ $t('common.update') }}
         </button>
@@ -64,30 +64,27 @@
 export default {
   data () {
     return {
-      users: [],
-      groupUsers: [],
-      group: {
-        name: '',
-        access_all: false,
-        collections: []
-      },
-      dialogVisible: false,
+      folder: {},
       loading: false,
+      dialogVisible: false,
+      errors: {},
+      users: [],
+      teamFolderUsers: [],
       multipleSelection: []
     }
   },
   computed: {
   },
   methods: {
-    async openDialog (group = {}) {
-      this.group = { ...group }
+    async openDialog (folder = {}) {
       this.dialogVisible = true
+      this.folder = { ...folder }
       this.loading = true
-      await this.getGroupUsers(group)
-      await this.getUsers()
+      await this.getUsers(folder)
+      await this.getTeamFolderUsers(folder)
       this.loading = false
       this.$nextTick(() => {
-        this.groupUsers.forEach(e => {
+        this.teamFolderUsers.forEach(e => {
           if (['member', 'manager'].includes(e.role)) {
             this.$refs.multipleTable.toggleRowSelection(e)
           }
@@ -102,31 +99,28 @@ export default {
     closeDialog () {
       this.dialogVisible = false
     },
-    async getGroupUsers (group) {
-      this.groupUsers = await this.$axios.$get(`cystack_platform/pm/teams/${this.$route.params.teamId}/groups/${group.id}/users`)
-    },
-    async putGroupUsers (group) {
+    async putTeamFolderUsers (folder) {
       try {
         this.loading = true
-        await this.$axios.$put(`cystack_platform/pm/teams/${this.$route.params.teamId}/groups/${group.id}/users`, {
+        await this.$axios.$put(`cystack_platform/pm/teams/${folder.organizationId}/folders/${folder.id}/users`, {
           members: this.multipleSelection.map(e => e.id)
         })
-
-        this.notify(this.$t('data.notifications.update_group_success'), 'success')
-        await this.getSyncData()
         this.closeDialog()
         this.$emit('done')
+        this.notify(this.$t('data.notifications.update_folder_success'), 'success')
       } catch (e) {
-        console.log(e)
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
-        this.notify(this.$t('data.notifications.update_group_failed'), 'warning')
+        this.notify(this.$t('data.notifications.update_folder_failed'), 'warning')
       } finally {
         this.loading = false
       }
     },
-    async getUsers () {
-      const users = await this.$axios.$get(`cystack_platform/pm/teams/${this.$route.params.teamId}/members`)
+    async getUsers (folder) {
+      const users = await this.$axios.$get(`cystack_platform/pm/teams/${folder.organizationId}/members`)
       this.users = users.filter(e => e.status === 'confirmed')
+    },
+    async getTeamFolderUsers (folder) {
+      this.teamFolderUsers = await this.$axios.$get(`cystack_platform/pm/teams/${folder.organizationId}/folders/${folder.id}/users`)
     },
     handleSelectionChange (val) {
       this.multipleSelection = val

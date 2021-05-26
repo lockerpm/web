@@ -8,7 +8,7 @@
     :close-on-click-modal="false"
   >
     <div slot="title">
-      <div class="text-head-5 text-black-700 font-semibold">
+      <div class="text-head-5 text-black-700 font-semibold truncate">
         {{ group.id ? 'Chỉnh sửa nhóm' : 'Thêm nhóm' }}
       </div>
     </div>
@@ -78,11 +78,6 @@ export default {
         access_all: false,
         collections: []
       }
-    }
-  },
-  computed: {
-    ownershipOptions () {
-      return this.teams.filter(e => ['owner', 'admin'].includes(e.role))
     }
   },
   asyncComputed: {

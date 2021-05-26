@@ -345,8 +345,8 @@
       </client-only>
     </div>
     <AddEditCipher ref="addEditCipherDialog" :route-name="routeName" :type="type" />
-    <AddEditFolder ref="addEditFolder" @reset-selection="multipleSelection = []" />
-    <AddEditTeamFolder ref="addEditTeamFolder" />
+    <AddEditFolder ref="addEditFolder" @done="getSyncData" />
+    <AddEditTeamFolder ref="addEditTeamFolder" @done="getSyncData" />
     <ShareCipher ref="shareCipher" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
     <div class="fixed bottom-[50px] right-[55px]">

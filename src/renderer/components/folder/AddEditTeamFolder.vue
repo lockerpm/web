@@ -8,7 +8,7 @@
     :close-on-click-modal="false"
   >
     <div slot="title">
-      <div class="text-head-5 text-black-700 font-semibold">
+      <div class="text-head-5 text-black-700 font-semibold truncate">
         {{ folder.id ? 'Cập nhật thư mục' : 'Tạo thư mục' }}
       </div>
     </div>
@@ -104,9 +104,8 @@ export default {
         const orgKey = await this.$cryptoService.getOrgKey(folder.organizationId)
         const name = (await this.$cryptoService.encrypt(folder.name, orgKey)).encryptedString
         const res = await this.$axios.$post(`cystack_platform/pm/teams/${folder.organizationId}/folders`, { name })
-        await this.getSyncData()
+        this.$emit('done')
         this.closeDialog()
-        this.$emit('created-team-folder', res.id)
         if (this.shouldRedirect) {
           this.$router.push(this.localeRoute({ name: 'vault-folders-folderId', params: { folderId: res.id } }))
         }
@@ -122,7 +121,7 @@ export default {
         const orgKey = await this.$cryptoService.getOrgKey(folder.organizationId)
         const name = (await this.$cryptoService.encrypt(folder.name, orgKey)).encryptedString
         await this.$axios.$put(`cystack_platform/pm/teams/${folder.id}/folders/${folder.id}`, { name })
-        await this.getSyncData()
+        this.$emit('done')
         this.closeDialog()
       } catch (e) {
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
@@ -141,7 +140,7 @@ export default {
           await this.$axios.$post(`cystack_platform/pm/folders/${folder.id}`, {
             delete_items: false
           })
-          await this.getSyncData()
+          this.$emit('done')
           this.closeDialog()
           this.notify(this.$tc('data.notifications.delete_success', 1, { type: this.$t('common.folder') }), 'success')
         } catch (e) {

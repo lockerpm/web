@@ -9,7 +9,7 @@
       :close-on-click-modal="false"
     >
       <div slot="title">
-        <div class="text-head-5 text-black-700 font-semibold">
+        <div class="text-head-5 text-black-700 font-semibold truncate">
           <span v-if="cipher.id">
             {{ isDeleted ? $t('common.restore') : $t('common.edit') }} {{ $tc(`type.${cipher.type}`, 1) }}
           </span>
@@ -389,7 +389,7 @@
         </div>
       </div>
     </el-dialog>
-    <AddEditFolder ref="addEditFolder" @created-folder="handleCreatedFolder" />
+    <AddEditFolder ref="addEditFolder" @done="getSyncData" @created-folder="handleCreatedFolder" />
   </div>
 </template>
 
