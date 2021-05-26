@@ -9,33 +9,33 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold">
-        {{ user.id ? 'Chỉnh sửa người dùng' : 'Mời người dùng' }}
+        {{ group.id ? 'Chỉnh sửa nhóm' : 'Thêm nhóm' }}
       </div>
     </div>
     <div class="text-left">
       <div class="form-group">
-        <label for="">Username/Email</label>
-        <input v-model="user.username" type="text" class="form-control">
+        <label for="">Tên nhóm</label>
+        <input v-model="group.name" type="text" class="form-control">
         <div class="invalid-feedback">
-          {{ errors.username && errors.username[0] }}
+          {{ errors.name && errors.name[0] }}
         </div>
       </div>
       <div class="form-group">
-        <el-radio-group v-model="user.role" @change="() => !user.id ? user.collections = [] : null">
-          <el-radio v-for="item in roleOptions"
-                    :key="item" :label="item"
+        <el-radio-group v-model="group.access_all" @change="() => !group.id ? group.collections = [] : null">
+          <el-radio :label="true"
                     class="!flex items-start !break-words !whitespace-normal !mb-4"
           >
-            <div>{{ $t(`data.members.role.${item}.title`) }}</div>
-            <div class="!break-words !whitespace-normal font-normal text-black-500 mt-2">
-              {{ $t(`data.members.role.${item}.description`) }}
-            </div>
+            <div>This group can access all items.</div>
+          </el-radio>
+          <el-radio :label="false"
+                    class="!flex items-start !break-words !whitespace-normal !mb-4"
+          >
+            <div>This group can access only the selected collections.</div>
           </el-radio>
         </el-radio-group>
       </div>
-      <div v-if="['manager', 'member'].includes(user.role)" class="form-group">
-        <div>This user can access only the selected folders.</div>
-        <el-checkbox-group v-model="user.collections">
+      <div v-if="group.access_all === false" class="form-group">
+        <el-checkbox-group v-model="group.collections">
           <el-checkbox
             v-for="item in collections"
             :key="item.id"
@@ -56,9 +56,9 @@
         </button>
         <button class="btn btn-primary"
                 :disabled="loading"
-                @click="user.id ? putUser(user) : postUser(user)"
+                @click="group.id ? putGroup(group) : postGroup(group)"
         >
-          {{ user.id ? $t('common.update') : $t('common.add') }}
+          {{ group.id ? $t('common.update') : $t('common.add') }}
         </button>
       </div>
     </div>
@@ -73,11 +73,9 @@ export default {
       loading: false,
       dialogVisible: false,
       errors: {},
-      collections: [],
-      roleOptions: [
-        'admin', 'manager', 'member'
-      ],
-      user: {
+      group: {
+        name: '',
+        access_all: false,
         collections: []
       }
     }
@@ -92,67 +90,77 @@ export default {
       async get () {
         const collections = await this.$collectionService.getAllDecrypted() || []
         return collections.filter(c => !c.readOnly && c.organizationId === this.$route.params.teamId)
-      }
+      },
+      watch: ['$store.state.syncedCiphersToggle']
     }
   },
   methods: {
-    async openDialog (user = {}) {
-      this.dialogVisible = true
-      if (user.id) {
-        this.user = { ...user }
+    async openDialog (group = {}) {
+      if (group.id) {
+        this.group = await this.getGroup(group)
+      } else {
+        this.group = {
+          name: '',
+          access_all: false,
+          collections: []
+        }
       }
+      this.dialogVisible = true
     },
     closeDialog () {
       this.dialogVisible = false
     },
-    async postUser (user) {
-      try {
-        this.loading = true
-        await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members`, user)
-        this.notify(this.$t('data.notifications.add_member_success'), 'success')
-        this.closeDialog()
-        this.getSyncData()
-        this.$emit('done')
-      } catch (e) {
-        console.log(e)
-        this.errors = (e.response && e.response.data && e.response.data.details) || {}
-        this.notify(this.$t('data.notifications.add_member_failed'), 'warning')
-      } finally {
-        this.loading = false
-      }
+    async getGroup (group) {
+      return await this.$axios.$get(`cystack_platform/pm/teams/${this.$route.params.teamId}/groups/${group.id}`)
     },
-    async putUser (user) {
+    async postGroup (group) {
       try {
         this.loading = true
-        await this.$axios.$put(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/${user.id}`, user)
-        this.notify(this.$t('data.notifications.update_member_success'), 'success')
+        await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/groups`, group)
+        this.notify(this.$t('data.notifications.add_group_success'), 'success')
         this.getSyncData()
         this.closeDialog()
         this.$emit('done')
       } catch (e) {
         console.log(e)
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
-        this.notify(this.$t('data.notifications.update_member_failed'), 'warning')
+        this.notify(this.$t('data.notifications.add_group_failed'), 'warning')
       } finally {
         this.loading = false
       }
     },
-    async deleteUser (user) {
-      this.$confirm(this.$t('data.notifications.delete_member_description'), this.$t('common.warning'), {
+    async putGroup (group) {
+      try {
+        this.loading = true
+        await this.$axios.$put(`cystack_platform/pm/teams/${this.$route.params.teamId}/groups/${group.id}`, group)
+        this.notify(this.$t('data.notifications.update_group_success'), 'success')
+        this.getSyncData()
+        this.closeDialog()
+        this.$emit('done')
+      } catch (e) {
+        console.log(e)
+        this.errors = (e.response && e.response.data && e.response.data.details) || {}
+        this.notify(this.$t('data.notifications.update_group_failed'), 'warning')
+      } finally {
+        this.loading = false
+      }
+    },
+    async deleteGroup (group) {
+      this.$confirm(this.$t('data.notifications.delete_group_description'), this.$t('common.warning'), {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(async () => {
         try {
           this.loading = true
-          await this.$axios.$delete(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/${user.id}`)
+          await this.$axios.$delete(`cystack_platform/pm/teams/${this.$route.params.teamId}/groups/${group.id}`)
           this.getSyncData()
           this.closeDialog()
           this.$emit('done')
-          this.notify(this.$t('data.notifications.delete_member_success'), 'success')
+          this.notify(this.$t('data.notifications.delete_group_success'), 'success')
         } catch (e) {
           this.errors = (e.response && e.response.data && e.response.data.details) || {}
-          this.notify(this.$t('data.notifications.delete_member_failed'), 'warning')
+          this.notify(this.$t('data.notifications.delete_group_failed'), 'warning')
         } finally {
           this.loading = false
         }

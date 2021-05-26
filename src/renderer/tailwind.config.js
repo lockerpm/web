@@ -63,6 +63,9 @@ module.exports = {
         xs: '2px',
         sm: '4px',
         DEFAULT: '5px'
+      },
+      opacity: {
+        15: '0.15'
       }
     }
   },

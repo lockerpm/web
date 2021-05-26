@@ -1,11 +1,9 @@
 <template>
   <div class="flex flex-col flex-column-fluid relative">
-    Trang user
-    <button class="btn btn-primary" @click="postUser">open</button>
     <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <client-only>
         <el-table
-          :data="members"
+          :data="users"
           style="width: 100%"
         >
           <el-table-column
@@ -26,7 +24,15 @@
             align="right"
           >
             <template slot-scope="scope">
-              {{ scope.row.status }}
+              <span class="label capitalize"
+                    :class="{'label-primary-light': scope.row.status === 'confirmed',
+                             'label-success-light': scope.row.status === 'accepted',
+                             'label-warning-light': scope.row.status === 'invited',
+                             'label-danger-light': scope.row.status === 'expired'
+                    }"
+              >
+                {{ scope.row.status }}
+              </span>
             </template>
           </el-table-column>
           <el-table-column
@@ -49,7 +55,10 @@
             align="right"
           >
             <template slot-scope="scope">
-              <el-dropdown trigger="click" :hide-on-click="false">
+              <el-dropdown
+                v-if="scope.row.role !=='owner' && scope.row.username !== currentUser.username"
+                trigger="click" :hide-on-click="false"
+              >
                 <button class="btn btn-icon btn-xs hover:bg-black-400">
                   <i class="fas fa-ellipsis-h" />
                 </button>
@@ -60,15 +69,18 @@
                   >
                     <span class="text-success">{{ $t('common.confirm') }}</span>
                   </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="scope.row.status === 'confirmed'"
-                    @click.native="putUser(scope.row)"
-                  >
-                    {{ $t('common.edit') }}
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    {{ $t('common.groups') }}
-                  </el-dropdown-item>
+                  <template v-if="scope.row.status === 'confirmed'">
+                    <el-dropdown-item
+                      @click.native="putUser(scope.row)"
+                    >
+                      {{ $t('common.edit') }}
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                      @click.native="putUserGroups(scope.row)"
+                    >
+                      {{ $t('common.groups') }}
+                    </el-dropdown-item>
+                  </template>
                   <el-dropdown-item @click.native="deleteUser(scope.row)">
                     <span class="text-danger">
                       {{ $t('common.remove') }}
@@ -82,18 +94,27 @@
       </client-only>
     </div>
     <AddEditUser ref="addEditUser" @done="getUsers" />
+    <AddEditUserGroups ref="addEditUserGroups" @done="getUsers" />
+    <div class="fixed bottom-[50px] right-[55px]">
+      <button class="btn btn-fab rounded-full flex items-center justify-center"
+              @click="postUser({})"
+      >
+        <i class="fas fa-plus text-[24px]" />
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import AddEditUser from '../../../components/user/AddEditUser'
+import AddEditUserGroups from '../../../components/user/AddEditUserGroups'
 export default {
   components: {
-    AddEditUser
+    AddEditUser, AddEditUserGroups
   },
   data () {
     return {
-      members: []
+      users: []
     }
   },
   mounted () {
@@ -106,7 +127,7 @@ export default {
     getUsers () {
       this.$axios.$get(`cystack_platform/pm/teams/${this.$route.params.teamId}/members`)
         .then(res => {
-          this.members = res
+          this.users = res
         })
     },
     putUser (user) {
@@ -138,6 +159,9 @@ export default {
         console.log(e)
         this.notify(this.$t('data.notifications.confirm_member_failed'), 'warning')
       }
+    },
+    putUserGroups (user) {
+      this.$refs.addEditUserGroups.openDialog(user)
     }
   }
 }
