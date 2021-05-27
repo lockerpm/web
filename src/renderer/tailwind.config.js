@@ -3,6 +3,7 @@ const colors = require('tailwindcss/colors')
 module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
+  mode: 'jit',
   theme: {
     fontFamily: {
       sans: ['-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol'],

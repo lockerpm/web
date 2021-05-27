@@ -1,0 +1,93 @@
+<template>
+  <div class="flex flex-col flex-column-fluid relative">
+    <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
+      <div class="setting-wrapper">
+        <div class="setting-section">
+          <div class="setting-section-header">
+            <div class="flex items-center">
+              <img src="~/assets/images/icons/icon_tools_pw_generator.svg" alt="" class="mr-3">
+              <div>
+                <div class="setting-title">
+                  Password Generator
+                </div>
+                <div class="setting-description">
+                  Create secure passwords for your accounts
+                </div>
+              </div>
+            </div>
+            <div>
+              <el-popover
+                placement="bottom-end"
+                width="280"
+                trigger="click"
+                popper-class="locker-pw-generator"
+              >
+                <PasswordGenerator />
+                <button slot="reference"
+                        class="btn btn-icon !text-black-600"
+                >
+                  <i class="fa fa-chevron-right" />
+                </button>
+              </el-popover>
+            </div>
+          </div>
+        </div>
+        <div class="setting-section">
+          <div class="setting-section-header">
+            <div class="flex items-center">
+              <img src="~/assets/images/icons/icon_tools_pw_health.svg" alt="" class="mr-3">
+              <div>
+                <div class="setting-title">
+                  Password Health
+                </div>
+                <div class="setting-description">
+                  Identify passwords that can put you at risk
+                </div>
+              </div>
+            </div>
+            <div>
+              <button class="btn btn-icon !text-black-600">
+                <i class="fa fa-chevron-right" />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="setting-section">
+          <div class="setting-section-header">
+            <div class="flex items-center">
+              <img src="~/assets/images/icons/icon_tools_pw_breach.svg" alt="" class="mr-3">
+              <div>
+                <div class="setting-title">
+                  Data Breach Scanner
+                </div>
+                <div class="setting-description">
+                  Check if your sensitive data has been leaked online
+                </div>
+              </div>
+            </div>
+            <div>
+              <button class="btn btn-icon !text-black-600">
+                <i class="fa fa-chevron-right" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import PasswordGenerator from '../../components/password/PasswordGenerator'
+export default {
+  components: { PasswordGenerator },
+  data () {
+    return {
+    }
+  },
+  computed: {
+  },
+  methods: {
+  }
+}
+</script>

@@ -232,6 +232,14 @@ Vue.mixin({
         return
       }
 
+      if (this.getRouteBaseName() === 'vault-tfolders-tfolderId') {
+        this.$router.push(this.localeRoute({
+          name: 'vault-tfolders-tfolderId-id',
+          params: { ...this.$route.params, id: cipher.id }
+        }))
+        return
+      }
+
       let name = ''
       switch (cipher.type) {
       case CipherType.Login:

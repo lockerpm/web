@@ -19,7 +19,8 @@ export const state = () => ({
   isLoggedInPw: false,
   syncedCiphersToggle: false,
   searchText: '',
-  teams: []
+  teams: [],
+  currentTeam: {}
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -82,6 +83,9 @@ export const mutations = {
   },
   UPDATE_TEAMS (state, value) {
     state.teams = value
+  },
+  UPDATE_TEAM (state, value) {
+    state.currentTeam = value
   }
 }
 export const actions = {

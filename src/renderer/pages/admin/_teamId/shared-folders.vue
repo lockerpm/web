@@ -7,10 +7,21 @@
           style="width: 100%"
         >
           <el-table-column
-            prop="date"
+            label="Folders"
           >
             <template slot-scope="scope">
-              <div class="text-black font-semibold truncate">{{ scope.row.name }}</div>
+              <div class="flex items-center">
+                <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none">
+                <div class="ml-2">
+                  <nuxt-link
+                    tag="a"
+                    :to="localeRoute({name: 'vault-tfolders-tfolderId', params: {tfolderId: scope.row.id}})"
+                    class="text-black truncate"
+                  >
+                    {{ scope.row.name }}
+                  </nuxt-link>
+                </div>
+              </div>
             </template>
           </el-table-column>
           <el-table-column
@@ -40,7 +51,9 @@
                     <span class="">{{ $t('common.groups') }}</span>
                   </el-dropdown-item>
                   <el-dropdown-item
-                      @click.native="deleteFolder(scope.row)">
+                    divided
+                    @click.native="deleteFolder(scope.row)"
+                  >
                     <span class="text-danger">{{ $t('common.remove') }}</span>
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -55,8 +68,8 @@
     <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" @done="getSyncData" />
     <AddEditTeamFolder ref="addEditTeamFolder" @done="getSyncData" />
     <div class="fixed bottom-[50px] right-[55px]">
-      <button class="btn btn-fab rounded-full flex items-center justify-center"
-              @click="postUser({})"
+      <button class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
+              @click="addEditFolder({organizationId: $route.params.teamId})"
       >
         <i class="fas fa-plus text-[24px]" />
       </button>

@@ -3,11 +3,12 @@
     <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <client-only>
         <el-table
+          v-loading="loading"
           :data="users"
           style="width: 100%"
         >
           <el-table-column
-            prop="date"
+            label="Users"
           >
             <template slot-scope="scope">
               <div class="flex items-center">
@@ -44,7 +45,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="Access time"
+            label="Joined at"
             align="right"
           >
             <template slot-scope="scope">
@@ -96,7 +97,7 @@
     <AddEditUser ref="addEditUser" @done="getUsers" />
     <AddEditUserGroups ref="addEditUserGroups" @done="getUsers" />
     <div class="fixed bottom-[50px] right-[55px]">
-      <button class="btn btn-fab rounded-full flex items-center justify-center"
+      <button class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
               @click="postUser({})"
       >
         <i class="fas fa-plus text-[24px]" />
@@ -114,7 +115,8 @@ export default {
   },
   data () {
     return {
-      users: []
+      users: [],
+      loading: true
     }
   },
   mounted () {
@@ -125,9 +127,11 @@ export default {
       this.$refs.addEditUser.openDialog({})
     },
     getUsers () {
+      this.loading = true
       this.$axios.$get(`cystack_platform/pm/teams/${this.$route.params.teamId}/members`)
         .then(res => {
           this.users = res
+          this.loading = false
         })
     },
     putUser (user) {

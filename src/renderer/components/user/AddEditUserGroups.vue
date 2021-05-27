@@ -15,8 +15,10 @@
     <div class="text-left">
       <el-table
         ref="multipleTable"
+        v-loading="loading"
         :data="groups"
         style="width: 100%"
+        max-height="350"
         @selection-change="handleSelectionChange"
       >
         >
@@ -25,7 +27,6 @@
           width="55"
         />
         <el-table-column
-          prop="date"
         >
           <template slot-scope="scope">
             <div class="text-black font-semibold truncate">{{ scope.row.name }}</div>

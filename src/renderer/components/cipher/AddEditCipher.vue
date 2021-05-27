@@ -74,11 +74,20 @@
               </div>
             </div>
             <div v-if="!isDeleted" class="text-right">
-              <button class="btn btn-clean !text-primary !pb-0"
-                      @click="onGeneratePassword"
+              <el-popover
+                placement="right"
+                width="280"
+                trigger="click"
+                popper-class="locker-pw-generator"
               >
-                Tạo mật khẩu ngẫu nhiên
-              </button>
+                <PasswordGenerator />
+
+                <button slot="reference"
+                        class="btn btn-clean !text-primary !pb-0"
+                >
+                  Tạo mật khẩu ngẫu nhiên
+                </button>
+              </el-popover>
             </div>
           </div>
           <div class="form-group">
@@ -399,9 +408,10 @@ import { Cipher } from '../../jslib/src/models/domain'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView } from '../../jslib/src/models/view'
 import AddEditFolder from '../folder/AddEditFolder'
+import PasswordGenerator from '../password/PasswordGenerator'
 export default {
   components: {
-    AddEditFolder
+    AddEditFolder, PasswordGenerator
   },
   props: {
     type: {
@@ -507,9 +517,9 @@ export default {
         this.cipher = new Cipher({ ...data }, true)
         this.writeableCollections = await this.getWritableCollections(this.cipher.organizationId)
       } else if (Cipher[this.type]) {
-        this.newCipher(this.type)
+        this.newCipher(this.type, data)
       } else {
-        this.newCipher('Login')
+        this.newCipher('Login', data)
       }
     },
     closeDialog () {
@@ -625,26 +635,6 @@ export default {
 
       })
     },
-    generatePassword () {
-      if (this.cipher.login != null && this.cipher.login.password != null && this.cipher.login.password.length) {
-        this.$confirm(this.$t('data.notifications.overwrite_password'), {
-          confirmButtonText: 'Yes',
-          cancelButtonText: 'No',
-          type: 'warning'
-        }).then(() => {
-          this.onGeneratePassword()
-        }).catch(() => {
-
-        })
-      } else {
-        this.onGeneratePassword()
-      }
-      this.onGeneratePassword()
-    },
-    async onGeneratePassword () {
-      const options = (await this.$passwordGenerationService.getOptions())[0]
-      this.cipher.login.password = await this.$passwordGenerationService.generatePassword(options)
-    },
     addFolder (shouldRedirect = false) {
       this.$refs.addEditFolder.openDialog({}, shouldRedirect)
     },
@@ -652,9 +642,9 @@ export default {
       this.folders = await this.getFolders()
       this.cipher.folderId = id
     },
-    newCipher (type) {
+    newCipher (type, data) {
       this.cipher = new CipherView()
-      this.cipher.organizationId = this.organizationId == null ? null : this.organizationId
+      this.cipher.organizationId = data.organizationId ? data.organizationId : null
       this.cipher.type = CipherType[type]
       this.cipher.login = new LoginView()
       this.cipher.login.uris = [new LoginUriView()]
@@ -663,7 +653,8 @@ export default {
       this.cipher.secureNote = new SecureNoteView()
       this.cipher.secureNote.type = SecureNoteType.Generic
       this.cipher.folderId = this.$route.params.folderId || null
-      this.cipher.collectionIds = []
+      this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
+      this.handleChangeOrg(this.cipher.organizationId)
     },
     handleChangeType (type) {
       this.newCipher(type)

@@ -7,13 +7,26 @@
             <el-breadcrumb-item
               :to="localeRoute({name: 'vault'})"
             >
-              {{ $t('sidebar.dashboard') }}
+              {{ $t('sidebar.vault') }}
             </el-breadcrumb-item>
             <el-breadcrumb-item
               class="flex items-center"
               :to="localeRoute({name: 'vault-folders-folderId', params: $route.params.folderId})"
             >
               {{ folder.name }}
+            </el-breadcrumb-item>
+          </template>
+          <template v-if="getRouteBaseName() === 'vault-tfolders-tfolderId-id'">
+            <el-breadcrumb-item
+              :to="localeRoute({name: 'vault'})"
+            >
+              {{ $t('sidebar.vault') }}
+            </el-breadcrumb-item>
+            <el-breadcrumb-item
+              class="flex items-center"
+              :to="localeRoute({name: 'vault-tfolders-tfolderId', params: $route.params.tfolderId})"
+            >
+              {{ collection.name }}
             </el-breadcrumb-item>
           </template>
           <template v-else>
@@ -159,6 +172,12 @@ export default {
     folder () {
       return find(this.folders, e => e.id === this.cipher.folderId) || {}
     },
+    collection () {
+      if (this.collections) {
+        return find(this.collections, e => e.id === this.$route.params.tfolderId) || {}
+      }
+      return {}
+    },
     cipher () {
       return find(this.ciphers, e => e.id === this.$route.params.id) || {}
     },
@@ -174,12 +193,6 @@ export default {
   mounted () {
   },
   asyncComputed: {
-    folders: {
-      async get () {
-        return await this.$folderService.getAllDecrypted() || []
-      },
-      watch: ['$store.state.syncedCiphersToggle']
-    },
     ciphers: {
       async get () {
         const deletedFilter = c => {
@@ -188,6 +201,24 @@ export default {
         return await this.$searchService.searchCiphers('', [null, deletedFilter], null) || []
       },
       watch: ['$store.state.syncedCiphersToggle']
+    },
+    folders: {
+      async get () {
+        return await this.$folderService.getAllDecrypted() || []
+      },
+      watch: ['$store.state.syncedCiphersToggle']
+    },
+    collections: {
+      async get () {
+        let collections = await this.$collectionService.getAllDecrypted() || []
+        collections = collections.filter(f => f.id)
+        collections.forEach(f => {
+          const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
+          f.ciphersCount = ciphers && ciphers.length
+        })
+        return collections
+      },
+      watch: ['$store.state.syncedCiphersToggle', 'ciphers']
     }
   },
   methods: {

@@ -15,15 +15,17 @@
     <div class="text-left">
       <el-table
         ref="multipleTable"
+        v-loading="loading"
         :data="users"
         style="width: 100%"
+        max-height="350"
         @selection-change="handleSelectionChange"
       >
         >
         <el-table-column
           type="selection"
           width="55"
-          :selectable="(row, index) => ['members', 'manager'].includes(row.role)"
+          :selectable="(row, index) => ['member', 'manager'].includes(row.role)"
         />
         <el-table-column
           prop="date"
@@ -87,13 +89,10 @@ export default {
       await this.getUsers()
       this.loading = false
       this.$nextTick(() => {
-        this.groupUsers.forEach(e => {
-          if (['member', 'manager'].includes(e.role)) {
-            this.$refs.multipleTable.toggleRowSelection(e)
-          }
-        })
         this.users.forEach(e => {
           if (['owner', 'admin'].includes(e.role)) {
+            this.$refs.multipleTable.toggleRowSelection(e)
+          } else if (this.groupUsers.some(u => u.id === e.id)) {
             this.$refs.multipleTable.toggleRowSelection(e)
           }
         })

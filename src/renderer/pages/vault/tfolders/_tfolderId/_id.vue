@@ -4,6 +4,7 @@
 
 <script>
 import DetailCipher from '../../../../components/cipher/DetailCipher'
+
 export default {
   components: {
     DetailCipher

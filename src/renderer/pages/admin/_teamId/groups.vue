@@ -3,22 +3,20 @@
     <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <client-only>
         <el-table
+          v-loading="loading"
           :data="groups"
           style="width: 100%"
         >
           <el-table-column
-            prop="date"
+            label="Groups"
           >
             <template slot-scope="scope">
-              {{ scope.row.name }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="Members"
-            align="right"
-          >
-            <template slot-scope="scope">
-              0
+              <div class="flex items-center">
+                <img src="~/assets/images/icons/group.svg" alt="" class="select-none">
+                <div class="ml-2">
+                  <div class="text-black truncate">{{ scope.row.name }}</div>
+                </div>
+              </div>
             </template>
           </el-table-column>
           <el-table-column
@@ -55,7 +53,7 @@
     <AddEditGroup ref="addEditGroup" @done="getGroups" />
     <AddEditGroupUsers ref="addEditGroupUsers" @done="getGroups" />
     <div class="fixed bottom-[50px] right-[55px]">
-      <button class="btn btn-fab rounded-full flex items-center justify-center"
+      <button class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
               @click="postGroup({})"
       >
         <i class="fas fa-plus text-[24px]" />
@@ -73,7 +71,8 @@ export default {
   },
   data () {
     return {
-      groups: []
+      groups: [],
+      loading: true
     }
   },
   mounted () {
@@ -84,9 +83,11 @@ export default {
       this.$refs.addEditGroup.openDialog({})
     },
     getGroups () {
+      this.loading = true
       this.$axios.$get(`cystack_platform/pm/teams/${this.$route.params.teamId}/groups`)
         .then(res => {
           this.groups = res
+          this.loading = false
         })
     },
     putGroup (group) {

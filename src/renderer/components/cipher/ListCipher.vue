@@ -17,7 +17,7 @@
                 {{ folder.name }}
               </el-breadcrumb-item>
             </template>
-            <template v-else-if="getRouteBaseName() === 'vault-tfolders-folderId'">
+            <template v-else-if="getRouteBaseName() === 'vault-tfolders-tfolderId'">
               <el-breadcrumb-item
                 :to="localeRoute({name: 'vault'})"
               >
@@ -143,31 +143,35 @@
                   <div class="font-semibold truncate select-none">{{ item.name }} ({{ item.ciphersCount }})</div>
                 </div>
               </div>
-              <component :is="context" ref="menuTeam"
-                         class="el-dropdown-menu"
-                         @open="openContextTeamFolder"
-              >
-                <template #default>
-                  <li class="el-dropdown-menu__item w-[200px]"
-                      @click.prevent="addEditTeamFolder(selectedFolder, false)"
-                  >
-                    Đổi tên
-                  </li>
-                  <li class="el-dropdown-menu__item w-[200px]">
-                    User Access
-                  </li>
-                  <li class="el-dropdown-menu__item w-[200px]">
-                    Group Access
-                  </li>
-                  <li class="el-dropdown-menu__item"
-                      @click.prevent="deleteTeamFolder(selectedFolder)"
-                  >
-                    <span class="text-danger">Xóa</span>
-                  </li>
-                </template>
-              </component>
             </div>
           </template>
+          <component :is="context" ref="menuTeam"
+                     class="el-dropdown-menu"
+                     @open="openContextTeamFolder"
+          >
+            <template #default>
+              <li class="el-dropdown-menu__item w-[200px]"
+                  @click.prevent="addEditTeamFolder(selectedFolder, false)"
+              >
+                Đổi tên
+              </li>
+              <li class="el-dropdown-menu__item w-[200px]"
+                  @click.prevent="putTeamFolderUsers(selectedFolder)"
+              >
+                User Access
+              </li>
+              <li class="el-dropdown-menu__item w-[200px]"
+                  @click.prevent="putTeamFolderGroups(selectedFolder)"
+              >
+                Group Access
+              </li>
+              <li class="el-dropdown-menu__item"
+                  @click.prevent="deleteTeamFolder(selectedFolder)"
+              >
+                <span class="text-danger">Xóa</span>
+              </li>
+            </template>
+          </component>
         </client-only>
       </div>
       <client-only>
@@ -230,11 +234,12 @@
                      v-html="getIconCipher(scope.row, 34)"
                 />
                 <div class="flex flex-col">
-                  <a class="text-black font-semibold truncate"
+                  <a class="text-black font-semibold truncate flex items-center"
                      :class="{'opacity-80': scope.row.isDeleted}"
                      @click="routerCipher(scope.row, addEdit)"
                   >
-                    {{ scope.row.name }} <i v-if="scope.row.organizationId" class="fa fa-share-alt" />
+                    {{ scope.row.name }}
+                    <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="" class="inline-block ml-2">
                   </a>
                   <div>
                     {{ scope.row.subTitle }}
@@ -347,10 +352,20 @@
     <AddEditCipher ref="addEditCipherDialog" :route-name="routeName" :type="type" />
     <AddEditFolder ref="addEditFolder" @done="getSyncData" />
     <AddEditTeamFolder ref="addEditTeamFolder" @done="getSyncData" />
+    <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" @done="getSyncData" />
+    <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" @done="getSyncData" />
     <ShareCipher ref="shareCipher" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
     <div class="fixed bottom-[50px] right-[55px]">
-      <button v-if="!['vault', 'shares'].includes(routeName)" class="btn btn-fab rounded-full flex items-center justify-center"
+      <button v-if="getRouteBaseName() === 'vault-tfolders-tfolderId' && !collection.readOnly"
+              class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
+              @click="addEdit({
+                organizationId: collection.organizationId
+              })"
+      >
+        <i class="fas fa-plus text-[24px]" />
+      </button>
+      <button v-else-if="!['vault', 'shares'].includes(routeName)" class="btn btn-fab rounded-full flex items-center justify-center"
               @click="addEdit({})"
       >
         <i class="fas fa-plus text-[24px]" />
@@ -401,6 +416,8 @@ import groupBy from 'lodash/groupBy'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import AddEditFolder from '../folder/AddEditFolder'
 import AddEditTeamFolder from '../folder/AddEditTeamFolder'
+import AddEditTeamFolderUsers from '../folder/AddEditTeamFolderUsers'
+import AddEditTeamFolderGroups from '../folder/AddEditTeamFolderGroups'
 import ShareCipher from '../../components/cipher/ShareCipher'
 import MoveFolder from '../folder/MoveFolder'
 import NoCipher from '../../components/cipher/NoCipher'
@@ -414,6 +431,8 @@ export default {
     ShareCipher,
     MoveFolder,
     NoCipher,
+    AddEditTeamFolderUsers,
+    AddEditTeamFolderGroups,
     VueContext: () => import('../../plugins/vue-context')
   },
   props: {
@@ -453,7 +472,7 @@ export default {
     },
     collection () {
       if (this.collections) {
-        return find(this.collections, e => e.id === this.$route.params.folderId) || {}
+        return find(this.collections, e => e.id === this.$route.params.tfolderId) || {}
       }
       return {}
     },
@@ -498,6 +517,9 @@ export default {
         return this.collections && !this.collections.length
       }
       if (this.getRouteBaseName() === 'vault-folders-folderId') {
+        return false
+      }
+      if (this.getRouteBaseName() === 'vault-tfolders-tfolderId') {
         return false
       }
       return !haveCipher && !this.searchText
@@ -587,8 +609,8 @@ export default {
     },
     routerCollection (item) {
       this.$router.push(this.localeRoute({
-        name: 'vault-tfolders-folderId',
-        params: { folderId: item.id }
+        name: 'vault-tfolders-tfolderId',
+        params: { tfolderId: item.id }
       }))
     },
     openContextFolder (event, data) {
@@ -611,6 +633,12 @@ export default {
     },
     shareItem (cipher) {
       this.$refs.shareCipher.openDialog(cipher)
+    },
+    putTeamFolderGroups (folder) {
+      this.$refs.addEditTeamFolderGroups.openDialog(folder)
+    },
+    putTeamFolderUsers (folder) {
+      this.$refs.addEditTeamFolderUsers.openDialog(folder)
     }
   }
 }

@@ -12,8 +12,9 @@
                          class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold "
                          active-class="bg-white bg-opacity-20 text-white"
               >
-                <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="" class="mr-2">
-
+                <div class="mr-2 w-[22px] h-[22px] flex items-center">
+                  <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+                </div>
                 <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
               </nuxt-link>
             </nav>
@@ -25,11 +26,11 @@
                          class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold "
                          active-class="bg-white bg-opacity-20 text-white"
               >
-                <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="" class="mr-2">
-
+                <div class="mr-2 w-[22px] h-[22px] flex items-center">
+                  <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="" >
+                </div>
                 <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
               </nuxt-link>
-              <nuxt-link :to="localeRoute({name: 'admin-teamId', params: {teamId: '095ccf45-983d-4fc1-951c-ad330073de93'}})" class="text-white">Admin</nuxt-link>
             </nav>
           </div>
         </div>

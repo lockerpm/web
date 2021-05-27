@@ -19,12 +19,13 @@
                    :class="{'is-invalid': errors.team}"
                    value-key="id"
                    class="w-full"
+                   :disabled="$route.params.teamId"
         >
           <el-option
             v-for="item in teams"
             :key="item.id"
             :label="item.name"
-            :value="item"
+            :value="item.id"
             :disabled="!canManage(item)"
           >
             <div class="flex items-center justify-between">
@@ -107,7 +108,7 @@ export default {
         this.$emit('done')
         this.closeDialog()
         if (this.shouldRedirect) {
-          this.$router.push(this.localeRoute({ name: 'vault-folders-folderId', params: { folderId: res.id } }))
+          this.$router.push(this.localeRoute({ name: 'vault-tfolders-folderId', params: { tfolderId: res.id } }))
         }
       } catch (e) {
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
@@ -120,7 +121,7 @@ export default {
         this.loading = true
         const orgKey = await this.$cryptoService.getOrgKey(folder.organizationId)
         const name = (await this.$cryptoService.encrypt(folder.name, orgKey)).encryptedString
-        await this.$axios.$put(`cystack_platform/pm/teams/${folder.id}/folders/${folder.id}`, { name })
+        await this.$axios.$put(`cystack_platform/pm/teams/${folder.organizationId}/folders/${folder.id}`, { name })
         this.$emit('done')
         this.closeDialog()
       } catch (e) {
@@ -137,8 +138,8 @@ export default {
       }).then(async () => {
         try {
           this.loading = true
-          await this.$axios.$post(`cystack_platform/pm/folders/${folder.id}`, {
-            delete_items: false
+          await this.$axios.$post(`cystack_platform/pm/teams/${folder.organizationId}/folders/${folder.id}/delete`, {
+            delete_items: true
           })
           this.$emit('done')
           this.closeDialog()
