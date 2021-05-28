@@ -198,7 +198,7 @@
           >
             <template slot="header">
               <div v-if="multipleSelection.length" class="flex items-center ">
-                <div class="text-black mr-8">
+                <div class="text-black mr-8 whitespace-nowrap">
                   {{ multipleSelection.length }} mục được chọn
                 </div>
                 <div v-if="deleted">
@@ -213,7 +213,7 @@
                     Xóa vĩnh viễn
                   </button>
                 </div>
-                <div v-else>
+                <div v-else class="">
                   <button class="btn btn-default btn-xs"
                           @click="moveFolders(multipleSelection.map(e => e.id))"
                   >
@@ -252,6 +252,8 @@
           <el-table-column
             align="right"
             label="Sở hữu"
+            width="200"
+            show-overflow-tooltip
           >
             <template slot-scope="scope">
               <span>{{ getTeam(teams, scope.row.organizationId).name || 'Cá nhân' }}</span>

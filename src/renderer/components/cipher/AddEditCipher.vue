@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-dialog
+    <component
+      :is="currentComponent"
       :visible.sync="dialogVisible"
       width="435px"
       destroy-on-close
@@ -308,6 +309,7 @@
                     type="textarea"
                     :rows="5"
                     placeholder=""
+                    :disabled="isDeleted"
           />
         </div>
         <div class="form-group">
@@ -358,7 +360,7 @@
             <div>
               Only team users with access to these collections will be able to see this item. Choose at least 1 folder.
             </div>
-            <el-checkbox-group v-model="cipher.collectionIds" :min="1">
+            <el-checkbox-group v-model="cipher.collectionIds" :min="1" :disabled="isDeleted">
               <el-checkbox v-for="(item, index) in writeableCollections"
                            :key="index"
                            :label="item.id"
@@ -379,7 +381,7 @@
         </div>
         <div>
           <button class="btn btn-default"
-                  @click="dialogVisible = false"
+                  @click="closeDialog"
           >
             Cancel
           </button>
@@ -397,21 +399,23 @@
           </button>
         </div>
       </div>
-    </el-dialog>
+    </component>
     <AddEditFolder ref="addEditFolder" @done="getSyncData" @created-folder="handleCreatedFolder" />
   </div>
 </template>
 
 <script>
+import { Dialog } from 'element-ui'
 import { CipherType, SecureNoteType } from '../../jslib/src/enums'
 import { Cipher } from '../../jslib/src/models/domain'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView } from '../../jslib/src/models/view'
 import AddEditFolder from '../folder/AddEditFolder'
 import PasswordGenerator from '../password/PasswordGenerator'
+import InlineEditCipher from './InlineEditCipher'
 export default {
   components: {
-    AddEditFolder, PasswordGenerator
+    AddEditFolder, PasswordGenerator, Dialog, InlineEditCipher
   },
   props: {
     type: {
@@ -434,7 +438,8 @@ export default {
       CipherType,
       errors: {},
       writeableCollections: [],
-      cloneMode: false
+      cloneMode: false,
+      currentComponent: Dialog
     }
   },
   computed: {
@@ -509,7 +514,8 @@ export default {
   mounted () {
   },
   methods: {
-    async openDialog (data, cloneMode = false) {
+    async openDialog (data, cloneMode = false, inline = false) {
+      this.currentComponent = inline ? InlineEditCipher : Dialog
       this.folders = await this.getFolders()
       this.dialogVisible = true
       this.cloneMode = cloneMode
@@ -524,6 +530,8 @@ export default {
     },
     closeDialog () {
       this.dialogVisible = false
+      this.$emit('close')
+      this.currentComponent = Dialog
     },
     async postCipher (cipher) {
       if (!cipher.name) { return }

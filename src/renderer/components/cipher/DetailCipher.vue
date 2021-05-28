@@ -73,7 +73,7 @@
             {{ cipher.name }}
           </div>
         </div>
-        <div class="cipher-items">
+        <div v-show="!editMode" class="cipher-items">
           <template v-if="cipher.type === CipherType.Login">
             <TextHaveCopy label="Email or Username" :text="cipher.login.username" />
             <TextHaveCopy label="Password" :text="cipher.login.password" should-hide />
@@ -126,6 +126,12 @@
           </template>
           <TextHaveCopy label="Notes" :text="cipher.notes" />
           <div class="grid md:grid-cols-6 cipher-item">
+            <div class="">Owned by</div>
+            <div class="col-span-4 font-semibold flex items-center">
+              <span>{{ getTeam(teams, cipher.organizationId).name || 'Cá nhân' }}</span>
+            </div>
+          </div>
+          <div class="grid md:grid-cols-6 cipher-item">
             <div class="">Folder</div>
             <div class="col-span-4 font-semibold flex items-center">
               <img src="~/assets/images/icons/folder.svg" alt="" class="mr-3"> {{ folder.name || 'No folder' }}
@@ -133,8 +139,14 @@
           </div>
         </div>
       </client-only>
+
+      <div class="max-w-[585px] mx-auto">
+        <AddEditCipher ref="addEditCipherDialog"
+                       @updated-cipher="getSyncData"
+                       @close="editMode=false"
+        />
+      </div>
     </div>
-    <AddEditCipher ref="addEditCipherDialog" @updated-cipher="getSyncData" />
   </div>
 </template>
 
@@ -167,7 +179,8 @@ export default {
     return {
       // cipher: {},
       showPassword: false,
-      CipherType
+      CipherType,
+      editMode: false
     }
   },
   computed: {
@@ -225,7 +238,8 @@ export default {
   },
   methods: {
     addEdit () {
-      this.$refs.addEditCipherDialog.openDialog(this.cipher)
+      this.editMode = true
+      this.$refs.addEditCipherDialog.openDialog(this.cipher, false, true)
     },
     async getCipher () {
       // this.folders = await this.getFolders()
