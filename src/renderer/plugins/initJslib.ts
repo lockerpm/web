@@ -17,7 +17,7 @@ import { ContainerService } from '../jslib/src/services/container.service';
 import { CryptoService } from '../jslib/src/services/crypto.service';
 // import { EnvironmentService } from '../jslib/src/services/environment.service';
 // import { EventService as EventLoggingService } from '../jslib/src/services/event.service';
-// import { ExportService } from '../jslib/src/services/export.service';
+import { ExportService } from '../jslib/src/services/export.service';
 import { FileUploadService } from '../jslib/src/services/fileUpload.service';
 import { FolderService } from '../jslib/src/services/folder.service';
 import { ImportService } from '../jslib/src/services/import.service';
@@ -44,11 +44,11 @@ import { CryptoService as CryptoServiceAbstraction } from '../jslib/src/abstract
 import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from '../jslib/src/abstractions/cryptoFunction.service';
 // import { EnvironmentService as EnvironmentServiceAbstraction } from '../jslib/src/abstractions/environment.service';
 // import { EventService as EventLoggingServiceAbstraction } from '../jslib/src/abstractions/event.service';
-// import { ExportService as ExportServiceAbstraction } from '../jslib/src/abstractions/export.service';
+import { ExportService as ExportServiceAbstraction } from '../jslib/src/abstractions/export.service';
 // import { FileUploadService as FileUploadServiceAbstraction }  from '../jslib/src/abstractions/fileUpload.service';
 import { FolderService as FolderServiceAbstraction } from '../jslib/src/abstractions/folder.service';
 // import { I18nService as I18nServiceAbstraction } from '../jslib/src/abstractions/i18n.service';
-// import { ImportService as ImportServiceAbstraction } from '../jslib/src/abstractions/import.service';
+import { ImportService as ImportServiceAbstraction } from '../jslib/src/abstractions/import.service';
 // import { MessagingService as MessagingServiceAbstraction } from '../jslib/src/abstractions/messaging.service';
 // import { NotificationsService as NotificationsServiceAbstraction } from '../jslib/src/abstractions/notifications.service';
 import {
@@ -111,9 +111,9 @@ const containerService = new ContainerService(cryptoService);
 // const authService = new AuthService(cryptoService, apiService,
 //     userService, tokenService, appIdService, i18nService, platformUtilsService, messagingService, vaultTimeoutService,
 //     consoleLogService);
-// const exportService = new ExportService(folderService, cipherService, apiService);
-// const importService = new ImportService(cipherService, folderService, apiService, i18nService, collectionService,
-//     platformUtilsService);
+const exportService = new ExportService(folderService, cipherService, apiService);
+const importService = new ImportService(cipherService, folderService, apiService, i18nService, collectionService,
+    platformUtilsService);
 // const notificationsService = new NotificationsService(userService, syncService, appIdService,
 //     apiService, vaultTimeoutService, async () => messagingService.send('logout', { expired: true }), consoleLogService);
 // const environmentService = new EnvironmentService(apiService, storageService, notificationsService);
@@ -143,5 +143,7 @@ export default async ({ app, store }, inject) => {
     inject('collectionService', collectionService)
     inject('passwordGenerationService', passwordGenerationService)
     inject('storageService', storageService)
+    inject('exportService', exportService)
+    inject('importService', importService)
 
 }

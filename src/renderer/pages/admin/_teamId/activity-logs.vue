@@ -20,13 +20,6 @@
           style="width: 100%"
         >
           <el-table-column
-            label="Date"
-          >
-            <template slot-scope="scope">
-              {{ $moment(scope.row.date).utc().format('LLLZ') }}
-            </template>
-          </el-table-column>
-          <el-table-column
             label="Users"
           >
             <template slot-scope="scope">
@@ -45,6 +38,12 @@
           >
             <template slot-scope="scope">
               {{ scope.row.description[language] }}
+            </template>
+          </el-table-column>
+          <el-table-column
+          >
+            <template slot-scope="scope">
+              {{ $moment(scope.row.date).utc().format('LLLZ') }}
             </template>
           </el-table-column>
         </el-table>

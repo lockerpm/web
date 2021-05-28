@@ -182,6 +182,9 @@ a {
     .setting-section-header {
       @apply flex items-center justify-between;
     }
+    .setting-section-body {
+      @apply mt-6
+    }
   }
 }
 
@@ -206,4 +209,10 @@ svg {
 .el-checkbox__inner::after {
   height: 10px;
   left: 6px;
+}
+.locker-callout {
+  @apply border border-black-200 rounded py-2 px-4 border-l-4;
+  &.locker-callout-info {
+    border-left-color: $--color-info!important;
+  }
 }

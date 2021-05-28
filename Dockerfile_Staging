@@ -22,6 +22,8 @@ ENV BASE_API_URL=https://gateway.staging.cystack.org/v3
 
 ENV WS_URL=wss://gateway.staging.cystack.org/ws
 
+ENV LOGO_URL=https://locker.staging.cystack.org/logo/
+
 RUN yarn run build-web
 
 ENV HOST 0.0.0.0

@@ -2,8 +2,10 @@ import Vue from 'vue'
 import { nanoid } from 'nanoid'
 import extractDomain from 'extract-domain'
 import find from 'lodash/find'
+import numeral from 'numeral'
 import { CipherType } from '../jslib/src/enums'
 import { SyncResponse } from '../jslib/src/models/response'
+
 Vue.mixin({
   data () {
     return { folders: [] }
@@ -185,7 +187,7 @@ Vue.mixin({
           try {
             const domain = extractDomain(cipher.login.uris[0]._uri)
             if (domain) {
-              return `<img src="//logo.clearbit.com/${domain}?size=${size}" alt="${domain}" class="rounded mx-auto"/>`
+              return `<img src="${process.env.logoUrl}${domain}?size=${size}" alt="${domain}" class="rounded mx-auto"/>`
             }
           } catch (e) {
             return this.getIconDefaultCipher('Login', size)
@@ -296,5 +298,11 @@ Vue.filter('filterPassword', function (value, showPassword) {
 })
 
 Vue.filter('filterString', function (value) {
+  return value
+})
+Vue.filter('formatPercentage', function (value) {
+  if (value) {
+    return numeral(value).format('0.[00]')
+  }
   return value
 })
