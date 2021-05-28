@@ -231,8 +231,9 @@
               <div class="flex items-center">
                 <div class="text-[34px] mr-3 flex-shrink-0"
                      :class="{'filter grayscale': scope.row.isDeleted}"
-                     v-html="getIconCipher(scope.row, 34)"
-                />
+                >
+                  <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
+                </div>
                 <div class="flex flex-col">
                   <a class="text-black font-semibold truncate flex items-center"
                      :class="{'opacity-80': scope.row.isDeleted}"
@@ -422,7 +423,7 @@ import ShareCipher from '../../components/cipher/ShareCipher'
 import MoveFolder from '../folder/MoveFolder'
 import NoCipher from '../../components/cipher/NoCipher'
 import { CipherType } from '../../jslib/src/enums'
-
+import Vnodes from '../../components/Vnodes'
 export default {
   components: {
     AddEditCipher,
@@ -433,7 +434,8 @@ export default {
     NoCipher,
     AddEditTeamFolderUsers,
     AddEditTeamFolderGroups,
-    VueContext: () => import('../../plugins/vue-context')
+    VueContext: () => import('../../plugins/vue-context'),
+    Vnodes
   },
   props: {
     deleted: {

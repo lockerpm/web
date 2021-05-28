@@ -3,9 +3,10 @@ import { nanoid } from 'nanoid'
 import extractDomain from 'extract-domain'
 import find from 'lodash/find'
 import numeral from 'numeral'
+import { Avatar } from 'element-ui'
 import { CipherType } from '../jslib/src/enums'
 import { SyncResponse } from '../jslib/src/models/response'
-
+// Vue.use(Image)
 Vue.mixin({
   data () {
     return { folders: [] }
@@ -187,7 +188,18 @@ Vue.mixin({
           try {
             const domain = extractDomain(cipher.login.uris[0]._uri)
             if (domain) {
-              return `<img src="${process.env.logoUrl}${domain}?size=${size}" alt="${domain}" class="rounded mx-auto"/>`
+              return (this.$createElement(Avatar, {
+                props: {
+                  src: `${process.env.logoUrl}${domain}?size=${size}" alt="${domain}`,
+                  size
+                }
+              }, [
+                this.$createElement('img', {
+                  attrs: {
+                    src: require('~/assets/images/icons/icon_Login.svg')
+                  }
+                })
+              ]))
             }
           } catch (e) {
             return this.getIconDefaultCipher('Login', size)
@@ -211,7 +223,13 @@ Vue.mixin({
       }
     },
     getIconDefaultCipher (type, size = 70) {
-      return `<img  src="${require(`~/assets/images/icons/icon_${type}.svg`)}" style="height: ${size}px" alt="" class="rounded mx-auto"/>`
+      return this.$createElement('img', {
+        attrs: {
+          src: require(`~/assets/images/icons/icon_${type}.svg`),
+          style: `height: ${size}px`,
+          class: 'rounded mx-auto'
+        }
+      })
     },
     routerCipher (cipher, callbackDeleted) {
       if (cipher.isDeleted) {

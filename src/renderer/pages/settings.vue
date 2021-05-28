@@ -7,6 +7,7 @@
                    :to="localeRoute({name: item.routeName})"
                    active-class="!text-primary"
                    class="text-black-600 font-bold mr-8 last:mr-0"
+                   exact
         >
           {{ $t(`sidebar.${item.label}`) }}
         </nuxt-link>

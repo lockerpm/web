@@ -12,7 +12,9 @@
         <div class="setting-section-body">
           <div class="form-group">
             <label for="">1. Select the format of the import file</label>
-            <el-select v-model="format">
+            <el-select v-model="format"
+                       filterable
+            >
               <el-option-group
                 label="Popular"
               >
@@ -119,7 +121,20 @@ export default {
       return this.$importService.featuredImportOptions
     },
     importOptions () {
-      return this.$importService.regularImportOptions
+      const data = this.$importService.regularImportOptions || []
+      return data.sort((a, b) => {
+        if (a.name == null && b.name != null) {
+          return -1
+        }
+        if (a.name != null && b.name == null) {
+          return 1
+        }
+        if (a.name == null && b.name == null) {
+          return 0
+        }
+
+        return a.name.localeCompare(b.name)
+      })
     },
     getFormatInstructionTitle () {
       if (this.format == null) {
@@ -143,7 +158,7 @@ export default {
     },
     async exportData (type) {
       const data = await this.$exportService.getExport(type)
-      this.downloadFile('\uFEFF' + data)
+      this.downloadFile(data)
     },
     padNumber (num, width, padCharacter = '0') {
       const numString = num.toString()

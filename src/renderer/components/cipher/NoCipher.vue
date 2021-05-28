@@ -1,9 +1,9 @@
 <template>
   <div class="flex-column-fluid flex items-center justify-center">
     <div class="text-center mb-60">
-      <div class="mb-5 p-5"
-           v-html="getIconCipher({type: CipherType[type] ? CipherType[type] : type}, 70)"
-      />
+      <div class="mb-5 p-5">
+        <Vnodes :vnodes="getIconCipher({type: CipherType[type] ? CipherType[type] : type}, 70)" />
+      </div>
       <div class="text-head-5 font-semibold mb-2.5">
         {{ $t(`data.no_data.${type}.title`) }}
       </div>
@@ -30,7 +30,9 @@
 
 <script>
 import { CipherType } from '../../jslib/src/enums/cipherType.ts'
+import Vnodes from '../../components/Vnodes'
 export default {
+  components: { Vnodes },
   props: {
     type: {
       type: String,

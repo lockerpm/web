@@ -9,7 +9,9 @@
   >
     <div slot="title">
       <div class="flex items-center">
-        <div class="text-[34px] mr-3" v-html="getIconCipher(cipher, 20)" />
+        <div class="text-[34px] mr-3">
+          <Vnodes :vnodes="getIconCipher(cipher, 20)" />
+        </div>
         <div class="text-black-700 font-semibold">{{ cipher.name }}</div>
       </div>
     </div>
@@ -70,8 +72,10 @@
 
 import { CipherRequest } from '../../jslib/src/models/request'
 import { CipherType } from '../../jslib/src/enums'
+import Vnodes from '../../components/Vnodes'
 
 export default {
+  components: { Vnodes },
   data () {
     return {
       cipher: {

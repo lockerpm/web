@@ -66,8 +66,9 @@
       </div>
       <client-only>
         <div class="mt-20 mb-9 text-center">
-          {{ cipher.ssn }}
-          <div class="mb-4 text-[70px]" v-html="getIconCipher(cipher)" />
+          <div class="mb-4 text-[70px]">
+            <Vnodes :vnodes="getIconCipher(cipher, 34)" />
+          </div>
           <div class="text-head-4 font-medium">
             {{ cipher.name }}
           </div>
@@ -144,12 +145,13 @@ import AddEditCipher from '../../components/cipher/AddEditCipher'
 import PasswordStrength from '../password/PasswordStrength'
 import { CipherType } from '../../jslib/src/enums'
 import TextHaveCopy from '../../components/cipher/TextHaveCopy'
-
+import Vnodes from '../../components/Vnodes'
 export default {
   components: {
     TextHaveCopy,
     AddEditCipher,
-    PasswordStrength
+    PasswordStrength,
+    Vnodes
   },
   props: {
     type: {
