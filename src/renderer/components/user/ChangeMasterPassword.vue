@@ -121,7 +121,6 @@ export default {
         const key = await this.$cryptoService.makeKey(this.masterPassword, this.currentUser.email,
           kdf, kdfIterations)
         const newMasterPasswordHash = await this.$cryptoService.hashPassword(this.masterPassword, key)
-        console.log(1)
         let encKey = null
         const existingEncKey = await this.$cryptoService.getEncKey()
         if (existingEncKey == null) {
@@ -131,7 +130,7 @@ export default {
         }
 
         const masterPasswordHash = await this.$cryptoService.hashPassword(this.oldMasterPassword, null)
-        console.log(2)
+
         await this.$axios.$post('cystack_platform/pm/users/me/password', {
           key: encKey[1].encryptedString,
           new_master_password_hash: newMasterPasswordHash,
