@@ -319,8 +319,15 @@ Vue.filter('filterString', function (value) {
   return value
 })
 Vue.filter('formatPercentage', function (value) {
-  if (value) {
+  if (!Number.isNaN(value)) {
     return numeral(value).format('0.[00]')
   }
-  return value
+  return 0
+})
+
+Vue.filter('formatNumber', function (value) {
+  if (!Number.isNaN(value)) {
+    return numeral(value).format('0,0.[00]')
+  }
+  return 0
 })

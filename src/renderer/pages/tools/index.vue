@@ -37,11 +37,35 @@
             <div class="flex items-center">
               <img src="~/assets/images/icons/icon_tools_pw_health.svg" alt="" class="mr-3">
               <div>
-                <div class="setting-title">
+                <div class="setting-title cursor-pointer"
+                     @click="go({name: 'tools-password-health'})"
+                >
                   Password Health
                 </div>
                 <div class="setting-description">
                   Identify passwords that can put you at risk
+                </div>
+              </div>
+            </div>
+            <div>
+              <button class="btn btn-icon !text-black-600"
+                      @click="go({name: 'tools-password-health'})"
+              >
+                <i class="fa fa-chevron-right" />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="setting-section">
+          <div class="setting-section-header">
+            <div class="flex items-center">
+              <img src="~/assets/images/icons/icon_tools_pw_breach.svg" alt="" class="mr-3">
+              <div>
+                <div class="setting-title">
+                  Data Breach Scanner
+                </div>
+                <div class="setting-description">
+                  Check if your sensitive data has been leaked online
                 </div>
               </div>
             </div>
@@ -58,10 +82,10 @@
               <img src="~/assets/images/icons/icon_tools_pw_breach.svg" alt="" class="mr-3">
               <div>
                 <div class="setting-title">
-                  Data Breach Scanner
+                  Unsecured Websites
                 </div>
                 <div class="setting-description">
-                  Check if your sensitive data has been leaked online
+                  Using unsecured websites with the http:// scheme can be dangerous
                 </div>
               </div>
             </div>
@@ -88,6 +112,9 @@ export default {
   computed: {
   },
   methods: {
+    go (route) {
+      this.$router.push(this.localeRoute(route))
+    }
   }
 }
 </script>

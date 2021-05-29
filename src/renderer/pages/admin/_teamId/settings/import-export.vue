@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ImportExport from '../../components/setting/ImportExport'
+import ImportExport from '../../../../components/setting/ImportExport'
 export default {
   components: {
     ImportExport

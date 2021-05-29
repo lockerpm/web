@@ -1,7 +1,7 @@
 <template>
   <div class="lg:px-28 px-10 h-[60px] flex items-center border-0 border-b border-black-200">
     <div class="flex-grow">
-      <div class="text-black-600">
+      <div v-if="shouldShowSearch" class="text-black-600">
         <i class="fa fa-search mr-4" />
         <input type="text" :value="searchText"
                class="w-1/2 focus:border-0 border-0"
@@ -46,6 +46,11 @@
 <script>
 import debounce from 'lodash/debounce'
 export default {
+  computed: {
+    shouldShowSearch () {
+      return ['vault', 'passwords', 'notes', 'identities', 'shares', 'trash', 'vault-tfolders-tfolderId', 'vault-folders-folderId'].includes(this.getRouteBaseName())
+    }
+  },
   methods: {
     handleSearch: debounce(function (e) {
       this.$store.commit('UPDATE_SEARCH', e.target.value)

@@ -215,6 +215,12 @@ svg {
   &.locker-callout-info {
     border-left-color: $--color-info!important;
   }
+  &.locker-callout-success {
+    border-left-color: $--color-success!important;
+  }
+  &.locker-callout-danger {
+    border-left-color: $--color-danger!important;
+  }
 }
 .el-avatar {
   background: transparent;

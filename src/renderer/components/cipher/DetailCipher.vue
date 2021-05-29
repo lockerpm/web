@@ -128,7 +128,7 @@
           <div class="grid md:grid-cols-6 cipher-item">
             <div class="">Owned by</div>
             <div class="col-span-4 font-semibold flex items-center">
-              <span>{{ getTeam(teams, cipher.organizationId).name || 'Cá nhân' }}</span>
+              <span>{{ getTeam(teams, cipher.organizationId).name || $t('common.me') }}</span>
             </div>
           </div>
           <div class="grid md:grid-cols-6 cipher-item">

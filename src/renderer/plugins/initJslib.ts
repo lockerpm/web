@@ -7,7 +7,7 @@ import { WebPlatformUtilsService } from '../services/webPlatformUtils.service';
 import { BroadcasterService } from '../jslib/src/services/broadcaster.service';
 import { ApiService } from '../jslib/src/services/api.service';
 import { AppIdService } from '../jslib/src/services/appId.service';
-// import { AuditService } from '../jslib/src/services/audit.service';
+import { AuditService } from '../jslib/src/services/audit.service';
 // import { AuthService } from '../jslib/src/services/auth.service';
 import { CipherService } from '../jslib/src/services/cipher.service';
 import { CollectionService } from '../jslib/src/services/collection.service';
@@ -36,7 +36,7 @@ import { VaultTimeoutService } from '../jslib/src/services/vaultTimeout.service'
 import { WebCryptoFunctionService } from '../jslib/src/services/webCryptoFunction.service';
 
 // import { ApiService as ApiServiceAbstraction } from '../jslib/src/abstractions/api.service';
-// import { AuditService as AuditServiceAbstraction } from '../jslib/src/abstractions/audit.service';
+import { AuditService as AuditServiceAbstraction } from '../jslib/src/abstractions/audit.service';
 // import { AuthService as AuthServiceAbstraction } from '../jslib/src/abstractions/auth.service';
 import { CipherService as CipherServiceAbstraction } from '../jslib/src/abstractions/cipher.service';
 import { CollectionService as CollectionServiceAbstraction } from '../jslib/src/abstractions/collection.service';
@@ -117,7 +117,7 @@ const importService = new ImportService(cipherService, folderService, apiService
 // const notificationsService = new NotificationsService(userService, syncService, appIdService,
 //     apiService, vaultTimeoutService, async () => messagingService.send('logout', { expired: true }), consoleLogService);
 // const environmentService = new EnvironmentService(apiService, storageService, notificationsService);
-// const auditService = new AuditService(cryptoFunctionService, apiService);
+const auditService = new AuditService(cryptoFunctionService, apiService);
 // const eventLoggingService = new EventLoggingService(storageService, apiService, userService, cipherService);
 // const passwordRepromptService = new PasswordRepromptService(i18nService, cryptoService, platformUtilsService);
 
@@ -145,5 +145,6 @@ export default async ({ app, store }, inject) => {
     inject('storageService', storageService)
     inject('exportService', exportService)
     inject('importService', importService)
+    inject('auditService', auditService)
 
 }

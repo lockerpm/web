@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="text-head-5 font-semibold mb-4">Account</div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
@@ -35,21 +36,8 @@
         </div>
       </div>
     </div>
+    <div class="text-head-5 font-semibold mb-4">Options</div>
     <div class="setting-wrapper">
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div>
-            <div class="setting-title">Change Master Password</div>
-          </div>
-          <div>
-            <button class="btn btn-icon !text-black-600"
-                    @click="changeMasterPassword"
-            >
-              <i class="fa fa-chevron-right" />
-            </button>
-          </div>
-        </div>
-      </div>
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
@@ -106,15 +94,73 @@
         </div>
       </div>
     </div>
+    <div class="text-head-5 font-semibold mb-4">Security</div>
+    <div class="setting-wrapper">
+      <div class="setting-section">
+        <div class="setting-section-header">
+          <div>
+            <div class="setting-title">Change Master Key</div>
+          </div>
+          <div>
+            <button class="btn btn-icon !text-black-600"
+                    @click="changeMasterPassword"
+            >
+              <i class="fa fa-chevron-right" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="setting-section">
+        <div class="setting-section-header">
+          <div>
+            <div class="setting-title">
+              Emergency Access
+            </div>
+            <div class="setting-description" />
+          </div>
+          <div>
+            <button class="btn btn-icon !text-black-600">
+              <i class="fa fa-chevron-right" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-head-5 font-semibold mb-4 text-danger">Danger Zone</div>
+    <div class="setting-wrapper">
+      <div class="setting-section">
+        <div class="setting-section-header">
+          <div>
+            <div class="setting-description mb-4">
+              Careful, these actions are not reversible!
+            </div>
+            <div>
+              <button class="btn btn-default !text-danger"
+                      @click="openPurgeVault('purge')"
+              >
+                Delete all account items
+              </button>
+              <button class="btn btn-default !text-danger"
+                      @click="openPurgeVault('delete_account')"
+              >
+                Delete Account
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <ChangeMasterPassword ref="changeMasterPassword" />
+    <PurgeVault ref="purgeVault" />
   </div>
 </template>
 
 <script>
 import ChangeMasterPassword from '../../components/user/ChangeMasterPassword'
+import PurgeVault from '../../components/setting/PurgeVault'
 export default {
   components: {
-    ChangeMasterPassword
+    ChangeMasterPassword, PurgeVault
   },
   data () {
     return {
@@ -178,6 +224,9 @@ export default {
     },
     changeMasterPassword () {
       this.$refs.changeMasterPassword.openDialog()
+    },
+    openPurgeVault (type) {
+      this.$refs.purgeVault.openDialog(type)
     }
   }
 }

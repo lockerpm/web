@@ -77,7 +77,7 @@
     "nuxt": "2.15.4",
     "nuxt-client-init-module": "^0.3.0",
     "nuxt-i18n": "^6.26.0",
-    "papaparse": "^5.3.0",
+    "papaparse": "^5.3.1",
     "sweetalert2": "^10.16.7",
     "tldjs": "^2.3.1",
     "valid-url": "^1.0.9",
