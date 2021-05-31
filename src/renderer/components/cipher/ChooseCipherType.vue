@@ -25,7 +25,8 @@
              @mouseover="type = item"
         >
           <img :src="require(`~/assets/images/icons/icon_${item}.svg`)" alt=""
-               style="width: 70px; height: 70px">
+               style="width: 70px; height: 70px"
+          >
           <div class="text-black text-[20px] font-semibold mt-4">{{ $tc(`type.${item}`, 1) }}</div>
         </div>
       </div>
@@ -62,7 +63,7 @@ export default {
     },
     confirmDialog (type) {
       this.type = type
-      this.$refs.addEditCipherDialog.openDialog()
+      this.$refs.addEditCipherDialog.openDialog({})
       this.dialogVisible = false
     }
   }
