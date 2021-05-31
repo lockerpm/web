@@ -27,7 +27,7 @@
                          active-class="bg-white bg-opacity-20 text-white"
               >
                 <div class="mr-2 w-[22px] h-[22px] flex items-center">
-                  <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="" >
+                  <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
                 </div>
                 <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
               </nuxt-link>
@@ -192,25 +192,19 @@ export default {
   },
   mounted () {
     this.$broadcasterService.subscribe(BroadcasterSubscriptionId, async message => {
-      console.log(message)
       switch (message.command) {
       case 'loggedIn':
-        console.log('loggedIn')
         break
       case 'loggedOut':
       case 'unlocked':
-        console.log('unlocked')
         break
       case 'authBlocked':
       case 'logout':
-        console.log('logout')
         this.logout()
         break
       case 'lockVault':
-        console.log('lockVault')
         break
       case 'locked':
-        console.log('locked')
         this.lock()
         break
       case 'lockedUrl':
@@ -235,6 +229,7 @@ export default {
   beforeDestroy () {
     this.$broadcasterService.unsubscribe(BroadcasterSubscriptionId)
     this.removeEvent()
+    this.disconnectSocket()
   },
   methods: {
     openURL (url) {
@@ -306,11 +301,18 @@ export default {
       this.$connect(this.sanitizeUrl(`${process.env.wsUrl}/cystack_platform/pm/sync?token=${token}`), {
         format: 'json',
         reconnection: true,
-        reconnectionAttempts: 5,
+        reconnectionAttempts: 60,
         reconnectionDelay: 3000
       })
-      this.$options.sockets.onmessage = data => {
-        console.log(data)
+      this.$options.sockets.onmessage = message => {
+        const data = JSON.parse(message.data)
+        switch (data.event) {
+        case 'sync':
+          this.getSyncData()
+          break
+        default:
+          break
+        }
       }
     },
     disconnectSocket () {

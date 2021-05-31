@@ -113,7 +113,6 @@ export default {
         this.loading = true
         await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/groups`, group)
         this.notify(this.$t('data.notifications.add_group_success'), 'success')
-        this.getSyncData()
         this.closeDialog()
         this.$emit('done')
       } catch (e) {
@@ -129,7 +128,6 @@ export default {
         this.loading = true
         await this.$axios.$put(`cystack_platform/pm/teams/${this.$route.params.teamId}/groups/${group.id}`, group)
         this.notify(this.$t('data.notifications.update_group_success'), 'success')
-        this.getSyncData()
         this.closeDialog()
         this.$emit('done')
       } catch (e) {
@@ -149,7 +147,6 @@ export default {
         try {
           this.loading = true
           await this.$axios.$delete(`cystack_platform/pm/teams/${this.$route.params.teamId}/groups/${group.id}`)
-          this.getSyncData()
           this.closeDialog()
           this.$emit('done')
           this.notify(this.$t('data.notifications.delete_group_success'), 'success')

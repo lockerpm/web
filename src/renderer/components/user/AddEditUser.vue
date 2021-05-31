@@ -111,7 +111,6 @@ export default {
         await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members`, user)
         this.notify(this.$t('data.notifications.add_member_success'), 'success')
         this.closeDialog()
-        this.getSyncData()
         this.$emit('done')
       } catch (e) {
         console.log(e)
@@ -126,7 +125,6 @@ export default {
         this.loading = true
         await this.$axios.$put(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/${user.id}`, user)
         this.notify(this.$t('data.notifications.update_member_success'), 'success')
-        this.getSyncData()
         this.closeDialog()
         this.$emit('done')
       } catch (e) {
@@ -146,7 +144,6 @@ export default {
         try {
           this.loading = true
           await this.$axios.$delete(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/${user.id}`)
-          this.getSyncData()
           this.closeDialog()
           this.$emit('done')
           this.notify(this.$t('data.notifications.delete_member_success'), 'success')

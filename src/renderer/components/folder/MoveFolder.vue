@@ -56,7 +56,7 @@
         </div>
       </div>
     </el-dialog>
-    <AddEditFolder ref="addEditFolder" @done="getSyncData" @created-folder="handleCreatedFolder" />
+    <AddEditFolder ref="addEditFolder" @created-folder="handleCreatedFolder" />
   </div>
 </template>
 
@@ -108,7 +108,6 @@ export default {
         })
         this.notify(this.$tc('data.notifications.move_success', this.ids.length), 'success')
         this.closeDialog()
-        this.getSyncData()
         this.$emit('reset-selection')
       } catch (e) {
         this.notify(this.$tc('data.notifications.move_failed', this.ids.length), 'warning')

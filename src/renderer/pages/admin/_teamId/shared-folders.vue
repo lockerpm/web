@@ -64,9 +64,9 @@
       </client-only>
     </div>
 
-    <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" @done="getSyncData" />
-    <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" @done="getSyncData" />
-    <AddEditTeamFolder ref="addEditTeamFolder" @done="getSyncData" />
+    <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" />
+    <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" />
+    <AddEditTeamFolder ref="addEditTeamFolder" />
     <div class="fixed bottom-[50px] right-[55px]">
       <button class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
               @click="addEditFolder({organizationId: $route.params.teamId})"

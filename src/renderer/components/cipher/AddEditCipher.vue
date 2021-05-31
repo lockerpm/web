@@ -400,7 +400,7 @@
         </div>
       </div>
     </component>
-    <AddEditFolder ref="addEditFolder" @done="getSyncData" @created-folder="handleCreatedFolder" />
+    <AddEditFolder ref="addEditFolder" @created-folder="handleCreatedFolder" />
   </div>
 </template>
 
@@ -547,7 +547,6 @@ export default {
         })
         this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
         this.closeDialog()
-        this.getSyncData()
       } catch (e) {
         this.notify(this.$tc('data.notifications.create_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
@@ -567,7 +566,6 @@ export default {
         })
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
         this.closeDialog()
-        this.getSyncData()
         this.$emit('updated-cipher')
       } catch (e) {
         this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
@@ -586,7 +584,6 @@ export default {
           this.loading = true
           await this.$axios.$put('cystack_platform/pm/ciphers/permanent_delete', { ids })
           this.notify(this.$tc('data.notifications.delete_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
-          this.getSyncData()
           this.closeDialog()
           this.$emit('reset-selection')
         } catch (e) {
@@ -609,7 +606,6 @@ export default {
           this.loading = true
           await this.$axios.$put('cystack_platform/pm/ciphers/delete', { ids })
           this.notify(this.$tc('data.notifications.trash_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
-          this.getSyncData()
           this.$emit('trashed-cipher')
         } catch (e) {
           this.notify(this.$tc('data.notifications.trash_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
@@ -631,7 +627,6 @@ export default {
           this.loading = true
           await this.$axios.$put('cystack_platform/pm/ciphers/restore', { ids })
           this.notify(this.$tc('data.notifications.restore_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
-          this.getSyncData()
           this.$emit('reset-selection')
         } catch (e) {
           this.notify(this.$tc('data.notifications.restore_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
@@ -646,9 +641,9 @@ export default {
     addFolder (shouldRedirect = false) {
       this.$refs.addEditFolder.openDialog({}, shouldRedirect)
     },
-    async handleCreatedFolder (id) {
-      this.folders = await this.getFolders()
-      this.cipher.folderId = id
+    async handleCreatedFolder (folder) {
+      this.folders.push(folder)
+      this.cipher.folderId = folder.id
     },
     newCipher (type, data) {
       this.cipher = new CipherView()

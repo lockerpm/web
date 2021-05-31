@@ -99,7 +99,6 @@ export default {
         })
 
         this.notify(this.$t('data.notifications.update_group_success'), 'success')
-        await this.getSyncData()
         this.closeDialog()
         this.$emit('done')
       } catch (e) {

@@ -229,3 +229,15 @@ svg {
 a {
   @apply text-primary
 }
+
+.el-dialog__headerbtn {
+  position: absolute;
+  top: 36px;
+  right: 30px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 20px;
+}

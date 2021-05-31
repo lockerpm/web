@@ -88,7 +88,7 @@ export default {
         const data = new FolderRequest(folderEnc)
         const res = await this.$axios.$post('cystack_platform/pm/folders', data)
         this.$emit('done')
-        this.$emit('created-folder', res.id)
+        this.$emit('created-folder', { id: res.id, name: folder.name })
         this.closeDialog()
         if (this.shouldRedirect) {
           this.$router.push(this.localeRoute({ name: 'vault-folders-folderId', params: { folderId: res.id } }))

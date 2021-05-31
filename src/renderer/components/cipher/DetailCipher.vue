@@ -142,7 +142,6 @@
 
       <div class="max-w-[585px] mx-auto">
         <AddEditCipher ref="addEditCipherDialog"
-                       @updated-cipher="getSyncData"
                        @close="editMode=false"
         />
       </div>

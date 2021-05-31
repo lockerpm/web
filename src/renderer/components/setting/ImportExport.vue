@@ -460,7 +460,6 @@ export default {
       const url = this.teamId ? `cystack_platform/pm/teams/${this.teamId}/import` : 'cystack_platform/pm/ciphers/import'
       await this.$axios.$post(url, request)
       this.notify('Nhập dữ liệu thành công', 'success')
-      this.getSyncData()
       this.$router.push(this.localeRoute({ name: 'vault' }))
     },
     handleServerError (errorResponse, importResult) {

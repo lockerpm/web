@@ -352,11 +352,12 @@
         </el-table>
       </client-only>
     </div>
-    <AddEditCipher ref="addEditCipherDialog" :route-name="routeName" :type="type" />
-    <AddEditFolder ref="addEditFolder" @done="getSyncData" />
-    <AddEditTeamFolder ref="addEditTeamFolder" @done="getSyncData" />
-    <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" @done="getSyncData" />
-    <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" @done="getSyncData" />
+    <AddEditCipher ref="addEditCipherDialog" :type="type" />
+    <ChooseCipherType ref="chooseCipherType" />
+    <AddEditFolder ref="addEditFolder" />
+    <AddEditTeamFolder ref="addEditTeamFolder" />
+    <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" />
+    <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" />
     <ShareCipher ref="shareCipher" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
     <div class="fixed bottom-[50px] right-[55px]">
@@ -395,7 +396,7 @@
               Tạo thư mục Teams
             </li>
             <li class="el-dropdown-menu__item font-semibold !text-black"
-                @click="addEdit({})"
+                @click="chooseCipherType"
             >
               Tạo mục
             </li>
@@ -426,8 +427,10 @@ import MoveFolder from '../folder/MoveFolder'
 import NoCipher from '../../components/cipher/NoCipher'
 import { CipherType } from '../../jslib/src/enums'
 import Vnodes from '../../components/Vnodes'
+import ChooseCipherType from '../../components/cipher/ChooseCipherType'
 export default {
   components: {
+    ChooseCipherType,
     AddEditCipher,
     AddEditFolder,
     AddEditTeamFolder,
@@ -680,6 +683,9 @@ export default {
     },
     putTeamFolderUsers (folder) {
       this.$refs.addEditTeamFolderUsers.openDialog(folder)
+    },
+    chooseCipherType () {
+      this.$refs.chooseCipherType.openDialog()
     }
   }
 }
