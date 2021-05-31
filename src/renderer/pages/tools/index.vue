@@ -1,6 +1,15 @@
 <template>
   <div class="flex flex-col flex-column-fluid relative">
     <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
+      <div class="mb-5">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item
+            :to="localeRoute({name: 'tools'})"
+          >
+            Tools
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
       <div class="setting-wrapper">
         <div class="setting-section">
           <div class="setting-section-header">
@@ -61,7 +70,9 @@
             <div class="flex items-center">
               <img src="~/assets/images/icons/icon_tools_pw_breach.svg" alt="" class="mr-3">
               <div>
-                <div class="setting-title">
+                <div class="setting-title cursor-pointer"
+                     @click="go('tools-breach')"
+                >
                   Data Breach Scanner
                 </div>
                 <div class="setting-description">
@@ -70,27 +81,9 @@
               </div>
             </div>
             <div>
-              <button class="btn btn-icon !text-black-600">
-                <i class="fa fa-chevron-right" />
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="setting-section">
-          <div class="setting-section-header">
-            <div class="flex items-center">
-              <img src="~/assets/images/icons/icon_tools_pw_breach.svg" alt="" class="mr-3">
-              <div>
-                <div class="setting-title">
-                  Unsecured Websites
-                </div>
-                <div class="setting-description">
-                  Using unsecured websites with the http:// scheme can be dangerous
-                </div>
-              </div>
-            </div>
-            <div>
-              <button class="btn btn-icon !text-black-600">
+              <button class="btn btn-icon !text-black-600"
+                      @click="go('tools-breach')"
+              >
                 <i class="fa fa-chevron-right" />
               </button>
             </div>

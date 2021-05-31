@@ -89,12 +89,10 @@ export default {
   },
   computed: {
     haveData () {
-      // return this.weakPasswordCiphers && this.weakPasswordCiphers.length
-      return false
+      return this.weakPasswordCiphers && this.weakPasswordCiphers.length
     },
     noData () {
-      // return this.weakPasswordCiphers && this.weakPasswordCiphers.length === 0
-      return true
+      return this.weakPasswordCiphers && this.weakPasswordCiphers.length === 0
     }
   },
   mounted () {
