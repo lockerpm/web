@@ -22,4 +22,7 @@
   &.label-success-light {
     @apply bg-opacity-15 bg-success text-success;
   }
+  &.label-black {
+    @apply bg-black text-white;
+  }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col flex-column-fluid relative">
     <NoCipher v-if="shouldRenderNoCipher" :type="type"
-              @add-cipher="addEdit({})"
+              @add-cipher="handleAddButton"
     />
     <div v-else class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <div class="flex items-center justify-between mb-5">
@@ -17,14 +17,14 @@
                 {{ folder.name }}
               </el-breadcrumb-item>
             </template>
-            <template v-else-if="getRouteBaseName() === 'vault-tfolders-tfolderId'">
+            <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId'">
               <el-breadcrumb-item
                 :to="localeRoute({name: 'vault'})"
               >
                 {{ $t('sidebar.vault') }}
               </el-breadcrumb-item>
               <el-breadcrumb-item class="flex items-center">
-                {{ collection.name }}
+                {{ getTeam(teams, $route.params.teamId).name }} - {{ collection.name }}
               </el-breadcrumb-item>
             </template>
             <template v-else-if="getRouteBaseName() ==='vault'">
@@ -141,6 +141,16 @@
                 <div class="flex items-center">
                   <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
                   <div class="font-semibold truncate select-none">{{ item.name }} ({{ item.ciphersCount }})</div>
+                </div>
+              </div>
+              <div class="px-4 py-6 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+                   :class="{'border-primary': selectedFolder.id === 'unassigned'}"
+                   @click="selectedFolder = {id: 'unassigned'}"
+                   @dblclick="routerCollection({id: 'unassigned', organizationId: key})"
+              >
+                <div class="flex items-center">
+                  <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
+                  <div class="font-semibold truncate select-none">Unassigned Folder ({{ countUnassignedItems(ciphers, key) }})</div>
                 </div>
               </div>
             </div>
@@ -361,21 +371,8 @@
     <ShareCipher ref="shareCipher" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
     <div class="fixed bottom-[50px] right-[55px]">
-      <button v-if="getRouteBaseName() === 'vault-tfolders-tfolderId' && !collection.readOnly"
-              class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
-              @click="addEdit({
-                organizationId: collection.organizationId
-              })"
-      >
-        <i class="fas fa-plus text-[24px]" />
-      </button>
-      <button v-else-if="!['vault', 'shares'].includes(routeName)" class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
-              @click="addEdit({})"
-      >
-        <i class="fas fa-plus text-[24px]" />
-      </button>
       <el-popover
-        v-else
+        v-if="['vault'].includes(routeName)"
         placement="right-end"
         width="200"
         trigger="click"
@@ -408,6 +405,11 @@
           <i class="fas fa-plus text-[24px]" />
         </button>
       </el-popover>
+      <button v-else class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
+              @click="handleAddButton"
+      >
+        <i class="fas fa-plus text-[24px]" />
+      </button>
     </div>
   </div>
 </template>
@@ -479,7 +481,7 @@ export default {
     },
     collection () {
       if (this.collections) {
-        return find(this.collections, e => e.id === this.$route.params.tfolderId) || {}
+        return find(this.collections, e => e.id === this.$route.params.tfolderId) || { name: 'Unassigned Folder' }
       }
       return {}
     },
@@ -530,6 +532,7 @@ export default {
         return false
       }
       return !haveCipher && !this.searchText
+      // return true
     },
     shouldRenderShare () {
       return (this.getRouteBaseName() === 'shares')
@@ -621,6 +624,17 @@ export default {
     addEdit (cipher) {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     },
+    handleAddButton () {
+      if (this.getRouteBaseName() === 'vault-tfolders-tfolderId' && !this.collection.readOnly) {
+        this.addEdit({
+          organizationId: this.collection.organizationId
+        })
+      } else if (!['vault', 'shares'].includes(this.getRouteBaseName())) {
+        this.addEdit({})
+      } else {
+        this.chooseCipherType()
+      }
+    },
     handleSelectionChange (val) {
       this.multipleSelection = val
     },
@@ -652,10 +666,17 @@ export default {
       }))
     },
     routerCollection (item) {
-      this.$router.push(this.localeRoute({
-        name: 'vault-tfolders-tfolderId',
-        params: { tfolderId: item.id }
-      }))
+      if (item.id === 'unassigned') {
+        this.$router.push(this.localeRoute({
+          name: 'vault-teams-teamId-tfolders-tfolderId',
+          params: { teamId: item.organizationId, tfolderId: item.id }
+        }))
+      } else {
+        this.$router.push(this.localeRoute({
+          name: 'vault-teams-teamId-tfolders-tfolderId',
+          params: { teamId: item.organizationId, tfolderId: item.id }
+        }))
+      }
     },
     openContextFolder (event, data) {
       this.selectedFolder = data
@@ -686,6 +707,13 @@ export default {
     },
     chooseCipherType () {
       this.$refs.chooseCipherType.openDialog()
+    },
+    countUnassignedItems (ciphers = [], organizationId) {
+      if (ciphers) {
+        const filteredCipher = ciphers.filter(c => c.organizationId === organizationId && c.collectionIds.length === 0)
+        return filteredCipher.length
+      }
+      return 0
     }
   }
 }

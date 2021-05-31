@@ -11,12 +11,12 @@
             </el-breadcrumb-item>
             <el-breadcrumb-item
               class="flex items-center"
-              :to="localeRoute({name: 'vault-folders-folderId', params: $route.params.folderId})"
+              :to="localeRoute({name: 'vault-folders-folderId', params: $route.params})"
             >
               {{ folder.name }}
             </el-breadcrumb-item>
           </template>
-          <template v-if="getRouteBaseName() === 'vault-tfolders-tfolderId-id'">
+          <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId-id'">
             <el-breadcrumb-item
               :to="localeRoute({name: 'vault'})"
             >
@@ -24,9 +24,9 @@
             </el-breadcrumb-item>
             <el-breadcrumb-item
               class="flex items-center"
-              :to="localeRoute({name: 'vault-tfolders-tfolderId', params: $route.params.tfolderId})"
+              :to="localeRoute({name: 'vault-teams-teamId-tfolders-tfolderId', params: $route.params})"
             >
-              {{ collection.name }}
+              {{ getTeam(teams, $route.params.teamId).name }} - {{ collection.name }}
             </el-breadcrumb-item>
           </template>
           <template v-else>
@@ -133,8 +133,11 @@
           </div>
           <div class="grid md:grid-cols-6 cipher-item">
             <div class="">Folder</div>
-            <div class="col-span-4 font-semibold flex items-center">
-              <img src="~/assets/images/icons/folder.svg" alt="" class="mr-3"> {{ folder.name || 'No folder' }}
+            <div v-if="cipher.organizationId" class="col-span-4 font-semibold flex items-center">
+              <img :src="collection.id === 'unassigned' ? require('~/assets/images/icons/folderSolid.svg') : require('~/assets/images/icons/folderSolidShare.svg')" alt="" class="mr-3"> {{ collection.name }}
+            </div>
+            <div v-else class="col-span-4 font-semibold flex items-center">
+              <img src="~/assets/images/icons/folderSolid.svg" alt="" class="mr-3"> {{ folder.name || 'No folder' }}
             </div>
           </div>
         </div>
@@ -188,12 +191,12 @@ export default {
     },
     collection () {
       if (this.collections) {
-        return find(this.collections, e => e.id === this.$route.params.tfolderId) || {}
+        return find(this.collections, e => e.id === this.$route.params.tfolderId) || { name: 'Unassigned Folder', id: 'unassigned' }
       }
       return {}
     },
     cipher () {
-      return find(this.ciphers, e => e.id === this.$route.params.id) || {}
+      return find(this.ciphers, e => e.id === this.$route.params.id) || { collectionIds: [] }
     },
     passwordStrength () {
       if (this.cipher.login) {

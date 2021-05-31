@@ -17,12 +17,15 @@
         >
           {{ $t(`data.no_data.${type}.btn`) }}
         </button>
-        <button v-if="shouldRenderBtnImport"
-                class="btn btn-default"
-                @click="$emit('import-cipher')"
+        <nuxt-link
+          v-if="shouldRenderBtnImport"
+          :to="localeRoute({name: 'settings-import-export'})"
+          tag="button"
+          class="btn btn-default"
+          @click="$emit('import-cipher')"
         >
           {{ $t(`data.no_data.${type}.btn_import`) }}
-        </button>
+        </nuxt-link>
       </div>
     </div>
   </div>
@@ -46,7 +49,7 @@ export default {
   },
   computed: {
     shouldRenderBtn () {
-      return this.type !== 'Shares' && this.type !== 'Trash'
+      return this.type !== 'Trash'
     },
     shouldRenderBtnImport () {
       return this.type === 'Login' || this.type === 'Vault'

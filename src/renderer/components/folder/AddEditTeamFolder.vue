@@ -131,16 +131,14 @@ export default {
       }
     },
     async deleteFolder (folder) {
-      this.$confirm(this.$t('data.notifications.deleted_folder'), this.$t('common.warning'), {
+      this.$confirm(this.$t('data.notifications.deleted_team_folder'), this.$t('common.warning'), {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(async () => {
         try {
           this.loading = true
-          await this.$axios.$post(`cystack_platform/pm/teams/${folder.organizationId}/folders/${folder.id}/delete`, {
-            delete_items: true
-          })
+          await this.$axios.$post(`cystack_platform/pm/teams/${folder.organizationId}/folders/${folder.id}/delete`)
           this.$emit('done')
           this.closeDialog()
           this.notify(this.$tc('data.notifications.delete_success', 1, { type: this.$t('common.folder') }), 'success')

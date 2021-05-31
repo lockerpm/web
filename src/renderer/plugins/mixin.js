@@ -252,9 +252,9 @@ Vue.mixin({
         return
       }
 
-      if (this.getRouteBaseName() === 'vault-tfolders-tfolderId') {
+      if (this.getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId') {
         this.$router.push(this.localeRoute({
-          name: 'vault-tfolders-tfolderId-id',
+          name: 'vault-teams-teamId-tfolders-tfolderId-id',
           params: { ...this.$route.params, id: cipher.id }
         }))
         return

@@ -357,8 +357,8 @@
           <div v-if="cipher.organizationId" class="form-group">
             <div class="flex items-center justify-between" />
             <label for="">Folders Team</label>
-            <div>
-              Only team users with access to these collections will be able to see this item. Choose at least 1 folder.
+            <div class="mb-2">
+              Only team users with access to these folders will be able to see this item. Choose at least 1 folder.
             </div>
             <el-checkbox-group v-model="cipher.collectionIds" :min="1" :disabled="isDeleted">
               <el-checkbox v-for="(item, index) in writeableCollections"
@@ -522,7 +522,7 @@ export default {
       if (data.id || this.cloneMode) {
         this.cipher = new Cipher({ ...data }, true)
         this.writeableCollections = await this.getWritableCollections(this.cipher.organizationId)
-      } else if (Cipher[this.type]) {
+      } else if (CipherType[this.type]) {
         this.newCipher(this.type, data)
       } else {
         this.newCipher('Login', data)
@@ -658,6 +658,8 @@ export default {
       this.cipher.folderId = this.$route.params.folderId || null
       this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
       this.handleChangeOrg(this.cipher.organizationId)
+      console.log(this.cipher)
+      console.log(this.type)
     },
     handleChangeType (type) {
       this.newCipher(type)
