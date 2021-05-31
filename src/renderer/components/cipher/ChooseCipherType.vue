@@ -10,7 +10,7 @@
     >
       <div slot="title">
         <div class="text-head-5 text-black-700 font-semibold truncate">
-          Thêm danh mục
+          Thêm mục
         </div>
       </div>
       <div class="grid grid-cols-2 gap-8 pb-3">

@@ -369,7 +369,7 @@
       >
         <i class="fas fa-plus text-[24px]" />
       </button>
-      <button v-else-if="!['vault', 'shares'].includes(routeName)" class="btn btn-fab rounded-full flex items-center justify-center"
+      <button v-else-if="!['vault', 'shares'].includes(routeName)" class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
               @click="addEdit({})"
       >
         <i class="fas fa-plus text-[24px]" />
