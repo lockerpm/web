@@ -39,9 +39,9 @@
             </div>
             <div>
               <button class="btn btn-default !text-danger"
-                      @click="openPurgeVault()"
+                      @click="openPurgeTeamVault()"
               >
-                Delete all account items
+                Delete all Team's items
               </button>
             </div>
           </div>
@@ -84,8 +84,8 @@ export default {
         this.loading = false
       }
     },
-    openPurgeVault () {
-      this.$refs.purgeVaultTeam.openDialog()
+    openPurgeTeamVault () {
+      this.$refs.purgeTeamVault.openDialog()
     }
   }
 }

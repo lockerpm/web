@@ -225,3 +225,7 @@ svg {
 .el-avatar {
   background: transparent;
 }
+
+a {
+  @apply text-primary
+}
