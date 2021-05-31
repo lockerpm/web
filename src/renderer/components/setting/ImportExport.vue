@@ -20,6 +20,12 @@
                 label="Popular"
               >
                 <el-option
+                  v-for="item in cystackOptions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+                <el-option
                   v-for="item in featuredImportOptions"
                   :key="item.id"
                   :label="item.name"
@@ -118,12 +124,18 @@ export default {
     return {
       selectedType: 'csv',
       exportFormats: ['csv', 'json', 'encrypted_json'],
-      format: 'bitwardenjson',
+      format: 'cystackjson',
       file: null,
       fileContents: ''
     }
   },
   computed: {
+    cystackOptions () {
+      return [
+        { name: 'CyStack (csv)', id: 'cystackjson' },
+        { name: 'CyStack (json)', id: 'cystackcsv' }
+      ]
+    },
     featuredImportOptions () {
       return this.$importService.featuredImportOptions
     },
@@ -148,7 +160,10 @@ export default {
         return null
       }
 
-      const results = this.featuredImportOptions.concat(this.importOptions).filter(o => o.id === this.format)
+      const results = this.featuredImportOptions
+        .concat(this.importOptions)
+        .concat(this.cystackOptions)
+        .filter(o => o.id === this.format)
       if (results.length > 0) {
         return this.$t('data.importFile.instructions', { name: results[0].name })
       }
@@ -167,7 +182,6 @@ export default {
       this.$refs.reConfirmMasterPassword.openDialog()
     },
     async exportData (type) {
-      console.log(this.teamId)
       const data = this.teamId ? await this.getOrganizationExport(this.teamId, type) : await this.$exportService.getExport(type)
       this.downloadFile(data)
     },
@@ -347,7 +361,8 @@ export default {
     },
     async importData () {
       this.loading = true
-      const importer = this.$importService.getImporter(this.format, this.teamId)
+      const format = this.cystackOptions.map(e => e.id).includes(this.format) ? this.format.replace('cystack', 'bitwarden') : this.format
+      const importer = this.$importService.getImporter(format, this.teamId)
       let fileContents = this.fileContents
       if (this.file) {
         try {
