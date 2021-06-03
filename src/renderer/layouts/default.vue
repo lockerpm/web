@@ -164,6 +164,13 @@ export default {
       shouldWelcome: 'false'
     }
   },
+  head () {
+    return {
+      script: [
+        { src: 'https://js.stripe.com/v3/' }
+      ]
+    }
+  },
   computed: {
     manageableTeams () {
       return this.teams.filter(e => ['owner', 'admin'].includes(e.role))

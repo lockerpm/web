@@ -241,3 +241,27 @@ a {
   cursor: pointer;
   font-size: 20px;
 }
+
+.el-drawer.ltr.credit-drawer, .el-drawer.rtl.credit-drawer {
+  top: 0;
+  height: calc(100% - 20px);
+  bottom: unset;
+  margin: 10px;
+  .el-drawer__header {
+    margin-bottom: 0;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #113F67;
+    color: #113F67
+  }
+  .el-drawer__body {
+    overflow-y: auto;
+    flex: unset;
+    .credit-drawer-body {
+
+    }
+    .credit-drawer-footer {
+      border-top: #113F67;
+      padding: 20px;
+    }
+  }
+}
