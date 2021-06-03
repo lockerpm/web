@@ -12,7 +12,7 @@ stages:
 build_staging:
   stage: build
   script:
-    - staging_build
+    - build staging
   tags:
     - cs_monitoring
   only:
@@ -22,14 +22,14 @@ build_staging:
 deploy_staging:
   stage: deploy
   script:
-    - staging_deploy
+    - deploy staging
   tags:
     - cs_monitoring
   only:
     - dev
     - tags
 
-clean_staging:
+clean:
   stage: clean
   script:
     - clean
@@ -43,7 +43,7 @@ clean_staging:
 build_production:
   stage: build
   script:
-    - production_build
+    - build prod
   tags:
     - cs_app
   only:
@@ -53,20 +53,10 @@ build_production:
 deploy_production:
   stage: deploy
   script:
-    - production_deploy
+    - deploy prod
   tags:
     - cs_app
   only:
     - master
     - tags
 
-clean_production:
-  stage: clean
-  script:
-    - clean
-  when: always
-  tags:
-    - cs_app
-  only:
-    - master
-    - tags
