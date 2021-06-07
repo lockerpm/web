@@ -49,7 +49,7 @@
                      class="flex items-center"
                 >
                   <Check class="text-primary" />
-                  <div class="ml-2">{{ $t(`data.plans.feature.${feature}`) }}</div>
+                  <div class="ml-2">{{ $t(`data.plans.features.${feature}`) }}</div>
                 </div>
               </div>
               <div v-if="item.alias !== 'pm_free'">
@@ -157,7 +157,7 @@
                 >
                   <div class="text-lg  mb-2 flex items-center justify-between">
                     <span class="font-semibold">Internet Banking</span>
-                    <span class="">{{ balance | formatNumber }} VNĐ</span>
+                    <span class="">{{ balance | formatNumber }} VND</span>
                   </div>
                   <div class=" flex items-center justify-between">
                     <span class="italic">*This is a payment method only for Vietnamese</span>
