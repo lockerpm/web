@@ -10,10 +10,10 @@
       "dom"
     ],
     "noImplicitAny": false,
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "allowJs": true,
     "sourceMap": true,
-    "strict": true,
+    "strict": false,
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
@@ -22,10 +22,45 @@
       ],
       "@/*": [
         "./*"
+      ],
+      "tldjs": [
+        "./jslib/src/misc/tldjs.noop"
+      ],
+      "jslib/*": [
+        "./jslib/src/*"
+      ],
+      "@angular/*": [
+        "../../node_modules/@angular/*"
+      ],
+      "node": [
+        "../../node_modules/@types/node"
+      ],
+      "duo_web_sdk": [
+        "../../../node_modules/duo_web_sdk"
       ]
     },
     "types": [
       "@nuxt/types"
-    ]
-  }
+    ],
+    "experimentalDecorators": true,
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "exclude": [
+    "../../node_modules",
+    "../../dist",
+    "../../build",
+    ".nuxt",
+    "./jslib/node_modules",
+    "./jslib/dist",
+    "./jslib/spec",
+    "./jslib/src",
+    "./jslib/src/electron",
+    "./jslib/src/cli",
+    "./jslib/src/services/nodeApi.service.ts",
+    "./jslib/src/services/lowdbStorage.service.ts",
+    "./jslib/src/services/consoleLog.service.ts",
+    "./jslib/src/misc/nodeUtils.ts",
+    "./jslib/src/angular",
+    "./services"
+  ]
 }

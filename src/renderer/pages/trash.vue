@@ -1,11 +1,12 @@
 <template>
-  <div>Chào mừng bạn đến mới CyPass Manager</div>
+  <ListCipher route-name="trash" :deleted="true" />
 </template>
 
 <script>
+import ListCipher from '../components/cipher/ListCipher'
 export default {
-  data () {
-    return {}
+  components: {
+    ListCipher
   }
 }
 </script>
