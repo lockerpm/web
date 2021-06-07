@@ -38,6 +38,7 @@ clean:
     - cs_monitoring
   only:
     - dev
+    - master
     - tags
 
 build_production:
@@ -45,7 +46,7 @@ build_production:
   script:
     - build prod
   tags:
-    - cs_app
+    - cs_monitoring
   only:
     - master
     - tags
@@ -55,7 +56,7 @@ deploy_production:
   script:
     - deploy prod
   tags:
-    - cs_app
+    - cs_monitoring
   only:
     - master
     - tags
