@@ -343,6 +343,9 @@ export default {
         case 'sync':
           this.getSyncData()
           break
+        case 'members':
+          this.getInvitations()
+          break
         default:
           break
         }
