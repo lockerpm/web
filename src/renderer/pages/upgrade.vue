@@ -1,148 +1,275 @@
 <template>
   <div class="flex flex-col flex-column-fluid relative">
     <div class="flex-column-fluid lg:px-28 py-10 px-10">
-      <div class="border border-black-200 rounded p-5 md:px-5 md:py-7 relative bg-gradient-to-r from-[#05A49F] to-[#1AB0AC] mb-6">
-        <div class="flex items-center justify-between text-white">
-          <div class="">
-            <div class="text-lg font-semibold mb-2">
-              Upgrade to Premium to unlock more features
-            </div>
-            <div class="flex items-center">
-              <Check />
-              <div class="ml-2">Check your overall passwords score</div>
-            </div>
-            <div class="flex items-center">
-              <Check />
-              <div class="ml-2">Detect if your password were in a breach</div>
-            </div>
-          </div>
-          <div class="mr-10">
-            <img src="~/assets/images/icons/callout-upgrade.svg" alt="">
-          </div>
-        </div>
-      </div>
-      <div class="grid grid-cols-4 gap-x-6">
-        <div v-for="item in plans" :key="item.id"
-             class="p-8 border border-black-200 rounded"
-        >
-          <div class="h-full flex flex-col">
-            <div class="flex items-center">
-              <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
-                {{ getPlanName(item.name).name }}
+      <template v-if="step===1">
+        <div v-if="plan.alias === 'pm_free'" class="border border-black-200 rounded p-5 md:px-5 md:py-7 relative bg-gradient-to-r from-[#05A49F] to-[#1AB0AC] mb-6">
+          <div class="flex items-center justify-between text-white">
+            <div class="">
+              <div class="text-lg font-semibold mb-2">
+                Upgrade to Premium to unlock more features
               </div>
-              <div class="text-black-600 ml-2">
-                {{ getPlanName(item.name).tag }}
+              <div class="flex items-center">
+                <Check />
+                <div class="ml-2">Check your overall passwords score</div>
+              </div>
+              <div class="flex items-center">
+                <Check />
+                <div class="ml-2">Detect if your password were in a breach</div>
               </div>
             </div>
-            <div class="mt-2.5 mb-6 flex items-center">
-              <span class="text-head-1 font-semibold mr-2">
-                <span v-if="language==='vi'">đ{{ item.price.vnd }}</span>
-                <span v-if="language==='en'">${{ item.price.usd }}</span>
-              </span>
-              <span class="text-black-600">/ mo</span>
-              <span v-if="item.max_number" class="ml-2 text-black-600">/ {{ item.max_number }} members </span>
-            </div>
-            <div class="mb-8 flex-grow">
-              <div v-for="feature in features[item.id]" :key="feature"
-                   class="flex items-center"
-              >
-                <Check class="text-primary" />
-                <div class="ml-2">{{ feature }}</div>
-              </div>
-            </div>
-            <div>
-              <button v-if="currentUser.current_plan === item.name"
-                      class="btn btn-primary w-full"
-                      disabled
-              >
-                Hiện tại
-              </button>
-              <button v-else class="btn btn-primary w-full"
-                      @click="selectedPlan = item"
-              >
-                Lựa chọn
-              </button>
+            <div class="mr-10">
+              <img src="~/assets/images/icons/callout-upgrade.svg" alt="">
             </div>
           </div>
         </div>
-      </div>
-      <div>
-        <div class="head-4 font-semibold mb-2.5">Get rid of password</div>
-        <div class="text-black-600 mb-12">
-          Securely store, organize, and access your passwords from anywhere.
-        </div>
-        <div class="mb-10">
-          <div class="text-[20px] font-semibold mb-6">
-            Choose subscription period
-          </div>
-          <div class="grid grid-cols-3 gap-x-6">
-            <div v-for="(item) in priceType"
-                 :key="item.value"
-                 class="pt-[70px] pb-5 px-3 border border-black-200 rounded text-center cursor-pointer"
-                 :class="{'border-primary': type===item.label}"
-                 @click="type = item.label"
-            >
-              <div class="font-semibold text-[1rem] mb-2.5">{{ item.label }}</div>
-              <template v-if="selectedPlan[item.label]">
-                <div class="font-semibold mb-10">
-                  <span>
-                    <span class="text-head-1">{{ symbol }}{{ selectedPlan[item.label][currency]/item.value | formatNumber }}</span> / Mo
-                  </span>
+        <div class="grid grid-cols-4 gap-x-6">
+          <div v-for="item in plans" :key="item.id"
+               class="p-8 border border-black-200 rounded"
+          >
+            <div class="h-full flex flex-col">
+              <div class="flex items-center">
+                <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
+                  {{ getPlanName(item.name).name }}
                 </div>
-                <div v-if="item.value !== 1">
-                  <span class="text-danger line-through">
-                    {{ symbol }}{{ selectedPlan.price[currency]*item.value |formatNumber }}</span>
-                  <span class="text-black-600">
-                    {{ symbol }}{{ selectedPlan[item.label][currency] |formatNumber }}
-                    <span v-if="item.value===6"> for the first 6 months</span>
-                    <span v-if="item.value===12"> for the first year</span>
-                  </span>
+                <div class="text-black-600 ml-2">
+                  {{ getPlanName(item.name).tag }}
                 </div>
-              </template>
-            </div>
-            <div>a</div>
-            <div>a</div>
-          </div>
-        </div>
-        <div>
-          <div class="text-[20px] font-semibold mb-6">
-            Select a payment method
-          </div>
-          <div class="grid grid-cols-2">
-            <div class="border border-black-200 rounded px-5 py-4">
-              <div class="text-lg font-semibold">Credits Cards</div>
-              <div>
-                Ảnh
-                <button class="btn btn-primary" @click="editBilling">
-                  Test
+              </div>
+              <div class="mt-2.5 mb-6 flex items-center">
+                <span class="text-head-1 font-semibold mr-2">
+                  <span v-if="language==='vi'">đ{{ item.price.vnd }}</span>
+                  <span v-if="language==='en'">${{ item.price.usd }}</span>
+                </span>
+                <span class="text-black-600">/ mo</span>
+                <span v-if="item.max_number" class="ml-2 text-black-600">/ {{ item.max_number }} members </span>
+                <span v-else-if="item.alias === 'pm_business_premium'" class="ml-2 text-black-600">/ 1 member </span>
+              </div>
+              <div class="mb-8 flex-grow">
+                <div v-for="feature in features[item.alias]" :key="feature"
+                     class="flex items-center"
+                >
+                  <Check class="text-primary" />
+                  <div class="ml-2">{{ $t(`data.plans.features.${feature}`) }}</div>
+                </div>
+              </div>
+              <div v-if="item.alias !== 'pm_free'">
+                <button v-if="plan.alias === item.alias"
+                        class="btn btn-primary w-full"
+                >
+                  Chỉnh sửa
+                </button>
+                <button v-else class="btn btn-outline-primary w-full"
+                        @click="selectPlan(item)"
+                >
+                  Lựa chọn
+                </button>
+              </div>
+              <div v-if="item.alias === 'pm_free'">
+                <button class="btn btn-primary w-full"
+                >
+                  Hiện tại
                 </button>
               </div>
             </div>
-            <div>a</div>
           </div>
         </div>
-        <CardDrawer ref="drawer" :user="user" @handle-done="handleDone" />
-      </div>
+      </template>
+      <template v-if="step===2">
+        <div class="text-head-4 font-semibold mb-6 flex items-center">
+          <button class="btn btn-icon btn-clean w-10 h-10 rounded-full -ml-4"
+                  @click="step = 1"
+          >
+            <i class="fa fa-chevron-left" />
+          </button> Get rid of password
+        </div>
+        <div class="text-black-600 mb-12">
+          Securely store, organize, and access your passwords from anywhere.
+        </div>
+        <div class="grid grid-cols-4 gap-x-20 mb-12">
+          <div class="col-span-3">
+            <div class="mb-10">
+              <div class="text-[20px] font-semibold mb-6">
+                Choose subscription period
+              </div>
+              <div class="grid grid-cols-3 gap-x-6">
+                <div v-for="(item) in periods"
+                     :key="item.value"
+                     class="py-5 px-3 border border-black-200 rounded text-center cursor-pointer"
+                     :class="{'border-primary': selectedPeriod.label===item.label}"
+                     @click="selectPeriod(item)"
+                >
+                  <div class="font-semibold text-[1rem] mb-2.5">{{ $t(`data.plans.price.${item.label}`) }}</div>
+                  <template v-if="selectedPlan[item.label]">
+                    <div class="font-semibold mb-8">
+                      <span>
+                        <span class="text-head-1">{{ symbol }}{{ selectedPlan[item.label][currency]/item.value | formatNumber }}</span>
+                        <span> / Mo </span>
+                        <span v-if="selectedPlan.max_number" class="text-black-600">/ {{ selectedPlan.max_number }} members </span>
+                        <span v-else-if="selectedPlan.alias === 'pm_business_premium'" class="text-black-600">/ 1 member </span>
+                      </span>
+                    </div>
+                    <div v-if="item.value !== 1">
+                      <span class="text-danger line-through">
+                        {{ symbol }}{{ selectedPlan.price[currency]*item.value |formatNumber }}</span>
+                      <span class="text-black-600">
+                        {{ symbol }}{{ selectedPlan[item.label][currency] |formatNumber }}
+                        <span v-if="item.value===6"> for the first 6 months</span>
+                        <span v-if="item.value===12"> for the first year</span>
+                      </span>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+            <div v-if="selectedPlan.alias === 'pm_business_premium'" class="mb-10">
+              <div class="text-[20px] font-semibold mb-6">
+                Choose number of members
+              </div>
+              <el-input-number v-model="number_members" controls-position="right" :min="1"
+                               :max="1000" @change="calcPrice"
+              />
+            </div>
+            <div>
+              <div class="text-[20px] font-semibold mb-6">
+                Select a payment method
+              </div>
+              <div class="grid grid-cols-2 gap-6">
+                <div class="border rounded px-5 py-4 hover:border-primary cursor-pointer"
+                     :class="{
+                       'border-primary': paymentMethod === 'card',
+                       'border-black-200': paymentMethod !== 'card'
+                     }"
+                     @click="selectMethod('card')"
+                >
+                  <div class="text-lg font-semibold mb-2">Credits Cards</div>
+                  <div class="flex">
+                    <img src="~/assets/images/icons/cards/visa.svg" alt="">
+                    <img src="~/assets/images/icons/cards/master.svg" class="mx-2">
+                    <img src="~/assets/images/icons/cards/amex.svg" alt="">
+                  </div>
+                </div>
+                <div class="border rounded px-5 py-4 hover:border-primary cursor-pointer"
+                     :class="{
+                       'border-primary': paymentMethod === 'cash',
+                       'border-black-200': paymentMethod !== 'cash'
+                     }"
+                     @click="selectMethod('cash')"
+                >
+                  <div class="text-lg  mb-2 flex items-center justify-between">
+                    <span class="font-semibold">Internet Banking</span>
+                    <span class="">{{ balance | formatNumber }} VND</span>
+                  </div>
+                  <div class=" flex items-center justify-between">
+                    <span class="italic">*This is a payment method only for Vietnamese</span>
+                    <a href="https://id.cystack.net/wallet"
+                       target="_blank"
+                       class="btn btn-outline-primary rounded-full btn-xs hover:no-underline"
+                    >
+                      <i class="fa fa-plus" /> Topup
+                    </a>
+                  </div>
+                </div>
+                <div v-if="paymentMethod==='card'"
+                     class="border rounded p-5 border-black-200 cursor-pointer col-span-2"
+                >
+                  <div class="">
+                    <el-radio-group v-model="selectedCard" class="w-full">
+                      <el-radio v-for="item in cards" :key="item.id_card"
+                                :label="item.id_card"
+                                class="!flex mb-4"
+                      >
+                        <div class="flex items-center w-[200px] justify-between">
+                          <div class="text-black font-bold">{{ item.card_type }}</div>
+                          <div class="text-black flex items-center">
+                            <span class="bg-[#242424] w-[4px] h-[4px] rounded-full mr-0.5" />
+                            <span class="bg-[#242424] w-[4px] h-[4px] rounded-full mr-0.5" />
+                            <span class="bg-[#242424] w-[4px] h-[4px] rounded-full mr-0.5" />
+                            <span class="bg-[#242424] w-[4px] h-[4px] rounded-full mr-0.5" />
+                            <span>{{ item.last4 }}</span>
+                          </div>
+                        </div>
+                      </el-radio>
+                    </el-radio-group>
+                    <button class="btn btn-default btn-xs"
+                            @click="editBilling"
+                    >
+                      Thêm thẻ mới
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-1">
+            <div class="pl-6 py-7 rounded"
+                 style="background: linear-gradient(90deg, rgba(219,223,225,0.16) 0%, rgba(219,223,225,0) 100%);"
+            >
+              <div class="text-[20px] font-semibold mb-6">
+                Order summary
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="flex items-center">
+                    <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
+                      {{ getPlanName(selectedPlan.name).name }}
+                    </div>
+                    <div class="text-black-600 ml-2">
+                      {{ getPlanName(selectedPlan.name).tag }}
+                    </div>
+                  </div>
+                  <div>
+                    <span>{{ $t(`data.plans.price.${selectedPeriod.label}`) }}</span>
+                    <span v-if="selectedPlan.id === 4"> x {{ $tc('data.plans.members', number_members, { count: number_members }) }}</span>
+                  </div>
+                </div>
+                <div>
+                  {{ result.price | formatNumber }} {{ result.currency }}
+                </div>
+              </div>
+              <div class="my-8 h-[1px] bg-[#E8EAED]" />
+              <div class="flex items-center justify-between text-[20px] font-semibold">
+                <div>Total</div>
+                <div>
+                  {{ result.total_price | formatNumber }} {{ result.currency }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-primary !px-20"
+                  :disabled="shouldDisableBtn"
+                  @click="confirmPlan"
+          >
+            Upgrade
+          </button>
+        </div>
+        <CardDrawer ref="drawer" @handle-done="handleDone" />
+      </template>
     </div>
   </div>
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
+import find from 'lodash/find'
 import CardDrawer from '../components/upgrade/CardDrawer'
 import Check from '../components/icons/check'
 export default {
   components: { Check, CardDrawer },
   data () {
     return {
+      step: 1,
       plans: [],
+      plan: {},
       features: {
-        1: [
+        pm_free: [
           'store_password',
           'cards_and_notes',
           'password_generator',
           'sync_devices'
         ],
-        2: [
+        pm_personal_premium: [
           'store_password',
           'cards_and_notes',
           'password_generator',
@@ -150,7 +277,7 @@ export default {
           'password_health',
           'data_breach'
         ],
-        3: [
+        pm_family_discount: [
           'store_password',
           'cards_and_notes',
           'password_generator',
@@ -158,7 +285,7 @@ export default {
           'password_health',
           'data_breach'
         ],
-        4: [
+        pm_business_premium: [
           'store_password',
           'cards_and_notes',
           'password_generator',
@@ -173,20 +300,36 @@ export default {
       selectedPlan: {
         half_yearly_price: {},
         price: {},
-        yearly_price: {}
+        yearly_price: {},
+        name: ''
       },
-      priceType: [{
+      periods: [{
         label: 'yearly_price',
-        value: 12
+        value: 12,
+        duration: 'yearly'
       }, {
         label: 'half_yearly_price',
-        value: 6
+        value: 6,
+        duration: 'half_yearly'
       }, {
         label: 'price',
-        value: 1
+        value: 1,
+        duration: 'monthly'
       }],
+      cards: [],
       type: 'yearly_price',
-      paymentMethod: 'card'
+      paymentMethod: 'card',
+      selectedCard: '',
+      duration: 'yearly',
+      promo_code: '',
+      selectedPeriod: {
+        label: 'yearly_price',
+        value: 12,
+        duration: 'yearly'
+      },
+      number_members: 0,
+      result: {},
+      balance: 0
     }
   },
   computed: {
@@ -195,14 +338,25 @@ export default {
     },
     symbol () {
       return this.currency === 'vnd' ? 'đ' : '$'
+    },
+    shouldDisableBtn () {
+      if (this.loading) return true
+      if (this.paymentMethod === 'card' && this.cards.length === 0) return true
+      return false
     }
   },
   mounted () {
     this.getPlans()
+    this.getPlan()
+    this.getCards()
+    this.getBalance()
   },
   methods: {
     async getPlans () {
       this.plans = await this.$axios.$get('resources/cystack_platform/pm/plans')
+    },
+    async getPlan () {
+      this.plan = await this.$axios.$get('cystack_platform/pm/payments/plan')
     },
     getPlanName (text) {
       const [name, tag] = text.split(' ')
@@ -210,9 +364,104 @@ export default {
     },
     editBilling () {
       this.$refs.drawer.openDrawer({
-        country: 'VN',
+        country: '',
         metadata: {}
       })
+    },
+    handleDone (card) {
+      this.getCards()
+      this.$nextTick(() => {
+        this.selectedCard = card.id_card
+      })
+    },
+    async genOrgKey () {
+      const shareKey = await this.$cryptoService.makeShareKey()
+      const orgKey = shareKey[0].encryptedString
+      const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
+      const collectionName = collection.encryptedString
+      console.log('orgKey', orgKey)
+      console.log('collectionName', collectionName)
+    },
+    async getCards () {
+      this.cards = await this.$axios.$get('cystack_platform/payments/cards')
+    },
+    calcPrice: debounce(function () {
+      const currency = this.paymentMethod === 'card' ? 'USD' : 'VND'
+      this.loadingCalc = true
+      const url = 'cystack_platform/pm/payments/calc'
+      this.$axios.$post(url, {
+        plan_alias: this.selectedPlan.alias,
+        promo_code: this.promo_code,
+        duration: this.selectedPeriod.duration,
+        number_members: this.number_members,
+        currency
+      }).then(res => {
+        this.result = res
+      })
+        .catch(error => {
+          if (error.response && error.response.data && error.response.code === '7009') {
+            this.notify(this.$t('data.error_code.7009'))
+          }
+        })
+        .then(() => {
+          this.loadingCalc = false
+        })
+    }, 800),
+    selectPeriod (period) {
+      this.selectedPeriod = period
+      this.number_members = 1
+      this.calcPrice()
+      this.selectMethod('card')
+    },
+    selectPlan (plan) {
+      this.selectedPlan = plan
+      this.number_members = 1
+      this.step = 2
+      this.calcPrice()
+      this.selectPeriod({
+        label: 'yearly_price',
+        value: 12,
+        duration: 'yearly'
+      })
+    },
+    selectMethod (method) {
+      this.paymentMethod = method
+      if (method === 'card' && this.cards.length) {
+        const card = find(this.cards, e => e.default) || {}
+        this.selectedCard = card.id_card
+      }
+      this.calcPrice()
+    },
+    async confirmPlan () {
+      try {
+        this.loading = true
+        const shareKey = await this.$cryptoService.makeShareKey()
+        const orgKey = shareKey[0].encryptedString
+        const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
+        const collectionName = collection.encryptedString
+
+        await this.$axios.$post('cystack_platform/pm/payments/plan', {
+          plan_alias: this.selectedPlan.alias,
+          duration: this.selectPeriod.duration,
+          payment_method: this.paymentMethod,
+          id_card: this.selectedCard,
+          promo_code: this.promo_code,
+          number_members: this.number_members,
+          key: orgKey,
+          collection_name: collectionName
+        })
+        this.getPlan()
+        this.step = 1
+        this.notify('Nâng cấp thành công', 'success')
+      } catch {
+        this.notify('Có lỗi xảy ra. Vui lòng thử lại', 'warning')
+      } finally {
+        this.loading = false
+      }
+    },
+    async getBalance () {
+      const { balance } = await this.$axios.$get('sso/me/wallet/VND')
+      this.balance = balance
     }
   }
 }

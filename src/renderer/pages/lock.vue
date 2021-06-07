@@ -34,7 +34,9 @@
           >
             Unlock
           </button>
-          <button class="btn btn-default w-full" :disabled="loading" @click="logout">
+          <button class="btn btn-default w-full" :disabled="loading"
+                  @click="logout"
+          >
             Log Out
           </button>
         </div>

@@ -23,6 +23,7 @@
     height: 40px;
     &.form-control-sm {
       height: 36px;
+      line-height: 36px;
       @apply pl-7 pr-12  py-1.5;
     }
     &.form-control-lg {

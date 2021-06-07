@@ -25,6 +25,14 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
+            <div class="setting-title">Fingerprint</div>
+            <div class="setting-description !text-danger-400">{{ fingerprint }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="setting-section">
+        <div class="setting-section-header">
+          <div>
             <div class="setting-title">Plan</div>
             <div class="setting-description">Business Premium Trial</div>
           </div>
@@ -166,7 +174,8 @@ export default {
     return {
       user: {},
       loading: false,
-      collapsed: false
+      collapsed: false,
+      fingerprint: ''
     }
   },
   computed: {
@@ -190,6 +199,18 @@ export default {
   },
   mounted () {
     this.getUser()
+  },
+  asyncComputed: {
+    fingerprint: {
+      async get () {
+        const fingerprint = await this.$cryptoService.getFingerprint(await this.$userService.getUserId())
+        if (fingerprint != null) {
+          return fingerprint.join('-')
+        }
+        return ''
+      },
+      watch: ['$store.state.syncedCiphersToggle']
+    }
   },
   methods: {
     async getUser () {

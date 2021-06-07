@@ -69,7 +69,8 @@ export default {
           label: 'settings',
           routeName: 'admin-teamId-settings'
         }
-      ]
+      ],
+      locked: true,
     }
   },
   watch: {

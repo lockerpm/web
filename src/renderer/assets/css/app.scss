@@ -250,7 +250,7 @@ a {
   .el-drawer__header {
     margin-bottom: 0;
     padding-bottom: 20px;
-    border-bottom: 1px solid #113F67;
+    border-bottom: 1px solid #DCDFE6;
     color: #113F67
   }
   .el-drawer__body {
@@ -260,8 +260,23 @@ a {
 
     }
     .credit-drawer-footer {
-      border-top: #113F67;
+      border-top: #DCDFE6;
       padding: 20px;
     }
+  }
+}
+
+.cloud-card {
+  background: -moz-linear-gradient(left,  rgba(109,75,255,0.75) 0%, rgba(214,33,150,0.75) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left,  rgba(109,75,255,0.75) 0%,rgba(214,33,150,0.75) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right,  rgba(109,75,255,0.75) 0%,rgba(214,33,150,0.75) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#806d4bff', endColorstr='#80d62196',GradientType=1 ); /* IE6-9 */
+  border-radius: 15px;
+  padding: 20px 10px
+}
+
+.el-select.is-invalid {
+  input.el-input__inner {
+    @apply border-danger;
   }
 }

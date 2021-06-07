@@ -66,7 +66,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
                     v-if="scope.row.status === 'accepted'"
-                    @click.native="confirmUser(scope.row)"
+                    @click.native="promptConfirmUser(scope.row)"
                   >
                     <span class="text-success">{{ $t('common.confirm') }}</span>
                   </el-dropdown-item>
@@ -103,12 +103,50 @@
         <i class="fas fa-plus text-[24px]" />
       </button>
     </div>
+    <el-dialog
+      :visible.sync="dialogConfirmVisible"
+      width="435px"
+      destroy-on-close
+      top="15vh"
+      custom-class="locker-dialog"
+      :close-on-click-modal="false"
+    >
+      <div slot="title">
+        <div class="text-head-5 text-black-700 font-semibold truncate">
+          {{ $t('data.notifications.fingerprint_title') }}
+        </div>
+      </div>
+      <div class="text-left">
+        <div class="text-head-6 mb-4">{{ $t('data.notifications.fingerprint_description_1') }}</div>
+        <div class="text-danger-400 bg-black-200 bg-opacity-50 rounded px-4 py-2 mb-4">
+          {{ userFingerPrint }}
+        </div>
+        <div class="text-sm">{{ $t('data.notifications.fingerprint_description_2') }}</div>
+      </div>
+      <div slot="footer" class="dialog-footer flex items-center text-left">
+        <div class="flex-grow" />
+        <div>
+          <button class="btn btn-default"
+                  @click="dialogConfirmVisible = false"
+          >
+            {{ $t('common.cancel') }}
+          </button>
+          <button class="btn btn-primary"
+                  :disabled="loadingConfirm"
+                  @click="confirmUser(selectedUser)"
+          >
+            {{ $t('common.confirm') }}
+          </button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import AddEditUser from '../../../components/user/AddEditUser'
 import AddEditUserGroups from '../../../components/user/AddEditUserGroups'
+import { Utils } from '../../../jslib/src/misc/utils.ts'
 export default {
   components: {
     AddEditUser, AddEditUserGroups
@@ -116,7 +154,13 @@ export default {
   data () {
     return {
       users: [],
-      loading: true
+      loading: true,
+      loadingConfirm: false,
+      dialogConfirmVisible: false,
+      dontAskAgain: false,
+      publicKey: null,
+      userFingerPrint: '',
+      selectedUser: {}
     }
   },
   mounted () {
@@ -140,28 +184,49 @@ export default {
     deleteUser (user) {
       this.$refs.addEditUser.deleteUser(user)
     },
-    async generateOrgKey (publicKey) {
-      const pk = new Uint8Array(Buffer.from(publicKey, 'base64'))
+    async generateOrgKey () {
+      const pk = Utils.fromB64ToArray(this.publicKey)
       const orgKey = await this.$cryptoService.getOrgKey(this.$route.params.teamId)
       const key = await this.$cryptoService.rsaEncrypt(orgKey.key, pk.buffer)
       return key.encryptedString
     },
     async getPublicKey (user) {
+      this.userFingerPrint = ''
       const { public_key: publicKey } = await this.$axios.$get(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/${user.id}/public_key`)
       return publicKey
     },
+    async promptConfirmUser (user) {
+      this.selectedUser = user
+      this.publicKey = await this.getPublicKey(user)
+      const publicKey = Utils.fromB64ToArray(this.publicKey)
+      const fingerprint = await this.$cryptoService.getFingerprint(user.pwd_user_id, publicKey.buffer)
+      if (fingerprint) {
+        this.userFingerPrint = fingerprint.join('-')
+      }
+      this.dontAskAgain = await this.$storageService.get('autoConfirmFingerprints')
+      this.openDialogConfirm()
+    },
+    openDialogConfirm () {
+      this.dialogConfirmVisible = true
+    },
+    closeDialogConfirm () {
+      this.dialogConfirmVisible = false
+    },
     async confirmUser (user) {
       try {
-        const publicKey = await this.getPublicKey(user)
-        const key = await this.generateOrgKey(publicKey)
+        this.loadingConfirm = true
+        const key = await this.generateOrgKey()
         await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/${user.id}`, {
           key
         })
+        this.closeDialogConfirm()
         this.getUsers()
         this.notify(this.$t('data.notifications.confirm_member_success'), 'success')
       } catch (e) {
         console.log(e)
         this.notify(this.$t('data.notifications.confirm_member_failed'), 'warning')
+      } finally {
+        this.loadingConfirm = false
       }
     },
     putUserGroups (user) {
