@@ -1,11 +1,11 @@
 <template>
   <nav
     id="header"
-    class="fixed w-full z-30 top-0 bg-white"
+    class="fixed w-full z-30 transition duration-300 ease-in-out bg-white"
   >
-    <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
       <!-- Logo -->
-      <div class="pl-4 flex items-center">
+      <div class="pl-6 flex items-center">
         <nuxt-link to="/">
           <img
             src="~/assets/images/logo/locker-logo.svg"
@@ -45,7 +45,7 @@
           </li>
           <li class="mr-3">
             <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="#">
-              link
+              link 123
             </a>
           </li>
         </ul>
@@ -74,9 +74,9 @@ export default {
       const scrollPos = window.scrollY
 
       if (scrollPos > 10) {
-        header.classList.add('shadow', 'border-b', 'border-gray-100')
+        header.classList.add('shadow-lg')
       } else {
-        header.classList.remove('shadow', 'border-b', 'border-gray-100')
+        header.classList.remove('shadow-lg')
       }
     })
 
