@@ -33,6 +33,11 @@ export default {
   font-size: 16px;
   border-radius: 5px;
 }
+
+.landing-transition {
+  @apply transition duration-200 ease-in-out;
+}
+
 .landing-font-50 {
   font-size: 50px;
   line-height: 56px;
@@ -58,6 +63,9 @@ export default {
 .landing-font-16 {
   font-size: 16px;
   line-height: 26px;
+}
+.landing-font-15 {
+  font-size: 15px;
 }
 .landing-font-14 {
   font-size: 14px;

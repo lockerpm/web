@@ -3,9 +3,9 @@
     id="header"
     class="fixed w-full z-30 transition duration-300 ease-in-out bg-white"
   >
-    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-2 px-6">
       <!-- Logo -->
-      <div class="pl-6 flex items-center">
+      <div class="flex items-center">
         <nuxt-link to="/">
           <img
             src="~/assets/images/logo/locker-logo.svg"
@@ -15,16 +15,16 @@
       </div>
       <!-- Logo end -->
 
-      <!-- Menu on mobile -->
-      <div class="block lg:hidden pr-4">
+      <!-- Icon on mobile -->
+      <div class="block lg:hidden landing-transition">
         <a
           id="nav-toggle"
-          class="text-3xl"
+          class="landing-font-28 text-black landing-transition"
         >
           <i class="fa fa-bars" />
         </a>
       </div>
-      <!-- Menu on mobile end -->
+      <!-- Icon on mobile end -->
 
       <!-- Content -->
       <div
@@ -33,40 +33,66 @@
       >
         <!-- Nav items -->
         <ul class="list-reset lg:flex justify-end flex-1 items-center">
-          <li class="mr-3">
-            <a class="inline-block py-2 px-4 font-bold no-underline" href="#">
-              Active
-            </a>
-          </li>
-          <li class="mr-3">
-            <a class="inline-block no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="#">
-              link
-            </a>
-          </li>
-          <li class="mr-3">
-            <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="#">
-              link 123
+          <li
+            v-for="(item, index) in menu"
+            :key="index"
+            class="mr-1"
+          >
+            <a
+              class="inline-block py-2 px-4 hover:no-underline landing-font-15 text-black landing-transition"
+              :href="item.link"
+            >
+              {{ item.name }}
             </a>
           </li>
         </ul>
         <!-- Nav items end -->
-
-        <!-- Right actions -->
-        <button
-          id="navAction"
-          class="mx-auto lg:mx-0 hover:underline bg-white font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow"
-        >
-          Action
-        </button>
-        <!-- Right actions end -->
       </div>
+      <!-- Content end -->
+
+      <!-- Right actions -->
+      <div class="hidden lg:flex">
+        <a
+          class="landing-btn landing-bg-green hover:opacity-80"
+          href="#"
+        >
+          Đăng ký
+        </a>
+      </div>
+      <!-- Right actions end -->
     </div>
-    <!-- Content end -->
   </nav>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      menu: [
+        {
+          name: 'Lợi ích',
+          link: '#'
+        },
+        {
+          name: 'Tính năng',
+          link: '#'
+        },
+        {
+          name: 'Bảng giá',
+          link: '#'
+        },
+        {
+          name: 'Tải về',
+          link: '#'
+        },
+        {
+          name: 'Doanh nghiệp',
+          link: '#'
+        }
+      ]
+    }
+  },
+
   mounted () {
     // Set scroll event
     const header = document.getElementById('header')

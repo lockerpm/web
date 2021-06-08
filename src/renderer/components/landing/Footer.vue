@@ -21,7 +21,7 @@
                   class="mb-3"
                 >
                   <a
-                    class="text-black-600 transition duration-200 ease-in-out hover:no-underline sm:max-w-[170px] block"
+                    class="text-black-600 landing-transition hover:no-underline sm:max-w-[170px] block"
                     :href="item.link"
                   >
                     {{ item.name }}
@@ -43,19 +43,19 @@
 
               <div class="flex">
                 <a
-                  class="text-black-600 landing-font-32 transition duration-200 ease-in-out mr-6"
+                  class="text-black-600 landing-font-32 landing-transition mr-6"
                   href="#"
                 >
                   <i class="fab fa-facebook" />
                 </a>
                 <a
-                  class="text-black-600 landing-font-32 transition duration-200 ease-in-out mr-6"
+                  class="text-black-600 landing-font-32 landing-transition mr-6"
                   href="#"
                 >
                   <i class="fab fa-twitter" />
                 </a>
                 <a
-                  class="text-black-600 landing-font-32 transition duration-200 ease-in-out"
+                  class="text-black-600 landing-font-32 landing-transition"
                   href="#"
                 >
                   <i class="fab fa-linkedin" />
