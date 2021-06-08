@@ -100,7 +100,7 @@ export default {
       const keyHash = await this.$cryptoService.hashPassword(this.password, null)
       const storedKeyHash = await this.$cryptoService.getKeyHash()
       if (storedKeyHash != null && keyHash != null && storedKeyHash === keyHash) {
-        await this.purgeAccount()
+        await this.purgeAccount(keyHash)
         this.closeDialog()
       } else {
         this.errors = { password: 1 }

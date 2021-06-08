@@ -36,6 +36,9 @@
 .btn-outline-primary {
   @apply bg-transparent border border-primary hover:bg-primary hover:text-white text-primary;
 }
+.btn-outline-warning {
+  @apply bg-transparent border border-primary hover:bg-primary hover:text-white text-primary;
+}
 .btn-primary-reserve {
   @apply text-primary hover:bg-opacity-[0.9] bg-white;
 }

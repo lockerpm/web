@@ -219,6 +219,7 @@ export default {
         this.getSyncData()
         this.getInvitations()
         this.reconnectSocket()
+        this.$store.dispatch('LoadCurrentPlan')
       }
     }
   },
