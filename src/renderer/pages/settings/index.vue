@@ -34,12 +34,15 @@
         <div class="setting-section-header">
           <div>
             <div class="setting-title">Plan</div>
-            <div class="setting-description">Business Premium Trial</div>
+            <div class="setting-description">{{ currentPlan.name }}</div>
           </div>
           <div>
-            <button class="btn btn-primary">
-              Upgrade
-            </button>
+            <nuxt-link tag="button"
+                       :to="localeRoute({name: 'upgrade'})"
+                       class="btn btn-primary"
+            >
+              Manage Plan
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -195,6 +198,9 @@ export default {
         { label: this.$t('common.lock'), value: 'lock' },
         { label: this.$t('common.logout'), value: 'logOut' }
       ]
+    },
+    currentPlan () {
+      return this.$store.state.currentPlan
     }
   },
   mounted () {
