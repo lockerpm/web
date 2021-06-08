@@ -190,8 +190,9 @@ Vue.mixin({
             if (domain) {
               return (this.$createElement(Avatar, {
                 props: {
-                  src: `${process.env.logoUrl}${domain}?size=${size}" alt="${domain}`,
-                  size
+                  src: `${process.env.logoUrl}${domain}?size=${size}`,
+                  size,
+                  alt: domain
                 }
               }, [
                 this.$createElement('img', {
