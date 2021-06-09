@@ -24,7 +24,7 @@
         </div>
         <form @submit.prevent="confirmPassword">
           <div class="form-group">
-            <label for="">Master Key</label>
+            <label for="">Master Password</label>
             <div class="input-group" :class="errors.password ? 'is-invalid' : ''">
               <input v-model="password"
                      :type="showPassword ? 'text' : 'password'"

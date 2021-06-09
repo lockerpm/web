@@ -36,34 +36,47 @@
     </div>
     <div class="text-head-5 font-semibold mb-4">Invoice</div>
     <div>
-      <table class="table table-hover">
-        <tbody>
-          <tr v-for="item in invoices.results" :key="item.id">
-            <td class="align-middle">
-              <nuxt-link :to="{name: 'invoices-idInvoice', params: {idInvoice: item.id}}"
-                         tag="a" target="_blank"
-                         class="kt-link kt-font-dark kt-font-bold"
-              >
-                {{ $moment(item.created_time*1000).format('LL') }}
-              </nuxt-link>
-            </td>
-            <td class="align-middle">
-              ${{ item.total_price | formatPrice }}
-            </td>
-            <td class="align-middle text-right">
-              <span class="font-weight-bold" :class="item.status.toLowerCase() ==='paid'?'kt-font-success':item.status.toLowerCase() ==='failed'?'kt-font-danger':'kt-font-warning'">{{ $t(`data.billing.${item.status.toLowerCase()}`) }}
-              </span>
-            </td>
-            <td class="align-middle text-right">
-            <!--                    <div v-if="item.status === 'past_due'">-->
-            <!--                      <button class="btn btn-warning btn-sm btn-widest" :disabled="loadingPay" @click="payInvoice(item)">-->
-            <!--                        {{ $t('common.pay') }}-->
-            <!--                      </button>-->
-            <!--                    </div>-->
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <el-table
+        :data="invoices.results"
+        style="width: 100%"
+      >
+        <el-table-column
+          label="Transaction ID"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.payment_id }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Date"
+        >
+          <template slot-scope="scope">
+            {{ $moment(scope.row.created_time*1000).format('LLL') }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Plan"
+        >
+          <template slot-scope="scope">
+            {{ getPlayByAlias(plans, scope.row.plan).name }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Duration"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.duration }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="date"
+          label="Amount"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.total_price | formatNumber }}
+          </template>
+        </el-table-column>
+      </el-table>
       <el-pagination
         v-if="invoices.count > 10"
         id="_main_pag"
@@ -78,11 +91,13 @@
 </template>
 
 <script>
+import find from 'lodash/find'
 export default {
   data () {
     return {
       invoices: {},
-      page: 1
+      page: 1,
+      plans: []
     }
   },
   computed: {
@@ -92,6 +107,7 @@ export default {
   },
   mounted () {
     this.getInvoices()
+    this.getPlans()
   },
   methods: {
     getPlanName (text) {
@@ -135,6 +151,13 @@ export default {
     },
     handlePageChange (page) {
       this.getInvoices(page)
+    },
+    async getPlans () {
+      this.plans = await this.$axios.$get('resources/cystack_platform/pm/plans')
+    },
+    getPlayByAlias (plans, alias) {
+      console.log(plans, alias)
+      return find(plans, e => e.alias === alias) || {}
     }
   }
 }

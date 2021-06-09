@@ -37,17 +37,20 @@
             />
           </el-select>
         </div>
-        <div class="form-group !mb-8">
-          <label for="">Tên <span class="text-danger">*</span></label>
-          <input v-model="cipher.name" type="text" class="form-control"
-                 :class="{'is-invalid': errors.name}"
-                 placeholder=""
-                 :disabled="isDeleted"
-          >
-          <div class="invalid-feedback">
-            {{ errors.name && errors.name[0] }}
+        <ValidationProvider v-slot="{ errors: err }" rules="required" :name="$t('common.name')">
+          <div class="form-group !mb-8">
+            <label for="">Tên <span class="text-danger">*</span></label>
+            <input v-model="cipher.name" type="text" class="form-control"
+                   :class="{'is-invalid': err.length}"
+                   placeholder=""
+                   :disabled="isDeleted"
+            >
+            <div class="invalid-feedback">
+              {{ err[0] }}
+            </div>
           </div>
-        </div>
+        </ValidationProvider>
+
         <template v-if="cipher.type === CipherType.Login">
           <div class="mb-4 text-black-700 text-head-6 font-semibold">Chi tiết đăng nhập</div>
           <div class="form-group">
@@ -74,6 +77,7 @@
                 </button>
               </div>
             </div>
+            <PasswordStrengthBar :score="passwordStrength.score" class="mt-2"/>
             <div v-if="!isDeleted" class="text-right">
               <el-popover
                 placement="right"
@@ -81,7 +85,7 @@
                 trigger="click"
                 popper-class="locker-pw-generator"
               >
-                <PasswordGenerator />
+                <PasswordGenerator @generated="(p) => cipher.login.password = p" />
 
                 <button slot="reference"
                         class="btn btn-clean !text-primary !pb-0"
@@ -392,7 +396,7 @@
             {{ $t('common.restore') }}
           </button>
           <button v-else class="btn btn-primary"
-                  :disabled="loading"
+                  :disabled="loading || !cipher.name"
                   @click="cipher.id ?putCipher(cipher):postCipher(cipher)"
           >
             {{ cipher.id ? $t('common.update') : $t('common.add') }}
@@ -406,16 +410,24 @@
 
 <script>
 import { Dialog } from 'element-ui'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { CipherType, SecureNoteType } from '../../jslib/src/enums'
 import { Cipher } from '../../jslib/src/models/domain'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView } from '../../jslib/src/models/view'
 import AddEditFolder from '../folder/AddEditFolder'
 import PasswordGenerator from '../password/PasswordGenerator'
+import PasswordStrengthBar from '../password/PasswordStrengthBar'
 import InlineEditCipher from './InlineEditCipher'
 export default {
   components: {
-    AddEditFolder, PasswordGenerator, Dialog, InlineEditCipher
+    AddEditFolder,
+    PasswordGenerator,
+    Dialog,
+    InlineEditCipher,
+    ValidationProvider,
+    ValidationObserver,
+    PasswordStrengthBar
   },
   props: {
     type: {

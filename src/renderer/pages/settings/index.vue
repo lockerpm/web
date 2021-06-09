@@ -110,7 +110,7 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
-            <div class="setting-title">Change Master Key</div>
+            <div class="setting-title">Change Master Password</div>
           </div>
           <div>
             <button class="btn btn-icon !text-black-600"

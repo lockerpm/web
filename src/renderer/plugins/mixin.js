@@ -319,6 +319,7 @@ Vue.filter('filterPassword', function (value, showPassword) {
 Vue.filter('filterString', function (value) {
   return value
 })
+
 Vue.filter('formatPercentage', function (value) {
   if (!Number.isNaN(value)) {
     return numeral(value).format('0.[00]')

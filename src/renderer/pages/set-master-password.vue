@@ -4,9 +4,9 @@
       <img src="~assets/images/logo/logo_black.svg" alt="" class="h-[1.875rem]">
     </div>
     <div class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center">
-      <div class="text-head-4 font-semibold mb-2.5">Tạo Master Key</div>
+      <div class="text-head-4 font-semibold mb-2.5">Tạo Master Password</div>
       <div class="text-base text-black-600 mb-4">
-        Master Key là mật khẩu mở khóa Locker của bạn. Đây là mật khẩu duy nhất bạn cần nhớ để truy cập tất cả các mật khẩu khác được lưu trữ trong Locker. Vui lòng không chia sẻ mật khẩu này với bất kỳ ai.
+        Master Password là mật khẩu mở khóa Locker của bạn. Đây là mật khẩu duy nhất bạn cần nhớ để truy cập tất cả các mật khẩu khác được lưu trữ trong Locker. Vui lòng không chia sẻ mật khẩu này với bất kỳ ai.
       </div>
       <div class="inline-block mb-8 select-none">
         <div class="flex items-center">
@@ -25,7 +25,7 @@
       </div>
       <div class="text-left">
         <div class="form-group !mb-4">
-          <label for="">Nhập Master Key</label>
+          <label for="">Nhập Master Password</label>
           <div class="input-group mb-1.5">
             <input v-model="masterPassword"
                    :type="showPassword ? 'text' : 'password'"
@@ -43,7 +43,7 @@
           <PasswordStrengthBar v-if="masterPassword" :score="passwordStrength.score" />
         </div>
         <div class="form-group !mb-4">
-          <label for="">Xác nhận Master Key</label>
+          <label for="">Xác nhận Master Password</label>
           <div class="input-group" :class="[errors.masterRePassword ? 'is-invalid' :'']">
             <input v-model="masterRePassword"
                    :type="showRePassword ? 'text' : 'password'"
@@ -77,7 +77,7 @@
         </button>
       </div>
       <div class="md:w-[320px] text-black-600 mx-auto">
-        Lưu ý: CyStack không thể xem, không thể lưu trữ, cũng như không thể cấp lại Master Key trong trường hợp bạn quên hoặc đánh mất.
+        Lưu ý: CyStack không thể xem, không thể lưu trữ, cũng như không thể cấp lại Master Password trong trường hợp bạn quên hoặc đánh mất.
       </div>
     </div>
   </div>
