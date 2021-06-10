@@ -10,7 +10,7 @@
 <script>
 export default {
   // layout: 'authenticate',
-  layout: 'blank',
+  layout: 'landing',
   asyncData ({ redirect }) {
     // redirect(302, '/vault')
   },
