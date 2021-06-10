@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     async regenerate () {
-      if (!this.options.lowercase && !this.options.uppercase && !this.options.lowercase && !this.options.number) {
+      if (!this.options.lowercase && !this.options.uppercase && !this.options.lowercase && !this.options.number && !this.options.special) {
         this.options.lowercase = true
       }
       this.password = await this.$passwordGenerationService.generatePassword(this.options)

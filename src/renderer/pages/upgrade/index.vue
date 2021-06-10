@@ -92,7 +92,7 @@
             <div class="grid grid-cols-3 gap-x-6">
               <div v-for="(item) in periods"
                    :key="item.value"
-                   class="py-5 px-3 border border-black-200 rounded text-center cursor-pointer"
+                   class="transition-card py-5 px-3 border border-black-200 rounded text-center cursor-pointer"
                    :class="{'border-primary': selectedPeriod.label===item.label}"
                    @click="selectPeriod(item)"
               >
@@ -132,7 +132,7 @@
               Select a payment method
             </div>
             <div class="grid grid-cols-2 gap-6">
-              <div class="border rounded px-5 py-4 hover:border-primary cursor-pointer"
+              <div class="transition-card border rounded px-5 py-4 hover:border-primary cursor-pointer"
                    :class="{
                      'border-primary': paymentMethod === 'card',
                      'border-black-200': paymentMethod !== 'card'
@@ -146,7 +146,7 @@
                   <img src="~/assets/images/icons/cards/amex.svg" alt="">
                 </div>
               </div>
-              <div class="border rounded px-5 py-4 hover:border-primary cursor-pointer"
+              <div class="transition-card border rounded px-5 py-4 hover:border-primary cursor-pointer"
                    :class="{
                      'border-primary': paymentMethod === 'cash',
                      'border-black-200': paymentMethod !== 'cash'
@@ -297,13 +297,13 @@
           <div class="grid grid-cols-3 gap-x-6">
             <div v-for="(item) in periods"
                  :key="item.value"
-                 class="py-5 px-3 border border-black-200 rounded text-center cursor-pointer"
+                 class="transition-card py-5 px-3 border border-black-200 rounded text-center cursor-pointer"
                  :class="{'border-primary': selectedPeriod.label===item.label}"
                  @click="selectPeriod(item)"
             >
               <div class="font-semibold text-[1rem] mb-2.5">{{ $t(`data.plans.price.${item.label}`) }}</div>
               <template v-if="selectedPlan[item.label]">
-                <div class="font-semibold mb-8">
+                <div class="font-semibold">
                   <span>
                     <span class="text-head-3">{{ symbol }}{{ selectedPlan[item.label][currency]/item.value | formatNumber }}</span>
                     <span> / Mo </span>
