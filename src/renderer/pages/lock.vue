@@ -18,12 +18,23 @@
       </div>
       <form @submit.prevent="setMasterPass">
         <div class="form-group !mb-4">
-          <input v-model="masterPassword" class="form-control"
-                 placeholder="Nhập mật khẩu tổng"
-                 :name="randomString()" autocomplete="new-password"
-                 :class="[errors ? 'is-invalid' :'']"
-                 type="password"
-          ></input>
+          <div class="input-group mb-1.5">
+            <input v-model="masterPassword"
+                   :type="showPassword ? 'text' : 'password'"
+                   class="form-control"
+                   :class="[errors ? 'is-invalid' :'']"
+                   :name="randomString()" autocomplete="new-password"
+            >
+            <div class="input-group-append !bg-white">
+              <button class="btn btn-icon" @click="showPassword = !showPassword"
+                      type="button"
+              >
+                <i class="far"
+                   :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+                />
+              </button>
+            </div>
+          </div>
           <div class="invalid-feedback">{{ $t('errors.invalid_password') }}</div>
         </div>
       </form>
@@ -52,7 +63,7 @@ export default {
   data () {
     return {
       invalidPinAttempts: 0,
-      masterPassword: '12345678',
+      masterPassword: '',
       loading: false,
       errors: false
     }

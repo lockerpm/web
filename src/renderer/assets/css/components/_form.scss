@@ -86,5 +86,18 @@
       @apply border-danger;
     }
   }
+  &.material-input {
+    @apply relative;
+    label {
+      position: absolute;
+      z-index: 2;
+      left: 14px;
+      top: -8px;
+      background: white;
+      padding: 0 5px;
+      margin: 0;
+      line-height: 1;
+    }
+  }
 }
 

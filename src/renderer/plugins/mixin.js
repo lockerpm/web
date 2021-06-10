@@ -192,7 +192,8 @@ Vue.mixin({
                 props: {
                   src: `${process.env.logoUrl}${domain}?size=${size}`,
                   size,
-                  alt: domain
+                  alt: domain,
+                  shape: 'square'
                 }
               }, [
                 this.$createElement('img', {
