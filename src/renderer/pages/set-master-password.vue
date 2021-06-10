@@ -158,7 +158,6 @@ export default {
         this.$store.commit('UPDATE_USER_PW', { ...this.$store.state.userPw, is_pwd_manager: true })
         await this.login()
       } catch (e) {
-        console.log(e)
         this.notify(this.$t('master_password.create_failed'), 'warning')
       } finally {
         this.loading = false
