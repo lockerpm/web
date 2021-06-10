@@ -14,7 +14,7 @@
     </div>
     <div class="text-left">
       <div class="form-group">
-        <label for="">Nhập Master Key hiện tại</label>
+        <label for="">Nhập Master Password hiện tại</label>
         <input v-model="oldMasterPassword"
                :type="showPassword ? 'text' : 'password'"
                class="form-control"
@@ -22,7 +22,7 @@
         >
       </div>
       <div class="form-group">
-        <label for="">Nhập Master Key mới</label>
+        <label for="">Nhập Master Password mới</label>
         <input v-model="masterPassword"
                :type="showPassword ? 'text' : 'password'"
                class="form-control mb-2"
@@ -31,7 +31,7 @@
         <PasswordStrengthBar v-if="masterPassword" :score="passwordStrength.score" />
       </div>
       <div class="form-group">
-        <label for="">Xác nhận Master Key mới</label>
+        <label for="">Xác nhận Master Password mới</label>
         <input v-model="masterRePassword"
                :type="showPassword ? 'text' : 'password'"
                class="form-control"

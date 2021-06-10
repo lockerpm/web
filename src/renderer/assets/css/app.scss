@@ -267,10 +267,7 @@ a {
 }
 
 .cloud-card {
-  background: -moz-linear-gradient(left,  rgba(109,75,255,0.75) 0%, rgba(214,33,150,0.75) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(left,  rgba(109,75,255,0.75) 0%,rgba(214,33,150,0.75) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to right,  rgba(109,75,255,0.75) 0%,rgba(214,33,150,0.75) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#806d4bff', endColorstr='#80d62196',GradientType=1 ); /* IE6-9 */
+  background: #F3F5F8;
   border-radius: 15px;
   padding: 20px 10px
 }
@@ -279,4 +276,8 @@ a {
   input.el-input__inner {
     @apply border-danger;
   }
+}
+
+.transition-card {
+  transition: border-color .25s ease-out,background-color .15s ease-out;
 }

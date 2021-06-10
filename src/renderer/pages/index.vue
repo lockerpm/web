@@ -1,12 +1,18 @@
 <template>
-  <div />
+  <div>
+    Landing page
+    <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">
+      vault
+    </nuxt-link>
+  </div>
 </template>
 
 <script>
 export default {
-  layout: 'authenticate',
+  // layout: 'authenticate',
+  layout: 'blank',
   asyncData ({ redirect }) {
-    redirect(302, '/vault')
+    // redirect(302, '/vault')
   },
   data () {
     return {

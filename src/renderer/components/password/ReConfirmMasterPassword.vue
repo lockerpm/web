@@ -10,7 +10,7 @@
     >
       <div slot="title">
         <div class="text-head-5 text-black-700 font-semibold truncate">
-          Nhập Master Key
+          Nhập Master Password
         </div>
       </div>
       <div class="text-left">

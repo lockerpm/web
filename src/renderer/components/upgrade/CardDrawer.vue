@@ -23,16 +23,16 @@
       <div class="grid grid-cols-2 cloud-card gap-x-4">
         <div class="form-group col-span-2">
           <ValidationProvider v-slot="{ errors }" rules="required|alpha_spaces|max:100" :name="$t('common.cardholder')">
-            <label class="!text-white">* {{ $t('common.cardholder') }}</label>
+            <label class="">* {{ $t('common.cardholder') }}</label>
             <input v-model="user.name" type="text"
                    :class="errors.length?'is-invalid':''"
                    class="form-control form-control-sm " :placeholder="$t('common.cardholder_placeholder')" name="cardholder"
             >
-            <span class="invalid-feedback text-white">{{ errors[0] }}</span>
+            <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
         </div>
         <div class="form-group col-span-2" :class="eventChangeNumber.error ? 'has-danger':''">
-          <label class="!text-white">* {{ $t('data.billing.card_number') }}</label>
+          <label class="">* {{ $t('data.billing.card_number') }}</label>
           <div class="input-group input-group-sm bg-white">
             <div class="input-group-prepend bg-black-200  !rounded-r-none">
               <span class="input-group-text">
@@ -47,21 +47,21 @@
             </div>
             <div id="card-number" ref="cardNumber" />
           </div>
-          <div v-if="eventChangeNumber.error" class="invalid-feedback text-white">
+          <div v-if="eventChangeNumber.error" class="invalid-feedback">
             {{ $t(`data.error_code.${eventChangeNumber.error.code}`) }}
           </div>
         </div>
         <div class="form-group" :class="eventChangeExpiry.error ? 'has-danger':''">
-          <label class="!text-white">* {{ $t('data.billing.expiration') }}</label>
+          <label class="">* {{ $t('data.billing.expiration') }}</label>
           <div id="card-expiry" ref="cardExpiry" />
-          <div v-if="eventChangeExpiry.error" class="invalid-feedback text-white">
+          <div v-if="eventChangeExpiry.error" class="invalid-feedback">
             {{ $t(`data.error_code.${eventChangeExpiry.error.code}`) }}
           </div>
         </div>
         <div class="form-group" :class="eventChangeCvc.error ? 'has-danger':''">
-          <label class="!text-white">* {{ $t('data.billing.cvc') }}</label>
+          <label class="">* {{ $t('data.billing.cvc') }}</label>
           <div id="card-cvc" ref="cardCvc" />
-          <div v-if="eventChangeCvc.error" class="invalid-feedback text-white">
+          <div v-if="eventChangeCvc.error" class="invalid-feedback">
             {{ $t(`data.error_code.${eventChangeCvc.error.code}`) }}
           </div>
         </div>
@@ -322,7 +322,7 @@ export default {
               this.$refs.cardDrawer.closeDrawer()
             })
               .catch(() => {
-                this.notify(this.$t('data.billing.generic_decline'), 'warning')
+                this.notify(this.$t('data.billing.card_decline.generic_decline'), 'warning')
               })
               .then(() => {
                 this.loading = false
