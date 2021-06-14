@@ -47,7 +47,7 @@ module.exports = {
         ...colors.yellow
       },
       success: {
-        DEFAULT: '#3DB249',
+        DEFAULT: '#3AB34A',
         HOVER: '#2C9737',
         ...colors.green
       },
