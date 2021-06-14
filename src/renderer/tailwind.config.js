@@ -39,7 +39,7 @@ module.exports = {
       },
       white: colors.white,
       info: {
-        DEFAULT: '#005AE4',
+        DEFAULT: '#0363C2',
         ...colors.blue
       },
       warning: {
@@ -56,8 +56,8 @@ module.exports = {
         ...colors.red
       },
       primary: {
-        DEFAULT: '#3DB249',
-        HOVER: '#2C9737'
+        DEFAULT: '#0476E9',
+        HOVER: '#0363C2'
       }
     },
     extend: {
