@@ -47,7 +47,8 @@ module.exports = {
         ...colors.yellow
       },
       success: {
-        DEFAULT: '#26BE56',
+        DEFAULT: '#3DB249',
+        HOVER: '#2C9737',
         ...colors.green
       },
       danger: {
@@ -55,7 +56,8 @@ module.exports = {
         ...colors.red
       },
       primary: {
-        DEFAULT: '#00A893'
+        DEFAULT: '#3DB249',
+        HOVER: '#2C9737'
       }
     },
     extend: {
