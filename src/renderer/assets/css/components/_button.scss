@@ -28,7 +28,7 @@
   }
 }
 .btn-primary {
-  @apply bg-primary hover:bg-opacity-90 text-white;
+  @apply bg-primary hover:bg-primary-HOVER text-white;
   &.btn-clean {
     @apply bg-transparent text-primary
   }
@@ -43,7 +43,7 @@
   @apply text-primary hover:bg-opacity-[0.9] bg-white;
 }
 .btn-success {
-  @apply bg-success text-white;
+  @apply bg-success hover:bg-primary-HOVER text-white;
 }
 .btn-danger {
   @apply bg-danger text-white;

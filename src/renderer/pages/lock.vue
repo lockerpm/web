@@ -65,7 +65,8 @@ export default {
       invalidPinAttempts: 0,
       masterPassword: '',
       loading: false,
-      errors: false
+      errors: false,
+      showPassword: false
     }
   },
   mounted () {
