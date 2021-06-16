@@ -17,12 +17,17 @@
                @change="handleChange"
     >
       <el-option
-        v-for="(item, index) in options"
-        :key="index"
+        v-for="(item) in options"
+        :key="item.id"
         :label="item.name"
-        :value="item.organization_id"
-        :disabled="!item.enabled"
-      />
+        :value="item.id"
+        :disabled="!canManage(item)"
+      >
+        <div class="flex items-center justify-between">
+          <div>{{ item.name }}</div>
+          <div>{{ item.role }}</div>
+        </div>
+      </el-option>
     </el-select>
     <button v-if="focusing || initialValue" class="btn btn-icon btn-select !py-0">
       <svg width="8px" height="13px" viewBox="0 0 8 13" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
@@ -88,7 +93,13 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      this.value = this.initialValue
+      if (this.initialValue === null || this.initialValue) {
+        this.value = this.initialValue
+      } else {
+        const options = this.options.filter(e => this.canManage(e))
+        this.value = options?.[0]?.id
+        this.$emit('change', this.value)
+      }
     })
   },
   methods: {
@@ -103,6 +114,9 @@ export default {
     handleChange (value) {
       if (this.disabled) { return }
       this.$emit('change', value)
+    },
+    canManage (team) {
+      return ['owner', 'admin'].includes(team.role) && !team.locked
     }
   }
 }

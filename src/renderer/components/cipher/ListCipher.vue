@@ -165,12 +165,14 @@
               >
                 Đổi tên
               </li>
-              <li class="el-dropdown-menu__item w-[200px]"
+              <li v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
+                  class="el-dropdown-menu__item w-[200px]"
                   @click.prevent="putTeamFolderUsers(selectedFolder)"
               >
                 User Access
               </li>
-              <li class="el-dropdown-menu__item w-[200px]"
+              <li v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
+                  class="el-dropdown-menu__item w-[200px]"
                   @click.prevent="putTeamFolderGroups(selectedFolder)"
               >
                 Group Access
@@ -714,6 +716,12 @@ export default {
         return filteredCipher.length
       }
       return 0
+    },
+    canDeleteTeamFolder (team) {
+      return ['owner', 'admin'].includes(team.role) && !team.locked
+    },
+    isBiz (team) {
+      return team.is_business
     }
   }
 }

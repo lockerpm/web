@@ -13,15 +13,15 @@
       </div>
     </div>
     <div class="text-left">
-      <div class="form-group">
-        <input v-model="folder.name" type="text" class="form-control"
-               :class="{'is-invalid': errors.name}"
-               placeholder=""
-        >
-        <div class="invalid-feedback">
-          {{ errors.name && errors.name[0] }}
-        </div>
-      </div>
+      <ValidationProvider v-slot="{ errors: err }"
+                          rules="required" :name="$t('common.folder_name')"
+      >
+        <InputText v-model="folder.name"
+                   label="Tên thư mục"
+                   class="w-full "
+                   :error-text="err && err.length && err[0]"
+        />
+      </ValidationProvider>
     </div>
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow">
@@ -38,7 +38,7 @@
           Cancel
         </button>
         <button class="btn btn-primary"
-                :disabled="loading"
+                :disabled="loading || !folder.name"
                 @click="folder.id ?putFolder(folder):postFolder(folder)"
         >
           {{ folder.id ? $t('common.update') : $t('common.add') }}
@@ -49,9 +49,14 @@
 </template>
 
 <script>
+import { ValidationProvider } from 'vee-validate'
 import { FolderRequest } from '../../jslib/src/models/request'
-
+import InputText from '../../components/input/InputText'
 export default {
+  components: {
+    InputText,
+    ValidationProvider
+  },
   data () {
     return {
       folder: {},

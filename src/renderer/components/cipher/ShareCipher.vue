@@ -22,20 +22,12 @@
       <div v-else class="mb-3">
         Choose a team that you wish to share this item with. Sharing transfers ownership of the item to the team. You will no longer be the direct owner of this item once it has been shared.
       </div>
-      <div v-if="!isBelongToTeam" class="form-group">
-        <label for="">Team</label>
-        <el-select v-model="cipher.organizationId" placeholder=""
-                   class="w-full"
-                   @change="handleChangeOrg"
-        >
-          <el-option
-            v-for="(item, index) in ownershipOptions"
-            :key="index"
-            :label="item.name"
-            :value="item.organization_id"
-          />
-        </el-select>
-      </div>
+      <InputSelectTeam v-if="!isBelongToTeam && dialogVisible"
+                       label="Quyền sở hữu"
+                       :options="ownershipOptions"
+                       class="w-full"
+                       @change="handleChangeOrg"
+      />
       <div v-if="cipher.organizationId" class="form-group">
         <div class="flex items-center justify-between" />
         <label for="">Folders Team</label>
@@ -70,16 +62,18 @@
 
 <script>
 
+import InputSelectTeam from '../../components/input/InputSelectTeam'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { CipherType } from '../../jslib/src/enums'
 import Vnodes from '../../components/Vnodes'
 
 export default {
-  components: { Vnodes },
+  components: { InputSelectTeam, Vnodes },
   data () {
     return {
       cipher: {
-        collectionIds: []
+        collectionIds: [],
+        organizationId: ''
       },
       originCipher: {},
       loading: false,
@@ -105,8 +99,8 @@ export default {
   methods: {
     async openDialog (cipher = {}) {
       this.dialogVisible = true
-      this.originCipher = { ...cipher }
-      this.cipher = { ...cipher }
+      this.originCipher = { organizationId: '', ...cipher }
+      this.cipher = { organizationId: '', ...cipher }
       await this.handleChangeOrg(this.cipher.organizationId)
     },
     closeDialog () {
@@ -140,6 +134,7 @@ export default {
       return key.encryptedString
     },
     async handleChangeOrg (orgId) {
+      this.$set(this.cipher, 'organizationId', orgId)
       this.cipher.folderId = null
       if (orgId) {
         this.writeableCollections = await this.getWritableCollections(orgId)
