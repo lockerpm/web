@@ -9,11 +9,12 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
-        {{ folder.id ? 'Cập nhật thư mục' : 'Tạo thư mục' }}
+        {{ folder.id ? $t('data.folders.edit_team_folder') : $t('data.folders.add_team_folder') }}
       </div>
     </div>
     <div class="text-left">
-      <InputSelectTeam v-if="!folder.id && dialogVisible" label="Quyền sở hữu"
+      <InputSelectTeam v-if="!folder.id && dialogVisible"
+                       :label="$t('common.ownership')"
                        :options="teams"
                        class="w-full"
                        :initial-value="folder.organizationId"
@@ -24,7 +25,7 @@
                           rules="required" :name="$t('common.folder_name')"
       >
         <InputText v-model="folder.name"
-                   label="Tên thư mục"
+                   :label="$t('common.folder_name')"
                    class="w-full "
                    :error-text="err && err.length && err[0]"
         />
@@ -42,7 +43,7 @@
         <button class="btn btn-default"
                 @click="dialogVisible = false"
         >
-          Cancel
+          {{ $t('common.cancel') }}
         </button>
         <button class="btn btn-primary"
                 :disabled="loading || !folder.organizationId || !folder.name"

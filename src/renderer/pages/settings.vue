@@ -12,23 +12,14 @@
           {{ $t(`sidebar.${item.label}`) }}
         </nuxt-link>
       </div>
-      <div>
-        <InputSelect label="heheheh"
-                     :initial-value="value"
-                     class="w-[400px]"
-                     @change="(v) => value = v"
-        />
-        {{ value }}
-      </div>
       <nuxt-child />
     </div>
   </div>
 </template>
 
 <script>
-import InputSelect from '../components/input/InputSelect'
 export default {
-  components: { InputSelect },
+  components: { },
   props: {
     isError: {
       type: Boolean,

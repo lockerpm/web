@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="text-head-5 font-semibold mb-4">Account</div>
+    <div class="text-head-5 font-semibold mb-4">
+      {{ $t('settings.account') }}
+    </div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
@@ -12,12 +14,12 @@
             <button class="btn btn-default !text-warning"
                     @click="lock"
             >
-              Lock
+              {{ $t('common.lock') }}
             </button>
             <button class="btn btn-default !text-danger"
                     @click="logout"
             >
-              Log Out
+              {{ $t('common.logout') }}
             </button>
           </div>
         </div>
@@ -25,7 +27,7 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
-            <div class="setting-title">Fingerprint</div>
+            <div class="setting-title">{{ $t('settings.fingerprint') }}</div>
             <div class="setting-description !text-danger-400">{{ fingerprint }}</div>
           </div>
         </div>
@@ -33,7 +35,7 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
-            <div class="setting-title">Plan</div>
+            <div class="setting-title">{{ $t('settings.plan') }}</div>
             <div class="setting-description">{{ currentPlan.name }}</div>
           </div>
           <div>
@@ -41,22 +43,22 @@
                        :to="localeRoute({name: 'upgrade'})"
                        class="btn btn-primary"
             >
-              Manage Plan
+              {{ $t('settings.manage_plan') }}
             </nuxt-link>
           </div>
         </div>
       </div>
     </div>
-    <div class="text-head-5 font-semibold mb-4">Options</div>
+    <div class="text-head-5 font-semibold mb-4">{{ $t('settings.options') }}</div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
             <div class="setting-title">
-              Timeout
+              {{ $t('settings.timeout') }}
             </div>
             <div class="setting-description">
-              Automatically locks the app after a chosen period of device inactivity
+              {{ $t('settings.timeout_desc') }}
             </div>
           </div>
           <div>
@@ -79,13 +81,13 @@
         <div class="setting-section-header">
           <div>
             <div class="setting-title">
-              Timeout Action
+              {{ $t('settings.timeout_action') }}
             </div>
             <div class="setting-description">
-              A locked vault requires that you re-enter your master password to access it again.
+              {{ $t('settings.timeout_action_1') }}
             </div>
             <div class="setting-description">
-              A logged out vault requires that you re-authenticate to access it again.
+              {{ $t('settings.timeout_action_2') }}
             </div>
           </div>
           <div>
@@ -105,12 +107,16 @@
         </div>
       </div>
     </div>
-    <div class="text-head-5 font-semibold mb-4">Security</div>
+    <div class="text-head-5 font-semibold mb-4">
+      {{ $t('settings.security') }}
+    </div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
-            <div class="setting-title">Change Master Password</div>
+            <div class="setting-title">
+              {{ $t('settings.change_master_password') }}
+            </div>
           </div>
           <div>
             <button class="btn btn-icon !text-black-600"
@@ -125,7 +131,7 @@
         <div class="setting-section-header">
           <div>
             <div class="setting-title">
-              Emergency Access
+              {{ $t('settings.emergency_access') }}
             </div>
             <div class="setting-description" />
           </div>
@@ -137,24 +143,26 @@
         </div>
       </div>
     </div>
-    <div class="text-head-5 font-semibold mb-4 text-danger">Danger Zone</div>
+    <div class="text-head-5 font-semibold mb-4 text-danger">
+      {{ $t('settings.danger_zone') }}
+    </div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
             <div class="setting-description mb-4">
-              Careful, these actions are not reversible!
+              {{ $t('settings.danger_zone_note') }}
             </div>
             <div>
               <button class="btn btn-default !text-danger"
                       @click="openPurgeVault('purge')"
               >
-                Delete all account items
+                {{ $t('settings.delete_all_items') }}
               </button>
               <button class="btn btn-default !text-danger"
                       @click="openPurgeVault('delete_account')"
               >
-                Delete Account
+                {{ $t('settings.delete_account') }}
               </button>
             </div>
           </div>

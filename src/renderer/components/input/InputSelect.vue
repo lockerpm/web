@@ -100,7 +100,6 @@ export default {
   mounted () {
     this.$nextTick(() => {
       this.value = this.initialValue
-      console.log(this.value)
     })
   },
   methods: {

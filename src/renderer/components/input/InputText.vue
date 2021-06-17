@@ -28,6 +28,7 @@
              :placeholder="shouldShowPlaceHolder ? placeholder : ''"
              :disabled="disabled"
              :value="value"
+             tabindex="0"
              @mouseleave="hovering = false"
              @focus="handleFocus"
              @blur="focusing = false"
@@ -36,7 +37,11 @@
       >
     </template>
 
-    <button v-if="isPassword && value" class="btn btn-icon" @click="togglePassword">
+    <button v-if="isPassword && value"
+            class="btn btn-icon" type="button"
+            tabindex="-1"
+            @click="togglePassword"
+    >
       <i class="far"
          :class="{'fa-eye': type==='password', 'fa-eye-slash': type==='text'}"
       />

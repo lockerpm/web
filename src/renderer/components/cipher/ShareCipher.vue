@@ -17,20 +17,20 @@
     </div>
     <div class="text-left">
       <div v-if="isBelongToTeam" class="mb-3">
-        Only team users with access to these folders will be able to see this item. Choose at least 1 folder.
+        {{ $t('data.ciphers.choose_at_least_folder') }}
       </div>
       <div v-else class="mb-3">
-        Choose a team that you wish to share this item with. Sharing transfers ownership of the item to the team. You will no longer be the direct owner of this item once it has been shared.
+        {{ $t('data.ciphers.choose_a_team') }}
       </div>
       <InputSelectTeam v-if="!isBelongToTeam && dialogVisible"
-                       label="Quyền sở hữu"
+                       :label="$t('common.ownership')"
                        :options="ownershipOptions"
                        class="w-full"
                        @change="handleChangeOrg"
       />
       <div v-if="cipher.organizationId" class="form-group">
         <div class="flex items-center justify-between" />
-        <label for="">Folders Team</label>
+        <label for="">{{ $t('data.ciphers.folders_team') }}</label>
         <el-checkbox-group v-model="cipher.collectionIds" :min="1">
           <el-checkbox v-for="(item, index) in writeableCollections"
                        :key="index"
@@ -47,7 +47,7 @@
         <button class="btn btn-default"
                 @click="dialogVisible = false"
         >
-          Cancel
+          {{ $t('common.cancel') }}
         </button>
         <button class="btn btn-primary"
                 :disabled="loading || !cipher.collectionIds.length"

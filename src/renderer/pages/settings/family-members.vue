@@ -7,7 +7,7 @@
         style="width: 100%"
       >
         <el-table-column
-          label="Users"
+          label=""
         >
           <template slot-scope="scope">
             <div class="flex items-center">
@@ -20,7 +20,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Status"
+          :label="$t('common.status')"
           align="right"
         >
           <template slot-scope="scope">
@@ -36,15 +36,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="Role"
-          align="right"
-        >
-          <template slot-scope="scope">
-            {{ scope.row.role }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="Joined at"
+          :label="$t('common.joined')"
           align="right"
         >
           <template slot-scope="scope">
@@ -92,7 +84,7 @@
         </el-table-column>
       </el-table>
     </client-only>
-    <AddEditUser ref="addEditUser" @done="getUsers" />
+    <AddFamily ref="addEditUser" @done="getUsers" />
     <AddEditUserGroups ref="addEditUserGroups" @done="getUsers" />
     <div class="fixed bottom-[50px] right-[55px]">
       <button class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
@@ -142,12 +134,12 @@
 </template>
 
 <script>
-import AddEditUser from '../../components/user/AddEditUser'
+import AddFamily from '../../components/user/AddFamily'
 import AddEditUserGroups from '../../components/user/AddEditUserGroups'
 import { Utils } from '../../jslib/src/misc/utils.ts'
 export default {
   components: {
-    AddEditUser, AddEditUserGroups
+    AddFamily, AddEditUserGroups
   },
   data () {
     return {
