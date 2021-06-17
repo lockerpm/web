@@ -381,7 +381,9 @@
         popper-class="!p-0"
       >
         <div class="text-black">
-          <div class="px-5 pt-5 text-xs">Tạo</div>
+          <div class="px-5 pt-5 text-xs">
+            {{ $t('common.add') }}
+          </div>
           <ul class="el-dropdown-menu !static !border-0 !shadow-none">
             <li v-if="getRouteBaseName() ==='vault'" class="el-dropdown-menu__item font-semibold !text-black"
                 @click="addEditFolder({}, true)"
