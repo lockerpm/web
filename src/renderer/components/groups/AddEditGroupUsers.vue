@@ -9,7 +9,7 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
-        User access {{ group.name }}
+        {{ $t('data.groups.user_access') }} {{ group.name }}
       </div>
     </div>
     <div class="text-left">
@@ -48,7 +48,7 @@
         <button class="btn btn-default"
                 @click="dialogVisible = false"
         >
-          Cancel
+          {{ $t('common.cancel') }}
         </button>
         <button class="btn btn-primary"
                 :disabled="loading"

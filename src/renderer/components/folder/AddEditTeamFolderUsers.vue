@@ -9,7 +9,7 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
-        Users access {{ folder.name }}
+        {{ $t('data.folders.user_access') }} {{ folder.name }}
       </div>
     </div>
     <div class="text-left">
@@ -34,7 +34,9 @@
             <div class="flex items-center">
               <el-avatar :src="scope.row.avatar" :size="32" />
               <div class="ml-2">
-                <div class="text-black font-semibold truncate">{{ scope.row.full_name || scope.row.email }}</div>
+                <div class="text-black font-semibold truncate">
+                  {{ scope.row.full_name || scope.row.email }}
+                </div>
                 <div v-if="scope.row.username">@{{ scope.row.username }}</div>
               </div>
             </div>
@@ -48,7 +50,7 @@
         <button class="btn btn-default"
                 @click="dialogVisible = false"
         >
-          Cancel
+          {{ $t('common.cancel') }}
         </button>
         <button class="btn btn-primary"
                 :disabled="loading"

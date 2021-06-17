@@ -1,18 +1,22 @@
 <template>
   <div>
-    <div class="text-head-5 font-semibold mb-4">Import</div>
+    <div class="text-head-5 font-semibold mb-4">
+      {{ $t('data.importFile.import') }}
+    </div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
-            <div class="setting-title">Import Items</div>
-            <div class="setting-description">Transfer passwords and other items from browser or files.</div>
+            <div class="setting-title">{{ $t('data.importFile.import_items') }}</div>
+            <div class="setting-description">
+              {{ $t('data.importFile.import_items_desc') }}
+            </div>
           </div>
           <div />
         </div>
         <div class="setting-section-body">
           <div class="form-group">
-            <label for="">1. Select the format of the import file</label>
+            <label for="">{{ $t('data.importFile.select_file') }}</label>
             <el-select v-model="format"
                        filterable
             >
@@ -49,12 +53,12 @@
             />
           </div>
           <div class="form-group">
-            <label for="">2. Select the format of the import file</label>
+            <label for="">{{ $t('data.importFile.select_format') }}</label>
             <input type="file" class="form-control-file form-input mb-4"
                    name="file" @change="handleFile"
             >
 
-            <label>or copy/paste the import file contents</label>
+            <label>{{ $t('data.importFile.or_copy') }}</label>
             <el-input type="textarea" :rows="5" />
           </div>
           <div class="form-group">
@@ -62,22 +66,24 @@
                     :disabled="disabledExport"
                     @click="importData"
             >
-              Import
+              {{ $t('data.importFile.import') }}
             </button>
           </div>
         </div>
       </div>
     </div>
-    <div class="text-head-5 font-semibold mb-4">Export</div>
+    <div class="text-head-5 font-semibold mb-4">
+      {{ $t('data.exportFile.export') }}
+    </div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
             <div class="setting-title">
-              Export Items
+              {{ $t('data.exportFile.export') }}
             </div>
             <div class="setting-description">
-              Enter your master password to export your vault data.
+              {{ $t('data.exportFile.export_items_desc') }}
             </div>
           </div>
           <div />

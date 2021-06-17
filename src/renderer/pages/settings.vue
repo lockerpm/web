@@ -19,9 +19,24 @@
 
 <script>
 export default {
+  components: { },
+  props: {
+    isError: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
-      menu: [
+      value: 'Option1'
+    }
+  },
+  computed: {
+    currentPlan () {
+      return this.$store.state.currentPlan
+    },
+    menu () {
+      return [
         {
           label: 'general',
           routeName: 'settings'
@@ -37,7 +52,14 @@ export default {
         {
           label: 'excluded_domains',
           routeName: 'settings-excluded-domains'
-        }
+        },
+        ...this.currentPlan.alias === 'pm_family_discount'
+          ? [{
+            label: 'family_members',
+            routeName: 'settings-family-members'
+          }]
+          : []
+
       ]
     }
   }

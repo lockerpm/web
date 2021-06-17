@@ -9,19 +9,19 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
-        {{ folder.id ? 'Cập nhật thư mục' : 'Tạo thư mục' }}
+        {{ folder.id ? $t('data.folders.edit_folder') : $t('data.folders.add_folder') }}
       </div>
     </div>
     <div class="text-left">
-      <div class="form-group">
-        <input v-model="folder.name" type="text" class="form-control"
-               :class="{'is-invalid': errors.name}"
-               placeholder=""
-        >
-        <div class="invalid-feedback">
-          {{ errors.name && errors.name[0] }}
-        </div>
-      </div>
+      <ValidationProvider v-slot="{ errors: err }"
+                          rules="required" :name="$t('common.folder_name')"
+      >
+        <InputText v-model="folder.name"
+                   :label="$t('common.folder_name')"
+                   class="w-full "
+                   :error-text="err && err.length && err[0]"
+        />
+      </ValidationProvider>
     </div>
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow">
@@ -35,10 +35,10 @@
         <button class="btn btn-default"
                 @click="dialogVisible = false"
         >
-          Cancel
+          {{ $t('common.cancel') }}
         </button>
         <button class="btn btn-primary"
-                :disabled="loading"
+                :disabled="loading || !folder.name"
                 @click="folder.id ?putFolder(folder):postFolder(folder)"
         >
           {{ folder.id ? $t('common.update') : $t('common.add') }}
@@ -49,9 +49,14 @@
 </template>
 
 <script>
+import { ValidationProvider } from 'vee-validate'
 import { FolderRequest } from '../../jslib/src/models/request'
-
+import InputText from '../../components/input/InputText'
 export default {
+  components: {
+    InputText,
+    ValidationProvider
+  },
   data () {
     return {
       folder: {},

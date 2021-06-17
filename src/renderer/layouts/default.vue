@@ -279,10 +279,10 @@ export default {
         await this.$axios.$put(`cystack_platform/pm/users/invitations/${id}`, {
           status
         })
-        this.notify(this.$t(`data.notifications.${status}_member_success)`), 'success')
+        this.notify(this.$t(`data.notifications.${status}_member_success`), 'success')
         this.getInvitations()
       } catch (e) {
-        this.notify(this.$t(`data.notifications.${status}_member_failed)`), 'warning')
+        this.notify(this.$t(`data.notifications.${status}_member_failed`), 'warning')
         console.log(e)
       } finally {
         this.loading = false

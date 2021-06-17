@@ -25,6 +25,7 @@ module.exports = {
       transparent: 'transparent',
       current: 'currentColor',
       black: {
+        SIDEBAR: '#161922',
         DEFAULT: '#072245',
         50: '#DBDFE1',
         100: '#E3E7EB',

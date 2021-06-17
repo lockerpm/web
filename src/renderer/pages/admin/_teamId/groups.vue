@@ -8,7 +8,7 @@
           style="width: 100%"
         >
           <el-table-column
-            label="Groups"
+            :label="$t('data.groups.groups')"
           >
             <template slot-scope="scope">
               <div class="flex items-center">
