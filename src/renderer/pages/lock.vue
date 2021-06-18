@@ -153,6 +153,7 @@ export default {
       })
         .then(res => {
           this.loadingSend = false
+          this.step = 3
         })
     }
     // TODO change masterpass if have account
