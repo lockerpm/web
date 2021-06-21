@@ -417,7 +417,7 @@ export default {
         },
         {
           name: 'Android',
-          imgGray: require('~/assets/images/landing/logo/Android-gray.png'),
+          imgGray: require('~/assets/images/landing/logo/android-gray.png'),
           img: ''
         }
       ],
