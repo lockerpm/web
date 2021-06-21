@@ -24,26 +24,14 @@
         </div>
         <form @submit.prevent="confirmPassword">
           <div class="form-group">
-            <label for="">Master Key</label>
-            <div class="input-group" :class="errors.password ? 'is-invalid' : ''">
-              <input v-model="password"
-                     :type="showPassword ? 'text' : 'password'"
-                     class="form-control mb-4"
-                     autocomplete="new-password"
-                     :disabled="loading"
-                     @change="errors = {}"
-              >
-              <div class="input-group-append !bg-white">
-                <button class="btn btn-icon" @click="showPassword = !showPassword">
-                  <i class="far"
-                     :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
-                  />
-                </button>
-              </div>
-            </div>
-            <div class="invalid-feedback">
-              {{ $t('errors.invalid_password') }}
-            </div>
+            <InputText v-model="password"
+                       :label="$t('common.master_password')"
+                       class="w-full"
+                       :disabled="loading"
+                       :error-text="errors.password && $t('errors.invalid_password')"
+                       is-password
+                       @change="errors = {}"
+            />
           </div>
         </form>
       </div>
@@ -53,7 +41,7 @@
           <button class="btn btn-default"
                   @click="dialogVisible = false"
           >
-            Cancel
+            {{ $t('common.cancel') }}
           </button>
           <button class="btn btn-danger"
                   :disabled="loading || !password"
@@ -68,7 +56,11 @@
 </template>
 
 <script>
+import InputText from '../input/InputText'
 export default {
+  components: {
+    InputText
+  },
   data () {
     return {
       password: '',

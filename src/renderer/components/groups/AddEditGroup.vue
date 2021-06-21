@@ -9,28 +9,26 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
-        {{ group.id ? 'Chỉnh sửa nhóm' : 'Thêm nhóm' }}
+        {{ group.id ? $t('data.groups.edit_group') : $t('data.groups.add_group') }}
       </div>
     </div>
     <div class="text-left">
-      <div class="form-group">
-        <label for="">Tên nhóm</label>
-        <input v-model="group.name" type="text" class="form-control">
-        <div class="invalid-feedback">
-          {{ errors.name && errors.name[0] }}
-        </div>
-      </div>
+      <InputText v-model="group.name"
+                 :label="$t('common.group_name')"
+                 class="w-full"
+                 :error-text="errors.name && errors.name[0]"
+      />
       <div class="form-group">
         <el-radio-group v-model="group.access_all" @change="() => !group.id ? group.collections = [] : null">
           <el-radio :label="true"
                     class="!flex items-start !break-words !whitespace-normal !mb-4"
           >
-            <div>This group can access all items.</div>
+            <div>{{ $t('data.groups.access_all') }}</div>
           </el-radio>
           <el-radio :label="false"
                     class="!flex items-start !break-words !whitespace-normal !mb-4"
           >
-            <div>This group can access only the selected collections.</div>
+            <div>{{ $t('data.groups.access_selected') }}</div>
           </el-radio>
         </el-radio-group>
       </div>
@@ -52,7 +50,7 @@
         <button class="btn btn-default"
                 @click="dialogVisible = false"
         >
-          Cancel
+          {{ $t('common.cancel') }}
         </button>
         <button class="btn btn-primary"
                 :disabled="loading"
@@ -66,8 +64,11 @@
 </template>
 
 <script>
-
+import InputText from '../input/InputText'
 export default {
+  components: {
+    InputText
+  },
   data () {
     return {
       loading: false,

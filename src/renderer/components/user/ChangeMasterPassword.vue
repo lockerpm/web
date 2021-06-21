@@ -9,58 +9,46 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
-        Change Master Password
+        {{ $t('master_password.change') }}
       </div>
     </div>
     <div class="text-left">
-      <div class="form-group">
-        <label for="">Nhập Master Key hiện tại</label>
-        <input v-model="oldMasterPassword"
-               :type="showPassword ? 'text' : 'password'"
-               class="form-control"
-               :name="randomString()" autocomplete="new-password"
-        >
-      </div>
-      <div class="form-group">
-        <label for="">Nhập Master Key mới</label>
-        <input v-model="masterPassword"
-               :type="showPassword ? 'text' : 'password'"
-               class="form-control mb-2"
-               :name="randomString()" autocomplete="new-password"
-        >
-        <PasswordStrengthBar v-if="masterPassword" :score="passwordStrength.score" />
-      </div>
-      <div class="form-group">
-        <label for="">Xác nhận Master Key mới</label>
-        <input v-model="masterRePassword"
-               :type="showPassword ? 'text' : 'password'"
-               class="form-control"
-               name="repassword"
-               placeholder=""
-               :class="[errors.masterRePassword ? 'is-invalid' :'']"
-        >
-        <div class="invalid-feedback">{{ $t('errors.confirm_password') }}</div>
-      </div>
+      <InputText v-model="oldMasterPassword"
+                 :label="$t('master_password.current_password')"
+                 class="w-full"
+                 :error-text="errors.oldMasterPassword && $t('errors.invalid_password')"
+                 is-password
+                 @change="errors = {}"
+      />
+      <InputText v-model="masterPassword"
+                 :label="$t('master_password.new_password')"
+                 class="w-full"
+                 :error-text="errors.masterPassword && $t('errors.confirm_password')"
+                 is-password
+                 @change="errors = {}"
+      />
+      <PasswordStrengthBar v-if="masterPassword" :score="passwordStrength.score" class="mb-4" />
+      <InputText v-model="masterRePassword"
+                 :label="$t('master_password.re_password')"
+                 class="w-full"
+                 :error-text="errors.masterRePassword && $t('errors.confirm_password')"
+                 is-password
+                 @change="errors = {}"
+      />
     </div>
     <div slot="footer" class="dialog-footer flex items-center text-left">
-      <div class="flex-grow">
-        <button class="btn btn-clean !px-0" @click="showPassword = !showPassword">
-          <i class="far"
-             :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
-          /> Show Passwords
-        </button>
-      </div>
+      <div class="flex-grow" />
       <div>
         <button class="btn btn-default"
                 @click="dialogVisible = false"
         >
-          Cancel
+          {{ $t('common.cancel') }}
         </button>
         <button class="btn btn-primary"
                 :disabled="loading || !oldMasterPassword || !masterRePassword || !masterPassword"
                 @click="changePass"
         >
-          Change Password
+          {{ $t('master_password.change_btn') }}
         </button>
       </div>
     </div>
@@ -68,10 +56,10 @@
 </template>
 
 <script>
-import { FolderRequest } from '../../jslib/src/models/request'
+import InputText from '../input/InputText'
 import PasswordStrengthBar from '../password/PasswordStrengthBar'
 export default {
-  components: { PasswordStrengthBar },
+  components: { PasswordStrengthBar, InputText },
   data () {
     return {
       folder: {},
@@ -144,7 +132,7 @@ export default {
       } catch (e) {
         console.log(e)
         this.notify(this.$t('data.notifications.update_master_failed'), 'warning')
-        this.errors = (e.response && e.response.data && e.response.data.details) || {}
+        this.errors = (e.response && e.response.data && e.response.data.details) || { oldMasterPassword: 1 }
       } finally {
         this.loading = false
       }

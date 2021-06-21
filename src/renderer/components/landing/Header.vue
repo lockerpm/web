@@ -40,6 +40,9 @@
         >
           Đăng ký
         </a>
+        <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">
+          vault
+        </nuxt-link>
       </div>
       <!-- Right actions end -->
 

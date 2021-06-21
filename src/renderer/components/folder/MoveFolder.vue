@@ -10,33 +10,23 @@
     >
       <div slot="title">
         <div class="text-head-5 text-black-700 font-semibold truncate">
-          Di chuyển tới
+          {{ $t('data.folders.move_to') }}
         </div>
       </div>
       <div>
         <div class="form-group">
-          <label for="">{{ $t('data.notifications.move_selected_desc', {count: ids.length}) }}</label>
-          <el-select v-model="folderId" placeholder="Chọn thư mục"
-                     class="w-full"
-          >
-            <el-option
-              v-for="item in folders"
-              :key="item.id"
-              :label="item.name || 'No Folder'"
-              :value="item.id"
-            >
-              <div class="flex items-center">
-                <img src="~/assets/images/icons/folder.svg" alt="" class="mr-2.5">
-                <div class="text-black">{{ item.name || 'No folder' }}</div>
-              </div>
-            </el-option>
-            <el-option value="" @click.native="addFolder">
-              <div class="flex items-center">
-                <img src="~/assets/images/icons/folderAdd.svg" alt="" class="mr-2.5">
-                <div class="text-black">Thêm thư mục</div>
-              </div>
-            </el-option>
-          </el-select>
+          <label for="">
+            {{ $t('data.notifications.move_selected_desc', {count: ids.length}) }}
+          </label>
+          <InputSelectFolder
+            v-if="dialogVisible"
+            :initial-value="folderId"
+            :options="folders"
+            :label="$t('data.folders.select_folder')"
+            class="w-full !mb-0 mt-4"
+            @change="(v) => folderId = v"
+            @addFolder="addFolder"
+          />
         </div>
       </div>
       <div slot="footer" class="dialog-footer flex items-center text-left">
@@ -45,7 +35,7 @@
           <button class="btn btn-default"
                   @click="dialogVisible = false"
           >
-            Cancel
+            {{ $t('common.cancel') }}
           </button>
           <button class="btn btn-primary"
                   :disabled="loading"
@@ -61,13 +51,11 @@
 </template>
 
 <script>
-import { CipherType, SecureNoteType } from '../../jslib/src/enums'
-import { Cipher } from '../../jslib/src/models/domain'
-import { CipherRequest } from '../../jslib/src/models/request'
-import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView } from '../../jslib/src/models/view'
+import InputSelectFolder from '../input/InputSelectFolder'
 import AddEditFolder from './AddEditFolder'
 export default {
   components: {
+    InputSelectFolder,
     AddEditFolder
   },
   props: {
@@ -102,6 +90,7 @@ export default {
     },
     async putCiphersFolder () {
       try {
+        this.loading = true
         await this.$axios.$put('cystack_platform/pm/ciphers/move', {
           ids: this.ids,
           folderId: this.folderId

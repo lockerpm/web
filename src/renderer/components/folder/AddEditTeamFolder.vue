@@ -9,45 +9,27 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
-        {{ folder.id ? 'Cập nhật thư mục' : 'Tạo thư mục' }}
+        {{ folder.id ? $t('data.folders.edit_team_folder') : $t('data.folders.add_team_folder') }}
       </div>
     </div>
     <div class="text-left">
-      <div v-if="!folder.id" class="form-group">
-        <label for="">Team</label>
-        <el-select v-model="folder.organizationId" placeholder=""
-                   :class="{'is-invalid': errors.team}"
-                   value-key="id"
-                   class="w-full"
-                   :disabled="$route.params.teamId"
-        >
-          <el-option
-            v-for="item in teams"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-            :disabled="!canManage(item)"
-          >
-            <div class="flex items-center justify-between">
-              <div>{{ item.name }}</div>
-              <div>{{ item.role }}</div>
-            </div>
-          </el-option>
-        </el-select>
-        <div class="invalid-feedback">
-          {{ errors.team && errors.team[0] }}
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="">Tên thư mục</label>
-        <input v-model="folder.name" type="text" class="form-control"
-               :class="{'is-invalid': errors.name}"
-               placeholder=""
-        >
-        <div class="invalid-feedback">
-          {{ errors.name && errors.name[0] }}
-        </div>
-      </div>
+      <InputSelectTeam v-if="!folder.id && dialogVisible"
+                       :label="$t('common.ownership')"
+                       :options="teams"
+                       class="w-full"
+                       :initial-value="folder.organizationId"
+                       :disabled="$route.params.teamId"
+                       @change="(v) => folder.organizationId = v"
+      />
+      <ValidationProvider v-slot="{ errors: err }"
+                          rules="required" :name="$t('common.folder_name')"
+      >
+        <InputText v-model="folder.name"
+                   :label="$t('common.folder_name')"
+                   class="w-full "
+                   :error-text="err && err.length && err[0]"
+        />
+      </ValidationProvider>
     </div>
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow">
@@ -61,10 +43,10 @@
         <button class="btn btn-default"
                 @click="dialogVisible = false"
         >
-          Cancel
+          {{ $t('common.cancel') }}
         </button>
         <button class="btn btn-primary"
-                :disabled="loading"
+                :disabled="loading || !folder.organizationId || !folder.name"
                 @click="folder.id ?putFolder(folder):postFolder(folder)"
         >
           {{ folder.id ? $t('common.update') : $t('common.add') }}
@@ -75,11 +57,21 @@
 </template>
 
 <script>
-
+import { ValidationProvider } from 'vee-validate'
+import InputSelectTeam from '../../components/input/InputSelectTeam'
+import InputText from '../../components/input/InputText'
 export default {
+  components: {
+    InputSelectTeam,
+    InputText,
+    ValidationProvider
+  },
   data () {
     return {
-      folder: {},
+      folder: {
+        organizationId: '',
+        name: ''
+      },
       loading: false,
       dialogVisible: false,
       errors: {},
@@ -94,7 +86,7 @@ export default {
     openDialog (folder = {}, shouldRedirect = false) {
       this.dialogVisible = true
       this.shouldRedirect = shouldRedirect
-      this.folder = { ...folder }
+      this.folder = { organizationId: '', name: '', ...folder }
     },
     closeDialog () {
       this.dialogVisible = false
@@ -153,7 +145,7 @@ export default {
       })
     },
     canManage (team) {
-      return ['owner', 'admin'].includes(team.role)
+      return ['owner', 'admin'].includes(team.role) && !team.locked
     }
   }
 }

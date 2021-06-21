@@ -10,32 +10,18 @@
     >
       <div slot="title">
         <div class="text-head-5 text-black-700 font-semibold truncate">
-          Nhập Master Key
+          {{ $t('master_password.enter_password') }}
         </div>
       </div>
       <div class="text-left">
         <form @submit.prevent="confirmPassword">
-          <div class="form-group">
-            <div class="input-group" :class="errors.password ? 'is-invalid' : ''">
-              <input v-model="password"
-                     :type="showPassword ? 'text' : 'password'"
-                     class="form-control mb-4"
-                     autocomplete="new-password"
-                     :disabled="loading"
+          <InputText v-model="password"
+                     :label="$t('common.password')"
+                     class="w-full !mb-0"
+                     :error-text="errors.password && $t('errors.invalid_password')"
+                     is-password
                      @change="errors = {}"
-              >
-              <div class="input-group-append !bg-white">
-                <button class="btn btn-icon" @click="showPassword = !showPassword">
-                  <i class="far"
-                     :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
-                  />
-                </button>
-              </div>
-            </div>
-            <div class="invalid-feedback">
-              {{ $t('errors.invalid_password') }}
-            </div>
-          </div>
+          />
         </form>
       </div>
       <div slot="footer" class="dialog-footer flex items-center text-left">
@@ -44,7 +30,7 @@
           <button class="btn btn-default"
                   @click="dialogVisible = false"
           >
-            Cancel
+            {{ $t('common.cancel') }}
           </button>
           <button class="btn btn-primary"
                   :disabled="loading || !password"
@@ -59,7 +45,11 @@
 </template>
 
 <script>
+import InputText from '../input/InputText'
 export default {
+  components: {
+    InputText
+  },
   data () {
     return {
       password: '',

@@ -6,7 +6,7 @@
 $color-aside: #0B2339;
 
 .bg-aside {
-  background: #0B2339
+  background: #161922
 }
 
 
@@ -250,7 +250,7 @@ a {
   .el-drawer__header {
     margin-bottom: 0;
     padding-bottom: 20px;
-    border-bottom: 1px solid #113F67;
+    border-bottom: 1px solid #DCDFE6;
     color: #113F67
   }
   .el-drawer__body {
@@ -260,8 +260,53 @@ a {
 
     }
     .credit-drawer-footer {
-      border-top: #113F67;
+      border-top: #DCDFE6;
       padding: 20px;
     }
+  }
+}
+
+.cloud-card {
+  background: #F3F5F8;
+  border-radius: 15px;
+  padding: 20px 10px
+}
+
+.el-select.is-invalid {
+  input.el-input__inner {
+    @apply border-danger;
+  }
+}
+
+.transition-card {
+  transition: border-color .25s ease-out,background-color .15s ease-out;
+}
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active
+{
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.cs-field {
+  .el-input__inner {
+    background-color: transparent;
+    border: none;
+    height: 32px;
+    line-height: 19px;
+    padding-left: 12px;
+  }
+  .el-input__suffix {
+    display: none;
+    visibility: hidden;
+  }
+  .el-select .el-input.is-focus .el-input__inner {
+    border: none;
+  }
+  .el-input.is-disabled .el-input__inner {
+    background-color: transparent;
+    border-color: transparent;
   }
 }

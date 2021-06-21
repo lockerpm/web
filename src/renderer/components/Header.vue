@@ -15,11 +15,13 @@
           <el-avatar :size="35" :src="currentUser.avatar" class="mr-2" />
           <div>
             <div class="text-sm font-semibold">{{ currentUser.full_name }} <i class="el-icon-caret-bottom el-icon--right" /></div>
-            <div class="text-xs text-black-600">Trial user</div>
+            <div class="text-xs text-black-600">{{ currentPlan.name }}</div>
           </div>
         </div>
         <el-dropdown-menu slot="dropdown" class="min-w-[200px]">
-          <el-dropdown-item class="text-warning" icon="fa fa-user-circle">
+          <el-dropdown-item class="text-warning" icon="fa fa-user-circle"
+                            @click.native="go('settings')"
+          >
             {{ $t('data.profile_menu.account_settings') }}
           </el-dropdown-item>
           <el-dropdown-item class="text-warning" icon="far fa-life-ring">
@@ -49,12 +51,18 @@ export default {
   computed: {
     shouldShowSearch () {
       return ['vault', 'passwords', 'notes', 'identities', 'shares', 'trash', 'vault-tfolders-tfolderId', 'vault-folders-folderId'].includes(this.getRouteBaseName())
+    },
+    currentPlan () {
+      return this.$store.state.currentPlan
     }
   },
   methods: {
     handleSearch: debounce(function (e) {
       this.$store.commit('UPDATE_SEARCH', e.target.value)
-    }, 800)
+    }, 800),
+    go (name) {
+      this.$router.push(this.localeRoute({ name }))
+    }
   }
 }
 </script>

@@ -4,9 +4,11 @@
       <img src="~assets/images/logo/logo_black.svg" alt="" class="h-[1.875rem]">
     </div>
     <div class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center">
-      <div class="text-head-4 font-semibold mb-2.5">Đăng nhập</div>
+      <div class="text-head-4 font-semibold mb-2.5">
+        {{ $t('master_password.enter_password_title') }}
+      </div>
       <div class="text-base mb-4">
-        Nhập lại mật khẩu tổng cho tài khoản của bạn
+        {{ $t('master_password.enter_password_desc') }}
       </div>
       <div class="inline-block mb-8 select-none">
         <div class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto">
@@ -16,15 +18,32 @@
           <div class="mr-2">{{ currentUser.email }}</div>
         </div>
       </div>
-      <form @submit.prevent="setMasterPass">
+      <form @submit.prevent="setMasterPass" class="mb-8">
         <div class="form-group !mb-4">
-          <input v-model="masterPassword" class="form-control"
-                 placeholder="Nhập mật khẩu tổng"
-                 :name="randomString()" autocomplete="new-password"
-                 :class="[errors ? 'is-invalid' :'']"
-                 type="password"
-          ></input>
+          <label for="" class="text-left">
+            {{ $t('master_password.enter_password') }}
+          </label>
+          <div class="input-group mb-1.5">
+            <input v-model="masterPassword"
+                   :type="showPassword ? 'text' : 'password'"
+                   class="form-control"
+                   :class="[errors ? 'is-invalid' :'']"
+                   :name="randomString()" autocomplete="new-password"
+            >
+            <div class="input-group-append !bg-white">
+              <button class="btn btn-icon" @click="showPassword = !showPassword"
+                      type="button"
+              >
+                <i class="far"
+                   :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+                />
+              </button>
+            </div>
+          </div>
           <div class="invalid-feedback">{{ $t('errors.invalid_password') }}</div>
+          <div class="text-success text-left cursor-pointer">
+            {{ $t('master_password.get_hint') }}
+          </div>
         </div>
       </form>
       <div class="form-group">
@@ -34,7 +53,9 @@
           >
             Unlock
           </button>
-          <button class="btn btn-default w-full" :disabled="loading" @click="logout">
+          <button class="btn btn-default w-full" :disabled="loading"
+                  @click="logout"
+          >
             Log Out
           </button>
         </div>
@@ -50,9 +71,11 @@ export default {
   data () {
     return {
       invalidPinAttempts: 0,
-      masterPassword: '12345678',
+      masterPassword: '',
       loading: false,
-      errors: false
+      errors: false,
+      showPassword: false,
+      showHint: false
     }
   },
   mounted () {

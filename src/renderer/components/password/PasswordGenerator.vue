@@ -20,10 +20,10 @@
               v-clipboard:success="clipboardSuccessHandler"
               class="btn btn-primary w-full"
       >
-        Copy Password
+        {{ $t('data.tools.copy_password') }}
       </button>
       <button class="btn btn-clean w-full" @click="toggle = !toggle">
-        Show Options <i class="fa fa-chevron-down" />
+        {{ $t('data.tools.show_options') }} <i class="fa fa-chevron-down" />
       </button>
       <div v-if="toggle" class="locker-pw-generator-options">
         <div>
@@ -38,31 +38,31 @@
                        class="mb-2"
                        @change="regenerate"
           >
-            Use uppercase letters (A-Z)
+            {{ $t('data.tools.uppercase') }}
           </el-checkbox>
           <el-checkbox v-model="options.lowercase"
                        class="mb-2"
                        @change="regenerate"
           >
-            Use lowercase letters (a-z)
+            {{ $t('data.tools.lowercase') }}
           </el-checkbox>
           <el-checkbox v-model="options.number"
                        class="mb-2"
                        @change="regenerate"
           >
-            Use digits (0-9)
+            {{ $t('data.tools.digits') }}
           </el-checkbox>
           <el-checkbox v-model="options.special"
                        class="mb-2"
                        @change="regenerate"
           >
-            Use symbols (@!$%*)
+            {{ $t('data.tools.symbols') }}
           </el-checkbox>
           <el-checkbox v-model="options.ambiguous"
                        class="mb-2"
                        @change="regenerate"
           >
-            Avoid ambiguous characters
+            {{ $t('data.tools.ambiguous') }}
           </el-checkbox>
         </div>
       </div>
@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     async regenerate () {
-      if (!this.options.lowercase && !this.options.uppercase) {
+      if (!this.options.lowercase && !this.options.uppercase && !this.options.lowercase && !this.options.number && !this.options.special) {
         this.options.lowercase = true
       }
       this.password = await this.$passwordGenerationService.generatePassword(this.options)

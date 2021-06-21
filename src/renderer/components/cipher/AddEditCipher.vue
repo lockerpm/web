@@ -20,345 +20,246 @@
         </div>
       </div>
       <div class="text-left">
-        <div v-if="['vault', 'shares'].includes(routeName) && !cipher.id"
-             class="form-group"
-        >
-          <label for="">Kiểu mục</label>
-          <el-select v-model="cipher.type" placeholder=""
+        <!--        <div v-if="['vault', 'shares'].includes(routeName) && !cipher.id"-->
+        <!--             class="form-group"-->
+        <!--        >-->
+        <!--          <label for="">Kiểu mục</label>-->
+        <!--          <el-select v-model="cipher.type" placeholder=""-->
+        <!--                     class="w-full"-->
+        <!--                     :disabled="isDeleted"-->
+        <!--                     :change="handleChangeType"-->
+        <!--          >-->
+        <!--            <el-option-->
+        <!--              v-for="(item, index) in typeOptions"-->
+        <!--              :key="index"-->
+        <!--              :label="item.name"-->
+        <!--              :value="item.value"-->
+        <!--            />-->
+        <!--          </el-select>-->
+        <!--        </div>-->
+        <ValidationProvider v-slot="{ errors: err }" rules="required" :name="$t('common.name')">
+          <InputText v-model="cipher.name" :label="$t('common.name')"
+                     class="w-full"
+                     :error-text="err && err.length && err[0]"
+                     :disabled="isDeleted"
+                     required
+          />
+        </ValidationProvider>
+
+        <template v-if="cipher.type === CipherType.Login">
+          <div class="mb-4 text-black-700 text-head-6 font-semibold">
+            {{ $t('data.ciphers.login') }}
+          </div>
+          <InputText v-model="cipher.login.username"
+                     label="Email / Username"
                      class="w-full"
                      :disabled="isDeleted"
-                     :change="handleChangeType"
-          >
-            <el-option
-              v-for="(item, index) in typeOptions"
-              :key="index"
-              :label="item.name"
-              :value="item.value"
+          />
+          <template>
+            <InputText v-model="cipher.login.password"
+                       :label="$t('data.ciphers.password')"
+                       class="w-full"
+                       :disabled="isDeleted"
+                       is-password
             />
-          </el-select>
-        </div>
-        <div class="form-group !mb-8">
-          <label for="">Tên <span class="text-danger">*</span></label>
-          <input v-model="cipher.name" type="text" class="form-control"
-                 :class="{'is-invalid': errors.name}"
-                 placeholder=""
-                 :disabled="isDeleted"
-          >
-          <div class="invalid-feedback">
-            {{ errors.name && errors.name[0] }}
-          </div>
-        </div>
-        <template v-if="cipher.type === CipherType.Login">
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">Chi tiết đăng nhập</div>
-          <div class="form-group">
-            <label for="">Email hoặc Username</label>
-            <input v-model="cipher.login.username" type="text" class="form-control mb-4"
-                   placeholder=""
-                   :disabled="isDeleted"
-            >
-          </div>
-          <div class="form-group !mb-0">
-            <label for="">Mật khẩu</label>
-            <div class="input-group">
-              <input v-model="cipher.login.password"
-                     :type="showPassword ? 'text' : 'password'"
-                     class="form-control mb-4"
-                     autocomplete="new-password"
-                     :disabled="isDeleted"
-              >
-              <div class="input-group-append !bg-white">
-                <button class="btn btn-icon" @click="showPassword = !showPassword">
-                  <i class="far"
-                     :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
-                  />
-                </button>
-              </div>
-            </div>
-            <div v-if="!isDeleted" class="text-right">
+            <PasswordStrengthBar :score="passwordStrength.score" class="mt-2" />
+            <div v-if="!isDeleted && !cipher.id" class="text-right">
               <el-popover
                 placement="right"
                 width="280"
                 trigger="click"
                 popper-class="locker-pw-generator"
               >
-                <PasswordGenerator />
+                <PasswordGenerator @generated="(p) => cipher.login.password = p" />
 
                 <button slot="reference"
-                        class="btn btn-clean !text-primary !pb-0"
+                        class="btn btn-clean !text-primary"
                 >
-                  Tạo mật khẩu ngẫu nhiên
+                  {{ $t('data.ciphers.generate_random_password') }}
                 </button>
               </el-popover>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="">Địa chỉ Website</label>
-            <div v-for="(item, index) in cipher.login.uris" :key="index">
-              <input v-model="item.uri" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-          </div>
+          </template>
+          <template v-for="(item, index) in cipher.login.uris">
+            <InputText :key="index"
+                       v-model="item.uri"
+                       :label="$t('data.ciphers.website_address')"
+                       class="w-full"
+                       :disabled="isDeleted"
+            />
+          </template>
         </template>
         <template v-if="cipher.type === CipherType.Card">
           <div class="mb-4 text-black-700 text-head-6 font-semibold">Chi tiết thẻ</div>
-          <div class="form-group">
-            <label for="">Tên chủ thẻ <span class="text-danger">*</span></label>
-            <input v-model="cipher.card.cardholderName" type="text" class="form-control"
-                   :class="{'is-invalid': errors.card && errors.card.cardholderName}"
-                   placeholder=""
-                   :disabled="isDeleted"
-            >
-          </div>
-          <div class="form-group">
-            <label for="">Thương hiệu</label>
-            <el-select v-model="cipher.card.brand" placeholder=""
+          <ValidationProvider v-slot="{ errors: err }" rules="required"
+                              :name="$t('data.ciphers.card_holder')"
+          >
+            <InputText v-model="cipher.card.cardholderName"
+                       :label="$t('data.ciphers.card_holder')"
+                       class="w-full !mb-2"
+                       :error-text="err && err.length && err[0]"
+                       :disabled="isDeleted"
+                       required
+            />
+          </ValidationProvider>
+          <InputSelect :label="$t('data.ciphers.brand')"
+                       :initial-value="cipher.card.brand"
                        class="w-full"
                        :disabled="isDeleted"
-            >
-              <el-option
-                v-for="item in cardBrandOptions"
-                :key="item.id"
-                :label="item.name"
-                :value="item.value"
-              />
-            </el-select>
-          </div>
-          <div class="form-group">
-            <label for="">Số thẻ thẻ</label>
-            <input v-model="cipher.card.number" type="text" class="form-control"
-                   placeholder=""
-                   :disabled="isDeleted"
-            >
-          </div>
+                       :options="cardBrandOptions"
+                       @change="(v) => cipher.card.brand = v"
+          />
+          <InputText v-model="cipher.card.number"
+                     :label="$t('data.ciphers.card_number')"
+                     class="w-full"
+                     :disabled="isDeleted"
+          />
           <div class="grid grid-cols-2 gap-2">
-            <div class="form-group">
-              <label for="">Tháng hết hạn</label>
-              <el-select v-model="cipher.card.expMonth" placeholder=""
+            <InputSelect :label="$t('data.ciphers.expiration_month')"
+                         :initial-value="cipher.card.expMonth"
                          class="w-full"
                          :disabled="isDeleted"
-              >
-                <el-option
-                  v-for="(item, index) in cardExpMonthOptions"
-                  :key="index"
-                  :label="item.name"
-                  :value="item.value"
-                />
-              </el-select>
-            </div>
-            <div class="form-group">
-              <label for="">Năm hết hạn</label>
-              <input v-model="cipher.card.expYear" type="text" class="form-control"
-                     placeholder="ex. 2025"
-                     :disabled="isDeleted"
-              >
-            </div>
+                         :options="cardExpMonthOptions"
+                         @change="(v) => cipher.card.expMonth = v"
+            />
+            <InputText v-model="cipher.card.expYear"
+                       :label="$t('data.ciphers.expiration_year')"
+                       class="w-full !mb-2"
+                       :disabled="isDeleted"
+            />
           </div>
-          <div class="form-group">
-            <label for="">CVV</label>
-            <div class="input-group">
-              <input v-model="cipher.card.code"
-                     :type="showCardCode ? 'text' : 'password'"
-                     class="form-control"
-                     autocomplete="new-password"
+          <InputText v-model="cipher.card.code"
+                     :label="$t('data.ciphers.cvv')"
+                     is-password
+                     class="w-full"
                      :disabled="isDeleted"
-              >
-              <div class="input-group-append !bg-transparent">
-                <button class="btn btn-icon" @click="showCardCode = !showCardCode">
-                  <i class="far"
-                     :class="{'fa-eye': !showCardCode, 'fa-eye-slash': showCardCode}"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
+          />
         </template>
         <template v-if="cipher.type === CipherType.Identity">
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">Thông tin cá nhân</div>
+          <div class="mb-4 text-black-700 text-head-6 font-semibold">
+            {{ $t('data.ciphers.personal') }}
+          </div>
           <div class="grid grid-cols-2 gap-x-2 mb-4">
-            <div class="form-group">
-              <label for="">Tước hiệu</label>
-              <el-select v-model="cipher.identity.title" placeholder=""
+            <InputSelect :label="$t('data.ciphers.title')"
+                         :initial-value="cipher.identity.title"
                          class="w-full"
                          :disabled="isDeleted"
-              >
-                <el-option
-                  v-for="(item, index) in identityTitleOptions"
-                  :key="index"
-                  :label="item.name"
-                  :value="item.value"
-                />
-              </el-select>
-            </div>
-            <div />
-            <div class="form-group">
-              <label for="">Tên</label>
-              <input v-model="cipher.identity.firstName" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group">
-              <label for="">Họ</label>
-              <input v-model="cipher.identity.lastName" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group">
-              <label for="">Username</label>
-              <input v-model="cipher.identity.username" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group">
-              <label for="">Công ty</label>
-              <input v-model="cipher.identity.company" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group col-span-2">
-              <label for="">Email</label>
-              <input v-model="cipher.identity.email" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group">
-              <label for="">Số điện thoại</label>
-              <input v-model="cipher.identity.phone" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group">
-              <label for="">Số CMT</label>
-              <input v-model="cipher.identity.ssn" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group">
-              <label for="">Số hộ chiếu</label>
-              <input v-model="cipher.identity.passportNumber" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group">
-              <label for="">Số bằng lái xe</label>
-              <input v-model="cipher.identity.licenseNumber" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
+                         :options="identityTitleOptions"
+                         @change="(v) => cipher.identity.title = v"
+            />
+            <InputText v-model="cipher.identity.firstName"
+                       :label="$t('data.ciphers.first_name')"
+                       class="w-full"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.lastName"
+                       :label="$t('data.ciphers.last_name')"
+                       class="w-full"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.username"
+                       label="Username"
+                       class="w-full"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.company"
+                       :label="$t('data.ciphers.company')"
+                       class="w-full"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.email"
+                       label="Email"
+                       class="w-full"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.phone"
+                       :label="$t('data.ciphers.phone')"
+                       class="w-full"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.ssn"
+                       :label="$t('data.ciphers.ssn')"
+                       class="w-full"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.passportNumber"
+                       :label="$t('data.ciphers.passport')"
+                       class="w-full"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.licenseNumber"
+                       :label="$t('data.ciphers.license')"
+                       class="w-full !mb-2"
+                       :disabled="isDeleted"
+            />
           </div>
           <div class="mb-4 text-black-700 text-head-6 font-semibold">Thông tin liên lạc</div>
           <div class="grid grid-cols-2 gap-x-2 mb-4">
-            <div class="form-group col-span-2">
-              <label for="">Địa chỉ 1</label>
-              <input v-model="cipher.identity.address1" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group col-span-2">
-              <label for="">Địa chỉ 2</label>
-              <input v-model="cipher.identity.address2" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group">
-              <label for="">Thành phố</label>
-              <input v-model="cipher.identity.city" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group">
-              <label for="">Quận/Huyện</label>
-              <input v-model="cipher.identity.state" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group">
-              <label for="">Mã bưu chính</label>
-              <input v-model="cipher.identity.postalCode" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
-            <div class="form-group">
-              <label for="">Quốc gia</label>
-              <input v-model="cipher.identity.country" type="text" class="form-control"
-                     placeholder=""
-                     :disabled="isDeleted"
-              >
-            </div>
+            <InputText v-model="cipher.identity.address1"
+                       :label="$t('data.ciphers.address') + '1'"
+                       class="w-full col-span-2"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.address2"
+                       :label="$t('data.ciphers.address') + '2'"
+                       class="w-full col-span-2"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.city"
+                       :label="$t('data.ciphers.city_town')"
+                       class="w-full col-span-2"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.state"
+                       :label="$t('data.ciphers.state_province')"
+                       class="w-full col-span-2"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.postalCode"
+                       :label="$t('data.ciphers.zip')"
+                       class="w-full col-span-2"
+                       :disabled="isDeleted"
+            />
+            <InputText v-model="cipher.identity.country"
+                       :label="$t('data.ciphers.country')"
+                       class="w-full col-span-2 !mb-2"
+                       :disabled="isDeleted"
+            />
           </div>
         </template>
-        <div v-if="cipher.type !== CipherType.SecureNote" class="mb-4 text-black-700 text-head-6 font-semibold">Khác</div>
-        <div class="form-group">
-          <label for="">Ghi chú</label>
-          <el-input v-model="cipher.notes"
-                    type="textarea"
-                    :rows="5"
-                    placeholder=""
-                    :disabled="isDeleted"
-          />
+        <div v-if="cipher.type !== CipherType.SecureNote" class="my-5 text-black-700 text-head-6 font-semibold">
+          {{ $t('data.ciphers.others') }}
         </div>
-        <div class="form-group">
-          <label for="">Thư mục cá nhân</label>
-          <el-select v-model="cipher.folderId" placeholder="Chọn thư mục"
-                     class="w-full mb-4"
-                     :disabled="isDeleted"
-          >
-            <el-option
-              v-for="item in folders"
-              :key="item.id"
-              :label="item.name || 'No folder'"
-              :value="item.id"
-            >
-              <div class="flex items-center">
-                <img src="~/assets/images/icons/folder.svg" alt="" class="mr-2.5">
-                <div class="text-black">{{ item.name || 'No folder' }}</div>
-              </div>
-            </el-option>
-            <el-option value="" @click.native="addFolder( false)">
-              <div class="flex items-center">
-                <img src="~/assets/images/icons/folderAdd.svg" alt="" class="mr-2.5">
-                <div class="text-black">Thêm thư mục</div>
-              </div>
-            </el-option>
-          </el-select>
-        </div>
+        <InputText v-model="cipher.notes"
+                   :label="$t('data.ciphers.notes')"
+                   class="w-full"
+                   :disabled="isDeleted"
+                   is-textarea
+        />
+        <InputSelectFolder :label="$t('data.folders.select_folder')"
+                           :initial-value="cipher.folderId"
+                           :options="folders"
+                           :disabled="isDeleted"
+                           class="w-full"
+                           @change="(v) => cipher.folderId = v"
+                           @addFolder="addFolder(false)"
+        />
         <template v-if="ownershipOptions.length">
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">Ownership</div>
-          <div class="form-group">
-            <label for="">Ai sở hữu mục này ?</label>
-            <el-select v-model="cipher.organizationId" placeholder=""
-                       class="w-full"
-                       :disabled="isDeleted || !!cipher.id"
-                       @change="handleChangeOrg"
-            >
-              <el-option
-                v-for="(item, index) in ownershipOptions"
-                :key="index"
-                :label="item.name"
-                :value="item.organization_id"
-              />
-            </el-select>
-          </div>
+          <InputSelectOrg :label="$t('common.ownership')"
+                          :initial-value="cipher.organizationId"
+                          :options="ownershipOptions"
+                          :disabled="isDeleted || !!cipher.id"
+                          class="w-full"
+                          @change="(v) => {
+                            cipher.organizationId = v;
+                            handleChangeOrg(v)
+                          }"
+          />
           <div v-if="cipher.organizationId" class="form-group">
             <div class="flex items-center justify-between" />
-            <label for="">Folders Team</label>
+            <label for="">{{ $t('data.ciphers.folders_team') }}</label>
             <div class="mb-2">
-              Only team users with access to these folders will be able to see this item. Choose at least 1 folder.
+              {{ $t('data.ciphers.choose_at_least_folder') }}
             </div>
             <el-checkbox-group v-model="cipher.collectionIds" :min="1" :disabled="isDeleted">
               <el-checkbox v-for="(item, index) in writeableCollections"
@@ -383,7 +284,7 @@
           <button class="btn btn-default"
                   @click="closeDialog"
           >
-            Cancel
+            {{ $t('common.cancel') }}
           </button>
           <button v-if="isDeleted" class="btn btn-primary"
                   :disabled="loading"
@@ -392,7 +293,7 @@
             {{ $t('common.restore') }}
           </button>
           <button v-else class="btn btn-primary"
-                  :disabled="loading"
+                  :disabled="loading || !cipher.name"
                   @click="cipher.id ?putCipher(cipher):postCipher(cipher)"
           >
             {{ cipher.id ? $t('common.update') : $t('common.add') }}
@@ -406,16 +307,32 @@
 
 <script>
 import { Dialog } from 'element-ui'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { CipherType, SecureNoteType } from '../../jslib/src/enums'
 import { Cipher } from '../../jslib/src/models/domain'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView } from '../../jslib/src/models/view'
 import AddEditFolder from '../folder/AddEditFolder'
 import PasswordGenerator from '../password/PasswordGenerator'
+import PasswordStrengthBar from '../password/PasswordStrengthBar'
+import InputText from '../input/InputText'
+import InputSelect from '../input/InputSelect'
+import InputSelectFolder from '../input/InputSelectFolder'
+import InputSelectOrg from '../input/InputSelectOrg'
 import InlineEditCipher from './InlineEditCipher'
 export default {
   components: {
-    AddEditFolder, PasswordGenerator, Dialog, InlineEditCipher
+    AddEditFolder,
+    PasswordGenerator,
+    Dialog,
+    InlineEditCipher,
+    ValidationProvider,
+    ValidationObserver,
+    PasswordStrengthBar,
+    InputText,
+    InputSelect,
+    InputSelectFolder,
+    InputSelectOrg
   },
   props: {
     type: {
@@ -445,50 +362,50 @@ export default {
   computed: {
     typeOptions () {
       return [
-        { name: this.$tc('type.Login', 1), value: CipherType.Login },
-        { name: this.$tc('type.Card', 1), value: CipherType.Card },
-        { name: this.$tc('type.Identity', 1), value: CipherType.Identity },
-        { name: this.$tc('type.SecureNote', 1), value: CipherType.SecureNote }
+        { label: this.$tc('type.Login', 1), value: CipherType.Login },
+        { label: this.$tc('type.Card', 1), value: CipherType.Card },
+        { label: this.$tc('type.Identity', 1), value: CipherType.Identity },
+        { label: this.$tc('type.SecureNote', 1), value: CipherType.SecureNote }
       ]
     },
     cardBrandOptions () {
       return [
-        { name: '-- ' + this.$t('select') + ' --', value: null },
-        { name: 'Visa', value: 'Visa' },
-        { name: 'Mastercard', value: 'Mastercard' },
-        { name: 'American Express', value: 'Amex' },
-        { name: 'Discover', value: 'Discover' },
-        { name: 'Diners Club', value: 'Diners Club' },
-        { name: 'JCB', value: 'JCB' },
-        { name: 'Maestro', value: 'Maestro' },
-        { name: 'UnionPay', value: 'UnionPay' },
-        { name: this.$t('other'), value: 'Other' }
+        { label: '----', value: null },
+        { label: 'Visa', value: 'Visa' },
+        { label: 'Mastercard', value: 'Mastercard' },
+        { label: 'American Express', value: 'Amex' },
+        { label: 'Discover', value: 'Discover' },
+        { label: 'Diners Club', value: 'Diners Club' },
+        { label: 'JCB', value: 'JCB' },
+        { label: 'Maestro', value: 'Maestro' },
+        { label: 'UnionPay', value: 'UnionPay' },
+        { label: this.$t('other'), value: 'Other' }
       ]
     },
     cardExpMonthOptions () {
       return [
-        { name: '-- ' + this.$t('select') + ' --', value: null },
-        { name: '01 - ' + this.$t('january'), value: '1' },
-        { name: '02 - ' + this.$t('february'), value: '2' },
-        { name: '03 - ' + this.$t('march'), value: '3' },
-        { name: '04 - ' + this.$t('april'), value: '4' },
-        { name: '05 - ' + this.$t('may'), value: '5' },
-        { name: '06 - ' + this.$t('june'), value: '6' },
-        { name: '07 - ' + this.$t('july'), value: '7' },
-        { name: '08 - ' + this.$t('august'), value: '8' },
-        { name: '09 - ' + this.$t('september'), value: '9' },
-        { name: '10 - ' + this.$t('october'), value: '10' },
-        { name: '11 - ' + this.$t('november'), value: '11' },
-        { name: '12 - ' + this.$t('december'), value: '12' }
+        { label: '----', value: null },
+        { label: '01 - ' + this.$t('january'), value: '1' },
+        { label: '02 - ' + this.$t('february'), value: '2' },
+        { label: '03 - ' + this.$t('march'), value: '3' },
+        { label: '04 - ' + this.$t('april'), value: '4' },
+        { label: '05 - ' + this.$t('may'), value: '5' },
+        { label: '06 - ' + this.$t('june'), value: '6' },
+        { label: '07 - ' + this.$t('july'), value: '7' },
+        { label: '08 - ' + this.$t('august'), value: '8' },
+        { label: '09 - ' + this.$t('september'), value: '9' },
+        { label: '10 - ' + this.$t('october'), value: '10' },
+        { label: '11 - ' + this.$t('november'), value: '11' },
+        { label: '12 - ' + this.$t('december'), value: '12' }
       ]
     },
     identityTitleOptions () {
       return [
-        { name: '-- ' + this.$t('select') + ' --', value: null },
-        { name: this.$t('mr'), value: this.$t('mr') },
-        { name: this.$t('mrs'), value: this.$t('mrs') },
-        { name: this.$t('ms'), value: this.$t('ms') },
-        { name: this.$t('dr'), value: this.$t('dr') }
+        { label: '-- ' + this.$t('select') + ' --', value: null },
+        { label: this.$t('mr'), value: this.$t('mr') },
+        { label: this.$t('mrs'), value: this.$t('mrs') },
+        { label: this.$t('ms'), value: this.$t('ms') },
+        { label: this.$t('dr'), value: this.$t('dr') }
       ]
     },
     isDeleted () {
@@ -509,6 +426,9 @@ export default {
     },
     allowOwnershipAssignment () {
       return (!this.cipher.id || this.cloneMode) && this.ownershipOptions && this.ownershipOptions.length > 1
+    },
+    shouldDisableBtn () {
+      return this.loading || !this.cipher.name || (this.cipher.type === CipherType.Card || !this.cipher.card.cardholderName)
     }
   },
   mounted () {

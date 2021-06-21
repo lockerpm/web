@@ -6,7 +6,7 @@
           <el-breadcrumb-item
             :to="localeRoute({name: 'tools'})"
           >
-            Tools
+            {{ $t('sidebar.tools') }}
           </el-breadcrumb-item>
         </el-breadcrumb>
       </div>
@@ -17,10 +17,10 @@
               <img src="~/assets/images/icons/icon_tools_pw_generator.svg" alt="" class="mr-3">
               <div>
                 <div class="setting-title">
-                  Password Generator
+                  {{ $t('data.tools.password_generator') }}
                 </div>
                 <div class="setting-description">
-                  Create secure passwords for your accounts
+                  {{ $t('data.tools.password_generator_desc') }}
                 </div>
               </div>
             </div>
@@ -49,10 +49,10 @@
                 <div class="setting-title cursor-pointer"
                      @click="go({name: 'tools-password-health'})"
                 >
-                  Password Health
+                  {{ $t('data.tools.password_health') }}
                 </div>
                 <div class="setting-description">
-                  Identify passwords that can put you at risk
+                  {{ $t('data.tools.password_health_desc') }}
                 </div>
               </div>
             </div>
@@ -73,10 +73,10 @@
                 <div class="setting-title cursor-pointer"
                      @click="go('tools-breach')"
                 >
-                  Data Breach Scanner
+                  {{ $t('data.tools.data_breach') }}
                 </div>
                 <div class="setting-description">
-                  Check if your sensitive data has been leaked online
+                  {{ $t('data.tools.data_breach_desc') }}
                 </div>
               </div>
             </div>
