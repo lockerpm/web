@@ -38,6 +38,10 @@ module.exports = {
         700: '#072245', // 1,
         800: '#000000'
       },
+      green: {
+        DEFAULT: '#268334',
+        ...colors.green
+      },
       white: colors.white,
       info: {
         DEFAULT: '#0363C2',
