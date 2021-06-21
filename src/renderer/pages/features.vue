@@ -8,7 +8,7 @@
       </h1>
       <div class="mt-16">
         <h2 class="text-left font-bold text-black feature-font-38 "> Quản lý mật khẩu </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
           <div
             v-for="(item, index) in feature1"
             :key="index"
@@ -24,7 +24,7 @@
         <div class="landing-font-18 align-top mt-[45px]">
           <a
             href=""
-            class="hover:no-underline"
+            class="hover:no-underline text-green font-semibold"
           >
             Bắt đầu ngay <i class="el-icon-right" />
           </a>
@@ -32,7 +32,7 @@
       </div>
       <div class="mt-[150px]">
         <h2 class="text-left font-bold text-black feature-font-38 "> Lưu trữ dữ liệu quan trọng </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
           <div
             v-for="(item, index) in feature2"
             :key="index"
@@ -48,7 +48,7 @@
         <div class="landing-font-18 align-top mt-[45px]">
           <a
             href=""
-            class="hover:no-underline"
+            class="hover:no-underline text-green font-semibold"
           >
             Bắt đầu ngay <i class="el-icon-right" />
           </a>
@@ -56,7 +56,7 @@
       </div>
       <div class="mt-[150px]">
         <h2 class="text-left font-bold text-black feature-font-38 "> Tính năng bảo mật </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
           <div
             v-for="(item, index) in feature3"
             :key="index"
@@ -72,7 +72,7 @@
         <div class="landing-font-18 align-top mt-[45px]">
           <a
             href=""
-            class="hover:no-underline"
+            class="hover:no-underline text-green font-semibold"
           >
             Tạo tài khoản <i class="el-icon-right" />
           </a>
@@ -80,7 +80,7 @@
       </div>
       <div class="mt-[150px] mb-[110px]">
         <h2 class="text-left font-bold text-black feature-font-38 "> Tính năng cho doanh nghiệp </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
           <div
             v-for="(item, index) in feature4"
             :key="index"
@@ -96,7 +96,7 @@
         <div class="landing-font-18 align-top mt-[45px]">
           <a
             href=""
-            class="hover:no-underline"
+            class="hover:no-underline text-green font-semibold"
           >
             Locker for business <i class="el-icon-right" />
           </a>

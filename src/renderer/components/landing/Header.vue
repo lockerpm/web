@@ -29,13 +29,13 @@
       <!-- Right actions -->
       <div class="hidden lg:flex ml-[195px] lg:order-4 order-3">
         <a
-          class="hover:no-underline landing-font-14 text-black mr-4 "
+          class="nav-item  text-black px-4 "
           href="#"
         >
           Đăng nhập
         </a>
         <a
-          class="hover:no-underline landing-font-14 text-black"
+          class="nav-item  text-black"
           href="#"
         >
           Đăng ký
@@ -55,7 +55,7 @@
             :key="index"
           >
             <a
-              class="inline-block hover:no-underline landing-font-14 text-black landing-transition"
+              class="inline-block nav-item  text-black landing-transition"
               :href="item.link"
             >
               {{ item.name }}
@@ -153,5 +153,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.nav-item{
+  @apply hover:no-underline hover:font-semibold hover:text-green;
+  font-size: 14px;
+}
 </style>
