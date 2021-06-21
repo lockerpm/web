@@ -4,10 +4,10 @@
       <template v-if="!locked">
         <div class="w-60 h-screen bg-aside relative min-h-500px min-w-60 fixed border-0 border-b border-black-200 flex flex-col justify-between">
           <div>
-            <div class="mt-10 px-8">
-              <img class="h-6" src="~assets/images/logo/logo_white.svg">
+            <div class="mt-7 px-6">
+              <img class="h-[29px]" src="~assets/images/logo/logo_white.svg">
             </div>
-            <nav class="mt-10">
+            <nav class="mt-7">
               <nuxt-link v-for="(item, index) in menu" :key="index" :to="localePath({name: item.routeName})"
                          class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold "
                          active-class="bg-white bg-opacity-20 text-white"
