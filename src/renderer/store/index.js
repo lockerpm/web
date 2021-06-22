@@ -142,7 +142,10 @@ export const actions = {
         const data = Object.assign({}, state.user)
         data.language = payload
         // eslint-disable-next-line no-undef
-        Intercom('update', { language_override: payload })
+        // if (Intercom) {
+        //   // eslint-disable-next-line no-undef
+        //   Intercom('update', { language_override: payload })
+        // }
         this.$axios.$put('me', data)
       }
       resolve(payload)

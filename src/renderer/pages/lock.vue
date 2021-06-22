@@ -4,62 +4,105 @@
       <img src="~assets/images/logo/logo_black.svg" alt="" class="h-[1.875rem]">
     </div>
     <div class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center">
-      <div class="text-head-4 font-semibold mb-2.5">
-        {{ $t('master_password.enter_password_title') }}
-      </div>
-      <div class="text-base mb-4">
-        {{ $t('master_password.enter_password_desc') }}
-      </div>
-      <div class="inline-block mb-8 select-none">
-        <div class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto">
-          <client-only>
-            <img :src="currentUser.avatar" alt="" class="w-[28px] h-[28px] rounded-full mr-2">
-          </client-only>
-          <div class="mr-2">{{ currentUser.email }}</div>
+      <template v-if="step===1">
+        <div class="text-head-4 font-semibold mb-2.5">
+          {{ $t('master_password.enter_password_title') }}
         </div>
-      </div>
-      <form @submit.prevent="setMasterPass" class="mb-8">
-        <div class="form-group !mb-4">
-          <label for="" class="text-left">
-            {{ $t('master_password.enter_password') }}
-          </label>
-          <div class="input-group mb-1.5">
-            <input v-model="masterPassword"
-                   :type="showPassword ? 'text' : 'password'"
-                   class="form-control"
-                   :class="[errors ? 'is-invalid' :'']"
-                   :name="randomString()" autocomplete="new-password"
-            >
-            <div class="input-group-append !bg-white">
-              <button class="btn btn-icon" @click="showPassword = !showPassword"
-                      type="button"
+        <div class="text-base mb-4">
+          {{ $t('master_password.enter_password_desc') }}
+        </div>
+        <div class="inline-block mb-8 select-none">
+          <div class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto">
+            <client-only>
+              <img :src="currentUser.avatar" alt="" class="w-[28px] h-[28px] rounded-full mr-2">
+            </client-only>
+            <div class="mr-2">{{ currentUser.email }}</div>
+          </div>
+        </div>
+        <form class="mb-8" @submit.prevent="setMasterPass">
+          <div class="form-group !mb-4">
+            <label for="" class="text-left">
+              {{ $t('master_password.enter_password') }}
+            </label>
+            <div class="input-group mb-1.5">
+              <input v-model="masterPassword"
+                     :type="showPassword ? 'text' : 'password'"
+                     class="form-control"
+                     :class="[errors ? 'is-invalid' :'']"
+                     :name="randomString()" autocomplete="new-password"
               >
-                <i class="far"
-                   :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
-                />
-              </button>
+              <div class="input-group-append !bg-white">
+                <button class="btn btn-icon" type="button"
+                        @click="showPassword = !showPassword"
+                >
+                  <i class="far"
+                     :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+                  />
+                </button>
+              </div>
+            </div>
+            <div class="invalid-feedback">{{ $t('errors.invalid_password') }}</div>
+            <div class="text-primary text-left cursor-pointer" @click="step = 2">
+              {{ $t('master_password.get_hint') }}
             </div>
           </div>
-          <div class="invalid-feedback">{{ $t('errors.invalid_password') }}</div>
-          <div class="text-success text-left cursor-pointer">
-            {{ $t('master_password.get_hint') }}
+        </form>
+        <div class="form-group">
+          <div class="grid lg:grid-cols-2 grid-cols-1 gap-2">
+            <button class="btn btn-primary w-full" :disabled="loading"
+                    @click="setMasterPass"
+            >
+              {{ $t('master_password.unlock') }}
+            </button>
+            <button class="btn btn-default w-full" :disabled="loading"
+                    @click="logout"
+            >
+              {{ $t('common.logout') }}
+            </button>
           </div>
         </div>
-      </form>
-      <div class="form-group">
-        <div class="grid lg:grid-cols-2 grid-cols-1 gap-2">
-          <button class="btn btn-primary w-full" :disabled="loading"
-                  @click="setMasterPass"
+      </template>
+      <template v-if="step===2">
+        <div class="text-head-4 font-semibold mb-2.5">
+          {{ $t('master_password.master_password_hint') }}
+        </div>
+        <div class="text-base mb-4">
+          {{ $t('master_password.master_password_hint_desc') }}
+        </div>
+        <div class="inline-block mb-8 select-none">
+          <div class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto">
+            <client-only>
+              <img :src="currentUser.avatar" alt="" class="w-[28px] h-[28px] rounded-full mr-2">
+            </client-only>
+            <div class="mr-2">{{ currentUser.email }}</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary w-full"
+                  :disabled="loadingSend"
+                  @click="sendHint"
           >
-            Unlock
-          </button>
-          <button class="btn btn-default w-full" :disabled="loading"
-                  @click="logout"
-          >
-            Log Out
+            {{ $t('master_password.send') }}
           </button>
         </div>
-      </div>
+      </template>
+      <template v-if="step===3">
+        <img src="~/assets/images/icons/icon_settings.svg" alt="" class="mx-auto mb-4">
+        <div class="text-head-4 font-semibold mb-2.5">
+          {{ $t('master_password.master_password_hint') }}
+        </div>
+        <div class="text-base mb-4">
+          {{ $t('master_password.hint_success') }}
+        </div>
+        <button class="btn btn-clean !text-primary !pb-0" @click="step = 1">
+          <i class="fa fa-chevron-left" />&nbsp;&nbsp;&nbsp;{{ $t('master_password.back_login') }}
+        </button>
+      </template>
+    </div>
+    <div v-if="step === 2" class="mt-1">
+      <button class="btn btn-clean !text-primary" @click="step = 1">
+        <i class="fa fa-chevron-left" />&nbsp;&nbsp;&nbsp;{{ $t('master_password.back_login') }}
+      </button>
     </div>
   </div>
 </template>
@@ -75,7 +118,9 @@ export default {
       loading: false,
       errors: false,
       showPassword: false,
-      showHint: false
+      showHint: false,
+      step: 1,
+      loadingSend: false
     }
   },
   mounted () {
@@ -100,6 +145,16 @@ export default {
           this.$messagingService.send('logout')
         }
       }
+    },
+    sendHint () {
+      this.loadingSend = true
+      this.$axios.$post('cystack_platform/pm/users/password_hint', {
+        email: this.currentUser.email
+      })
+        .then(res => {
+          this.loadingSend = false
+          this.step = 3
+        })
     }
     // TODO change masterpass if have account
   }
