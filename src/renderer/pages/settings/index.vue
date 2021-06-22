@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-head-5 font-semibold mb-4">
-      {{ $t('settings.account') }}
+      {{ $t('data.settings.account') }}
     </div>
     <div class="setting-wrapper">
       <div class="setting-section">
@@ -11,13 +11,15 @@
             <div class="setting-description">{{ currentUser.email }}</div>
           </div>
           <div>
-            <button class="btn btn-default !text-warning"
-                    @click="lock"
+            <button
+              class="btn btn-default !text-warning"
+              @click="lock"
             >
               {{ $t('common.lock') }}
             </button>
-            <button class="btn btn-default !text-danger"
-                    @click="logout"
+            <button
+              class="btn btn-default !text-danger"
+              @click="logout"
             >
               {{ $t('common.logout') }}
             </button>
@@ -27,7 +29,7 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
-            <div class="setting-title">{{ $t('settings.fingerprint') }}</div>
+            <div class="setting-title">{{ $t('data.settings.fingerprint') }}</div>
             <div class="setting-description !text-danger-400">{{ fingerprint }}</div>
           </div>
         </div>
@@ -35,37 +37,62 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
-            <div class="setting-title">{{ $t('settings.plan') }}</div>
+            <div class="setting-title">{{ $t('data.settings.plan') }}</div>
             <div class="setting-description">{{ currentPlan.name }}</div>
           </div>
           <div>
-            <nuxt-link tag="button"
-                       :to="localeRoute({name: 'upgrade'})"
-                       class="btn btn-primary"
+            <nuxt-link
+              tag="button"
+              :to="localeRoute({name: 'upgrade'})"
+              class="btn btn-primary"
             >
-              {{ $t('settings.manage_plan') }}
+              {{ $t('data.settings.manage_plan') }}
             </nuxt-link>
           </div>
         </div>
       </div>
+      <div class="setting-section">
+        <div class="setting-section-header">
+          <div>
+            <div class="setting-title">{{ $t('data.settings.language') }}</div>
+          </div>
+          <div>
+            <el-select
+              :value="language"
+              placeholder="Select"
+              @change="changeLang"
+            >
+              <el-option
+                :label=" $t('data.settings.vietnamese')"
+                value="vi"
+              />
+              <el-option
+                :label=" $t('data.settings.english')"
+                value="en"
+              />
+            </el-select>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="text-head-5 font-semibold mb-4">{{ $t('settings.options') }}</div>
+    <div class="text-head-5 font-semibold mb-4">{{ $t('data.settings.options') }}</div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
             <div class="setting-title">
-              {{ $t('settings.timeout') }}
+              {{ $t('data.settings.timeout') }}
             </div>
             <div class="setting-description">
-              {{ $t('settings.timeout_desc') }}
+              {{ $t('data.settings.timeout_desc') }}
             </div>
           </div>
           <div>
-            <el-select v-model="user.timeout"
-                       placeholder=""
-                       :disabled="loading"
-                       @change="putUser"
+            <el-select
+              v-model="user.timeout"
+              placeholder=""
+              :disabled="loading"
+              @change="putUser"
             >
               <el-option
                 v-for="item in vaultTimeouts"
@@ -81,20 +108,21 @@
         <div class="setting-section-header">
           <div>
             <div class="setting-title">
-              {{ $t('settings.timeout_action') }}
+              {{ $t('data.settings.timeout_action') }}
             </div>
             <div class="setting-description">
-              {{ $t('settings.timeout_action_1') }}
+              {{ $t('data.settings.timeout_action_1') }}
             </div>
             <div class="setting-description">
-              {{ $t('settings.timeout_action_2') }}
+              {{ $t('data.settings.timeout_action_2') }}
             </div>
           </div>
           <div>
-            <el-select v-model="user.timeout_action"
-                       placeholder=""
-                       :disabled="loading"
-                       @change="putUser"
+            <el-select
+              v-model="user.timeout_action"
+              placeholder=""
+              :disabled="loading"
+              @change="putUser"
             >
               <el-option
                 v-for="item in vaultTimeoutActions"
@@ -108,19 +136,20 @@
       </div>
     </div>
     <div class="text-head-5 font-semibold mb-4">
-      {{ $t('settings.security') }}
+      {{ $t('data.settings.security') }}
     </div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
             <div class="setting-title">
-              {{ $t('settings.change_master_password') }}
+              {{ $t('data.settings.change_master_password') }}
             </div>
           </div>
           <div>
-            <button class="btn btn-icon !text-black-600"
-                    @click="changeMasterPassword"
+            <button
+              class="btn btn-icon !text-black-600"
+              @click="changeMasterPassword"
             >
               <i class="fa fa-chevron-right" />
             </button>
@@ -131,7 +160,7 @@
         <div class="setting-section-header">
           <div>
             <div class="setting-title">
-              {{ $t('settings.emergency_access') }}
+              {{ $t('data.settings.emergency_access') }}
             </div>
             <div class="setting-description" />
           </div>
@@ -144,25 +173,27 @@
       </div>
     </div>
     <div class="text-head-5 font-semibold mb-4 text-danger">
-      {{ $t('settings.danger_zone') }}
+      {{ $t('data.settings.danger_zone') }}
     </div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
             <div class="setting-description mb-4">
-              {{ $t('settings.danger_zone_note') }}
+              {{ $t('data.settings.danger_zone_note') }}
             </div>
             <div>
-              <button class="btn btn-default !text-danger"
-                      @click="openPurgeVault('purge')"
+              <button
+                class="btn btn-default !text-danger"
+                @click="openPurgeVault('purge')"
               >
-                {{ $t('settings.delete_all_items') }}
+                {{ $t('data.settings.delete_all_items') }}
               </button>
-              <button class="btn btn-default !text-danger"
-                      @click="openPurgeVault('delete_account')"
+              <button
+                class="btn btn-default !text-danger"
+                @click="openPurgeVault('delete_account')"
               >
-                {{ $t('settings.delete_account') }}
+                {{ $t('data.settings.delete_account') }}
               </button>
             </div>
           </div>
