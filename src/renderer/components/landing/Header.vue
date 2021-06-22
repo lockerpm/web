@@ -8,15 +8,16 @@
       <div class="flex items-center order-1">
         <nuxt-link to="/">
           <img
-            src="~/assets/images/logo/locker_logo_green.svg"
+            src="~/assets/images/logo/locker_logo.png"
             alt="CyStack Locker"
+            class="w-[105px] h-[28px]"
           >
         </nuxt-link>
       </div>
       <!-- Logo end -->
 
       <!-- Icon on mobile -->
-      <div class="block lg:hidden landing-transition order-2">
+      <div class="block lg:hidden landing-transition order-3">
         <a
           id="nav-toggle"
           class="landing-font-28 text-black landing-transition"
@@ -27,15 +28,15 @@
       <!-- Icon on mobile end -->
 
       <!-- Right actions -->
-      <div class="hidden lg:flex ml-[195px] lg:order-4 order-3">
+      <div class="hidden sm:flex lg:ml-[195px] lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
         <a
-          class="nav-item  text-black px-4 "
+          class="nav-item text-black px-4"
           href="#"
         >
           Đăng nhập
         </a>
         <a
-          class="nav-item  text-black"
+          class="nav-item text-black"
           href="#"
         >
           Đăng ký
@@ -55,10 +56,26 @@
             :key="index"
           >
             <a
-              class="inline-block nav-item  text-black landing-transition"
+              class="inline-block nav-item text-black landing-transition"
               :href="item.link"
             >
               {{ item.name }}
+            </a>
+          </li>
+          <li class="sm:hidden">
+            <a
+              class="inline-block nav-item text-black landing-transition"
+              href="#"
+            >
+              Đăng nhập
+            </a>
+          </li>
+          <li class="sm:hidden">
+            <a
+              class="inline-block nav-item text-black landing-transition"
+              href="#"
+            >
+              Đăng ký
             </a>
           </li>
         </ul>
@@ -76,7 +93,7 @@ export default {
       menu: [
         {
           name: 'Lợi ích',
-          link: '#'
+          link: 'how-it-works'
         },
         {
           name: 'Tính năng',
@@ -154,7 +171,7 @@ export default {
 </script>
 
 <style>
-.nav-item{
+.nav-item {
   @apply hover:no-underline hover:font-semibold hover:text-green;
   font-size: 14px;
 }

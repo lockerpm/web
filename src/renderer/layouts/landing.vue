@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <div class="max-w-6xl mx-auto mb-36">
+    <div class="max-w-6xl mx-auto">
       <div class="w-full px-6">
         <nuxt />
       </div>
@@ -24,7 +24,7 @@ export default {
 
 <style>
 .landing-btn {
-  @apply hover:no-underline transition duration-200 ease-in-out text-white hover:text-white;
+  @apply hover:no-underline transition duration-200 ease-in-out text-white hover:text-white hover:bg-green-hover;
   display: inline-block;
   padding: 13px 20px;
   min-width: 160px;
@@ -32,6 +32,19 @@ export default {
   font-weight: bold;
   font-size: 16px;
   border-radius: 5px;
+  background-color: #268334;
+}
+
+.landing-btn2 {
+  @apply hover:no-underline hover:bg-green transition duration-200 ease-in-out text-green hover:text-white;
+  display: inline-block;
+  padding: 13px 20px;
+  min-width: 160px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #268334;
 }
 
 .landing-transition {
@@ -44,7 +57,7 @@ export default {
 }
 .landing-font-38 {
   font-size: 38px;
-  line-height: 42px;
+  line-height: 45px;
 }
 .landing-font-32 {
   font-size: 32px;
@@ -54,11 +67,16 @@ export default {
   font-size: 28px;
   line-height: 32px;
 }
+.landing-font-22 {
+  font-size: 22px;
+  line-height: 26px;
+}
 .landing-font-20 {
   font-size: 20px;
 }
 .landing-font-18 {
   font-size: 18px;
+  line-height: 30px;
 }
 .landing-font-16 {
   font-size: 16px;
