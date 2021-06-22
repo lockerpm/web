@@ -16,67 +16,63 @@
       <h4>{{ $t('data.billing.card_title') }}</h4>
     </div>
     <ValidationObserver ref="observer" tag="div" class="p-4 credit-drawer-body">
-      <div class="row">
-        <div class="form-group col-12">
-          <!--          <h5> {{ $t('data.billing.payment_method') }} </h5>-->
-          <p v-html="$t('data.billing.intro')" />
+      <div class="form-group">
+        <!--          <h5> {{ $t('data.billing.payment_method') }} </h5>-->
+        <div v-html="$t('data.billing.intro')" />
+      </div>
+      <div class="grid grid-cols-2 cloud-card gap-x-4">
+        <div class="form-group col-span-2">
+          <ValidationProvider v-slot="{ errors }" rules="required|alpha_spaces|max:100" :name="$t('common.cardholder')">
+            <label class="">* {{ $t('common.cardholder') }}</label>
+            <input v-model="user.name" type="text"
+                   :class="errors.length?'is-invalid':''"
+                   class="form-control form-control-sm " :placeholder="$t('common.cardholder_placeholder')" name="cardholder"
+            >
+            <span class="invalid-feedback">{{ errors[0] }}</span>
+          </ValidationProvider>
         </div>
-        <div class="col-12">
-          <div class="row text-white cloud-card">
-            <div class="form-group  col-12">
-              <ValidationProvider v-slot="{ errors }" rules="required|alpha_spaces|max:100" :name="$t('common.cardholder')">
-                <label>* {{ $t('common.cardholder') }}</label>
-                <input v-model="user.name" type="text"
-                       :class="errors.length?'is-invalid':''"
-                       class="form-control form-control-sm " :placeholder="$t('common.cardholder_placeholder')" name="cardholder"
-                >
-                <span class="invalid-feedback text-white">{{ errors[0] }}</span>
-              </ValidationProvider>
+        <div class="form-group col-span-2" :class="eventChangeNumber.error ? 'has-danger':''">
+          <label class="">* {{ $t('data.billing.card_number') }}</label>
+          <div class="input-group input-group-sm bg-white">
+            <div class="input-group-prepend bg-black-200  !rounded-r-none">
+              <span class="input-group-text">
+                <i v-if="eventChangeNumber.brand === 'visa'" class="fab fa-cc-visa" style="font-size:1.5em" />
+                <i v-else-if="eventChangeNumber.brand === 'amex'" class="fab fa-cc-amex" style="font-size:1.5em" />
+                <i v-else-if="eventChangeNumber.brand === 'jcb'" class="fab fa-cc-jcb" style="font-size:1.5em" />
+                <i v-else-if="eventChangeNumber.brand === 'mastercard'" class="fab fa-cc-mastercard" style="font-size:1.5em" />
+                <i v-else-if="eventChangeNumber.brand === 'diners'" class="fab fa-cc-diners-club" style="font-size:1.5em" />
+                <i v-else-if="eventChangeNumber.brand === 'discover'" class="fab fa-cc-discover" style="font-size:1.5em" />
+                <i v-else class="far fa-credit-card" :class="eventChangeNumber.brand? 'm--font-danger':''" style="font-size:1.5em" />
+              </span>
             </div>
-            <div class="form-group col-12" :class="eventChangeNumber.error ? 'has-danger':''">
-              <label>* {{ $t('data.billing.card_number') }}</label>
-              <div class="input-group input-group-sm">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i v-if="eventChangeNumber.brand === 'visa'" class="fab fa-cc-visa" style="font-size:1.5em" />
-                    <i v-else-if="eventChangeNumber.brand === 'amex'" class="fab fa-cc-amex" style="font-size:1.5em" />
-                    <i v-else-if="eventChangeNumber.brand === 'jcb'" class="fab fa-cc-jcb" style="font-size:1.5em" />
-                    <i v-else-if="eventChangeNumber.brand === 'mastercard'" class="fab fa-cc-mastercard" style="font-size:1.5em" />
-                    <i v-else-if="eventChangeNumber.brand === 'diners'" class="fab fa-cc-diners-club" style="font-size:1.5em" />
-                    <i v-else-if="eventChangeNumber.brand === 'discover'" class="fab fa-cc-discover" style="font-size:1.5em" />
-                    <i v-else class="far fa-credit-card" :class="eventChangeNumber.brand? 'm--font-danger':''" style="font-size:1.5em" />
-                  </span>
-                </div>
-                <div id="card-number" ref="cardNumber" />
-              </div>
-              <div v-if="eventChangeNumber.error" class="invalid-feedback text-white">
-                {{ $t(`data.error_code.${eventChangeNumber.error.code}`) }}
-              </div>
-            </div>
-            <div class="form-group col-6" :class="eventChangeExpiry.error ? 'has-danger':''">
-              <label>* {{ $t('data.billing.expiration') }}</label>
-              <div id="card-expiry" ref="cardExpiry" />
-              <div v-if="eventChangeExpiry.error" class="invalid-feedback text-white">
-                {{ $t(`data.error_code.${eventChangeExpiry.error.code}`) }}
-              </div>
-            </div>
-            <div class="form-group col-6" :class="eventChangeCvc.error ? 'has-danger':''">
-              <label>* {{ $t('data.billing.cvc') }}</label>
-              <div id="card-cvc" ref="cardCvc" />
-              <div v-if="eventChangeCvc.error" class="invalid-feedback text-white">
-                {{ $t(`data.error_code.${eventChangeCvc.error.code}`) }}
-              </div>
-            </div>
-            <div class="form-group col-12 text-right">
-              <img src="~assets/images/logo/stripe.svg" alt="" style="height: 30px">
-            </div>
+            <div id="card-number" ref="cardNumber" />
           </div>
+          <div v-if="eventChangeNumber.error" class="invalid-feedback">
+            {{ $t(`data.error_code.${eventChangeNumber.error.code}`) }}
+          </div>
+        </div>
+        <div class="form-group" :class="eventChangeExpiry.error ? 'has-danger':''">
+          <label class="">* {{ $t('data.billing.expiration') }}</label>
+          <div id="card-expiry" ref="cardExpiry" />
+          <div v-if="eventChangeExpiry.error" class="invalid-feedback">
+            {{ $t(`data.error_code.${eventChangeExpiry.error.code}`) }}
+          </div>
+        </div>
+        <div class="form-group" :class="eventChangeCvc.error ? 'has-danger':''">
+          <label class="">* {{ $t('data.billing.cvc') }}</label>
+          <div id="card-cvc" ref="cardCvc" />
+          <div v-if="eventChangeCvc.error" class="invalid-feedback">
+            {{ $t(`data.error_code.${eventChangeCvc.error.code}`) }}
+          </div>
+        </div>
+        <div class="form-group col-span-2 text-right">
+          <img src="~assets/images/logo/stripe.svg" alt="" style="height: 30px">
         </div>
       </div>
       <el-divider />
       <div class="row">
         <div class="form-group col-12">
-          <h5>{{ $t('data.billing.billing_contact') }}</h5>
+          <div class="text-lg font-semibold">{{ $t('data.billing.billing_contact') }}</div>
         </div>
         <div class="form-group col-12">
           <ValidationProvider v-slot="{ errors }" rules="required|alpha_spaces|max:100" :name="$t('common.name')">
@@ -112,11 +108,13 @@
         </div>
       </div>
       <el-divider />
-      <div class="row">
-        <div class="form-group col-12">
-          <h5> {{ $t('data.billing.billing_address') }} </h5>
+      <div class="grid grid-cols-2 gap-x-4">
+        <div class="form-group col-span-2">
+          <div class="text-lg font-semibold">
+            {{ $t('data.billing.billing_address') }}
+          </div>
         </div>
-        <div class="form-group col-12">
+        <div class="form-group col-span-2">
           <ValidationProvider v-slot="{ errors }" rules="required|max:250" :name="$t('common.address')">
             <label>* {{ $t('common.address') }}</label>
             <input v-model="user.address" name="address"
@@ -127,7 +125,7 @@
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
         </div>
-        <div class="form-group col-6">
+        <div class="form-group">
           <ValidationProvider v-slot="{ errors }" rules="required|max:100" :name="$t('common.city')">
             <label>* {{ $t('common.city') }}</label>
             <input v-model="user.address_city" name="city"
@@ -137,7 +135,7 @@
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
         </div>
-        <div class="form-group col-6">
+        <div class="form-group">
           <ValidationProvider v-slot="{ errors }" rules="max:100" :name="$t('common.state')">
             <label>{{ $t('common.state') }}</label>
             <input v-model="user.address_state" type="text"
@@ -147,10 +145,16 @@
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
         </div>
-        <div class="form-group col-6 mb-0">
-          <ValidationProvider v-slot="{ errors }" rules="required" :name="$t('common.country')">
+        <div class="form-group">
+          <ValidationProvider v-slot="{ errors }" rules="required"
+                              :name="$t('common.country')"
+          >
             <label>* {{ $t('common.country') }}</label>
-            <el-select v-model="user.address_country" placeholder="" filterable class="full-width" size="small">
+            <el-select v-model="user.address_country" placeholder="" filterable
+                       class="w-full" size="small"
+                       :class="errors.length?'is-invalid':''"
+                       auto-complete="off"
+            >
               <el-option
                 v-for="country in countries"
                 :key="country.country_code"
@@ -166,12 +170,12 @@
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
         </div>
-        <div class="form-group col-6 mb-0">
+        <div class="form-group">
           <ValidationProvider v-slot="{ errors }" rules="numeric|max:10" :name="$t('common.state')">
             <label>{{ $t('common.zip') }}</label>
             <input v-model="user.address_zip" type="text"
                    :class="errors.length?'is-invalid':''"
-                   class="form-control form-control-sm" name="zip"
+                   class="form-control form-control-sm " name="zip"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
@@ -179,21 +183,19 @@
       </div>
     </ValidationObserver>
     <div class="credit-drawer-footer">
-      <div class="row">
-        <div class="col-6">
-          <button class="btn btn-default btn-block" :disabled="loading" @click="cancel">
-            {{ $t('common.cancel') }}
-          </button>
-        </div>
-        <div class="col-6">
-          <button class="btn btn-primary btn-block"
-                  :class="loading?'kt-spinner kt-spinner--light kt-spinner-sm':''"
-                  :disabled="loading"
-                  @click="save"
-          >
-            {{ $t('common.save') }}
-          </button>
-        </div>
+      <div class="grid grid-cols-2 gap-x-4">
+        <button class="btn btn-default btn-block w-full"
+                :disabled="loading"
+                @click="cancel"
+        >
+          {{ $t('common.cancel') }}
+        </button>
+        <button class="btn btn-primary btn-block w-full"
+                :disabled="loading"
+                @click="save"
+        >
+          {{ $t('common.save') }}
+        </button>
       </div>
     </div>
   </el-drawer>
@@ -201,6 +203,7 @@
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
+
 export default {
   components: {
     ValidationProvider, ValidationObserver
@@ -254,11 +257,11 @@ export default {
     },
     handleOpen () {
       this.$nextTick(() => {
-        this.cardNumber = this.elements.create('cardNumber', { classes: { base: 'form-control form-control-sm ' } })
+        this.cardNumber = this.elements.create('cardNumber', { classes: { base: 'form-control form-control-sm !py-[10px]' } })
         this.cardNumber.mount(this.$refs.cardNumber)
-        this.cardExpiry = this.elements.create('cardExpiry', { classes: { base: 'form-control form-control-sm ' } })
+        this.cardExpiry = this.elements.create('cardExpiry', { classes: { base: 'form-control form-control-sm bg-white !py-[10px]' } })
         this.cardExpiry.mount(this.$refs.cardExpiry)
-        this.cardCvc = this.elements.create('cardCvc', { classes: { base: 'form-control form-control-sm ' } })
+        this.cardCvc = this.elements.create('cardCvc', { classes: { base: 'form-control form-control-sm bg-white !py-[10px]' } })
         this.cardCvc.mount(this.$refs.cardCvc)
         this.cardNumber.on('change', event => {
           this.eventChangeNumber = event
@@ -285,6 +288,7 @@ export default {
     },
     async save () {
       const isValid = await this.$refs.observer.validate()
+      console.log(isValid)
       if (isValid) {
         this.loading = true
         const tokenData = {
@@ -304,7 +308,7 @@ export default {
         this.stripe.createToken(this.cardNumber, tokenData).then(result => {
           if (result.token) {
             // Handle result.error or result.token
-            const url = 'cloud_security/payments/subscriptions/card'
+            const url = 'cystack_platform/payments/cards'
             this.$axios.$post(url, {
               token_card: result.token.id,
               metadata: {
@@ -314,11 +318,11 @@ export default {
               }
             }).then(res => {
               this.notify(this.$t('data.billing.add_card_success'), 'success')
-              this.$emit('handle-done')
+              this.$emit('handle-done', res)
               this.$refs.cardDrawer.closeDrawer()
             })
               .catch(() => {
-                this.notify(this.$t('data.billing.generic_decline'), 'warning')
+                this.notify(this.$t('data.billing.card_decline.generic_decline'), 'warning')
               })
               .then(() => {
                 this.loading = false

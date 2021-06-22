@@ -190,8 +190,10 @@ Vue.mixin({
             if (domain) {
               return (this.$createElement(Avatar, {
                 props: {
-                  src: `${process.env.logoUrl}${domain}?size=${size}" alt="${domain}`,
-                  size
+                  src: `${process.env.logoUrl}${domain}?size=${size}`,
+                  size,
+                  alt: domain,
+                  shape: 'square'
                 }
               }, [
                 this.$createElement('img', {
@@ -318,6 +320,7 @@ Vue.filter('filterPassword', function (value, showPassword) {
 Vue.filter('filterString', function (value) {
   return value
 })
+
 Vue.filter('formatPercentage', function (value) {
   if (!Number.isNaN(value)) {
     return numeral(value).format('0.[00]')

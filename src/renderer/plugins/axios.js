@@ -1,12 +1,11 @@
 import https from 'https'
 
 export default function ({ store, $axios, app, isDev, redirect }) {
-  const environment = isDev ? 'dev' : process.env.environment
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.interceptors.request.use(request => {
     // Get token from auth.js store
     // const token = store.state.auth.accessToken
-    const token = app.$cookies.get('cs_locker_token', { path: '/', ...environment === '' ? { secure: true } : { secure: false } })
+    const token = app.$cookies.get('cs_locker_token')
 
     // Update token axios header
     if (token) {

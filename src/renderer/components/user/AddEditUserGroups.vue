@@ -9,7 +9,7 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
-        Group access {{ user.name }}
+        {{ $t('data.folders.groups_access') }} {{ user.name }}
       </div>
     </div>
     <div class="text-left">
@@ -40,7 +40,7 @@
         <button class="btn btn-default"
                 @click="dialogVisible = false"
         >
-          Cancel
+          {{ $t('common.cancel') }}
         </button>
         <button class="btn btn-primary"
                 :disabled="loading"
@@ -54,8 +54,9 @@
 </template>
 
 <script>
-
 export default {
+  components: {
+  },
   data () {
     return {
       groups: [],

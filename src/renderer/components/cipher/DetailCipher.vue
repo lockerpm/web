@@ -46,7 +46,10 @@
           >
             <i class="fa fa-pen" />
           </button>
-          <button class="btn btn-icon btn-xs btn-action">
+          <button v-if="!cipher.organizationId"
+                  class="btn btn-icon btn-xs btn-action"
+                  @click="shareItem(cipher)"
+          >
             <i class="fas fa-share-square" />
           </button>
           <el-dropdown trigger="click" :hide-on-click="false">
@@ -54,10 +57,10 @@
               <i class="fas fa-ellipsis-h" />
             </button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>
+              <el-dropdown-item @click.native="moveFolders([cipher.id])">
                 {{ $t('common.move_folder') }}
               </el-dropdown-item>
-              <el-dropdown-item>
+              <el-dropdown-item @click.native="deleteCiphers([cipher.id])">
                 <span class="text-danger">{{ $t('common.delete') }}</span>
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -75,10 +78,12 @@
         </div>
         <div v-show="!editMode" class="cipher-items">
           <template v-if="cipher.type === CipherType.Login">
-            <TextHaveCopy label="Email or Username" :text="cipher.login.username" />
-            <TextHaveCopy label="Password" :text="cipher.login.password" should-hide />
+            <TextHaveCopy label="Email / Username" :text="cipher.login.username" />
+            <TextHaveCopy :label="$t('data.ciphers.password')"
+                          :text="cipher.login.password" should-hide
+            />
             <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">Password Security</div>
+              <div class="">{{ $t('data.ciphers.password_security') }}</div>
               <div class="col-span-4 font-semibold">
                 <PasswordStrength :score="passwordStrength.score" />
               </div>
@@ -88,7 +93,7 @@
                  :key="index"
                  class="grid md:grid-cols-6 cipher-item"
             >
-              <div class="">Website Address</div>
+              <div class="">{{ $t('data.ciphers.website_address') }}</div>
               <div class="col-span-4 font-semibold">
                 {{ item.uri }}
               </div>
@@ -100,49 +105,51 @@
             </div>
           </template>
           <template v-if="cipher.type === CipherType.Card">
-            <TextHaveCopy label="Tên chủ thẻ" :text="cipher.card.cardholderName" />
-            <TextHaveCopy label="Thương hiệu" :text="cipher.card.brand" />
-            <TextHaveCopy label="Số thẻ" :text="cipher.card.number" />
-            <TextHaveCopy label="Tháng Hết hạn" :text="cipher.card.expMonth" />
-            <TextHaveCopy label="Năm Hết hạn" :text="cipher.card.expYear" />
-            <TextHaveCopy label="CVV" :text="cipher.card.code" should-hide />
+            <TextHaveCopy :label="$t('data.ciphers.card_holder')" :text="cipher.card.cardholderName" />
+            <TextHaveCopy :label="$t('data.ciphers.brand')" :text="cipher.card.brand" />
+            <TextHaveCopy :label="$t('data.ciphers.card_number')" :text="cipher.card.number" />
+            <TextHaveCopy :label="$t('data.ciphers.expiration_month')" :text="cipher.card.expMonth" />
+            <TextHaveCopy :label="$t('data.ciphers.expiration_year')" :text="cipher.card.expYear" />
+            <TextHaveCopy :label="$t('data.ciphers.cvv')" :text="cipher.card.code" should-hide />
           </template>
           <template v-if="cipher.type === CipherType.Identity">
-            <TextHaveCopy label="Tước hiệu" :text="cipher.identity.title" />
-            <TextHaveCopy label="Tên" :text="cipher.identity.firstName" />
-            <TextHaveCopy label="Họ" :text="cipher.identity.lastName" />
+            <TextHaveCopy :label="$t('data.ciphers.title')" :text="cipher.identity.title" />
+            <TextHaveCopy :label="$t('data.ciphers.first_name')" :text="cipher.identity.firstName" />
+            <TextHaveCopy :label="$t('data.ciphers.last_name')" :text="cipher.identity.lastName" />
             <TextHaveCopy label="Username" :text="cipher.identity.username" />
             <TextHaveCopy label="Email" :text="cipher.identity.email" />
-            <TextHaveCopy label="Công ty" :text="cipher.identity.company" />
-            <TextHaveCopy label="Số CMT" :text="cipher.identity.ssn" />
-            <TextHaveCopy label="Số hộ chiếu" :text="cipher.identity.passportNumber" />
-            <TextHaveCopy label="Bằng lái xe" :text="cipher.identity.licenseNumber" />
-            <TextHaveCopy label="Địa chỉ 1" :text="cipher.identity.address1" />
-            <TextHaveCopy label="Địa chỉ 2" :text="cipher.identity.address2" />
-            <TextHaveCopy label="Thành phố/Tỉnh" :text="cipher.identity.city" />
-            <TextHaveCopy label="Quận/Huyện" :text="cipher.identity.state" />
-            <TextHaveCopy label="Mã bưu chính" :text="cipher.identity.postalCode" />
-            <TextHaveCopy label="Quốc gia" :text="cipher.identity.country" />
+            <TextHaveCopy :label="$t('data.ciphers.company')" :text="cipher.identity.company" />
+            <TextHaveCopy :label="$t('data.ciphers.ssn')" :text="cipher.identity.ssn" />
+            <TextHaveCopy :label="$t('data.ciphers.passport')" :text="cipher.identity.passportNumber" />
+            <TextHaveCopy :label="$t('data.ciphers.license')" :text="cipher.identity.licenseNumber" />
+            <TextHaveCopy :label="$t('data.ciphers.address') + '1'" :text="cipher.identity.address1" />
+            <TextHaveCopy :label="$t('data.ciphers.address') + '2'" :text="cipher.identity.address2" />
+            <TextHaveCopy :label="$t('data.ciphers.city_town')" :text="cipher.identity.city" />
+            <TextHaveCopy :label="$t('data.ciphers.state_province')" :text="cipher.identity.state" />
+            <TextHaveCopy :label="$t('data.ciphers.zip')" :text="cipher.identity.postalCode" />
+            <TextHaveCopy :label="$t('data.ciphers.country')" :text="cipher.identity.country" />
           </template>
-          <TextHaveCopy label="Notes" :text="cipher.notes" />
+          <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.notes" />
           <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">Owned by</div>
+            <div class="">{{ $t('data.ciphers.owned_by') }}</div>
             <div class="col-span-4 font-semibold flex items-center">
               <span>{{ getTeam(teams, cipher.organizationId).name || $t('common.me') }}</span>
             </div>
           </div>
           <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">Folder</div>
+            <div class="">{{ $t('data.ciphers.folder') }}</div>
             <div v-if="cipher.organizationId" class="col-span-4 font-semibold flex items-center">
               <img :src="collection.id === 'unassigned' ? require('~/assets/images/icons/folderSolid.svg') : require('~/assets/images/icons/folderSolidShare.svg')" alt="" class="mr-3"> {{ collection.name }}
             </div>
             <div v-else class="col-span-4 font-semibold flex items-center">
-              <img src="~/assets/images/icons/folderSolid.svg" alt="" class="mr-3"> {{ folder.name || 'No folder' }}
+              <img src="~/assets/images/icons/folderSolid.svg" alt="" class="mr-3"> {{ folder.name || $t('data.folders.no_folder') }}
             </div>
           </div>
         </div>
       </client-only>
-
+      <ShareCipher ref="shareCipher" />
+      <MoveFolder ref="moveFolder" />
+      <AddEditCipher ref="addEditCipherDialog" />
       <div class="max-w-[585px] mx-auto">
         <AddEditCipher ref="addEditCipherDialog"
                        @close="editMode=false"
@@ -160,12 +167,16 @@ import PasswordStrength from '../password/PasswordStrength'
 import { CipherType } from '../../jslib/src/enums'
 import TextHaveCopy from '../../components/cipher/TextHaveCopy'
 import Vnodes from '../../components/Vnodes'
+import ShareCipher from '../../components/cipher/ShareCipher'
+import MoveFolder from '../folder/MoveFolder'
 export default {
   components: {
     TextHaveCopy,
     AddEditCipher,
     PasswordStrength,
-    Vnodes
+    Vnodes,
+    ShareCipher,
+    MoveFolder
   },
   props: {
     type: {
@@ -242,6 +253,15 @@ export default {
     addEdit () {
       this.editMode = true
       this.$refs.addEditCipherDialog.openDialog(this.cipher, false, true)
+    },
+    shareItem (cipher) {
+      this.$refs.shareCipher.openDialog(cipher)
+    },
+    moveFolders (ids) {
+      this.$refs.moveFolder.openDialog(ids)
+    },
+    deleteCiphers (ids) {
+      this.$refs.addEditCipherDialog.deleteCiphers(ids)
     },
     async getCipher () {
       // this.folders = await this.getFolders()

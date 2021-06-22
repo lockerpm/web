@@ -30,6 +30,7 @@ module.exports = {
       transparent: 'transparent',
       current: 'currentColor',
       black: {
+        SIDEBAR: '#161922',
         DEFAULT: '#072245',
         50: '#DBDFE1',
         100: '#E3E7EB',
@@ -49,7 +50,7 @@ module.exports = {
       },
       white: colors.white,
       info: {
-        DEFAULT: '#005AE4',
+        DEFAULT: '#0363C2',
         ...colors.blue
       },
       warning: {
@@ -57,7 +58,8 @@ module.exports = {
         ...colors.yellow
       },
       success: {
-        DEFAULT: '#26BE56',
+        DEFAULT: '#3AB34A',
+        HOVER: '#2C9737',
         ...colors.green
       },
       danger: {
@@ -65,8 +67,9 @@ module.exports = {
         ...colors.red
       },
       primary: {
-        DEFAULT: '#00A893'
-      },
+        DEFAULT: '#0476E9',
+        HOVER: '#0363C2'
+      }
     },
     extend: {
       borderRadius: {

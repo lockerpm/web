@@ -374,7 +374,6 @@
 <script>
 export default {
   layout: 'landing',
-
   data () {
     return {
       features: [

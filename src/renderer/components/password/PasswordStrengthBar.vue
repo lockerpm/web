@@ -1,6 +1,6 @@
 <template>
   <div class="progress">
-    <div class="progress-bar" role="progressbar"
+    <div class="progress-bar select-none" role="progressbar"
          :class="{
            'bg-success w-full': score === 4,
            'bg-info w-3/4': score === 3,

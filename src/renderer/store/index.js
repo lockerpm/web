@@ -20,7 +20,8 @@ export const state = () => ({
   syncedCiphersToggle: false,
   searchText: '',
   teams: [],
-  currentTeam: {}
+  currentTeam: {},
+  currentPlan: {}
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -86,6 +87,9 @@ export const mutations = {
   },
   UPDATE_TEAM (state, value) {
     state.currentTeam = value
+  },
+  UPDATE_CURRENT_PLAN (state, plan) {
+    state.currentPlan = plan
   }
 }
 export const actions = {
@@ -174,6 +178,12 @@ export const actions = {
   LoadTeams ({ commit }) {
     return this.$axios.$get('cystack_platform/pm/teams').then(res => {
       commit('UPDATE_TEAMS', res)
+      return res
+    })
+  },
+  LoadCurrentPlan ({ commit }) {
+    return this.$axios.$get('cystack_platform/pm/payments/plan').then(res => {
+      commit('UPDATE_CURRENT_PLAN', res)
       return res
     })
   }

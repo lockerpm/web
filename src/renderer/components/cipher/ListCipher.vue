@@ -48,35 +48,35 @@
         <div class="header-actions">
           <el-dropdown trigger="click">
             <div class="text-sm text-black-600 font-semibold">
-              Sắp xếp theo <i class="el-icon-caret-bottom el-icon--right" />
+              {{ $t('data.ciphers.sort_by') }} <i class="el-icon-caret-bottom el-icon--right" />
             </div>
             <el-dropdown-menu slot="dropdown" class="w-[200px] ">
               <el-dropdown-item
                 class="flex items-center justify-between"
                 @click.native="changeSort('name', 'asc')"
               >
-                <span>Tên tăng dần</span>
+                <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.ascending') }}</span>
                 <i v-if="orderString==='name_asc'" class="fa fa-check" />
               </el-dropdown-item>
               <el-dropdown-item
                 class="flex items-center justify-between"
                 @click.native="changeSort('name', 'desc')"
               >
-                <span>Tên giảm dần</span>
+                <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.descending') }}</span>
                 <i v-if="orderString==='name_desc'" class="fa fa-check" />
               </el-dropdown-item>
               <el-dropdown-item
                 class="flex items-center justify-between"
                 @click.native="changeSort('revisionDate', 'asc')"
               >
-                <span>Thời gian tăng dần</span>
+                <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.ascending') }}</span>
                 <i v-if="orderString==='revisionDate_asc'" class="fa fa-check" />
               </el-dropdown-item>
               <el-dropdown-item
                 class="flex items-center justify-between"
                 @click.native="changeSort('revisionDate', 'desc')"
               >
-                <span>Thời gian giảm dần</span>
+                <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.descending') }}</span>
                 <i v-if="orderString==='revisionDate_desc'" class="fa fa-check" />
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -108,12 +108,12 @@
                 <li class="el-dropdown-menu__item w-[200px]"
                     @click.prevent="addEditFolder(selectedFolder, false)"
                 >
-                  Đổi tên
+                  {{ $t('common.rename') }}
                 </li>
                 <li class="el-dropdown-menu__item"
                     @click.prevent="deleteFolder(selectedFolder)"
                 >
-                  <span class="text-danger">Xóa</span>
+                  <span class="text-danger">{{ $t('common.delete') }}</span>
                 </li>
               </template>
             </component>
@@ -150,7 +150,7 @@
               >
                 <div class="flex items-center">
                   <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
-                  <div class="font-semibold truncate select-none">Unassigned Folder ({{ countUnassignedItems(ciphers, key) }})</div>
+                  <div class="font-semibold truncate select-none">{{ $t('data.ciphers.unassigned_folder') }} ({{ countUnassignedItems(ciphers, key) }})</div>
                 </div>
               </div>
             </div>
@@ -163,22 +163,24 @@
               <li class="el-dropdown-menu__item w-[200px]"
                   @click.prevent="addEditTeamFolder(selectedFolder, false)"
               >
-                Đổi tên
+                {{ $t('common.rename') }}
               </li>
-              <li class="el-dropdown-menu__item w-[200px]"
+              <li v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
+                  class="el-dropdown-menu__item w-[200px]"
                   @click.prevent="putTeamFolderUsers(selectedFolder)"
               >
-                User Access
+                {{ $t('data.groups.user_access') }}
               </li>
-              <li class="el-dropdown-menu__item w-[200px]"
+              <li v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
+                  class="el-dropdown-menu__item w-[200px]"
                   @click.prevent="putTeamFolderGroups(selectedFolder)"
               >
-                Group Access
+                {{ $t('data.folders.user_access') }}
               </li>
               <li class="el-dropdown-menu__item"
                   @click.prevent="deleteTeamFolder(selectedFolder)"
               >
-                <span class="text-danger">Xóa</span>
+                <span class="text-danger">{{ $t('common.delete') }}</span>
               </li>
             </template>
           </component>
@@ -188,7 +190,7 @@
         <div v-if="getRouteBaseName() === 'vault'"
              class="mb font-medium"
         >
-          All items
+          {{ $t('data.ciphers.all_items') }}
         </div>
         <el-table
           ref="multipleTable"
@@ -209,30 +211,30 @@
             <template slot="header">
               <div v-if="multipleSelection.length" class="flex items-center ">
                 <div class="text-black mr-8 whitespace-nowrap">
-                  {{ multipleSelection.length }} mục được chọn
+                  {{ multipleSelection.length }} {{ $t('data.ciphers.selected_items') }}
                 </div>
                 <div v-if="deleted">
                   <button class="btn btn-default btn-xs"
                           @click="restoreCiphers(multipleSelection.map(e => e.id))"
                   >
-                    Khôi phục
+                    {{ $t('common.restore') }}
                   </button>
                   <button class="btn btn-default btn-xs !text-danger"
                           @click="deleteCiphers(multipleSelection.map(e => e.id))"
                   >
-                    Xóa vĩnh viễn
+                    {{ $t('common.permanently_delete') }}
                   </button>
                 </div>
                 <div v-else class="">
                   <button class="btn btn-default btn-xs"
                           @click="moveFolders(multipleSelection.map(e => e.id))"
                   >
-                    Chuyển thư mục
+                    {{ $t('common.move_folder') }}
                   </button>
                   <button class="btn btn-default btn-xs !text-danger"
                           @click="moveTrashCiphers(multipleSelection.map(e => e.id))"
                   >
-                    Xóa
+                    {{ $t('common.delete') }}
                   </button>
                 </div>
               </div>
@@ -261,7 +263,7 @@
           </el-table-column>
           <el-table-column
             align="right"
-            label="Sở hữu"
+            :label="$t('common.ownership')"
             width="200"
             show-overflow-tooltip
           >
@@ -272,7 +274,7 @@
           <el-table-column
             width="200"
             align="right"
-            label="Cập nhật lúc"
+            :label="$t('data.ciphers.updated_time')"
           >
             <template slot-scope="scope">
               {{ $moment(scope.row.revisionDate).fromNow() }}
@@ -379,23 +381,25 @@
         popper-class="!p-0"
       >
         <div class="text-black">
-          <div class="px-5 pt-5 text-xs">Tạo</div>
+          <div class="px-5 pt-5 text-xs">
+            {{ $t('common.add') }}
+          </div>
           <ul class="el-dropdown-menu !static !border-0 !shadow-none">
             <li v-if="getRouteBaseName() ==='vault'" class="el-dropdown-menu__item font-semibold !text-black"
                 @click="addEditFolder({}, true)"
             >
-              Tạo thư mục
+              {{ $t('data.folders.add_folder') }}
             </li>
             <li v-if="getRouteBaseName() ==='vault' && canManageTeamFolder"
                 class="el-dropdown-menu__item font-semibold !text-black"
                 @click="addEditTeamFolder({})"
             >
-              Tạo thư mục Teams
+              {{ $t('data.folders.add_team_folder') }}
             </li>
             <li class="el-dropdown-menu__item font-semibold !text-black"
                 @click="chooseCipherType"
             >
-              Tạo mục
+              {{ $t('data.ciphers.add_item') }}
             </li>
           </ul>
         </div>
@@ -714,6 +718,12 @@ export default {
         return filteredCipher.length
       }
       return 0
+    },
+    canDeleteTeamFolder (team) {
+      return ['owner', 'admin'].includes(team.role) && !team.locked
+    },
+    isBiz (team) {
+      return team.is_business
     }
   }
 }
