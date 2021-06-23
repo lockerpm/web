@@ -50,6 +50,23 @@
             </nuxt-link>
           </div>
         </div>
+        <div class="setting-section-body">
+          <div v-for="item in teams" :key="item.id" class="grid grid-cols-3 max-w-[800px] w-full justify-between">
+            <div class="font-semibold truncate">{{ item.name }}</div>
+            <div>
+              {{ item.role === 'owner' ? $t('data.members.role.owner.title') : item.is_business ? $t(`data.members.role.${item.role}.title`) : $t('data.members.role.family.title') }}
+            </div>
+            <div>
+              <nuxt-link
+                v-if="item.is_business && ['owner', 'admin'].includes(item.role)"
+                :to="localeRoute({name: 'admin-teamId', params: {teamId: item.id}})"
+                class="text-primary cursor-pointer"
+              >
+                {{ $t('data.settings.manage') }}
+              </nuxt-link>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="setting-section">
         <div class="setting-section-header">

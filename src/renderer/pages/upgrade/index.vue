@@ -22,8 +22,10 @@
         </div>
       </div>
       <div class="grid grid-cols-4 gap-x-6">
-        <div v-for="item in plans" :key="item.id"
-             class="p-8 border border-black-200 rounded"
+        <div
+          v-for="item in plans"
+          :key="item.id"
+          class="p-8 border border-black-200 rounded"
         >
           <div class="h-full flex flex-col">
             <div class="flex items-center">
@@ -35,30 +37,35 @@
               </div>
             </div>
             <div class="mt-2.5 mb-6 flex items-center">
-              <span class="text-head-1 font-semibold mr-2">
-                <span v-if="language==='vi'">đ{{ item.price.vnd }}</span>
-                <span v-if="language==='en'">${{ item.price.usd }}</span>
+              <span class="text-head-3 font-semibold mr-2">
+                <span v-if="language==='vi'">đ{{ item.price.vnd | formatNumber }}</span>
+                <span v-if="language==='en'">${{ item.price.usd | formatNumber }}</span>
               </span>
               <span class="text-black-600">/ mo</span>
               <span v-if="item.max_number" class="ml-2 text-black-600">/ {{ item.max_number }} members </span>
               <span v-else-if="item.alias === 'pm_business_premium'" class="ml-2 text-black-600">/ 1 member </span>
             </div>
             <div class="mb-8 flex-grow">
-              <div v-for="feature in features[item.alias]" :key="feature"
-                   class="flex items-center"
+              <div
+                v-for="feature in features[item.alias]"
+                :key="feature"
+                class="flex items-center"
               >
                 <Check class="text-primary" />
                 <div class="ml-2">{{ $t(`data.plans.features.${feature}`) }}</div>
               </div>
             </div>
             <div v-if="item.alias !== 'pm_free'">
-              <button v-if="currentPlan.alias === item.alias"
-                      class="btn btn-default w-full"
+              <button
+                v-if="currentPlan.alias === item.alias"
+                class="btn btn-default w-full"
               >
                 Hiện tại
               </button>
-              <button v-else class="btn btn-outline-primary w-full"
-                      @click="selectPlan(item)"
+              <button
+                v-else
+                class="btn btn-outline-primary w-full"
+                @click="selectPlan(item)"
               >
                 Lựa chọn
               </button>
@@ -74,8 +81,9 @@
     </template>
     <template v-if="step===2">
       <div class="text-head-4 font-semibold mb-6 flex items-center">
-        <button class="btn btn-icon btn-clean w-10 h-10 rounded-full -ml-4"
-                @click="step = 1"
+        <button
+          class="btn btn-icon btn-clean w-10 h-10 rounded-full -ml-4"
+          @click="step = 1"
         >
           <i class="fa fa-chevron-left" />
         </button> Get rid of password
@@ -90,11 +98,12 @@
               Choose subscription period
             </div>
             <div class="grid grid-cols-3 gap-x-6">
-              <div v-for="(item) in periods"
-                   :key="item.value"
-                   class="transition-card py-5 px-3 border border-black-200 rounded text-center cursor-pointer"
-                   :class="{'border-primary': selectedPeriod.label===item.label}"
-                   @click="selectPeriod(item)"
+              <div
+                v-for="(item) in periods"
+                :key="item.value"
+                class="transition-card py-5 px-3 border border-black-200 rounded text-center cursor-pointer"
+                :class="{'border-primary': selectedPeriod.label===item.label}"
+                @click="selectPeriod(item)"
               >
                 <div class="font-semibold text-[1rem] mb-2.5">{{ $t(`data.plans.price.${item.label}`) }}</div>
                 <template v-if="selectedPlan[item.label]">
@@ -123,21 +132,26 @@
             <div class="text-[20px] font-semibold mb-6">
               Choose number of members
             </div>
-            <el-input-number v-model="number_members" controls-position="right" :min="1"
-                             :max="1000" @change="calcPrice"
+            <el-input-number
+              v-model="number_members"
+              controls-position="right"
+              :min="1"
+              :max="1000"
+              @change="calcPrice"
             />
           </div>
           <div>
             <div class="text-[20px] font-semibold mb-6">
               Select a payment method
             </div>
-            <div class="grid grid-cols-2 gap-6">
-              <div class="transition-card border rounded px-5 py-4 hover:border-primary cursor-pointer"
-                   :class="{
-                     'border-primary': paymentMethod === 'card',
-                     'border-black-200': paymentMethod !== 'card'
-                   }"
-                   @click="selectMethod('card')"
+            <div class="grid grid-cols-3 gap-6">
+              <div
+                class="transition-card border rounded px-5 py-4 hover:border-primary cursor-pointer"
+                :class="{
+                  'border-primary': paymentMethod === 'card',
+                  'border-black-200': paymentMethod !== 'card'
+                }"
+                @click="selectMethod('card')"
               >
                 <div class="text-lg font-semibold mb-2">Credits Cards</div>
                 <div class="flex">
@@ -146,35 +160,70 @@
                   <img src="~/assets/images/icons/cards/amex.svg" alt="">
                 </div>
               </div>
-              <div class="transition-card border rounded px-5 py-4 hover:border-primary cursor-pointer"
-                   :class="{
-                     'border-primary': paymentMethod === 'cash',
-                     'border-black-200': paymentMethod !== 'cash'
-                   }"
-                   @click="selectMethod('cash')"
+              <div
+                class="transition-card border rounded px-5 py-4 hover:border-primary cursor-pointer"
+                :class="{
+                  'border-primary': paymentMethod === 'cash',
+                  'border-black-200': paymentMethod !== 'cash'
+                }"
+                @click="selectMethod('cash')"
               >
                 <div class="text-lg  mb-2 flex items-center justify-between">
-                  <span class="font-semibold">Internet Banking</span>
+                  <span class="font-semibold">CyStack Wallet**</span>
                   <span class="">{{ balance | formatNumber }} VND</span>
                 </div>
                 <div class=" flex items-center justify-between">
-                  <span class="italic">*This is a payment method only for Vietnamese</span>
-                  <a href="https://id.cystack.net/wallet/vnd"
-                     target="_blank"
-                     class="btn btn-outline-primary rounded-full btn-xs hover:no-underline"
-                  >
-                    <i class="fa fa-plus" /> Topup
-                  </a>
+                  &nbsp;
                 </div>
+                <a
+                  href="https://id.cystack.net/wallet/vnd"
+                  target="_blank"
+                >
+                  <button class="btn rounded-full btn-xs hover:no-underline w-full mt-auto !font-normal">
+                    <i class="fa fa-plus" /> Topup
+                  </button>
+                </a>
               </div>
-              <div v-if="paymentMethod==='card'"
-                   class="border rounded p-5 border-black-200 cursor-pointer col-span-2"
+              <div
+                class="transition-card border rounded px-5 py-4 hover:border-primary cursor-pointer"
+                :class="{
+                  'border-primary': paymentMethod === 'banking',
+                  'border-black-200': paymentMethod !== 'banking'
+                }"
+                @click="selectMethod('banking')"
+              >
+                <div class="text-lg  mb-2 flex items-center justify-between">
+                  <span class="font-semibold">Internet Banking**</span>
+                </div>
+                <div class=" flex items-center justify-between">
+                  <span class="italic">&nbsp;</span>
+                </div>
+                <el-select
+                  v-model="bank"
+                  placeholder=""
+                  value-key="id"
+                  class="w-full"
+                  @focus="selectMethod('banking')"
+                >
+                  <el-option
+                    v-for="item in banks"
+                    :key="item.id"
+                    :label="item.bank_name"
+                    :value="item"
+                  />
+                </el-select>
+              </div>
+              <div
+                v-if="paymentMethod==='card'"
+                class="border rounded p-5 border-black-200 cursor-pointer col-span-2"
               >
                 <div class="">
                   <el-radio-group v-model="selectedCard" class="w-full">
-                    <el-radio v-for="item in cards" :key="item.id_card"
-                              :label="item.id_card"
-                              class="!flex mb-4"
+                    <el-radio
+                      v-for="item in cards"
+                      :key="item.id_card"
+                      :label="item.id_card"
+                      class="!flex mb-4"
                     >
                       <div class="flex items-center w-[200px] justify-between">
                         <div class="text-black font-bold">{{ item.card_type }}</div>
@@ -188,10 +237,11 @@
                       </div>
                     </el-radio>
                   </el-radio-group>
-                  <button class="btn btn-default btn-xs"
-                          @click="editBilling"
+                  <button
+                    class="btn btn-default btn-xs"
+                    @click="editBilling"
                   >
-                    Thêm thẻ mới
+                    {{ $t('data.billing.add_btn') }}
                   </button>
                 </div>
               </div>
@@ -199,11 +249,12 @@
           </div>
         </div>
         <div class="col-span-1">
-          <div class="pl-6 py-7 rounded"
-               style="background: linear-gradient(90deg, rgba(219,223,225,0.16) 0%, rgba(219,223,225,0) 100%);"
+          <div
+            class="pl-6 py-7 rounded"
+            style="background: linear-gradient(90deg, rgba(219,223,225,0.16) 0%, rgba(219,223,225,0) 100%);"
           >
             <div class="text-[20px] font-semibold mb-6">
-              Order summary
+              {{ $t('data.billing.upgrade_summary') }}
             </div>
             <div class="flex items-center justify-between mb-4">
               <div>
@@ -229,12 +280,12 @@
                 {{ $t('data.billing.charged_today') }}
               </div>
               <div>
-                {{ result.immediate_payment | formatPrice }} {{ result.currency }}
+                {{ result.immediate_payment | formatNumber }} {{ result.currency }}
               </div>
             </div>
             <div class="my-8 h-[1px] bg-[#E8EAED]" />
             <div class="flex items-center justify-between text-[20px] font-semibold">
-              <div>Total</div>
+              <div>{{ $t('data.billing.total') }}</div>
               <div>
                 {{ result.total_price | formatNumber }} {{ result.currency }}
               </div>
@@ -243,9 +294,10 @@
         </div>
       </div>
       <div>
-        <button class="btn btn-primary !px-20"
-                :disabled="shouldDisableBtn"
-                @click="confirmPlan"
+        <button
+          class="btn btn-primary !px-20"
+          :disabled="shouldDisableBtn"
+          @click="confirmPlan"
         >
           Upgrade
         </button>
@@ -295,11 +347,12 @@
             Choose subscription period
           </div>
           <div class="grid grid-cols-3 gap-x-6">
-            <div v-for="(item) in periods"
-                 :key="item.value"
-                 class="transition-card py-5 px-3 border border-black-200 rounded text-center cursor-pointer"
-                 :class="{'border-primary': selectedPeriod.label===item.label}"
-                 @click="selectPeriod(item)"
+            <div
+              v-for="(item) in periods"
+              :key="item.value"
+              class="transition-card py-5 px-3 border border-black-200 rounded text-center cursor-pointer"
+              :class="{'border-primary': selectedPeriod.label===item.label}"
+              @click="selectPeriod(item)"
             >
               <div class="font-semibold text-[1rem] mb-2.5">{{ $t(`data.plans.price.${item.label}`) }}</div>
               <template v-if="selectedPlan[item.label]">
@@ -319,9 +372,12 @@
           <div class="font-semibold mb-6">
             Choose number of members
           </div>
-          <el-input-number v-model="number_members" controls-position="right"
-                           :min="currentPlan.max_number ? currentPlan.max_number : 1"
-                           :max="1000" @change="calcPrice"
+          <el-input-number
+            v-model="number_members"
+            controls-position="right"
+            :min="currentPlan.max_number ? currentPlan.max_number : 1"
+            :max="1000"
+            @change="calcPrice"
           />
         </div>
         <div class="mb-5">
@@ -329,35 +385,41 @@
             Select a payment method
           </div>
           <div class="grid gap-5">
-            <div v-if="currentPlan.payment_method ==='wallet'" class="border rounded px-5 py-4 hover:border-primary cursor-pointer"
-                 :class="{
-                   'border-primary': paymentMethod === 'cash',
-                   'border-black-200': paymentMethod !== 'cash'
-                 }"
-                 @click="selectMethod('cash')"
+            <div
+              v-if="currentPlan.payment_method ==='wallet'"
+              class="border rounded px-5 py-4 hover:border-primary cursor-pointer"
+              :class="{
+                'border-primary': paymentMethod === 'cash',
+                'border-black-200': paymentMethod !== 'cash'
+              }"
+              @click="selectMethod('cash')"
             >
               <div class="text-lg  mb-2 flex items-center justify-between">
-                <span class="font-semibold">Internet Banking</span>
+                <span class="font-semibold">CyStack Wallet</span>
                 <span class="">{{ balance | formatNumber }} VND</span>
               </div>
               <div class=" flex items-center justify-between">
                 <span class="italic">*This is a payment method only for Vietnamese</span>
-                <a href="https://id.cystack.net/wallet/vnd"
-                   target="_blank"
-                   class="btn btn-outline-primary rounded-full btn-xs hover:no-underline"
+                <a
+                  href="https://id.cystack.net/wallet/vnd"
+                  target="_blank"
+                  class="btn btn-outline-primary rounded-full btn-xs hover:no-underline"
                 >
                   <i class="fa fa-plus" /> Topup
                 </a>
               </div>
             </div>
-            <div v-if="currentPlan.payment_method==='card'"
-                 class="border rounded p-5 border-black-200 cursor-pointer col-span-2"
+            <div
+              v-if="currentPlan.payment_method==='card'"
+              class="border rounded p-5 border-black-200 cursor-pointer col-span-2"
             >
               <div class="">
                 <el-radio-group v-model="selectedCard" class="w-full">
-                  <el-radio v-for="item in cards" :key="item.id_card"
-                            :label="item.id_card"
-                            class="!flex mb-4"
+                  <el-radio
+                    v-for="item in cards"
+                    :key="item.id_card"
+                    :label="item.id_card"
+                    class="!flex mb-4"
                   >
                     <div class="flex items-center w-[200px] justify-between">
                       <div class="text-black font-bold">{{ item.card_type }}</div>
@@ -371,8 +433,9 @@
                     </div>
                   </el-radio>
                 </el-radio-group>
-                <button class="btn btn-default btn-xs"
-                        @click="editBilling"
+                <button
+                  class="btn btn-default btn-xs"
+                  @click="editBilling"
                 >
                   Thêm thẻ mới
                 </button>
@@ -413,15 +476,17 @@
       <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow" />
         <div>
-          <button class="btn btn-default"
-                  :disabled="loading || loadingCalc"
-                  @click="dialogChange = false"
+          <button
+            class="btn btn-default"
+            :disabled="loading || loadingCalc"
+            @click="dialogChange = false"
           >
             {{ $t('common.cancel') }}
           </button>
-          <button class="btn btn-primary"
-                  :disabled="loading || loadingCalc"
-                  @click="confirmPlan"
+          <button
+            class="btn btn-primary"
+            :disabled="loading || loadingCalc"
+            @click="confirmPlan"
           >
             {{ $t('common.confirm') }}
           </button>
@@ -449,17 +514,146 @@
       <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow" />
         <div>
-          <button class="btn btn-default"
-                  @click="dialogTopup = false"
+          <button
+            class="btn btn-default"
+            @click="dialogTopup = false"
           >
             {{ $t('common.cancel') }}
           </button>
-          <a href="https://id.cystack.net/wallet/vnd"
-             target="_blank"
-             class="btn btn-outline-primary hover:no-underline"
+          <a
+            href="https://id.cystack.net/wallet/vnd"
+            target="_blank"
+            class="btn btn-outline-primary hover:no-underline"
           >
             Topup
           </a>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      :visible.sync="dialogTransfer"
+      width="500px"
+      custom-class="locker-dialog"
+      :close-on-click-modal="false"
+      :close-on-press-escape=" false"
+    >
+      <div slot="title">
+        <div class="text-head-5 text-black-700 font-semibold truncate">
+          {{ $t('data.billing.transfer_information') }}
+        </div>
+      </div>
+      <div class="text-black-700">
+        <div class="text-lg font-semibold mb-5">
+          {{ $t('data.billing.transfer_detail') }}
+        </div>
+        <div class="flex justify-between mb-3">
+          <div class="flex-grow w-50">
+            {{ $t('data.billing.transfer_bank') }}
+          </div>
+          <div class="flex-grow w-1/2 text-right font-semibold">
+            {{ order.bank && order.bank.bank_name }}
+          </div>
+        </div>
+        <div class="flex justify-between mb-3">
+          <div class="flex-grow-1 w-50">
+            {{ $t('data.billing.transfer_branch') }}
+          </div>
+          <div class="flex-grow-1 w-1/2 text-right font-semibold text-right">
+            {{ order.bank.bank_branch && order.bank.bank_branch }}
+          </div>
+        </div>
+        <div class="flex justify-between mb-3">
+          <div class="flex-grow-1 w-50">
+            {{ $t('data.billing.transfer_account') }}
+          </div>
+          <div class="flex-grow-1 w-1/2 text-right font-semibold text-right">
+            {{ order.bank && order.bank.account_name }}
+          </div>
+        </div>
+        <div class="flex justify-between mb-3">
+          <div class="">
+            {{ $t('data.billing.transfer_account_number') }}
+          </div>
+          <div class="flex-grow-1 w-1/2 text-right font-semibold text-right">
+            {{ order.bank && order.bank.account_number }}
+            <i
+              v-clipboard:copy="order.bank && order.bank.account_number"
+              v-clipboard:success="clipboardSuccessHandler"
+              class="fa fa-clone cursor-pointer"
+            />
+          </div>
+        </div>
+        <div class="flex justify-between mb-3">
+          <div class="">
+            {{ $t('data.billing.transfer_amount') }}
+          </div>
+          <div class="flex-grow-1 w-1/2 text-right font-semibold text-right">
+            {{ order.total_price | formatNumber }} VND
+            <i
+              v-clipboard:copy="order.total_price"
+              v-clipboard:success="clipboardSuccessHandler"
+              class="fa fa-clone cursor-pointer"
+            />
+          </div>
+        </div>
+        <div class="flex justify-between mb-3">
+          <div class="">
+            {{ $t('data.billing.transfer_content') }}
+          </div>
+          <div class="flex-grow-1 w-1/2 text-right font-semibold text-right">
+            {{ order.code }}
+            <i
+              v-clipboard:copy="order.code"
+              v-clipboard:success="clipboardSuccessHandler"
+              class="fa fa-clone cursor-pointer"
+            />
+          </div>
+        </div>
+        <div class="italic">
+          {{ $t('data.billing.transfer_note') }}
+        </div>
+      </div>
+      <div slot="footer">
+        <div class="">
+          <button
+            v-if="order.status === 'pending'"
+            class="btn btn-outline-primary w-full mb-2"
+            :disabled="loadingDeposited"
+            @click="postDeposit(order)"
+          >
+            {{ $t('data.billing.transfer_already') }}
+          </button>
+          <button class="btn btn-default w-full" @click="dialogTransfer = false">
+            {{ $t('common.close') }}
+          </button>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog
+      :visible.sync="dialogThank"
+      width="500px"
+      custom-class="locker-dialog"
+      :close-on-click-modal="false"
+      :close-on-press-escape=" false"
+    >
+      <div slot="title">
+        <div class="text-head-5 text-black-700 font-semibold truncate">
+          {{ $t('data.billing.transfer_thank') }}
+        </div>
+      </div>
+      <div class="text-black-700">
+        <div class="text-lg mb-3">
+          {{ $t('data.billing.transfer_thank_content', {plan: selectedPlan.name}) }}
+        </div>
+        <div class="text-lg">
+          {{ $t('data.billing.transfer_thank_content_1') }}
+        </div>
+      </div>
+      <div slot="footer">
+        <div class="">
+          <button class="btn btn-default w-full" @click="dialogThank = false">
+            {{ $t('common.close') }}
+          </button>
         </div>
       </div>
     </el-dialog>
@@ -519,19 +713,20 @@ export default {
         yearly_price: {},
         name: ''
       },
-      periods: [{
-        label: 'yearly_price',
-        value: 12,
-        duration: 'yearly'
-      }, {
-        label: 'half_yearly_price',
-        value: 6,
-        duration: 'half_yearly'
-      }, {
-        label: 'price',
-        value: 1,
-        duration: 'monthly'
-      }],
+      periods: [
+        {
+          label: 'yearly_price',
+          value: 12,
+          duration: 'yearly'
+        }, {
+          label: 'half_yearly_price',
+          value: 6,
+          duration: 'half_yearly'
+        }, {
+          label: 'price',
+          value: 1,
+          duration: 'monthly'
+        }],
       cards: [],
       type: 'yearly_price',
       paymentMethod: 'card',
@@ -551,7 +746,15 @@ export default {
       loading: false,
       dialogTopup: false,
       loadingCalc: false,
-      intervalBalance: null
+      intervalBalance: null,
+      banks: [],
+      bank: '',
+      dialogTransfer: false,
+      order: {
+        bank: {}
+      },
+      loadingDeposited: false,
+      dialogThank: false
     }
   },
   computed: {
@@ -577,6 +780,7 @@ export default {
     this.getPlans()
     this.getCards()
     this.getBalance()
+    this.getBanks()
     this.intervalBalance = setTimeout(() => {
       this.getBalance()
     }, 10000)
@@ -690,20 +894,26 @@ export default {
         const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
         const collectionName = collection.encryptedString
 
-        await this.$axios.$post('cystack_platform/pm/payments/plan', {
+        const data = await this.$axios.$post('cystack_platform/pm/payments/plan', {
           plan_alias: this.selectedPlan.alias,
-          duration: this.selectPeriod.duration,
+          duration: this.selectedPeriod.duration,
           payment_method: this.paymentMethod,
           id_card: this.selectedCard,
           promo_code: this.promo_code,
           number_members: this.number_members,
           key: orgKey,
-          collection_name: collectionName
+          collection_name: collectionName,
+          bank_id: this.bank.id
         })
         this.$store.dispatch('LoadCurrentPlan')
         this.step = 1
         this.dialogChange = false
-        this.notify('Nâng cấp thành công', 'success')
+        if (this.paymentMethod === 'banking') {
+          this.order = data
+          this.dialogTransfer = true
+        } else {
+          this.notify('Nâng cấp thành công', 'success')
+        }
       } catch {
         this.notify('Có lỗi xảy ra. Vui lòng thử lại', 'warning')
       } finally {
@@ -714,7 +924,25 @@ export default {
       const { balance } = await this.$axios.$get('sso/me/wallet/VND')
       this.balance = balance
     },
-    confirmChange () {}
+    confirmChange () {},
+    getBanks () {
+      this.$axios.$get('resources/wallet/banks')
+        .then(res => {
+          this.banks = res
+          if (res && res.length) {
+            this.bank = res[0]
+          }
+        })
+        .finally(() => {
+        })
+    },
+    postDeposit (order) {
+      this.$axios.$post(`cystack_platform/pm/payments/invoices/${order.payment_id}/processing`)
+        .then((res) => {
+          this.dialogTransfer = false
+          this.dialogThank = true
+        })
+    }
   }
 }
 </script>

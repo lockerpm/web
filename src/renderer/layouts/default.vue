@@ -173,7 +173,7 @@ export default {
   },
   computed: {
     manageableTeams () {
-      return this.teams.filter(e => ['owner', 'admin'].includes(e.role))
+      return this.teams.filter(e => ['owner', 'admin'].includes(e.role) && e.is_business)
     },
     bottomMenu () {
       return [

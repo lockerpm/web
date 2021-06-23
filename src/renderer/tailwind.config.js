@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors')
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   purge: [],
@@ -21,6 +22,10 @@ module.exports = {
       'head-2': ['2.375rem', { lineHeight: '2.5rem' }], // Heading 2 38px
       'head-1': ['2.625rem', { lineHeight: '2.5rem' }] // Heading 1 42px
     },
+    screens: {
+      cs: '960px',
+      ...defaultTheme.screens
+    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
@@ -40,6 +45,7 @@ module.exports = {
       },
       green: {
         DEFAULT: '#268334',
+        hover: '#1C7029',
         ...colors.green
       },
       white: colors.white,
