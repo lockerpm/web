@@ -1,8 +1,8 @@
 <template>
-  <footer style="background-color: #F6F7F8">
+  <footer>
     <div class="max-w-6xl mx-auto px-6">
       <!-- Menu -->
-      <div class="w-full lg:flex">
+      <div class="w-full lg:flex md:pt-12 md:pb-24">
         <!-- Menu items -->
         <div class="w-full lg:w-9/12">
           <div class="grid sm:grid-cols-12 gap-8 py-8 md:py-12">
@@ -21,7 +21,7 @@
                   class="mb-3"
                 >
                   <a
-                    class="text-black-600 landing-transition hover:no-underline sm:max-w-[170px] block"
+                    class="text-black-600 landing-transition hover:no-underline hover:font-semibold hover:text-green sm:max-w-[170px] block"
                     :href="item.link"
                   >
                     {{ item.name }}
@@ -78,13 +78,13 @@
         <div>
           <a
             href="#"
-            class="text-black-600 landing-font-12 mr-4 hover:no-underline"
+            class="text-black-600 landing-font-12 mr-4 hover:no-underline hover:font-semibold hover:text-green"
           >
             Điều khoản
           </a>
           <a
             href="#"
-            class="text-black-600 landing-font-12 hover:no-underline"
+            class="text-black-600 landing-font-12 hover:no-underline hover:font-semibold hover:text-green"
           >
             Chính sách
           </a>
@@ -119,16 +119,16 @@ export default {
             {
               name: 'Doanh nghiệp',
               link: '#'
-            },
-            {
-              name: 'Quản lý mật khẩu',
-              link: '#'
             }
           ]
         },
         {
           category: 'Công cụ',
           items: [
+            {
+              name: 'Quản lý mật khẩu',
+              link: '#'
+            },
             {
               name: 'Tạo mật khẩu',
               link: '#'
@@ -147,7 +147,7 @@ export default {
           category: 'Tài nguyên',
           items: [
             {
-              name: 'Danh sách 100 mật khẩu yếu nhất',
+              name: '100 mật khẩu yếu nhất',
               link: '#'
             },
             {
@@ -155,11 +155,11 @@ export default {
               link: '#'
             },
             {
-              name: 'Liên hệ',
+              name: 'Trung tâm hỗ trợ',
               link: '#'
             },
             {
-              name: 'Trung tâm hỗ trợ',
+              name: 'Whitepaper',
               link: '#'
             }
           ]
