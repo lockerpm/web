@@ -117,7 +117,7 @@ export default {
       let shouldRedirect = false
       try {
         const team = await this.$axios.$get(`cystack_platform/pm/teams/${this.$route.params.teamId}`)
-        shouldRedirect = ['member', 'manager'].includes(team.role)
+        shouldRedirect = ['member', 'manager'].includes(team.role) || !team.is_business
         this.$store.commit('UPDATE_TEAM', team)
       } catch (e) {
         shouldRedirect = false

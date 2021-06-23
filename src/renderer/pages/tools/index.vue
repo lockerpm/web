@@ -47,9 +47,12 @@
               <img src="~/assets/images/icons/icon_tools_pw_health.svg" alt="" class="mr-3">
               <div>
                 <div class="setting-title cursor-pointer"
-                     @click="go({name: 'tools-password-health'})"
+                     @click="currentPlan.alias === 'pm_free' ? () => {} : go('tools-breach')"
                 >
                   {{ $t('data.tools.password_health') }}
+                  <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
+                    Premium
+                  </div>
                 </div>
                 <div class="setting-description">
                   {{ $t('data.tools.password_health_desc') }}
@@ -71,9 +74,12 @@
               <img src="~/assets/images/icons/icon_tools_pw_breach.svg" alt="" class="mr-3">
               <div>
                 <div class="setting-title cursor-pointer"
-                     @click="go('tools-breach')"
+                     @click="currentPlan.alias === 'pm_free' ? () => {} : go('tools-breach')"
                 >
                   {{ $t('data.tools.data_breach') }}
+                  <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
+                    Premium
+                  </div>
                 </div>
                 <div class="setting-description">
                   {{ $t('data.tools.data_breach_desc') }}
@@ -103,6 +109,9 @@ export default {
     }
   },
   computed: {
+    currentPlan () {
+      return this.$store.state.currentPlan
+    }
   },
   methods: {
     go (route) {
