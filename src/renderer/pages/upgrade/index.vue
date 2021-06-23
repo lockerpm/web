@@ -163,10 +163,10 @@
               <div
                 class="transition-card border rounded px-5 py-4 hover:border-primary cursor-pointer"
                 :class="{
-                  'border-primary': paymentMethod === 'cash',
-                  'border-black-200': paymentMethod !== 'cash'
+                  'border-primary': paymentMethod === 'wallet',
+                  'border-black-200': paymentMethod !== 'wallet'
                 }"
-                @click="selectMethod('cash')"
+                @click="selectMethod('wallet')"
               >
                 <div class="text-lg  mb-2 flex items-center justify-between">
                   <span class="font-semibold">CyStack Wallet**</span>
@@ -320,7 +320,7 @@
       </div>
       <div class="text-left text-black">
         <div class="flex items-center justify-between mb-5">
-          <div class="text-head-5 text-black font-semibold">Gói hiện tại:</div>
+          <div class="text-head-6 text-black font-semibold">Gói hiện tại:</div>
           <div class="flex items-center">
             <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
               {{ getPlanName(currentPlan.name).name }}
@@ -332,7 +332,7 @@
         </div>
 
         <div class="flex items-center justify-between mb-5">
-          <div class="text-head-5 text-black font-semibold">Gói đăng ký mới:</div>
+          <div class="text-head-6 text-black font-semibold">Gói đăng ký mới:</div>
           <div class="flex items-center">
             <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
               {{ getPlanName(selectedPlan.name).name }}
@@ -342,6 +342,7 @@
             </div>
           </div>
         </div>
+        <div class="my-4 h-[1px] bg-[#E8EAED]"></div>
         <div class="mb-5">
           <div class="font-semibold mb-6">
             Choose subscription period
@@ -358,7 +359,7 @@
               <template v-if="selectedPlan[item.label]">
                 <div class="font-semibold">
                   <span>
-                    <span class="text-head-3">{{ symbol }}{{ selectedPlan[item.label][currency]/item.value | formatNumber }}</span>
+                    <span class="text-head-5">{{ symbol }}{{ selectedPlan[item.label][currency]/item.value | formatNumber }}</span>
                     <span> / Mo </span>
                     <div v-if="selectedPlan.max_number" class="text-black-600">/ {{ selectedPlan.max_number }} members </div>
                     <div v-else-if="selectedPlan.alias === 'pm_business_premium'" class="text-black-600">/ 1 member </div>
@@ -386,13 +387,13 @@
           </div>
           <div class="grid gap-5">
             <div
-              v-if="currentPlan.payment_method ==='wallet'"
+              v-if="currentPlan.payment_method ==='wallet' || currentPlan.payment_method ==='banking'"
               class="border rounded px-5 py-4 hover:border-primary cursor-pointer"
               :class="{
-                'border-primary': paymentMethod === 'cash',
-                'border-black-200': paymentMethod !== 'cash'
+                'border-primary': paymentMethod === 'wallet',
+                'border-black-200': paymentMethod !== 'wallet'
               }"
-              @click="selectMethod('cash')"
+              @click="selectMethod('wallet')"
             >
               <div class="text-lg  mb-2 flex items-center justify-between">
                 <span class="font-semibold">CyStack Wallet</span>
@@ -848,7 +849,7 @@ export default {
     selectPeriod (period) {
       this.selectedPeriod = period
       if (this.currentPlan.alias !== 'pm_free') {
-        this.selectMethod(this.currentPlan.payment_method)
+        this.selectMethod(this.currentPlan.payment_method === 'banking' ? 'wallet' : this.currentPlan.payment_method)
       } else {
         this.number_members = 1
         this.selectMethod('card')
