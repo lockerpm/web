@@ -2,7 +2,7 @@
   <div class="flex flex-col sm:flex-row flex-1">
     <client-only>
       <template v-if="!locked">
-        <div class="w-60 h-screen bg-aside relative min-h-500px min-w-60 fixed border-0 border-b border-black-200 flex flex-col justify-between">
+        <div class="w-60 h-screen bg-aside min-h-500px min-w-60 fixed border-0 border-b border-black-200 flex flex-col justify-between">
           <div>
             <div class="mt-7 px-6">
               <img class="h-[29px]" src="~assets/images/logo/logo_white.svg">
