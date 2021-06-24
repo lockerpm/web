@@ -10,16 +10,16 @@
     >
       <div slot="title">
         <div class="text-head-5 text-black-700 font-semibold truncate">
-          {{ $t(`data.notifications.${type}_title`) }}
+          {{ $t(`data.settings.deauthorize_sessions`) }}
         </div>
       </div>
       <div class="text-left">
+        <div class="mb-2">
+          {{ $t(`data.settings.deauthorize_sessions_title`) }}
+        </div>
         <div class="locker-callout locker-callout-danger mb-5">
-          <div class="mb-2 font-semibold text-danger">
-            {{ $t(`data.notifications.${type}_title`) }}
-          </div>
           <div>
-            {{ $t(`data.notifications.${type}_description`) }}
+            {{ $t(`data.settings.deauthorize_sessions_desc`) }}
           </div>
         </div>
         <form @submit.prevent="confirmPassword">
@@ -47,7 +47,7 @@
                   :disabled="loading || !password"
                   @click="confirmPassword"
           >
-            {{ $t(`common.${type}`) }}
+            {{ $t(`common.confirm`) }}
           </button>
         </div>
       </div>
@@ -92,11 +92,7 @@ export default {
       const keyHash = await this.$cryptoService.hashPassword(this.password, null)
       const storedKeyHash = await this.$cryptoService.getKeyHash()
       if (storedKeyHash != null && keyHash != null && storedKeyHash === keyHash) {
-        if (this.type === 'purge') {
-          await this.purgeAccount(keyHash)
-        } else {
-          await this.deleteAccount(keyHash)
-        }
+        await this.deauthorizeSessions(keyHash)
         this.closeDialog()
       } else {
         this.errors = { password: 1 }
@@ -108,27 +104,16 @@ export default {
       }
       this.loading = false
     },
-    async purgeAccount (hashedPassword) {
+    async deauthorizeSessions (hashedPassword) {
       try {
-        await this.$post('cystack_platform/pm/users/me/purge', {
+        await this.$axios.$post('cystack_platform/pm/users/session/revoke_all', {
           master_password_hash: hashedPassword
         })
         this.closeDialog()
-        this.notify(this.$t('data.notifications.purge_success'), 'success')
+        this.lock()
+        this.notify(this.$t('data.settings.deauthorize_sessions_success'), 'success')
       } catch (e) {
-        this.notify(this.$t('data.notifications.purge_failed'), 'warning')
-      }
-    },
-    async deleteAccount (hashedPassword) {
-      try {
-        await this.$post('cystack_platform/pm/users/me/delete', {
-          master_password_hash: hashedPassword
-        })
-        this.notify(this.$t('data.notifications.delete_account_success'), 'success')
-        this.closeDialog()
-        this.logout()
-      } catch (e) {
-        this.notify(this.$t('data.notifications.delete_account_failed'), 'warning')
+        this.notify(this.$t('data.settings.deauthorize_sessions_failed'), 'warning')
       }
     }
   }

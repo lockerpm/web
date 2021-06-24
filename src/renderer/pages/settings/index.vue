@@ -202,6 +202,12 @@
             <div>
               <button
                 class="btn btn-default !text-danger"
+                @click="openDeauthorizeSessions()"
+              >
+                {{ $t('data.settings.deauthorize_sessions') }}
+              </button>
+              <button
+                class="btn btn-default !text-danger"
                 @click="openPurgeVault('purge')"
               >
                 {{ $t('data.settings.delete_all_items') }}
@@ -219,15 +225,17 @@
     </div>
     <ChangeMasterPassword ref="changeMasterPassword" />
     <PurgeVault ref="purgeVault" />
+    <DeauthorizeSessions ref="deauthorizeSessions" />
   </div>
 </template>
 
 <script>
 import ChangeMasterPassword from '../../components/user/ChangeMasterPassword'
 import PurgeVault from '../../components/setting/PurgeVault'
+import DeauthorizeSessions from '../../components/setting/DeauthorizeSessions'
 export default {
   components: {
-    ChangeMasterPassword, PurgeVault
+    ChangeMasterPassword, PurgeVault, DeauthorizeSessions
   },
   data () {
     return {
@@ -310,6 +318,9 @@ export default {
     },
     openPurgeVault (type) {
       this.$refs.purgeVault.openDialog(type)
+    },
+    openDeauthorizeSessions () {
+      this.$refs.deauthorizeSessions.openDialog()
     }
   }
 }
