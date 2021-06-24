@@ -1,7 +1,7 @@
 <template>
   <nav
     id="header"
-    class="fixed w-full z-30 transition duration-300 ease-in-out bg-white"
+    class="fixed w-full z-30 transition duration-300 ease-in-out bg-transparent"
   >
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-[14px] px-6">
       <!-- Logo -->
@@ -108,7 +108,7 @@ export default {
         },
         {
           name: 'Tải về',
-          link: '#'
+          link: 'download'
         },
         {
           name: 'Doanh nghiệp',
@@ -128,12 +128,14 @@ export default {
     const header = document.getElementById('header')
     document.addEventListener('scroll', function () {
       const scrollPos = window.scrollY
-
+      header.classList.remove('bg-transparent')
+      header.classList.add('bg-white')
       if (scrollPos > 10) {
         header.classList.add('shadow-lg')
       } else {
         header.classList.remove('shadow-lg')
       }
+      
     })
 
     // Set click event
@@ -175,7 +177,7 @@ export default {
 
 <style>
 .nav-item {
-  @apply hover:no-underline hover:font-semibold hover:text-green;
+  @apply hover:no-underline hover:text-green;
   font-size: 14px;
 }
 </style>

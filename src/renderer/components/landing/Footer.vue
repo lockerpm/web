@@ -78,7 +78,7 @@
         <div>
           <a
             href="#"
-            class="text-black-600 landing-font-12 mr-4 hover:no-underline hover:font-semibold hover:text-green"
+            class="text-black-600 landing-font-12 mr-4 hover:no-underline hover:text-green"
           >
             Điều khoản
           </a>

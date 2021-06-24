@@ -1,162 +1,160 @@
 <template>
-  <div>
-    <section class="pt-[180px]">
-      <h1 class="text-left font-bold text-black feature-font-50 lg:w-[980px]">
-        Locker giúp bạn tận hưởng
-        cuộc sống online an toàn và liền mạch
-      </h1>
-      <section class="mt-[75px]">
-        <div class="w-full flex flex-wrap">
-          <div class="w-full md:mb-0 mt-3 md:w-2/5 pr-0 md:pl-[110px] md:order-2 self-center order-1">
-            <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-              {{ hiw1.title }}
-            </h2>
-            <p class="landing-font-18">{{ hiw1.desc }}</p>
-          </div>
-          <!-- Right end -->
-          <!-- Left -->
-          <div class="w-full md:w-1/2 pl-0 md:pl-4 flex align-middle justify-center order-1">
-            <img
-              :src="hiw1.img"
-              alt=""
-              style="align-self: center"
-            >
-          </div>
-          <!-- Left end -->
+  <div class="md:pt-[180px] pt-36">
+    <h1 class="text-left font-bold text-black landing-font-50 lg:w-[980px]">
+      Locker giúp bạn tận hưởng
+      cuộc sống online an toàn và liền mạch
+    </h1>
+    <section class="md:mt-[75px] mt-8">
+      <div class="w-full flex flex-wrap">
+        <div class="w-full md:mb-0 mt-3 md:w-2/5 pr-0 md:pl-[110px] md:order-2 self-center order-1">
+          <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
+            {{ hiw1.title }}
+          </h2>
+          <p class="landing-font-18">{{ hiw1.desc }}</p>
         </div>
-      </section>
-      <section class="mt-[70px]">
+        <!-- Right end -->
+        <!-- Left -->
+        <div class="w-full md:w-1/2 pl-0 md:pl-4 flex align-middle justify-center order-1">
+          <img
+            :src="hiw1.img"
+            alt=""
+            style="align-self: center"
+          >
+        </div>
+        <!-- Left end -->
+      </div>
+    </section>
+    <section class="md:mt-[70px] mt-8">
+      <div class="w-full flex flex-wrap">
+        <div class="w-full md:mb-0 mt-3 md:w-1/3 self-center pr-0 order-1">
+          <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
+            {{ hiw2.title }}
+          </h2>
+          <p class="landing-font-18">{{ hiw2.desc }}</p>
+        </div>
+        <!-- Left end -->
+        <!-- Right -->
+        <div class="w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
+          <img
+            :src="hiw2.img"
+            alt=""
+            style="align-self: center"
+          >
+        </div>
+        <!-- Right end -->
+      </div>
+    </section>
+    <section class="md:mt-[111px] mt-14">
+      <div class="w-full flex flex-wrap">
+        <div class="w-full md:mb-0 mt-3 md:w-2/5 pr-0 md:pl-[110px] md:order-2 self-center order-1">
+          <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
+            {{ hiw3.title }}
+          </h2>
+          <p class="landing-font-18">{{ hiw3.desc }}</p>
+        </div>
+        <!-- Left end -->
+        <!-- Right -->
+        <div class="w-full md:w-1/2 pl-0 md:pl-4 mt-4 md:mt-0 flex align-middle justify-center order-1">
+          <img
+            :src="hiw3.img"
+            alt=""
+            style="align-self: center"
+          >
+        </div>
+        <!-- Right end -->
+      </div>
+    </section>
+    <section class="full-width w-full bg-how-it-works1 h-auto">
+      <div class="mt-[111px] max-w-6xl mx-auto px-6 md:pt-[100px] md:pb-20 pt-12 pb-12">
         <div class="w-full flex flex-wrap">
-          <div class="w-full md:mb-0 mt-3 md:w-1/3 self-center pr-0 order-1">
+          <div class="w-full md:mb-0 md:w-1/3 pr-0 self-center order-1">
             <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-              {{ hiw2.title }}
+              {{ hiw4.title }}
             </h2>
-            <p class="landing-font-18">{{ hiw2.desc }}</p>
+            <div
+              v-for="(item, index) in hiw4.desc"
+              :key="index"
+              :class="index===0?'vertical-line':'opacity-50 pl-[30px]'"
+            >
+              <h3 class="font-bold text-black landing-font-20 mb-[12px]">
+                {{ item.title }}
+              </h3>
+              <p class="text-black-600 landing-font-16 mb-9">
+                {{ item.desc }}
+              </p>
+            </div>
+            <div class="landing-font-18 align-top ml-[30px] mt-9">
+              <a
+                href=""
+                class="hover:no-underline text-green font-semibold"
+              >
+                Xem tất cả tính năng <i class="el-icon-right" />
+              </a>
+            </div>
           </div>
           <!-- Left end -->
           <!-- Right -->
           <div class="w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
             <img
-              :src="hiw2.img"
+              :src="hiw4.img"
               alt=""
               style="align-self: center"
             >
           </div>
           <!-- Right end -->
         </div>
-      </section>
-      <section class="mt-[111px]">
-        <div class="w-full flex flex-wrap">
-          <div class="w-full md:mb-0 mt-3 md:w-2/5 pr-0 md:pl-[110px] md:order-2 self-center order-1">
-            <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-              {{ hiw3.title }}
-            </h2>
-            <p class="landing-font-18">{{ hiw3.desc }}</p>
-          </div>
-          <!-- Left end -->
-          <!-- Right -->
-          <div class="w-full md:w-1/2 pl-0 md:pl-4 flex align-middle justify-center order-1">
-            <img
-              :src="hiw3.img"
-              alt=""
-              style="align-self: center"
-            >
-          </div>
-          <!-- Right end -->
-        </div>
-      </section>
-      <div class="full-width w-full bg-how-it-works1 h-auto">
-        <section class="mt-[111px] max-w-6xl mx-auto px-6">
-          <div class="w-full flex flex-wrap">
-            <div class="w-full md:mb-0 mt-3 md:w-1/3 pr-0 self-center order-1">
-              <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-                {{ hiw4.title }}
-              </h2>
-              <div
-                v-for="(item, index) in hiw4.desc"
-                :key="index"
-                :class="index===0?'vertical-line':'opacity-50 pl-[30px]'"
-              >
-                <h3 class="font-bold text-black landing-font-20 mb-[12px]">
-                  {{ item.title }}
-                </h3>
-                <p class="text-black-600 landing-font-16 mb-[30px]">
-                  {{ item.desc }}
-                </p>
-              </div>
-              <div class="landing-font-18 align-top ml-[30px] mt-9">
-                <a
-                  href=""
-                  class="hover:no-underline text-green font-semibold"
-                >
-                  Xem tất cả tính năng <i class="el-icon-right" />
-                </a>
-              </div>
-            </div>
-            <!-- Left end -->
-            <!-- Right -->
-            <div class="w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
-              <img
-                :src="hiw4.img"
-                alt=""
-                style="align-self: center"
-              >
-            </div>
-            <!-- Right end -->
-          </div>
 
-        </section>
       </div>
-      <div class="full-width w-full bg-how-it-works2 h-auto pb-[111px]">
-        <section class="max-w-6xl mx-auto px-6">
-          <div class="w-full flex flex-wrap">
-            <div class="w-full md:mb-0 pt-[115px] text-center order-1">
-              <h2 class="w-full font-bold landing-font-38 text-black mb-[20px] max-w-[514px] mx-auto">
-                {{ hiw5.title }}
-              </h2>
-              <img
-                :src="hiw5.img"
-                alt=""
-                class="mx-auto"
-              >
-            </div>
-            <div class="w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2">
-              <div
-                v-for="(item, index) in hiw5.desc"
-                :key="index"
-                class="px-[30px] pt-11 bg-white rounded-md hover:shadow-xl"
-              >
-                <img
-                  :src="item.img"
-                  :alt="item.title"
-                  class="h-[40px] mb-[16px]"
-                >
-                <h3 class="mb-[12px] font-bold text-black landing-font-20">
-                  {{ item.title }}
-                </h3>
-                <p class="md:max-w-[265px] md:pr-[20px] mb-[40px]">
-                  {{ item.desc }}
-                </p>
-              </div>
-            </div>
-            <div class="w-full landing-font-18 mt-[60px] text-center order-3">
-                <a
-                  href=""
-                  class="hover:no-underline text-green font-semibold"
-                >
-                  Xem thêm cách chúng tôi bảo vệ dữ liệu của bạn <i class="el-icon-right" />
-                </a>
-              </div>
-              <div class="w-full landing-font-18 mt-3 text-center order-4">
-                <a
-                  href=""
-                  class="hover:no-underline text-green font-semibold"
-                >
-                  Các tính năng bảo mật trong ứng dụng <i class="el-icon-right" />
-                </a>
-              </div>
+    </section>
+    <section class="full-width w-full bg-how-it-works2 h-auto md:pt-[115px] pt-12 md:pb-[111px] pb-12">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="w-full flex flex-wrap">
+          <div class="w-full md:mb-0 text-center order-1">
+            <h2 class="w-full font-bold landing-font-38 text-black mb-[20px] max-w-[514px] mx-auto">
+              {{ hiw5.title }}
+            </h2>
+            <img
+              :src="hiw5.img"
+              alt=""
+              class="mx-auto"
+            >
           </div>
-        </section>
+          <div class="w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2">
+            <div
+              v-for="(item, index) in hiw5.desc"
+              :key="index"
+              class="px-[30px] pt-11 bg-white rounded-md hover:shadow-xl"
+            >
+              <img
+                :src="item.img"
+                :alt="item.title"
+                class="h-[40px] mb-[16px]"
+              >
+              <h3 class="mb-[12px] font-bold text-black landing-font-20">
+                {{ item.title }}
+              </h3>
+              <p class="md:max-w-[265px] md:pr-[20px] mb-[40px]">
+                {{ item.desc }}
+              </p>
+            </div>
+          </div>
+          <div class="w-full landing-font-18 mt-[60px] text-center order-3">
+            <a
+              href=""
+              class="hover:no-underline text-green font-semibold"
+            >
+              Xem thêm cách chúng tôi bảo vệ dữ liệu của bạn <i class="el-icon-right" />
+            </a>
+          </div>
+          <div class="w-full landing-font-18 mt-3 text-center order-4">
+            <a
+              href=""
+              class="hover:no-underline text-green font-semibold"
+            >
+              Các tính năng bảo mật trong ứng dụng <i class="el-icon-right" />
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -231,22 +229,6 @@ export default {
 }
 </script>
 <style>
-.feature-font-50 {
-  font-size: 50px;
-  line-height: 66px;
-}
-.feature-font-38 {
-  font-size: 38px;
-  line-height: 45px;
-}
-.feature-font-22 {
-  font-size: 22px;
-  line-height: 26px;
-}
-.feature-font-14 {
-  font-size: 14px;
-  line-height: 24px;
-}
 .full-width {
   width: 100vw;
   position: relative;
@@ -260,10 +242,10 @@ export default {
   height: 100%;
   padding-left: 27px;
 }
-.bg-how-it-works1{
-  background-color: #FBFAF3;
+.bg-how-it-works1 {
+  background-color: #fbfaf3;
 }
-.bg-how-it-works2{
-  background-color: #F5F6F7;
+.bg-how-it-works2 {
+  background-color: #f5f6f7;
 }
 </style>
