@@ -3,9 +3,11 @@
     <div class="flex-grow">
       <div v-if="shouldShowSearch" class="text-black-600">
         <i class="fa fa-search mr-4" />
-        <input type="text" :value="searchText"
-               class="w-1/2 focus:border-0 border-0"
-               @input="handleSearch"
+        <input
+          type="text"
+          :value="searchText"
+          class="w-1/2 focus:border-0 border-0"
+          @input="handleSearch"
         >
       </div>
     </div>
@@ -19,8 +21,10 @@
           </div>
         </div>
         <el-dropdown-menu slot="dropdown" class="min-w-[200px]">
-          <el-dropdown-item class="text-warning" icon="fa fa-user-circle"
-                            @click.native="go('settings')"
+          <el-dropdown-item
+            class="text-warning"
+            icon="fa fa-user-circle"
+            @click.native="go('settings')"
           >
             {{ $t('data.profile_menu.account_settings') }}
           </el-dropdown-item>

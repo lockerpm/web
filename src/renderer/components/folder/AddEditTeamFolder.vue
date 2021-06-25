@@ -13,41 +13,49 @@
       </div>
     </div>
     <div class="text-left">
-      <InputSelectTeam v-if="!folder.id && dialogVisible"
-                       :label="$t('common.ownership')"
-                       :options="teams"
-                       class="w-full"
-                       :initial-value="folder.organizationId"
-                       :disabled="$route.params.teamId"
-                       @change="(v) => folder.organizationId = v"
+      <InputSelectTeam
+        v-if="!folder.id && dialogVisible"
+        :label="$t('common.ownership')"
+        :options="teams"
+        class="w-full"
+        :initial-value="folder.organizationId"
+        :disabled="$route.params.teamId"
+        @change="(v) => folder.organizationId = v"
       />
-      <ValidationProvider v-slot="{ errors: err }"
-                          rules="required" :name="$t('common.folder_name')"
+      <ValidationProvider
+        v-slot="{ errors: err }"
+        rules="required"
+        :name="$t('common.folder_name')"
       >
-        <InputText v-model="folder.name"
-                   :label="$t('common.folder_name')"
-                   class="w-full "
-                   :error-text="err && err.length && err[0]"
+        <InputText
+          v-model="folder.name"
+          :label="$t('common.folder_name')"
+          class="w-full "
+          :error-text="err && err.length && err[0]"
         />
       </ValidationProvider>
     </div>
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow">
-        <button v-if="folder.id" class="btn btn-icon !text-danger"
-                @click="deleteFolder(folder)"
+        <button
+          v-if="folder.id"
+          class="btn btn-icon !text-danger"
+          @click="deleteFolder(folder)"
         >
           <i class="fa fa-trash-alt" />
         </button>
       </div>
       <div>
-        <button class="btn btn-default"
-                @click="dialogVisible = false"
+        <button
+          class="btn btn-default"
+          @click="dialogVisible = false"
         >
           {{ $t('common.cancel') }}
         </button>
-        <button class="btn btn-primary"
-                :disabled="loading || !folder.organizationId || !folder.name"
-                @click="folder.id ?putFolder(folder):postFolder(folder)"
+        <button
+          class="btn btn-primary"
+          :disabled="loading || !folder.organizationId || !folder.name"
+          @click="folder.id ?putFolder(folder):postFolder(folder)"
         >
           {{ folder.id ? $t('common.update') : $t('common.add') }}
         </button>

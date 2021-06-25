@@ -13,40 +13,45 @@
       </div>
     </div>
     <div class="text-left">
-      <InputText v-model="oldMasterPassword"
-                 :label="$t('master_password.current_password')"
-                 class="w-full"
-                 :error-text="errors.oldMasterPassword && $t('errors.invalid_password')"
-                 is-password
-                 @change="errors = {}"
+      <InputText
+        v-model="oldMasterPassword"
+        :label="$t('master_password.current_password')"
+        class="w-full"
+        :error-text="errors.oldMasterPassword && $t('errors.invalid_password')"
+        is-password
+        @change="errors = {}"
       />
-      <InputText v-model="masterPassword"
-                 :label="$t('master_password.new_password')"
-                 class="w-full"
-                 :error-text="errors.masterPassword && $t('errors.confirm_password')"
-                 is-password
-                 @change="errors = {}"
+      <InputText
+        v-model="masterPassword"
+        :label="$t('master_password.new_password')"
+        class="w-full"
+        :error-text="errors.masterPassword && $t('errors.confirm_password')"
+        is-password
+        @change="errors = {}"
       />
       <PasswordStrengthBar v-if="masterPassword" :score="passwordStrength.score" class="mb-4" />
-      <InputText v-model="masterRePassword"
-                 :label="$t('master_password.re_password')"
-                 class="w-full"
-                 :error-text="errors.masterRePassword && $t('errors.confirm_password')"
-                 is-password
-                 @change="errors = {}"
+      <InputText
+        v-model="masterRePassword"
+        :label="$t('master_password.re_password')"
+        class="w-full"
+        :error-text="errors.masterRePassword && $t('errors.confirm_password')"
+        is-password
+        @change="errors = {}"
       />
     </div>
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow" />
       <div>
-        <button class="btn btn-default"
-                @click="dialogVisible = false"
+        <button
+          class="btn btn-default"
+          @click="dialogVisible = false"
         >
           {{ $t('common.cancel') }}
         </button>
-        <button class="btn btn-primary"
-                :disabled="loading || !oldMasterPassword || !masterRePassword || !masterPassword"
-                @click="changePass"
+        <button
+          class="btn btn-primary"
+          :disabled="loading || !oldMasterPassword || !masterRePassword || !masterPassword"
+          @click="changePass"
         >
           {{ $t('master_password.change_btn') }}
         </button>

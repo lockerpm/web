@@ -14,18 +14,21 @@
         </div>
       </div>
       <div class="grid grid-cols-2 gap-8 pb-3">
-        <div v-for="item in options"
-             :key="item"
-             class="py-8 rounded-[12px] flex flex-col items-center justify-center border border-black-200 cursor-pointer"
-             :class="{
-               'border-primary': type === item,
-               'border-black-200': type !== item
-             }"
-             @click="confirmDialog(item)"
-             @mouseover="type = item"
+        <div
+          v-for="item in options"
+          :key="item"
+          class="py-8 rounded-[12px] flex flex-col items-center justify-center border border-black-200 cursor-pointer"
+          :class="{
+            'border-primary': type === item,
+            'border-black-200': type !== item
+          }"
+          @click="confirmDialog(item)"
+          @mouseover="type = item"
         >
-          <img :src="require(`~/assets/images/icons/icon_${item}.svg`)" alt=""
-               style="width: 70px; height: 70px"
+          <img
+            :src="require(`~/assets/images/icons/icon_${item}.svg`)"
+            alt=""
+            style="width: 70px; height: 70px"
           >
           <div class="text-black text-[20px] font-semibold mt-4">{{ $tc(`type.${item}`, 1) }}</div>
         </div>

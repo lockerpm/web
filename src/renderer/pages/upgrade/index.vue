@@ -355,7 +355,7 @@
             </div>
           </div>
         </div>
-        <div class="my-4 h-[1px] bg-[#E8EAED]"></div>
+        <div class="my-4 h-[1px] bg-[#E8EAED]" />
         <div class="mb-5">
           <div class="font-semibold mb-6">
             Choose subscription period
@@ -430,10 +430,10 @@
               <div class="">
                 <el-radio-group v-model="selectedCard" class="w-full">
                   <el-radio
-                      v-for="item in cards"
-                      :key="item.id_card"
-                      :label="item.id_card"
-                      class="!flex mb-4 items-center"
+                    v-for="item in cards"
+                    :key="item.id_card"
+                    :label="item.id_card"
+                    class="!flex mb-4 items-center"
                   >
                     <div class="flex items-center w-[200px]">
                       <div class="bg-[#f5f8fa] w-10 h-10 rounded flex items-center justify-center p-1 mr-4">
@@ -965,7 +965,7 @@ export default {
     },
     postDeposit (order) {
       this.$axios.$post(`cystack_platform/pm/payments/invoices/${order.payment_id}/processing`)
-        .then((res) => {
+        .then(res => {
           this.dialogTransfer = false
           this.dialogThank = true
         })

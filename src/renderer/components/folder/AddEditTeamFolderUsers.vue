@@ -47,14 +47,16 @@
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow" />
       <div>
-        <button class="btn btn-default"
-                @click="dialogVisible = false"
+        <button
+          class="btn btn-default"
+          @click="dialogVisible = false"
         >
           {{ $t('common.cancel') }}
         </button>
-        <button class="btn btn-primary"
-                :disabled="loading"
-                @click="putTeamFolderUsers(folder)"
+        <button
+          class="btn btn-primary"
+          :disabled="loading"
+          @click="putTeamFolderUsers(folder)"
         >
           {{ $t('common.update') }}
         </button>

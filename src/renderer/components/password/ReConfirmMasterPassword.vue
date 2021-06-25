@@ -15,26 +15,29 @@
       </div>
       <div class="text-left">
         <form @submit.prevent="confirmPassword">
-          <InputText v-model="password"
-                     :label="$t('common.password')"
-                     class="w-full !mb-0"
-                     :error-text="errors.password && $t('errors.invalid_password')"
-                     is-password
-                     @change="errors = {}"
+          <InputText
+            v-model="password"
+            :label="$t('common.password')"
+            class="w-full !mb-0"
+            :error-text="errors.password && $t('errors.invalid_password')"
+            is-password
+            @change="errors = {}"
           />
         </form>
       </div>
       <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow" />
         <div>
-          <button class="btn btn-default"
-                  @click="dialogVisible = false"
+          <button
+            class="btn btn-default"
+            @click="dialogVisible = false"
           >
             {{ $t('common.cancel') }}
           </button>
-          <button class="btn btn-primary"
-                  :disabled="loading || !password"
-                  @click="confirmPassword"
+          <button
+            class="btn btn-primary"
+            :disabled="loading || !password"
+            @click="confirmPassword"
           >
             {{ $t('common.confirm') }}
           </button>

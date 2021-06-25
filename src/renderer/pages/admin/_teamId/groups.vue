@@ -53,8 +53,9 @@
     <AddEditGroup ref="addEditGroup" @done="getGroups" />
     <AddEditGroupUsers ref="addEditGroupUsers" @done="getGroups" />
     <div class="fixed bottom-[50px] right-[55px]">
-      <button class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
-              @click="postGroup({})"
+      <button
+        class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
+        @click="postGroup({})"
       >
         <i class="fas fa-plus text-[24px]" />
       </button>

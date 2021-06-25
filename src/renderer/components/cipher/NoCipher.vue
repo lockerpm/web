@@ -11,9 +11,10 @@
         {{ $t(`data.no_data.${type}.description`) }}
       </div>
       <div>
-        <button v-if="shouldRenderBtn"
-                class="btn btn-default"
-                @click="$emit('add-cipher')"
+        <button
+          v-if="shouldRenderBtn"
+          class="btn btn-default"
+          @click="$emit('add-cipher')"
         >
           {{ $t(`data.no_data.${type}.btn`) }}
         </button>

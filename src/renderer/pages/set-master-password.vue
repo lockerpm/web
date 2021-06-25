@@ -16,8 +16,9 @@
             </client-only>
             <div class="mr-2">{{ currentUser.email }}</div>
           </div>
-          <button class="btn btn-sm btn-clean btn-primary !px-3 !font-normal"
-                  @click="logout"
+          <button
+            class="btn btn-sm btn-clean btn-primary !px-3 !font-normal"
+            @click="logout"
           >
             Đăng xuất
           </button>
@@ -27,15 +28,18 @@
         <div class="form-group !mb-4">
           <label for="">Nhập Master Password</label>
           <div class="input-group mb-1.5">
-            <input v-model="masterPassword"
-                   :type="showPassword ? 'text' : 'password'"
-                   class="form-control"
-                   :name="randomString()" autocomplete="new-password"
+            <input
+              v-model="masterPassword"
+              :type="showPassword ? 'text' : 'password'"
+              class="form-control"
+              :name="randomString()"
+              autocomplete="new-password"
             >
             <div class="input-group-append !bg-white">
               <button class="btn btn-icon" @click="showPassword = !showPassword">
-                <i class="far"
-                   :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+                <i
+                  class="far"
+                  :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
                 />
               </button>
             </div>
@@ -45,16 +49,18 @@
         <div class="form-group !mb-4">
           <label for="">Xác nhận Master Password</label>
           <div class="input-group" :class="[errors.masterRePassword ? 'is-invalid' :'']">
-            <input v-model="masterRePassword"
-                   :type="showRePassword ? 'text' : 'password'"
-                   class="form-control"
-                   name="repassword"
-                   placeholder=""
+            <input
+              v-model="masterRePassword"
+              :type="showRePassword ? 'text' : 'password'"
+              class="form-control"
+              name="repassword"
+              placeholder=""
             >
             <div class="input-group-append !bg-white">
               <button class="btn btn-icon" @click="showRePassword = !showRePassword">
-                <i class="far"
-                   :class="{'fa-eye': !showRePassword, 'fa-eye-slash': showRePassword}"
+                <i
+                  class="far"
+                  :class="{'fa-eye': !showRePassword, 'fa-eye-slash': showRePassword}"
                 />
               </button>
             </div>
@@ -63,15 +69,19 @@
         </div>
         <div class="form-group !mb-8">
           <label for="">Gợi ý mật khẩu (tuỳ chọn)</label>
-          <input v-model="masterPasswordHint" class="form-control"
-                 placeholder=""
-                 type="text"
+          <input
+            v-model="masterPasswordHint"
+            class="form-control"
+            placeholder=""
+            type="text"
           ></input>
         </div>
       </div>
       <div class="form-group !mb-4">
-        <button class="btn btn-primary w-full" :disabled="loading"
-                @click="setMasterPass"
+        <button
+          class="btn btn-primary w-full"
+          :disabled="loading"
+          @click="setMasterPass"
         >
           Tạo mật khẩu
         </button>

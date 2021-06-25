@@ -2,7 +2,6 @@
   <div>
     <!-- Header -->
     <section class="bg-white">
-
       <div
         class="full-width w-full h-auto"
         style="background: #FBFAF3;"
@@ -225,15 +224,15 @@
           :key="index"
           class="mb-9 w-[156px] h-[75px] mr-24"
         >
-        <div class="flex flex-flex-nowrap items-start">
-          <img
-            :src="item.imgGray || item.img"
-            :alt="item.name"
-            class="mx-6"
-            style="height: 70px"
-          >
-          <p class="landing-font-16 font-semibold font-black self-center">{{item.name}}</p>
-        </div>
+          <div class="flex flex-flex-nowrap items-start">
+            <img
+              :src="item.imgGray || item.img"
+              :alt="item.name"
+              class="mx-6"
+              style="height: 70px"
+            >
+            <p class="landing-font-16 font-semibold font-black self-center">{{ item.name }}</p>
+          </div>
         </div>
       </div>
     </section>
@@ -253,12 +252,11 @@
       </div>
 
       <div class="w-full relative">
-
         <div class="w-full bg-white relative z-10">
           <table class="w-full">
             <tbody>
               <tr class="hidden md:table-row">
-                <td></td>
+                <td />
                 <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">Trình quản lý thông thường</td>
                 <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">Trình quản lý mật khẩu Locker</td>
               </tr>

@@ -1,49 +1,55 @@
 <template>
-  <div class="cs-field"
-       :class="{'is-focus': focusing,
-                'have-value': value,
-                'is-hover': hovering,
-                'is-password': isPassword,
-                'is-error': errorText,
-                'is-disabled': disabled,
-       }"
+  <div
+    class="cs-field"
+    :class="{'is-focus': focusing,
+             'have-value': value,
+             'is-hover': hovering,
+             'is-password': isPassword,
+             'is-error': errorText,
+             'is-disabled': disabled,
+    }"
   >
     <label for="">{{ label }} <span v-if="required" class="text-danger">*</span></label>
     <template v-if="isTextarea">
-      <textarea ref="textarea"
-                class="cs-textarea"
-                :placeholder="shouldShowPlaceHolder ? placeholder : ''"
-                :disabled="disabled"
-                @mouseleave="hovering = false"
-                @focus="focusing = true"
-                @blur="focusing = false"
-                @input="handleInput"
-                @mouseenter="hovering = true"
+      <textarea
+        ref="textarea"
+        class="cs-textarea"
+        :placeholder="shouldShowPlaceHolder ? placeholder : ''"
+        :disabled="disabled"
+        @mouseleave="hovering = false"
+        @focus="focusing = true"
+        @blur="focusing = false"
+        @input="handleInput"
+        @mouseenter="hovering = true"
       />
     </template>
     <template v-else>
-      <input ref="input"
-             class="cs-input"
-             :type="type"
-             :placeholder="shouldShowPlaceHolder ? placeholder : ''"
-             :disabled="disabled"
-             :value="value"
-             tabindex="0"
-             @mouseleave="hovering = false"
-             @focus="handleFocus"
-             @blur="focusing = false"
-             @input="handleInput"
-             @mouseenter="handleHover"
+      <input
+        ref="input"
+        class="cs-input"
+        :type="type"
+        :placeholder="shouldShowPlaceHolder ? placeholder : ''"
+        :disabled="disabled"
+        :value="value"
+        tabindex="0"
+        @mouseleave="hovering = false"
+        @focus="handleFocus"
+        @blur="focusing = false"
+        @input="handleInput"
+        @mouseenter="handleHover"
       >
     </template>
 
-    <button v-if="isPassword && value"
-            class="btn btn-icon" type="button"
-            tabindex="-1"
-            @click="togglePassword"
+    <button
+      v-if="isPassword && value"
+      class="btn btn-icon"
+      type="button"
+      tabindex="-1"
+      @click="togglePassword"
     >
-      <i class="far"
-         :class="{'fa-eye': type==='password', 'fa-eye-slash': type==='text'}"
+      <i
+        class="far"
+        :class="{'fa-eye': type==='password', 'fa-eye-slash': type==='text'}"
       />
     </button>
     <div v-if="errorText" class="cs-helper-text">
