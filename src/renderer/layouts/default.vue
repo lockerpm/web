@@ -8,9 +8,12 @@
               <img class="h-[29px]" src="~assets/images/logo/logo_white.svg">
             </div>
             <nav class="mt-7">
-              <nuxt-link v-for="(item, index) in menu" :key="index" :to="localePath({name: item.routeName})"
-                         class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold "
-                         active-class="bg-white bg-opacity-20 text-white"
+              <nuxt-link
+                v-for="(item, index) in menu"
+                :key="index"
+                :to="localePath({name: item.routeName})"
+                class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                active-class="bg-white bg-opacity-20 text-white"
               >
                 <div class="mr-2 w-[22px] h-[22px] flex items-center">
                   <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
@@ -21,10 +24,12 @@
           </div>
           <div>
             <nav class="mb-10">
-              <nuxt-link v-for="(item, index) in bottomMenu" :key="index"
-                         :to="localePath({name: item.routeName, params: item.params})"
-                         class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold "
-                         active-class="bg-white bg-opacity-20 text-white"
+              <nuxt-link
+                v-for="(item, index) in bottomMenu"
+                :key="index"
+                :to="localePath({name: item.routeName, params: item.params})"
+                class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                active-class="bg-white bg-opacity-20 text-white"
               >
                 <div class="mr-2 w-[22px] h-[22px] flex items-center">
                   <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
@@ -52,8 +57,9 @@
                 <div>
                   <img src="~/assets/images/icons/welcome.svg" alt="">
                 </div>
-                <button class="btn btn-clean absolute top-2 -right-2"
-                        @click="offWelcome"
+                <button
+                  class="btn btn-clean absolute top-2 -right-2"
+                  @click="offWelcome"
                 >
                   <i class="el-icon-close text-lg" />
                 </button>
@@ -61,9 +67,10 @@
             </div>
           </div>
           <div v-if="invitations.length" class="flex-column-fluid lg:px-28 py-10 px-10">
-            <div v-for="invitation in invitations.slice(0, 1)"
-                 :key="invitation.id"
-                 class="banner-invitation border border-black-200 rounded p-5 md:p-8"
+            <div
+              v-for="invitation in invitations.slice(0, 1)"
+              :key="invitation.id"
+              class="banner-invitation border border-black-200 rounded p-5 md:p-8"
             >
               <div class="flex items-center justify-between">
                 <div class="">
@@ -74,15 +81,17 @@
                     You’ve been invited to the {{ invitation.team && invitation.team.name }} organization! Join now and start collaborating with your teammates.
                   </div>
                   <div>
-                    <button class="btn btn-default"
-                            :disabled="loading"
-                            @click="putInvitation(invitation.id, 'reject')"
+                    <button
+                      class="btn btn-default"
+                      :disabled="loading"
+                      @click="putInvitation(invitation.id, 'reject')"
                     >
                       Từ chối
                     </button>
-                    <button class="btn btn-primary"
-                            :disabled="loading"
-                            @click="putInvitation(invitation.id, 'accept')"
+                    <button
+                      class="btn btn-primary"
+                      :disabled="loading"
+                      @click="putInvitation(invitation.id, 'accept')"
                     >
                       Đồng ý
                     </button>
@@ -177,11 +186,13 @@ export default {
     },
     bottomMenu () {
       return [
-        // {
-        //   label: 'upgrade',
-        //   routeName: 'upgrade',
-        //   icon: 'upgrade'
-        // },
+        ...this.currentPlan.alias === 'pm_free'
+          ? [{
+            label: 'upgrade',
+            routeName: 'upgrade',
+            icon: 'upgrade'
+          }]
+          : [],
         ...this.manageableTeams && this.manageableTeams.length
           ? [{
             label: 'dashboard',

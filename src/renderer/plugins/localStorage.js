@@ -46,6 +46,7 @@ export default ({ store, app, isDev }) => {
           const obj = JSON.parse(value)
           delete obj.notifications
           delete obj.userIntercom
+          delete obj.currentPlan
           if (obj.user) {
             // eslint-disable-next-line camelcase
             const { language, is_factor2 } = obj.user

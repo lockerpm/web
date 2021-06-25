@@ -2,7 +2,7 @@
   <div class="flex flex-col sm:flex-row flex-1">
     <client-only>
       <template v-if="!locked">
-        <div class="w-60 h-screen bg-aside relative min-h-500px min-w-60 fixed border-0 border-b border-black-200">
+        <div class="w-60 h-screen bg-aside min-h-500px min-w-60 fixed">
           <div class="mt-10 px-8">
             <img class="h-[26px]" src="~assets/images/logo/logo_white.svg">
           </div>
@@ -10,7 +10,7 @@
           <nav class="mt-10">
             <nuxt-link v-for="(item, index) in menu"
                        :key="index" :to="localePath({name: item.routeName, params: $route.params})"
-                       class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold "
+                       class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
                        active-class="bg-white bg-opacity-20 text-white"
                        :exact="item.exact"
             >
