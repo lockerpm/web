@@ -18,9 +18,10 @@
               <el-input v-model="team.description" type="textarea" :rows="5" />
             </div>
             <div class="form-group">
-              <button class="btn btn-primary"
-                      :disabled="loading || !team.name"
-                      @click="putTeam"
+              <button
+                class="btn btn-primary"
+                :disabled="loading || !team.name"
+                @click="putTeam"
               >
                 {{ $t('common.update') }}
               </button>
@@ -38,8 +39,9 @@
               Careful, these actions are not reversible!
             </div>
             <div>
-              <button class="btn btn-default !text-danger"
-                      @click="openPurgeTeamVault()"
+              <button
+                class="btn btn-default !text-danger"
+                @click="openPurgeTeamVault()"
               >
                 Delete all Team's items
               </button>

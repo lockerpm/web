@@ -156,8 +156,9 @@
       {{ $t('data.settings.security') }}
     </div>
     <div class="setting-wrapper">
-      <div class="setting-section setting-section--hover"
-           @click="changeMasterPassword"
+      <div
+        class="setting-section setting-section--hover"
+        @click="changeMasterPassword"
       >
         <div class="setting-section-header">
           <div>

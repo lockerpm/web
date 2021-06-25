@@ -24,13 +24,14 @@
         </div>
         <form @submit.prevent="confirmPassword">
           <div class="form-group">
-            <InputText v-model="password"
-                       :label="$t('common.master_password')"
-                       class="w-full"
-                       :disabled="loading"
-                       :error-text="errors.password && $t('errors.invalid_password')"
-                       is-password
-                       @change="errors = {}"
+            <InputText
+              v-model="password"
+              :label="$t('common.master_password')"
+              class="w-full"
+              :disabled="loading"
+              :error-text="errors.password && $t('errors.invalid_password')"
+              is-password
+              @change="errors = {}"
             />
           </div>
         </form>
@@ -38,14 +39,16 @@
       <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow" />
         <div>
-          <button class="btn btn-default"
-                  @click="dialogVisible = false"
+          <button
+            class="btn btn-default"
+            @click="dialogVisible = false"
           >
             {{ $t('common.cancel') }}
           </button>
-          <button class="btn btn-danger"
-                  :disabled="loading || !password"
-                  @click="confirmPassword"
+          <button
+            class="btn btn-danger"
+            :disabled="loading || !password"
+            @click="confirmPassword"
           >
             {{ $t(`common.confirm`) }}
           </button>

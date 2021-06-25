@@ -29,7 +29,8 @@
           >
             <template slot-scope="scope">
               <el-dropdown
-                trigger="click" :hide-on-click="false"
+                trigger="click"
+                :hide-on-click="false"
               >
                 <button class="btn btn-icon btn-xs hover:bg-black-400">
                   <i class="fas fa-ellipsis-h" />
@@ -68,8 +69,9 @@
     <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" />
     <AddEditTeamFolder ref="addEditTeamFolder" />
     <div class="fixed bottom-[50px] right-[55px]">
-      <button class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
-              @click="addEditFolder({organizationId: $route.params.teamId})"
+      <button
+        class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
+        @click="addEditFolder({organizationId: $route.params.teamId})"
       >
         <i class="fas fa-plus text-[24px]" />
       </button>

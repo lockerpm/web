@@ -1,13 +1,15 @@
 <template>
   <div class="progress">
-    <div class="progress-bar select-none" role="progressbar"
-         :class="{
-           'bg-success w-full': score === 4,
-           'bg-info w-3/4': score === 3,
-           'bg-warning w-2/4': score === 2,
-           'bg-danger w-1/4': score === 1 || score === 0,
-           'bg-black w-0': score === 10,
-         }"
+    <div
+      class="progress-bar select-none"
+      role="progressbar"
+      :class="{
+        'bg-success w-full': score === 4,
+        'bg-info w-3/4': score === 3,
+        'bg-warning w-2/4': score === 2,
+        'bg-danger w-1/4': score === 1 || score === 0,
+        'bg-black w-0': score === 10,
+      }"
     >
       {{ $t(`master_password.scores.${scores[score]}`) }}
     </div>

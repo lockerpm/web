@@ -63,7 +63,7 @@ export default {
       this.$router.push(this.localeRoute({ name: 'vault' }))
     },
     goSetting () {
-      this.$router.push(this.localeRoute({ name: 'admin-teamId-settings', params: {teamId: this.$route.params.teamId} }))
+      this.$router.push(this.localeRoute({ name: 'admin-teamId-settings', params: { teamId: this.$route.params.teamId } }))
     },
     getAvatarString (string) {
       const matches = string.match(/\b(\w)/g)

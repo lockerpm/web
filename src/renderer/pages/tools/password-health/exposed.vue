@@ -1,16 +1,18 @@
 <template>
   <div>
-    <div class="locker-callout mb-8"
-         :class="{
-           'locker-callout-success': noData,
-           'locker-callout-danger': haveData
-         }"
+    <div
+      class="locker-callout mb-8"
+      :class="{
+        'locker-callout-success': noData,
+        'locker-callout-danger': haveData
+      }"
     >
-      <div class="mb-2 font-semibold"
-           :class="{
-             'text-success': noData,
-             'text-danger': haveData
-           }"
+      <div
+        class="mb-2 font-semibold"
+        :class="{
+          'text-success': noData,
+          'text-danger': haveData
+        }"
       >
         <span v-if="noData">GOOD NEWS</span>
         <span v-if="haveData">EXPOSED PASSWORDS FOUND</span>
@@ -38,15 +40,17 @@
         >
           <template slot-scope="scope">
             <div class="flex items-center">
-              <div class="text-[34px] mr-3 flex-shrink-0"
-                   :class="{'filter grayscale': scope.row.isDeleted}"
+              <div
+                class="text-[34px] mr-3 flex-shrink-0"
+                :class="{'filter grayscale': scope.row.isDeleted}"
               >
                 <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
               </div>
               <div class="flex flex-col">
-                <a class="text-black font-semibold truncate flex items-center"
-                   :class="{'opacity-80': scope.row.isDeleted}"
-                   @click="routerCipher(scope.row)"
+                <a
+                  class="text-black font-semibold truncate flex items-center"
+                  :class="{'opacity-80': scope.row.isDeleted}"
+                  @click="routerCipher(scope.row)"
                 >
                   {{ scope.row.name }}
                   <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="" class="inline-block ml-2">

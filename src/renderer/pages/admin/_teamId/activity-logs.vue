@@ -40,16 +40,17 @@
               {{ scope.row.description[language] }}
             </template>
           </el-table-column>
-          <el-table-column
-          >
+          <el-table-column>
             <template slot-scope="scope">
               {{ $moment(scope.row.date).utc().format('LLLZ') }}
             </template>
           </el-table-column>
         </el-table>
         <div v-if="continuationToken" class="text-center">
-          <button class="btn btn-clean btn-primary" :disabled="loading"
-                  @click="getLogs"
+          <button
+            class="btn btn-clean btn-primary"
+            :disabled="loading"
+            @click="getLogs"
           >
             Load more
           </button>

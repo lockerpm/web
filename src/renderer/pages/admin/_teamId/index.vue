@@ -30,11 +30,12 @@
           <div class="text-black-600">
             Tỉ lệ mật khẩu an toàn
           </div>
-          <div class="text-head-1 font-semibold"
-               :class="{'text-success': strongRate >= 75,
-                        'text-warning': strongRate >= 50,
-                        'text-danger': strongRate < 50
-               }"
+          <div
+            class="text-head-1 font-semibold"
+            :class="{'text-success': strongRate >= 75,
+                     'text-warning': strongRate >= 50,
+                     'text-danger': strongRate < 50
+            }"
           >
             {{ strongRate | formatPercentage }}%
           </div>

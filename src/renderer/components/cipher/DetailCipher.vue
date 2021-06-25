@@ -41,14 +41,16 @@
           </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-if="canManageItem(teams, cipher)" class="header-actions">
-          <button class="btn btn-icon btn-xs btn-action"
-                  @click="addEdit"
+          <button
+            class="btn btn-icon btn-xs btn-action"
+            @click="addEdit"
           >
             <i class="fa fa-pen" />
           </button>
-          <button v-if="!cipher.organizationId"
-                  class="btn btn-icon btn-xs btn-action"
-                  @click="shareItem(cipher)"
+          <button
+            v-if="!cipher.organizationId"
+            class="btn btn-icon btn-xs btn-action"
+            @click="shareItem(cipher)"
           >
             <i class="fas fa-share-square" />
           </button>
@@ -79,8 +81,10 @@
         <div v-show="!editMode" class="cipher-items">
           <template v-if="cipher.type === CipherType.Login">
             <TextHaveCopy label="Email / Username" :text="cipher.login.username" />
-            <TextHaveCopy :label="$t('data.ciphers.password')"
-                          :text="cipher.login.password" should-hide
+            <TextHaveCopy
+              :label="$t('data.ciphers.password')"
+              :text="cipher.login.password"
+              should-hide
             />
             <div class="grid md:grid-cols-6 cipher-item">
               <div class="">{{ $t('data.ciphers.password_security') }}</div>
@@ -88,10 +92,11 @@
                 <PasswordStrength :score="passwordStrength.score" />
               </div>
             </div>
-            <div v-for="(item, index) in cipher.login.uris"
-                 v-show="item.uri"
-                 :key="index"
-                 class="grid md:grid-cols-6 cipher-item"
+            <div
+              v-for="(item, index) in cipher.login.uris"
+              v-show="item.uri"
+              :key="index"
+              class="grid md:grid-cols-6 cipher-item"
             >
               <div class="">{{ $t('data.ciphers.website_address') }}</div>
               <div class="col-span-4 font-semibold">
@@ -151,8 +156,9 @@
       <MoveFolder ref="moveFolder" />
       <AddEditCipher ref="addEditCipherDialog" />
       <div class="max-w-[585px] mx-auto">
-        <AddEditCipher ref="addEditCipherDialog"
-                       @close="editMode=false"
+        <AddEditCipher
+          ref="addEditCipherDialog"
+          @close="editMode=false"
         />
       </div>
     </div>

@@ -104,7 +104,6 @@
             </div>
             <!-- Right end -->
           </div>
-
         </section>
       </div>
       <div class="full-width w-full bg-how-it-works2 h-auto pb-[111px]">
@@ -140,21 +139,21 @@
               </div>
             </div>
             <div class="w-full landing-font-18 mt-[60px] text-center order-3">
-                <a
-                  href=""
-                  class="hover:no-underline text-green font-semibold"
-                >
-                  Xem thêm cách chúng tôi bảo vệ dữ liệu của bạn <i class="el-icon-right" />
-                </a>
-              </div>
-              <div class="w-full landing-font-18 mt-3 text-center order-4">
-                <a
-                  href=""
-                  class="hover:no-underline text-green font-semibold"
-                >
-                  Các tính năng bảo mật trong ứng dụng <i class="el-icon-right" />
-                </a>
-              </div>
+              <a
+                href=""
+                class="hover:no-underline text-green font-semibold"
+              >
+                Xem thêm cách chúng tôi bảo vệ dữ liệu của bạn <i class="el-icon-right" />
+              </a>
+            </div>
+            <div class="w-full landing-font-18 mt-3 text-center order-4">
+              <a
+                href=""
+                class="hover:no-underline text-green font-semibold"
+              >
+                Các tính năng bảo mật trong ứng dụng <i class="el-icon-right" />
+              </a>
+            </div>
           </div>
         </section>
       </div>

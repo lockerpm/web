@@ -38,11 +38,13 @@
         <!--          </el-select>-->
         <!--        </div>-->
         <ValidationProvider v-slot="{ errors: err }" rules="required" :name="$t('common.name')">
-          <InputText v-model="cipher.name" :label="$t('common.name')"
-                     class="w-full"
-                     :error-text="err && err.length && err[0]"
-                     :disabled="isDeleted"
-                     required
+          <InputText
+            v-model="cipher.name"
+            :label="$t('common.name')"
+            class="w-full"
+            :error-text="err && err.length && err[0]"
+            :disabled="isDeleted"
+            required
           />
         </ValidationProvider>
 
@@ -50,17 +52,19 @@
           <div class="mb-4 text-black-700 text-head-6 font-semibold">
             {{ $t('data.ciphers.login') }}
           </div>
-          <InputText v-model="cipher.login.username"
-                     label="Email / Username"
-                     class="w-full"
-                     :disabled="isDeleted"
+          <InputText
+            v-model="cipher.login.username"
+            label="Email / Username"
+            class="w-full"
+            :disabled="isDeleted"
           />
           <template>
-            <InputText v-model="cipher.login.password"
-                       :label="$t('data.ciphers.password')"
-                       class="w-full"
-                       :disabled="isDeleted"
-                       is-password
+            <InputText
+              v-model="cipher.login.password"
+              :label="$t('data.ciphers.password')"
+              class="w-full"
+              :disabled="isDeleted"
+              is-password
             />
             <PasswordStrengthBar :score="passwordStrength.score" class="mt-2" />
             <div v-if="!isDeleted && !cipher.id" class="text-right">
@@ -72,8 +76,9 @@
               >
                 <PasswordGenerator @generated="(p) => cipher.login.password = p" />
 
-                <button slot="reference"
-                        class="btn btn-clean !text-primary"
+                <button
+                  slot="reference"
+                  class="btn btn-clean !text-primary"
                 >
                   {{ $t('data.ciphers.generate_random_password') }}
                 </button>
@@ -81,58 +86,67 @@
             </div>
           </template>
           <template v-for="(item, index) in cipher.login.uris">
-            <InputText :key="index"
-                       v-model="item.uri"
-                       :label="$t('data.ciphers.website_address')"
-                       class="w-full"
-                       :disabled="isDeleted"
+            <InputText
+              :key="index"
+              v-model="item.uri"
+              :label="$t('data.ciphers.website_address')"
+              class="w-full"
+              :disabled="isDeleted"
             />
           </template>
         </template>
         <template v-if="cipher.type === CipherType.Card">
           <div class="mb-4 text-black-700 text-head-6 font-semibold">Chi tiết thẻ</div>
-          <ValidationProvider v-slot="{ errors: err }" rules="required"
-                              :name="$t('data.ciphers.card_holder')"
+          <ValidationProvider
+            v-slot="{ errors: err }"
+            rules="required"
+            :name="$t('data.ciphers.card_holder')"
           >
-            <InputText v-model="cipher.card.cardholderName"
-                       :label="$t('data.ciphers.card_holder')"
-                       class="w-full !mb-2"
-                       :error-text="err && err.length && err[0]"
-                       :disabled="isDeleted"
-                       required
+            <InputText
+              v-model="cipher.card.cardholderName"
+              :label="$t('data.ciphers.card_holder')"
+              class="w-full !mb-2"
+              :error-text="err && err.length && err[0]"
+              :disabled="isDeleted"
+              required
             />
           </ValidationProvider>
-          <InputSelect :label="$t('data.ciphers.brand')"
-                       :initial-value="cipher.card.brand"
-                       class="w-full"
-                       :disabled="isDeleted"
-                       :options="cardBrandOptions"
-                       @change="(v) => cipher.card.brand = v"
+          <InputSelect
+            :label="$t('data.ciphers.brand')"
+            :initial-value="cipher.card.brand"
+            class="w-full"
+            :disabled="isDeleted"
+            :options="cardBrandOptions"
+            @change="(v) => cipher.card.brand = v"
           />
-          <InputText v-model="cipher.card.number"
-                     :label="$t('data.ciphers.card_number')"
-                     class="w-full"
-                     :disabled="isDeleted"
+          <InputText
+            v-model="cipher.card.number"
+            :label="$t('data.ciphers.card_number')"
+            class="w-full"
+            :disabled="isDeleted"
           />
           <div class="grid grid-cols-2 gap-2">
-            <InputSelect :label="$t('data.ciphers.expiration_month')"
-                         :initial-value="cipher.card.expMonth"
-                         class="w-full"
-                         :disabled="isDeleted"
-                         :options="cardExpMonthOptions"
-                         @change="(v) => cipher.card.expMonth = v"
+            <InputSelect
+              :label="$t('data.ciphers.expiration_month')"
+              :initial-value="cipher.card.expMonth"
+              class="w-full"
+              :disabled="isDeleted"
+              :options="cardExpMonthOptions"
+              @change="(v) => cipher.card.expMonth = v"
             />
-            <InputText v-model="cipher.card.expYear"
-                       :label="$t('data.ciphers.expiration_year')"
-                       class="w-full !mb-2"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.card.expYear"
+              :label="$t('data.ciphers.expiration_year')"
+              class="w-full !mb-2"
+              :disabled="isDeleted"
             />
           </div>
-          <InputText v-model="cipher.card.code"
-                     :label="$t('data.ciphers.cvv')"
-                     is-password
-                     class="w-full"
-                     :disabled="isDeleted"
+          <InputText
+            v-model="cipher.card.code"
+            :label="$t('data.ciphers.cvv')"
+            is-password
+            class="w-full"
+            :disabled="isDeleted"
           />
         </template>
         <template v-if="cipher.type === CipherType.Identity">
@@ -140,120 +154,139 @@
             {{ $t('data.ciphers.personal') }}
           </div>
           <div class="grid grid-cols-2 gap-x-2 mb-4">
-            <InputSelect :label="$t('data.ciphers.title')"
-                         :initial-value="cipher.identity.title"
-                         class="w-full"
-                         :disabled="isDeleted"
-                         :options="identityTitleOptions"
-                         @change="(v) => cipher.identity.title = v"
+            <InputSelect
+              :label="$t('data.ciphers.title')"
+              :initial-value="cipher.identity.title"
+              class="w-full"
+              :disabled="isDeleted"
+              :options="identityTitleOptions"
+              @change="(v) => cipher.identity.title = v"
             />
-            <InputText v-model="cipher.identity.firstName"
-                       :label="$t('data.ciphers.first_name')"
-                       class="w-full"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.firstName"
+              :label="$t('data.ciphers.first_name')"
+              class="w-full"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.lastName"
-                       :label="$t('data.ciphers.last_name')"
-                       class="w-full"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.lastName"
+              :label="$t('data.ciphers.last_name')"
+              class="w-full"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.username"
-                       label="Username"
-                       class="w-full"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.username"
+              label="Username"
+              class="w-full"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.company"
-                       :label="$t('data.ciphers.company')"
-                       class="w-full"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.company"
+              :label="$t('data.ciphers.company')"
+              class="w-full"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.email"
-                       label="Email"
-                       class="w-full"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.email"
+              label="Email"
+              class="w-full"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.phone"
-                       :label="$t('data.ciphers.phone')"
-                       class="w-full"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.phone"
+              :label="$t('data.ciphers.phone')"
+              class="w-full"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.ssn"
-                       :label="$t('data.ciphers.ssn')"
-                       class="w-full"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.ssn"
+              :label="$t('data.ciphers.ssn')"
+              class="w-full"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.passportNumber"
-                       :label="$t('data.ciphers.passport')"
-                       class="w-full"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.passportNumber"
+              :label="$t('data.ciphers.passport')"
+              class="w-full"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.licenseNumber"
-                       :label="$t('data.ciphers.license')"
-                       class="w-full !mb-2"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.licenseNumber"
+              :label="$t('data.ciphers.license')"
+              class="w-full !mb-2"
+              :disabled="isDeleted"
             />
           </div>
           <div class="mb-4 text-black-700 text-head-6 font-semibold">Thông tin liên lạc</div>
           <div class="grid grid-cols-2 gap-x-2 mb-4">
-            <InputText v-model="cipher.identity.address1"
-                       :label="$t('data.ciphers.address') + '1'"
-                       class="w-full col-span-2"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.address1"
+              :label="$t('data.ciphers.address') + '1'"
+              class="w-full col-span-2"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.address2"
-                       :label="$t('data.ciphers.address') + '2'"
-                       class="w-full col-span-2"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.address2"
+              :label="$t('data.ciphers.address') + '2'"
+              class="w-full col-span-2"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.city"
-                       :label="$t('data.ciphers.city_town')"
-                       class="w-full col-span-2"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.city"
+              :label="$t('data.ciphers.city_town')"
+              class="w-full col-span-2"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.state"
-                       :label="$t('data.ciphers.state_province')"
-                       class="w-full col-span-2"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.state"
+              :label="$t('data.ciphers.state_province')"
+              class="w-full col-span-2"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.postalCode"
-                       :label="$t('data.ciphers.zip')"
-                       class="w-full col-span-2"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.postalCode"
+              :label="$t('data.ciphers.zip')"
+              class="w-full col-span-2"
+              :disabled="isDeleted"
             />
-            <InputText v-model="cipher.identity.country"
-                       :label="$t('data.ciphers.country')"
-                       class="w-full col-span-2 !mb-2"
-                       :disabled="isDeleted"
+            <InputText
+              v-model="cipher.identity.country"
+              :label="$t('data.ciphers.country')"
+              class="w-full col-span-2 !mb-2"
+              :disabled="isDeleted"
             />
           </div>
         </template>
         <div v-if="cipher.type !== CipherType.SecureNote" class="my-5 text-black-700 text-head-6 font-semibold">
           {{ $t('data.ciphers.others') }}
         </div>
-        <InputText v-model="cipher.notes"
-                   :label="$t('data.ciphers.notes')"
-                   class="w-full"
-                   :disabled="isDeleted"
-                   is-textarea
+        <InputText
+          v-model="cipher.notes"
+          :label="$t('data.ciphers.notes')"
+          class="w-full"
+          :disabled="isDeleted"
+          is-textarea
         />
-        <InputSelectFolder :label="$t('data.folders.select_folder')"
-                           :initial-value="cipher.folderId"
-                           :options="folders"
-                           :disabled="isDeleted"
-                           class="w-full"
-                           @change="(v) => cipher.folderId = v"
-                           @addFolder="addFolder(false)"
+        <InputSelectFolder
+          :label="$t('data.folders.select_folder')"
+          :initial-value="cipher.folderId"
+          :options="folders"
+          :disabled="isDeleted"
+          class="w-full"
+          @change="(v) => cipher.folderId = v"
+          @addFolder="addFolder(false)"
         />
         <template v-if="ownershipOptions.length">
-          <InputSelectOrg :label="$t('common.ownership')"
-                          :initial-value="cipher.organizationId"
-                          :options="ownershipOptions"
-                          :disabled="isDeleted || !!cipher.id"
-                          class="w-full"
-                          @change="(v) => {
-                            cipher.organizationId = v;
-                            handleChangeOrg(v)
-                          }"
+          <InputSelectOrg
+            :label="$t('common.ownership')"
+            :initial-value="cipher.organizationId"
+            :options="ownershipOptions"
+            :disabled="isDeleted || !!cipher.id"
+            class="w-full"
+            @change="(v) => {
+              cipher.organizationId = v;
+              handleChangeOrg(v)
+            }"
           />
           <div v-if="cipher.organizationId" class="form-group">
             <div class="flex items-center justify-between" />
@@ -262,9 +295,10 @@
               {{ $t('data.ciphers.choose_at_least_folder') }}
             </div>
             <el-checkbox-group v-model="cipher.collectionIds" :min="1" :disabled="isDeleted">
-              <el-checkbox v-for="(item, index) in writeableCollections"
-                           :key="index"
-                           :label="item.id"
+              <el-checkbox
+                v-for="(item, index) in writeableCollections"
+                :key="index"
+                :label="item.id"
               >
                 {{ item.name }}
               </el-checkbox>
@@ -274,27 +308,34 @@
       </div>
       <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow">
-          <button v-if="cipher.id" class="btn btn-icon !text-danger"
-                  @click="isDeleted ? deleteCiphers([cipher.id]) : moveTrashCiphers([cipher.id])"
+          <button
+            v-if="cipher.id"
+            class="btn btn-icon !text-danger"
+            @click="isDeleted ? deleteCiphers([cipher.id]) : moveTrashCiphers([cipher.id])"
           >
             <i class="fa fa-trash-alt" />
           </button>
         </div>
         <div>
-          <button class="btn btn-default"
-                  @click="closeDialog"
+          <button
+            class="btn btn-default"
+            @click="closeDialog"
           >
             {{ $t('common.cancel') }}
           </button>
-          <button v-if="isDeleted" class="btn btn-primary"
-                  :disabled="loading"
-                  @click="restoreCiphers([cipher.id])"
+          <button
+            v-if="isDeleted"
+            class="btn btn-primary"
+            :disabled="loading"
+            @click="restoreCiphers([cipher.id])"
           >
             {{ $t('common.restore') }}
           </button>
-          <button v-else class="btn btn-primary"
-                  :disabled="loading || !cipher.name"
-                  @click="cipher.id ?putCipher(cipher):postCipher(cipher)"
+          <button
+            v-else
+            class="btn btn-primary"
+            :disabled="loading || !cipher.name"
+            @click="cipher.id ?putCipher(cipher):postCipher(cipher)"
           >
             {{ cipher.id ? $t('common.update') : $t('common.add') }}
           </button>

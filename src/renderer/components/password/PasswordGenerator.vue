@@ -6,8 +6,9 @@
           {{ password }}
         </div>
         <div class="ml-4">
-          <button class="btn btn-icon btn-default w-8 h-8 !rounded-full flex items-center justify-center"
-                  @click="regenerate"
+          <button
+            class="btn btn-icon btn-default w-8 h-8 !rounded-full flex items-center justify-center"
+            @click="regenerate"
           >
             <i class="fas fa-redo-alt" />
           </button>
@@ -16,9 +17,10 @@
       <PasswordStrength v-if="password" :score="passwordStrength.score" />
     </div>
     <div class="p-5">
-      <button v-clipboard:copy="password"
-              v-clipboard:success="clipboardSuccessHandler"
-              class="btn btn-primary w-full"
+      <button
+        v-clipboard:copy="password"
+        v-clipboard:success="clipboardSuccessHandler"
+        class="btn btn-primary w-full"
       >
         {{ $t('data.tools.copy_password') }}
       </button>
@@ -28,39 +30,45 @@
       <div v-if="toggle" class="locker-pw-generator-options">
         <div>
           <div class="text-black font-semibold -mb-2">{{ $t('common.length') }}</div>
-          <el-slider v-model="options.length"
-                     :min="8"
-                     :max="64"
-                     :debounce="800"
-                     @change="regenerate"
+          <el-slider
+            v-model="options.length"
+            :min="8"
+            :max="64"
+            :debounce="800"
+            @change="regenerate"
           />
-          <el-checkbox v-model="options.uppercase"
-                       class="mb-2"
-                       @change="regenerate"
+          <el-checkbox
+            v-model="options.uppercase"
+            class="mb-2"
+            @change="regenerate"
           >
             {{ $t('data.tools.uppercase') }}
           </el-checkbox>
-          <el-checkbox v-model="options.lowercase"
-                       class="mb-2"
-                       @change="regenerate"
+          <el-checkbox
+            v-model="options.lowercase"
+            class="mb-2"
+            @change="regenerate"
           >
             {{ $t('data.tools.lowercase') }}
           </el-checkbox>
-          <el-checkbox v-model="options.number"
-                       class="mb-2"
-                       @change="regenerate"
+          <el-checkbox
+            v-model="options.number"
+            class="mb-2"
+            @change="regenerate"
           >
             {{ $t('data.tools.digits') }}
           </el-checkbox>
-          <el-checkbox v-model="options.special"
-                       class="mb-2"
-                       @change="regenerate"
+          <el-checkbox
+            v-model="options.special"
+            class="mb-2"
+            @change="regenerate"
           >
             {{ $t('data.tools.symbols') }}
           </el-checkbox>
-          <el-checkbox v-model="options.ambiguous"
-                       class="mb-2"
-                       @change="regenerate"
+          <el-checkbox
+            v-model="options.ambiguous"
+            class="mb-2"
+            @change="regenerate"
           >
             {{ $t('data.tools.ambiguous') }}
           </el-checkbox>
