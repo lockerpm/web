@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col flex-column-fluid relative">
+  <div class="flex flex-col flex-column-fluid relative bg-[#FBFBFC]">
     <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <div class="mb-5">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -34,14 +34,18 @@
         </el-breadcrumb>
       </div>
       <div v-if="getRouteBaseName() === 'tools-password-health'" class="setting-wrapper">
-        <div class="setting-section">
+        <div
+          class="setting-section setting-section--hover"
+          @click="go({name: 'tools-password-health-weak'})"
+        >
           <div class="setting-section-header">
             <div class="flex items-center">
-              <div class="w-[48px] h-[48px] flex items-center justify-center rounded-full text-head-5 text-white mr-3"
-                   :class="{
-                     'bg-danger': weakPasswordCiphers && weakPasswordCiphers.length > 1,
-                     'bg-success': weakPasswordCiphers && weakPasswordCiphers.length === 0
-                   }"
+              <div
+                class="w-[48px] h-[48px] flex items-center justify-center rounded-full text-head-5 text-white mr-3"
+                :class="{
+                  'bg-danger': weakPasswordCiphers && weakPasswordCiphers.length > 1,
+                  'bg-success': weakPasswordCiphers && weakPasswordCiphers.length === 0
+                }"
               >
                 <span v-if="weakPasswordCiphers && weakPasswordCiphers.length">
                   <span v-if="weakPasswordCiphers.length > 99">99+</span>
@@ -71,14 +75,18 @@
             </div>
           </div>
         </div>
-        <div class="setting-section">
+        <div
+          class="setting-section setting-section--hover"
+          @click="go({name: 'tools-password-health-reused'})"
+        >
           <div class="setting-section-header">
             <div class="flex items-center">
-              <div class="w-[48px] h-[48px] flex items-center justify-center rounded-full text-head-5 text-white mr-3"
-                   :class="{
-                     'bg-danger': reusedPasswordCiphers && reusedPasswordCiphers.length > 1,
-                     'bg-success': reusedPasswordCiphers && reusedPasswordCiphers.length === 0
-                   }"
+              <div
+                class="w-[48px] h-[48px] flex items-center justify-center rounded-full text-head-5 text-white mr-3"
+                :class="{
+                  'bg-danger': reusedPasswordCiphers && reusedPasswordCiphers.length > 1,
+                  'bg-success': reusedPasswordCiphers && reusedPasswordCiphers.length === 0
+                }"
               >
                 <span v-if="reusedPasswordCiphers && reusedPasswordCiphers.length">
                   <span v-if="reusedPasswordCiphers.length > 99">99+</span>
@@ -108,7 +116,10 @@
             </div>
           </div>
         </div>
-        <div class="setting-section">
+        <div
+          class="setting-section setting-section--hover"
+          @click="go({name: 'tools-password-health-exposed'})"
+        >
           <div class="setting-section-header">
             <div class="flex items-center">
               <img src="~/assets/images/icons/icon_tools_pw_breach.svg" alt="" class="mr-3">
@@ -157,7 +168,17 @@ export default {
       weakPasswordCiphers: []
     }
   },
-  computed: {
+  watch: {
+    currentPlan (newValue) {
+      if (newValue.alias === 'pm_free') {
+        this.$router.push('/vault')
+      }
+    }
+  },
+  mounted () {
+    if (this.currentPlan.alias === 'pm_free') {
+      this.$router.push('/vault')
+    }
   },
   asyncComputed: {
     weakPasswordCiphers: {

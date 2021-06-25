@@ -156,7 +156,9 @@
       {{ $t('data.settings.security') }}
     </div>
     <div class="setting-wrapper">
-      <div class="setting-section">
+      <div class="setting-section setting-section--hover"
+           @click="changeMasterPassword"
+      >
         <div class="setting-section-header">
           <div>
             <div class="setting-title">
@@ -166,14 +168,13 @@
           <div>
             <button
               class="btn btn-icon !text-black-600"
-              @click="changeMasterPassword"
             >
               <i class="fa fa-chevron-right" />
             </button>
           </div>
         </div>
       </div>
-      <div class="setting-section">
+      <div class="setting-section setting-section--hover">
         <div class="setting-section-header">
           <div>
             <div class="setting-title">
