@@ -1,8 +1,7 @@
 <template>
   <div class="md:pt-[180px] pt-36">
-    <h1 class="text-left font-bold text-black landing-font-50">
+    <h1 class="text-left font-bold text-black landing-font-50 max-w-[890px]">
       Khám phá các tính năng của Locker
-      <br>
       Password Manager
     </h1>
     <section class="md:mt-16 mt-12">

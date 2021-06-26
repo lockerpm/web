@@ -21,7 +21,7 @@
                   class="mb-3"
                 >
                   <a
-                    class="text-black-600 landing-transition hover:no-underline hover:font-semibold hover:text-green sm:max-w-[170px] block"
+                    class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
                     :href="item.link"
                   >
                     {{ item.name }}
@@ -84,7 +84,7 @@
           </a>
           <a
             href="#"
-            class="text-black-600 landing-font-12 hover:no-underline hover:font-semibold hover:text-green"
+            class="text-black-600 landing-font-12 hover:no-underline hover:text-green"
           >
             Chính sách
           </a>

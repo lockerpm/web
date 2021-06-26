@@ -2,10 +2,10 @@
   <div>
     <!-- Header -->
     <section class="full-width h-auto">
-      <div class="md:pt-[186px] pt-28 max-w-6xl mx-auto pl-6">
-        <div class="w-full flex flex-wrap">
-          <div class="md:max-w-[475px] md:w-1/2 order-1 mb-8 md:mb-0">
-            <h1 class="text-left font-bold text-black landing-font-50 mb-[24px]">
+      <div class="md:pt-[200px] pt-28 mx-auto pl-6">
+        <div class="w-full flex flex-wrap justify-end">
+          <div class="md:max-w-[570px] md:w-1/2 order-1 mb-8 md:mb-0">
+            <h1 class="text-left w-11/12 font-bold text-black landing-font-50 mb-[24px]">
               Tải Locker trên các thiết bị của bạn
             </h1>
             <img
@@ -25,11 +25,11 @@
             </div>
           </div>
           <!-- Right -->
-          <div class="hidden md:block md:w-1/2 order-2 absolute jusify-self-end right-0 mb-10">
+          <div class="hidden md:block md:w-1/2 order-2 jusify-self-end pr-0 mb-10">
             <img
               src="~/assets/images/landing/download/img3x.png"
               alt=""
-              style="float:right;"
+              style="width:100%;"
             >
           </div>
           <div class="w-full md:hidden order-2">
@@ -44,7 +44,7 @@
     </section>
     <section
       id="section2"
-      class="mt-48 mb-20"
+      class="mt-36 mb-20"
     >
       <div
         id="flex1"
@@ -135,8 +135,13 @@
         >
           <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">Truy cập phiên bản web</h2>
           <p class="text-center landing-font-14 w-[400px] mx-auto">Chỉ cần một thiết bị bất kỳ có hỗ trợ trình duyệt web, bạn đã có thể truy cập Locker tại: <span class="text-green"><a href="#">locker.io/vault</a></span></p>
-          <div class="w-full">
-            <img src="~/assets/images/landing/download/web_app.png">
+          <div class="w-full h-[236px] bg-web-app">
+            <a
+              class="landing-btn w-full text-center w-[207px] h-[45px] ml-[141px] mt-[125px]"
+              href="#"
+            >
+              locker.io/vault
+            </a>
           </div>
         </div>
       </div>

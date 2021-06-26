@@ -41,9 +41,9 @@
         >
           Đăng ký
         </a>
-        <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">
-          vault
-        </nuxt-link>
+<!--        <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">-->
+<!--          vault-->
+<!--        </nuxt-link>-->
       </div>
       <!-- Right actions end -->
 
@@ -104,7 +104,7 @@ export default {
         },
         {
           name: 'Bảng giá',
-          link: '#'
+          link: 'plan'
         },
         {
           name: 'Tải về',
@@ -128,14 +128,15 @@ export default {
     const header = document.getElementById('header')
     document.addEventListener('scroll', function () {
       const scrollPos = window.scrollY
-      header.classList.remove('bg-transparent')
-      header.classList.add('bg-white')
       if (scrollPos > 10) {
         header.classList.add('shadow-lg')
+        header.classList.remove('bg-transparent')
+        header.classList.add('bg-white')
       } else {
         header.classList.remove('shadow-lg')
+        header.classList.add('bg-transparent')
+        header.classList.remove('bg-white')
       }
-      
     })
 
     // Set click event

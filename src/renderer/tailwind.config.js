@@ -78,6 +78,9 @@ module.exports = {
       },
       opacity: {
         15: '0.15'
+      },
+      backgroundImage: {
+        'web-app': "url('~/assets/images/landing/download/web_app.png')"
       }
     }
   },
