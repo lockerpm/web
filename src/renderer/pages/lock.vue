@@ -25,18 +25,23 @@
               {{ $t('master_password.enter_password') }}
             </label>
             <div class="input-group mb-1.5">
-              <input v-model="masterPassword"
-                     :type="showPassword ? 'text' : 'password'"
-                     class="form-control"
-                     :class="[errors ? 'is-invalid' :'']"
-                     :name="randomString()" autocomplete="new-password"
+              <input
+                v-model="masterPassword"
+                :type="showPassword ? 'text' : 'password'"
+                class="form-control"
+                :class="[errors ? 'is-invalid' :'']"
+                :name="randomString()"
+                autocomplete="new-password"
               >
               <div class="input-group-append !bg-white">
-                <button class="btn btn-icon" type="button"
-                        @click="showPassword = !showPassword"
+                <button
+                  class="btn btn-icon"
+                  type="button"
+                  @click="showPassword = !showPassword"
                 >
-                  <i class="far"
-                     :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+                  <i
+                    class="far"
+                    :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
                   />
                 </button>
               </div>
@@ -49,13 +54,17 @@
         </form>
         <div class="form-group">
           <div class="grid lg:grid-cols-2 grid-cols-1 gap-2">
-            <button class="btn btn-primary w-full" :disabled="loading"
-                    @click="setMasterPass"
+            <button
+              class="btn btn-primary w-full"
+              :disabled="loading"
+              @click="setMasterPass"
             >
               {{ $t('master_password.unlock') }}
             </button>
-            <button class="btn btn-default w-full" :disabled="loading"
-                    @click="logout"
+            <button
+              class="btn btn-default w-full"
+              :disabled="loading"
+              @click="logout"
             >
               {{ $t('common.logout') }}
             </button>
@@ -78,9 +87,10 @@
           </div>
         </div>
         <div class="form-group">
-          <button class="btn btn-primary w-full"
-                  :disabled="loadingSend"
-                  @click="sendHint"
+          <button
+            class="btn btn-primary w-full"
+            :disabled="loadingSend"
+            @click="sendHint"
           >
             {{ $t('master_password.send') }}
           </button>

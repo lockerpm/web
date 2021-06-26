@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col flex-column-fluid relative">
+  <div class="flex flex-col flex-column-fluid relative bg-[#FBFBFC]">
     <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <div class="mb-5">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -30,14 +30,18 @@
               <label for="">
                 Check any usernames or email addresses that you use.
               </label>
-              <input v-model="email" type="text" class="form-control max-w-[500px]"
-                     :disabled="loading"
+              <input
+                v-model="email"
+                type="text"
+                class="form-control max-w-[500px]"
+                :disabled="loading"
               >
             </div>
             <div class="form-group">
-              <button class="btn btn-primary"
-                      :disabled="loading || !email"
-                      @click="checkBreaches"
+              <button
+                class="btn btn-primary"
+                :disabled="loading || !email"
+                @click="checkBreaches"
               >
                 Check Breaches
               </button>
@@ -46,17 +50,20 @@
         </div>
       </div>
       <div v-loading="loading" class="min-h-[500px] relative">
-        <div v-if="!loading && checked" class="locker-callout mb-8"
-             :class="{
-               'locker-callout-success': noData,
-               'locker-callout-danger': haveData
-             }"
+        <div
+          v-if="!loading && checked"
+          class="locker-callout mb-8"
+          :class="{
+            'locker-callout-success': noData,
+            'locker-callout-danger': haveData
+          }"
         >
-          <div class="mb-2 font-semibold"
-               :class="{
-                 'text-success': noData,
-                 'text-danger': haveData
-               }"
+          <div
+            class="mb-2 font-semibold"
+            :class="{
+              'text-success': noData,
+              'text-danger': haveData
+            }"
           >
             <span v-if="noData">GOOD NEWS</span>
             <span v-if="haveData">BREACHED ACCOUNTS FOUND</span>
@@ -71,9 +78,10 @@
           </div>
         </div>
         <div v-if="breach.length" class="setting-wrapper">
-          <div v-for="(item, index) in breach"
-               :key="index"
-               class="setting-section"
+          <div
+            v-for="(item, index) in breach"
+            :key="index"
+            class="setting-section"
           >
             <div class="setting-section-header">
               <div class="grid grid-cols-12 gap-x-4">
@@ -145,8 +153,17 @@ export default {
       return !this.loading && this.breach.length === 0
     }
   },
+  watch: {
+    currentPlan (newValue) {
+      if (newValue.alias === 'pm_free') {
+        this.$router.push('/vault')
+      }
+    }
+  },
   mounted () {
-    // this.checkBreach()
+    if (this.currentPlan.alias === 'pm_free') {
+      this.$router.push('/vault')
+    }
   },
   methods: {
     async checkBreaches () {

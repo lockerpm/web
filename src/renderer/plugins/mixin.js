@@ -26,6 +26,9 @@ Vue.mixin({
     teams () { return this.$store.state.teams || [] },
     currentOrg () {
       return find(this.teams, team => team.id === this.$route.params.teamId) || {}
+    },
+    currentPlan () {
+      return this.$store.state.currentPlan
     }
   },
   mounted () {

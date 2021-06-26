@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col flex-column-fluid relative">
+  <div class="flex flex-col flex-column-fluid relative bg-[#FBFBFC]">
     <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <div class="mb-5">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -11,45 +11,55 @@
         </el-breadcrumb>
       </div>
       <div class="setting-wrapper">
-        <div class="setting-section">
-          <div class="setting-section-header">
-            <div class="flex items-center">
-              <img src="~/assets/images/icons/icon_tools_pw_generator.svg" alt="" class="mr-3">
-              <div>
-                <div class="setting-title">
-                  {{ $t('data.tools.password_generator') }}
-                </div>
-                <div class="setting-description">
-                  {{ $t('data.tools.password_generator_desc') }}
+        <el-popover
+          placement="top-end"
+          width="280"
+          trigger="click"
+          popper-class="locker-pw-generator !top-[130px]"
+        >
+          <PasswordGenerator />
+          <div
+            slot="reference"
+            class="setting-section setting-section--hover !border-b"
+          >
+            <div class="setting-section-header">
+              <div class="flex items-center">
+                <img src="~/assets/images/icons/icon_tools_pw_generator.svg" alt="" class="mr-3">
+                <div>
+                  <div class="setting-title">
+                    {{ $t('data.tools.password_generator') }}
+                  </div>
+                  <div class="setting-description">
+                    {{ $t('data.tools.password_generator_desc') }}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div>
-              <el-popover
-                placement="bottom-end"
-                width="280"
-                trigger="click"
-                popper-class="locker-pw-generator"
-              >
-                <PasswordGenerator />
-                <button slot="reference"
-                        class="btn btn-icon !text-black-600"
+              <div>
+                <button
+                  class="btn btn-icon !text-black-600"
                 >
                   <i class="fa fa-chevron-right" />
                 </button>
-              </el-popover>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="setting-section">
+        </el-popover>
+
+        <div
+          class="setting-section setting-section--hover"
+          @click="currentPlan.alias === 'pm_free' ? () => {} : go('tools-password-health')"
+        >
           <div class="setting-section-header">
             <div class="flex items-center">
               <img src="~/assets/images/icons/icon_tools_pw_health.svg" alt="" class="mr-3">
               <div>
-                <div class="setting-title cursor-pointer"
-                     @click="go({name: 'tools-password-health'})"
+                <div
+                  class="setting-title cursor-pointer"
                 >
                   {{ $t('data.tools.password_health') }}
+                  <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
+                    Premium
+                  </div>
                 </div>
                 <div class="setting-description">
                   {{ $t('data.tools.password_health_desc') }}
@@ -57,23 +67,30 @@
               </div>
             </div>
             <div>
-              <button class="btn btn-icon !text-black-600"
-                      @click="go({name: 'tools-password-health'})"
+              <button
+                class="btn btn-icon !text-black-600"
+                @click="go({name: 'tools-password-health'})"
               >
                 <i class="fa fa-chevron-right" />
               </button>
             </div>
           </div>
         </div>
-        <div class="setting-section">
+        <div
+          class="setting-section setting-section--hover"
+          @click="currentPlan.alias === 'pm_free' ? () => {} : go('tools-breach')"
+        >
           <div class="setting-section-header">
             <div class="flex items-center">
               <img src="~/assets/images/icons/icon_tools_pw_breach.svg" alt="" class="mr-3">
               <div>
-                <div class="setting-title cursor-pointer"
-                     @click="go('tools-breach')"
+                <div
+                  class="setting-title cursor-pointer"
                 >
                   {{ $t('data.tools.data_breach') }}
+                  <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
+                    Premium
+                  </div>
                 </div>
                 <div class="setting-description">
                   {{ $t('data.tools.data_breach_desc') }}
@@ -81,8 +98,9 @@
               </div>
             </div>
             <div>
-              <button class="btn btn-icon !text-black-600"
-                      @click="go('tools-breach')"
+              <button
+                class="btn btn-icon !text-black-600"
+                @click="currentPlan.alias === 'pm_free' ? () => {} : go('tools-breach')"
               >
                 <i class="fa fa-chevron-right" />
               </button>
@@ -103,6 +121,9 @@ export default {
     }
   },
   computed: {
+    currentPlan () {
+      return this.$store.state.currentPlan
+    }
   },
   methods: {
     go (route) {

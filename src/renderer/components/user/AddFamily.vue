@@ -13,23 +13,26 @@
       </div>
     </div>
     <div class="text-left">
-      <InputText v-model="user.username"
-                 label="Username/Email"
-                 class="w-full !mb-0"
-                 :error-text="errors.username && errors.username[0]"
+      <InputText
+        v-model="user.username"
+        label="Username/Email"
+        class="w-full !mb-0"
+        :error-text="errors.username && errors.username[0]"
       />
     </div>
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow" />
       <div>
-        <button class="btn btn-default"
-                @click="dialogVisible = false"
+        <button
+          class="btn btn-default"
+          @click="dialogVisible = false"
         >
           {{ $t('common.cancel') }}
         </button>
-        <button class="btn btn-primary"
-                :disabled="loading"
-                @click="user.id ? putUser(user) : postUser(user)"
+        <button
+          class="btn btn-primary"
+          :disabled="loading"
+          @click="user.id ? putUser(user) : postUser(user)"
         >
           {{ user.id ? $t('common.update') : $t('common.add') }}
         </button>

@@ -24,9 +24,13 @@
         <div class="form-group col-span-2">
           <ValidationProvider v-slot="{ errors }" rules="required|alpha_spaces|max:100" :name="$t('common.cardholder')">
             <label class="">* {{ $t('common.cardholder') }}</label>
-            <input v-model="user.name" type="text"
-                   :class="errors.length?'is-invalid':''"
-                   class="form-control form-control-sm " :placeholder="$t('common.cardholder_placeholder')" name="cardholder"
+            <input
+              v-model="user.name"
+              type="text"
+              :class="errors.length?'is-invalid':''"
+              class="form-control form-control-sm "
+              :placeholder="$t('common.cardholder_placeholder')"
+              name="cardholder"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
@@ -77,9 +81,12 @@
         <div class="form-group col-12">
           <ValidationProvider v-slot="{ errors }" rules="required|alpha_spaces|max:100" :name="$t('common.name')">
             <label>* {{ $t('common.name') }}</label>
-            <input v-model="user.metadata.contact_name" name="name"
-                   :class="errors.length?'is-invalid':''"
-                   type="text" class="form-control form-control-sm"
+            <input
+              v-model="user.metadata.contact_name"
+              name="name"
+              :class="errors.length?'is-invalid':''"
+              type="text"
+              class="form-control form-control-sm"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
@@ -87,10 +94,12 @@
         <div class="form-group col-12">
           <ValidationProvider v-slot="{ errors }" rules="email|required|max:100" :name="$t('common.email')">
             <label>* {{ $t('common.email') }}</label>
-            <input v-model="user.metadata.email"
-                   :class="errors.length?'is-invalid':''"
-                   name="email" type="text"
-                   class="form-control form-control-sm"
+            <input
+              v-model="user.metadata.email"
+              :class="errors.length?'is-invalid':''"
+              name="email"
+              type="text"
+              class="form-control form-control-sm"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
             <span class="form-text text-muted">{{ $t('data.billing.email_hint') }}</span>
@@ -99,9 +108,12 @@
         <div class="form-group col-12">
           <ValidationProvider v-slot="{ errors }" rules="max:100" :name="$t('common.company')">
             <label>{{ $t('common.company') }}</label>
-            <input v-model="user.metadata.company" name="company"
-                   :class="errors.length?'is-invalid':''"
-                   type="text" class="form-control form-control-sm"
+            <input
+              v-model="user.metadata.company"
+              name="company"
+              :class="errors.length?'is-invalid':''"
+              type="text"
+              class="form-control form-control-sm"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
@@ -117,10 +129,13 @@
         <div class="form-group col-span-2">
           <ValidationProvider v-slot="{ errors }" rules="required|max:250" :name="$t('common.address')">
             <label>* {{ $t('common.address') }}</label>
-            <input v-model="user.address" name="address"
-                   :class="errors.length?'is-invalid':''"
-                   type="text" class="form-control form-control-sm"
-                   :placeholder="$t('common.address_placeholder')"
+            <input
+              v-model="user.address"
+              name="address"
+              :class="errors.length?'is-invalid':''"
+              type="text"
+              class="form-control form-control-sm"
+              :placeholder="$t('common.address_placeholder')"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
@@ -128,9 +143,12 @@
         <div class="form-group">
           <ValidationProvider v-slot="{ errors }" rules="required|max:100" :name="$t('common.city')">
             <label>* {{ $t('common.city') }}</label>
-            <input v-model="user.address_city" name="city"
-                   :class="errors.length?'is-invalid':''"
-                   type="text" class="form-control form-control-sm"
+            <input
+              v-model="user.address_city"
+              name="city"
+              :class="errors.length?'is-invalid':''"
+              type="text"
+              class="form-control form-control-sm"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
@@ -138,22 +156,31 @@
         <div class="form-group">
           <ValidationProvider v-slot="{ errors }" rules="max:100" :name="$t('common.state')">
             <label>{{ $t('common.state') }}</label>
-            <input v-model="user.address_state" type="text"
-                   :class="errors.length?'is-invalid':''"
-                   class="form-control form-control-sm" name="state"
+            <input
+              v-model="user.address_state"
+              type="text"
+              :class="errors.length?'is-invalid':''"
+              class="form-control form-control-sm"
+              name="state"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
         </div>
         <div class="form-group">
-          <ValidationProvider v-slot="{ errors }" rules="required"
-                              :name="$t('common.country')"
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required"
+            :name="$t('common.country')"
           >
             <label>* {{ $t('common.country') }}</label>
-            <el-select v-model="user.address_country" placeholder="" filterable
-                       class="w-full" size="small"
-                       :class="errors.length?'is-invalid':''"
-                       auto-complete="off"
+            <el-select
+              v-model="user.address_country"
+              placeholder=""
+              filterable
+              class="w-full"
+              size="small"
+              :class="errors.length?'is-invalid':''"
+              auto-complete="off"
             >
               <el-option
                 v-for="country in countries"
@@ -173,9 +200,12 @@
         <div class="form-group">
           <ValidationProvider v-slot="{ errors }" rules="numeric|max:10" :name="$t('common.state')">
             <label>{{ $t('common.zip') }}</label>
-            <input v-model="user.address_zip" type="text"
-                   :class="errors.length?'is-invalid':''"
-                   class="form-control form-control-sm " name="zip"
+            <input
+              v-model="user.address_zip"
+              type="text"
+              :class="errors.length?'is-invalid':''"
+              class="form-control form-control-sm "
+              name="zip"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
@@ -184,15 +214,17 @@
     </ValidationObserver>
     <div class="credit-drawer-footer">
       <div class="grid grid-cols-2 gap-x-4">
-        <button class="btn btn-default btn-block w-full"
-                :disabled="loading"
-                @click="cancel"
+        <button
+          class="btn btn-default btn-block w-full"
+          :disabled="loading"
+          @click="cancel"
         >
           {{ $t('common.cancel') }}
         </button>
-        <button class="btn btn-primary btn-block w-full"
-                :disabled="loading"
-                @click="save"
+        <button
+          class="btn btn-primary btn-block w-full"
+          :disabled="loading"
+          @click="save"
         >
           {{ $t('common.save') }}
         </button>

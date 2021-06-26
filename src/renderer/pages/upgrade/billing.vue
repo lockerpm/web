@@ -11,69 +11,95 @@
               {{ getPlanName(currentPlan.name).tag }}
             </div>
           </div>
-          <div class="flex items-center">
+          <div class="flex">
             <span v-if="currentPlan.price" class="text-head-1 font-semibold mr-2">
-              <span v-if="language==='vi'">đ{{ currentPlan.price.vnd }}</span>
-              <span v-if="language==='en'">${{ currentPlan.price.usd }}</span>
+              <span v-if="language==='vi'">đ{{ currentPlan.price.vnd | formatNumber }}</span>
+              <span v-if="language==='en'">${{ currentPlan.price.usd | formatNumber }}</span>
             </span>
             <span class="text-black-600">/ mo</span>
-            <span v-if="currentPlan.max_number" class="ml-2 text-black-600">/ {{ currentPlan.max_number }} members </span>
-            <span v-else-if="currentPlan.alias === 'pm_business_premium'" class="ml-2 text-black-600">/ 1 member </span>
+            <span
+              v-if="currentPlan.max_number && currentPlan.max_number > 1"
+              class="ml-2 text-black-600"
+            >/ {{ currentPlan.max_number }} members </span>
+            <span
+              v-else-if="currentPlan.alias === 'pm_business_premium'"
+              class="ml-2 text-black-600"
+            >/ 1 member </span>
           </div>
         </div>
-        <div class="flex">
+        <div v-if="plans" class="flex">
           <div class="flex-grow" />
-          <div>
-            <button class="btn btn-default">Cancel Subscription</button>
-          </div>
+          <div />
         </div>
       </div>
       <div class="col-span-2 p-6 rounded border border-black-200">
-        <div class="text-black-600 mb-1.5">Next payment</div>
-        <div class="font-semibold mb-4">{{ $moment(currentPlan.next_billing_time * 1000).format('LLL') }}</div>
-        <button class="btn btn-default">Manage Payments</button>
+        <div class="text-black-600 mb-1.5">
+          {{ currentPlan.cancel_at_period_end ? $t('data.billing.cancel_at_period_end') : $t('data.billing.next_billing') }}
+        </div>
+        <div class="font-semibold">
+          {{ currentPlan.next_billing_time ? $moment(currentPlan.next_billing_time * 1000).format('LLL') : 'N/A' }}
+        </div>
+        <button
+          v-if="currentPlan.next_billing_time && !currentPlan.cancel_at_period_end"
+          class="btn btn-default mt-4"
+          @click="cancelSub"
+        >
+          {{ $t('data.billing.cancel_subscription') }}
+        </button>
       </div>
     </div>
-    <div class="text-head-5 font-semibold mb-4">Invoice</div>
+    <div class="text-head-5 font-semibold mb-4">
+      {{ $t('data.billing.invoices') }}
+    </div>
     <div>
       <el-table
         :data="invoices.results"
         style="width: 100%"
       >
         <el-table-column
-          label="Transaction ID"
+          label="ID"
         >
           <template slot-scope="scope">
             {{ scope.row.payment_id }}
           </template>
         </el-table-column>
         <el-table-column
-          label="Date"
+          :label="$t('common.created_date')"
         >
           <template slot-scope="scope">
             {{ $moment(scope.row.created_time*1000).format('LLL') }}
           </template>
         </el-table-column>
         <el-table-column
-          label="Plan"
+          :label="$t('common.plan')"
         >
           <template slot-scope="scope">
-            {{ getPlayByAlias(plans, scope.row.plan).name }}
+            {{ getPlanByAlias(plans, scope.row.plan).name }}
           </template>
         </el-table-column>
         <el-table-column
-          label="Duration"
+          label=""
         >
           <template slot-scope="scope">
-            {{ scope.row.duration }}
+            {{ $t(`common.${scope.row.duration}`) }}
           </template>
         </el-table-column>
         <el-table-column
-          prop="date"
-          label="Amount"
+          prop="total_price"
+          label=""
+          align="right"
         >
           <template slot-scope="scope">
             {{ scope.row.total_price | formatNumber }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="status"
+          label=""
+          align="right"
+        >
+          <template slot-scope="scope">
+            {{ $t(`data.billing.${scope.row.status}`) }}
           </template>
         </el-table-column>
       </el-table>
@@ -155,9 +181,25 @@ export default {
     async getPlans () {
       this.plans = await this.$axios.$get('resources/cystack_platform/pm/plans')
     },
-    getPlayByAlias (plans, alias) {
-      console.log(plans, alias)
+    getPlanByAlias (plans, alias) {
       return find(plans, e => e.alias === alias) || {}
+    },
+    cancelSub () {
+      this.$confirm(this.$t('data.billing.confirm_unsubscribe', { date: this.$moment(this.currentPlan.next_billing_time * 1000).format('LL') }), this.$t('data.billing.cancel_subscription'), {
+        confirmButtonText: 'OK',
+        cancelButtonText: this.$t('common.cancel'),
+        type: 'warning'
+      }).then(() => {
+        this.$axios.$post('cystack_platform/pm/payments/plan/cancel')
+          .then(res => {
+            this.notify(this.$t('data.billing.unsubscribe_success', { date: this.$moment(this.currentPlan.next_billing_time * 1000).format('LL') }), 'success')
+            this.$store.dispatch('LoadCurrentPlan')
+          })
+          .catch(() => {
+            this.notify(this.$t('data.billing.subscribe_failed'), 'warning')
+          })
+      }).catch(() => {
+      })
     }
   }
 }

@@ -13,20 +13,23 @@
       </div>
     </div>
     <div class="text-left">
-      <InputText v-model="group.name"
-                 :label="$t('common.group_name')"
-                 class="w-full"
-                 :error-text="errors.name && errors.name[0]"
+      <InputText
+        v-model="group.name"
+        :label="$t('common.group_name')"
+        class="w-full"
+        :error-text="errors.name && errors.name[0]"
       />
       <div class="form-group">
         <el-radio-group v-model="group.access_all" @change="() => !group.id ? group.collections = [] : null">
-          <el-radio :label="true"
-                    class="!flex items-start !break-words !whitespace-normal !mb-4"
+          <el-radio
+            :label="true"
+            class="!flex items-start !break-words !whitespace-normal !mb-4"
           >
             <div>{{ $t('data.groups.access_all') }}</div>
           </el-radio>
-          <el-radio :label="false"
-                    class="!flex items-start !break-words !whitespace-normal !mb-4"
+          <el-radio
+            :label="false"
+            class="!flex items-start !break-words !whitespace-normal !mb-4"
           >
             <div>{{ $t('data.groups.access_selected') }}</div>
           </el-radio>
@@ -47,14 +50,16 @@
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow" />
       <div>
-        <button class="btn btn-default"
-                @click="dialogVisible = false"
+        <button
+          class="btn btn-default"
+          @click="dialogVisible = false"
         >
           {{ $t('common.cancel') }}
         </button>
-        <button class="btn btn-primary"
-                :disabled="loading"
-                @click="group.id ? putGroup(group) : postGroup(group)"
+        <button
+          class="btn btn-primary"
+          :disabled="loading"
+          @click="group.id ? putGroup(group) : postGroup(group)"
         >
           {{ group.id ? $t('common.update') : $t('common.add') }}
         </button>

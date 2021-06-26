@@ -17,8 +17,9 @@
         <div class="setting-section-body">
           <div class="form-group">
             <label for="">{{ $t('data.importFile.select_file') }}</label>
-            <el-select v-model="format"
-                       filterable
+            <el-select
+              v-model="format"
+              filterable
             >
               <el-option-group
                 label="Popular"
@@ -47,24 +48,29 @@
                 />
               </el-option-group>
             </el-select>
-            <Instructions :format="format"
-                          :title="getFormatInstructionTitle"
-                          class="mt-5"
+            <Instructions
+              :format="format"
+              :title="getFormatInstructionTitle"
+              class="mt-5"
             />
           </div>
           <div class="form-group">
             <label for="">{{ $t('data.importFile.select_format') }}</label>
-            <input type="file" class="form-control-file form-input mb-4"
-                   name="file" @change="handleFile"
+            <input
+              type="file"
+              class="form-control-file form-input mb-4"
+              name="file"
+              @change="handleFile"
             >
 
             <label>{{ $t('data.importFile.or_copy') }}</label>
             <el-input type="textarea" :rows="5" />
           </div>
           <div class="form-group">
-            <button class="btn btn-primary"
-                    :disabled="disabledExport"
-                    @click="importData"
+            <button
+              class="btn btn-primary"
+              :disabled="disabledExport"
+              @click="importData"
             >
               {{ $t('data.importFile.import') }}
             </button>
@@ -91,11 +97,14 @@
         <div class="setting-section-body">
           <div class="grid md:grid-cols-2 gap-4">
             <div v-for="(item, index) in exportFormats" :key="index">
-              <div class="rounded bg-black-300 flex items-center px-4 py-1.5 cursor-pointer"
-                   @click="selectTypeExport(item)"
+              <div
+                class="rounded bg-black-300 flex items-center px-4 py-1.5 cursor-pointer"
+                @click="selectTypeExport(item)"
               >
-                <img :size="30" :src="require(`~/assets/images/icons/files/${item}.svg`)"
-                     class="w-[40px] h-[40px] mr-3"
+                <img
+                  :size="30"
+                  :src="require(`~/assets/images/icons/files/${item}.svg`)"
+                  class="w-[40px] h-[40px] mr-3"
                 >
                 <div class="flex-grow uppercase">{{ item }}</div>
                 <i class="fa fa-chevron-right text-black-600" />

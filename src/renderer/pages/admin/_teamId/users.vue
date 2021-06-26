@@ -25,12 +25,13 @@
             align="right"
           >
             <template slot-scope="scope">
-              <span class="label capitalize"
-                    :class="{'label-primary-light': scope.row.status === 'confirmed',
-                             'label-success-light': scope.row.status === 'accepted',
-                             'label-warning-light': scope.row.status === 'invited',
-                             'label-danger-light': scope.row.status === 'expired'
-                    }"
+              <span
+                class="label capitalize"
+                :class="{'label-primary-light': scope.row.status === 'confirmed',
+                         'label-success-light': scope.row.status === 'accepted',
+                         'label-warning-light': scope.row.status === 'invited',
+                         'label-danger-light': scope.row.status === 'expired'
+                }"
               >
                 {{ scope.row.status }}
               </span>
@@ -58,7 +59,8 @@
             <template slot-scope="scope">
               <el-dropdown
                 v-if="scope.row.role !=='owner' && scope.row.username !== currentUser.username"
-                trigger="click" :hide-on-click="false"
+                trigger="click"
+                :hide-on-click="false"
               >
                 <button class="btn btn-icon btn-xs hover:bg-black-400">
                   <i class="fas fa-ellipsis-h" />
@@ -97,8 +99,9 @@
     <AddEditUser ref="addEditUser" @done="getUsers" />
     <AddEditUserGroups ref="addEditUserGroups" @done="getUsers" />
     <div class="fixed bottom-[50px] right-[55px]">
-      <button class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
-              @click="postUser({})"
+      <button
+        class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
+        @click="postUser({})"
       >
         <i class="fas fa-plus text-[24px]" />
       </button>
@@ -126,14 +129,16 @@
       <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow" />
         <div>
-          <button class="btn btn-default"
-                  @click="dialogConfirmVisible = false"
+          <button
+            class="btn btn-default"
+            @click="dialogConfirmVisible = false"
           >
             {{ $t('common.cancel') }}
           </button>
-          <button class="btn btn-primary"
-                  :disabled="loadingConfirm"
-                  @click="confirmUser(selectedUser)"
+          <button
+            class="btn btn-primary"
+            :disabled="loadingConfirm"
+            @click="confirmUser(selectedUser)"
           >
             {{ $t('common.confirm') }}
           </button>

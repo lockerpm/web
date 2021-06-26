@@ -1,7 +1,9 @@
 <template>
   <div class="flex flex-col flex-column-fluid relative">
-    <NoCipher v-if="shouldRenderNoCipher" :type="type"
-              @add-cipher="handleAddButton"
+    <NoCipher
+      v-if="shouldRenderNoCipher"
+      :type="type"
+      @add-cipher="handleAddButton"
     />
     <div v-else class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <div class="flex items-center justify-between mb-5">
@@ -83,35 +85,41 @@
           </el-dropdown>
         </div>
       </div>
-      <div v-if="getRouteBaseName() === 'vault' && folders"
-           class="mb-10"
+      <div
+        v-if="getRouteBaseName() === 'vault' && folders"
+        class="mb-10"
       >
         <client-only>
           <div class="grid grid-cols-4 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
-            <div v-for="item in folders"
-                 :key="item.id"
-                 class="px-4 py-6 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                 :class="{'border-primary': selectedFolder.id === item.id}"
-                 :title="item.name"
-                 @click="selectedFolder = item"
-                 @dblclick="routerFolder(item)"
-                 @contextmenu.prevent="$refs.menu.open($event, item)"
+            <div
+              v-for="item in folders"
+              :key="item.id"
+              class="px-4 py-6 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+              :class="{'border-primary': selectedFolder.id === item.id}"
+              :title="item.name"
+              @click="selectedFolder = item"
+              @dblclick="routerFolder(item)"
+              @contextmenu.prevent="$refs.menu.open($event, item)"
             >
               <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
               <div class="font-semibold break-all select-none">{{ item.name }} ({{ item.ciphersCount }})</div>
             </div>
-            <component :is="context" ref="menu"
-                       class="el-dropdown-menu"
-                       @open="openContextFolder"
+            <component
+              :is="context"
+              ref="menu"
+              class="el-dropdown-menu"
+              @open="openContextFolder"
             >
               <template #default>
-                <li class="el-dropdown-menu__item w-[200px]"
-                    @click.prevent="addEditFolder(selectedFolder, false)"
+                <li
+                  class="el-dropdown-menu__item w-[200px]"
+                  @click.prevent="addEditFolder(selectedFolder, false)"
                 >
                   {{ $t('common.rename') }}
                 </li>
-                <li class="el-dropdown-menu__item"
-                    @click.prevent="deleteFolder(selectedFolder)"
+                <li
+                  class="el-dropdown-menu__item"
+                  @click.prevent="deleteFolder(selectedFolder)"
                 >
                   <span class="text-danger">{{ $t('common.delete') }}</span>
                 </li>
@@ -120,8 +128,9 @@
           </div>
         </client-only>
       </div>
-      <div v-if="getRouteBaseName() === 'vault' && collections"
-           class="mb-10"
+      <div
+        v-if="getRouteBaseName() === 'vault' && collections"
+        class="mb-10"
       >
         <client-only>
           <template v-for="(value, key) in filteredCollection">
@@ -129,24 +138,26 @@
               {{ getTeam(teams, key).name }}
             </div>
             <div :key="key" class="grid grid-cols-4 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
-              <div v-for="item in value"
-                   :key="item.id"
-                   class="px-4 py-6 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                   :class="{'border-primary': selectedFolder.id === item.id}"
-                   :title="`${item.name} (${item.ciphersCount})`"
-                   @click="selectedFolder = item"
-                   @dblclick="routerCollection(item)"
-                   @contextmenu.prevent="canManageItem(teams, item) ? $refs.menuTeam.open($event, item) : null"
+              <div
+                v-for="item in value"
+                :key="item.id"
+                class="px-4 py-6 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+                :class="{'border-primary': selectedFolder.id === item.id}"
+                :title="`${item.name} (${item.ciphersCount})`"
+                @click="selectedFolder = item"
+                @dblclick="routerCollection(item)"
+                @contextmenu.prevent="canManageItem(teams, item) ? $refs.menuTeam.open($event, item) : null"
               >
                 <div class="flex items-center">
                   <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
                   <div class="font-semibold truncate select-none">{{ item.name }} ({{ item.ciphersCount }})</div>
                 </div>
               </div>
-              <div class="px-4 py-6 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                   :class="{'border-primary': selectedFolder.id === 'unassigned'}"
-                   @click="selectedFolder = {id: 'unassigned'}"
-                   @dblclick="routerCollection({id: 'unassigned', organizationId: key})"
+              <div
+                class="px-4 py-6 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+                :class="{'border-primary': selectedFolder.id === 'unassigned'}"
+                @click="selectedFolder = {id: 'unassigned'}"
+                @dblclick="routerCollection({id: 'unassigned', organizationId: key})"
               >
                 <div class="flex items-center">
                   <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
@@ -155,30 +166,36 @@
               </div>
             </div>
           </template>
-          <component :is="context" ref="menuTeam"
-                     class="el-dropdown-menu"
-                     @open="openContextTeamFolder"
+          <component
+            :is="context"
+            ref="menuTeam"
+            class="el-dropdown-menu"
+            @open="openContextTeamFolder"
           >
             <template #default>
-              <li class="el-dropdown-menu__item w-[200px]"
-                  @click.prevent="addEditTeamFolder(selectedFolder, false)"
+              <li
+                class="el-dropdown-menu__item w-[200px]"
+                @click.prevent="addEditTeamFolder(selectedFolder, false)"
               >
                 {{ $t('common.rename') }}
               </li>
-              <li v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
-                  class="el-dropdown-menu__item w-[200px]"
-                  @click.prevent="putTeamFolderUsers(selectedFolder)"
+              <li
+                v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
+                class="el-dropdown-menu__item w-[200px]"
+                @click.prevent="putTeamFolderUsers(selectedFolder)"
               >
                 {{ $t('data.groups.user_access') }}
               </li>
-              <li v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
-                  class="el-dropdown-menu__item w-[200px]"
-                  @click.prevent="putTeamFolderGroups(selectedFolder)"
+              <li
+                v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
+                class="el-dropdown-menu__item w-[200px]"
+                @click.prevent="putTeamFolderGroups(selectedFolder)"
               >
                 {{ $t('data.folders.user_access') }}
               </li>
-              <li class="el-dropdown-menu__item"
-                  @click.prevent="deleteTeamFolder(selectedFolder)"
+              <li
+                class="el-dropdown-menu__item"
+                @click.prevent="deleteTeamFolder(selectedFolder)"
               >
                 <span class="text-danger">{{ $t('common.delete') }}</span>
               </li>
@@ -187,8 +204,9 @@
         </client-only>
       </div>
       <client-only>
-        <div v-if="getRouteBaseName() === 'vault'"
-             class="mb font-medium"
+        <div
+          v-if="getRouteBaseName() === 'vault'"
+          class="mb font-medium"
         >
           {{ $t('data.ciphers.all_items') }}
         </div>
@@ -214,25 +232,29 @@
                   {{ multipleSelection.length }} {{ $t('data.ciphers.selected_items') }}
                 </div>
                 <div v-if="deleted">
-                  <button class="btn btn-default btn-xs"
-                          @click="restoreCiphers(multipleSelection.map(e => e.id))"
+                  <button
+                    class="btn btn-default btn-xs"
+                    @click="restoreCiphers(multipleSelection.map(e => e.id))"
                   >
                     {{ $t('common.restore') }}
                   </button>
-                  <button class="btn btn-default btn-xs !text-danger"
-                          @click="deleteCiphers(multipleSelection.map(e => e.id))"
+                  <button
+                    class="btn btn-default btn-xs !text-danger"
+                    @click="deleteCiphers(multipleSelection.map(e => e.id))"
                   >
                     {{ $t('common.permanently_delete') }}
                   </button>
                 </div>
                 <div v-else class="">
-                  <button class="btn btn-default btn-xs"
-                          @click="moveFolders(multipleSelection.map(e => e.id))"
+                  <button
+                    class="btn btn-default btn-xs"
+                    @click="moveFolders(multipleSelection.map(e => e.id))"
                   >
                     {{ $t('common.move_folder') }}
                   </button>
-                  <button class="btn btn-default btn-xs !text-danger"
-                          @click="moveTrashCiphers(multipleSelection.map(e => e.id))"
+                  <button
+                    class="btn btn-default btn-xs !text-danger"
+                    @click="moveTrashCiphers(multipleSelection.map(e => e.id))"
                   >
                     {{ $t('common.delete') }}
                   </button>
@@ -241,15 +263,17 @@
             </template>
             <template slot-scope="scope">
               <div class="flex items-center">
-                <div class="text-[34px] mr-3 flex-shrink-0"
-                     :class="{'filter grayscale': scope.row.isDeleted}"
+                <div
+                  class="text-[34px] mr-3 flex-shrink-0"
+                  :class="{'filter grayscale': scope.row.isDeleted}"
                 >
                   <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
                 </div>
                 <div class="flex flex-col">
-                  <a class="text-black font-semibold truncate flex items-center"
-                     :class="{'opacity-80': scope.row.isDeleted}"
-                     @click="routerCipher(scope.row, addEdit)"
+                  <a
+                    class="text-black font-semibold truncate flex items-center"
+                    :class="{'opacity-80': scope.row.isDeleted}"
+                    @click="routerCipher(scope.row, addEdit)"
                   >
                     {{ scope.row.name }}
                     <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="" class="inline-block ml-2">
@@ -287,9 +311,10 @@
           >
             <template slot-scope="scope">
               <div class="col-actions">
-                <button v-if="scope.row.login.canLaunch"
-                        class="btn btn-icon btn-xs hover:bg-black-400"
-                        @click="openNewTab(scope.row.login.uri)"
+                <button
+                  v-if="scope.row.login.canLaunch"
+                  class="btn btn-icon btn-xs hover:bg-black-400"
+                  @click="openNewTab(scope.row.login.uri)"
                 >
                   <i class="fas fa-external-link-square-alt" />
                 </button>
@@ -340,7 +365,8 @@
                       </el-dropdown-item>
                       <el-dropdown-item
                         v-if="canManageTeamFolder"
-                        divided @click.native="shareItem(scope.row)"
+                        divided
+                        @click.native="shareItem(scope.row)"
                       >
                         {{ $t('common.collections') }}
                       </el-dropdown-item>
@@ -385,32 +411,39 @@
             {{ $t('common.add') }}
           </div>
           <ul class="el-dropdown-menu !static !border-0 !shadow-none">
-            <li v-if="getRouteBaseName() ==='vault'" class="el-dropdown-menu__item font-semibold !text-black"
-                @click="addEditFolder({}, true)"
+            <li
+              v-if="getRouteBaseName() ==='vault'"
+              class="el-dropdown-menu__item font-semibold !text-black"
+              @click="addEditFolder({}, true)"
             >
               {{ $t('data.folders.add_folder') }}
             </li>
-            <li v-if="getRouteBaseName() ==='vault' && canManageTeamFolder"
-                class="el-dropdown-menu__item font-semibold !text-black"
-                @click="addEditTeamFolder({})"
+            <li
+              v-if="getRouteBaseName() ==='vault' && canManageTeamFolder"
+              class="el-dropdown-menu__item font-semibold !text-black"
+              @click="addEditTeamFolder({})"
             >
               {{ $t('data.folders.add_team_folder') }}
             </li>
-            <li class="el-dropdown-menu__item font-semibold !text-black"
-                @click="chooseCipherType"
+            <li
+              class="el-dropdown-menu__item font-semibold !text-black"
+              @click="chooseCipherType"
             >
               {{ $t('data.ciphers.add_item') }}
             </li>
           </ul>
         </div>
-        <button slot="reference"
-                class="btn btn-fab rounded-full flex items-center justify-center btn-primary"
+        <button
+          slot="reference"
+          class="btn btn-fab rounded-full flex items-center justify-center btn-primary"
         >
           <i class="fas fa-plus text-[24px]" />
         </button>
       </el-popover>
-      <button v-else class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
-              @click="handleAddButton"
+      <button
+        v-else
+        class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
+        @click="handleAddButton"
       >
         <i class="fas fa-plus text-[24px]" />
       </button>

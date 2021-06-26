@@ -22,19 +22,21 @@
       <div v-else class="mb-3">
         {{ $t('data.ciphers.choose_a_team') }}
       </div>
-      <InputSelectTeam v-if="!isBelongToTeam && dialogVisible"
-                       :label="$t('common.ownership')"
-                       :options="ownershipOptions"
-                       class="w-full"
-                       @change="handleChangeOrg"
+      <InputSelectTeam
+        v-if="!isBelongToTeam && dialogVisible"
+        :label="$t('common.ownership')"
+        :options="ownershipOptions"
+        class="w-full"
+        @change="handleChangeOrg"
       />
       <div v-if="cipher.organizationId" class="form-group">
         <div class="flex items-center justify-between" />
         <label for="">{{ $t('data.ciphers.folders_team') }}</label>
         <el-checkbox-group v-model="cipher.collectionIds" :min="1">
-          <el-checkbox v-for="(item, index) in writeableCollections"
-                       :key="index"
-                       :label="item.id"
+          <el-checkbox
+            v-for="(item, index) in writeableCollections"
+            :key="index"
+            :label="item.id"
           >
             {{ item.name }}
           </el-checkbox>
@@ -44,14 +46,16 @@
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow" />
       <div>
-        <button class="btn btn-default"
-                @click="dialogVisible = false"
+        <button
+          class="btn btn-default"
+          @click="dialogVisible = false"
         >
           {{ $t('common.cancel') }}
         </button>
-        <button class="btn btn-primary"
-                :disabled="loading || !cipher.collectionIds.length"
-                @click="shareCipher(cipher)"
+        <button
+          class="btn btn-primary"
+          :disabled="loading || !cipher.collectionIds.length"
+          @click="shareCipher(cipher)"
         >
           {{ isBelongToTeam ? $t('common.update') : $t('common.share') }}
         </button>
