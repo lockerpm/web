@@ -10,7 +10,7 @@
           <div
             v-for="(plan, index) in plans"
             :key="index"
-            class="landing-transition px-10 py-14 w-full md:w-[445px] bg-white relative z-10 rounded-xl relative"
+            class="landing-transition px-10 py-14 w-full md:w-[445px] bg-white relative z-10 rounded-xl relative hover:shadow-xl"
           >
             <p
               v-if="index===2"
