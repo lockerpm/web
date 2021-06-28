@@ -1,7 +1,7 @@
 <template>
   <div class="md:pt-[180px] pt-36">
     <h1 class="text-left font-bold text-black landing-font-50 lg:w-[980px]">
-      Locker giúp bạn tận hưởng cuộc sống online an toàn và liền mạch
+      {{ title }}
     </h1>
     <section class="md:mt-[75px] mt-8">
       <div class="w-full flex flex-wrap">
@@ -15,7 +15,7 @@
         <!-- Left -->
         <div class="w-full md:w-1/2 pl-0 md:pl-4 flexalign-middle justify-centerorder-1 ">
           <img
-            :src="hiw1.img"
+            :src="require(`~/assets/images/landing/how-it-works/${hiw1.img}`)"
             alt=""
             style="align-self: center"
           >
@@ -35,7 +35,7 @@
         <!-- Right -->
         <div class="w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
           <img
-            :src="hiw2.img"
+            :src="require(`~/assets/images/landing/how-it-works/${hiw2.img}`)"
             alt=""
             style="align-self: center"
           >
@@ -55,7 +55,7 @@
         <!-- Right -->
         <div class=" w-full md:w-1/2 pl-0 md:pl-4 mt-4 md:mt-0 flex align-middle justify-center order-1">
           <img
-            :src="hiw3.img"
+            :src="require(`~/assets/images/landing/how-it-works/${hiw3.img}`)"
             alt=""
             style="align-self: center"
           >
@@ -84,10 +84,10 @@
             </div>
             <div class="landing-font-18 align-top ml-[30px] mt-9">
               <a
-                href=""
+                :href="hiw4.btn.link"
                 class="hover:no-underline text-green font-semibold"
               >
-                Xem tất cả tính năng <i class="el-icon-right" />
+                {{ hiw4.btn.text }} <i class="el-icon-right" />
               </a>
             </div>
           </div>
@@ -95,7 +95,7 @@
           <!-- Right -->
           <div class=" w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
             <img
-              :src="hiw4.img"
+              :src="require(`~/assets/images/landing/how-it-works/${hiw4.img}`)"
               alt=""
               style="align-self: center"
             >
@@ -112,7 +112,7 @@
               {{ hiw5.title }}
             </h2>
             <img
-              :src="hiw5.img"
+              :src="require(`~/assets/images/landing/how-it-works/${hiw5.img}`)"
               alt=""
               class="mx-auto"
             >
@@ -124,7 +124,7 @@
               class="landing-transition px-[30px] pt-11 bg-white rounded-md hover:shadow-xl"
             >
               <img
-                :src="item.img"
+                :src="require(`~/assets/images/landing/how-it-works/${item.img}`)"
                 :alt="item.title"
                 class="h-[40px] mb-[16px]"
               >
@@ -138,19 +138,19 @@
           </div>
           <div class="w-full landing-font-18 mt-[60px] text-center order-3">
             <a
-              href=""
+              :href="hiw5.btn[0].link"
               class="hover:no-underline text-green font-semibold"
             >
-              Xem thêm cách chúng tôi bảo vệ dữ liệu của bạn
+              {{ hiw5.btn[0].text }}
               <i class="el-icon-right" />
             </a>
           </div>
           <div class="w-full landing-font-18 mt-3 text-center order-4">
             <a
-              href=""
+              :href="hiw5.btn[1].link"
               class="hover:no-underline text-green font-semibold"
             >
-              Các tính năng bảo mật trong ứng dụng <i class="el-icon-right" />
+              {{ hiw5.btn[1].text }} <i class="el-icon-right" />
             </a>
           </div>
         </div>
@@ -163,23 +163,24 @@ export default {
   layout: 'landing',
   data () {
     return {
+      title: 'Locker giúp bạn tận hưởng cuộc sống online an toàn và liền mạch',
       hiw1: {
-        img: require('~/assets/images/landing/how-it-works/save_password.png'),
+        img: 'save_password.png',
         title: 'Lưu mật khẩu khi bạn đăng nhập',
         desc: 'Ngay khi bạn đăng nhập một website lần đầu tiên, Locker sẽ giúp bạn lưu mật khẩu để sử dụng cho lần đăng nhập sau.'
       },
       hiw2: {
-        img: require('~/assets/images/landing/how-it-works/auto_login.png'),
+        img: 'auto_login.png',
         title: 'Tự động đăng nhập chỉ với 1 click',
         desc: 'Locker tự động điền mật khẩu và đăng nhập vào các trang web và ứng dụng yêu thích trên PC, smartphone, tablet.'
       },
       hiw3: {
-        img: require('~/assets/images/landing/how-it-works/access_anytime.png'),
+        img: 'access_anytime.png',
         title: 'Truy cập mật khẩu mọi lúc, mọi nơi',
         desc: 'Bạn có thể truy cập mật khẩu của mình mọi lúc, mọi nơi, ngay cả khi đang không có kết nối mạng.'
       },
       hiw4: {
-        img: require('~/assets/images/landing/how-it-works/save_time.png'),
+        img: 'save_time.png',
         title: 'Tiết kiệm thời gian và công sức',
         desc: [
           {
@@ -194,31 +195,45 @@ export default {
             title: 'Điền tờ khai nhanh chóng',
             desc: 'Bạn có thể lưu thông tin cá nhân bao gồm tên, tuổi, địa chỉ, mã ZIP,... để tự động điền vào các mẫu tờ khai trực tuyến chỉ trong 3s.'
           }
-        ]
+        ],
+        btn: {
+          text: 'Xem tất cả tính năng',
+          link: '#'
+        }
       },
       hiw5: {
-        img: require('~/assets/images/landing/how-it-works/boundary.svg'),
+        img: 'boundary.svg',
         title: 'Dữ liệu của bạn được bảo vệ an toàn và bí mật',
         desc: [
           {
-            img: require('~/assets/images/landing/how-it-works/master_password.svg'),
+            img: 'master_password.svg',
             title: 'Master password',
             desc: 'Mật khẩu chính là mật khẩu duy nhất bạn cần nhớ để truy cập vào mọi dữ liệu khác trong Locker.'
           },
           {
-            img: require('~/assets/images/landing/how-it-works/zero_knowledge.svg'),
+            img: 'zero_knowledge.svg',
             title: 'Zero-knowledge',
             desc: 'Không ai có thể xem được dữ liệu của bạn, kể cả đội ngũ nhân viên Locker. Bạn là người duy nhất có thể truy cập vào dữ liệu Locker của riêng bạn.'
           },
           {
-            img: require('~/assets/images/landing/how-it-works/protect.svg'),
+            img: 'protect.svg',
             title: 'Bảo vệ trước tin tặc',
             desc: 'Ứng dụng được kiểm tra bảo mật định kì bởi các kĩ sư bảo mật có trình độ cao.'
           },
           {
-            img: require('~/assets/images/landing/how-it-works/encryption.svg'),
+            img: 'encryption.svg',
             title: 'Mã hóa đầu cuối',
             desc: 'Tất cả dữ liệu được mã hóa đầu cuối khi truyền tải giữa các ứng dụng khách.'
+          }
+        ],
+        btn: [
+          {
+            text: 'Xem thêm cách chúng tôi bảo vệ dữ liệu của bạn',
+            link: '#'
+          },
+          {
+            text: 'Các tính năng bảo mật trong ứng dụng',
+            link: '#'
           }
         ]
       }
