@@ -1,7 +1,7 @@
 <template>
   <nav
     id="header"
-    class="fixed w-full z-30 transition duration-300 ease-in-out bg-white"
+    class="fixed w-full z-30 transition duration-300 ease-in-out bg-transparent"
   >
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-[14px] px-6">
       <!-- Logo -->
@@ -41,9 +41,9 @@
         >
           Đăng ký
         </a>
-        <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">
-          vault
-        </nuxt-link>
+<!--        <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">-->
+<!--          vault-->
+<!--        </nuxt-link>-->
       </div>
       <!-- Right actions end -->
 
@@ -104,11 +104,11 @@ export default {
         },
         {
           name: 'Bảng giá',
-          link: '#'
+          link: 'plan'
         },
         {
           name: 'Tải về',
-          link: '#'
+          link: 'download'
         },
         {
           name: 'Doanh nghiệp',
@@ -128,11 +128,14 @@ export default {
     const header = document.getElementById('header')
     document.addEventListener('scroll', function () {
       const scrollPos = window.scrollY
-
       if (scrollPos > 10) {
         header.classList.add('shadow-lg')
+        header.classList.remove('bg-transparent')
+        header.classList.add('bg-white')
       } else {
         header.classList.remove('shadow-lg')
+        header.classList.add('bg-transparent')
+        header.classList.remove('bg-white')
       }
     })
 
@@ -175,7 +178,7 @@ export default {
 
 <style>
 .nav-item {
-  @apply hover:no-underline hover:font-semibold hover:text-green;
+  @apply hover:no-underline hover:text-green;
   font-size: 14px;
 }
 </style>

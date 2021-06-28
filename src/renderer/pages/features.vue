@@ -1,106 +1,103 @@
 <template>
-  <div>
-    <section class="pt-[180px]">
-      <h1 class="text-left font-bold text-black feature-font-50">
-        Khám phá các tính năng của Locker
-        <br>
-        Password Manager
-      </h1>
-      <div class="mt-16">
-        <h2 class="text-left font-bold text-black feature-font-38 "> Quản lý mật khẩu </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
-          <div
-            v-for="(item, index) in feature1"
-            :key="index"
-            class="flex flex-col items-start"
-          >
-            <img :src="item.img">
-            <div>
-              <p class="text-black font-bold feature-font-22 mt-[16px]">{{ item.title }}</p>
-              <p class="text-black feature-font-14 mt-[13px]">{{ item.desc }}</p>
-            </div>
+  <div class="md:pt-[180px] pt-36">
+    <h1 class="text-left font-bold text-black landing-font-50 max-w-[890px]">
+      Khám phá các tính năng của Locker
+      Password Manager
+    </h1>
+    <section class="md:mt-16 mt-12">
+      <h2 class="text-left font-bold text-black landing-font-38 "> Quản lý mật khẩu </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
+        <div
+          v-for="(item, index) in feature1"
+          :key="index"
+          class="flex flex-col items-start"
+        >
+          <img :src="item.img">
+          <div>
+            <p class="text-black font-bold landing-font-22 mt-[16px]">{{ item.title }}</p>
+            <p class="text-black landing-font-14 mt-[13px]">{{ item.desc }}</p>
           </div>
-        </div>
-        <div class="landing-font-18 align-top mt-[45px]">
-          <a
-            href=""
-            class="hover:no-underline text-green font-semibold"
-          >
-            Bắt đầu ngay <i class="el-icon-right" />
-          </a>
         </div>
       </div>
-      <div class="mt-[150px]">
-        <h2 class="text-left font-bold text-black feature-font-38 "> Lưu trữ dữ liệu quan trọng </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
-          <div
-            v-for="(item, index) in feature2"
-            :key="index"
-            class="flex flex-col items-start"
-          >
-            <img :src="item.img">
-            <div>
-              <p class="text-black font-bold feature-font-22 mt-[16px]">{{ item.title }}</p>
-              <p class="text-black feature-font-14 mt-[13px]">{{ item.desc }}</p>
-            </div>
+      <div class="landing-font-18 align-top mt-[45px]">
+        <a
+          href=""
+          class="hover:no-underline text-green font-semibold"
+        >
+          Bắt đầu ngay <i class="el-icon-right" />
+        </a>
+      </div>
+    </section>
+    <section class="md:mt-[150px] mt-16">
+      <h2 class="text-left font-bold text-black landing-font-38 "> Lưu trữ dữ liệu quan trọng </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
+        <div
+          v-for="(item, index) in feature2"
+          :key="index"
+          class="flex flex-col items-start"
+        >
+          <img :src="item.img">
+          <div>
+            <p class="text-black font-bold landing-font-22 mt-[16px]">{{ item.title }}</p>
+            <p class="text-black landing-font-14 mt-[13px]">{{ item.desc }}</p>
           </div>
-        </div>
-        <div class="landing-font-18 align-top mt-[45px]">
-          <a
-            href=""
-            class="hover:no-underline text-green font-semibold"
-          >
-            Bắt đầu ngay <i class="el-icon-right" />
-          </a>
         </div>
       </div>
-      <div class="mt-[150px]">
-        <h2 class="text-left font-bold text-black feature-font-38 "> Tính năng bảo mật </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
-          <div
-            v-for="(item, index) in feature3"
-            :key="index"
-            class="flex flex-col items-start"
-          >
-            <img :src="item.img">
-            <div>
-              <p class="text-black font-bold feature-font-22 mt-[16px]">{{ item.title }}</p>
-              <p class="text-black feature-font-14 mt-[13px]">{{ item.desc }}</p>
-            </div>
+      <div class="landing-font-18 align-top mt-[45px]">
+        <a
+          href=""
+          class="hover:no-underline text-green font-semibold"
+        >
+          Bắt đầu ngay <i class="el-icon-right" />
+        </a>
+      </div>
+    </section>
+    <section class="md:mt-[150px] mt-16">
+      <h2 class="text-left font-bold text-black landing-font-38 "> Tính năng bảo mật </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
+        <div
+          v-for="(item, index) in feature3"
+          :key="index"
+          class="flex flex-col items-start"
+        >
+          <img :src="item.img">
+          <div>
+            <p class="text-black font-bold landing-font-22 mt-[16px]">{{ item.title }}</p>
+            <p class="text-black landing-font-14 mt-[13px]">{{ item.desc }}</p>
           </div>
-        </div>
-        <div class="landing-font-18 align-top mt-[45px]">
-          <a
-            href=""
-            class="hover:no-underline text-green font-semibold"
-          >
-            Tạo tài khoản <i class="el-icon-right" />
-          </a>
         </div>
       </div>
-      <div class="mt-[150px] mb-[110px]">
-        <h2 class="text-left font-bold text-black feature-font-38 "> Tính năng cho doanh nghiệp </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
-          <div
-            v-for="(item, index) in feature4"
-            :key="index"
-            class="flex flex-col items-start"
-          >
-            <img :src="item.img">
-            <div>
-              <p class="text-black font-bold feature-font-22 mt-[16px]">{{ item.title }}</p>
-              <p class="text-black feature-font-14 mt-[13px]">{{ item.desc }}</p>
-            </div>
+      <div class="landing-font-18 align-top mt-[45px]">
+        <a
+          href=""
+          class="hover:no-underline text-green font-semibold"
+        >
+          Tạo tài khoản <i class="el-icon-right" />
+        </a>
+      </div>
+    </section>
+    <section class="md:mt-[150px] mt-16 mb-[110px]">
+      <h2 class="text-left font-bold text-black landing-font-38 "> Tính năng cho doanh nghiệp </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
+        <div
+          v-for="(item, index) in feature4"
+          :key="index"
+          class="flex flex-col items-start"
+        >
+          <img :src="item.img">
+          <div>
+            <p class="text-black font-bold landing-font-22 mt-[16px]">{{ item.title }}</p>
+            <p class="text-black landing-font-14 mt-[13px]">{{ item.desc }}</p>
           </div>
         </div>
-        <div class="landing-font-18 align-top mt-[45px]">
-          <a
-            href=""
-            class="hover:no-underline text-green font-semibold"
-          >
-            Locker for business <i class="el-icon-right" />
-          </a>
-        </div>
+      </div>
+      <div class="landing-font-18 align-top mt-[45px]">
+        <a
+          href=""
+          class="hover:no-underline text-green font-semibold"
+        >
+          Locker for business <i class="el-icon-right" />
+        </a>
       </div>
     </section>
   </div>
@@ -231,20 +228,4 @@ export default {
 }
 </script>
 <style>
-.feature-font-50 {
-  font-size: 50px;
-  line-height: 66px;
-}
-.feature-font-38 {
-  font-size: 38px;
-  line-height: 45px;
-}
-.feature-font-22 {
-  font-size: 22px;
-  line-height: 26px;
-}
-.feature-font-14 {
-  font-size: 14px;
-  line-height: 24px;
-}
 </style>

@@ -1,67 +1,77 @@
 <template>
   <div>
     <!-- Header -->
-    <section class="bg-white">
-      <div
-        class="full-width w-full h-auto"
-        style="background: #FBFAF3;"
-      >
-        <section class="pt-[186px]  max-w-6xl mx-auto px-6 pb-32">
-          <div class="w-full flex flex-wrap justify-between">
-            <div class="lg:max-w-[570px] md:w-1/2 order-1 mb-8 md:mb-0">
-              <h1 class="text-left font-bold text-black landing-font-50 mb-[24px]">
-                Tận hưởng trải nghiệm sử dụng internet an toàn và liền mạch
-              </h1>
-              <img
-                src="~/assets/images/landing/index/boundary.svg"
-                alt=""
-              >
-              <p class="text-left font-normal text-black-600 landing-font-20 mx-auto mb-[50px] mt-[18px]">
-                Locker giúp bạn lưu trữ dữ liệu quan trọng <span class="text-green">an toàn</span>, quản lý
-                mật khẩu <span class="text-green">trực quan</span>, và tự động đăng nhập trên mọi thiết bị.
-              </p>
-              <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
-                <div class="mb-4 sm:mb-0">
-                  <a
-                    class="landing-btn w-full sm:w-auto mb-1"
-                    href="#"
-                  >
-                    Cá nhân
-                  </a>
-                  <p class="italic w-full landing-font-14 mt-2">
-                    Miễn phí vĩnh viễn
-                  </p>
-                </div>
-                <div>
-                  <a
-                    class="landing-btn2 w-full sm:w-auto sm:ml-4"
-                    href="#"
-                  >
-                    Doanh nghiệp
-                  </a>
-                </div>
+    <section
+      class="full-width h-auto"
+      style="background: #fbfaf3"
+    >
+      <div class="md:pt-[186px] pt-28 mx-auto pl-6 md:pb-32 pb-20">
+        <div class="w-full flex flex-wrap justify-end">
+          <div class="lg:max-w-[570px] md:w-1/2 order-1 mb-8 md:mb-0">
+            <h1 class="text-left font-bold text-black landing-font-50 mb-[24px]">
+              Tận hưởng trải nghiệm sử dụng internet an toàn và liền mạch
+            </h1>
+            <img
+              src="~/assets/images/landing/index/boundary.svg"
+              alt=""
+            >
+            <p class="text-left font-normal text-black-600 landing-font-20 mx-auto mb-[50px] mt-[18px]">
+              Locker giúp bạn lưu trữ dữ liệu quan trọng
+              <span class="text-green">an toàn</span>, quản lý mật khẩu
+              <span class="text-green">trực quan</span>, và tự động đăng nhập
+              trên mọi thiết bị.
+            </p>
+            <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
+              <div class="mb-4 sm:mb-0">
+                <a
+                  class="landing-btn w-full sm:w-auto mb-1"
+                  href="#"
+                >
+                  Cá nhân
+                </a>
+                <p class="italic w-full landing-font-14 mt-1">
+                  Miễn phí vĩnh viễn
+                </p>
+              </div>
+              <div>
+                <a
+                  class="landing-btn2 w-full sm:w-auto sm:ml-4"
+                  href="#"
+                >
+                  Doanh nghiệp
+                </a>
               </div>
             </div>
-            <!-- Right -->
-            <div class="w-full md:w-1/2 order-2">
-              <img
-                src="~/assets/images/landing/index/img1.png"
-                alt=""
-              >
-            </div>
-            <!-- Right end -->
           </div>
-        </section>
+          <!-- Right -->
+          <div class="hidden md:block md:w-1/2 order-2 jusify-self-end top-[173px] pr-0">
+            <img
+              src="~/assets/images/landing/index/img1.png"
+              alt=""
+              style="width: 100%"
+            >
+          </div>
+          <div class="w-full md:hidden order-2">
+            <img
+              src="~/assets/images/landing/index/img1_1.png"
+              alt=""
+            >
+          </div>
+          <!-- Right end -->
+        </div>
       </div>
     </section>
     <!-- Header end -->
 
     <!-- Feature -->
-    <div class="full-width w-full h-auto pb-[118px]" style="background-color: #F5F6F7">
-      <section class="max-w-6xl mx-auto px-6">
+    <section
+      class="full-width w-full h-auto md:pb-[118px] pb-20"
+      style="background-color: #f5f6f7"
+    >
+      <div class="max-w-6xl mx-auto px-6">
         <div class="w-full flex flex-wrap">
-          <div class="w-full md:mb-0 pt-[115px] text-center order-1">
-            <h2 class="w-full font-bold landing-font-38 text-black mb-[20px] max-w-[589px] mx-auto">
+          <div class="w-full md:mb-0 md:pt-[115px] pt-20 text-center order-1">
+            <h2 class=" w-full font-bold landing-font-38 text-black mb-[20px] max-w-[589px] mx-auto">
               Lưu trữ mật khẩu của bạn tại một không gian bảo mật duy nhất
             </h2>
             <img
@@ -74,7 +84,7 @@
             <div
               v-for="(item, index) in features"
               :key="index"
-              class="px-[30px] pt-11 bg-white rounded-lg hover:shadow-xl"
+              class="landing-transition px-[30px] pt-11 bg-white rounded-lg hover:shadow-xl"
             >
               <img
                 :src="item.img"
@@ -100,8 +110,8 @@
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
     <!-- Feature end -->
 
     <!-- Benefits -->
@@ -115,7 +125,7 @@
         </div>
         <!-- Left end -->
         <!-- Right -->
-        <div class="w-full md:w-1/2 pl-0 md:pl-4 flex align-middle justify-end order-2">
+        <div class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2">
           <img
             :src="benefits[0].img"
             alt=""
@@ -127,7 +137,7 @@
     </section>
     <section class="mt-[75px]">
       <div class="w-full flex flex-wrap">
-        <div class="w-full md:mb-0 mt-3 md:w-1/2 md:px-20 self-center md:order-2 order-1">
+        <div class=" w-full md:mb-0 mt-3 md:w-1/2 md:px-20 self-center md:order-2 order-1">
           <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
             {{ benefits[1].title }}
           </h2>
@@ -155,7 +165,7 @@
         </div>
         <!-- Left end -->
         <!-- Right -->
-        <div class="w-full md:w-1/2 pl-0 md:pl-4 flex align-middle justify-end order-2">
+        <div class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2">
           <img
             :src="benefits[2].img"
             alt=""
@@ -188,13 +198,14 @@
     <!-- Benefits end -->
 
     <!-- CTA 1 -->
-    <section class="mt-36">
+    <section class="md:mt-36 mt-24">
       <div
         class="w-full rounded py-[40px] px-[65px] flex justify-between align-middle md:flex-row flex-col"
-        style="background-color: #F5F6F7"
+        style="background-color: #f5f6f7"
       >
-        <p class="md:max-w-[490px] md:text-left md:mb-0 landing-font-28 max-w-max text-center mb-6">
-          Mang lại trải nghiệm internet an toàn hơn, tốt hơn cho tất cả mọi người.
+        <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-28 max-w-max text-center mb-6">
+          Mang lại trải nghiệm internet an toàn hơn, tốt hơn cho tất cả mọi
+          người.
         </p>
 
         <a
@@ -208,30 +219,78 @@
     </section>
     <!-- CTA 1 end -->
 
+    <!--Devices-->
+    <section
+      class="full-width h-auto"
+      style="background: #ffffff"
+    >
+      <div class="flex flex-wrap lg:justify-between justify-center xl:transform xl:-translate-y-24">
+        <div class="w-2/12 relative">
+          <img
+            src="~/assets/images/landing/index/mobile3x.png"
+            class="hidden lg:block pb-6 absolute bottom-0"
+            style="width: 100%"
+          >
+        </div>
+        <div class="w-4/12 relative">
+          <img
+            src="~/assets/images/landing/index/tablet3x.png"
+            class="hidden lg:block absolute bottom-0 pb-4 right-0"
+            style="width: 60%;"
+          >
+        </div>
+        <div class="w-6/12">
+          <img
+            src="~/assets/images/landing/index/mac3x.png"
+            class="hidden lg:block"
+            style="width: 75%; float: right"
+          >
+        </div>
+        <img
+          src="~/assets/images/landing/index/mobile_rotated.png"
+          class="lg:hidden mx-6 my-12 w-[118px] h-[240px] self-end"
+        >
+        <img
+          src="~/assets/images/landing/index/tablet_rotated.png"
+          class="lg:hidden mx-6 my-12 w-[206px] h-[282px] self-end"
+        >
+        <img
+          src="~/assets/images/landing/index/mac_rotated.png"
+          class="lg:hidden w-[704px] h-[412px]"
+        >
+      </div>
+    </section>
+    <!-- Devices end -->
     <!-- Platforms -->
-    <section class="mt-36">
+    <section class="mt-8">
       <div class="w-8/12 mx-auto">
         <h2 class="text-center font-bold text-black landing-font-38 mb-[14px]">
           Sử dụng trên mọi thiết bị và nền tảng
         </h2>
-        <p class="text-center text-black-600 leading-[26px] landing-font-18 mx-auto mb-[42px] md:max-w-[540px]">
-          Locker hoạt động trên mọi thiết bị, hệ điều hành, nền tảng phổ biến mà bạn sử dụng!
+        <p class=" text-center text-black-600 leading-[26px] landing-font-18 mx-auto mb-[42px] md:max-w-[540px]">
+          Locker hoạt động trên mọi thiết bị, hệ điều hành, nền tảng phổ biến mà
+          bạn sử dụng!
         </p>
       </div>
-      <div class="w-11/12 mx-auto flex flex-wrap justify-between align-start">
+      <div class="w-11/12 mx-auto flex flex-wrap md:justify-between justify-center align-start">
         <div
           v-for="(item, index) in platforms"
           :key="index"
-          class="mb-9 w-[156px] h-[75px] mr-24"
+          class="mb-9 max-w-[234px] h-[75px] w-full"
         >
-          <div class="flex flex-flex-nowrap items-start">
-            <img
-              :src="item.imgGray || item.img"
-              :alt="item.name"
-              class="mx-6"
-              style="height: 70px"
-            >
-            <p class="landing-font-16 font-semibold font-black self-center">{{ item.name }}</p>
+          <div class="flex flex-flex-nowrap">
+            <div class="circle mx-5">
+              <img
+                :src="item.imgGray || item.img"
+                :alt="item.name"
+                class="max-h-full h-auto mx-auto"
+                style="max-width: 50%"
+              >
+            </div>
+
+            <p class="landing-font-16 font-semibold text-black self-center">
+              {{ item.name }}
+            </p>
           </div>
         </div>
       </div>
@@ -239,10 +298,11 @@
     <!-- Platforms end -->
 
     <!-- Why -->
-    <section class="mt-36">
+    <section class="md:mt-36 mt-20">
       <div class="w-full mb-14 text-center">
         <h2 class="font-bold landing-font-32 text-black mx-auto md:max-w-[950px]">
-          Tại sao sử dụng Locker thay vì công cụ quản lý mật khẩu tích hợp trong trình duyệt?
+          Tại sao sử dụng Locker thay vì công cụ quản lý mật khẩu tích hợp trong
+          trình duyệt?
         </h2>
         <img
           src="~/assets/images/landing/index/boundary3.svg"
@@ -257,8 +317,12 @@
             <tbody>
               <tr class="hidden md:table-row">
                 <td />
-                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">Trình quản lý thông thường</td>
-                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">Trình quản lý mật khẩu Locker</td>
+                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
+                  Trình quản lý thông thường
+                </td>
+                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
+                  Trình quản lý mật khẩu Locker
+                </td>
               </tr>
               <template v-for="(label, index) in why.labels">
                 <tr
@@ -267,15 +331,15 @@
                 >
                   <td
                     colspan="2"
-                    class="landing-font-18 font-bold p-4 text-center border"
-                    style="background-color: #F6F7F8"
+                    class="landing-font-18 font-bold p-4 text-center"
+                    style="background-color: #f6f7f8"
                   >
                     {{ label }}
                   </td>
                 </tr>
                 <tr
                   :key="index"
-                  :style="index%2===0?'background-color: #FBFAF3':''"
+                  :style="index % 2 === 0 ? 'background-color: #FBFAF3' : ''"
                 >
                   <td class="lg:min-w-[200px] min-w-[120px] landing-font-16 font-semibold px-9 py-4 align-top hidden md:table-cell">
                     {{ label }}
@@ -283,17 +347,17 @@
                   <td class="landing-font-16 text-black-600 px-8 py-4 align-top">
                     <div class="flex flex-flex-nowrap items-start">
                       <img
-                        class="mt-2 mr-3"
+                        class="mt-[6px] mr-3"
                         src="~/assets/images/landing/index/unchecked_icon.svg"
                       >
 
                       <p>{{ why.browser[index] }}</p>
                     </div>
                   </td>
-                  <td class="landing-font-16 px-8 py-4">
+                  <td class="landing-font-16 px-8 py-4 align-top">
                     <div class="flex flex-flex-nowrap items-start">
                       <img
-                        class="mt-2 mr-3"
+                        class="mt-[6px] mr-3"
                         src="~/assets/images/landing/index/checked_icon.svg"
                       >
                       {{ why.locker[index] }}
@@ -322,19 +386,23 @@
     <!-- Why end -->
 
     <!-- Start -->
-    <div class="full-width w-full h-auto pb-[105px] mt-[150px]" style="background-color: #F5F6F7">
+    <div
+      class="full-width w-full h-auto pb-[105px] md:mt-[150px] mt-24"
+      style="background-color: #f5f6f7"
+    >
       <section class="max-w-6xl mx-auto px-6">
         <div class="w-full flex flex-wrap">
-          <div class="w-full md:mb-0 pt-[115px] text-center order-1">
+          <div class="w-full md:mb-0 md:pt-[115px] pt-20 text-center order-1">
             <h2 class="w-full font-bold landing-font-38 text-black mb-[45px] max-w-[790px] mx-auto">
-              Trải nghiệm internet an toàn hơn, tiện nghi hơn với Locker Password Manager
+              Trải nghiệm internet an toàn hơn, tiện nghi hơn với Locker
+              Password Manager
             </h2>
           </div>
           <div class="w-full md:w-10/12 mx-auto flex flex-wrap order-2 gap-x-[30px] gap-y-[45px] justify-center">
             <div
               v-for="(item, index) in start"
               :key="index"
-              class="p-10 w-full md:w-[380px] bg-white relative z-10 rounded-xl"
+              class=" landing-transition p-10 w-full md:w-[380px] bg-white relative z-10 rounded-xl hover:shadow-xl"
             >
               <img
                 :src="item.img"
@@ -419,7 +487,7 @@ export default {
         },
         {
           name: 'Chrome',
-          imgGray: require('~/assets/images/landing/logo/chrome-gray.png'),
+          imgGray: require('~/assets/images/landing/index/chrome.svg'),
           img: ''
         },
         {
@@ -547,5 +615,13 @@ export default {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
+}
+.circle {
+  height: 75px;
+  width: 75px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 50%;
+  display: flex;
 }
 </style>
