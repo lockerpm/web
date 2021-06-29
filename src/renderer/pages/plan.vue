@@ -118,11 +118,11 @@
               </tr>
             </template>
             <tr style="background-color: #FBFAF3;">
-              <td class="py-[18px] pl-6 text-green font-semibold">GIÁ CƯỚC</td>
-              <td class="py-[18px] pl-6 text-green text-center">0đ</td>
-              <td class="py-[18px] pl-6 text-green text-center">19,000đ/tháng</td>
-              <td class="py-[18px] pl-6 text-green text-center">79,000đ/tháng/<br>5 tài khoản</td>
-              <td class="py-[18px] pl-6 text-green text-center">39,000đ/tháng/<br>tài khoản</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">GIÁ CƯỚC</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">0đ</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">19,000đ/tháng</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">79,000đ/tháng/<br>5 tài khoản</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">39,000đ/tháng/<br>tài khoản</td>
             </tr>
             <tr>
               <td />
@@ -134,6 +134,7 @@
                 <div class="text-center">
                   <a
                     class="landing-btn2 w-full sm:w-auto sm:ml-4"
+                    style="font-weight: normal"
                     href="#"
                   >
                     {{ button }}

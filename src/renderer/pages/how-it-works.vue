@@ -13,7 +13,7 @@
         </div>
         <!-- Right end -->
         <!-- Left -->
-        <div class="w-full md:w-1/2 pl-0 md:pl-4 flexalign-middle justify-centerorder-1 ">
+        <div class="w-full md:w-1/2 pl-0 md:pl-4 flexalign-middle justify-center order-2">
           <img
             :src="require(`~/assets/images/landing/how-it-works/${hiw1.img}`)"
             alt=""
@@ -64,22 +64,36 @@
       </div>
     </section>
     <section class="full-width w-full bg-how-it-works1 h-auto">
-      <div class=" mt-[111px] max-w-6xl mx-auto px-6 md:pt-[100px] md:pb-20 pt-12 pb-12">
-        <div class="w-full flex flex-wrap">
-          <div class="w-full md:mb-0 md:w-1/3 pr-0 self-center order-1">
+      <div class="hidden md:block mt-[111px] max-w-6xl mx-auto px-6 md:pt-[100px] md:pb-20 pt-12 pb-12">
+        <div class="w-full flex flex-wrap relative">
+          <div class="w-full md:mb-0 md:w-1/3 pr-0 self-start order-1 sticky top-24">
             <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
               {{ hiw4.title }}
             </h2>
-            <div
-              v-for="(item, index) in hiw4.desc"
-              :key="index"
-              :class="index === 0 ? 'vertical-line' : 'opacity-50 pl-[30px]'"
-            >
+            <div id="save1" class="vertical-line landing-transition">
               <h3 class="font-bold text-black landing-font-20 mb-[12px]">
-                {{ item.title }}
+                {{ hiw4.desc[0].title }}
               </h3>
-              <p class="text-black-600 landing-font-16 mb-9">
-                {{ item.desc }}
+              <p id="save1Desc" class="text-black-600 landing-font-16 mb-9">
+                {{ hiw4.desc[0].desc }}
+              </p>
+            </div>
+
+            <div id="save2" class="opacity-50 pl-[30px] landing-transition">
+              <h3 class="font-bold text-black landing-font-20 mb-[12px]">
+                {{ hiw4.desc[1].title }}
+              </h3>
+              <p id="save2Desc" class="text-black-600 landing-font-16 mb-9">
+                {{ hiw4.desc[1].desc }}
+              </p>
+            </div>
+
+            <div id="save3" class="opacity-50 pl-[30px] landing-transition">
+              <h3 class="font-bold text-black landing-font-20 mb-[12px]">
+                {{ hiw4.desc[2].title }}
+              </h3>
+              <p id="save3Desc" class="text-black-600 landing-font-16 mb-9">
+                {{ hiw4.desc[2].desc }}
               </p>
             </div>
             <div class="landing-font-18 align-top ml-[30px] mt-9">
@@ -94,14 +108,50 @@
           <!-- Left end -->
           <!-- Right -->
           <div class=" w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
-            <img
-              :src="require(`~/assets/images/landing/how-it-works/${hiw4.img}`)"
-              alt=""
-              style="align-self: center"
-            >
+            <div class="w-full flex flex-col">
+              <img
+                :src="require(`~/assets/images/landing/how-it-works/${hiw4.desc[0].img}`)"
+                alt=""
+                style="align-self: center"
+                class="mb-72"
+              >
+              <img
+                :src="require(`~/assets/images/landing/how-it-works/${hiw4.desc[1].img}`)"
+                alt=""
+                style="align-self: center"
+                class="mb-72"
+              >
+              <img
+                :src="require(`~/assets/images/landing/how-it-works/${hiw4.desc[2].img}`)"
+                alt=""
+                style="align-self: center"
+                class="mb-72"
+              >
+            </div>
           </div>
           <!-- Right end -->
         </div>
+      </div>
+      <h2 class="md:hidden w-full font-bold landing-font-38 text-black mb-[20px] mx-6 pt-20">
+        {{ hiw4.title }}
+      </h2>
+      <div v-for="(item, index) in hiw4.desc" :key="index" class="md:hidden w-full flex flex-wrap mx-6 pb-6">
+        <div class="w-full md:mb-0 mt-3 md:w-1/3 self-center pr-0 order-1">
+          <h2 class="w-full font-bold landing-font-28 text-black mb-[20px]">
+            {{ item.title }}
+          </h2>
+          <p class="landing-font-18">{{ item.desc }}</p>
+        </div>
+        <!-- Left end -->
+        <!-- Right -->
+        <div class="w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
+          <img
+            :src="require(`~/assets/images/landing/how-it-works/${item.img}`)"
+            alt=""
+            style="align-self: center"
+          >
+        </div>
+        <!-- Right end -->
       </div>
     </section>
     <section class=" full-width w-full bg-how-it-works2 h-auto md:pt-[115px] pt-12 md:pb-[111px] pb-12">
@@ -117,7 +167,9 @@
               class="mx-auto"
             >
           </div>
-          <div class=" w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2">
+          <div
+            class=" w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2"
+          >
             <div
               v-for="(item, index) in hiw5.desc"
               :key="index"
@@ -180,18 +232,20 @@ export default {
         desc: 'Bạn có thể truy cập mật khẩu của mình mọi lúc, mọi nơi, ngay cả khi đang không có kết nối mạng.'
       },
       hiw4: {
-        img: 'save_time.png',
         title: 'Tiết kiệm thời gian và công sức',
         desc: [
           {
+            img: 'save_time.png',
             title: 'Đăng nhập nhanh hơn',
             desc: 'Tự động điền thông tin đăng nhập và mật khẩu các trang web mà bạn sử dụng chỉ với 1 click, có thể sử dụng FaceID và TouchID.'
           },
           {
+            img: 'save_time.png',
             title: 'Lướt web và mua sắm dễ dàng',
             desc: 'Tự động điền thông tin thẻ thanh toán VISA/Mastercard khi bạn mua hàng online trên các trang thương mại điện tử.'
           },
           {
+            img: 'save_time.png',
             title: 'Điền tờ khai nhanh chóng',
             desc: 'Bạn có thể lưu thông tin cá nhân bao gồm tên, tuổi, địa chỉ, mã ZIP,... để tự động điền vào các mẫu tờ khai trực tuyến chỉ trong 3s.'
           }
@@ -236,6 +290,69 @@ export default {
             link: '#'
           }
         ]
+      }
+    }
+  },
+  mounted () {
+    const save1 = document.getElementById('save1')
+    const save2 = document.getElementById('save2')
+    const save3 = document.getElementById('save3')
+    // const save1Desc = document.getElementById('save1Desc')
+    // const save2Desc = document.getElementById('save2Desc')
+    // const save3Desc = document.getElementById('save3Desc')
+    window.onscroll = function () {
+      const scrollPos = window.scrollY
+      if (scrollPos < 2600) {
+        save1.classList.remove('opacity-50')
+        save1.classList.remove('pl-[30px]')
+        save1.classList.add('vertical-line')
+        save2.classList.add('opacity-50')
+        save2.classList.add('pl-[30px]')
+        if (save2.classList.contains('vertical-line')) {
+          save2.classList.remove('vertical-line')
+        }
+        save3.classList.add('opacity-50')
+        save3.classList.add('pl-[30px]')
+        if (save3.classList.contains('vertical-line')) {
+          save3.classList.remove('vertical-line')
+        }
+        // save2Desc.classList.add('hidden')
+        // save1Desc.classList.remove('hidden')
+        // save3Desc.classList.add('hidden')
+      } else if (scrollPos > 2600 && scrollPos < 3600) {
+        save2.classList.remove('opacity-50')
+        save2.classList.remove('pl-[30px]')
+        save2.classList.add('vertical-line')
+        save1.classList.add('opacity-50')
+        save1.classList.add('pl-[30px]')
+        if (save1.classList.contains('vertical-line')) {
+          save1.classList.remove('vertical-line')
+        }
+        save3.classList.add('opacity-50')
+        save3.classList.add('pl-[30px]')
+        if (save3.classList.contains('vertical-line')) {
+          save3.classList.remove('vertical-line')
+        }
+        // save1Desc.classList.add('hidden')
+        // save2Desc.classList.remove('hidden')
+        // save3Desc.classList.add('hidden')
+      } else {
+        save3.classList.remove('opacity-50')
+        save3.classList.remove('pl-[30px]')
+        save3.classList.add('vertical-line')
+        save1.classList.add('opacity-50')
+        save1.classList.add('pl-[30px]')
+        if (save1.classList.contains('vertical-line')) {
+          save1.classList.remove('vertical-line')
+        }
+        save2.classList.add('opacity-50')
+        save2.classList.add('pl-[30px]')
+        if (save2.classList.contains('vertical-line')) {
+          save2.classList.remove('vertical-line')
+        }
+        // save1Desc.classList.add('hidden')
+        // save2Desc.classList.add('hidden')
+        // save3Desc.classList.remove('hidden')
       }
     }
   }

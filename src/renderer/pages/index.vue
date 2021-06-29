@@ -78,7 +78,9 @@
               class="mx-auto"
             >
           </div>
-          <div class="w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2">
+          <div
+            class="w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2"
+          >
             <div
               v-for="(item, index) in section2.features"
               :key="index"
@@ -221,39 +223,78 @@
       class="full-width h-auto"
       style="background: #ffffff"
     >
-      <div class="flex flex-wrap lg:justify-between justify-center xl:transform xl:-translate-y-24">
-        <div class="w-2/12 relative">
-          <img
-            src="~/assets/images/landing/index/mobile3x.png"
-            class="hidden lg:block pb-6 absolute bottom-0"
-            style="width: 100%"
-          >
-        </div>
-        <div class="w-4/12 relative">
-          <img
-            src="~/assets/images/landing/index/tablet3x.png"
-            class="hidden lg:block absolute bottom-0 pb-4 right-0"
-            style="width: 60%;"
-          >
-        </div>
-        <div class="w-6/12">
-          <img
-            src="~/assets/images/landing/index/mac3x.png"
-            class="hidden lg:block"
-            style="width: 75%; float: right"
-          >
-        </div>
+      <!--      <div class="flex flex-wrap lg:justify-between justify-center xl:transform xl:-translate-y-24">-->
+      <!--        <div class="w-2/12 relative">-->
+      <!--          <img-->
+      <!--            id="mobile"-->
+      <!--            src="~/assets/images/landing/index/mobile3x.png"-->
+      <!--            class="hidden lg:block pb-6 absolute bottom-0"-->
+      <!--            style="width: 100%"-->
+      <!--          >-->
+      <!--        </div>-->
+      <!--        <div class="w-4/12 relative">-->
+      <!--          <img-->
+      <!--            id="tablet"-->
+      <!--            src="~/assets/images/landing/index/tablet3x.png"-->
+      <!--            class="hidden lg:block absolute bottom-0 pb-4 right-0"-->
+      <!--            style="width: 60%;"-->
+      <!--          >-->
+      <!--        </div>-->
+      <!--        <div class="w-6/12">-->
+      <!--          <img-->
+      <!--            id="mac"-->
+      <!--            src="~/assets/images/landing/index/mac3x.png"-->
+      <!--            class="hidden lg:block"-->
+      <!--            style="width: 75%; float: right"-->
+      <!--          >-->
+      <!--        </div>-->
+      <!--        <img-->
+      <!--          src="~/assets/images/landing/index/mobile_rotated.png"-->
+      <!--          class="lg:hidden mx-6 my-12 w-[118px] h-[240px] self-end"-->
+      <!--        >-->
+      <!--        <img-->
+      <!--          src="~/assets/images/landing/index/tablet_rotated.png"-->
+      <!--          class="lg:hidden mx-6 my-12 w-[206px] h-[282px] self-end"-->
+      <!--        >-->
+      <!--        <img-->
+      <!--          src="~/assets/images/landing/index/mac_rotated.png"-->
+      <!--          class="lg:hidden w-[704px] h-[412px]"-->
+      <!--        >-->
+      <!--      </div>-->
+      <div
+        class="hidden lg:inline-block w-full h-auto text-center mt-20 mb-36 flex flex-nowrap justify-center gap-x-6"
+      >
+        <img
+          id="mobile"
+          src="~/assets/images/landing/index/mobile_rotated.png"
+          class="inline self-end transition duration-300 ease-in-out;"
+          style="width: 8%; transform: translate3d(-120px, 30px, 0px) rotateZ(28deg);"
+        >
+        <img
+          id="tablet"
+          src="~/assets/images/landing/index/tablet_rotated.png"
+          class="inline self-end transition duration-300 ease-in-out;"
+          style="width: 14%; transform: translate3d(180px, 50px, 0px) rotateZ(10deg);"
+        >
+        <img
+          id="mac"
+          src="~/assets/images/landing/index/mac_rotated.png"
+          class="inline transition duration-300 ease-in-out;"
+          style="width: 50%; transform: translate3d(500px, -50px, 0px) rotateZ(-25deg);"
+        >
+      </div>
+      <div class="lg:hidden w-full h-[412px] mt-28 mb-16 relative">
         <img
           src="~/assets/images/landing/index/mobile_rotated.png"
-          class="lg:hidden mx-6 my-12 w-[118px] h-[240px] self-end"
+          class="lg:hidden mx-6 my-12 w-[118px] h-[240px] self-end" style="position: absolute; left: 150px; bottom: 0px; z-index: 3;"
         >
         <img
           src="~/assets/images/landing/index/tablet_rotated.png"
-          class="lg:hidden mx-6 my-12 w-[206px] h-[282px] self-end"
+          class="lg:hidden mx-6 my-12 w-[206px] h-[282px] self-end" style="position: absolute; z-index: 2; bottom: 0px; left: 200px;"
         >
         <img
           src="~/assets/images/landing/index/mac_rotated.png"
-          class="lg:hidden w-[704px] h-[412px]"
+          class="lg:hidden w-[704px] h-[412px]" style="position: absolute; bottom: 40px; left: 200px;"
         >
       </div>
     </section>
@@ -310,69 +351,71 @@
         <div class="w-full bg-white relative z-10">
           <table class="w-full">
             <tbody>
-              <tr class="hidden md:table-row">
-                <td />
-                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
-                  {{ why.column_labels[0] }}
-                </td>
-                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
-                  {{ why.column_labels[1] }}
+            <tr class="hidden md:table-row">
+              <td/>
+              <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
+                {{ why.column_labels[0] }}
+              </td>
+              <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
+                {{ why.column_labels[1] }}
+              </td>
+            </tr>
+            <template v-for="(label, index) in why.labels">
+              <tr
+                :key="index"
+                class="md:hidden"
+              >
+                <td
+                  colspan="2"
+                  class="landing-font-18 font-bold p-4 text-center"
+                  style="background-color: #f6f7f8"
+                >
+                  {{ label }}
                 </td>
               </tr>
-              <template v-for="(label, index) in why.labels">
-                <tr
-                  :key="index"
-                  class="md:hidden"
+              <tr
+                :key="index"
+                :style="index % 2 === 0 ? 'background-color: #FBFAF3' : ''"
+              >
+                <td
+                  class="lg:min-w-[200px] min-w-[120px] landing-font-16 font-semibold px-9 py-4 align-top hidden md:table-cell"
                 >
-                  <td
-                    colspan="2"
-                    class="landing-font-18 font-bold p-4 text-center"
-                    style="background-color: #f6f7f8"
-                  >
-                    {{ label }}
-                  </td>
-                </tr>
-                <tr
-                  :key="index"
-                  :style="index % 2 === 0 ? 'background-color: #FBFAF3' : ''"
-                >
-                  <td class="lg:min-w-[200px] min-w-[120px] landing-font-16 font-semibold px-9 py-4 align-top hidden md:table-cell">
-                    {{ label }}
-                  </td>
-                  <td class="landing-font-16 text-black-600 px-8 py-4 align-top">
-                    <div class="flex flex-flex-nowrap items-start">
-                      <img
-                        class="mt-[6px] mr-3"
-                        src="~/assets/images/landing/index/unchecked_icon.svg"
-                      >
+                  {{ label }}
+                </td>
+                <td class="landing-font-16 text-black-600 px-8 py-4 align-top">
+                  <div class="flex flex-flex-nowrap items-start">
+                    <img
+                      class="mt-[6px] mr-3"
+                      src="~/assets/images/landing/index/unchecked_icon.svg"
+                    >
 
-                      <p>{{ why.browser[index] }}</p>
-                    </div>
-                  </td>
-                  <td class="landing-font-16 px-8 py-4 align-top">
-                    <div class="flex flex-flex-nowrap items-start">
-                      <img
-                        class="mt-[6px] mr-3"
-                        src="~/assets/images/landing/index/checked_icon.svg"
-                      >
-                      {{ why.locker[index] }}
-                    </div>
-                  </td>
-                </tr>
-              </template>
-
-              <tr class="md:border-b-0">
-                <td class="hidden md:table-cell" />
-                <td />
-                <td class="landing-font-18 px-8 py-4 align-top font-semibold">
-                  <a
-                    href=""
-                    class="hover:no-underline text-green"
-                  >
-                    {{ why.btn.text }} <i class="el-icon-right" />
-                  </a>
+                    <p>{{ why.browser[index] }}</p>
+                  </div>
+                </td>
+                <td class="landing-font-16 px-8 py-4 align-top">
+                  <div class="flex flex-flex-nowrap items-start">
+                    <img
+                      class="mt-[6px] mr-3"
+                      src="~/assets/images/landing/index/checked_icon.svg"
+                    >
+                    {{ why.locker[index] }}
+                  </div>
                 </td>
               </tr>
+            </template>
+
+            <tr class="md:border-b-0">
+              <td class="hidden md:table-cell"/>
+              <td/>
+              <td class="landing-font-18 px-8 py-4 align-top font-semibold">
+                <a
+                  href=""
+                  class="hover:no-underline text-green"
+                >
+                  {{ why.btn.text }} <i class="el-icon-right"/>
+                </a>
+              </td>
+            </tr>
             </tbody>
           </table>
         </div>
@@ -632,17 +675,48 @@ export default {
       }
 
     }
+  },
+  mounted () {
+    const mac = document.getElementById('mac')
+    const mobile = document.getElementById('mobile')
+    const tablet = document.getElementById('tablet')
+    window.onscroll = function () {
+      const scrollPos = window.scrollY
+      if (scrollPos > 3800 && scrollPos < 4100) {
+        scrollRotate()
+      } else if (scrollPos > 4100) {
+        mac.style.transform = 'translate3d(0px,0px,0px) rotateZ(0deg)'
+        tablet.style.transform = 'translate3d(0px,60px,0px) rotateZ(0deg)'
+        mobile.style.transform = 'translate3d(0px,80px,0px) rotateZ(0deg)'
+      } else {
+        mac.style.transform = 'translate3d(500px,-50px,0px) rotateZ(-25deg)'
+        mobile.style.transform = 'translate3d(-120px,30px,0px) rotateZ(28deg)'
+        tablet.style.transform = 'translate3d(180px,50px,0px) rotateZ(10deg)'
+      }
+    }
+
+    function scrollRotate () {
+      const offset = window.pageYOffset - 3800
+      const macXAxis = 480 - Math.ceil(480 * offset / 300)
+      const macYAxis = Math.ceil(50 * offset / 300) - 50
+      const macZRotate = Math.ceil(25 * offset / 300) - 25
+      mac.style.transform = 'translate3d(' + macXAxis + 'px,' + macYAxis + 'px,0px) rotateZ(' + macZRotate + 'deg)'
+
+      const mobileXAxis = Math.ceil(120 * offset / 300) - 120
+      const mobileYAxis = 30 - Math.ceil(30 * offset / 300)
+      const mobileZRotate = 28 - Math.ceil(28 * offset / 300)
+      mobile.style.transform = 'translate3d(' + mobileXAxis + 'px,' + mobileYAxis + 'px,0px) rotateZ(' + mobileZRotate + 'deg)'
+
+      const tabletXAxis = 180 - Math.ceil(180 * offset / 300)
+      const tabletYAxis = 50 - Math.ceil(50 * offset / 300)
+      const tabletZRotate = 10 - Math.ceil(10 * offset / 300)
+      tablet.style.transform = 'translate3d(' + tabletXAxis + 'px,' + tabletYAxis + 'px,0px) rotateZ(' + tabletZRotate + 'deg)'
+    }
   }
 }
 </script>
 
 <style scoped>
-#feature {
-  background-image: url("~assets/images/landing/bg/locker-bg.svg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
 .circle {
   height: 75px;
   width: 75px;
