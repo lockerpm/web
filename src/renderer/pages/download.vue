@@ -6,28 +6,28 @@
         <div class="w-full flex flex-wrap justify-end">
           <div class="md:max-w-[570px] md:w-1/2 order-1 mb-8 md:mb-0">
             <h1 class="text-left w-11/12 font-bold text-black landing-font-50 mb-[24px]">
-              Tải Locker trên các thiết bị của bạn
+              {{ header.title }}
             </h1>
             <img
               src="~/assets/images/landing/download/boundary.svg"
               alt=""
             >
             <p class="md:max-w-[350px] text-left font-normal text-black-600 landing-font-20 mb-[50px] mt-[18px]">
-              Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.
+              {{ header.desc }}
             </p>
             <div class="max-w-xs mb-4 sm:mb-0">
               <a
                 class="landing-btn w-full sm:w-auto mb-1"
-                href="#"
+                :href="header.btn.link"
               >
-                Đăng ký miễn phí
+                {{ header.btn.text }}
               </a>
             </div>
           </div>
           <!-- Right -->
           <div class="hidden md:block md:w-1/2 order-2 jusify-self-end pr-0 mb-10">
             <img
-              src="~/assets/images/landing/download/img3x.png"
+              :src="require(`~/assets/images/landing/${header.img}`)"
               alt=""
               style="width:100%;"
             >
@@ -155,6 +155,15 @@ export default {
   layout: 'landing',
   data () {
     return {
+      header: {
+        title: 'Tải Locker trên các thiết bị của bạn',
+        desc: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
+        img: 'download/img3x.png',
+        btn: {
+          text: 'Đăng ký miễn phí',
+          link: '#'
+        }
+      },
       os: [
         {
           name: 'Windows',
@@ -205,14 +214,6 @@ export default {
 </script>
 
 <style scoped>
-.full-width {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
 .circle {
   height: 60px;
   width: 60px;

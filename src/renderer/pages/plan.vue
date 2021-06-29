@@ -4,7 +4,7 @@
       class="full-width h-auto pt-40"
       style="background-color: #f5f6f7"
     >
-      <h1 class="max-w-[700px] font-bold landing-font-50 text-center mx-auto">Simple, transparent pricing</h1>
+      <h1 class="max-w-[700px] font-bold landing-font-50 text-center mx-auto">{{ title }}</h1>
       <div class="mt-[100px] pb-[140px] max-w-6xl mx-auto px-6">
         <div class="w-full flex flex-wrap  gap-x-[30px] gap-y-[30px] justify-center">
           <div
@@ -118,11 +118,11 @@
               </tr>
             </template>
             <tr style="background-color: #FBFAF3;">
-              <td class="py-[18px] pl-6 text-green font-semibold">GIÁ CƯỚC</td>
-              <td class="py-[18px] pl-6 text-green text-center">0đ</td>
-              <td class="py-[18px] pl-6 text-green text-center">19,000đ/tháng</td>
-              <td class="py-[18px] pl-6 text-green text-center">79,000đ/tháng/<br>5 tài khoản</td>
-              <td class="py-[18px] pl-6 text-green text-center">39,000đ/tháng/<br>tài khoản</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">GIÁ CƯỚC</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">0đ</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">19,000đ/tháng</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">79,000đ/tháng/<br>5 tài khoản</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">39,000đ/tháng/<br>tài khoản</td>
             </tr>
             <tr>
               <td />
@@ -134,6 +134,7 @@
                 <div class="text-center">
                   <a
                     class="landing-btn2 w-full sm:w-auto sm:ml-4"
+                    style="font-weight: normal"
                     href="#"
                   >
                     {{ button }}
@@ -165,7 +166,7 @@
                 mx-auto
               "
             >
-              Lưu trữ mật khẩu của bạn tại một không gian bảo mật duy nhất
+              {{ features.title }}
             </h2>
             <img
               src="~/assets/images/landing/index/boundary2.svg"
@@ -187,12 +188,12 @@
             "
           >
             <div
-              v-for="(item, index) in features"
+              v-for="(item, index) in features.details"
               :key="index"
               class="landing-transition px-[30px] pt-11 bg-white rounded-lg hover:shadow-xl"
             >
               <img
-                :src="item.img"
+                :src="require(`~/assets/images/landing/plan/${item.img}`)"
                 :alt="item.title"
                 class="h-[40px] mb-[16px]"
               >
@@ -242,6 +243,7 @@ export default {
   layout: 'landing',
   data () {
     return {
+      title: 'Simple, transparent pricing',
       plans: [
         {
           title: 'Free',
@@ -415,28 +417,31 @@ export default {
       subscription_button: [
         'Đăng ký', 'Dùng thử 7 ngày', 'Mua', 'Dùng thử 10 ngày'
       ],
-      features: [
-        {
-          img: require('~/assets/images/landing/plan/icon1.svg'),
-          title: 'Mã hóa dữ liệu',
-          desc: 'Locker mã hóa dữ liệu của bạn theo tiêu chuẩn quân đội AES-256, kết hợp thuật toán khởi tạo cặp khóa PBDKF2 và RSA.'
-        },
-        {
-          img: require('~/assets/images/landing/plan/icon2.svg'),
-          title: 'Zero-knowledge',
-          desc: 'Mã hóa đầu cuối và Zero-knowledge đảm bảo rằng không ai xem được dữ liệu của bạn, kể cả đội ngũ phát triển Locker.'
-        },
-        {
-          img: require('~/assets/images/landing/plan/icon3.svg'),
-          title: 'Hạ tầng an toàn',
-          desc: 'Chúng tôi sử dụng hạ tầng máy chủ của các nhà cung cấp hàng đầu thế giới như AWS, DigitalOcean.'
-        },
-        {
-          img: require('~/assets/images/landing/plan/icon4.svg'),
-          title: 'Kiểm thử bảo mật',
-          desc: 'Được kiểm thử an ninh bởi cộng đồng 1500+ chuyên gia bảo mật trên nền tảng WhiteHub Bug Bounty.'
-        }
-      ],
+      features: {
+        title: 'Tính năng bảo mật dành cho mọi tài khoản Locker',
+        details: [
+          {
+            img: 'icon1.svg',
+            title: 'Mã hóa dữ liệu',
+            desc: 'Locker mã hóa dữ liệu của bạn theo tiêu chuẩn quân đội AES-256, kết hợp thuật toán khởi tạo cặp khóa PBDKF2 và RSA.'
+          },
+          {
+            img: 'icon2.svg',
+            title: 'Zero-knowledge',
+            desc: 'Mã hóa đầu cuối và Zero-knowledge đảm bảo rằng không ai xem được dữ liệu của bạn, kể cả đội ngũ phát triển Locker.'
+          },
+          {
+            img: 'icon3.svg',
+            title: 'Hạ tầng an toàn',
+            desc: 'Chúng tôi sử dụng hạ tầng máy chủ của các nhà cung cấp hàng đầu thế giới như AWS, DigitalOcean.'
+          },
+          {
+            img: 'icon4.svg',
+            title: 'Kiểm thử bảo mật',
+            desc: 'Được kiểm thử an ninh bởi cộng đồng 1500+ chuyên gia bảo mật trên nền tảng WhiteHub Bug Bounty.'
+          }
+        ]
+      },
       question: {
         title: 'Những câu hỏi thường gặp',
         question_list: [
@@ -460,27 +465,18 @@ export default {
 </script>
 
 <style scoped>
-.full-width {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
 ul {
-  list-style: none;
+  list-style-image: url('~/assets/images/landing/plan/list_bullet.svg');
 }
 
-ul li::before {
+/* ul li::before {
   content: "\2022";
   color: #268334;
   font-weight: bold;
   display: inline-block;
   width: 1em;
   margin-left: -1em;
-}
+} */
 
 .info:hover .tooltiptext {
   visibility: visible;

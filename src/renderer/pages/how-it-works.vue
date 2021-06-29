@@ -1,7 +1,7 @@
 <template>
   <div class="md:pt-[180px] pt-36">
     <h1 class="text-left font-bold text-black landing-font-50 lg:w-[980px]">
-      Locker giúp bạn tận hưởng cuộc sống online an toàn và liền mạch
+      {{ title }}
     </h1>
     <section class="md:mt-[75px] mt-8">
       <div class="w-full flex flex-wrap">
@@ -13,9 +13,9 @@
         </div>
         <!-- Right end -->
         <!-- Left -->
-        <div class="w-full md:w-1/2 pl-0 md:pl-4 flexalign-middle justify-centerorder-1 ">
+        <div class="w-full md:w-1/2 pl-0 md:pl-4 flexalign-middle justify-center order-2">
           <img
-            :src="hiw1.img"
+            :src="require(`~/assets/images/landing/how-it-works/${hiw1.img}`)"
             alt=""
             style="align-self: center"
           >
@@ -35,7 +35,7 @@
         <!-- Right -->
         <div class="w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
           <img
-            :src="hiw2.img"
+            :src="require(`~/assets/images/landing/how-it-works/${hiw2.img}`)"
             alt=""
             style="align-self: center"
           >
@@ -55,7 +55,7 @@
         <!-- Right -->
         <div class=" w-full md:w-1/2 pl-0 md:pl-4 mt-4 md:mt-0 flex align-middle justify-center order-1">
           <img
-            :src="hiw3.img"
+            :src="require(`~/assets/images/landing/how-it-works/${hiw3.img}`)"
             alt=""
             style="align-self: center"
           >
@@ -64,44 +64,94 @@
       </div>
     </section>
     <section class="full-width w-full bg-how-it-works1 h-auto">
-      <div class=" mt-[111px] max-w-6xl mx-auto px-6 md:pt-[100px] md:pb-20 pt-12 pb-12">
-        <div class="w-full flex flex-wrap">
-          <div class="w-full md:mb-0 md:w-1/3 pr-0 self-center order-1">
+      <div class="hidden md:block mt-[111px] max-w-6xl mx-auto px-6 md:pt-[100px] md:pb-20 pt-12 pb-12">
+        <div class="w-full flex flex-wrap relative">
+          <div class="w-full md:mb-0 md:w-1/3 pr-0 self-start order-1 sticky top-24">
             <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
               {{ hiw4.title }}
             </h2>
-            <div
-              v-for="(item, index) in hiw4.desc"
-              :key="index"
-              :class="index === 0 ? 'vertical-line' : 'opacity-50 pl-[30px]'"
-            >
+            <div id="save1" class="vertical-line landing-transition">
               <h3 class="font-bold text-black landing-font-20 mb-[12px]">
-                {{ item.title }}
+                {{ hiw4.desc[0].title }}
               </h3>
-              <p class="text-black-600 landing-font-16 mb-9">
-                {{ item.desc }}
+              <p id="save1Desc" class="text-black-600 landing-font-16 mb-9">
+                {{ hiw4.desc[0].desc }}
+              </p>
+            </div>
+
+            <div id="save2" class="opacity-50 pl-[30px] landing-transition">
+              <h3 class="font-bold text-black landing-font-20 mb-[12px]">
+                {{ hiw4.desc[1].title }}
+              </h3>
+              <p id="save2Desc" class="text-black-600 landing-font-16 mb-9">
+                {{ hiw4.desc[1].desc }}
+              </p>
+            </div>
+
+            <div id="save3" class="opacity-50 pl-[30px] landing-transition">
+              <h3 class="font-bold text-black landing-font-20 mb-[12px]">
+                {{ hiw4.desc[2].title }}
+              </h3>
+              <p id="save3Desc" class="text-black-600 landing-font-16 mb-9">
+                {{ hiw4.desc[2].desc }}
               </p>
             </div>
             <div class="landing-font-18 align-top ml-[30px] mt-9">
               <a
-                href=""
+                :href="hiw4.btn.link"
                 class="hover:no-underline text-green font-semibold"
               >
-                Xem tất cả tính năng <i class="el-icon-right" />
+                {{ hiw4.btn.text }} <i class="el-icon-right" />
               </a>
             </div>
           </div>
           <!-- Left end -->
           <!-- Right -->
           <div class=" w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
-            <img
-              :src="hiw4.img"
-              alt=""
-              style="align-self: center"
-            >
+            <div class="w-full flex flex-col">
+              <img
+                :src="require(`~/assets/images/landing/how-it-works/${hiw4.desc[0].img}`)"
+                alt=""
+                style="align-self: center"
+                class="mb-72"
+              >
+              <img
+                :src="require(`~/assets/images/landing/how-it-works/${hiw4.desc[1].img}`)"
+                alt=""
+                style="align-self: center"
+                class="mb-72"
+              >
+              <img
+                :src="require(`~/assets/images/landing/how-it-works/${hiw4.desc[2].img}`)"
+                alt=""
+                style="align-self: center"
+                class="mb-72"
+              >
+            </div>
           </div>
           <!-- Right end -->
         </div>
+      </div>
+      <h2 class="md:hidden w-full font-bold landing-font-38 text-black mb-[20px] mx-6 pt-20">
+        {{ hiw4.title }}
+      </h2>
+      <div v-for="(item, index) in hiw4.desc" :key="index" class="md:hidden w-full flex flex-wrap mx-6 pb-6">
+        <div class="w-full md:mb-0 mt-3 md:w-1/3 self-center pr-0 order-1">
+          <h2 class="w-full font-bold landing-font-28 text-black mb-[20px]">
+            {{ item.title }}
+          </h2>
+          <p class="landing-font-18">{{ item.desc }}</p>
+        </div>
+        <!-- Left end -->
+        <!-- Right -->
+        <div class="w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
+          <img
+            :src="require(`~/assets/images/landing/how-it-works/${item.img}`)"
+            alt=""
+            style="align-self: center"
+          >
+        </div>
+        <!-- Right end -->
       </div>
     </section>
     <section class=" full-width w-full bg-how-it-works2 h-auto md:pt-[115px] pt-12 md:pb-[111px] pb-12">
@@ -112,19 +162,21 @@
               {{ hiw5.title }}
             </h2>
             <img
-              :src="hiw5.img"
+              :src="require(`~/assets/images/landing/how-it-works/${hiw5.img}`)"
               alt=""
               class="mx-auto"
             >
           </div>
-          <div class=" w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2">
+          <div
+            class=" w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2"
+          >
             <div
               v-for="(item, index) in hiw5.desc"
               :key="index"
               class="landing-transition px-[30px] pt-11 bg-white rounded-md hover:shadow-xl"
             >
               <img
-                :src="item.img"
+                :src="require(`~/assets/images/landing/how-it-works/${item.img}`)"
                 :alt="item.title"
                 class="h-[40px] mb-[16px]"
               >
@@ -138,19 +190,19 @@
           </div>
           <div class="w-full landing-font-18 mt-[60px] text-center order-3">
             <a
-              href=""
+              :href="hiw5.btn[0].link"
               class="hover:no-underline text-green font-semibold"
             >
-              Xem thêm cách chúng tôi bảo vệ dữ liệu của bạn
+              {{ hiw5.btn[0].text }}
               <i class="el-icon-right" />
             </a>
           </div>
           <div class="w-full landing-font-18 mt-3 text-center order-4">
             <a
-              href=""
+              :href="hiw5.btn[1].link"
               class="hover:no-underline text-green font-semibold"
             >
-              Các tính năng bảo mật trong ứng dụng <i class="el-icon-right" />
+              {{ hiw5.btn[1].text }} <i class="el-icon-right" />
             </a>
           </div>
         </div>
@@ -163,64 +215,144 @@ export default {
   layout: 'landing',
   data () {
     return {
+      title: 'Locker giúp bạn tận hưởng cuộc sống online an toàn và liền mạch',
       hiw1: {
-        img: require('~/assets/images/landing/how-it-works/save_password.png'),
+        img: 'save_password.png',
         title: 'Lưu mật khẩu khi bạn đăng nhập',
         desc: 'Ngay khi bạn đăng nhập một website lần đầu tiên, Locker sẽ giúp bạn lưu mật khẩu để sử dụng cho lần đăng nhập sau.'
       },
       hiw2: {
-        img: require('~/assets/images/landing/how-it-works/auto_login.png'),
+        img: 'auto_login.png',
         title: 'Tự động đăng nhập chỉ với 1 click',
         desc: 'Locker tự động điền mật khẩu và đăng nhập vào các trang web và ứng dụng yêu thích trên PC, smartphone, tablet.'
       },
       hiw3: {
-        img: require('~/assets/images/landing/how-it-works/access_anytime.png'),
+        img: 'access_anytime.png',
         title: 'Truy cập mật khẩu mọi lúc, mọi nơi',
         desc: 'Bạn có thể truy cập mật khẩu của mình mọi lúc, mọi nơi, ngay cả khi đang không có kết nối mạng.'
       },
       hiw4: {
-        img: require('~/assets/images/landing/how-it-works/save_time.png'),
         title: 'Tiết kiệm thời gian và công sức',
         desc: [
           {
+            img: 'save_time.png',
             title: 'Đăng nhập nhanh hơn',
             desc: 'Tự động điền thông tin đăng nhập và mật khẩu các trang web mà bạn sử dụng chỉ với 1 click, có thể sử dụng FaceID và TouchID.'
           },
           {
+            img: 'save_time.png',
             title: 'Lướt web và mua sắm dễ dàng',
             desc: 'Tự động điền thông tin thẻ thanh toán VISA/Mastercard khi bạn mua hàng online trên các trang thương mại điện tử.'
           },
           {
+            img: 'save_time.png',
             title: 'Điền tờ khai nhanh chóng',
             desc: 'Bạn có thể lưu thông tin cá nhân bao gồm tên, tuổi, địa chỉ, mã ZIP,... để tự động điền vào các mẫu tờ khai trực tuyến chỉ trong 3s.'
           }
-        ]
+        ],
+        btn: {
+          text: 'Xem tất cả tính năng',
+          link: '#'
+        }
       },
       hiw5: {
-        img: require('~/assets/images/landing/how-it-works/boundary.svg'),
+        img: 'boundary.svg',
         title: 'Dữ liệu của bạn được bảo vệ an toàn và bí mật',
         desc: [
           {
-            img: require('~/assets/images/landing/how-it-works/master_password.svg'),
+            img: 'master_password.svg',
             title: 'Master password',
             desc: 'Mật khẩu chính là mật khẩu duy nhất bạn cần nhớ để truy cập vào mọi dữ liệu khác trong Locker.'
           },
           {
-            img: require('~/assets/images/landing/how-it-works/zero_knowledge.svg'),
+            img: 'zero_knowledge.svg',
             title: 'Zero-knowledge',
             desc: 'Không ai có thể xem được dữ liệu của bạn, kể cả đội ngũ nhân viên Locker. Bạn là người duy nhất có thể truy cập vào dữ liệu Locker của riêng bạn.'
           },
           {
-            img: require('~/assets/images/landing/how-it-works/protect.svg'),
+            img: 'protect.svg',
             title: 'Bảo vệ trước tin tặc',
             desc: 'Ứng dụng được kiểm tra bảo mật định kì bởi các kĩ sư bảo mật có trình độ cao.'
           },
           {
-            img: require('~/assets/images/landing/how-it-works/encryption.svg'),
+            img: 'encryption.svg',
             title: 'Mã hóa đầu cuối',
             desc: 'Tất cả dữ liệu được mã hóa đầu cuối khi truyền tải giữa các ứng dụng khách.'
           }
+        ],
+        btn: [
+          {
+            text: 'Xem thêm cách chúng tôi bảo vệ dữ liệu của bạn',
+            link: '#'
+          },
+          {
+            text: 'Các tính năng bảo mật trong ứng dụng',
+            link: '#'
+          }
         ]
+      }
+    }
+  },
+  mounted () {
+    const save1 = document.getElementById('save1')
+    const save2 = document.getElementById('save2')
+    const save3 = document.getElementById('save3')
+    // const save1Desc = document.getElementById('save1Desc')
+    // const save2Desc = document.getElementById('save2Desc')
+    // const save3Desc = document.getElementById('save3Desc')
+    window.onscroll = function () {
+      const scrollPos = window.scrollY
+      if (scrollPos < 2600) {
+        save1.classList.remove('opacity-50')
+        save1.classList.remove('pl-[30px]')
+        save1.classList.add('vertical-line')
+        save2.classList.add('opacity-50')
+        save2.classList.add('pl-[30px]')
+        if (save2.classList.contains('vertical-line')) {
+          save2.classList.remove('vertical-line')
+        }
+        save3.classList.add('opacity-50')
+        save3.classList.add('pl-[30px]')
+        if (save3.classList.contains('vertical-line')) {
+          save3.classList.remove('vertical-line')
+        }
+        // save2Desc.classList.add('hidden')
+        // save1Desc.classList.remove('hidden')
+        // save3Desc.classList.add('hidden')
+      } else if (scrollPos > 2600 && scrollPos < 3600) {
+        save2.classList.remove('opacity-50')
+        save2.classList.remove('pl-[30px]')
+        save2.classList.add('vertical-line')
+        save1.classList.add('opacity-50')
+        save1.classList.add('pl-[30px]')
+        if (save1.classList.contains('vertical-line')) {
+          save1.classList.remove('vertical-line')
+        }
+        save3.classList.add('opacity-50')
+        save3.classList.add('pl-[30px]')
+        if (save3.classList.contains('vertical-line')) {
+          save3.classList.remove('vertical-line')
+        }
+        // save1Desc.classList.add('hidden')
+        // save2Desc.classList.remove('hidden')
+        // save3Desc.classList.add('hidden')
+      } else {
+        save3.classList.remove('opacity-50')
+        save3.classList.remove('pl-[30px]')
+        save3.classList.add('vertical-line')
+        save1.classList.add('opacity-50')
+        save1.classList.add('pl-[30px]')
+        if (save1.classList.contains('vertical-line')) {
+          save1.classList.remove('vertical-line')
+        }
+        save2.classList.add('opacity-50')
+        save2.classList.add('pl-[30px]')
+        if (save2.classList.contains('vertical-line')) {
+          save2.classList.remove('vertical-line')
+        }
+        // save1Desc.classList.add('hidden')
+        // save2Desc.classList.add('hidden')
+        // save3Desc.classList.remove('hidden')
       }
     }
   }
