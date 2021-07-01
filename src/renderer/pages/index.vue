@@ -7,7 +7,7 @@
     >
       <div class="md:pt-[186px] pt-28 mx-auto pl-6 md:pb-32 pb-20">
         <div class="w-full flex flex-wrap justify-end">
-          <div class="lg:max-w-[570px] md:w-1/2 order-1 mb-8 md:mb-0">
+          <div class="lg:max-w-[570px] md:w-1/2 order-1 mb-8 md:mb-0 self-center">
             <h1 class="text-left font-bold text-black landing-font-50 mb-[24px]">
               {{ section1.title }}
             </h1>
@@ -42,16 +42,16 @@
             </div>
           </div>
           <!-- Right -->
-          <div class="hidden md:block md:w-1/2 order-2 jusify-self-end top-[173px] pr-0">
+          <div class="hidden md:block md:w-1/2 order-2 justify-self-end top-[173px] pr-0">
             <img
-              src="~/assets/images/landing/index/img1.png"
+              src="~/assets/images/landing/index/img.png"
               alt=""
-              style="width: 100%"
+              style="width: 90%; float: right"
             >
           </div>
           <div class="w-full md:hidden order-2">
             <img
-              src="~/assets/images/landing/index/img1_1.png"
+              src="~/assets/images/landing/index/img_1.png"
               alt=""
             >
           </div>
@@ -69,7 +69,7 @@
       <div class="max-w-6xl mx-auto px-6">
         <div class="w-full flex flex-wrap">
           <div class="w-full md:mb-0 md:pt-[115px] pt-20 text-center order-1">
-            <h2 class=" w-full font-bold landing-font-38 text-black mb-[20px] max-w-[589px] mx-auto">
+            <h2 class=" w-full font-bold landing-font-38 text-black mb-[20px] max-w-[650px] mx-auto">
               {{ section2.title }}
             </h2>
             <img
@@ -203,7 +203,7 @@
         class="w-full rounded py-[40px] px-[65px] flex justify-between align-middle md:flex-row flex-col"
         style="background-color: #f5f6f7"
       >
-        <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-28 max-w-max text-center mb-6">
+        <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-28 font-semibold max-w-max text-center mb-6 ">
           {{ cta1.title }}
         </p>
 
@@ -264,33 +264,42 @@
       <div
         class="hidden lg:inline-block w-full h-auto text-center mt-20 mb-36 flex flex-nowrap justify-center gap-x-6"
       >
-        <img
-          id="mobile"
-          src="~/assets/images/landing/index/mobile_rotated.png"
-          class="inline self-end transition duration-300 ease-in-out;"
-          style="width: 8%; transform: translate3d(-120px, 30px, 0px) rotateZ(28deg);"
-        >
-        <img
-          id="tablet"
-          src="~/assets/images/landing/index/tablet_rotated.png"
-          class="inline self-end transition duration-300 ease-in-out;"
-          style="width: 14%; transform: translate3d(180px, 50px, 0px) rotateZ(10deg);"
-        >
-        <img
-          id="mac"
-          src="~/assets/images/landing/index/mac_rotated.png"
-          class="inline transition duration-300 ease-in-out;"
-          style="width: 50%; transform: translate3d(500px, -50px, 0px) rotateZ(-25deg);"
-        >
+        <div class="inline w-2/12">
+          <img
+            id="mobile"
+            src="~/assets/images/landing/index/mobile_rotated.png"
+            class="inline self-end transition duration-150 ease-in-out;"
+            style="width: 8%; transform: translate3d(-120px, 30px, 0px) rotateZ(28deg);"
+          >
+        </div>
+        <div class="inline w-2/12">
+          <img
+            id="tablet"
+            src="~/assets/images/landing/index/tablet_rotated.png"
+            class="inline self-end transition duration-150 ease-in-out;"
+            style="width: 14%; transform: translate3d(180px, 50px, 0px) rotateZ(10deg);"
+          >
+        </div>
+        <div class="inline w-8/12">
+          <img
+            id="mac"
+            src="~/assets/images/landing/index/mac_rotated.png"
+            class="inline transition duration-150 ease-in-out;"
+            style="width: 50%; transform: translate3d(500px, -50px, 0px) rotateZ(-25deg);"
+          >
+        </div>
+
       </div>
       <div class="lg:hidden w-full h-[412px] mt-28 mb-16 relative">
         <img
           src="~/assets/images/landing/index/mobile_rotated.png"
-          class="lg:hidden mx-6 my-12 w-[118px] h-[240px] self-end" style="position: absolute; left: 150px; bottom: 0px; z-index: 3;"
+          class="lg:hidden mx-6 my-12 w-[118px] h-[240px] self-end"
+          style="position: absolute; left: 150px; bottom: 0px; z-index: 3;"
         >
         <img
           src="~/assets/images/landing/index/tablet_rotated.png"
-          class="lg:hidden mx-6 my-12 w-[206px] h-[282px] self-end" style="position: absolute; z-index: 2; bottom: 0px; left: 200px;"
+          class="lg:hidden mx-6 my-12 w-[206px] h-[282px] self-end"
+          style="position: absolute; z-index: 2; bottom: 0px; left: 200px;"
         >
         <img
           src="~/assets/images/landing/index/mac_rotated.png"
@@ -320,8 +329,8 @@
               <img
                 :src="require(`~/assets/images/landing/index/${item.img}`)"
                 :alt="item.name"
-                class="max-h-full h-auto mx-auto"
-                style="max-width: 50%"
+                class="max-h-full mx-auto"
+                style="align-self: center; max-width: 55%; max-height: 55%;"
               >
             </div>
 
@@ -439,7 +448,7 @@
             <div
               v-for="(item, index) in start.options"
               :key="index"
-              class=" landing-transition p-10 w-full md:w-[380px] bg-white relative z-10 rounded-xl hover:shadow-xl"
+              class=" landing-transition p-12 w-full md:w-[380px] bg-white relative z-10 rounded-xl hover:shadow-xl"
             >
               <img
                 :src="require(`~/assets/images/landing/index/${item.img}`)"
@@ -531,85 +540,85 @@ export default {
         platforms: [
           {
             name: 'Windows',
-            imgGray: require('~/assets/images/landing/index/windows.svg'),
-            img: 'windows.svg'
+            imgGray: require('~/assets/images/landing/index/windows.png'),
+            img: 'windows.png'
           },
           {
             name: 'MacOS',
-            imgGray: require('~/assets/images/landing/index/macos.svg'),
-            img: 'macos.svg'
+            imgGray: require('~/assets/images/landing/index/macos.png'),
+            img: 'macos.png'
           },
           {
             name: 'Linux',
-            imgGray: require('~/assets/images/landing/index/linux.svg'),
-            img: 'linux.svg'
+            imgGray: require('~/assets/images/landing/index/linux.png'),
+            img: 'linux.png'
           },
           {
             name: 'Ubuntu',
-            imgGray: require('~/assets/images/landing/index/ubuntu.svg'),
-            img: 'ubuntu.svg'
+            imgGray: require('~/assets/images/landing/index/ubuntu.png'),
+            img: 'ubuntu.png'
           },
           {
             name: 'Chrome',
-            imgGray: require('~/assets/images/landing/index/chrome.svg'),
-            img: 'chrome.svg'
+            imgGray: require('~/assets/images/landing/index/chrome.png'),
+            img: 'chrome.png'
           },
           {
             name: 'Safari',
-            imgGray: require('~/assets/images/landing/index/safari.svg'),
-            img: 'safari.svg'
+            imgGray: require('~/assets/images/landing/index/safari.png'),
+            img: 'safari.png'
           },
           {
             name: 'Firefox',
-            imgGray: require('~/assets/images/landing/index/firefox.svg'),
-            img: 'firefox.svg'
+            imgGray: require('~/assets/images/landing/index/firefox.png'),
+            img: 'firefox.png'
           },
           {
             name: 'Microsoft Edge',
-            imgGray: require('~/assets/images/landing/index/edge.svg'),
-            img: 'edge.svg'
+            imgGray: require('~/assets/images/landing/index/edge.png'),
+            img: 'edge.png'
           },
           {
             name: 'Cốc Cốc',
-            imgGray: require('~/assets/images/landing/index/coccoc.svg'),
-            img: 'coccoc.svg'
+            imgGray: require('~/assets/images/landing/index/coccoc.png'),
+            img: 'coccoc.png'
           },
           {
             name: 'Opera',
-            imgGray: require('~/assets/images/landing/index/opera.svg'),
-            img: 'opera.svg'
+            imgGray: require('~/assets/images/landing/index/opera.png'),
+            img: 'opera.png'
           },
           {
             name: 'iOS',
-            imgGray: require('~/assets/images/landing/index/ios.svg'),
-            img: 'ios.svg'
+            imgGray: require('~/assets/images/landing/index/ios.png'),
+            img: 'ios.png'
           },
           {
             name: 'Android',
-            imgGray: require('~/assets/images/landing/index/android.svg'),
-            img: 'android.svg'
+            imgGray: require('~/assets/images/landing/index/android.png'),
+            img: 'android.png'
           }
         ]
       },
 
       benefits: [
         {
-          img: 'img2.png',
+          img: 'img1.png',
           title: 'Đăng nhập dễ dàng',
           desc: 'Đăng nhập mọi trang web dễ dàng chỉ với vài click chuột, đăng nhập bằng FaceID và TouchID trên smartphone. Bạn không cần phải nhớ hay gõ mật khẩu như trước đây!'
         },
         {
-          img: 'img3.png',
+          img: 'img2.png',
           title: 'Mua sắm online nhanh chóng',
           desc: 'Tự động điền thông tin thẻ thanh toán vào trang mua sắm trực tuyến. Tiết kiệm công sức đọc và điền số thẻ Visa/Mastercard.'
         },
         {
-          img: 'img4.png',
+          img: 'img3.png',
           title: 'Tiết kiệm thời gian',
           desc: 'Locker giúp bạn tiết kiệm thời gian nhập mật khẩu, điền thông tin thẻ tín dụng, thông tin cá nhân. Giúp bạn dành thời gian cho những việc có ý nghĩa.'
         },
         {
-          img: 'img5.png',
+          img: 'img4.png',
           title: 'Chia sẻ mật khẩu',
           desc: 'Chia sẻ mật khẩu với nhóm làm việc của bạn một cách an toàn và bảo mật. Hỗ trợ mã hóa đầu cuối và quản lý các mật khẩu chia sẻ của bạn.'
         }
@@ -656,7 +665,7 @@ export default {
           {
             img: 'start-personal.png',
             title: 'Cá nhân',
-            desc: 'Miễn phí vĩnh viễn. Khả năng lưu trữ không giới hạn mật khẩu và đồng bộ hóa nhiều thiết bị.',
+            desc: 'Miễn phí vĩnh viễn. Lưu trữ mật khẩu, thẻ tín dụng, ghi chú cá nhân và sử dụng trên mọi thiết bị.',
             btn: {
               text: 'Đăng ký miễn phí',
               link: '#'
@@ -665,7 +674,7 @@ export default {
           {
             img: 'start-business.png',
             title: 'Doanh nghiệp',
-            desc: 'Dùng thử 7 ngày các tính năng quản lý và thiết lập chính sách mật khẩu cho đội ngũ của bạn.',
+            desc: 'Dùng thử 10 ngày. Chia sẻ mật khẩu an toàn, thiết lập chính sách và quản lý bảo mật cho đơn vị của bạn.',
             btn: {
               text: 'Bắt đầu dùng thử',
               link: '#'

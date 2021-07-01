@@ -7,12 +7,112 @@
         class="mx-auto mt-[15px] mb-5"
       >
       <p class="landing-font-20 max-w-[600px] text-center mx-auto">{{ header.desc }}</p>
-      <div class="mx-auto mt-[45px] max-w-[730px]">
-        <img
-          :src="require(`~/assets/images/landing/password-generator/${header.img}`)"
-          class="shadow-xl rounded-lg"
-        >
+      <!--      Tool-->
+      <div class="mx-auto h-auto mt-[45px] max-w-[730px] shadow-xl rounded-xl">
+        <!--        <img-->
+        <!--          :src="require(`~/assets/images/landing/password-generator/${header.img}`)"-->
+        <!--        >-->
+        <div style="background-color: #F5F6F7; border-radius: 10px 10px 0 0;" class="h-auto flex flex-wrap pb-5 pr-6">
+          <div class="w-11/12 h-auto break-words">
+            <p class="landing-font-34 font-semibold mt-8 ml-9 max-w-[600px]" id="password">{{ password }}</p>
+          </div>
+          <div class="w-1/12 self-center pt-6">
+            <button @click="regenerate">
+              <img src="~/assets/images/landing/password-generator/refresh.png"
+                   style="width: 50px; height: 50px;"
+              >
+            </button>
+          </div>
+
+        </div>
+        <div class="mx-9 pt-6 flex flex-wrap">
+          <div class="w-full sm:w-1/2">
+            <p class="landing-font-16 font-semibold">Mật khẩu mạnh:</p>
+            <PasswordStrength v-if="password" :score="passwordStrength.score"/>
+            <p class="landing-font-16 font-semibold mt-8">Độ dài</p>
+            <div>
+              <input v-model="options.length" @change="updateLength" class="h-[44px] w-[70px] mt-4 mr-3" type="number"
+                     min="8" max="64"
+              >
+              <!--            <input type="range" min="0" max="50" v-model="form_gen.length">-->
+              <el-slider
+                v-model="options.length"
+                :min="8"
+                :max="64"
+                :debounce="800"
+                @change="regenerate"
+              />
+            </div>
+          </div>
+          <div class="w-full sm:w-1/2">
+            <!--            <div v-for="(item, index) in form_gen.check_list" class="mb-[14px] md:pl-10 pl-0" :key="index">-->
+            <!--              <input type="checkbox" :id="item.value" v-model="item.checked" :key="index">-->
+            <!--              <label :for="item.value" :key="index" class="landing-font-14" style="color: #5A6176"> {{-->
+            <!--                  item.label-->
+            <!--                }}</label>-->
+            <!--              <el-checkbox-->
+            <!--                v-for="(item, index) in form_gen.check_list" :key="index"-->
+            <!--                v-model="item.checked"-->
+            <!--                class="mb-[14px] md:pl-10 pl-0"-->
+            <!--              >-->
+            <!--              {{item.label}}-->
+            <!--              </el-checkbox>-->
+            <!--              <br>-->
+            <!--            </div>-->
+            <el-checkbox
+              v-model="options.uppercase"
+              class="mb-[14px] md:pl-10 pl-0"
+              @change="regenerate"
+            >
+              {{ tools.uppercase }}
+            </el-checkbox>
+            <el-checkbox
+              v-model="options.lowercase"
+              class="mb-[14px] md:pl-10 pl-0"
+              @change="regenerate"
+            >
+              {{ tools.lowercase }}
+            </el-checkbox>
+            <el-checkbox
+              v-model="options.number"
+              class="mb-[14px] md:pl-10 pl-0"
+              @change="regenerate"
+            >
+              {{ tools.digits }}
+            </el-checkbox>
+            <el-checkbox
+              v-model="options.special"
+              class="mb-[14px] md:pl-10 pl-0"
+              @change="regenerate"
+            >
+              {{ tools.symbols }}
+            </el-checkbox>
+            <el-checkbox
+              v-model="options.ambiguous"
+              class="mb-[14px] md:pl-10 pl-0"
+              @change="regenerate"
+            >
+              {{ tools.ambiguous }}
+            </el-checkbox>
+          </div>
+          <div class="w-full mt-9 grid sm:grid-cols-2 grid-cols-1 gap-5 mb-[50px]">
+            <button
+              class="landing-btn w-auto"
+              @click="copy_password"
+            >
+              Copy Password
+            </button>
+
+            <button
+              class="landing-btn2 w-auto"
+            >
+              Lưu với Locker
+            </button>
+
+          </div>
+        </div>
       </div>
+      <!--Tool end-->
       <!-- CTA 1 -->
       <div class="md:mt-36 mt-24">
         <div
@@ -20,7 +120,7 @@
           style="background-color: #f5f6f7"
         >
           <div>
-            <h2 class="landing-font-28 font-semibold mb-3 text-left">{{ cta1.title }}</h2>
+            <h2 class="landing-font-28 font-semibold mb-3 sm:text-left text-center">{{ cta1.title }}</h2>
             <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-14 max-w-max text-center mb-6">
               {{ cta1.desc }}
             </p>
@@ -80,7 +180,7 @@
         >
           <div class="w-full flex flex-wrap">
             <div class="w-1/12 circle ml-6">
-              <p class="text-white landing-font-38 font-bold mx-auto my-auto">{{ index+1 }}</p>
+              <p class="text-white landing-font-38 font-bold mx-auto my-auto">{{ index + 1 }}</p>
             </div>
             <div class="max-w-[705px] ml-6">
               <h2>{{ tip.title }}</h2>
@@ -103,7 +203,7 @@
                 href=""
                 class="hover:no-underline text-green font-semibold"
               >
-                {{ use_locker.link }} <i class="el-icon-right" />
+                {{ use_locker.link }} <i class="el-icon-right"/>
               </a>
             </div>
           </div>
@@ -138,7 +238,7 @@
                   href=""
                   class="hover:no-underline text-green font-semibold"
                 >
-                  {{ item.link }} <i class="el-icon-right" />
+                  {{ item.link }} <i class="el-icon-right"/>
                 </a>
               </div>
             </div>
@@ -169,7 +269,10 @@
 </template>
 
 <script>
+import PasswordStrength from '../components/password/PasswordStrength'
+
 export default {
+  components: { PasswordStrength },
   layout: 'landing',
   data () {
     return {
@@ -177,6 +280,32 @@ export default {
         title: 'Tạo mật khẩu mạnh ngẫu nhiên',
         desc: 'Công cụ giúp bạn tạo mật khẩu mạnh, duy nhất, và hoàn toàn ngẫu nhiên giúp bảo mật các tài khoản trực tuyến tốt hơn.',
         img: 'tool.png'
+      },
+
+      password: '',
+      strength: '',
+      tools: {
+        password_generator: 'Tạo mật khẩu mạnh',
+        password_generator_desc: 'Tạo một mật khẩu mạnh và ngẫu nhiên cho tài khoản của bạn',
+        password_health: 'Sức khỏe mật khẩu',
+        password_health_desc: 'Xác định các mật khẩu yếu, trùng lặp có thể khiến bạn bị tấn công bởi tội phạm mạng',
+        data_breach: 'Cảnh báo lộ dữ liệu',
+        data_breach_desc: 'Kiểm tra xem dữ liệu nhạy cảm của bạn có bị lộ trên internet hay không',
+        copy_password: 'Sao chép',
+        show_options: 'Tùy chọn',
+        uppercase: 'Sử dụng chữ in hoa (A-Z)',
+        lowercase: 'Sử dụng chữ in thường (a-z)',
+        digits: 'Sử dụng số (0-9)',
+        symbols: 'Sử dụng ký tự đặc biệt (@!$%*)',
+        ambiguous: 'Tránh các ký tự dễ nhầm lẫn'
+      },
+      options: {
+        length: 16,
+        uppercase: true,
+        lowercase: true,
+        number: true,
+        special: true,
+        ambiguous: false
       },
       cta1: {
         title: 'Lưu trữ mật khẩu an toàn với Locker',
@@ -188,7 +317,7 @@ export default {
       },
       why: {
         title: 'Tại sao bạn cần mật khẩu mạnh?',
-        img: 'img1.png',
+        img: 'why.png',
         desc: 'Hơn <span class="text-green underline">80% các vụ vi phạm dữ liệu là do mật khẩu yếu hoặc bị đánh cắp</span>, theo báo cáo của Verizon. Vì vậy, nếu bạn muốn bảo vệ thông tin cá nhân và tài sản của mình, thì việc tạo mật khẩu an toàn là bước quan trọng đầu tiên. Dưới đây là một số mẹo giúp bạn tăng độ an toàn cho mật khẩu, đồng thời cải thiện bảo mật cho tài khoản trực tuyến, giúp bảo vệ tài sản và thông tin cá nhân của bạn.'
       },
       tips: {
@@ -235,7 +364,7 @@ export default {
       },
       use_locker: {
         title: 'Sử dụng công cụ tạo mật khẩu tích hợp vào trình duyệt và smartphone',
-        img: 'img2.png',
+        img: 'save.png',
         desc: 'Bạn có thể sử dụng trình tạo mật khẩu mạnh tích hợp trong trình duyệt hoặc ứng dụng trên điện thoại của bạn. Chỉ việc tải Locker là bạn có thể tạo mật khẩu an toàn ngay khi bạn đăng ký tài khoản trên bất kỳ một website nào, ngay sau đó Locker sẽ ghi nhớ mật khẩu giúp bạn để sử dụng cho những lần sau.',
         link: 'Xem cách Locker hoạt động'
       },
@@ -264,6 +393,54 @@ export default {
           link: '#'
         }
       }
+    }
+  },
+  mounted () {
+    this.regenerate()
+  },
+  methods: {
+    gen_password () {
+      let result = ''
+      let characters = ''
+      const passLength = this.form_gen.length
+      const listLength = this.form_gen.check_list.length
+      for (let i = 0; i < listLength - 1; i++) {
+        if (this.form_gen.check_list[i].checked) {
+          characters += this.form_gen.check_list[i].characters
+        }
+      }
+      if (this.form_gen.check_list[listLength - 1].checked) {
+        for (const chr in this.form_gen.check_list[listLength - 1].characters) {
+          characters = characters.replace(this.form_gen.check_list[listLength - 1].characters[chr], '')
+        }
+      }
+      for (let i = 0; i < passLength; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length))
+      }
+      this.form_gen.password = result
+    },
+    copy_password () {
+      const cb = navigator.clipboard
+      const paragraph = document.getElementById('password')
+      cb.writeText(paragraph.innerText).then(() => alert('Password copied'))
+    },
+    async regenerate () {
+      if (!this.options.lowercase && !this.options.uppercase && !this.options.lowercase && !this.options.number && !this.options.special) {
+        this.options.lowercase = true
+      }
+      this.password = await this.$passwordGenerationService.generatePassword(this.options)
+    },
+    updateLength () {
+      this.options.length = parseInt(this.options.length)
+      this.regenerate()
+    }
+  },
+  computed: {
+    passwordStrength () {
+      if (this.password) {
+        return this.$passwordGenerationService.passwordStrength(this.password, ['cystack']) || {}
+      }
+      return {}
     }
   }
 }

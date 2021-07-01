@@ -13,86 +13,89 @@
         </a>
       </div>
     </section>
-    <section class="md:mt-[150px] mt-16">
-      <div class="w-full flex flex-wrap">
-        <div class="w-full max-w-[530px] mt-3 md:w-1/2 pr-0 pl-4 md:order-2 self-center order-1">
-          <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ security1.title }}
-          </h2>
-          <p class="landing-font-18">{{ security1.desc }}</p>
+    <section class="mb-36">
+      <div class="md:mt-[150px] mt-16">
+        <div class="w-full flex flex-wrap">
+          <div class="w-full max-w-[530px] mt-3 md:w-1/2 pr-0 pl-4 md:order-2 self-center order-1">
+            <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
+              {{ security1.title }}
+            </h2>
+            <p class="landing-font-18">{{ security1.desc }}</p>
+          </div>
+          <!-- Right end -->
+          <!-- Left -->
+          <div class="w-full md:w-1/2 flex align-middle justify-center order-1 mt-4 md:mt-0">
+            <img
+              :src="require(`~/assets/images/landing/security/${security1.img}`)"
+              alt=""
+              style="align-self: center"
+            >
+          </div>
+          <!-- Left end -->
         </div>
-        <!-- Right end -->
-        <!-- Left -->
-        <div class="w-full md:w-1/2 flex align-middle justify-center order-1 mt-4 md:mt-0">
-          <img
-            :src="require(`~/assets/images/landing/security/${security1.img}`)"
-            alt=""
-            style="align-self: center"
-          >
+      </div>
+      <div class="md:mt-[70px] mt-8">
+        <div class="w-full flex flex-wrap">
+          <div class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:pr-12 pr-0 order-1">
+            <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
+              {{ security2.title }}
+            </h2>
+            <p class="landing-font-18">{{ security2.desc }}</p>
+          </div>
+          <!-- Left end -->
+          <!-- Right -->
+          <div class="w-full md:w-1/2 pl-0 flex align-middle justify-center mt-4 md:mt-0 order-2">
+            <img
+              :src="require(`~/assets/images/landing/security/${security2.img}`)"
+              alt=""
+              style="align-self: center"
+            >
+          </div>
+          <!-- Right end -->
         </div>
-        <!-- Left end -->
+      </div>
+      <div class="md:mt-[111px] mt-14">
+        <div class="w-full flex flex-wrap">
+          <div class="w-full mt-3 md:w-2/5 pr-0 pl-4 md:order-2 self-center order-1">
+            <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
+              {{ security3.title }}
+            </h2>
+            <p class="landing-font-18">{{ security3.desc }}</p>
+          </div>
+          <!-- Left end -->
+          <!-- Right -->
+          <div class="w-full md:w-1/2 pl-0 md:pl-4 mt-4 md:mt-0 flex align-middle justify-center mt-4 md:mt-0 order-1">
+            <img
+              :src="require(`~/assets/images/landing/security/${security3.img}`)"
+              alt=""
+              style="align-self: center"
+            >
+          </div>
+          <!-- Right end -->
+        </div>
+      </div>
+      <div class="md:mt-[70px] mt-8">
+        <div class="w-full flex flex-wrap">
+          <div class="w-full mt-3 md:w-1/2 self-center pr-10 order-1">
+            <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
+              {{ security4.title }}
+            </h2>
+            <p class="landing-font-18">{{ security4.desc }}</p>
+          </div>
+          <!-- Left end -->
+          <!-- Right -->
+          <div class="w-full md:w-1/2 pl-0 md:pl-4 flex align-middle justify-center mt-4 md:mt-0 order-2">
+            <img
+              :src="require(`~/assets/images/landing/security/${security4.img}`)"
+              alt=""
+              style="align-self: center"
+            >
+          </div>
+          <!-- Right end -->
+        </div>
       </div>
     </section>
-    <section class="md:mt-[70px] mt-8">
-      <div class="w-full flex flex-wrap">
-        <div class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:pr-12 pr-0 order-1">
-          <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ security2.title }}
-          </h2>
-          <p class="landing-font-18">{{ security2.desc }}</p>
-        </div>
-        <!-- Left end -->
-        <!-- Right -->
-        <div class="w-full md:w-1/2 pl-0 flex align-middle justify-center mt-4 md:mt-0 order-2">
-          <img
-            :src="require(`~/assets/images/landing/security/${security2.img}`)"
-            alt=""
-            style="align-self: center"
-          >
-        </div>
-        <!-- Right end -->
-      </div>
-    </section>
-    <section class="md:mt-[111px] mt-14">
-      <div class="w-full flex flex-wrap">
-        <div class="w-full mt-3 md:w-2/5 pr-0 pl-4 md:order-2 self-center order-1">
-          <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ security3.title }}
-          </h2>
-          <p class="landing-font-18">{{ security3.desc }}</p>
-        </div>
-        <!-- Left end -->
-        <!-- Right -->
-        <div class="w-full md:w-1/2 pl-0 md:pl-4 mt-4 md:mt-0 flex align-middle justify-center mt-4 md:mt-0 order-1">
-          <img
-            :src="require(`~/assets/images/landing/security/${security3.img}`)"
-            alt=""
-            style="align-self: center"
-          >
-        </div>
-        <!-- Right end -->
-      </div>
-    </section>
-    <section class="md:mt-[70px] mt-8">
-      <div class="w-full flex flex-wrap">
-        <div class="w-full mt-3 md:w-1/3 self-center pr-0 order-1">
-          <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ security4.title }}
-          </h2>
-          <p class="landing-font-18">{{ security4.desc }}</p>
-        </div>
-        <!-- Left end -->
-        <!-- Right -->
-        <div class="w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center mt-4 md:mt-0 order-2">
-          <img
-            :src="require(`~/assets/images/landing/security/${security4.img}`)"
-            alt=""
-            style="align-self: center"
-          >
-        </div>
-        <!-- Right end -->
-      </div>
-    </section>
+
     <section
       class="full-width w-full h-auto md:pt-[115px] pt-12 md:pb-[111px] pb-12"
       style="background: #F5F6F7;"
@@ -109,7 +112,9 @@
               class="mx-auto"
             >
           </div>
-          <div class="w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2">
+          <div
+            class="w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2"
+          >
             <div
               v-for="(item, index) in personal.features"
               :key="index"
@@ -142,7 +147,9 @@
               class="mx-auto"
             >
           </div>
-          <div class="w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2">
+          <div
+            class="w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2"
+          >
             <div
               v-for="(item, index) in business.features"
               :key="index"

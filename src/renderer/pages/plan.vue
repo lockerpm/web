@@ -10,7 +10,7 @@
           <div
             v-for="(plan, index) in plans"
             :key="index"
-            class="landing-transition px-10 py-14 w-full md:w-[445px] bg-white relative z-10 rounded-xl relative hover:shadow-xl"
+            class="landing-transition px-9 py-14 w-full md:w-[445px] bg-white relative z-10 rounded-xl relative hover:shadow-xl"
           >
             <p
               v-if="index===2"
@@ -20,7 +20,8 @@
             </p>
             <p class="landing-font-20 text-green">{{ plan.title }}</p>
             <p class="mt-4">
-              <span class="font-bold landing-font-50">{{ plan.price }}</span> <span class="landing-font-18">{{ plan.price_detail }}</span>
+              <span class="font-bold landing-font-50">{{ plan.price }}</span> <span class="landing-font-18"
+            >{{ plan.price_detail }}</span>
             </p>
             <ul class="ml-3 my-[30px]">
               <li
@@ -34,7 +35,7 @@
                   v-if="detail==='Thiết lập Liên hệ Khẩn cấp'"
                   class="info"
                 >
-                  <i class="fa fa-info-circle" />
+                  <i class="fa fa-info-circle"/>
                   <span
                     class="tooltiptext"
                     style="font-size: 11px"
@@ -58,90 +59,90 @@
       <div class="max-w-6xl mx-auto">
         <table class="w-full">
           <thead>
-            <tr>
-              <th class="w-3/12 text-left pl-6 pb-5">Tính năng</th>
-              <th class="w-1/12 pb-5">Free</th>
-              <th class="w-8/36 pb-5">Premium</th>
-              <th class="w-8/36 pb-5">Family</th>
-              <th class="w-8/36 pb-5">Business</th>
-            </tr>
+          <tr>
+            <th class="w-3/12 text-left pl-6 pb-5">Tính năng</th>
+            <th class="w-1/12 pb-5">Free</th>
+            <th class="w-8/36 pb-5">Premium</th>
+            <th class="w-8/36 pb-5">Family</th>
+            <th class="w-8/36 pb-5">Business</th>
+          </tr>
           </thead>
           <tbody>
-            <template v-for="(feature, index) in feature_plan">
-              <tr
-                :key="index"
-                style="background-color: #FBFAF3;"
-              >
-                <td
-                  colspan="100%"
-                  class="py-[18px] pl-6 text-green font-semibold"
-                >
-                  {{ feature.title }}
-                </td>
-              </tr>
-              <tr :key="index">
-                <td
-                  colspan="100%"
-                  class="pb-5"
-                />
-              </tr>
-              <tr
-                v-for="(item, idx) in feature.features"
-                :key="idx"
-              >
-                <td
-                  class="pl-6 landing-font-16 pb-5"
-                  style="color: #5A6176"
-                >
-                  {{ item.label }}
-                </td>
-                <td
-                  v-for="(plan, ind) in item.plans"
-                  :key="ind"
-                  class="text-center pb-5"
-                >
-                  <img
-                    v-if="plan===true"
-                    class="mx-auto"
-                    src="~/assets/images/landing/plan/true.svg"
-                  >
-                  <img
-                    v-else-if="plan===false"
-                    class="mx-auto"
-                    src="~/assets/images/landing/plan/false.svg"
-                  >
-                  <p
-                    v-else
-                    v-html="plan"
-                  />
-                </td>
-              </tr>
-            </template>
-            <tr style="background-color: #FBFAF3;">
-              <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">GIÁ CƯỚC</td>
-              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">0đ</td>
-              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">19,000đ/tháng</td>
-              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">79,000đ/tháng/<br>5 tài khoản</td>
-              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">39,000đ/tháng/<br>tài khoản</td>
-            </tr>
-            <tr>
-              <td />
+          <template v-for="(feature, index) in feature_plan">
+            <tr
+              :key="index"
+              style="background-color: #FBFAF3;"
+            >
               <td
-                v-for="(button, index) in subscription_button"
-                :key="index"
-                class="pt-5"
+                colspan="100%"
+                class="py-[18px] pl-6 text-green font-semibold"
               >
-                <div class="text-center">
-                  <a
-                    class="landing-btn2 w-full sm:w-auto sm:ml-4"
-                    style="font-weight: normal"
-                    href="#"
-                  >
-                    {{ button }}
-                  </a>
-                </div>
+                {{ feature.title }}
               </td>
             </tr>
+            <tr :key="index">
+              <td
+                colspan="100%"
+                class="pb-5"
+              />
+            </tr>
+            <tr
+              v-for="(item, idx) in feature.features"
+              :key="idx"
+            >
+              <td
+                class="pl-6 landing-font-16 pb-5"
+                style="color: #5A6176"
+              >
+                {{ item.label }}
+              </td>
+              <td
+                v-for="(plan, ind) in item.plans"
+                :key="ind"
+                class="text-center pb-5"
+              >
+                <img
+                  v-if="plan===true"
+                  class="mx-auto"
+                  src="~/assets/images/landing/plan/true.svg"
+                >
+                <img
+                  v-else-if="plan===false"
+                  class="mx-auto"
+                  src="~/assets/images/landing/plan/false.svg"
+                >
+                <p
+                  v-else
+                  v-html="plan"
+                />
+              </td>
+            </tr>
+          </template>
+          <tr style="background-color: #FBFAF3;">
+            <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">GIÁ CƯỚC</td>
+            <td class="py-[18px] pl-6 text-green landing-font-16 text-center">0đ</td>
+            <td class="py-[18px] pl-6 text-green landing-font-16 text-center">19,000đ/tháng</td>
+            <td class="py-[18px] pl-6 text-green landing-font-16 text-center">79,000đ/tháng/<br>5 tài khoản</td>
+            <td class="py-[18px] pl-6 text-green landing-font-16 text-center">39,000đ/tháng/<br>tài khoản</td>
+          </tr>
+          <tr>
+            <td/>
+            <td
+              v-for="(button, index) in subscription_button"
+              :key="index"
+              class="pt-5"
+            >
+              <div class="text-center">
+                <a
+                  class="landing-btn2 w-full sm:w-auto sm:ml-4"
+                  style="font-weight: 600"
+                  href="#"
+                >
+                  {{ button }}
+                </a>
+              </div>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -221,7 +222,7 @@
           <div
             v-for="(qa, index) in question.question_list"
             :key="index"
-            class="mb-[70px]"
+            class="mb-[35px]"
           >
             <h3 class="landing-font-22 font-bold mb-3">{{ qa.question }}</h3>
             <p
@@ -230,6 +231,7 @@
             >
               {{ qa.answer }}
             </p>
+            <hr v-if="index!==question.question_list.length-1" class="opacity-50 mt-[35px]" style="color: #CFD6E4">
           </div>
         </div>
       </div>
