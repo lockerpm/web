@@ -5,7 +5,7 @@
     </h1>
     <section class="md:mt-[75px] mt-8">
       <div class="w-full flex flex-wrap">
-        <div class="w-full md:mb-0 mt-3 md:w-2/5 pr-0 md:pl-[110px] md:order-2 self-center order-1">
+        <div class="w-full md:mb-0 mt-3 md:w-2/5 pr-0 md:pl-[110px] md:order-2 self-center order-2">
           <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
             {{ hiw1.title }}
           </h2>
@@ -13,7 +13,7 @@
         </div>
         <!-- Right end -->
         <!-- Left -->
-        <div class="w-full md:w-1/2 pl-0 md:pl-4 flexalign-middle justify-center order-2">
+        <div class="w-full md:w-1/2 pl-0 md:pl-4 flex align-middle justify-center order-1">
           <img
             :src="require(`~/assets/images/landing/how-it-works/${hiw1.img}`)"
             alt=""
@@ -235,17 +235,17 @@ export default {
         title: 'Tiết kiệm thời gian và công sức',
         desc: [
           {
-            img: 'save_time.png',
+            img: 'login.png',
             title: 'Đăng nhập nhanh hơn',
             desc: 'Tự động điền thông tin đăng nhập và mật khẩu các trang web mà bạn sử dụng chỉ với 1 click, có thể sử dụng FaceID và TouchID.'
           },
           {
-            img: 'save_time.png',
+            img: 'shopping.png',
             title: 'Lướt web và mua sắm dễ dàng',
             desc: 'Tự động điền thông tin thẻ thanh toán VISA/Mastercard khi bạn mua hàng online trên các trang thương mại điện tử.'
           },
           {
-            img: 'save_time.png',
+            img: 'login.png',
             title: 'Điền tờ khai nhanh chóng',
             desc: 'Bạn có thể lưu thông tin cá nhân bao gồm tên, tuổi, địa chỉ, mã ZIP,... để tự động điền vào các mẫu tờ khai trực tuyến chỉ trong 3s.'
           }

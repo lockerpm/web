@@ -80,6 +80,10 @@ export default {
   font-size: 38px;
   line-height: 45px;
 }
+.landing-font-34 {
+  font-size: 34px;
+  line-height: 40px;
+}
 .landing-font-32 {
   font-size: 32px;
   line-height: 36px;
@@ -94,6 +98,7 @@ export default {
 }
 .landing-font-20 {
   font-size: 20px;
+  line-height: 32px;
 }
 .landing-font-18 {
   font-size: 18px;
@@ -108,7 +113,7 @@ export default {
 }
 .landing-font-14 {
   font-size: 14px;
-  list-style: 24px;
+  line-height: 24px;
 }
 .landing-font-12 {
   font-size: 12px;

@@ -67,7 +67,7 @@
                     :src="item.img"
                     :alt="item.name"
                     class="max-h-full h-auto mx-auto"
-                    style="max-width: 50%"
+                    style="max-width: 55%; max-height: 55%; align-self: center"
                   >
                 </div>
 
@@ -92,8 +92,8 @@
                   <img
                     :src="item.img"
                     :alt="item.name"
-                    class="max-h-full h-auto mx-auto"
-                    style="max-width: 50%"
+                    class="h-auto mx-auto"
+                    style="max-width: 55%; max-height: 55%; align-self: center"
                   >
                 </div>
 
@@ -103,8 +103,7 @@
           </div>
         </div>
         <div
-          class="w-[510px] h-auto rounded-xl mb-10"
-          style="background: #F5F6F7;"
+          class="w-[510px] h-[382px] rounded-xl mb-10 bg-mobile-app" style="background-repeat: no-repeat; background-size: contain;"
         >
           <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">Ứng dụng di động</h2>
           <div class="max-w-full mx-auto justify-center flex gap-x-4">
@@ -125,19 +124,18 @@
               </a>
             </div>
           </div>
-          <div class="w-full">
-            <img src="~/assets/images/landing/download/mobile_app.png">
-          </div>
+<!--          <div class="w-full">-->
+<!--            <img src="~/assets/images/landing/download/mobile_app.png">-->
+<!--          </div>-->
         </div>
         <div
-          class="w-[510px] h-auto rounded-xl mb-10"
-          style="background: #F5F6F7;"
+          class="w-[510px] h-auto rounded-xl mb-10 bg-web-app" style="background-repeat: no-repeat; background-size: auto;"
         >
           <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">Truy cập phiên bản web</h2>
           <p class="text-center landing-font-14 w-[400px] mx-auto">Chỉ cần một thiết bị bất kỳ có hỗ trợ trình duyệt web, bạn đã có thể truy cập Locker tại: <span class="text-green"><a href="#">locker.io/vault</a></span></p>
-          <div class="w-full h-[236px] bg-web-app">
+          <div class="w-full h-[236px]">
             <a
-              class="landing-btn w-full text-center w-[207px] h-[45px] ml-[141px] mt-[125px]"
+              class="landing-btn w-full text-center w-[207px] h-[45px] ml-[151px] mt-[121px]"
               href="#"
             >
               locker.io/vault
@@ -167,45 +165,45 @@ export default {
       os: [
         {
           name: 'Windows',
-          img: require('~/assets/images/landing/index/windows.svg')
+          img: require('~/assets/images/landing/index/windows.png')
         },
         {
           name: 'MacOs',
-          img: require('~/assets/images/landing/index/macos.svg')
+          img: require('~/assets/images/landing/index/macos.png')
         },
         {
           name: 'Linux',
-          img: require('~/assets/images/landing/index/linux.svg')
+          img: require('~/assets/images/landing/index/linux.png')
         },
         {
           name: 'Ubuntu',
-          img: require('~/assets/images/landing/index/ubuntu.svg')
+          img: require('~/assets/images/landing/index/ubuntu.png')
         }
       ],
       browser: [
         {
           name: 'Chrome',
-          img: require('~/assets/images/landing/index/chrome.svg')
+          img: require('~/assets/images/landing/index/chrome.png')
         },
         {
           name: 'Safari',
-          img: require('~/assets/images/landing/index/safari.svg')
+          img: require('~/assets/images/landing/index/safari.png')
         },
         {
           name: 'Firefox',
-          img: require('~/assets/images/landing/index/firefox.svg')
+          img: require('~/assets/images/landing/index/firefox.png')
         },
         {
           name: 'Microsoft Edge',
-          img: require('~/assets/images/landing/index/edge.svg')
+          img: require('~/assets/images/landing/index/edge.png')
         },
         {
           name: 'Cốc Cốc',
-          img: require('~/assets/images/landing/index/coccoc.svg')
+          img: require('~/assets/images/landing/index/coccoc.png')
         },
         {
           name: 'Opera',
-          img: require('~/assets/images/landing/index/opera.svg')
+          img: require('~/assets/images/landing/index/opera.png')
         }
       ]
     }
