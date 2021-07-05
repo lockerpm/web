@@ -12,27 +12,45 @@
         <!--        <img-->
         <!--          :src="require(`~/assets/images/landing/password-generator/${header.img}`)"-->
         <!--        >-->
-        <div style="background-color: #F5F6F7; border-radius: 10px 10px 0 0;" class="h-auto flex flex-wrap pb-5 pr-6">
+        <div
+          style="background-color: #F5F6F7; border-radius: 10px 10px 0 0;"
+          class="h-auto flex flex-wrap pb-5 pr-6"
+        >
           <div class="w-11/12 h-auto break-words">
-            <p class="landing-font-34 font-semibold mt-8 ml-9 max-w-[600px]" id="password">{{ password }}</p>
+            <p
+              id="password"
+              class="landing-font-34 font-semibold mt-8 ml-9 max-w-[600px]"
+            >
+              {{ password }}
+            </p>
           </div>
           <div class="w-1/12 self-center pt-6">
             <button @click="regenerate">
-              <img src="~/assets/images/landing/password-generator/refresh.png"
-                   style="width: 50px; height: 50px;"
+              <img
+                src="~/assets/images/landing/password-generator/refresh.png"
+                style="width: 50px; height: 50px;"
               >
             </button>
           </div>
-
         </div>
         <div class="mx-9 pt-6 flex flex-wrap">
           <div class="w-full sm:w-1/2">
             <p class="landing-font-16 font-semibold">Mật khẩu mạnh:</p>
-            <PasswordStrength v-if="password" :score="passwordStrength.score"/>
-            <p class="landing-font-16 font-semibold mt-8">Độ dài</p>
+            <div style="margin-left: 130px; transform: translateY(-23px);">
+              <PasswordStrength
+                v-if="password"
+                :score="passwordStrength.score"
+              />
+            </div>
+            <p class="landing-font-16 font-semibold">Độ dài</p>
             <div>
-              <input v-model="options.length" @change="updateLength" class="h-[44px] w-[70px] mt-4 mr-3" type="number"
-                     min="8" max="64"
+              <input
+                v-model="options.length"
+                class="h-[44px] w-[70px] mt-4 mr-3"
+                type="number"
+                min="8"
+                max="64"
+                @change="updateLength"
               >
               <!--            <input type="range" min="0" max="50" v-model="form_gen.length">-->
               <el-slider
@@ -40,6 +58,7 @@
                 :min="8"
                 :max="64"
                 :debounce="800"
+                style="margin-left: 80px; transform: translateY(-40px); padding-right: 60px"
                 @change="regenerate"
               />
             </div>
@@ -103,12 +122,9 @@
               Copy Password
             </button>
 
-            <button
-              class="landing-btn2 w-auto"
-            >
+            <button class="landing-btn2 w-auto">
               Lưu với Locker
             </button>
-
           </div>
         </div>
       </div>
@@ -179,12 +195,22 @@
           class="bg-white mb-[30px] rounded-lg py-[50px] pr-[35px] pl-3"
         >
           <div class="w-full flex flex-wrap">
-            <div class="w-1/12 circle ml-6">
+            <div class="md:w-1/12 w-full circle ml-6 mb-3">
               <p class="text-white landing-font-38 font-bold mx-auto my-auto">{{ index + 1 }}</p>
             </div>
             <div class="max-w-[705px] ml-6">
-              <h2>{{ tip.title }}</h2>
-              <p>{{ tip.desc }}</p>
+              <h2
+                class="landing-font-22 font-bold mb-3"
+                style="color: #161922"
+              >
+                {{ tip.title }}
+              </h2>
+              <p
+                class="landing-font-14"
+                style="color: #5A6176"
+              >
+                {{ tip.desc }}
+              </p>
             </div>
           </div>
         </div>
@@ -203,7 +229,7 @@
                 href=""
                 class="hover:no-underline text-green font-semibold"
               >
-                {{ use_locker.link }} <i class="el-icon-right"/>
+                {{ use_locker.link }} <i class="el-icon-right" />
               </a>
             </div>
           </div>
@@ -238,7 +264,7 @@
                   href=""
                   class="hover:no-underline text-green font-semibold"
                 >
-                  {{ item.link }} <i class="el-icon-right"/>
+                  {{ item.link }} <i class="el-icon-right" />
                 </a>
               </div>
             </div>
@@ -283,7 +309,6 @@ export default {
       },
 
       password: '',
-      strength: '',
       tools: {
         password_generator: 'Tạo mật khẩu mạnh',
         password_generator_desc: 'Tạo một mật khẩu mạnh và ngẫu nhiên cho tài khoản của bạn',
@@ -395,32 +420,40 @@ export default {
       }
     }
   },
+  computed: {
+    passwordStrength () {
+      if (this.password) {
+        return this.$passwordGenerationService.passwordStrength(this.password, ['cystack']) || {}
+      }
+      return {}
+    }
+  },
   mounted () {
     this.regenerate()
   },
   methods: {
-    gen_password () {
-      let result = ''
-      let characters = ''
-      const passLength = this.form_gen.length
-      const listLength = this.form_gen.check_list.length
-      for (let i = 0; i < listLength - 1; i++) {
-        if (this.form_gen.check_list[i].checked) {
-          characters += this.form_gen.check_list[i].characters
-        }
-      }
-      if (this.form_gen.check_list[listLength - 1].checked) {
-        for (const chr in this.form_gen.check_list[listLength - 1].characters) {
-          characters = characters.replace(this.form_gen.check_list[listLength - 1].characters[chr], '')
-        }
-      }
-      for (let i = 0; i < passLength; i++) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length))
-      }
-      this.form_gen.password = result
-    },
+    // gen_password () {
+    //   let result = ''
+    //   let characters = ''
+    //   const passLength = this.form_gen.length
+    //   const listLength = this.form_gen.check_list.length
+    //   for (let i = 0; i < listLength - 1; i++) {
+    //     if (this.form_gen.check_list[i].checked) {
+    //       characters += this.form_gen.check_list[i].characters
+    //     }
+    //   }
+    //   if (this.form_gen.check_list[listLength - 1].checked) {
+    //     for (const chr in this.form_gen.check_list[listLength - 1].characters) {
+    //       characters = characters.replace(this.form_gen.check_list[listLength - 1].characters[chr], '')
+    //     }
+    //   }
+    //   for (let i = 0; i < passLength; i++) {
+    //     result += characters.charAt(Math.floor(Math.random() * characters.length))
+    //   }
+    //   this.form_gen.password = result
+    // },
     copy_password () {
-      const cb = navigator.clipboard
+      const cb = navigator.clipboard4
       const paragraph = document.getElementById('password')
       cb.writeText(paragraph.innerText).then(() => alert('Password copied'))
     },
@@ -428,19 +461,13 @@ export default {
       if (!this.options.lowercase && !this.options.uppercase && !this.options.lowercase && !this.options.number && !this.options.special) {
         this.options.lowercase = true
       }
-      this.password = await this.$passwordGenerationService.generatePassword(this.options)
+      const _options = { ...this.options }
+      _options.ambiguous = !_options.ambiguous
+      this.password = await this.$passwordGenerationService.generatePassword(_options)
     },
     updateLength () {
       this.options.length = parseInt(this.options.length)
       this.regenerate()
-    }
-  },
-  computed: {
-    passwordStrength () {
-      if (this.password) {
-        return this.$passwordGenerationService.passwordStrength(this.password, ['cystack']) || {}
-      }
-      return {}
     }
   }
 }
