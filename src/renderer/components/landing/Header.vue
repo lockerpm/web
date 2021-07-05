@@ -29,21 +29,21 @@
 
       <!-- Right actions -->
       <div class="hidden sm:flex lg:ml-[195px] lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
-        <a
+        <nuxt-link
           class="nav-item text-black px-4"
-          href="#"
+          to="/#"
         >
           Đăng nhập
-        </a>
-        <a
+        </nuxt-link>
+        <nuxt-link
           class="nav-item text-black"
-          href="#"
+          to="/#"
         >
           Đăng ký
-        </a>
-<!--        <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">-->
-<!--          vault-->
-<!--        </nuxt-link>-->
+        </nuxt-link>
+        <!--        <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">-->
+        <!--          vault-->
+        <!--        </nuxt-link>-->
       </div>
       <!-- Right actions end -->
 
@@ -58,28 +58,28 @@
             v-for="(item, index) in menu"
             :key="index"
           >
-            <a
+            <nuxt-link
               class="inline-block nav-item text-black landing-transition"
-              :href="item.link"
+              :to="item.link"
             >
               {{ item.name }}
-            </a>
+            </nuxt-link>
           </li>
           <li class="sm:hidden">
-            <a
+            <nuxt-link
               class="inline-block nav-item text-black landing-transition"
-              href="#"
+              to="/#"
             >
               Đăng nhập
-            </a>
+            </nuxt-link>
           </li>
           <li class="sm:hidden">
-            <a
+            <nuxt-link
               class="inline-block nav-item text-black landing-transition"
-              href="#"
+              to="/#"
             >
               Đăng ký
-            </a>
+            </nuxt-link>
           </li>
         </ul>
         <!-- Nav items end -->
@@ -96,23 +96,23 @@ export default {
       menu: [
         {
           name: 'Lợi ích',
-          link: 'how-it-works'
+          link: '/how-it-works'
         },
         {
           name: 'Tính năng',
-          link: 'features'
+          link: '/features'
         },
         {
           name: 'Bảng giá',
-          link: 'plan'
+          link: '/plan'
         },
         {
           name: 'Tải về',
-          link: 'download'
+          link: '/download'
         },
         {
           name: 'Doanh nghiệp',
-          link: '#'
+          link: '/#'
         }
       ]
     }
@@ -181,4 +181,13 @@ export default {
   @apply hover:no-underline hover:text-green;
   font-size: 14px;
 }
+a.nuxt-link-active {
+  font-weight: 600;
+  color: green !important;
+}
+a,
+a:visited {
+  text-decoration: none;
+}
+
 </style>
