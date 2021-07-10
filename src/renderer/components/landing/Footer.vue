@@ -43,23 +43,38 @@
 
               <div class="flex">
                 <a
-                  class="text-black-600 landing-font-32 landing-transition mr-6"
+                  class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
+                  style="border-radius: 50%"
                   href="#"
                 >
-                  <i class="fab fa-facebook" />
+                  <i class="fab fa-facebook-f mt-2" />
                 </a>
                 <a
-                  class="text-black-600 landing-font-32 landing-transition mr-6"
+                  class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
+                  style="border-radius: 50%"
                   href="#"
                 >
-                  <i class="fab fa-twitter" />
+                  <i class="fab fa-twitter mt-2" />
                 </a>
                 <a
-                  class="text-black-600 landing-font-32 landing-transition"
+                  class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
+                  style="border-radius: 50%"
                   href="#"
                 >
-                  <i class="fab fa-linkedin" />
+                  <i class="fab fa-linkedin-in mt-2" />
                 </a>
+<!--                <a-->
+<!--                  class="text-black-600 landing-font-32 landing-transition mr-6"-->
+<!--                  href="#"-->
+<!--                >-->
+<!--                  <i class="fab fa-twitter" />-->
+<!--                </a>-->
+<!--                <a-->
+<!--                  class="text-black-600 landing-font-32 landing-transition"-->
+<!--                  href="#"-->
+<!--                >-->
+<!--                  <i class="fab fa-linkedin" />-->
+<!--                </a>-->
               </div>
             </div>
           </div>

@@ -207,13 +207,13 @@
           {{ cta1.title }}
         </p>
 
-        <a
+        <nuxt-link
           class="landing-btn"
-          :href="cta1.btn.link"
+          :to="cta1.btn.link"
           style="align-self: center"
         >
           {{ cta1.btn.text }}
-        </a>
+        </nuxt-link>
       </div>
     </section>
     <!-- CTA 1 end -->
@@ -627,7 +627,7 @@ export default {
         title: 'Mang lại trải nghiệm internet an toàn hơn, tốt hơn cho tất cả mọi người.',
         btn: {
           text: 'Tìm hiểu lợi ích',
-          link: '#'
+          link: '/how-it-works'
         }
       },
       why: {
