@@ -36,7 +36,7 @@
       </div>
       <div class="md:mt-[70px] mt-8">
         <div class="w-full flex flex-wrap">
-          <div class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:pr-12 pr-0 order-1">
+          <div class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:pr-12 pr-0 order-1 md:pl-10">
             <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
               {{ security2.title }}
             </h2>
@@ -56,7 +56,7 @@
       </div>
       <div class="md:mt-[111px] mt-14">
         <div class="w-full flex flex-wrap">
-          <div class="w-full mt-3 md:w-2/5 pr-0 pl-4 md:order-2 self-center order-1">
+          <div class="w-full mt-3 md:w-2/5 pr-0 md:order-2 self-center order-1">
             <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
               {{ security3.title }}
             </h2>
@@ -64,11 +64,10 @@
           </div>
           <!-- Left end -->
           <!-- Right -->
-          <div class="w-full md:w-1/2 pl-0 md:pl-4 mt-4 md:mt-0 flex align-middle justify-center mt-4 md:mt-0 order-1">
+          <div class="w-full md:w-1/2 flex align-middle justify-center order-1 mt-4 md:mt-0">
             <img
               :src="require(`~/assets/images/landing/security/${security3.img}`)"
               alt=""
-              style="align-self: center"
             >
           </div>
           <!-- Right end -->
@@ -76,7 +75,7 @@
       </div>
       <div class="md:mt-[70px] mt-8">
         <div class="w-full flex flex-wrap">
-          <div class="w-full mt-3 md:w-1/2 self-center pr-10 order-1">
+          <div class="w-full mt-3 md:w-1/2 self-center pr-10 order-1 md:pl-10">
             <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
               {{ security4.title }}
             </h2>

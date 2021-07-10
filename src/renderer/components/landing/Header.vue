@@ -65,6 +65,7 @@
               {{ item.name }}
             </nuxt-link>
           </li>
+          <hr class="sm:hidden my-5 opacity-20">
           <li class="sm:hidden">
             <nuxt-link
               class="inline-block nav-item text-black landing-transition"
@@ -181,7 +182,7 @@ export default {
   @apply hover:no-underline hover:text-green;
   font-size: 14px;
 }
-a.nuxt-link-active {
+ul li a.nuxt-link-active {
   font-weight: 600;
   color: green !important;
 }

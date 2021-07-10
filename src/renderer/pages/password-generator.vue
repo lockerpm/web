@@ -453,7 +453,7 @@ export default {
     //   this.form_gen.password = result
     // },
     copy_password () {
-      const cb = navigator.clipboard4
+      const cb = navigator.clipboard
       const paragraph = document.getElementById('password')
       cb.writeText(paragraph.innerText).then(() => alert('Password copied'))
     },

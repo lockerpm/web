@@ -60,11 +60,11 @@
         <table class="w-full">
           <thead>
           <tr>
-            <th class="w-3/12 text-left pl-6 pb-5">Tính năng</th>
-            <th class="w-1/12 pb-5">Free</th>
-            <th class="w-8/36 pb-5">Premium</th>
-            <th class="w-8/36 pb-5">Family</th>
-            <th class="w-8/36 pb-5">Business</th>
+            <th class="w-3/12 text-left pl-6 pb-5 landing-font-18">Tính năng</th>
+            <th class="w-1/12 pb-5 landing-font-18">Free</th>
+            <th class="w-8/36 pb-5 landing-font-18">Premium</th>
+            <th class="w-8/36 pb-5 landing-font-18">Family</th>
+            <th class="w-8/36 pb-5 landing-font-18">Business</th>
           </tr>
           </thead>
           <tbody>
@@ -75,7 +75,7 @@
             >
               <td
                 colspan="100%"
-                class="py-[18px] pl-6 text-green font-semibold"
+                class="py-[18px] pl-6 text-green font-semibold landing-font-16"
               >
                 {{ feature.title }}
               </td>
