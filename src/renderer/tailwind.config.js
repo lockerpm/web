@@ -78,6 +78,12 @@ module.exports = {
       },
       opacity: {
         15: '0.15'
+      },
+      backgroundImage: {
+        'web-app': "url('~/assets/images/landing/download/bg4.png')",
+        'mobile-app': "url('~/assets/images/landing/download/bg3.png')",
+        'generator-1': "url('~/assets/images/landing/password-generator/bg1.png')",
+        'generator-2': "url('~/assets/images/landing/password-generator/bg2.png')"
       }
     }
   },
