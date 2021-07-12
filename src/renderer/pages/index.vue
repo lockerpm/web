@@ -7,7 +7,7 @@
     >
       <div class="md:pt-[186px] pt-28 mx-auto pl-6 md:pb-32 pb-20">
         <div class="w-full flex flex-wrap justify-end">
-          <div class="lg:max-w-[570px] md:w-1/2 order-1 mb-8 md:mb-0 self-center">
+          <div class="lg:max-w-[570px] max-h-[485px] md:w-1/2 order-1 mb-8 md:mb-0 self-center">
             <h1 class="text-left font-bold text-black landing-font-50 mb-[24px]">
               {{ section1.title }}
             </h1>
@@ -44,9 +44,9 @@
           <!-- Right -->
           <div class="hidden md:block md:w-1/2 order-2 justify-self-end top-[173px] pr-0">
             <img
-              src="~/assets/images/landing/index/img.png"
+              src="~/assets/images/landing/index/img_1.png"
               alt=""
-              style="width: 90%; float: right"
+              style="max-width: 120%; margin-left: 75px; max-height: 485px;"
             >
           </div>
           <div class="w-full md:hidden order-2">
@@ -322,7 +322,7 @@
         <div
           v-for="(item, index) in platform.platforms"
           :key="index"
-          class="mb-9 max-w-[234px] h-[75px] w-full"
+          class="opacity-90 mb-9 max-w-[234px] h-[75px] w-full"
         >
           <div class="flex flex-flex-nowrap">
             <div class="circle mx-5">
