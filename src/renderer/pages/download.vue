@@ -25,11 +25,11 @@
             </div>
           </div>
           <!-- Right -->
-          <div class="hidden md:block md:w-1/2 order-2 jusify-self-end pr-0 mb-10">
+          <div id="img-header" class="hidden md:block md:w-1/2 order-2 jusify-self-end pr-0 mb-10" style="transform: translate3d(-50px, -50px, 0px)">
             <img
               :src="require(`~/assets/images/landing/${header.img}`)"
               alt=""
-              style="width:100%;"
+              style="max-width: 120%; max-height: 485px;"
             >
           </div>
           <div class="w-full md:hidden order-2">
@@ -59,7 +59,7 @@
             <div
               v-for="(item, index) in browser"
               :key="index"
-              class="mb-9 max-w-[190px] h-[60px] w-full w-1/2"
+              class="opacity-90 mb-9 max-w-[190px] h-[60px] w-full w-1/2"
             >
               <div class="flex flex-nowrap">
                 <div class="circle mx-4">
@@ -85,7 +85,7 @@
             <div
               v-for="(item, index) in os"
               :key="index"
-              class="mb-9 max-w-[190px] h-[60px] w-full w-1/2"
+              class="opacity-90 mb-9 max-w-[190px] h-[60px] w-full w-1/2"
             >
               <div class="flex flex-nowrap">
                 <div class="circle mx-4">
@@ -103,7 +103,8 @@
           </div>
         </div>
         <div
-          class="w-[510px] h-[382px] rounded-xl mb-10 bg-mobile-app" style="background-repeat: no-repeat; background-size: contain;"
+          class="w-[510px] h-[382px] rounded-xl mb-10 bg-mobile-app"
+          style="background-repeat: no-repeat; background-size: contain;"
         >
           <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">Ứng dụng di động</h2>
           <div class="max-w-full mx-auto justify-center flex gap-x-4">
@@ -124,12 +125,13 @@
               </a>
             </div>
           </div>
-<!--          <div class="w-full">-->
-<!--            <img src="~/assets/images/landing/download/mobile_app.png">-->
-<!--          </div>-->
+          <!--          <div class="w-full">-->
+          <!--            <img src="~/assets/images/landing/download/mobile_app.png">-->
+          <!--          </div>-->
         </div>
         <div
-          class="w-[510px] h-auto rounded-xl mb-10 bg-web-app" style="background-repeat: no-repeat; background-size: auto;"
+          class="w-[510px] h-auto rounded-xl mb-10 bg-web-app"
+          style="background-repeat: no-repeat; background-size: auto;"
         >
           <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">Truy cập phiên bản web</h2>
           <p class="text-center landing-font-14 w-[400px] mx-auto">Chỉ cần một thiết bị bất kỳ có hỗ trợ trình duyệt web, bạn đã có thể truy cập Locker tại: <span class="text-green"><a href="#">locker.io/vault</a></span></p>
@@ -156,7 +158,7 @@ export default {
       header: {
         title: 'Tải Locker trên các thiết bị của bạn',
         desc: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
-        img: 'download/img3x.png',
+        img: 'download/img_1.png',
         btn: {
           text: 'Đăng ký miễn phí',
           link: '#'
@@ -226,6 +228,9 @@ export default {
   }
   #flex1 {
     justify-content: center;
+  }
+  #img-header {
+    transform: translate3d(0px, 0px, 0px) !important;
   }
 }
 </style>

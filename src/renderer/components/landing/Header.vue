@@ -31,13 +31,13 @@
       <div class="hidden sm:flex lg:ml-[195px] lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
         <nuxt-link
           class="nav-item text-black px-4"
-          to="/#"
+          to="/login"
         >
           Đăng nhập
         </nuxt-link>
         <nuxt-link
           class="nav-item text-black"
-          to="/#"
+          to="/register"
         >
           Đăng ký
         </nuxt-link>
@@ -69,7 +69,7 @@
           <li class="sm:hidden">
             <nuxt-link
               class="inline-block nav-item text-black landing-transition"
-              to="/#"
+              to="/login"
             >
               Đăng nhập
             </nuxt-link>
@@ -77,7 +77,7 @@
           <li class="sm:hidden">
             <nuxt-link
               class="inline-block nav-item text-black landing-transition"
-              to="/#"
+              to="/register"
             >
               Đăng ký
             </nuxt-link>
@@ -113,7 +113,7 @@ export default {
         },
         {
           name: 'Doanh nghiệp',
-          link: '/#'
+          link: '#'
         }
       ]
     }
