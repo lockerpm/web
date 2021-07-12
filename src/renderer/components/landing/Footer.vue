@@ -63,18 +63,18 @@
                 >
                   <i class="fab fa-linkedin-in mt-2" />
                 </a>
-<!--                <a-->
-<!--                  class="text-black-600 landing-font-32 landing-transition mr-6"-->
-<!--                  href="#"-->
-<!--                >-->
-<!--                  <i class="fab fa-twitter" />-->
-<!--                </a>-->
-<!--                <a-->
-<!--                  class="text-black-600 landing-font-32 landing-transition"-->
-<!--                  href="#"-->
-<!--                >-->
-<!--                  <i class="fab fa-linkedin" />-->
-<!--                </a>-->
+                <!--                <a-->
+                <!--                  class="text-black-600 landing-font-32 landing-transition mr-6"-->
+                <!--                  href="#"-->
+                <!--                >-->
+                <!--                  <i class="fab fa-twitter" />-->
+                <!--                </a>-->
+                <!--                <a-->
+                <!--                  class="text-black-600 landing-font-32 landing-transition"-->
+                <!--                  href="#"-->
+                <!--                >-->
+                <!--                  <i class="fab fa-linkedin" />-->
+                <!--                </a>-->
               </div>
             </div>
           </div>
@@ -121,15 +121,15 @@ export default {
           items: [
             {
               name: 'Cách hoạt động',
-              link: '#'
+              link: '/how-it-works'
             },
             {
               name: 'Tính năng',
-              link: '#'
+              link: '/features'
             },
             {
               name: 'Bảng giá',
-              link: '#'
+              link: '/plan'
             },
             {
               name: 'Doanh nghiệp',
@@ -146,7 +146,7 @@ export default {
             },
             {
               name: 'Tạo mật khẩu',
-              link: '#'
+              link: '/password-generator'
             },
             {
               name: 'Kiểm tra độ mạnh yếu của mật khẩu',
