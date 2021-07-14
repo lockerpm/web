@@ -127,7 +127,7 @@
               <h3 class="mb-[12px] font-bold text-black landing-font-20">
                 {{ item.title }}
               </h3>
-              <p class="md:max-w-[265px] md:pr-[20px] mb-[40px]">
+              <p class="lg:max-w-[265px] mb-[40px]">
                 {{ item.desc }}
               </p>
             </div>
@@ -162,7 +162,7 @@
               <h3 class="mb-[12px] font-bold text-black landing-font-20">
                 {{ item.title }}
               </h3>
-              <p class="md:max-w-[265px] md:pr-[20px] mb-[40px]">
+              <p class="lg:max-w-[265px] mb-[40px]">
                 {{ item.desc }}
               </p>
             </div>
