@@ -94,7 +94,7 @@
               <h3 class="mb-[12px] font-bold text-black landing-font-20">
                 {{ item.title }}
               </h3>
-              <p class="md:max-w-[265px] md:pr-[20px] mb-[40px]">
+              <p class="lg:max-w-[265px] mb-[40px] landing-font-14">
                 {{ item.desc }}
               </p>
             </div>
@@ -262,7 +262,7 @@
       <!--        >-->
       <!--      </div>-->
       <div
-        class="hidden lg:inline-block w-full h-auto text-center mt-20 mb-36 flex flex-nowrap justify-center gap-x-6"
+        class="hidden lg:inline-block w-full h-auto text-center mt-20 mb-36 justify-center gap-x-6"
       >
         <div class="inline w-2/12">
           <img
@@ -288,7 +288,6 @@
             style="width: 50%; transform: translate3d(500px, -50px, 0px) rotateZ(-25deg);"
           >
         </div>
-
       </div>
       <div class="lg:hidden w-full h-[412px] mt-28 mb-16 relative">
         <img
@@ -303,7 +302,8 @@
         >
         <img
           src="~/assets/images/landing/index/mac_rotated.png"
-          class="lg:hidden w-[704px] h-[412px]" style="position: absolute; bottom: 40px; left: 200px;"
+          class="lg:hidden w-[704px] h-[412px]"
+          style="position: absolute; bottom: 40px; left: 200px;"
         >
       </div>
     </section>
@@ -360,71 +360,71 @@
         <div class="w-full bg-white relative z-10">
           <table class="w-full">
             <tbody>
-            <tr class="hidden md:table-row">
-              <td/>
-              <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
-                {{ why.column_labels[0] }}
-              </td>
-              <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
-                {{ why.column_labels[1] }}
-              </td>
-            </tr>
-            <template v-for="(label, index) in why.labels">
-              <tr
-                :key="index"
-                class="md:hidden"
-              >
-                <td
-                  colspan="2"
-                  class="landing-font-18 font-bold p-4 text-center"
-                  style="background-color: #f6f7f8"
-                >
-                  {{ label }}
+              <tr class="hidden md:table-row">
+                <td />
+                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
+                  {{ why.column_labels[0] }}
+                </td>
+                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
+                  {{ why.column_labels[1] }}
                 </td>
               </tr>
-              <tr
-                :key="index"
-                :style="index % 2 === 0 ? 'background-color: #FBFAF3' : ''"
-              >
-                <td
-                  class="lg:min-w-[200px] min-w-[120px] landing-font-16 font-semibold px-9 py-4 align-top hidden md:table-cell"
+              <template v-for="(label, index) in why.labels">
+                <tr
+                  :key="index"
+                  class="md:hidden"
                 >
-                  {{ label }}
-                </td>
-                <td class="landing-font-16 text-black-600 px-8 py-4 align-top">
-                  <div class="flex flex-flex-nowrap items-start">
-                    <img
-                      class="mt-[6px] mr-3"
-                      src="~/assets/images/landing/index/unchecked_icon.svg"
-                    >
+                  <td
+                    colspan="2"
+                    class="landing-font-18 font-bold p-4 text-center"
+                    style="background-color: #f6f7f8"
+                  >
+                    {{ label }}
+                  </td>
+                </tr>
+                <tr
+                  :key="index"
+                  :style="index % 2 === 0 ? 'background-color: #FBFAF3' : ''"
+                >
+                  <td
+                    class="lg:min-w-[200px] min-w-[120px] landing-font-16 font-semibold px-9 py-4 align-top hidden md:table-cell"
+                  >
+                    {{ label }}
+                  </td>
+                  <td class="landing-font-16 text-black-600 px-8 py-4 align-top">
+                    <div class="flex flex-flex-nowrap items-start">
+                      <img
+                        class="mt-[6px] mr-3"
+                        src="~/assets/images/landing/index/unchecked_icon.svg"
+                      >
 
-                    <p>{{ why.browser[index] }}</p>
-                  </div>
-                </td>
-                <td class="landing-font-16 px-8 py-4 align-top">
-                  <div class="flex flex-flex-nowrap items-start">
-                    <img
-                      class="mt-[6px] mr-3"
-                      src="~/assets/images/landing/index/checked_icon.svg"
-                    >
-                    {{ why.locker[index] }}
-                  </div>
+                      <p>{{ why.browser[index] }}</p>
+                    </div>
+                  </td>
+                  <td class="landing-font-16 px-8 py-4 align-top">
+                    <div class="flex flex-flex-nowrap items-start">
+                      <img
+                        class="mt-[6px] mr-3"
+                        src="~/assets/images/landing/index/checked_icon.svg"
+                      >
+                      {{ why.locker[index] }}
+                    </div>
+                  </td>
+                </tr>
+              </template>
+
+              <tr class="md:border-b-0">
+                <td class="hidden md:table-cell" />
+                <td />
+                <td class="landing-font-18 px-8 py-4 align-top font-semibold">
+                  <a
+                    href=""
+                    class="hover:no-underline text-green"
+                  >
+                    {{ why.btn.text }} <i class="el-icon-right" />
+                  </a>
                 </td>
               </tr>
-            </template>
-
-            <tr class="md:border-b-0">
-              <td class="hidden md:table-cell"/>
-              <td/>
-              <td class="landing-font-18 px-8 py-4 align-top font-semibold">
-                <a
-                  href=""
-                  class="hover:no-underline text-green"
-                >
-                  {{ why.btn.text }} <i class="el-icon-right"/>
-                </a>
-              </td>
-            </tr>
             </tbody>
           </table>
         </div>

@@ -20,8 +20,9 @@
             </p>
             <p class="landing-font-20 text-green">{{ plan.title }}</p>
             <p class="mt-4">
-              <span class="font-bold landing-font-50">{{ plan.price }}</span> <span class="landing-font-18"
-            >{{ plan.price_detail }}</span>
+              <span class="font-bold landing-font-50">{{ plan.price }}</span> <span
+                class="landing-font-18"
+              >{{ plan.price_detail }}</span>
             </p>
             <ul class="ml-3 my-[30px]">
               <li
@@ -35,7 +36,7 @@
                   v-if="detail==='Thiết lập Liên hệ Khẩn cấp'"
                   class="info"
                 >
-                  <i class="fa fa-info-circle"/>
+                  <i class="fa fa-info-circle" />
                   <span
                     class="tooltiptext"
                     style="font-size: 11px"
@@ -59,90 +60,90 @@
       <div class="max-w-6xl mx-auto">
         <table class="w-full">
           <thead>
-          <tr>
-            <th class="w-3/12 text-left pl-6 pb-5 landing-font-18">Tính năng</th>
-            <th class="w-1/12 pb-5 landing-font-18">Free</th>
-            <th class="w-8/36 pb-5 landing-font-18">Premium</th>
-            <th class="w-8/36 pb-5 landing-font-18">Family</th>
-            <th class="w-8/36 pb-5 landing-font-18">Business</th>
-          </tr>
+            <tr>
+              <th class="w-3/12 text-left pl-6 pb-5 landing-font-18">Tính năng</th>
+              <th class="w-1/12 pb-5 landing-font-18">Free</th>
+              <th class="w-8/36 pb-5 landing-font-18">Premium</th>
+              <th class="w-8/36 pb-5 landing-font-18">Family</th>
+              <th class="w-8/36 pb-5 landing-font-18">Business</th>
+            </tr>
           </thead>
           <tbody>
-          <template v-for="(feature, index) in feature_plan">
-            <tr
-              :key="index"
-              style="background-color: #FBFAF3;"
-            >
-              <td
-                colspan="100%"
-                class="py-[18px] pl-6 text-green font-semibold landing-font-16"
+            <template v-for="(feature, index) in feature_plan">
+              <tr
+                :key="index"
+                style="background-color: #FBFAF3;"
               >
-                {{ feature.title }}
-              </td>
-            </tr>
-            <tr :key="index">
-              <td
-                colspan="100%"
-                class="pb-5"
-              />
-            </tr>
-            <tr
-              v-for="(item, idx) in feature.features"
-              :key="idx"
-            >
-              <td
-                class="pl-6 landing-font-16 pb-5"
-                style="color: #5A6176"
-              >
-                {{ item.label }}
-              </td>
-              <td
-                v-for="(plan, ind) in item.plans"
-                :key="ind"
-                class="text-center pb-5"
-              >
-                <img
-                  v-if="plan===true"
-                  class="mx-auto"
-                  src="~/assets/images/landing/plan/true.svg"
+                <td
+                  colspan="100%"
+                  class="py-[18px] pl-6 text-green font-semibold landing-font-16"
                 >
-                <img
-                  v-else-if="plan===false"
-                  class="mx-auto"
-                  src="~/assets/images/landing/plan/false.svg"
-                >
-                <p
-                  v-else
-                  v-html="plan"
+                  {{ feature.title }}
+                </td>
+              </tr>
+              <tr :key="index">
+                <td
+                  colspan="100%"
+                  class="pb-5"
                 />
+              </tr>
+              <tr
+                v-for="(item, idx) in feature.features"
+                :key="idx"
+              >
+                <td
+                  class="pl-6 landing-font-16 pb-5"
+                  style="color: #5A6176"
+                >
+                  {{ item.label }}
+                </td>
+                <td
+                  v-for="(plan, ind) in item.plans"
+                  :key="ind"
+                  class="text-center pb-5"
+                >
+                  <img
+                    v-if="plan===true"
+                    class="mx-auto"
+                    src="~/assets/images/landing/plan/true.svg"
+                  >
+                  <img
+                    v-else-if="plan===false"
+                    class="mx-auto"
+                    src="~/assets/images/landing/plan/false.svg"
+                  >
+                  <p
+                    v-else
+                    v-html="plan"
+                  />
+                </td>
+              </tr>
+            </template>
+            <tr style="background-color: #FBFAF3;">
+              <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">GIÁ CƯỚC</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">0đ</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">19,000đ/tháng</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">79,000đ/tháng/<br>5 tài khoản</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">39,000đ/tháng/<br>tài khoản</td>
+            </tr>
+            <tr>
+              <td />
+              <td
+                v-for="(button, index) in subscription_button"
+                :key="index"
+                class="pt-5"
+              >
+                <div class="text-center">
+                  <a
+                    class="landing-btn2 w-full sm:w-auto sm:ml-4"
+                    style="font-weight: 600"
+                    href="#"
+                  >
+                    {{ button }}
+                  </a>
+                </div>
               </td>
             </tr>
-          </template>
-          <tr style="background-color: #FBFAF3;">
-            <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">GIÁ CƯỚC</td>
-            <td class="py-[18px] pl-6 text-green landing-font-16 text-center">0đ</td>
-            <td class="py-[18px] pl-6 text-green landing-font-16 text-center">19,000đ/tháng</td>
-            <td class="py-[18px] pl-6 text-green landing-font-16 text-center">79,000đ/tháng/<br>5 tài khoản</td>
-            <td class="py-[18px] pl-6 text-green landing-font-16 text-center">39,000đ/tháng/<br>tài khoản</td>
-          </tr>
-          <tr>
-            <td/>
-            <td
-              v-for="(button, index) in subscription_button"
-              :key="index"
-              class="pt-5"
-            >
-              <div class="text-center">
-                <a
-                  class="landing-btn2 w-full sm:w-auto sm:ml-4"
-                  style="font-weight: 600"
-                  href="#"
-                >
-                  {{ button }}
-                </a>
-              </div>
-            </td>
-          </tr>
           </tbody>
         </table>
       </div>
@@ -201,7 +202,7 @@
               <h3 class="mb-[12px] font-bold text-black landing-font-20">
                 {{ item.title }}
               </h3>
-              <p class="md:max-w-[265px] md:pr-[20px] mb-[40px]">
+              <p class="lg:max-w-[265px] mb-[40px]">
                 {{ item.desc }}
               </p>
             </div>
