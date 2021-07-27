@@ -586,7 +586,7 @@
             {{ $t('data.billing.transfer_branch') }}
           </div>
           <div class="flex-grow-1 w-1/2 text-right font-semibold text-right">
-            {{ order.bank.bank_branch && order.bank.bank_branch }}
+            {{ order.bank && order.bank.bank_branch }}
           </div>
         </div>
         <div class="flex justify-between mb-3">
