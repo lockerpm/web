@@ -21,7 +21,7 @@
                   class="mb-3"
                 >
                   <a
-                    class="text-black-600 landing-transition hover:no-underline hover:font-semibold hover:text-green sm:max-w-[170px] block"
+                    class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
                     :href="item.link"
                   >
                     {{ item.name }}
@@ -43,23 +43,38 @@
 
               <div class="flex">
                 <a
-                  class="text-black-600 landing-font-32 landing-transition mr-6"
+                  class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
+                  style="border-radius: 50%"
                   href="#"
                 >
-                  <i class="fab fa-facebook" />
+                  <i class="fab fa-facebook-f mt-2" />
                 </a>
                 <a
-                  class="text-black-600 landing-font-32 landing-transition mr-6"
+                  class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
+                  style="border-radius: 50%"
                   href="#"
                 >
-                  <i class="fab fa-twitter" />
+                  <i class="fab fa-twitter mt-2" />
                 </a>
                 <a
-                  class="text-black-600 landing-font-32 landing-transition"
+                  class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
+                  style="border-radius: 50%"
                   href="#"
                 >
-                  <i class="fab fa-linkedin" />
+                  <i class="fab fa-linkedin-in mt-2" />
                 </a>
+                <!--                <a-->
+                <!--                  class="text-black-600 landing-font-32 landing-transition mr-6"-->
+                <!--                  href="#"-->
+                <!--                >-->
+                <!--                  <i class="fab fa-twitter" />-->
+                <!--                </a>-->
+                <!--                <a-->
+                <!--                  class="text-black-600 landing-font-32 landing-transition"-->
+                <!--                  href="#"-->
+                <!--                >-->
+                <!--                  <i class="fab fa-linkedin" />-->
+                <!--                </a>-->
               </div>
             </div>
           </div>
@@ -78,13 +93,13 @@
         <div>
           <a
             href="#"
-            class="text-black-600 landing-font-12 mr-4 hover:no-underline hover:font-semibold hover:text-green"
+            class="text-black-600 landing-font-12 mr-4 hover:no-underline hover:text-green"
           >
             Điều khoản
           </a>
           <a
             href="#"
-            class="text-black-600 landing-font-12 hover:no-underline hover:font-semibold hover:text-green"
+            class="text-black-600 landing-font-12 hover:no-underline hover:text-green"
           >
             Chính sách
           </a>
@@ -106,15 +121,15 @@ export default {
           items: [
             {
               name: 'Cách hoạt động',
-              link: '#'
+              link: '/how-it-works'
             },
             {
               name: 'Tính năng',
-              link: '#'
+              link: '/features'
             },
             {
               name: 'Bảng giá',
-              link: '#'
+              link: '/plan'
             },
             {
               name: 'Doanh nghiệp',
@@ -131,7 +146,7 @@ export default {
             },
             {
               name: 'Tạo mật khẩu',
-              link: '#'
+              link: '/password-generator'
             },
             {
               name: 'Kiểm tra độ mạnh yếu của mật khẩu',

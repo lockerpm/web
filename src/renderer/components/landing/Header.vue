@@ -1,7 +1,7 @@
 <template>
   <nav
     id="header"
-    class="fixed w-full z-30 transition duration-300 ease-in-out bg-white"
+    class="fixed w-full z-30 transition duration-300 ease-in-out bg-transparent"
   >
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-[14px] px-6">
       <!-- Logo -->
@@ -29,21 +29,21 @@
 
       <!-- Right actions -->
       <div class="hidden sm:flex lg:ml-[195px] lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
-        <a
+        <nuxt-link
           class="nav-item text-black px-4"
-          href="#"
+          to="/login"
         >
           Đăng nhập
-        </a>
-        <a
+        </nuxt-link>
+        <nuxt-link
           class="nav-item text-black"
-          href="#"
+          to="/register"
         >
           Đăng ký
-        </a>
-        <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">
-          vault
         </nuxt-link>
+        <!--        <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">-->
+        <!--          vault-->
+        <!--        </nuxt-link>-->
       </div>
       <!-- Right actions end -->
 
@@ -58,28 +58,29 @@
             v-for="(item, index) in menu"
             :key="index"
           >
-            <a
+            <nuxt-link
               class="inline-block nav-item text-black landing-transition"
-              :href="item.link"
+              :to="item.link"
             >
               {{ item.name }}
-            </a>
+            </nuxt-link>
           </li>
+          <hr class="sm:hidden my-5 opacity-20">
           <li class="sm:hidden">
-            <a
+            <nuxt-link
               class="inline-block nav-item text-black landing-transition"
-              href="#"
+              to="/login"
             >
               Đăng nhập
-            </a>
+            </nuxt-link>
           </li>
           <li class="sm:hidden">
-            <a
+            <nuxt-link
               class="inline-block nav-item text-black landing-transition"
-              href="#"
+              to="/register"
             >
               Đăng ký
-            </a>
+            </nuxt-link>
           </li>
         </ul>
         <!-- Nav items end -->
@@ -96,19 +97,19 @@ export default {
       menu: [
         {
           name: 'Lợi ích',
-          link: 'how-it-works'
+          link: '/how-it-works'
         },
         {
           name: 'Tính năng',
-          link: 'features'
+          link: '/features'
         },
         {
           name: 'Bảng giá',
-          link: '#'
+          link: '/plan'
         },
         {
           name: 'Tải về',
-          link: '#'
+          link: '/download'
         },
         {
           name: 'Doanh nghiệp',
@@ -128,11 +129,14 @@ export default {
     const header = document.getElementById('header')
     document.addEventListener('scroll', function () {
       const scrollPos = window.scrollY
-
       if (scrollPos > 10) {
         header.classList.add('shadow-lg')
+        header.classList.remove('bg-transparent')
+        header.classList.add('bg-white')
       } else {
         header.classList.remove('shadow-lg')
+        header.classList.add('bg-transparent')
+        header.classList.remove('bg-white')
       }
     })
 
@@ -175,7 +179,16 @@ export default {
 
 <style>
 .nav-item {
-  @apply hover:no-underline hover:font-semibold hover:text-green;
+  @apply hover:no-underline hover:text-green;
   font-size: 14px;
 }
+ul li a.nuxt-link-active {
+  font-weight: 600;
+  color: green !important;
+}
+a,
+a:visited {
+  text-decoration: none;
+}
+
 </style>

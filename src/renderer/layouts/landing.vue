@@ -74,11 +74,15 @@ export default {
 
 .landing-font-50 {
   font-size: 50px;
-  line-height: 56px;
+  line-height: 66px;
 }
 .landing-font-38 {
   font-size: 38px;
   line-height: 45px;
+}
+.landing-font-34 {
+  font-size: 34px;
+  line-height: 40px;
 }
 .landing-font-32 {
   font-size: 32px;
@@ -94,6 +98,7 @@ export default {
 }
 .landing-font-20 {
   font-size: 20px;
+  line-height: 32px;
 }
 .landing-font-18 {
   font-size: 18px;
@@ -108,12 +113,27 @@ export default {
 }
 .landing-font-14 {
   font-size: 14px;
+  line-height: 24px;
 }
 .landing-font-12 {
   font-size: 12px;
   line-height: 26px;
 }
 .landing-bg-green {
-  background-color: #00A893;
+  background-color: #00a893;
+}
+@media screen and (max-width: 960px) {
+  .landing-font-50 {
+    font-size: 45px !important;
+    line-height: 60px !important;
+  }
+}
+.full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 </style>
