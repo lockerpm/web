@@ -14,9 +14,9 @@
           >
             <p
               v-if="index===2"
-              class="bg-black text-white w-[100px] text-center absolute right-6 top-6 rounded-sm"
+              class="bg-black uppercase text-white w-[100px] text-center absolute right-6 top-6 rounded-sm"
             >
-              TIẾT KIỆM 17%
+              {{ save17 }}
             </p>
             <p class="landing-font-20 text-green">{{ plan.title }}</p>
             <p class="mt-4">
@@ -40,7 +40,7 @@
                   <span
                     class="tooltiptext"
                     style="font-size: 11px"
-                  >Liên hệ khẩn cấp giúp bạn truy cập vào dữ liệu của mình trong trường hợp quên mật khẩu chính của tài khoản.</span>
+                  >{{ contact_info }}</span>
                 </span>
               </li>
             </ul>
@@ -134,13 +134,13 @@
                 class="pt-5"
               >
                 <div class="text-center">
-                  <a
+                  <nuxt-link
                     class="landing-btn2 w-full sm:w-auto sm:ml-4"
                     style="font-weight: 600"
-                    href="#"
+                    :to="localeRoute({name: button.link})"
                   >
-                    {{ button }}
-                  </a>
+                    {{ button.text }}
+                  </nuxt-link>
                 </div>
               </td>
             </tr>
@@ -247,6 +247,8 @@ export default {
   data () {
     return {
       title: 'Simple, transparent pricing',
+      save17: 'TIẾT KIỆM 17%',
+      contact_info: 'Liên hệ khẩn cấp giúp bạn truy cập vào dữ liệu của mình trong trường hợp quên mật khẩu chính của tài khoản.',
       plans: [
         {
           title: 'Free',
@@ -418,7 +420,22 @@ export default {
         }
       ],
       subscription_button: [
-        'Đăng ký', 'Dùng thử 7 ngày', 'Mua', 'Dùng thử 10 ngày'
+        {
+          text: 'Đăng ký',
+          link: ''
+        },
+        {
+          text: 'Dùng thử 7 ngày',
+          link: ''
+        },
+        {
+          text: 'Mua',
+          link: ''
+        },
+        {
+          text: 'Dùng thử 10 ngày',
+          link: ''
+        }
       ],
       features: {
         title: 'Tính năng bảo mật dành cho mọi tài khoản Locker',

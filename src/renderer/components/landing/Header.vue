@@ -94,28 +94,7 @@
 export default {
   data () {
     return {
-      menu: [
-        {
-          name: 'Lợi ích',
-          link: '/how-it-works'
-        },
-        {
-          name: 'Tính năng',
-          link: '/features'
-        },
-        {
-          name: 'Bảng giá',
-          link: '/plan'
-        },
-        {
-          name: 'Tải về',
-          link: '/download'
-        },
-        {
-          name: 'Doanh nghiệp',
-          link: '#'
-        }
-      ]
+      menu: this.$t('landing_header.menu')
     }
   },
   computed: {
