@@ -1,20 +1,11 @@
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
-
-before_script:
-  - git clone ${CONFIG_REPO} ${CONFIG_DIR}
-  - chmod +x ${SCRIPT_DEPLOY}
-  - source ${SCRIPT_DEPLOY}
-
 stages:
   - build
   - deploy
-  - clean
 
 build_staging:
   stage: build
   script:
-    - build staging
+    - cystack-deployer
   tags:
     - cs_monitoring
   only:
@@ -24,29 +15,17 @@ build_staging:
 deploy_staging:
   stage: deploy
   script:
-    - deploy staging
+    - cystack-deployer
   tags:
     - cs_monitoring
   only:
     - dev
-    - tags
-
-clean:
-  stage: clean
-  script:
-    - clean
-  when: always
-  tags:
-    - cs_monitoring
-  only:
-    - dev
-    - master
     - tags
 
 build_production:
   stage: build
   script:
-    - build prod
+    - cystack-deployer
   tags:
     - cs_monitoring
   only:
@@ -56,7 +35,7 @@ build_production:
 deploy_production:
   stage: deploy
   script:
-    - deploy prod
+    - cystack-deployer
   tags:
     - cs_monitoring
   only:
