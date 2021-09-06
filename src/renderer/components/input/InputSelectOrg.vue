@@ -23,7 +23,7 @@
         :key="index"
         :label="item.name"
         :value="item.organization_id"
-        :disabled="!item.enabled"
+        :disabled="item.locked"
       />
     </el-select>
     <button v-if="focusing || initialValue" class="btn btn-icon btn-select !py-0">
