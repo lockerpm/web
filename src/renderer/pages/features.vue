@@ -1,13 +1,13 @@
 <template>
   <div class="md:pt-[180px] pt-36">
     <h1 class="text-left font-bold text-black landing-font-50 max-w-[890px]">
-      {{ title }}
+      {{ $t('features.title') }}
     </h1>
     <section class="md:mt-16 mt-12">
-      <h2 class="text-left font-bold text-black landing-font-38 "> {{ feature1.title }} </h2>
+      <h2 class="text-left font-bold text-black landing-font-38 "> {{ $t('features.feature1.title') }} </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
         <div
-          v-for="(item, index) in feature1.details"
+          v-for="(item, index) in $t('features.feature1.details')"
           :key="index"
           class="flex flex-col items-start"
         >
@@ -19,19 +19,19 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <a
-          :href="feature1.btn.link"
+        <nuxt-link
+          :to="localeRoute({name: $t('features.feature1.btn.link')})"
           class="hover:no-underline text-green font-semibold"
         >
-          {{ feature1.btn.text }} <i class="el-icon-right" />
-        </a>
+          {{ $t('features.feature1.btn.text') }} <i class="el-icon-right" />
+        </nuxt-link>
       </div>
     </section>
     <section class="md:mt-[150px] mt-16">
-      <h2 class="text-left font-bold text-black landing-font-38 "> {{ feature2.title }} </h2>
+      <h2 class="text-left font-bold text-black landing-font-38 "> {{ $t('features.feature2.title') }} </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
         <div
-          v-for="(item, index) in feature2.details"
+          v-for="(item, index) in $t('features.feature2.details')"
           :key="index"
           class="flex flex-col items-start"
         >
@@ -43,19 +43,19 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <a
-          :href="feature2.btn.link"
+        <nuxt-link
+          :to="localeRoute({name: $t('features.feature2.btn.link')})"
           class="hover:no-underline text-green font-semibold"
         >
-          {{ feature2.btn.text }} <i class="el-icon-right" />
-        </a>
+          {{ $t('features.feature2.btn.text') }} <i class="el-icon-right" />
+        </nuxt-link>
       </div>
     </section>
     <section class="md:mt-[150px] mt-16">
-      <h2 class="text-left font-bold text-black landing-font-38 "> {{ feature3.title }} </h2>
+      <h2 class="text-left font-bold text-black landing-font-38 "> {{ $t('features.feature3.title') }} </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
         <div
-          v-for="(item, index) in feature3.details"
+          v-for="(item, index) in $t('features.feature3.details')"
           :key="index"
           class="flex flex-col items-start"
         >
@@ -67,19 +67,19 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <a
-          :href="feature3.btn.link"
+        <nuxt-link
+          :to="localeRoute({name: $t('features.feature3.btn.link')})"
           class="hover:no-underline text-green font-semibold"
         >
-          {{ feature3.btn.text }} <i class="el-icon-right" />
-        </a>
+          {{ $t('features.feature3.btn.text') }} <i class="el-icon-right" />
+        </nuxt-link>
       </div>
     </section>
     <section class="md:mt-[150px] mt-16 mb-[110px]">
-      <h2 class="text-left font-bold text-black landing-font-38 "> {{ feature4.title }} </h2>
+      <h2 class="text-left font-bold text-black landing-font-38 "> {{ $t('features.feature4.title')}} </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
         <div
-          v-for="(item, index) in feature4.details"
+          v-for="(item, index) in $t('features.feature4.details')"
           :key="index"
           class="flex flex-col items-start"
         >
@@ -91,12 +91,12 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <a
-          :href="feature4.btn.link"
+        <nuxt-link
+          :to="localeRoute({name: $t('features.feature4.btn.link')})"
           class="hover:no-underline text-green font-semibold"
         >
-          {{ feature4.btn.text }} <i class="el-icon-right" />
-        </a>
+          {{ $t('features.feature4.btn.text') }} <i class="el-icon-right" />
+        </nuxt-link>
       </div>
     </section>
   </div>

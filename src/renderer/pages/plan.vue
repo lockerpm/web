@@ -14,9 +14,9 @@
           >
             <p
               v-if="index===2"
-              class="bg-black text-white w-[100px] text-center absolute right-6 top-6 rounded-sm"
+              class="bg-black uppercase text-white w-[100px] text-center absolute right-6 top-6 rounded-sm"
             >
-              TIẾT KIỆM 17%
+              {{ save17 }}
             </p>
             <p class="landing-font-20 text-green">{{ plan.title }}</p>
             <p class="mt-4">
@@ -40,7 +40,7 @@
                   <span
                     class="tooltiptext"
                     style="font-size: 11px"
-                  >Liên hệ khẩn cấp giúp bạn truy cập vào dữ liệu của mình trong trường hợp quên mật khẩu chính của tài khoản.</span>
+                  >{{ contact_info }}</span>
                 </span>
               </li>
             </ul>
@@ -134,13 +134,13 @@
                 class="pt-5"
               >
                 <div class="text-center">
-                  <a
+                  <nuxt-link
                     class="landing-btn2 w-full sm:w-auto sm:ml-4"
                     style="font-weight: 600"
-                    href="#"
+                    :to="localeRoute({name: button.link})"
                   >
-                    {{ button }}
-                  </a>
+                    {{ button.text }}
+                  </nuxt-link>
                 </div>
               </td>
             </tr>
@@ -246,222 +246,240 @@ export default {
   layout: 'landing',
   data () {
     return {
-      title: 'Simple, transparent pricing',
-      plans: [
-        {
-          title: 'Free',
-          price: '0đ',
-          price_detail: '',
-          desc: [
-            'Lưu trữ mật khẩu an toàn và & dụng trên mọi thiết bị',
-            'Tự động đăng nhập website và ứng dụng',
-            'Lưu thông tin thẻ thanh toán, ghi chú bí mật, thông tin cá nhân',
-            'Tự động điền thông tin thẻ thanh toán khi mua sắm online',
-            'Tự động điền tờ khai sử dụng mẫu thông tin cá nhân lưu sẵn',
-            'Đăng nhập với FaceID hoặc TouchID',
-            'Công cụ tạo mật khẩu mạnh ngẫu nhiên'
-          ],
-          note: []
-        },
-        {
-          title: 'Premium',
-          price: '19,000đ',
-          price_detail: '/tháng*',
-          desc: [
-            'Tất cả tính năng của gói miễn phí',
-            'Lưu trữ không giới hạn mật khẩu, thông tin cá nhân, thẻ tín dụng, ghi chú bí mật',
-            'Đánh giá sức khỏe tất cả mật khẩu của bạn. Cảnh báo mật khẩu có mức độ bảo mật kém',
-            'Công cụ dò quét và cảnh báo lộ dữ liệu tài khoản, mật khẩu trên internet',
-            'Thiết lập Liên hệ Khẩn cấp'
-          ],
-          note: ['*Áp dụng nếu thanh toán theo năm. Giá gốc 49,000đ/tháng.']
-        },
-        {
-          title: 'Family & Friends',
-          price: '79,000đ',
-          price_detail: '/tháng/tài khoản*',
-          desc: [
-            'Tất cả tính năng của gói miễn phí',
-            'Lưu trữ không giới hạn mật khẩu, thông tin cá nhân, thẻ tín dụng, ghi chú bí mật',
-            'Đánh giá sức khỏe tất cả mật khẩu của bạn. Cảnh báo mật khẩu có mức độ bảo mật kém',
-            'Công cụ dò quét và cảnh báo lộ dữ liệu tài khoản, mật khẩu trên internet',
-            'Thiết lập Liên hệ Khẩn cấp',
-            'Chia sẻ mật khẩu an toàn**'
-          ],
-          note: ['*Áp dụng nếu thanh toán theo năm. Giá gốc 129,000đ/tháng.', '**Chỉ chia sẻ với những thành viên thuộc tổ chức.']
-        },
-        {
-          title: 'Organization & Business',
-          price: '39,000đ',
-          price_detail: '/tháng/tài khoản*',
-          desc: [
-            'Mỗi tài khoản thuộc doanh nghiệp đều nhận được tất cả tính năng của gói Premium',
-            'Chia sẻ mật khẩu cho nhóm làm việc**',
-            'Bảng điều khiển quản trị viên',
-            'Phân quyền truy cập theo nhóm',
-            'Tổng hợp báo cáo bảo mật các thành viên nhóm',
-            'Hỗ trợ triển khai chính sách mật khẩu',
-            'Nhật ký hoạt động thành viên'
-          ],
-          note: ['*Áp dụng nếu thanh toán theo năm. Giá gốc 89,000đ/tháng/tài khoản.', '**Chỉ chia sẻ với những thành viên thuộc tổ chức.']
-        }
-      ],
-      feature_plan: [
-        {
-          title: 'LƯU TRỮ',
-          features: [
-            {
-              label: 'Mật khẩu',
-              plans: ['&le; 100', 'Không giới hạn', 'Không giới hạn', 'Không giới hạn']
-            },
-            {
-              label: 'Thông tin cá nhân',
-              plans: ['&le; 3', 'Không giới hạn', 'Không giới hạn', 'Không giới hạn']
-            },
-            {
-              label: 'Ghi chú bí mật',
-              plans: ['&le; 100', 'Không giới hạn', 'Không giới hạn', 'Không giới hạn']
-            },
-            {
-              label: 'Thẻ thanh toán',
-              plans: ['&le; 10', 'Không giới hạn', 'Không giới hạn', 'Không giới hạn']
-            }
-          ]
-        },
-        {
-          title: 'TIỆN ÍCH',
-          features: [
-            {
-              label: 'Tự động điền mật khẩu, thẻ thanh toán, thông tin cá nhân',
-              plans: [true, true, true, true]
-            },
-            {
-              label: 'Đăng nhập với FaceID và Touch ID trên smartphone',
-              plans: [true, true, true, true]
-            },
-            {
-              label: 'Sử dụng trên nhiều thiết bị',
-              plans: [true, true, true, true]
-            },
-            {
-              label: 'Truy cập dữ liệu khi ngoại tuyến',
-              plans: [true, true, true, true]
-            },
-            {
-              label: 'URL loại trừ',
-              plans: [true, true, true, true]
-            },
-            {
-              label: 'Tạo mật khẩu mạnh',
-              plans: [true, true, true, true]
-            },
-            {
-              label: 'Cảnh báo rò rỉ dữ liệu',
-              plans: [false, true, true, true]
-            },
-            {
-              label: 'Kiểm tra sức khỏe mật khẩu',
-              plans:
-                [false, true, true, true]
-            },
-            {
-              label: 'Liên hệ khẩn cấp',
-              plans:
-                [false, true, true, true]
-            },
-            {
-              label: 'Chia sẻ mật khẩu',
-              plans:
-                [false, false, 'Tối đa 5 tài khoản', 'Không giới hạn']
-            }
-          ]
-        },
-        {
-          title: 'QUẢN LÝ',
-          features: [
-            {
-              label: 'Quản lý bằng thư mục',
-              plans:
-                [true, true, true, true]
-            },
-            {
-              label: 'Quản lý theo danh mục',
-              plans:
-                [true, true, true, true]
-            },
-            {
-              label: 'Quản lý thành viên nhóm',
-              plans:
-                [false, false, false, true]
-            },
-            {
-              label: 'Bảng điều khiển dành cho quản lý',
-              plans:
-                [false, false, false, true]
-            },
-            {
-              label: 'Nhật ký hoạt động thành viên',
-              plans:
-                [false, false, false, true]
-            },
-            {
-              label: 'Báo cáo bảo mật cho nhóm',
-              plans:
-                [false, false, false, true]
-            },
-            {
-              label: 'Chính sách mật khẩu',
-              plans:
-                [false, false, false, true]
-            }
-          ]
-        }
-      ],
-      subscription_button: [
-        'Đăng ký', 'Dùng thử 7 ngày', 'Mua', 'Dùng thử 10 ngày'
-      ],
-      features: {
-        title: 'Tính năng bảo mật dành cho mọi tài khoản Locker',
-        details: [
-          {
-            img: 'icon1.svg',
-            title: 'Mã hóa dữ liệu',
-            desc: 'Locker mã hóa dữ liệu của bạn theo tiêu chuẩn quân đội AES-256, kết hợp thuật toán khởi tạo cặp khóa PBDKF2 và RSA.'
-          },
-          {
-            img: 'icon2.svg',
-            title: 'Zero-knowledge',
-            desc: 'Mã hóa đầu cuối và Zero-knowledge đảm bảo rằng không ai xem được dữ liệu của bạn, kể cả đội ngũ phát triển Locker.'
-          },
-          {
-            img: 'icon3.svg',
-            title: 'Hạ tầng an toàn',
-            desc: 'Chúng tôi sử dụng hạ tầng máy chủ của các nhà cung cấp hàng đầu thế giới như AWS, DigitalOcean.'
-          },
-          {
-            img: 'icon4.svg',
-            title: 'Kiểm thử bảo mật',
-            desc: 'Được kiểm thử an ninh bởi cộng đồng 1500+ chuyên gia bảo mật trên nền tảng WhiteHub Bug Bounty.'
-          }
-        ]
-      },
-      question: {
-        title: 'Những câu hỏi thường gặp',
-        question_list: [
-          {
-            question: 'Tài khoản miễn phí có an toàn không?',
-            answer: 'Tất cả các tài khoản Locker đều được bảo mật như nhau, không có sự khác biệt nào về mức độ bảo mật giữa các gói tài khoản, dù là trả phí hay miễn phí. Dữ liệu được mã hóa cấp quân đội, kết hợp các thuật toán mã hóa và biện pháp bảo vệ tốt nhất để bảo mật dữ liệu và tính riêng tư của người dùng. Ngoài ra, chính đội ngũ xây dựng Locker cũng không thể xem dữ liệu của bạn. Khám phá thêm tại trang bảo mật.'
-          },
-          {
-            question: 'Có những hình thức thanh toán nào?',
-            answer: 'Bạn có thể thanh toán bằng thẻ thanh toán quốc tế Visa, Mastercard. Nếu bạn ở Việt Nam và sử dụng VND là tiền tệ, bạn có thể thanh toán bằng hình thức chuyển khoản ngân hàng với mức giá tốt hơn.'
-          },
-          {
-            question: 'Làm sao để biết tôi có cần gói Premium hay không?',
-            answer: 'Mỗi tài khoản miễn phí đều đi kèm 7 ngày dùng thử Premium. Bạn có thể sử dụng đầy đủ các tính năng của tài khoản trả phí và đưa ra quyết định.'
-          }
-        ]
-      }
+      ...this.$t('plan')
+      // title: 'Simple, transparent pricing',
+      // save17: 'TIẾT KIỆM 17%',
+      // contact_info: 'Liên hệ khẩn cấp giúp bạn truy cập vào dữ liệu của mình trong trường hợp quên mật khẩu chính của tài khoản.',
+      // plans: [
+      //   {
+      //     title: 'Free',
+      //     price: '0đ',
+      //     price_detail: '',
+      //     desc: [
+      //       'Lưu trữ mật khẩu an toàn và & dụng trên mọi thiết bị',
+      //       'Tự động đăng nhập website và ứng dụng',
+      //       'Lưu thông tin thẻ thanh toán, ghi chú bí mật, thông tin cá nhân',
+      //       'Tự động điền thông tin thẻ thanh toán khi mua sắm online',
+      //       'Tự động điền tờ khai sử dụng mẫu thông tin cá nhân lưu sẵn',
+      //       'Đăng nhập với FaceID hoặc TouchID',
+      //       'Công cụ tạo mật khẩu mạnh ngẫu nhiên'
+      //     ],
+      //     note: []
+      //   },
+      //   {
+      //     title: 'Premium',
+      //     price: '19,000đ',
+      //     price_detail: '/tháng*',
+      //     desc: [
+      //       'Tất cả tính năng của gói miễn phí',
+      //       'Lưu trữ không giới hạn mật khẩu, thông tin cá nhân, thẻ tín dụng, ghi chú bí mật',
+      //       'Đánh giá sức khỏe tất cả mật khẩu của bạn. Cảnh báo mật khẩu có mức độ bảo mật kém',
+      //       'Công cụ dò quét và cảnh báo lộ dữ liệu tài khoản, mật khẩu trên internet',
+      //       'Thiết lập Liên hệ Khẩn cấp'
+      //     ],
+      //     note: ['*Áp dụng nếu thanh toán theo năm. Giá gốc 49,000đ/tháng.']
+      //   },
+      //   {
+      //     title: 'Family & Friends',
+      //     price: '79,000đ',
+      //     price_detail: '/tháng/tài khoản*',
+      //     desc: [
+      //       'Tất cả tính năng của gói miễn phí',
+      //       'Lưu trữ không giới hạn mật khẩu, thông tin cá nhân, thẻ tín dụng, ghi chú bí mật',
+      //       'Đánh giá sức khỏe tất cả mật khẩu của bạn. Cảnh báo mật khẩu có mức độ bảo mật kém',
+      //       'Công cụ dò quét và cảnh báo lộ dữ liệu tài khoản, mật khẩu trên internet',
+      //       'Thiết lập Liên hệ Khẩn cấp',
+      //       'Chia sẻ mật khẩu an toàn**'
+      //     ],
+      //     note: ['*Áp dụng nếu thanh toán theo năm. Giá gốc 129,000đ/tháng.', '**Chỉ chia sẻ với những thành viên thuộc tổ chức.']
+      //   },
+      //   {
+      //     title: 'Organization & Business',
+      //     price: '39,000đ',
+      //     price_detail: '/tháng/tài khoản*',
+      //     desc: [
+      //       'Mỗi tài khoản thuộc doanh nghiệp đều nhận được tất cả tính năng của gói Premium',
+      //       'Chia sẻ mật khẩu cho nhóm làm việc**',
+      //       'Bảng điều khiển quản trị viên',
+      //       'Phân quyền truy cập theo nhóm',
+      //       'Tổng hợp báo cáo bảo mật các thành viên nhóm',
+      //       'Hỗ trợ triển khai chính sách mật khẩu',
+      //       'Nhật ký hoạt động thành viên'
+      //     ],
+      //     note: ['*Áp dụng nếu thanh toán theo năm. Giá gốc 89,000đ/tháng/tài khoản.', '**Chỉ chia sẻ với những thành viên thuộc tổ chức.']
+      //   }
+      // ],
+      // feature_plan: [
+      //   {
+      //     title: 'LƯU TRỮ',
+      //     features: [
+      //       {
+      //         label: 'Mật khẩu',
+      //         plans: ['&le; 100', 'Không giới hạn', 'Không giới hạn', 'Không giới hạn']
+      //       },
+      //       {
+      //         label: 'Thông tin cá nhân',
+      //         plans: ['&le; 3', 'Không giới hạn', 'Không giới hạn', 'Không giới hạn']
+      //       },
+      //       {
+      //         label: 'Ghi chú bí mật',
+      //         plans: ['&le; 100', 'Không giới hạn', 'Không giới hạn', 'Không giới hạn']
+      //       },
+      //       {
+      //         label: 'Thẻ thanh toán',
+      //         plans: ['&le; 10', 'Không giới hạn', 'Không giới hạn', 'Không giới hạn']
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     title: 'TIỆN ÍCH',
+      //     features: [
+      //       {
+      //         label: 'Tự động điền mật khẩu, thẻ thanh toán, thông tin cá nhân',
+      //         plans: [true, true, true, true]
+      //       },
+      //       {
+      //         label: 'Đăng nhập với FaceID và Touch ID trên smartphone',
+      //         plans: [true, true, true, true]
+      //       },
+      //       {
+      //         label: 'Sử dụng trên nhiều thiết bị',
+      //         plans: [true, true, true, true]
+      //       },
+      //       {
+      //         label: 'Truy cập dữ liệu khi ngoại tuyến',
+      //         plans: [true, true, true, true]
+      //       },
+      //       {
+      //         label: 'URL loại trừ',
+      //         plans: [true, true, true, true]
+      //       },
+      //       {
+      //         label: 'Tạo mật khẩu mạnh',
+      //         plans: [true, true, true, true]
+      //       },
+      //       {
+      //         label: 'Cảnh báo rò rỉ dữ liệu',
+      //         plans: [false, true, true, true]
+      //       },
+      //       {
+      //         label: 'Kiểm tra sức khỏe mật khẩu',
+      //         plans:
+      //           [false, true, true, true]
+      //       },
+      //       {
+      //         label: 'Liên hệ khẩn cấp',
+      //         plans:
+      //           [false, true, true, true]
+      //       },
+      //       {
+      //         label: 'Chia sẻ mật khẩu',
+      //         plans:
+      //           [false, false, 'Tối đa 5 tài khoản', 'Không giới hạn']
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     title: 'QUẢN LÝ',
+      //     features: [
+      //       {
+      //         label: 'Quản lý bằng thư mục',
+      //         plans:
+      //           [true, true, true, true]
+      //       },
+      //       {
+      //         label: 'Quản lý theo danh mục',
+      //         plans:
+      //           [true, true, true, true]
+      //       },
+      //       {
+      //         label: 'Quản lý thành viên nhóm',
+      //         plans:
+      //           [false, false, false, true]
+      //       },
+      //       {
+      //         label: 'Bảng điều khiển dành cho quản lý',
+      //         plans:
+      //           [false, false, false, true]
+      //       },
+      //       {
+      //         label: 'Nhật ký hoạt động thành viên',
+      //         plans:
+      //           [false, false, false, true]
+      //       },
+      //       {
+      //         label: 'Báo cáo bảo mật cho nhóm',
+      //         plans:
+      //           [false, false, false, true]
+      //       },
+      //       {
+      //         label: 'Chính sách mật khẩu',
+      //         plans:
+      //           [false, false, false, true]
+      //       }
+      //     ]
+      //   }
+      // ],
+      // subscription_button: [
+      //   {
+      //     text: 'Đăng ký',
+      //     link: ''
+      //   },
+      //   {
+      //     text: 'Dùng thử 7 ngày',
+      //     link: ''
+      //   },
+      //   {
+      //     text: 'Mua',
+      //     link: ''
+      //   },
+      //   {
+      //     text: 'Dùng thử 10 ngày',
+      //     link: ''
+      //   }
+      // ],
+      // features: {
+      //   title: 'Tính năng bảo mật dành cho mọi tài khoản Locker',
+      //   details: [
+      //     {
+      //       img: 'icon1.svg',
+      //       title: 'Mã hóa dữ liệu',
+      //       desc: 'Locker mã hóa dữ liệu của bạn theo tiêu chuẩn quân đội AES-256, kết hợp thuật toán khởi tạo cặp khóa PBDKF2 và RSA.'
+      //     },
+      //     {
+      //       img: 'icon2.svg',
+      //       title: 'Zero-knowledge',
+      //       desc: 'Mã hóa đầu cuối và Zero-knowledge đảm bảo rằng không ai xem được dữ liệu của bạn, kể cả đội ngũ phát triển Locker.'
+      //     },
+      //     {
+      //       img: 'icon3.svg',
+      //       title: 'Hạ tầng an toàn',
+      //       desc: 'Chúng tôi sử dụng hạ tầng máy chủ của các nhà cung cấp hàng đầu thế giới như AWS, DigitalOcean.'
+      //     },
+      //     {
+      //       img: 'icon4.svg',
+      //       title: 'Kiểm thử bảo mật',
+      //       desc: 'Được kiểm thử an ninh bởi cộng đồng 1500+ chuyên gia bảo mật trên nền tảng WhiteHub Bug Bounty.'
+      //     }
+      //   ]
+      // },
+      // question: {
+      //   title: 'Những câu hỏi thường gặp',
+      //   question_list: [
+      //     {
+      //       question: 'Tài khoản miễn phí có an toàn không?',
+      //       answer: 'Tất cả các tài khoản Locker đều được bảo mật như nhau, không có sự khác biệt nào về mức độ bảo mật giữa các gói tài khoản, dù là trả phí hay miễn phí. Dữ liệu được mã hóa cấp quân đội, kết hợp các thuật toán mã hóa và biện pháp bảo vệ tốt nhất để bảo mật dữ liệu và tính riêng tư của người dùng. Ngoài ra, chính đội ngũ xây dựng Locker cũng không thể xem dữ liệu của bạn. Khám phá thêm tại trang bảo mật.'
+      //     },
+      //     {
+      //       question: 'Có những hình thức thanh toán nào?',
+      //       answer: 'Bạn có thể thanh toán bằng thẻ thanh toán quốc tế Visa, Mastercard. Nếu bạn ở Việt Nam và sử dụng VND là tiền tệ, bạn có thể thanh toán bằng hình thức chuyển khoản ngân hàng với mức giá tốt hơn.'
+      //     },
+      //     {
+      //       question: 'Làm sao để biết tôi có cần gói Premium hay không?',
+      //       answer: 'Mỗi tài khoản miễn phí đều đi kèm 7 ngày dùng thử Premium. Bạn có thể sử dụng đầy đủ các tính năng của tài khoản trả phí và đưa ra quyết định.'
+      //     }
+      //   ]
+      // }
     }
   }
 }
