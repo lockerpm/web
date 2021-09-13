@@ -8,9 +8,13 @@
       <div class="flex items-center order-1">
         <nuxt-link to="/">
           <img
+<<<<<<< HEAD
             src="~/assets/images/logo/locker-logo.svg"
+=======
+            src="~/assets/images/logo/logo_black.svg"
+>>>>>>> dev
             alt="CyStack Locker"
-            class="w-[105px] h-[28px]"
+            class="h-[36px]"
           >
         </nuxt-link>
       </div>
