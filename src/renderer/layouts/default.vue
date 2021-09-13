@@ -5,7 +5,7 @@
         <div class="w-60 h-screen bg-aside min-h-500px min-w-60 fixed flex flex-col justify-between">
           <div>
             <div class="mt-7 px-6">
-              <img class="h-[29px]" src="~assets/images/logo/logo_white.svg">
+              <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
             </div>
             <nav class="mt-7">
               <nuxt-link
@@ -46,7 +46,7 @@
               <div class="flex items-center justify-between">
                 <div class="">
                   <div class="text-lg font-semibold mb-2">
-                    Chào mừng bạn đến với CyStack Manager
+                    Chào mừng bạn đến với CyStack Locker
                   </div>
                   <div class="text-black-600 mb-5">
                     Bạn có thể lưu trữ mật khẩu, ghi chú, hồ sơ để mua sắm trực tuyến và thậm chí cả tài liệu một cách an toàn.

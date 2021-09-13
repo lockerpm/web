@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-grow flex-col items-center">
     <div class="mt-[5.625rem] mb-5">
-      <img src="~assets/images/logo/logo_black.svg" alt="" class="h-[1.875rem]">
+      <img src="~assets/images/logo/logo_black.svg" alt="" class="h-[36px]">
     </div>
     <div class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center">
       <template v-if="step===1">
