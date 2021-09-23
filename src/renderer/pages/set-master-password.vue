@@ -36,7 +36,7 @@
               autocomplete="new-password"
             >
             <div class="input-group-append !bg-white">
-              <button class="btn btn-icon" @click="showPassword = !showPassword">
+              <button class="btn btn-icon" type="button" tabindex="-1" @click="showPassword = !showPassword">
                 <i
                   class="far"
                   :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
@@ -57,7 +57,7 @@
               placeholder=""
             >
             <div class="input-group-append !bg-white">
-              <button class="btn btn-icon" @click="showRePassword = !showRePassword">
+              <button class="btn btn-icon" tabindex="-1" @click="showRePassword = !showRePassword">
                 <i
                   class="far"
                   :class="{'fa-eye': !showRePassword, 'fa-eye-slash': showRePassword}"
