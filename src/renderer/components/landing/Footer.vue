@@ -20,12 +20,12 @@
                   :key="index"
                   class="mb-3"
                 >
-                  <a
+                  <nuxt-link
                     class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
-                    :href="item.link"
+                    :to="item.link"
                   >
                     {{ item.name }}
-                  </a>
+                  </nuxt-link>
                 </li>
               </ul>
             </div>
@@ -115,88 +115,7 @@ export default {
 
   data () {
     return {
-      menu: [
-        {
-          category: 'Locker',
-          items: [
-            {
-              name: 'Cách hoạt động',
-              link: '/how-it-works'
-            },
-            {
-              name: 'Tính năng',
-              link: '/features'
-            },
-            {
-              name: 'Bảng giá',
-              link: '/plan'
-            },
-            {
-              name: 'Doanh nghiệp',
-              link: '#'
-            }
-          ]
-        },
-        {
-          category: 'Công cụ',
-          items: [
-            {
-              name: 'Quản lý mật khẩu',
-              link: '#'
-            },
-            {
-              name: 'Tạo mật khẩu',
-              link: '/password-generator'
-            },
-            {
-              name: 'Kiểm tra độ mạnh yếu của mật khẩu',
-              link: '#'
-            }, {
-              name: 'Kiểm tra mật khẩu bị lộ',
-              link: '#'
-            }
-
-          ]
-        },
-        {
-          category: 'Tài nguyên',
-          items: [
-            {
-              name: '100 mật khẩu yếu nhất',
-              link: '#'
-            },
-            {
-              name: 'Blog',
-              link: '#'
-            },
-            {
-              name: 'Trung tâm hỗ trợ',
-              link: '#'
-            },
-            {
-              name: 'Whitepaper',
-              link: '#'
-            }
-          ]
-        },
-        {
-          category: 'Công ty',
-          items: [
-            {
-              name: 'Về chúng tôi',
-              link: '#'
-            },
-            {
-              name: 'Tin tức',
-              link: '#'
-            },
-            {
-              name: 'Liên hệ',
-              link: '#'
-            }
-          ]
-        }
-      ]
+      menu: this.$t('landing_footer.menu')
     }
   },
   computed: {

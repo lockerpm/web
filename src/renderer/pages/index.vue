@@ -9,7 +9,7 @@
         <div class="w-full flex flex-wrap justify-end">
           <div class="lg:max-w-[570px] max-h-[485px] md:w-1/2 order-1 mb-8 md:mb-0 self-center">
             <h1 class="text-left font-bold text-black landing-font-50 mb-[24px]">
-              {{ section1.title }}
+              {{ $t('landing.section1.title') }}
             </h1>
             <img
               src="~/assets/images/landing/index/boundary.svg"
@@ -17,27 +17,27 @@
             >
             <p
               class="text-left font-normal text-black-600 landing-font-20 mx-auto mb-[50px] mt-[18px]"
-              v-html="section1.desc"
+              v-html="$t('landing.section1.desc')"
             />
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
-                <a
+                <nuxt-link
                   class="landing-btn w-full sm:w-auto mb-1"
-                  :href="section1.btn[0].link"
+                  :to="localeRoute({name: $t('landing.section1.btn[0].link')})"
                 >
-                  {{ section1.btn[0].text }}
-                </a>
+                  {{ $t('landing.section1.btn[0].text') }}
+                </nuxt-link>
                 <p class="italic w-full landing-font-14 mt-1">
-                  {{ section1.btn[0].note }}
+                  {{ $t('landing.section1.btn[0].note') }}
                 </p>
               </div>
               <div>
-                <a
+                <nuxt-link
                   class="landing-btn2 w-full sm:w-auto sm:ml-4"
-                  :href="section1.btn[1].link"
+                  :to="localeRoute({name: $t('landing.section1.btn[1].link')})"
                 >
-                  {{ section1.btn[1].text }}
-                </a>
+                  {{ $t('landing.section1.btn[1].text') }}
+                </nuxt-link>
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@
         <div class="w-full flex flex-wrap">
           <div class="w-full md:mb-0 md:pt-[115px] pt-20 text-center order-1">
             <h2 class=" w-full font-bold landing-font-38 text-black mb-[20px] max-w-[650px] mx-auto">
-              {{ section2.title }}
+              {{ $t('landing.section2.title') }}
             </h2>
             <img
               src="~/assets/images/landing/index/boundary2.svg"
@@ -82,7 +82,7 @@
             class="w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2"
           >
             <div
-              v-for="(item, index) in section2.features"
+              v-for="(item, index) in $t('landing.section2.features')"
               :key="index"
               class="landing-transition px-[30px] pt-11 bg-white rounded-lg hover:shadow-xl"
             >
@@ -94,19 +94,19 @@
               <h3 class="mb-[12px] font-bold text-black landing-font-20">
                 {{ item.title }}
               </h3>
-              <p class="md:max-w-[265px] md:pr-[20px] mb-[40px]">
+              <p class="lg:max-w-[265px] mb-[40px] landing-font-14">
                 {{ item.desc }}
               </p>
             </div>
           </div>
           <div class="max-w-xs mx-auto sm:max-w-none order-3 mt-[60px]">
             <div class="mb-4 sm:mb-0">
-              <a
+              <nuxt-link
                 class="landing-btn bg-green w-full sm:w-auto mb-1"
-                href="#"
+                :to="localeRoute({name: $t('landing.section2.btn.link')})"
               >
-                {{ section2.btn.text }}
-              </a>
+                {{ $t('landing.section2.btn.text') }}
+              </nuxt-link>
             </div>
           </div>
         </div>
@@ -119,15 +119,15 @@
       <div class="w-full flex flex-wrap">
         <div class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:px-24 order-1">
           <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ benefits[0].title }}
+            {{ $t('landing.benefits[0].title') }}
           </h2>
-          <p class="landing-font-18">{{ benefits[0].desc }}</p>
+          <p class="landing-font-18">{{ $t('landing.benefits[0].desc') }}</p>
         </div>
         <!-- Left end -->
         <!-- Right -->
         <div class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2">
           <img
-            :src="require(`~/assets/images/landing/index/${benefits[0].img}`)"
+            :src="require(`~/assets/images/landing/index/${$t('landing.benefits[0].img')}`)"
             alt=""
             style="align-self: center"
           >
@@ -139,15 +139,15 @@
       <div class="w-full flex flex-wrap">
         <div class=" w-full md:mb-0 mt-3 md:w-1/2 md:px-20 self-center md:order-2 order-1">
           <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ benefits[1].title }}
+            {{ $t('landing.benefits[1].title') }}
           </h2>
-          <p class="landing-font-18 md:max-w-[350px]">{{ benefits[1].desc }}</p>
+          <p class="landing-font-18 md:max-w-[350px]">{{ $t('landing.benefits[1].desc') }}</p>
         </div>
         <!-- Right end -->
         <!-- Left -->
         <div class="w-full md:w-1/2 pl-0 flex order-1">
           <img
-            :src="require(`~/assets/images/landing/index/${benefits[1].img}`)"
+            :src="require(`~/assets/images/landing/index/${$t('landing.benefits[1].img')}`)"
             alt=""
             style="align-self: center"
           >
@@ -159,15 +159,15 @@
       <div class="w-full flex flex-wrap">
         <div class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:px-24 order-1">
           <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ benefits[2].title }}
+            {{ $t('landing.benefits[2].title') }}
           </h2>
-          <p class="landing-font-18">{{ benefits[2].desc }}</p>
+          <p class="landing-font-18">{{ $t('landing.benefits[2].desc') }}</p>
         </div>
         <!-- Left end -->
         <!-- Right -->
         <div class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2">
           <img
-            :src="require(`~/assets/images/landing/index/${benefits[2].img}`)"
+            :src="require(`~/assets/images/landing/index/${$t('landing.benefits[2].img')}`)"
             alt=""
             style="align-self: center"
           >
@@ -179,15 +179,15 @@
       <div class="w-full flex flex-wrap">
         <div class="w-full md:mb-0 mt-3 md:w-1/2 md:px-20 self-center md:order-2 order-1">
           <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ benefits[3].title }}
+            {{ $t('landing.benefits[3].title') }}
           </h2>
-          <p class="landing-font-18 md:max-w-[350px]">{{ benefits[3].desc }}</p>
+          <p class="landing-font-18 md:max-w-[350px]">{{ $t('landing.benefits[3].desc') }}</p>
         </div>
         <!-- Right end -->
         <!-- Left -->
         <div class="w-full md:w-1/2 pl-0 flex order-1">
           <img
-            :src="require(`~/assets/images/landing/index/${benefits[3].img}`)"
+            :src="require(`~/assets/images/landing/index/${$t('landing.benefits[3].img')}`)"
             alt=""
             style="align-self: center"
           >
@@ -204,15 +204,15 @@
         style="background-color: #f5f6f7"
       >
         <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-28 font-semibold max-w-max text-center mb-6 ">
-          {{ cta1.title }}
+          {{ $t('landing.cta1.title') }}
         </p>
 
         <nuxt-link
           class="landing-btn"
-          :to="cta1.btn.link"
+          :to="localeRoute({name: $t('landing.cta1.btn.link')})"
           style="align-self: center"
         >
-          {{ cta1.btn.text }}
+          {{ $t('landing.cta1.btn.text') }}
         </nuxt-link>
       </div>
     </section>
@@ -262,7 +262,7 @@
       <!--        >-->
       <!--      </div>-->
       <div
-        class="hidden lg:inline-block w-full h-auto text-center mt-20 mb-36 flex flex-nowrap justify-center gap-x-6"
+        class="hidden lg:inline-block w-full h-auto text-center mt-20 mb-36 justify-center gap-x-6"
       >
         <div class="inline w-2/12">
           <img
@@ -288,7 +288,6 @@
             style="width: 50%; transform: translate3d(500px, -50px, 0px) rotateZ(-25deg);"
           >
         </div>
-
       </div>
       <div class="lg:hidden w-full h-[412px] mt-28 mb-16 relative">
         <img
@@ -303,7 +302,8 @@
         >
         <img
           src="~/assets/images/landing/index/mac_rotated.png"
-          class="lg:hidden w-[704px] h-[412px]" style="position: absolute; bottom: 40px; left: 200px;"
+          class="lg:hidden w-[704px] h-[412px]"
+          style="position: absolute; bottom: 40px; left: 200px;"
         >
       </div>
     </section>
@@ -312,15 +312,15 @@
     <section class="mt-8">
       <div class="w-8/12 mx-auto">
         <h2 class="text-center font-bold text-black landing-font-38 mb-[14px]">
-          {{ platform.title }}
+          {{ $t('landing.platform.title') }}
         </h2>
         <p class=" text-center text-black-600 leading-[26px] landing-font-18 mx-auto mb-[42px] md:max-w-[540px]">
-          {{ platform.desc }}
+          {{ $t('landing.platform.desc') }}
         </p>
       </div>
       <div class="w-11/12 mx-auto flex flex-wrap md:justify-between justify-center align-start">
         <div
-          v-for="(item, index) in platform.platforms"
+          v-for="(item, index) in $t('landing.platform.platforms')"
           :key="index"
           class="opacity-90 mb-9 max-w-[234px] h-[75px] w-full"
         >
@@ -347,7 +347,7 @@
     <section class="md:mt-36 mt-20">
       <div class="w-full mb-14 text-center">
         <h2 class="font-bold landing-font-32 text-black mx-auto md:max-w-[950px]">
-          {{ why.title }}
+          {{ $t('landing.why.title') }}
         </h2>
         <img
           src="~/assets/images/landing/index/boundary3.svg"
@@ -360,71 +360,71 @@
         <div class="w-full bg-white relative z-10">
           <table class="w-full">
             <tbody>
-            <tr class="hidden md:table-row">
-              <td/>
-              <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
-                {{ why.column_labels[0] }}
-              </td>
-              <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
-                {{ why.column_labels[1] }}
-              </td>
-            </tr>
-            <template v-for="(label, index) in why.labels">
-              <tr
-                :key="index"
-                class="md:hidden"
-              >
-                <td
-                  colspan="2"
-                  class="landing-font-18 font-bold p-4 text-center"
-                  style="background-color: #f6f7f8"
-                >
-                  {{ label }}
+              <tr class="hidden md:table-row">
+                <td />
+                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
+                  {{ $t('landing.why.column_labels[0]') }}
+                </td>
+                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
+                  {{ $t('landing.why.column_labels[1]') }}
                 </td>
               </tr>
-              <tr
-                :key="index"
-                :style="index % 2 === 0 ? 'background-color: #FBFAF3' : ''"
-              >
-                <td
-                  class="lg:min-w-[200px] min-w-[120px] landing-font-16 font-semibold px-9 py-4 align-top hidden md:table-cell"
+              <template v-for="(label, index) in $t('landing.why.labels')">
+                <tr
+                  :key="index"
+                  class="md:hidden"
                 >
-                  {{ label }}
-                </td>
-                <td class="landing-font-16 text-black-600 px-8 py-4 align-top">
-                  <div class="flex flex-flex-nowrap items-start">
-                    <img
-                      class="mt-[6px] mr-3"
-                      src="~/assets/images/landing/index/unchecked_icon.svg"
-                    >
+                  <td
+                    colspan="2"
+                    class="landing-font-18 font-bold p-4 text-center"
+                    style="background-color: #f6f7f8"
+                  >
+                    {{ label }}
+                  </td>
+                </tr>
+                <tr
+                  :key="index"
+                  :style="index % 2 === 0 ? 'background-color: #FBFAF3' : ''"
+                >
+                  <td
+                    class="lg:min-w-[200px] min-w-[120px] landing-font-16 font-semibold px-9 py-4 align-top hidden md:table-cell"
+                  >
+                    {{ label }}
+                  </td>
+                  <td class="landing-font-16 text-black-600 px-8 py-4 align-top">
+                    <div class="flex flex-flex-nowrap items-start">
+                      <img
+                        class="mt-[6px] mr-3"
+                        src="~/assets/images/landing/index/unchecked_icon.svg"
+                      >
 
-                    <p>{{ why.browser[index] }}</p>
-                  </div>
-                </td>
-                <td class="landing-font-16 px-8 py-4 align-top">
-                  <div class="flex flex-flex-nowrap items-start">
-                    <img
-                      class="mt-[6px] mr-3"
-                      src="~/assets/images/landing/index/checked_icon.svg"
-                    >
-                    {{ why.locker[index] }}
-                  </div>
+                      <p>{{ why.browser[index] }}</p>
+                    </div>
+                  </td>
+                  <td class="landing-font-16 px-8 py-4 align-top">
+                    <div class="flex flex-flex-nowrap items-start">
+                      <img
+                        class="mt-[6px] mr-3"
+                        src="~/assets/images/landing/index/checked_icon.svg"
+                      >
+                      {{ why.locker[index] }}
+                    </div>
+                  </td>
+                </tr>
+              </template>
+
+              <tr class="md:border-b-0">
+                <td class="hidden md:table-cell" />
+                <td />
+                <td class="landing-font-18 px-8 py-4 align-top font-semibold">
+                  <nuxt-link
+                    :to="localeRoute({name: $t('landing.why.btn.link')})"
+                    class="hover:no-underline text-green"
+                  >
+                    {{ $t('landing.why.btn.text') }} <i class="el-icon-right" />
+                  </nuxt-link>
                 </td>
               </tr>
-            </template>
-
-            <tr class="md:border-b-0">
-              <td class="hidden md:table-cell"/>
-              <td/>
-              <td class="landing-font-18 px-8 py-4 align-top font-semibold">
-                <a
-                  href=""
-                  class="hover:no-underline text-green"
-                >
-                  {{ why.btn.text }} <i class="el-icon-right"/>
-                </a>
-              </td>
-            </tr>
             </tbody>
           </table>
         </div>
@@ -441,12 +441,12 @@
         <div class="w-full flex flex-wrap">
           <div class="w-full md:mb-0 md:pt-[115px] pt-20 text-center order-1">
             <h2 class="w-full font-bold landing-font-38 text-black mb-[45px] max-w-[790px] mx-auto">
-              {{ start.title }}
+              {{ $t('landing.start.title') }}
             </h2>
           </div>
           <div class="w-full md:w-10/12 mx-auto flex flex-wrap order-2 gap-x-[30px] gap-y-[45px] justify-center">
             <div
-              v-for="(item, index) in start.options"
+              v-for="(item, index) in $t('landing.start.options')"
               :key="index"
               class=" landing-transition p-12 w-full md:w-[380px] bg-white relative z-10 rounded-xl hover:shadow-xl"
             >
@@ -465,14 +465,14 @@
               </p>
 
               <div class="w-full flex">
-                <a
+                <nuxt-link
                   :class="index === 0 ? 'landing-btn' : 'landing-btn2'"
                   class="mx-auto"
-                  :href="item.btn.link"
+                  :to="localeRoute({name: item.btn.link})"
                   style="align-self: center"
                 >
                   {{ item.btn.text }}
-                </a>
+                </nuxt-link>
               </div>
             </div>
           </div>
@@ -494,12 +494,12 @@ export default {
         btn: [
           {
             text: 'Cá nhân',
-            link: '#',
+            link: '',
             note: 'Miễn phí vĩnh viễn'
           },
           {
             text: 'Doanh nghiệp',
-            link: '#',
+            link: '',
             note: ''
           }
         ]
@@ -530,7 +530,7 @@ export default {
         ],
         btn: {
           text: 'Xem thêm',
-          link: '#'
+          link: ''
         }
 
       },
@@ -540,62 +540,50 @@ export default {
         platforms: [
           {
             name: 'Windows',
-            imgGray: require('~/assets/images/landing/index/windows.png'),
             img: 'windows.png'
           },
           {
             name: 'MacOS',
-            imgGray: require('~/assets/images/landing/index/macos.png'),
             img: 'macos.png'
           },
           {
             name: 'Linux',
-            imgGray: require('~/assets/images/landing/index/linux.png'),
             img: 'linux.png'
           },
           {
             name: 'Ubuntu',
-            imgGray: require('~/assets/images/landing/index/ubuntu.png'),
             img: 'ubuntu.png'
           },
           {
             name: 'Chrome',
-            imgGray: require('~/assets/images/landing/index/chrome.png'),
             img: 'chrome.png'
           },
           {
             name: 'Safari',
-            imgGray: require('~/assets/images/landing/index/safari.png'),
             img: 'safari.png'
           },
           {
             name: 'Firefox',
-            imgGray: require('~/assets/images/landing/index/firefox.png'),
             img: 'firefox.png'
           },
           {
             name: 'Microsoft Edge',
-            imgGray: require('~/assets/images/landing/index/edge.png'),
             img: 'edge.png'
           },
           {
             name: 'Cốc Cốc',
-            imgGray: require('~/assets/images/landing/index/coccoc.png'),
             img: 'coccoc.png'
           },
           {
             name: 'Opera',
-            imgGray: require('~/assets/images/landing/index/opera.png'),
             img: 'opera.png'
           },
           {
             name: 'iOS',
-            imgGray: require('~/assets/images/landing/index/ios.png'),
             img: 'ios.png'
           },
           {
             name: 'Android',
-            imgGray: require('~/assets/images/landing/index/android.png'),
             img: 'android.png'
           }
         ]
@@ -627,7 +615,7 @@ export default {
         title: 'Mang lại trải nghiệm internet an toàn hơn, tốt hơn cho tất cả mọi người.',
         btn: {
           text: 'Tìm hiểu lợi ích',
-          link: '/how-it-works'
+          link: 'how-it-works'
         }
       },
       why: {
@@ -656,7 +644,7 @@ export default {
         ],
         btn: {
           text: 'Khám phá tính năng',
-          link: '#'
+          link: ''
         }
       },
       start: {
@@ -668,7 +656,7 @@ export default {
             desc: 'Miễn phí vĩnh viễn. Lưu trữ mật khẩu, thẻ tín dụng, ghi chú cá nhân và sử dụng trên mọi thiết bị.',
             btn: {
               text: 'Đăng ký miễn phí',
-              link: '#'
+              link: ''
             }
           },
           {
@@ -677,7 +665,7 @@ export default {
             desc: 'Dùng thử 10 ngày. Chia sẻ mật khẩu an toàn, thiết lập chính sách và quản lý bảo mật cho đơn vị của bạn.',
             btn: {
               text: 'Bắt đầu dùng thử',
-              link: '#'
+              link: ''
             }
           }
         ]

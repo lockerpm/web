@@ -16,12 +16,12 @@
               {{ header.desc }}
             </p>
             <div class="max-w-xs mb-4 sm:mb-0">
-              <a
+              <nuxt-link
                 class="landing-btn w-full sm:w-auto mb-1"
-                :href="header.btn.link"
+                :to="localeRoute({name: header.btn.link})"
               >
                 {{ header.btn.text }}
-              </a>
+              </nuxt-link>
             </div>
           </div>
           <!-- Right -->
@@ -54,7 +54,7 @@
           class="w-[510px] h-auto rounded-xl mb-10"
           style="background: #F5F6F7;"
         >
-          <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">Tiện ích mở rộng trình duyệt</h2>
+          <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">{{ grid_headers[0] }}</h2>
           <div class="w-10/12 mx-auto flex flex-wrap sm:justify-between justify-center align-start">
             <div
               v-for="(item, index) in browser"
@@ -64,7 +64,7 @@
               <div class="flex flex-nowrap">
                 <div class="circle mx-4">
                   <img
-                    :src="item.img"
+                    :src="require(`~/assets/images/landing/index/${item.img}`)"
                     :alt="item.name"
                     class="max-h-full h-auto mx-auto"
                     style="max-width: 55%; max-height: 55%; align-self: center"
@@ -80,7 +80,7 @@
           class="w-[510px] h-auto rounded-xl mb-10"
           style="background: #F5F6F7;"
         >
-          <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">Ứng dụng cho máy tính cá nhân</h2>
+          <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">{{ grid_headers[1] }}</h2>
           <div class="w-10/12 mx-auto flex flex-wrap sm:justify-between justify-center align-start">
             <div
               v-for="(item, index) in os"
@@ -90,7 +90,7 @@
               <div class="flex flex-nowrap">
                 <div class="circle mx-4">
                   <img
-                    :src="item.img"
+                    :src="require(`~/assets/images/landing/index/${item.img}`)"
                     :alt="item.name"
                     class="h-auto mx-auto"
                     style="max-width: 55%; max-height: 55%; align-self: center"
@@ -106,7 +106,7 @@
           class="w-[510px] h-[382px] rounded-xl mb-10 bg-mobile-app"
           style="background-repeat: no-repeat; background-size: contain;"
         >
-          <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">Ứng dụng di động</h2>
+          <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">{{ grid_headers[2] }}</h2>
           <div class="max-w-full mx-auto justify-center flex gap-x-4">
             <div class="justify-self-center">
               <a
@@ -133,15 +133,15 @@
           class="w-[510px] h-auto rounded-xl mb-10 bg-web-app"
           style="background-repeat: no-repeat; background-size: auto;"
         >
-          <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">Truy cập phiên bản web</h2>
-          <p class="text-center landing-font-14 w-[400px] mx-auto">Chỉ cần một thiết bị bất kỳ có hỗ trợ trình duyệt web, bạn đã có thể truy cập Locker tại: <span class="text-green"><a href="#">locker.io/vault</a></span></p>
+          <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">{{ grid_headers[3] }}</h2>
+          <p class="text-center landing-font-14 w-[400px] mx-auto">{{ go_locker }}<span class="text-green"><nuxt-link :to="localeRoute({name: 'vault'})">locker.io/vault</nuxt-link></span></p>
           <div class="w-full h-[236px]">
-            <a
+            <nuxt-link
               class="landing-btn w-full text-center w-[207px] h-[45px] ml-[151px] mt-[121px]"
-              href="#"
+              :to="localeRoute({name: 'vault'})"
             >
               locker.io/vault
-            </a>
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -154,61 +154,64 @@
 export default {
   layout: 'landing',
   data () {
-    return {
-      header: {
-        title: 'Tải Locker trên các thiết bị của bạn',
-        desc: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
-        img: 'download/img_1.png',
-        btn: {
-          text: 'Đăng ký miễn phí',
-          link: '#'
-        }
-      },
-      os: [
-        {
-          name: 'Windows',
-          img: require('~/assets/images/landing/index/windows.png')
-        },
-        {
-          name: 'MacOs',
-          img: require('~/assets/images/landing/index/macos.png')
-        },
-        {
-          name: 'Linux',
-          img: require('~/assets/images/landing/index/linux.png')
-        },
-        {
-          name: 'Ubuntu',
-          img: require('~/assets/images/landing/index/ubuntu.png')
-        }
-      ],
-      browser: [
-        {
-          name: 'Chrome',
-          img: require('~/assets/images/landing/index/chrome.png')
-        },
-        {
-          name: 'Safari',
-          img: require('~/assets/images/landing/index/safari.png')
-        },
-        {
-          name: 'Firefox',
-          img: require('~/assets/images/landing/index/firefox.png')
-        },
-        {
-          name: 'Microsoft Edge',
-          img: require('~/assets/images/landing/index/edge.png')
-        },
-        {
-          name: 'Cốc Cốc',
-          img: require('~/assets/images/landing/index/coccoc.png')
-        },
-        {
-          name: 'Opera',
-          img: require('~/assets/images/landing/index/opera.png')
-        }
-      ]
-    }
+    return this.$t('download')
+    // return {
+    //   header: {
+    //     title: 'Tải Locker trên các thiết bị của bạn',
+    //     desc: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
+    //     img: 'download/img_1.png',
+    //     btn: {
+    //       text: 'Đăng ký miễn phí',
+    //       link: '#'
+    //     }
+    //   },
+    //   grid_headers: ['Tiện ích mở rộng trình duyệt', 'Ứng dụng cho máy tính cá nhân', 'Ứng dụng di động', 'Truy cập phiên bản web'],
+    //   go_locker: 'Chỉ cần một thiết bị bất kỳ có hỗ trợ trình duyệt web, bạn đã có thể truy cập Locker tại:',
+    //   os: [
+    //     {
+    //       name: 'Windows',
+    //       img: 'windows.png'
+    //     },
+    //     {
+    //       name: 'MacOs',
+    //       img: 'macos.png'
+    //     },
+    //     {
+    //       name: 'Linux',
+    //       img: 'linux.png'
+    //     },
+    //     {
+    //       name: 'Ubuntu',
+    //       img: 'ubuntu.png'
+    //     }
+    //   ],
+    //   browser: [
+    //     {
+    //       name: 'Chrome',
+    //       img: 'chrome.png'
+    //     },
+    //     {
+    //       name: 'Safari',
+    //       img: 'safari.png'
+    //     },
+    //     {
+    //       name: 'Firefox',
+    //       img: 'firefox.png'
+    //     },
+    //     {
+    //       name: 'Microsoft Edge',
+    //       img: 'edge.png'
+    //     },
+    //     {
+    //       name: 'Cốc Cốc',
+    //       img: 'coccoc.png'
+    //     },
+    //     {
+    //       name: 'Opera',
+    //       img: 'opera.png'
+    //     }
+    //   ]
+    // }
   }
 }
 </script>

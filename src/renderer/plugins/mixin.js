@@ -13,6 +13,7 @@ Vue.mixin({
   },
   computed: {
     language () { return this.$store.state.user.language },
+    locale () { return this.$store.state.i18n.locale },
     currentUser () { return this.$store.state.user },
     currentUserPw () { return this.$store.state.userPw },
     environment () { return this.$store.state.environment },
@@ -78,6 +79,9 @@ Vue.mixin({
       this.$store.dispatch('SetLang', value).then(() => {
         this.$i18n.locale = value
       })
+    },
+    changeLocale (value) {
+      this.$i18n.setLocale(value)
     },
     async logout () {
       console.log('###### LOG OUT')
