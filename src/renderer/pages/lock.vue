@@ -37,6 +37,7 @@
                 <button
                   class="btn btn-icon"
                   type="button"
+                  tabindex="-1"
                   @click="showPassword = !showPassword"
                 >
                   <i

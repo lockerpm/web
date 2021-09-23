@@ -40,7 +40,8 @@
       ]
     },
     "types": [
-      "@nuxt/types"
+      "@nuxt/types",
+      "@types/node"
     ],
     "experimentalDecorators": true,
     "suppressImplicitAnyIndexErrors": true
