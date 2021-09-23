@@ -1,21 +1,21 @@
 <template>
   <div class="md:pt-[180px] pt-36">
     <h1 class="text-left font-bold text-black landing-font-50 lg:w-[980px]">
-      {{ title }}
+      {{ $t('how_it_works.title') }}
     </h1>
     <section class="md:mt-[75px] mt-8">
       <div class="w-full flex flex-wrap">
         <div class="w-full md:mb-0 mt-3 md:w-2/5 pr-0 md:pl-[110px] md:order-2 self-center order-2">
           <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ hiw1.title }}
+            {{ $t('how_it_works.hiw1.title') }}
           </h2>
-          <p class="landing-font-18">{{ hiw1.desc }}</p>
+          <p class="landing-font-18">{{ $t('how_it_works.hiw1.desc') }}</p>
         </div>
         <!-- Right end -->
         <!-- Left -->
         <div class="w-full md:w-1/2 pl-0 md:pl-4 flex align-middle justify-center order-1">
           <img
-            :src="require(`~/assets/images/landing/how-it-works/${hiw1.img}`)"
+            :src="require(`~/assets/images/landing/how-it-works/${$t('how_it_works.hiw1.img')}`)"
             alt=""
             style="align-self: center"
           >
@@ -27,15 +27,15 @@
       <div class="w-full flex flex-wrap">
         <div class="w-full md:mb-0 mt-3 md:w-1/3 self-center pr-0 order-1">
           <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ hiw2.title }}
+            {{ $t('how_it_works.hiw2.title') }}
           </h2>
-          <p class="landing-font-18">{{ hiw2.desc }}</p>
+          <p class="landing-font-18">{{ $t('how_it_works.hiw2.desc') }}</p>
         </div>
         <!-- Left end -->
         <!-- Right -->
         <div class="w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
           <img
-            :src="require(`~/assets/images/landing/how-it-works/${hiw2.img}`)"
+            :src="require(`~/assets/images/landing/how-it-works/${$t('how_it_works.hiw2.img')}`)"
             alt=""
             style="align-self: center"
           >
@@ -47,15 +47,15 @@
       <div class="w-full flex flex-wrap">
         <div class="w-full md:mb-0 mt-3 md:w-2/5 pr-0 md:pl-[110px] md:order-2 self-center order-1">
           <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ hiw3.title }}
+            {{ $t('how_it_works.hiw3.title') }}
           </h2>
-          <p class="landing-font-18">{{ hiw3.desc }}</p>
+          <p class="landing-font-18">{{ $t('how_it_works.hiw3.desc') }}</p>
         </div>
         <!-- Left end -->
         <!-- Right -->
         <div class=" w-full md:w-1/2 pl-0 md:pl-4 mt-4 md:mt-0 flex align-middle justify-center order-1">
           <img
-            :src="require(`~/assets/images/landing/how-it-works/${hiw3.img}`)"
+            :src="require(`~/assets/images/landing/how-it-works/${$t('how_it_works.hiw3.img')}`)"
             alt=""
             style="align-self: center"
           >
@@ -68,9 +68,17 @@
         <div class="w-full flex flex-wrap relative">
           <div class="w-full md:mb-0 md:w-1/3 pr-0 self-start order-1 sticky top-24">
             <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-              {{ hiw4.title }}
+              {{ $t('how_it_works.hiw4.title') }}
             </h2>
-            <div id="save1" class="vertical-line landing-transition">
+            <div v-for="(item, index) in $t('how_it_works.hiw4.desc')" :id="`save${index+1}`" :key="index" :class="index===0?'vertical-line':'opacity-50 pl-[30px]'" class="landing-transition">
+              <h3 class="font-bold text-black landing-font-20 mb-[12px]">
+                {{ item.title }}
+              </h3>
+              <p class="text-black-600 landing-font-16 mb-9">
+                {{ item.desc }}
+              </p>
+            </div>
+            <!-- <div id="save1" :class="" class="vertical-line landing-transition">
               <h3 class="font-bold text-black landing-font-20 mb-[12px]">
                 {{ hiw4.desc[0].title }}
               </h3>
@@ -95,14 +103,14 @@
               <p id="save3Desc" class="text-black-600 landing-font-16 mb-9">
                 {{ hiw4.desc[2].desc }}
               </p>
-            </div>
+            </div> -->
             <div class="landing-font-18 align-top ml-[30px] mt-9">
-              <a
-                :href="hiw4.btn.link"
+              <nuxt-link
+                :to="localeRoute({name: $t('how_it_works.hiw4.btn.link')})"
                 class="hover:no-underline text-green font-semibold"
               >
-                {{ hiw4.btn.text }} <i class="el-icon-right" />
-              </a>
+                {{ $t('how_it_works.hiw4.btn.text') }} <i class="el-icon-right" />
+              </nuxt-link>
             </div>
           </div>
           <!-- Left end -->
@@ -110,19 +118,19 @@
           <div class=" w-full md:w-2/3 pl-0 md:pl-4 flex align-middle justify-center order-2">
             <div class="w-full flex flex-col">
               <img
-                :src="require(`~/assets/images/landing/how-it-works/${hiw4.desc[0].img}`)"
+                :src="require(`~/assets/images/landing/how-it-works/${$t('how_it_works.hiw4.desc[0].img')}`)"
                 alt=""
                 style="align-self: center"
                 class="mb-72"
               >
               <img
-                :src="require(`~/assets/images/landing/how-it-works/${hiw4.desc[1].img}`)"
+                :src="require(`~/assets/images/landing/how-it-works/${$t('how_it_works.hiw4.desc[1].img')}`)"
                 alt=""
                 style="align-self: center"
                 class="mb-72"
               >
               <img
-                :src="require(`~/assets/images/landing/how-it-works/${hiw4.desc[2].img}`)"
+                :src="require(`~/assets/images/landing/how-it-works/${$t('how_it_works.hiw4.desc[2].img')}`)"
                 alt=""
                 style="align-self: center"
                 class="mb-72"
@@ -133,9 +141,9 @@
         </div>
       </div>
       <h2 class="md:hidden w-full font-bold landing-font-38 text-black mb-[20px] mx-6 pt-20">
-        {{ hiw4.title }}
+        {{ $t('how_it_works.hiw4.title') }}
       </h2>
-      <div v-for="(item, index) in hiw4.desc" :key="index" class="md:hidden w-full flex flex-wrap mx-6 pb-6">
+      <div v-for="(item, index) in $t('how_it_works.hiw4.desc')" :key="index" class="md:hidden w-full flex flex-wrap mx-6 pb-6">
         <div class="w-full md:mb-0 mt-3 md:w-1/3 self-center pr-0 order-1">
           <h2 class="w-full font-bold landing-font-28 text-black mb-[20px]">
             {{ item.title }}
@@ -159,10 +167,10 @@
         <div class="w-full flex flex-wrap">
           <div class="w-full md:mb-0 text-center order-1">
             <h2 class="w-full font-bold landing-font-38 text-black mb-[20px] max-w-[514px] mx-auto">
-              {{ hiw5.title }}
+              {{ $t('how_it_works.hiw5.title') }}
             </h2>
             <img
-              :src="require(`~/assets/images/landing/how-it-works/${hiw5.img}`)"
+              :src="require(`~/assets/images/landing/how-it-works/${$t('how_it_works.hiw5.img')}`)"
               alt=""
               class="mx-auto"
             >
@@ -171,7 +179,7 @@
             class=" w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2"
           >
             <div
-              v-for="(item, index) in hiw5.desc"
+              v-for="(item, index) in $t('how_it_works.hiw5.desc')"
               :key="index"
               class="landing-transition px-[30px] pt-11 bg-white rounded-md hover:shadow-xl"
             >
@@ -183,27 +191,27 @@
               <h3 class="mb-[12px] font-bold text-black landing-font-20">
                 {{ item.title }}
               </h3>
-              <p class="md:max-w-[265px] md:pr-[20px] mb-[40px]">
+              <p class="lg:max-w-[265px] mb-[40px]">
                 {{ item.desc }}
               </p>
             </div>
           </div>
           <div class="w-full landing-font-18 mt-[60px] text-center order-3">
-            <a
-              :href="hiw5.btn[0].link"
+            <nuxt-link
+              :to="localeRoute({name: $t('how_it_works.hiw5.btn[0].link')})"
               class="hover:no-underline text-green font-semibold"
             >
-              {{ hiw5.btn[0].text }}
+              {{ $t('how_it_works.hiw5.btn[0].text') }}
               <i class="el-icon-right" />
-            </a>
+            </nuxt-link>
           </div>
           <div class="w-full landing-font-18 mt-3 text-center order-4">
-            <a
-              :href="hiw5.btn[1].link"
+            <nuxt-link
+              :to="localeRoute({name: $t('how_it_works.hiw5.btn[1].link')})"
               class="hover:no-underline text-green font-semibold"
             >
-              {{ hiw5.btn[1].text }} <i class="el-icon-right" />
-            </a>
+              {{ $t('how_it_works.hiw5.btn[1].text') }} <i class="el-icon-right" />
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -252,7 +260,7 @@ export default {
         ],
         btn: {
           text: 'Xem tất cả tính năng',
-          link: '#'
+          link: 'features'
         }
       },
       hiw5: {
@@ -297,9 +305,6 @@ export default {
     const save1 = document.getElementById('save1')
     const save2 = document.getElementById('save2')
     const save3 = document.getElementById('save3')
-    // const save1Desc = document.getElementById('save1Desc')
-    // const save2Desc = document.getElementById('save2Desc')
-    // const save3Desc = document.getElementById('save3Desc')
     window.onscroll = function () {
       const scrollPos = window.scrollY
       if (scrollPos < 2600) {
@@ -316,9 +321,6 @@ export default {
         if (save3.classList.contains('vertical-line')) {
           save3.classList.remove('vertical-line')
         }
-        // save2Desc.classList.add('hidden')
-        // save1Desc.classList.remove('hidden')
-        // save3Desc.classList.add('hidden')
       } else if (scrollPos > 2600 && scrollPos < 3600) {
         save2.classList.remove('opacity-50')
         save2.classList.remove('pl-[30px]')
@@ -333,9 +335,6 @@ export default {
         if (save3.classList.contains('vertical-line')) {
           save3.classList.remove('vertical-line')
         }
-        // save1Desc.classList.add('hidden')
-        // save2Desc.classList.remove('hidden')
-        // save3Desc.classList.add('hidden')
       } else {
         save3.classList.remove('opacity-50')
         save3.classList.remove('pl-[30px]')
@@ -350,9 +349,6 @@ export default {
         if (save2.classList.contains('vertical-line')) {
           save2.classList.remove('vertical-line')
         }
-        // save1Desc.classList.add('hidden')
-        // save2Desc.classList.add('hidden')
-        // save3Desc.classList.remove('hidden')
       }
     }
   }

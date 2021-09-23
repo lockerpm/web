@@ -8,7 +8,11 @@
       <div class="flex items-center order-1">
         <nuxt-link to="/">
           <img
+<<<<<<< HEAD
+            src="~/assets/images/logo/locker-logo.svg"
+=======
             src="~/assets/images/logo/logo_black.svg"
+>>>>>>> dev
             alt="CyStack Locker"
             class="h-[36px]"
           >
@@ -94,28 +98,7 @@
 export default {
   data () {
     return {
-      menu: [
-        {
-          name: 'Lợi ích',
-          link: '/how-it-works'
-        },
-        {
-          name: 'Tính năng',
-          link: '/features'
-        },
-        {
-          name: 'Bảng giá',
-          link: '/plan'
-        },
-        {
-          name: 'Tải về',
-          link: '/download'
-        },
-        {
-          name: 'Doanh nghiệp',
-          link: '#'
-        }
-      ]
+      menu: this.$t('landing_header.menu')
     }
   },
   computed: {
