@@ -113,18 +113,19 @@ export default {
     },
     async purgeAccount (hashedPassword) {
       try {
-        await this.$post('cystack_platform/pm/users/me/purge', {
+        await this.$axios.$post('cystack_platform/pm/users/me/purge', {
           master_password_hash: hashedPassword
         })
         this.closeDialog()
         this.notify(this.$t('data.notifications.purge_success'), 'success')
       } catch (e) {
+        console.log(e)
         this.notify(this.$t('data.notifications.purge_failed'), 'warning')
       }
     },
     async deleteAccount (hashedPassword) {
       try {
-        await this.$post('cystack_platform/pm/users/me/delete', {
+        await this.$axios.$post('cystack_platform/pm/users/me/delete', {
           master_password_hash: hashedPassword
         })
         this.notify(this.$t('data.notifications.delete_account_success'), 'success')
