@@ -68,8 +68,8 @@ body {
 .cipher-items {
   .cipher-item {
     border-bottom: 1px solid #EAEAF5;
-    height: 57px;
-    @apply hover:bg-black-300 cursor-pointer items-center px-5;
+    min-height: 57px;
+    @apply hover:bg-black-300 cursor-pointer items-center px-5 break-all;
     &:last-child {
       border-bottom: none;
     }
