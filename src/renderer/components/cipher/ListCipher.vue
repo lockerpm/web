@@ -364,7 +364,7 @@
                         {{ $t('common.move_folder') }}
                       </el-dropdown-item>
                       <el-dropdown-item
-                        v-if="canManageTeamFolder"
+                        v-if="scope.row.organizationId && canManageTeamFolder"
                         divided
                         @click.native="shareItem(scope.row)"
                       >
