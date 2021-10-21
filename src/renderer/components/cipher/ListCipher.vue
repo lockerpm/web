@@ -146,7 +146,7 @@
                 :title="`${item.name} (${item.ciphersCount})`"
                 @click="selectedFolder = item"
                 @dblclick="routerCollection(item)"
-                @contextmenu.prevent="canManageItem(teams, item) ? $refs.menuTeam.open($event, item) : null"
+                @contextmenu.prevent="canManageFolder(teams, item) ? $refs.menuTeam.open($event, item) : null"
               >
                 <div class="flex items-center">
                   <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
@@ -355,7 +355,7 @@
                         {{ $t('common.clone') }}
                       </el-dropdown-item>
                       <el-dropdown-item
-                        v-if="!scope.row.organizationId"
+                        v-if="!scope.row.organizationId && canManageTeamFolder"
                         @click.native="shareItem(scope.row)"
                       >
                         {{ $t('common.share') }}
@@ -419,7 +419,7 @@
               {{ $t('data.folders.add_folder') }}
             </li>
             <li
-              v-if="getRouteBaseName() ==='vault' && canManageTeamFolder"
+              v-if="getRouteBaseName() ==='vault' && canCreateTeamFolder"
               class="el-dropdown-menu__item font-semibold !text-black"
               @click="addEditTeamFolder({})"
             >
@@ -575,6 +575,9 @@ export default {
       return (this.getRouteBaseName() === 'shares')
     },
     canManageTeamFolder () {
+      return this.teams.some(e => ['owner', 'admin', 'manager'].includes(e.role))
+    },
+    canCreateTeamFolder () {
       return this.teams.some(e => ['owner', 'admin'].includes(e.role))
     }
   },
@@ -720,6 +723,7 @@ export default {
     },
     openContextTeamFolder (event, data) {
       this.selectedFolder = data
+      console.log(this.selectedFolder)
     },
     addEditFolder (folder, shouldRedirect = false) {
       this.$refs.addEditFolder.openDialog(folder, shouldRedirect)
