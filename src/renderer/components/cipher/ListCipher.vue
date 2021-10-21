@@ -191,7 +191,7 @@
                 class="el-dropdown-menu__item w-[200px]"
                 @click.prevent="putTeamFolderGroups(selectedFolder)"
               >
-                {{ $t('data.folders.user_access') }}
+                {{ $t('data.folders.groups_access') }}
               </li>
               <li
                 class="el-dropdown-menu__item"
