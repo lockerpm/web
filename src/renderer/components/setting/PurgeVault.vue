@@ -116,6 +116,7 @@ export default {
         await this.$axios.$post('cystack_platform/pm/users/me/purge', {
           master_password_hash: hashedPassword
         })
+        await this.getSyncData()
         this.closeDialog()
         this.notify(this.$t('data.notifications.purge_success'), 'success')
       } catch (e) {

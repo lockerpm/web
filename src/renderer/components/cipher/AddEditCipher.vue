@@ -621,8 +621,6 @@ export default {
       if (this.cipher.organizationId) {
         this.handleChangeOrg(this.cipher.organizationId)
       }
-      console.log(this.cipher)
-      console.log(this.type)
     },
     handleChangeType (type) {
       this.newCipher(type)
