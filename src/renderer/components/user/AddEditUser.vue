@@ -98,7 +98,8 @@ export default {
       async get () {
         const collections = await this.$collectionService.getAllDecrypted() || []
         return collections.filter(c => !c.readOnly && c.organizationId === this.$route.params.teamId)
-      }
+      },
+      watch: ['dialogVisible']
     }
   },
   methods: {
@@ -106,6 +107,8 @@ export default {
       this.dialogVisible = true
       if (user.id) {
         this.user = { ...user }
+      } else {
+        this.user = {}
       }
     },
     closeDialog () {
