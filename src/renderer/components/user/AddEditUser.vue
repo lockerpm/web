@@ -99,7 +99,7 @@ export default {
         const collections = await this.$collectionService.getAllDecrypted() || []
         return collections.filter(c => !c.readOnly && c.organizationId === this.$route.params.teamId)
       },
-      watch: ['dialogVisible']
+      watch: ['$store.state.syncedCiphersToggle']
     }
   },
   methods: {
@@ -108,7 +108,9 @@ export default {
       if (user.id) {
         this.user = { ...user }
       } else {
-        this.user = {}
+        this.user = {
+          collections: []
+        }
       }
     },
     closeDialog () {
