@@ -108,7 +108,9 @@ export default {
       if (user.id) {
         this.user = { ...user }
       } else {
-        this.user = {}
+        this.user = {
+          collections: []
+        }
       }
     },
     closeDialog () {
