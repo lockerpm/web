@@ -98,7 +98,7 @@ export default {
       this.$refs.addEditGroupUsers.openDialog(group)
     },
     deleteGroup (group) {
-      this.$refs.addEditGroup.deleteUser(group)
+      this.$refs.addEditGroup.deleteGroup(group)
     }
   }
 }
