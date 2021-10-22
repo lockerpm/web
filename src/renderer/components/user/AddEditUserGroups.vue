@@ -45,7 +45,7 @@
         <button
           class="btn btn-primary"
           :disabled="loading"
-          @click="putGroupUsers(group)"
+          @click="putGroupUsers(user)"
         >
           {{ $t('common.update') }}
         </button>
