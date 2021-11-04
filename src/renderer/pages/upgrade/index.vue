@@ -28,22 +28,24 @@
           class="p-8 border border-black-200 rounded"
         >
           <div class="h-full flex flex-col">
-            <div class="flex items-center">
-              <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
+            <div class="2xl:flex items-center text-center">
+              <span class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
                 {{ getPlanName(item.name).name }}
-              </div>
-              <div class="text-black-600 ml-2">
+              </span>
+              <span class="text-black-600 ml-2">
                 {{ getPlanName(item.name).tag }}
-              </div>
+              </span>
             </div>
-            <div class="mt-2.5 mb-6 flex items-center">
-              <span class="text-head-3 font-semibold mr-2">
+            <div class="mt-2.5 mb-6 2xl:flex items-center">
+              <div class="text-head-3 font-semibold text-center 2xl:mr-2">
                 <span v-if="language==='vi'">đ{{ item.price.vnd | formatNumber }}</span>
                 <span v-if="language==='en'">${{ item.price.usd | formatNumber }}</span>
-              </span>
-              <span class="text-black-600">/ mo</span>
-              <span v-if="item.max_number" class="ml-2 text-black-600">/ {{ item.max_number }} members </span>
-              <span v-else-if="item.alias === 'pm_business_premium'" class="ml-2 text-black-600">/ 1 member </span>
+              </div>
+              <div class="text-center">
+                <span class="text-black-600">/ mo</span>
+                <span v-if="item.max_number" class="ml-2 text-black-600">/ {{ item.max_number }} members </span>
+                <span v-else-if="item.alias === 'pm_business_premium'" class="ml-2 text-black-600">/ 1 member </span>
+              </div>
             </div>
             <div class="mb-8 flex-grow">
               <div
