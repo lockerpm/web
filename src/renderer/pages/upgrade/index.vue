@@ -43,8 +43,8 @@
               </div>
               <div class="text-center">
                 <span class="text-black-600">/ mo</span>
-                <span v-if="item.max_number" class="ml-2 text-black-600">/ {{ item.max_number }} members </span>
-                <span v-else-if="item.alias === 'pm_business_premium'" class="ml-2 text-black-600">/ 1 member </span>
+                <span v-if="item.max_number" class="text-black-600">/ {{ $tc('data.plans.members',item.max_number ,{count: item.max_number}) }} </span>
+                <span v-else-if="item.alias === 'pm_business_premium'" class="text-black-600">/ {{ $tc('data.plans.members', 1, {count: 1}) }} </span>
               </div>
             </div>
             <div class="mb-8 flex-grow">
