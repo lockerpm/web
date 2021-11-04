@@ -29,21 +29,25 @@
 
       <!-- Right actions -->
       <div class="hidden sm:flex lg:ml-[195px] lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
-        <nuxt-link
-          class="nav-item text-black px-4"
-          to="/login"
-        >
-          Đăng nhập
-        </nuxt-link>
-        <nuxt-link
-          class="nav-item text-black"
-          to="/register"
-        >
-          Đăng ký
-        </nuxt-link>
-        <!--        <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">-->
-        <!--          vault-->
-        <!--        </nuxt-link>-->
+        <template v-if="isLoggedIn">
+          <nuxt-link :to="localeRoute({name: 'vault'})" class="btn btn-primary">
+            vault
+          </nuxt-link>
+        </template>
+        <template v-else>
+          <nuxt-link
+            class="nav-item text-black px-4"
+            to="/login"
+          >
+            Đăng nhập
+          </nuxt-link>
+          <nuxt-link
+            class="nav-item text-black"
+            to="/register"
+          >
+            Đăng ký
+          </nuxt-link>
+        </template>
       </div>
       <!-- Right actions end -->
 

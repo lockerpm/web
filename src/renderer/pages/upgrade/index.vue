@@ -175,14 +175,16 @@
                 <div class=" flex items-center justify-between">
                   &nbsp;
                 </div>
-                <a
-                  href="https://id.cystack.net/wallet/vnd"
-                  target="_blank"
-                >
-                  <button class="btn rounded-full btn-xs hover:no-underline w-full mt-auto !font-normal">
-                    <i class="fa fa-plus" /> Topup
-                  </button>
-                </a>
+                <div class="text-center">
+                  <a
+                    href="https://id.cystack.net/wallet/vnd"
+                    target="_blank"
+                  >
+                    <button class="btn rounded-full btn-xs hover:no-underline mt-auto !font-normal">
+                      <i class="fa fa-plus" /> Topup
+                    </button>
+                  </a>
+                </div>
               </div>
               <div
                 class="transition-card border rounded px-5 py-4 hover:border-primary cursor-pointer"
@@ -844,8 +846,8 @@ export default {
       const orgKey = shareKey[0].encryptedString
       const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
       const collectionName = collection.encryptedString
-      console.log('orgKey', orgKey)
-      console.log('collectionName', collectionName)
+      // console.log('orgKey', orgKey)
+      // console.log('collectionName', collectionName)
     },
     async getCards () {
       this.cards = await this.$axios.$get('cystack_platform/payments/cards')
@@ -910,7 +912,7 @@ export default {
       this.calcPrice()
     },
     async confirmPlan () {
-      if (this.paymentMethod === 'wallet' && this.result.total_price < this.balance) {
+      if (this.paymentMethod === 'wallet' && this.result.total_price > this.balance) {
         this.dialogTopup = true
         return
       }

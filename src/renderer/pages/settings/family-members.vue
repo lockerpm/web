@@ -181,13 +181,13 @@ export default {
     },
     async generateOrgKey () {
       const pk = Utils.fromB64ToArray(this.publicKey)
-      const orgKey = await this.$cryptoService.getOrgKey(this.$route.params.teamId)
+      const orgKey = await this.$cryptoService.getOrgKey(this.currentUserPw.default_team_id)
       const key = await this.$cryptoService.rsaEncrypt(orgKey.key, pk.buffer)
       return key.encryptedString
     },
     async getPublicKey (user) {
       this.userFingerPrint = ''
-      const { public_key: publicKey } = await this.$axios.$get(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/${user.id}/public_key`)
+      const { public_key: publicKey } = await this.$axios.$get(`cystack_platform/pm/teams/${this.currentUserPw.default_team_id}/members/${user.id}/public_key`)
       return publicKey
     },
     async promptConfirmUser (user) {
@@ -211,7 +211,7 @@ export default {
       try {
         this.loadingConfirm = true
         const key = await this.generateOrgKey()
-        await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/${user.id}`, {
+        await this.$axios.$post(`cystack_platform/pm/teams/${this.currentUserPw.default_team_id}/members/${user.id}`, {
           key
         })
         this.closeDialogConfirm()

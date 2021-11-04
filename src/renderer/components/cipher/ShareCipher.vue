@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     ownershipOptions () {
-      return this.teams.filter(e => ['owner', 'admin'].includes(e.role))
+      return this.teams.filter(e => ['owner', 'admin', 'manager'].includes(e.role))
     },
     isBelongToTeam () {
       return this.originCipher.organizationId

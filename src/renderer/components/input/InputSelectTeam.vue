@@ -132,7 +132,7 @@ export default {
       this.$emit('change', value)
     },
     canManage (team) {
-      return ['owner', 'admin'].includes(team.role) && !team.locked
+      return ['owner', 'admin', 'manager'].includes(team.role) && !team.locked
     }
   }
 }
