@@ -103,7 +103,7 @@
                 {{ item.uri }}
               </div>
               <div class="text-right">
-                <button v-if="item.canLaunch" class="btn btn-icon btn-xs btn-action" @click="openNewTab(item.uri)">
+                <button v-if="item.canLaunch" class="btn btn-icon btn-xs btn-action" title="Go to website" @click="openNewTab(item.uri)">
                   <i class="fas fa-external-link-square-alt" />
                 </button>
               </div>
