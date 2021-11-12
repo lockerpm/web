@@ -444,7 +444,7 @@ export default {
       //     {
       //       img: 'icon1.svg',
       //       title: 'Mã hóa dữ liệu',
-      //       desc: 'Locker mã hóa dữ liệu của bạn theo tiêu chuẩn quân đội AES-256, kết hợp thuật toán khởi tạo cặp khóa PBDKF2 và RSA.'
+      //       desc: 'Locker mã hóa dữ liệu của bạn theo tiêu chuẩn quân đội AES-256, kết hợp thuật toán khởi tạo cặp khóa PBKDF2 và RSA.'
       //     },
       //     {
       //       img: 'icon2.svg',
