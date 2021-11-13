@@ -20,11 +20,11 @@
             <span
               v-if="currentPlan.max_number && currentPlan.max_number > 1"
               class="ml-2 text-black-600"
-            >/ {{ currentPlan.max_number }} members </span>
+            >/ {{ currentPlan.max_number }} {{ $tc('data.plans.members', {count: currentPlan.max_number}) }}</span>
             <span
               v-else-if="currentPlan.alias === 'pm_business_premium'"
               class="ml-2 text-black-600"
-            >/ 1 member </span>
+            >/ 1 {{ $tc('data.plans.members', {count: 1}) }} </span>
           </div>
         </div>
         <div v-if="plans" class="flex">
