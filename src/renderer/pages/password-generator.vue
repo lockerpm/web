@@ -117,8 +117,9 @@
           </div>
           <div class="w-full mt-9 grid sm:grid-cols-2 grid-cols-1 gap-5 mb-[50px]">
             <button
+              v-clipboard:copy="password"
+              v-clipboard:success="clipboardSuccessHandler"
               class="landing-btn w-auto"
-              @click="copy_password"
             >
               {{ $t('data.tools.copy_password') }}
             </button>
@@ -332,7 +333,7 @@ export default {
         number: true,
         special: true,
         ambiguous: false
-      },
+      }
       // cta1: {
       //   title: 'Lưu trữ mật khẩu an toàn với Locker',
       //   desc: 'Lưu lại mật khẩu của bạn để truy cập mật khẩu mọi lúc và mọi nơi, ngay cả khi không có kết nối internet!',
