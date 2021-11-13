@@ -110,9 +110,12 @@ export default {
     addFolder () {
       this.$refs.addEditFolder.openDialog({})
     },
-    async handleCreatedFolder (id) {
-      this.folders = await this.getFolders()
-      this.cipher.folderId = id
+    async handleCreatedFolder (folder) {
+      // this.folders = await this.getFolders()
+      setTimeout(async () => {
+        this.folders = await this.getFolders()
+      }, 300)
+      this.cipher.folderId = folder.id
     }
   }
 }
