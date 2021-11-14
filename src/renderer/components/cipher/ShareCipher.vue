@@ -42,12 +42,8 @@
           </el-checkbox>
         </el-checkbox-group>
       </div>
-      <div v-if="cipher.type===CipherType.Login">
-        <!-- <el-form-item label="Show password">
-          <el-switch v-model="viewPassword"></el-switch>
-        </el-form-item> -->
+      <div v-if="cipher.organizationId && cipher.type===CipherType.Login">
         <label class="font-semibold">{{ $t('data.ciphers.show_password') }}</label>
-        <!-- <el-switch v-model="viewPassword" active-color="#13ce66"></el-switch> -->
         <el-checkbox
           v-model="cipher.viewPassword"
         />
