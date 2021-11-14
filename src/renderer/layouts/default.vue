@@ -46,12 +46,12 @@
               <div class="flex items-center justify-between">
                 <div class="">
                   <div class="text-lg font-semibold mb-2">
-                    Chào mừng bạn đến với CyStack Locker
+                    {{ $t('data.welcome.title') }}
                   </div>
                   <div class="text-black-600 mb-5">
-                    Bạn có thể lưu trữ mật khẩu, ghi chú, hồ sơ để mua sắm trực tuyến và thậm chí cả tài liệu một cách an toàn.
+                    {{ $t('data.welcome.text1') }}
                     <br>
-                    Và bất kể bạn làm việc ở đâu, kho tiền của bạn luôn đồng bộ hóa mọi thứ, vì vậy bạn có thể luôn ngăn nắp và tiết kiệm thời gian.
+                    {{ $t('data.welcome.text2') }}
                   </div>
                 </div>
                 <div>
