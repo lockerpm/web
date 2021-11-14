@@ -534,7 +534,8 @@ export default {
         await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
           ...data,
           score: this.passwordStrength.score,
-          collectionIds: cipher.collectionIds
+          collectionIds: cipher.collectionIds,
+          view_password: cipher.viewPassword
         })
         this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
         this.closeDialog()
