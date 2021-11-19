@@ -16,10 +16,16 @@
       </div>
     </div>
     <div class="text-left">
-      <div v-if="isBelongToTeam" class="mb-3">
+      <div
+        v-if="isBelongToTeam"
+        class="mb-3"
+      >
         {{ $t('data.ciphers.choose_at_least_folder') }}
       </div>
-      <div v-else class="mb-3">
+      <div
+        v-else
+        class="mb-3"
+      >
         {{ $t('data.ciphers.choose_a_team') }}
       </div>
       <InputSelectTeam
@@ -29,10 +35,16 @@
         class="w-full"
         @change="handleChangeOrg"
       />
-      <div v-if="cipher.organizationId" class="form-group">
+      <div
+        v-if="cipher.organizationId"
+        class="form-group"
+      >
         <div class="flex items-center justify-between" />
         <label for="">{{ $t('data.ciphers.folders_team') }}</label>
-        <el-checkbox-group v-model="cipher.collectionIds" :min="1">
+        <el-checkbox-group
+          v-model="cipher.collectionIds"
+          :min="1"
+        >
           <el-checkbox
             v-for="(item, index) in writeableCollections"
             :key="index"
@@ -44,12 +56,13 @@
       </div>
       <div v-if="cipher.organizationId && cipher.type===CipherType.Login">
         <label class="font-semibold">{{ $t('data.ciphers.show_password') }}</label>
-        <el-checkbox
-          v-model="cipher.viewPassword"
-        />
+        <el-checkbox v-model="cipher.viewPassword" />
       </div>
     </div>
-    <div slot="footer" class="dialog-footer flex items-center text-left">
+    <div
+      slot="footer"
+      class="dialog-footer flex items-center text-left"
+    >
       <div class="flex-grow" />
       <div>
         <button
@@ -91,7 +104,15 @@ export default {
       loading: false,
       dialogVisible: false,
       errors: {},
-      writeableCollections: []
+      writeableCollections: [],
+      policies: {
+        min_password_length: null,
+        max_password_length: null,
+        password_composition: false,
+        failed_login_attempts: null,
+        failed_login_duration: 0,
+        failed_login_block_time: 0
+      }
     }
   },
   computed: {
@@ -119,25 +140,27 @@ export default {
       this.dialogVisible = false
     },
     async shareCipher (cipher) {
-      try {
-        this.loading = true
-        const cipherEnc = await this.$cipherService.encrypt(cipher)
-        const data = new CipherRequest(cipherEnc)
-        const url = this.isBelongToTeam ? `cystack_platform/pm/ciphers/${cipher.id}` : `cystack_platform/pm/ciphers/${cipher.id}/share`
-        await this.$axios.$put(url, {
-          ...data,
-          score: this.passwordStrength.score,
-          collectionIds: cipher.collectionIds,
-          view_password: cipher.viewPassword
-        })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
-        this.closeDialog()
-        this.$emit('updated-cipher')
-      } catch (e) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
-        console.log(e)
-      } finally {
-        this.loading = false
+      if (this.checkPolicies(cipher)) {
+        try {
+          this.loading = true
+          const cipherEnc = await this.$cipherService.encrypt(cipher)
+          const data = new CipherRequest(cipherEnc)
+          const url = this.isBelongToTeam ? `cystack_platform/pm/ciphers/${cipher.id}` : `cystack_platform/pm/ciphers/${cipher.id}/share`
+          await this.$axios.$put(url, {
+            ...data,
+            score: this.passwordStrength.score,
+            collectionIds: cipher.collectionIds,
+            view_password: cipher.viewPassword
+          })
+          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
+          this.closeDialog()
+          this.$emit('updated-cipher')
+        } catch (e) {
+          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
+          console.log(e)
+        } finally {
+          this.loading = false
+        }
       }
     },
     async generateOrgKey (publicKey) {
@@ -150,6 +173,7 @@ export default {
       this.$set(this.cipher, 'organizationId', orgId)
       this.cipher.folderId = null
       if (orgId) {
+        await this.getTeamPolicies(orgId)
         this.writeableCollections = await this.getWritableCollections(orgId)
         if (this.writeableCollections.length && !this.isBelongToTeam) {
           this.cipher.collectionIds = [this.writeableCollections[0].id]
@@ -161,6 +185,30 @@ export default {
     async getWritableCollections (orgId) {
       const allCollections = await this.$collectionService.getAllDecrypted()
       return allCollections.filter(c => !c.readOnly && c.organizationId === orgId)
+    },
+    async getTeamPolicies (teamId) {
+      this.policies = await this.$axios.$get(`cystack_platform/pm/teams/${teamId}/policy`)
+    },
+    checkPolicies (cipher) {
+      if (cipher.type === CipherType.Login) {
+        if (this.policies.min_password_length && cipher.login.password.length < this.policies.min_password_length) {
+          this.notify(this.$t('data.notifications.min_password_length', { length: this.policies.min_password_length }), 'warning')
+          return false
+        }
+        if (this.policies.max_password_length && cipher.login.password.length > this.policies.max_password_length) {
+          this.notify(this.$t('data.notifications.max_password_length', { length: this.policies.max_password_length }), 'warning')
+          return false
+        }
+        if (this.policies.password_composition) {
+          const reg = /(?=.*[!@#$%^&*])/
+          const check = reg.test(cipher.login.password)
+          if (!check) {
+            this.notify(this.$t('data.notifications.password_composition'), 'warning')
+            return check
+          }
+        }
+      }
+      return true
     }
   }
 }
