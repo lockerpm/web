@@ -8,15 +8,50 @@
             <div class="md:w-[400px]">
               <div class="form-group">
                 <label for="">Minimum password length</label>
-                <input v-model="teamPolicy.min_password_length" type="number" min="0" max="128" class="form-control">
+                <!-- <input v-model="teamPolicy.min_password_length" type="number" min="0" max="128" class="form-control"> -->
+                <div>
+                  <input
+                    v-model="teamPolicy.min_password_length"
+                    class="h-[44px] w-[70px] mt-4 mr-3"
+                    type="number"
+                    min="0"
+                    max="128"
+                    @change="updateLength('min_password_length')"
+                  >
+                  <el-slider
+                    v-model="teamPolicy.min_password_length"
+                    :min="0"
+                    :max="128"
+                    :debounce="800"
+                  />
+                </div>
               </div>
               <div class="form-group">
                 <label for="">Maximum password length</label>
-                <input v-model="teamPolicy.max_password_length" type="number" min="0" max="128" class="form-control">
+                <!-- <input v-model="teamPolicy.max_password_length" type="number" min="0" max="128" class="form-control"> -->
+                <div>
+                  <input
+                    v-model="teamPolicy.max_password_length"
+                    class="h-[44px] w-[70px] mt-4 mr-3"
+                    type="number"
+                    min="0"
+                    max="128"
+                    @change="updateLength('max_password_length')"
+                  >
+                  <el-slider
+                    v-model="teamPolicy.max_password_length"
+                    :min="0"
+                    :max="128"
+                    :debounce="800"
+                  />
+                </div>
               </div>
               <div class="form-group">
-                <label for="">Password Composition</label>
-                <el-switch v-model="teamPolicy.password_composition" />
+                <div class="flex">
+                  <label for="" class="mr-2">Password Composition</label>
+                  <!-- <el-switch v-model="teamPolicy.password_composition" /> -->
+                  <el-checkbox v-model="teamPolicy.password_composition" />
+                </div>
               </div>
               <div class="form-group">
                 <label for="">Failed login attempts</label>
@@ -115,6 +150,9 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    updateLength (v) {
+      this.teamPolicy[`${v}`] = parseInt(this.teamPolicy[`${v}`])
     }
   }
 }
