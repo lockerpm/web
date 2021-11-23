@@ -20,7 +20,16 @@
                   :key="index"
                   class="mb-3"
                 >
+                  <a
+                    v-if="item.external"
+                    target="_blank"
+                    class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
+                    :href="item.link"
+                  >
+                    {{ item.name }}
+                  </a>
                   <nuxt-link
+                    v-else
                     class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
                     :to="item.link"
                   >
