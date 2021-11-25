@@ -8,6 +8,7 @@
         <a
           class="mx-auto landing-btn w-auto"
           :href="header.btn.link"
+          target="_blank"
         >
           {{ header.btn.text }}
         </a>
@@ -177,7 +178,7 @@
 export default {
   layout: 'landing',
   data () {
-    return {...this.$t('security')}
+    return { ...this.$t('security') }
     // return {
     //   header: {
     //     title: 'Locker được xây dựng với triết lý bảo mật là ưu tiên hàng đầu',

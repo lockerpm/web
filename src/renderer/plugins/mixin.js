@@ -30,6 +30,15 @@ Vue.mixin({
     },
     currentPlan () {
       return this.$store.state.currentPlan
+    },
+    blog_categories () {
+      return [
+        {
+          id: '457',
+          label: 'CyStack Web Security',
+          slug: 'cystack-web-security'
+        }
+      ]
     }
   },
   mounted () {
