@@ -72,15 +72,15 @@
               <div class="setting-description">{{ $t('data.password_policies.password_complexity_desc') }}</div>
             </div>
             <div>
-              <el-switch v-model="policies_checklist.password_complexity" />
+              <el-switch v-model="teamPolicy.password_composition" />
             </div>
           </div>
-          <div v-if="policies_checklist.password_complexity" class="grid md:grid-cols-2 grid-cols-1 gap-y-3 w-full mt-10">
-            <el-checkbox v-model="teamPolicy.password_complexity.lowercase" :label="$t('data.password_policies.requires_lowercase')" />
-            <el-checkbox v-model="teamPolicy.password_complexity.uppercase" :label="$t('data.password_policies.requires_uppercase')" />
-            <el-checkbox v-model="teamPolicy.password_complexity.special" :label="$t('data.password_policies.requires_special')" />
-            <el-checkbox v-model="teamPolicy.password_complexity.digit" :label="$t('data.password_policies.requires_number')" />
-            <el-checkbox v-model="teamPolicy.password_complexity.avoid_ambiguous" :label="$t('data.password_policies.avoid_ambiguous')" />
+          <div v-if="teamPolicy.password_composition" class="grid md:grid-cols-2 grid-cols-1 gap-y-3 w-full mt-10">
+            <el-checkbox v-model="teamPolicy.require_lower_case" :label="$t('data.password_policies.requires_lowercase')" />
+            <el-checkbox v-model="teamPolicy.require_upper_case" :label="$t('data.password_policies.requires_uppercase')" />
+            <el-checkbox v-model="teamPolicy.require_special_character" :label="$t('data.password_policies.requires_special')" />
+            <el-checkbox v-model="teamPolicy.require_digit" :label="$t('data.password_policies.requires_number')" />
+            <el-checkbox v-model="teamPolicy.avoid_ambiguous_character" :label="$t('data.password_policies.avoid_ambiguous')" />
           </div>
           <div class="italic setting-description mt-6">{{ $t('data.password_policies.notice') }}</div>
         </div>
@@ -116,7 +116,7 @@
             </div>
             <div class="setting-section-header mt-3">
               <div>
-                <div class="setting-description">{{ $t('data.password_policies.failed_login_how_long') }}</div>
+                <div class="setting-description">{{ $t('data.password_policies.failed_login_how_long', {failed_login_attempts: teamPolicy.failed_login_attempts}), }}</div>
               </div>
               <div>
                 <el-select
@@ -262,7 +262,6 @@ export default {
       policies_checklist: {
         min_password_length: false,
         max_password_length: false,
-        password_complexity: false,
         failed_login_attempts: false
       },
       teamPolicy: {}
@@ -294,20 +293,20 @@ export default {
   },
   async mounted () {
     await this.getTeamPolicy()
-    this.teamPolicy.password_complexity = {
-      lowercase: false,
-      uppercase: false,
-      special: false,
-      digit: false,
-      avoid_ambiguous: false
-    }
+    // this.teamPolicy.password_complexity = {
+    //   lowercase: false,
+    //   uppercase: false,
+    //   special: false,
+    //   digit: false,
+    //   avoid_ambiguous: false
+    // }
   },
   methods: {
     async getTeamPolicy () {
       this.teamPolicy = await this.$axios.$get(`cystack_platform/pm/teams/${this.$route.params.teamId}/policy`)
       this.policies_checklist.min_password_length = !!this.teamPolicy.min_password_length
       this.policies_checklist.max_password_length = !!this.teamPolicy.max_password_length
-      this.policies_checklist.password_complexity = !!this.teamPolicy.password_complexity
+      this.policies_checklist.password_composition = !!this.teamPolicy.password_composition
       this.policies_checklist.failed_login_attempts = !!this.teamPolicy.failed_login_attempts
     },
     async putTeamPolicy () {
@@ -315,9 +314,13 @@ export default {
         this.loading = true
         const newPolicy = {
           ...this.teamPolicy,
-          min_password_length: parseInt(this.teamPolicy.min_password_length) > 0 ? parseInt(this.teamPolicy.min_password_length) : null,
-          max_password_length: parseInt(this.teamPolicy.max_password_length) > 0 ? parseInt(this.teamPolicy.max_password_length) : null,
-          failed_login_attempts: parseInt(this.teamPolicy.failed_login_attempts) > 0 ? parseInt(this.teamPolicy.failed_login_attempts) : null
+          min_password_length: this.policies_checklist.min_password_length ? parseInt(this.teamPolicy.min_password_length) > 0 ? parseInt(this.teamPolicy.min_password_length) : null : null,
+          max_password_length: this.policies_checklist.max_password_length ? parseInt(this.teamPolicy.max_password_length) > 0 ? parseInt(this.teamPolicy.max_password_length) : null : null,
+          failed_login_attempts: this.policies_checklist.failed_login_attempts ? parseInt(this.teamPolicy.failed_login_attempts) > 0 ? parseInt(this.teamPolicy.failed_login_attempts) : null : null
+        }
+        if (newPolicy.min_password_length && newPolicy.max_password_length && newPolicy.max_password_length < newPolicy.min_password_length) {
+          this.notify(this.$t('data.notifications.max_less_than_min'), 'warning')
+          return
         }
         this.team = await this.$axios.$put(`cystack_platform/pm/teams/${this.$route.params.teamId}/policy`, newPolicy)
         this.notify(this.$t('data.notifications.update_team_success'), 'success')

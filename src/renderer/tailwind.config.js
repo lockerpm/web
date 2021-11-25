@@ -84,6 +84,9 @@ module.exports = {
         'mobile-app': "url('~/assets/images/landing/download/bg3.png')",
         'generator-1': "url('~/assets/images/landing/password-generator/bg1.png')",
         'generator-2': "url('~/assets/images/landing/password-generator/bg2.png')"
+      },
+      boxShadow: {
+        custom: '0 5px 10px 6px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
       }
     }
   },

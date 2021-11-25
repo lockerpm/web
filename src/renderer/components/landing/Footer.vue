@@ -29,9 +29,16 @@
                     {{ item.name }}
                   </a>
                   <nuxt-link
+                    v-else-if="item.params"
+                    class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
+                    :to="localePath(`/${item.link}?${item.params}`)"
+                  >
+                    {{ item.name }}
+                  </nuxt-link>
+                  <nuxt-link
                     v-else
                     class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
-                    :to="item.link"
+                    :to="localePath(`/${item.link}`)"
                   >
                     {{ item.name }}
                   </nuxt-link>

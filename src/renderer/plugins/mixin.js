@@ -34,9 +34,29 @@ Vue.mixin({
     blog_categories () {
       return [
         {
-          id: '457',
-          label: 'CyStack Web Security',
-          slug: 'cystack-web-security'
+          id: '29,4,400,315',
+          label: this.$t('blog.categories')[0],
+          slug: ''
+        },
+        {
+          id: '29',
+          label: this.$t('blog.categories')[1],
+          slug: 'data-security'
+        },
+        {
+          id: '4',
+          label: this.$t('blog.categories')[2],
+          slug: 'cyber-defense'
+        },
+        {
+          id: '400',
+          label: this.$t('blog.categories')[3],
+          slug: 'cong-bo'
+        },
+        {
+          id: '315',
+          label: this.$t('blog.categories')[4],
+          slug: 'featured'
         }
       ]
     }
@@ -325,6 +345,15 @@ Vue.mixin({
       }
 
       return connectionUrl
+    },
+    // Blog subscribe
+    subscribe (email) {
+      const payload = {
+        email,
+        subscribed: true,
+        service: 'cystack'
+      }
+      return this.$axios.put('https://tracking.cystack.net/v2/email/subscription', payload)
     }
   }
 })

@@ -133,20 +133,20 @@ export default {
   async asyncData ({ isDev, route, store, env, params, query, req, res, redirect, error }) {
     const slug = params.slug
     const language = store.state.i18n.locale
-    const { data } = await axios.get(`https://b.cystack.net/posts?slug=${slug}&categories=457`)
+    const { data } = await axios.get(`https://b.cystack.net/posts?slug=${slug}`)
     if (data.length === 0) {
       error({ statusCode: 404 })
       return
     }
-    // const categoriesId = data[0].categories
-    // const categories = await Promise.all(categoriesId.map(async (id) => {
-    //   const res = await axios.get(`https://b.cystack.net/categories/${id}`)
-    //   return res.data
-    // }))
+    const categoriesId = data[0].categories
+    const categories = await Promise.all(categoriesId.map(async id => {
+      const res = await axios.get(`https://b.cystack.net/categories/${id}`)
+      return res.data
+    }))
     const languageTag = await axios.get(`https://b.cystack.net/tags?slug=${language}`)
-    const relateResult = await axios.get(`https://b.cystack.net/posts?exclude=${data[0].id}&categories=457&tags=${languageTag.data[0].id}&per_page=2`)
+    const relateResult = await axios.get(`https://b.cystack.net/posts?exclude=${data[0].id}&categories=${categoriesId.toString()}&tags=${languageTag.data[0].id}&per_page=2`)
     return {
-      post: data.map((post) => {
+      post: data.map(post => {
         const $ = cheerio.load(post.content.rendered)
         let featuredImage = ''
         try {
@@ -188,8 +188,8 @@ export default {
           table_of_contents: tableOfContents
         }
       })[0],
-      // categories: categories.map(item => item.name),
-      relatedPosts: relateResult.data.map((post) => {
+      categories: categories.map(item => item.name),
+      relatedPosts: relateResult.data.map(post => {
         let featuredImage = ''
         try {
           featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
@@ -312,19 +312,19 @@ export default {
       return moment(date).format('ll')
     },
     fbShare (winWidth = 520, winHeight = 350) {
-      const url = 'https://web.cystack.net/' + this.$route.fullPath
+      const url = 'https://locker.io/' + this.$route.fullPath
       const winTop = (screen.height / 2) - (winHeight / 2)
       const winLeft = (screen.width / 2) - (winWidth / 2)
       window.open('http://www.facebook.com/sharer.php?u=' + url, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight)
     },
     twitterShare (winWidth = 520, winHeight = 400) {
-      const url = 'https://web.cystack.net/' + this.$route.fullPath
+      const url = 'https://locker.io/' + this.$route.fullPath
       const winTop = (screen.height / 2) - (winHeight / 2)
       const winLeft = (screen.width / 2) - (winWidth / 2)
       window.open('https://twitter.com/intent/tweet?url=' + url, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight)
     },
     linkedinShare (winWidth = 520, winHeight = 500) {
-      const url = 'https://web.cystack.net/' + this.$route.fullPath
+      const url = 'https://locker.io/' + this.$route.fullPath
       const winTop = (screen.height / 2) - (winHeight / 2)
       const winLeft = (screen.width / 2) - (winWidth / 2)
       window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + url, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight)
