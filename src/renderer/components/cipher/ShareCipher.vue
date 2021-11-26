@@ -200,11 +200,45 @@ export default {
           return false
         }
         if (this.policies.password_composition) {
-          const reg = /(?=.*[!@#$%^&*])/
-          const check = reg.test(cipher.login.password)
-          if (!check) {
-            this.notify(this.$t('data.notifications.password_composition'), 'warning')
-            return check
+          if (this.policies.require_special_character) {
+            const reg = /(?=.*[!@#$%^&*])/
+            const check = reg.test(cipher.login.password)
+            if (!check) {
+              this.notify(this.$t('data.notifications.requires_special'), 'warning')
+              return false
+            }
+          }
+          if (this.policies.require_lower_case) {
+            const reg = /[a-z]/
+            const check = reg.test(cipher.login.password)
+            if (!check) {
+              this.notify(this.$t('data.notifications.requires_lowercase'), 'warning')
+              return false
+            }
+          }
+          if (this.policies.require_upper_case) {
+            const reg = /[A-Z]/
+            const check = reg.test(cipher.login.password)
+            if (!check) {
+              this.notify(this.$t('data.notifications.requires_uppercase'), 'warning')
+              return false
+            }
+          }
+          if (this.policies.require_digit) {
+            const reg = /[1-9]/
+            const check = reg.test(cipher.login.password)
+            if (!check) {
+              this.notify(this.$t('data.notifications.requires_number'), 'warning')
+              return false
+            }
+          }
+          if (this.policies.avoid_ambiguous_character) {
+            const ambiguousCharacters = ['I', 'l', '1', 'O', '0']
+            const check = ambiguousCharacters.some(c => cipher.login.password.includes(c))
+            if (check) {
+              this.notify(this.$t('data.notifications.avoid_ambiguous'), 'warning')
+              return false
+            }
           }
         }
       }

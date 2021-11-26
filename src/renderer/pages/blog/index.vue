@@ -1,37 +1,5 @@
 <template>
   <div id="blog" class="pb-25 pt-20">
-    <!-- Intro -->
-    <!-- <div class="w-full pb-0">
-      <div class="projects-catalog">
-        <div id="imageSlider1" class="catalog-slider flex justify-between">
-          <div class="catalog-cover" style="width: 80%">
-            <ul id="sliderWrapper1" class="catalog-list corporate-projects">
-              <li
-                v-for="(item, index) in blog_categories"
-                :key="index"
-                :class="item.id===category?'text-primary':''"
-                class="catalog-item landing-transition landing-font-12 font-bold uppercase"
-                @click="changeCategory(item.id)"
-              >
-                {{ item.label }}
-              </li>
-            </ul>
-          </div>
-          <span style="padding: 10px 20px 5px; cursor: pointer" @click="showNext()"><fa-icon :icon="faAngleRight" class="landing-font-16" /></span>
-          <el-input
-            v-model="query"
-            :placeholder="`${$t('blog.search')}`"
-            style="margin-bottom: 7px; width: 15%;"
-            @input="searchPosts"
-          >
-            <i
-              slot="suffix"
-              class="el-icon-search el-input__icon text-20 font-weight-700 text-black"
-            />
-          </el-input>
-        </div>
-      </div>
-    </div> -->
     <section class="full-width min-w-[380px] h-auto pt-20 pb-24" style="background-color: #F3F5F8;">
       <div class="blog-intro max-w-6xl px-6 mx-auto flex flex-wrap h-auto">
         <div class="w-full md:w-1/2 mt-12">
@@ -65,7 +33,7 @@
       </div>
     </section>
 
-    <section v-if="posts.length" id="blog-body" class="py-20">
+    <section id="blog-body" class="py-20">
       <div class="w-full pb-0">
         <div class="projects-catalog">
           <div id="imageSlider1" class="catalog-slider flex justify-between">
@@ -76,7 +44,7 @@
                   :key="index"
                   :class="item.id===category?'text-primary':''"
                   class="catalog-item landing-transition landing-font-16 font-bold uppercase"
-                  @click="changeCategory(item.id)"
+                  @click="category=item.id"
                 >
                   {{ item.label }}
                 </li>
@@ -128,39 +96,20 @@
     </section>
 
     <!-- CTA -->
-    <!-- <section class="pt-20 mb-20">
-      <div
-        :style="{backgroundImage: `url(${require(`~/assets/images/landing/banner_bg.png`)})`}"
-        class="w-full featured-bg"
-        style="padding: 84px 0px; border-radius: 5px"
-      >
-        <div class="row">
-          <div class="w-10/12 mx-auto text-center">
-            <div style="max-width: 605px; margin: 0 auto">
-              <h2 class="landing-font-44 font-bold text-white text-center mb-12">
-                {{ $t('blog.cta.title') }}
-              </h2>
-            </div>
-
-            <nuxt-link
-              class="landing-btn2 mx-auto"
-              :to="localePath('/get-started')"
-            >
-              <span>{{ $t('blog.cta.btn.text') }}</span>
-            </nuxt-link>
-          </div>
-        </div>
-      </div>
-    </section> -->
     <section class="md:mt-36 mt-24">
       <div
         class="w-full rounded py-[40px] px-[65px] flex justify-between align-middle md:flex-row flex-col"
         style="background-color: #f5f6f7"
       >
-        <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-28 font-semibold max-w-max text-center mb-6 ">
+        <!-- <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-28 font-semibold max-w-max text-center mb-6 ">
           {{ $t('blog.cta.title') }}
-        </p>
-
+        </p> -->
+        <div>
+          <h2 class="landing-font-28 font-semibold mb-3 sm:text-left text-center">{{ $t('blog.cta.title') }}</h2>
+          <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-14 max-w-max text-center mb-6">
+            {{ $t('blog.cta.desc') }}
+          </p>
+        </div>
         <nuxt-link
           class="landing-btn"
           :to="localePath('/register')"
@@ -250,6 +199,8 @@ export default {
       const category = this.blog_categories.find(cate => cate.slug === newValue)
       if (category) {
         this.category = category.id
+      } else {
+        this.category = '29,4,400,315'
       }
     },
     category (newValue) {
@@ -296,13 +247,13 @@ export default {
       }
     },
     async changeCategory (id) {
-      // this.$router.push(`${this.$route.path}#blog-body`)
+      // const category = this.blog_categories.find(cate => cate.id === id)
+      // this.$router.push(`/blog?category=${category.slug}`)
       window.scroll({
         top: 650,
         left: 0,
         behavior: 'smooth'
       })
-
       this.category = id
       this.postLoading = true
       this.loadMoreDisabled = false
@@ -424,12 +375,6 @@ export default {
   border-bottom-right-radius: 4px;
   background-color: #268334;
 }
-/* .blog-btn:hover {
-  @apply text-primary;
-  background-color: white;
-  transition: ease-in-out;
-  transition-duration: 300ms;
-} */
 .blog-intro .el-input__inner {
   height: 40px;
 }
@@ -450,23 +395,6 @@ export default {
   font-weight: bold;
   box-shadow: -1px 0 0 0 #fff;
 }
-/* #blog-body button{
-  padding: 9px 24px;
-  background-color: white !important;
-  color: #2222FF;
-  border: 1.5px solid #2222FF !important;
-  border-radius: 4px;
-  height: 40px;
-  font-weight: 600;
-  font-size: 14px !important;
-  line-height: 22px;
-} */
-/* #blog-body button:hover{
-  background-color: #2222FF !important;
-  color: white;
-  transition: ease-in-out;
-  transition-duration: 300ms;
-} */
 .blog-container{
   justify-content: space-between;
   row-gap: 50px;
