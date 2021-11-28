@@ -37,7 +37,11 @@
         <!--            />-->
         <!--          </el-select>-->
         <!--        </div>-->
-        <ValidationProvider v-slot="{ errors: err }" rules="required" :name="$t('common.name')">
+        <ValidationProvider
+          v-slot="{ errors: err }"
+          rules="required"
+          :name="$t('common.name')"
+        >
           <InputText
             v-model="cipher.name"
             :label="$t('common.name')"
@@ -66,8 +70,14 @@
               :disabled="isDeleted"
               is-password
             />
-            <PasswordStrengthBar :score="passwordStrength.score" class="mt-2" />
-            <div v-if="!isDeleted && !cipher.id" class="text-right">
+            <PasswordStrengthBar
+              :score="passwordStrength.score"
+              class="mt-2"
+            />
+            <div
+              v-if="!isDeleted && !cipher.id"
+              class="text-right"
+            >
               <el-popover
                 placement="right"
                 width="280"
@@ -257,7 +267,10 @@
             />
           </div>
         </template>
-        <div v-if="cipher.type !== CipherType.SecureNote" class="my-5 text-black-700 text-head-6 font-semibold">
+        <div
+          v-if="cipher.type !== CipherType.SecureNote"
+          class="my-5 text-black-700 text-head-6 font-semibold"
+        >
           {{ $t('data.ciphers.others') }}
         </div>
         <InputText
@@ -288,13 +301,20 @@
               handleChangeOrg(v)
             }"
           />
-          <div v-if="cipher.organizationId" class="form-group">
+          <div
+            v-if="cipher.organizationId"
+            class="form-group"
+          >
             <div class="flex items-center justify-between" />
             <label for="">{{ $t('data.ciphers.folders_team') }}</label>
             <div class="mb-2">
               {{ $t('data.ciphers.choose_at_least_folder') }}
             </div>
-            <el-checkbox-group v-model="cipher.collectionIds" :min="1" :disabled="isDeleted">
+            <el-checkbox-group
+              v-model="cipher.collectionIds"
+              :min="1"
+              :disabled="isDeleted"
+            >
               <el-checkbox
                 v-for="(item, index) in writeableCollections"
                 :key="index"
@@ -304,9 +324,16 @@
               </el-checkbox>
             </el-checkbox-group>
           </div>
+          <div v-if="cipher.organizationId && cipher.type===CipherType.Login">
+            <label class="font-semibold">{{ $t('data.ciphers.show_password') }}</label>
+            <el-checkbox v-model="cipher.viewPassword" />
+          </div>
         </template>
       </div>
-      <div slot="footer" class="dialog-footer flex items-center text-left">
+      <div
+        slot="footer"
+        class="dialog-footer flex items-center text-left"
+      >
         <div class="flex-grow">
           <button
             v-if="cipher.id"
@@ -342,7 +369,10 @@
         </div>
       </div>
     </component>
-    <AddEditFolder ref="addEditFolder" @created-folder="handleCreatedFolder" />
+    <AddEditFolder
+      ref="addEditFolder"
+      @created-folder="handleCreatedFolder"
+    />
   </div>
 </template>
 
@@ -504,7 +534,8 @@ export default {
         await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
           ...data,
           score: this.passwordStrength.score,
-          collectionIds: cipher.collectionIds
+          collectionIds: cipher.collectionIds,
+          view_password: cipher.viewPassword
         })
         this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
         this.closeDialog()
@@ -523,7 +554,8 @@ export default {
         await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, {
           ...data,
           score: this.passwordStrength.score,
-          collectionIds: cipher.collectionIds
+          collectionIds: cipher.collectionIds,
+          view_password: cipher.viewPassword
         })
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
         this.closeDialog()

@@ -29,6 +29,83 @@ export default {
       externalContent: ''
     }
   },
+  head () {
+    // this.$i18n.locale = this.lang
+    return {
+      htmlAttrs: {
+        lang: this.locale
+        // lang: this.currentUser.language
+      },
+      title: this.$t(`${this.mappings}.head_title`),
+      meta: [
+        { hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: this.$t(`${this.mappings}.head_title`)
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${process.env.baseUrl}${this.$route.fullPath}`
+        },
+        {
+          hid: 'og:locale',
+          property: 'og:locale',
+          content: this.locale === 'vi' ? 'vi' : 'en'
+        },
+        {
+          hid: 'og:locale:alternate',
+          property: 'og:locale:alternate',
+          content: this.locale === 'vi' ? 'en' : 'vi'
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: this.$t(`${this.mappings}.head_title`)
+        },
+        {
+          hid: 'twitter:url',
+          name: 'twitter:url',
+          content: `${process.env.baseUrl}${this.$route.fullPath}`
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.$t(`${this.mappings}.title`)
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: this.$t(`${this.mappings}.title`)
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: this.$t(`${this.mappings}.title`)
+        }
+      ],
+      link: [
+        { rel: 'alternate', hreflang: this.locale, href: this.getAlternatePath(this.locale) }
+        // { rel: 'alternate', hreflang: 'vi', href: this.getAlternatePath('vi') }
+      ]
+    }
+  },
+  computed: {
+    // currentUser () {
+    //   return this.$store.state.user
+    // },
+    mappings () {
+      const path = this.$route.path
+      if (path === '/how-it-works' || path === `/${this.locale}/how-it-works`) { return 'how_it_works' }
+      if (path === '/features' || path === `/${this.locale}/features`) { return 'features' }
+      if (path === '/plan' || path === `/${this.locale}/plan`) { return 'plan' }
+      if (path === '/download' || path === `/${this.locale}/download`) { return 'download' }
+      if (path === '/contact-us' || path === `/${this.locale}/contact-us`) { return 'landing_contact' }
+      if (path === '/blog' || path === `/${this.locale}/blog`) { return 'blog' }
+      return 'landing'
+    }
+  },
   mounted () {
     // this.$store.dispatch('LoadCurrentUser')
     // this.$store.dispatch('LoadCurrentUserPw')
@@ -38,6 +115,22 @@ export default {
       if (remote) {
         remote.shell.openExternal(url)
       }
+    },
+    getAlternatePath (lang) {
+      let path = ''
+      if (lang === 'en') {
+        if (this.locale === 'en') {
+          path = `${process.env.baseUrl}${this.$route.path}`
+        } else {
+          path = `${process.env.baseUrl}${this.$route.path.slice(3)}`
+        }
+      } else if (this.locale === 'en') {
+        path = `${process.env.baseUrl}/${lang}${this.$route.path}`
+      } else {
+        path = `${process.env.baseUrl}${this.$route.path}`
+      }
+
+      return path.endsWith('/') ? path.slice(0, -1) : path
     }
   }
 }
@@ -71,10 +164,17 @@ export default {
 .landing-transition {
   @apply transition duration-200 ease-in-out;
 }
-
+.landing-font-56 {
+  font-size: 56px;
+  line-height: 64px;
+}
 .landing-font-50 {
   font-size: 50px;
   line-height: 66px;
+}
+.landing-font-44 {
+  font-size: 44px;
+  line-height: 53px;
 }
 .landing-font-38 {
   font-size: 38px;

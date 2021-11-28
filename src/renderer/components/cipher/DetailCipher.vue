@@ -84,6 +84,7 @@
             <TextHaveCopy
               :label="$t('data.ciphers.password')"
               :text="cipher.login.password"
+              :view-password="cipher.viewPassword"
               should-hide
             />
             <div class="grid md:grid-cols-6 cipher-item">
@@ -103,7 +104,7 @@
                 {{ item.uri }}
               </div>
               <div class="text-right">
-                <button v-if="item.canLaunch" class="btn btn-icon btn-xs btn-action" @click="openNewTab(item.uri)">
+                <button v-if="item.canLaunch" class="btn btn-icon btn-xs btn-action" :title="$t('common.go_to_website')" @click="openNewTab(item.uri)">
                   <i class="fas fa-external-link-square-alt" />
                 </button>
               </div>

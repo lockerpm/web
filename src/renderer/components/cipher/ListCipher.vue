@@ -276,7 +276,7 @@
                     @click="routerCipher(scope.row, addEdit)"
                   >
                     {{ scope.row.name }}
-                    <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="" class="inline-block ml-2">
+                    <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
                   </a>
                   <div>
                     {{ scope.row.subTitle }}
@@ -314,6 +314,7 @@
                 <button
                   v-if="scope.row.login.canLaunch"
                   class="btn btn-icon btn-xs hover:bg-black-400"
+                  :title="$t('common.go_to_website')"
                   @click="openNewTab(scope.row.login.uri)"
                 >
                   <i class="fas fa-external-link-square-alt" />

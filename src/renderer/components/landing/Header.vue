@@ -165,7 +165,7 @@ export default {
   @apply hover:no-underline hover:text-green;
   font-size: 14px;
 }
-ul li a.nuxt-link-active {
+#header ul li a.nuxt-link-active {
   font-weight: 600;
   color: green !important;
 }
