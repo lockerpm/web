@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="dialogVisible"
-    width="435px"
+    width="500px"
     destroy-on-close
     top="5vh"
     custom-class="locker-dialog"
@@ -15,10 +15,14 @@
     <div class="text-left">
       <InputText
         v-model="user.username"
-        label="Username/Email"
+        :label="!user.id?'Email':'Username'"
         class="w-full"
         :error-text="errors.username && errors.username[0]"
+        :disabled="user.id?true:false"
       />
+      <!-- <div v-if="!user.id" class="!break-words !whitespace-normal font-normal text-black-500 mb-3 italic">
+        {{ $t(`data.members.invite_multiple.description`) }}
+      </div> -->
       <div class="form-group">
         <el-radio-group v-model="user.role" @change="() => !user.id ? user.collections = [] : null">
           <el-radio
@@ -36,7 +40,7 @@
       </div>
       <div v-if="['manager', 'member'].includes(user.role)" class="form-group">
         <div>This user can access only the selected folders.</div>
-        <el-checkbox-group v-model="user.collections">
+        <!-- <el-checkbox-group v-model="user.collections">
           <el-checkbox
             v-for="item in collections"
             :key="item.id"
@@ -44,7 +48,37 @@
           >
             {{ item.name }}
           </el-checkbox>
-        </el-checkbox-group>
+        </el-checkbox-group> -->
+        <el-table
+          :data="tableData"
+          style="width: 100%"
+        >
+          <el-table-column
+            label="Name"
+            width="300"
+          >
+            <template slot-scope="scope">
+              <el-checkbox
+                :key="scope.row.id"
+                v-model="scope.row.selected"
+                :label="scope.row.id"
+              >
+                {{ scope.row.name }}
+              </el-checkbox>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Hide Passwords"
+            width="130"
+          >
+            <template slot-scope="scope">
+              <el-checkbox
+                :key="scope.row.id"
+                v-model="scope.row.hide_passwords"
+              />
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
     <div slot="footer" class="dialog-footer flex items-center text-left">
@@ -91,6 +125,29 @@ export default {
   computed: {
     ownershipOptions () {
       return this.teams.filter(e => ['owner', 'admin'].includes(e.role))
+    },
+    tableData () {
+      let collectionData = this.collections.map(collection => {
+        return {
+          id: collection.id,
+          name: collection.name,
+          hide_passwords: false,
+          selected: false
+        }
+      })
+      if (this.user.id) {
+        collectionData = collectionData.map(item => {
+          const collectionUser = this.user.collections.find(collection => collection.id === item.id)
+          return collectionUser
+            ? {
+              ...collectionUser,
+              name: item.name,
+              selected: true
+            }
+            : item
+        })
+      }
+      return collectionData
     }
   },
   asyncComputed: {
@@ -119,6 +176,11 @@ export default {
     async postUser (user) {
       try {
         this.loading = true
+        user.collections = this.tableData.filter(item => item.selected === true)
+        user.collections = user.collections.map(item => {
+          delete item.name
+          return item
+        })
         await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members`, user)
         this.notify(this.$t('data.notifications.add_member_success'), 'success')
         this.closeDialog()
@@ -131,9 +193,41 @@ export default {
         this.loading = false
       }
     },
+    // async postUser (user) { // invite multiple
+    //   try {
+    //     this.loading = true
+    //     const members = []
+    //     const usernames = user.username.split(',')
+    //     usernames.forEach(username => {
+    //       members.push({
+    //         username: username.trim(),
+    //         role: user.role,
+    //         collections: user.collections
+    //       })
+    //     })
+    //     const payload = {
+    //       members
+    //     }
+    //     await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/multiple`, payload)
+    //     this.notify(this.$t('data.notifications.add_member_success'), 'success')
+    //     this.closeDialog()
+    //     this.$emit('done')
+    //   } catch (e) {
+    //     console.log(e)
+    //     this.errors = (e.response && e.response.data && e.response.data.details) || {}
+    //     this.notify(this.$t('data.notifications.add_member_failed'), 'warning')
+    //   } finally {
+    //     this.loading = false
+    //   }
+    // },
     async putUser (user) {
       try {
         this.loading = true
+        user.collections = this.tableData.filter(item => item.selected === true)
+        user.collections = user.collections.map(item => {
+          delete item.name
+          return item
+        })
         await this.$axios.$put(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/${user.id}`, user)
         this.notify(this.$t('data.notifications.update_member_success'), 'success')
         this.closeDialog()

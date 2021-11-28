@@ -324,10 +324,10 @@
               </el-checkbox>
             </el-checkbox-group>
           </div>
-          <div v-if="cipher.organizationId && cipher.type===CipherType.Login">
+          <!-- <div v-if="cipher.organizationId && cipher.type===CipherType.Login">
             <label class="font-semibold">{{ $t('data.ciphers.show_password') }}</label>
             <el-checkbox v-model="cipher.viewPassword" />
-          </div>
+          </div> -->
         </template>
       </div>
       <div
@@ -534,8 +534,8 @@ export default {
         await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
           ...data,
           score: this.passwordStrength.score,
-          collectionIds: cipher.collectionIds,
-          view_password: cipher.viewPassword
+          collectionIds: cipher.collectionIds
+          // view_password: cipher.viewPassword
         })
         this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
         this.closeDialog()
@@ -554,8 +554,8 @@ export default {
         await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, {
           ...data,
           score: this.passwordStrength.score,
-          collectionIds: cipher.collectionIds,
-          view_password: cipher.viewPassword
+          collectionIds: cipher.collectionIds
+          // view_password: cipher.viewPassword
         })
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
         this.closeDialog()
