@@ -168,10 +168,16 @@ export default {
       selectedUser: {}
     }
   },
-  mounted () {
+  async mounted () {
     this.getUsers()
+    const orgKey = await this.$cryptoService.getOrgKey(this.$route.params.teamId)
+    console.log(orgKey)
   },
   methods: {
+    async test () {
+      const orgKey = await this.$cryptoService.getOrgKey(this.$route.params.teamId)
+      console.log(orgKey)
+    },
     postUser () {
       this.$refs.addEditUser.openDialog({})
     },

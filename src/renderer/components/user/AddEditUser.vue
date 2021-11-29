@@ -13,6 +13,10 @@
       </div>
     </div>
     <div class="text-left">
+      <div class="flex justify-between">
+        <div v-if="!user.id" for="">Enter emails</div>
+        <div class="cursor-pointer" @click="inviteByFile=true">Upload file</div>
+      </div>
       <InputText
         v-model="user.username"
         :label="!user.id?'Email':'Username'"
@@ -20,10 +24,13 @@
         :error-text="errors.username && errors.username[0]"
         :disabled="user.id?true:false"
       />
-      <!-- <div v-if="!user.id" class="!break-words !whitespace-normal font-normal text-black-500 mb-3 italic">
-        {{ $t(`data.members.invite_multiple.description`) }}
-      </div> -->
-      <div class="form-group">
+      <div v-if="!user.id" class="!break-words !whitespace-normal font-normal text-black-500 mb-3 italic">
+        {{ $t(`data.members.invite_member.description`) }}
+      </div>
+      <div v-if="!user.id" class="!break-words !whitespace-normal font-normal text-danger-500 mb-3 italic">
+        {{ $t(`data.members.invite_member.warning`) }}
+      </div>
+      <div v-if="user.id" class="form-group">
         <el-radio-group v-model="user.role" @change="() => !user.id ? user.collections = [] : null">
           <el-radio
             v-for="item in roleOptions"
@@ -38,7 +45,7 @@
           </el-radio>
         </el-radio-group>
       </div>
-      <div v-if="['manager', 'member'].includes(user.role)" class="form-group">
+      <div v-if="user.id && ['manager', 'member'].includes(user.role)" class="form-group">
         <div>This user can access only the selected folders.</div>
         <!-- <el-checkbox-group v-model="user.collections">
           <el-checkbox
@@ -81,6 +88,41 @@
         </el-table>
       </div>
     </div>
+    <div v-if="inviteByFile" class="text-left">
+      <div class="form-group">
+        <label for="">Invite members by file</label>
+      </div>
+      <div class="flex justify-between">
+        <div class="w-5/12" for="">Select file type</div>
+        <el-select
+          v-model="file_type"
+          class="w-7/12"
+          placeholder=""
+          :disabled="loading"
+        >
+          <el-option
+            v-for="item in fileTypes"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
+        </el-select>
+      </div>
+      <div class="flex justify-between mt-3">
+        <div class="w-5/12" for="">Select file</div>
+        <input
+          type="file"
+          class="w-7/12 form-control-file form-input mb-4"
+          name="file"
+          @change="handleFile"
+        >
+      </div>
+      <div>
+        <a href="/assets/example-import-user.xlsx">
+          Download template
+        </a>
+      </div>
+    </div>
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow" />
       <div>
@@ -119,7 +161,11 @@ export default {
       ],
       user: {
         collections: []
-      }
+      },
+      file: null,
+      file_type: '.xlsx',
+      inviteByFile: false,
+      fileTypes: ['.csv', '.xlsx']
     }
   },
   computed: {
@@ -173,42 +219,15 @@ export default {
     closeDialog () {
       this.dialogVisible = false
     },
-    async postUser (user) {
-      try {
-        this.loading = true
-        user.collections = this.tableData.filter(item => item.selected === true)
-        user.collections = user.collections.map(item => {
-          delete item.name
-          return item
-        })
-        await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members`, user)
-        this.notify(this.$t('data.notifications.add_member_success'), 'success')
-        this.closeDialog()
-        this.$emit('done')
-      } catch (e) {
-        console.log(e)
-        this.errors = (e.response && e.response.data && e.response.data.details) || {}
-        this.notify(this.$t('data.notifications.add_member_failed'), 'warning')
-      } finally {
-        this.loading = false
-      }
-    },
-    // async postUser (user) { // invite multiple
+    // async postUser (user) {
     //   try {
     //     this.loading = true
-    //     const members = []
-    //     const usernames = user.username.split(',')
-    //     usernames.forEach(username => {
-    //       members.push({
-    //         username: username.trim(),
-    //         role: user.role,
-    //         collections: user.collections
-    //       })
+    //     user.collections = this.tableData.filter(item => item.selected === true)
+    //     user.collections = user.collections.map(item => {
+    //       delete item.name
+    //       return item
     //     })
-    //     const payload = {
-    //       members
-    //     }
-    //     await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/multiple`, payload)
+    //     await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members`, user)
     //     this.notify(this.$t('data.notifications.add_member_success'), 'success')
     //     this.closeDialog()
     //     this.$emit('done')
@@ -220,6 +239,48 @@ export default {
     //     this.loading = false
     //   }
     // },
+    async postUser (user) { // invite multiple
+      try {
+        this.loading = true
+        if (this.file && this.inviteByFile) {
+          const formData = new FormData()
+          formData.append('members', this.file)
+          await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/multiple/file`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+        } else {
+          user.collections = this.tableData.filter(item => item.selected === true)
+          user.collections = user.collections.map(item => {
+            delete item.name
+            return item
+          })
+          const members = []
+          const usernames = user.username.split(',')
+          usernames.forEach(username => {
+            members.push({
+              username: username.trim(),
+              role: user.role,
+              collections: user.collections
+            })
+          })
+          const payload = {
+            members
+          }
+          await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/multiple`, payload)
+        }
+        this.notify(this.$t('data.notifications.add_member_success'), 'success')
+        this.closeDialog()
+        this.$emit('done')
+      } catch (e) {
+        console.log(e)
+        this.errors = (e.response && e.response.data && e.response.data.details) || {}
+        this.notify(this.$t('data.notifications.add_member_failed'), 'warning')
+      } finally {
+        this.loading = false
+      }
+    },
     async putUser (user) {
       try {
         this.loading = true
@@ -261,6 +322,11 @@ export default {
       }).catch(() => {
 
       })
+    },
+    handleFile (e) {
+      if (e.target && e.target.files && e.target.files.length) {
+        this.file = e.target.files[0]
+      }
     }
   }
 }
