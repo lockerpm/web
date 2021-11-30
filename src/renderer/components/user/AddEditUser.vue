@@ -12,10 +12,49 @@
         {{ user.id ? 'Chỉnh sửa người dùng' : 'Mời người dùng' }}
       </div>
     </div>
-    <div class="text-left">
+    <div v-if="inviteByFile && !user.id" class="text-left">
+      <div class="form-group flex justify-between">
+        <label for="">{{ $t('data.members.invite_member.upload_file') }}</label>
+        <div class="cursor-pointer" @click="inviteByFile=false"><span><i class="fas fa-keyboard mr-1" /></span>{{ $t('data.members.enter_email') }}</div>
+      </div>
       <div class="flex justify-between">
-        <div v-if="!user.id" for="">Enter emails</div>
-        <div class="cursor-pointer" @click="inviteByFile=true">Upload file</div>
+        <div class="w-5/12" for="">{{ $t('data.members.invite_member.select_format') }}</div>
+        <el-select
+          v-model="file_format"
+          class="w-7/12"
+          placeholder=""
+          :disabled="loading"
+        >
+          <el-option
+            v-for="item in fileFormats"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
+        </el-select>
+      </div>
+      <div class="flex justify-between mt-3">
+        <div class="w-5/12" for="">{{ $t('data.members.invite_member.select_file') }}</div>
+        <input
+          type="file"
+          class="w-7/12 form-control-file form-input mb-4"
+          name="file"
+          @change="handleFile"
+        >
+      </div>
+      <div v-html="file_template">
+        <!-- <a href="/assets/example-import-user.xlsx">
+          Download template
+        </a> -->
+      </div>
+      <div v-if="!user.id" class="!break-words !whitespace-normal font-normal text-danger-500 mb-3 mt-2 italic">
+        {{ $t(`data.members.invite_member.warning`) }}
+      </div>
+    </div>
+    <div v-else class="text-left">
+      <div v-if="!user.id" class="form-group flex justify-between">
+        <label for="">{{ $t('data.members.enter_email') }}</label>
+        <div class="cursor-pointer" @click="inviteByFile=true"><span><i class="fas fa-cloud-upload-alt mr-1" /></span>{{ $t('data.members.invite_member.by_file') }}</div>
       </div>
       <InputText
         v-model="user.username"
@@ -46,7 +85,7 @@
         </el-radio-group>
       </div>
       <div v-if="user.id && ['manager', 'member'].includes(user.role)" class="form-group">
-        <div>This user can access only the selected folders.</div>
+        <div>{{ $t('data.members.user_access') }}</div>
         <!-- <el-checkbox-group v-model="user.collections">
           <el-checkbox
             v-for="item in collections"
@@ -75,6 +114,7 @@
             </template>
           </el-table-column>
           <el-table-column
+            v-if="user.role === 'member'"
             label="Hide Passwords"
             width="130"
           >
@@ -86,41 +126,6 @@
             </template>
           </el-table-column>
         </el-table>
-      </div>
-    </div>
-    <div v-if="inviteByFile" class="text-left">
-      <div class="form-group">
-        <label for="">Invite members by file</label>
-      </div>
-      <div class="flex justify-between">
-        <div class="w-5/12" for="">Select file type</div>
-        <el-select
-          v-model="file_type"
-          class="w-7/12"
-          placeholder=""
-          :disabled="loading"
-        >
-          <el-option
-            v-for="item in fileTypes"
-            :key="item"
-            :label="item"
-            :value="item"
-          />
-        </el-select>
-      </div>
-      <div class="flex justify-between mt-3">
-        <div class="w-5/12" for="">Select file</div>
-        <input
-          type="file"
-          class="w-7/12 form-control-file form-input mb-4"
-          name="file"
-          @change="handleFile"
-        >
-      </div>
-      <div>
-        <a href="/assets/example-import-user.xlsx">
-          Download template
-        </a>
       </div>
     </div>
     <div slot="footer" class="dialog-footer flex items-center text-left">
@@ -163,9 +168,9 @@ export default {
         collections: []
       },
       file: null,
-      file_type: '.xlsx',
+      file_format: '.xlsx',
       inviteByFile: false,
-      fileTypes: ['.csv', '.xlsx']
+      fileFormats: ['.csv', '.xlsx']
     }
   },
   computed: {
@@ -194,6 +199,15 @@ export default {
         })
       }
       return collectionData
+    },
+    file_template () {
+      if (this.file_format === '.xlsx') {
+        return this.$t('data.members.invite_member.xlsx_template')
+      }
+      if (this.file_format === '.csv') {
+        return this.$t('data.members.invite_member.csv_template')
+      }
+      return ''
     }
   },
   asyncComputed: {
@@ -261,7 +275,7 @@ export default {
           usernames.forEach(username => {
             members.push({
               username: username.trim(),
-              role: user.role,
+              role: user.role || 'member',
               collections: user.collections
             })
           })
