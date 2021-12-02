@@ -170,8 +170,6 @@ export default {
   },
   async mounted () {
     this.getUsers()
-    const orgKey = await this.$cryptoService.getOrgKey(this.$route.params.teamId)
-    console.log(orgKey)
   },
   methods: {
     async test () {

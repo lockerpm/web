@@ -130,13 +130,13 @@ export default {
       try {
         this.loading = true
         await this.$axios.$post('cystack_platform/pm/emergency_access/invite', emergency_access)
-        this.notify(this.$t('data.notifications.add_member_success'), 'success')
+        this.notify(this.$t('data.notifications.invite_user_success'), 'success')
         this.closeDialog()
         this.$emit('done')
       } catch (e) {
         console.log(e)
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
-        this.notify(this.$t('data.notifications.add_member_failed'), 'warning')
+        this.notify(this.$t('data.notifications.invite_user_failed'), 'warning')
       } finally {
         this.loading = false
       }
@@ -145,16 +145,38 @@ export default {
       try {
         this.loading = true
         await this.$axios.$put(`cystack_platform/pm/emergency_access/invite/${emergency_access.id}`, emergency_access)
-        this.notify(this.$t('data.notifications.update_member_success'), 'success')
+        this.notify(this.$t('data.notifications.update_contact_success'), 'success')
         this.closeDialog()
         this.$emit('done')
       } catch (e) {
         console.log(e)
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
-        this.notify(this.$t('data.notifications.update_member_failed'), 'warning')
+        this.notify(this.$t('data.notifications.update_contact_failed'), 'warning')
       } finally {
         this.loading = false
       }
+    },
+    async deleteEmergencyAccess (emergency_access) {
+      this.$confirm(this.$t('data.notifications.delete_member_description'), this.$t('common.warning'), {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(async () => {
+        try {
+          this.loading = true
+          await this.$axios.$delete(`cystack_platform/pm/emergency_access/${emergency_access.id}`)
+          this.closeDialog()
+          this.$emit('done')
+          this.notify(this.$t('data.notifications.remove_user_success', { user: emergency_access.email }), 'success')
+        } catch (e) {
+          this.errors = (e.response && e.response.data && e.response.data.details) || {}
+          this.notify(this.$t('data.notifications.remove_user_failed'), 'warning')
+        } finally {
+          this.loading = false
+        }
+      }).catch(() => {
+
+      })
     }
   }
 }
