@@ -54,10 +54,10 @@
           </el-checkbox>
         </el-checkbox-group>
       </div>
-      <div v-if="cipher.organizationId && cipher.type===CipherType.Login">
+      <!-- <div v-if="cipher.organizationId && cipher.type===CipherType.Login">
         <label class="font-semibold">{{ $t('data.ciphers.show_password') }}</label>
         <el-checkbox v-model="cipher.viewPassword" />
-      </div>
+      </div> -->
     </div>
     <div
       slot="footer"
@@ -97,8 +97,8 @@ export default {
       CipherType,
       cipher: {
         collectionIds: [],
-        organizationId: '',
-        viewPassword: true
+        organizationId: ''
+        // viewPassword: true
       },
       originCipher: {},
       loading: false,
@@ -149,8 +149,8 @@ export default {
           await this.$axios.$put(url, {
             ...data,
             score: this.passwordStrength.score,
-            collectionIds: cipher.collectionIds,
-            view_password: cipher.viewPassword
+            collectionIds: cipher.collectionIds
+            // view_password: cipher.viewPassword
           })
           this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
           this.closeDialog()
