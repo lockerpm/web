@@ -144,7 +144,7 @@ export default {
     async putEmergencyAccess (emergency_access) {
       try {
         this.loading = true
-        await this.$axios.$put(`cystack_platform/pm/emergency_access/invite/${emergency_access.id}`, emergency_access)
+        await this.$axios.$put(`cystack_platform/pm/emergency_access/${emergency_access.id}`, emergency_access)
         this.notify(this.$t('data.notifications.update_contact_success'), 'success')
         this.closeDialog()
         this.$emit('done')
@@ -157,7 +157,7 @@ export default {
       }
     },
     async deleteEmergencyAccess (emergency_access) {
-      this.$confirm(this.$t('data.notifications.delete_member_description'), this.$t('common.warning'), {
+      this.$confirm(this.$t('data.notifications.delete_emergency_contact'), this.$t('common.warning'), {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
