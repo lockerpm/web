@@ -398,6 +398,7 @@ export default {
         if (importResult.success) {
           if (importResult.folders.length === 0 && importResult.ciphers.length === 0) {
             this.notify('Không có dữ liệu', 'warning')
+            this.loading = false
             return
           } else if (importResult.ciphers.length > 0) {
             const halfway = Math.floor(importResult.ciphers.length / 2)
@@ -407,6 +408,7 @@ export default {
                 this.badData(importResult.ciphers[halfway]) &&
                 this.badData(importResult.ciphers[last])) {
               this.notify('Dữ liệu không đúng định dạng', 'warning')
+              this.loading = false
               return
             }
           }
@@ -416,6 +418,7 @@ export default {
             if (error.response && error.response.data) {
               const errorResponse = new ErrorResponse(error.response.data, 400)
               this.notify(this.handleServerError(errorResponse, importResult), 'warning')
+              this.loading = false
               return
             }
             this.notify('Dữ liệu không đúng định dạng', 'warning')
