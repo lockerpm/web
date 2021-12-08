@@ -90,11 +90,11 @@
         class="mb-10"
       >
         <client-only>
-          <div class="grid grid-cols-4 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
+          <div class="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
             <div
               v-for="item in folders"
               :key="item.id"
-              class="px-4 py-6 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+              class="px-4 py-4 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
               :class="{'border-primary': selectedFolder.id === item.id}"
               :title="item.name"
               @click="selectedFolder = item"
@@ -102,7 +102,10 @@
               @contextmenu.prevent="$refs.menu.open($event, item)"
             >
               <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
-              <div class="font-semibold break-all select-none">{{ item.name }} ({{ item.ciphersCount }})</div>
+              <div class="font-semibold break-all select-none">
+                {{ item.name }}
+                <div>({{ item.ciphersCount }})</div>
+              </div>
             </div>
             <component
               :is="context"
@@ -137,11 +140,11 @@
             <div class="mb-5 font-medium">
               {{ getTeam(teams, key).name }}
             </div>
-            <div :key="key" class="grid grid-cols-4 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
+            <div :key="key" class="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
               <div
                 v-for="item in value"
                 :key="item.id"
-                class="px-4 py-6 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+                class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
                 :class="{'border-primary': selectedFolder.id === item.id}"
                 :title="`${item.name} (${item.ciphersCount})`"
                 @click="selectedFolder = item"
@@ -150,18 +153,24 @@
               >
                 <div class="flex items-center">
                   <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
-                  <div class="font-semibold truncate select-none">{{ item.name }} ({{ item.ciphersCount }})</div>
+                  <div class="font-semibold truncate select-none">
+                    {{ item.name }}
+                    <div>({{ item.ciphersCount }})</div>
+                  </div>
                 </div>
               </div>
               <div
-                class="px-4 py-6 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+                class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
                 :class="{'border-primary': selectedFolder.id === 'unassigned'}"
                 @click="selectedFolder = {id: 'unassigned'}"
                 @dblclick="routerCollection({id: 'unassigned', organizationId: key})"
               >
                 <div class="flex items-center">
                   <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
-                  <div class="font-semibold truncate select-none">{{ $t('data.ciphers.unassigned_folder') }} ({{ countUnassignedItems(ciphers, key) }})</div>
+                  <div class="font-semibold truncate select-none">
+                    {{ $t('data.ciphers.unassigned_folder') }}
+                    <div>({{ countUnassignedItems(ciphers, key) }})</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -224,6 +233,7 @@
           <el-table-column
             prop="name"
             label=""
+            min-width="300"
             show-overflow-tooltip
           >
             <template slot="header">
