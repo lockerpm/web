@@ -49,9 +49,9 @@ Vue.mixin({
           slug: 'cyber-defense'
         },
         {
-          id: '400',
-          label: this.$t('blog.categories')[3],
-          slug: 'cong-bo'
+          id: '14',
+          label: this.$t('blog.categories')[10],
+          slug: 'news-trend'
         },
         {
           id: '315',
