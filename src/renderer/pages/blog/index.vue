@@ -140,9 +140,9 @@ export default {
     const language = context.store.state.i18n.locale
     let tagId
     try {
-      const result = await axios.get(`https://b.cystack.net/tags?slug=${language}`)
+      const result = await axios.get(`${process.env.blogUrl}/tags?slug=${language}`)
       tagId = result.data[0].id
-      const { data } = await axios.get(`https://b.cystack.net/posts?_embed=1&per_page=9&tags=${tagId}&categories=29,4,400,315`)
+      const { data } = await axios.get(`${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${tagId}&categories=29,4,400,315`)
       return {
         posts: data.map(post => {
           let featuredImage = ''
@@ -240,7 +240,7 @@ export default {
     },
     async getTagBySlug (tagSlug) {
       try {
-        const result = await axios.get(`https://b.cystack.net/tags?slug=${tagSlug}`)
+        const result = await axios.get(`${process.env.blogUrl}/tags?slug=${tagSlug}`)
         return result.data[0]
       } catch (error) {
         return {}
@@ -261,7 +261,7 @@ export default {
       this.query = ''
       try {
         const localeTag = await this.getTagBySlug(this.locale)
-        const url = `https://b.cystack.net/posts?_embed=1&per_page=9&tags=${localeTag.id}&categories=${this.category}`
+        const url = `${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${localeTag.id}&categories=${this.category}`
         // if (this.category !== 0) {
         //   url += `&categories=${parseInt(this.category)}`
         // } else {
@@ -284,7 +284,7 @@ export default {
       this.page += 1
       try {
         const localeTag = await this.getTagBySlug(this.locale)
-        const url = `https://b.cystack.net/posts?_embed=1&per_page=9&page=${this.page}&tags=${localeTag.id}&search=${this.query}&categories=${this.category}`
+        const url = `${process.env.blogUrl}/posts?_embed=1&per_page=9&page=${this.page}&tags=${localeTag.id}&search=${this.query}&categories=${this.category}`
         // if (this.category !== 0) {
         //   url += `&categories=${this.category}`
         // } else {
@@ -339,7 +339,7 @@ export default {
       this.page = 1
       try {
         const localeTag = await this.getTagBySlug(this.locale)
-        const url = `https://b.cystack.net/posts?_embed=1&per_page=9&tags=${localeTag.id}&search=${this.query}&categories=${this.category}`
+        const url = `${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${localeTag.id}&search=${this.query}&categories=${this.category}`
         // if (this.category !== 0) {
         //   url += `&categories=${parseInt(this.category)}`
         // } else {

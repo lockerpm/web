@@ -133,18 +133,18 @@ export default {
   async asyncData ({ isDev, route, store, env, params, query, req, res, redirect, error }) {
     const slug = params.slug
     const language = store.state.i18n.locale
-    const { data } = await axios.get(`https://b.cystack.net/posts?slug=${slug}`)
+    const { data } = await axios.get(`${process.env.blogUrl}/posts?slug=${slug}`)
     if (data.length === 0) {
       error({ statusCode: 404 })
       return
     }
     const categoriesId = data[0].categories
     const categories = await Promise.all(categoriesId.map(async id => {
-      const res = await axios.get(`https://b.cystack.net/categories/${id}`)
+      const res = await axios.get(`${process.env.blogUrl}/categories/${id}`)
       return res.data
     }))
-    const languageTag = await axios.get(`https://b.cystack.net/tags?slug=${language}`)
-    const relateResult = await axios.get(`https://b.cystack.net/posts?exclude=${data[0].id}&categories=${categoriesId.toString()}&tags=${languageTag.data[0].id}&per_page=2`)
+    const languageTag = await axios.get(`${process.env.blogUrl}/tags?slug=${language}`)
+    const relateResult = await axios.get(`${process.env.blogUrl}/posts?exclude=${data[0].id}&categories=${categoriesId.toString()}&tags=${languageTag.data[0].id}&per_page=2`)
     return {
       post: data.map(post => {
         const $ = cheerio.load(post.content.rendered)
@@ -302,7 +302,7 @@ export default {
     },
     async getTagBySlug (tagSlug) {
       try {
-        const result = await axios.get(`https://b.cystack.net/tags?slug=${tagSlug}`)
+        const result = await axios.get(`${process.env.blogUrl}/tags?slug=${tagSlug}`)
         return result.data[0]
       } catch (error) {
         return {}
