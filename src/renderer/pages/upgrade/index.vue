@@ -21,7 +21,7 @@
           </div>
         </div>
       </div>
-      <div class="grid grid-cols-4 gap-x-6">
+      <div class="grid ld:grid-cols-4 md:grid-cols-2 grid-cols-1  gap-x-6">
         <div
           v-for="item in plans"
           :key="item.id"

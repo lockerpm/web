@@ -1,11 +1,11 @@
 <template>
   <el-dialog
     :visible.sync="dialogVisible"
-    width="575px"
+    md:width="575px"
+    width="90%"
     destroy-on-close
     top="5vh"
     custom-class="locker-dialog"
-    :close-on-click-modal="false"
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
@@ -43,7 +43,7 @@
       <div class="flex-grow" />
       <div>
         <button
-          class="btn btn-default"
+          class="btn btn-default mb-4 md:mb-0"
           @click="dialogVisible = false"
         >
           {{ $t('common.cancel') }}

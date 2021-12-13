@@ -90,7 +90,7 @@
         class="mb-10"
       >
         <client-only>
-          <div class="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
             <div
               v-for="item in folders"
               :key="item.id"
@@ -140,7 +140,7 @@
             <div class="mb-5 font-medium">
               {{ getTeam(teams, key).name }}
             </div>
-            <div :key="key" class="grid grid-cols-2 md:grid-cols-4 2xl:grid-cols-5 gap-6 ">
+            <div :key="key" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
               <div
                 v-for="item in value"
                 :key="item.id"

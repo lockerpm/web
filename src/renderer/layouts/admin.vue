@@ -1,26 +1,28 @@
 <template>
-  <div class="flex flex-col sm:flex-row flex-1">
+  <div class="flex flex-col sm:flex-row flex-1 relative">
     <client-only>
       <template v-if="!locked">
-        <div class="w-60 h-screen bg-aside min-h-500px min-w-60 fixed">
-          <div class="mt-10 px-8">
-            <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
-          </div>
+        <div class="hidden md:block">
+          <div class="w-60 h-screen bg-aside min-w-60 fixed">
+            <div class="mt-10 px-8">
+              <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
+            </div>
 
-          <nav class="mt-10">
-            <nuxt-link
-              v-for="(item, index) in menu"
-              :key="index"
-              :to="localePath({name: item.routeName, params: $route.params})"
-              class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
-              active-class="bg-white bg-opacity-20 text-white"
-              :exact="item.exact"
-            >
-              <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
-            </nuxt-link>
-          </nav>
+            <nav class="mt-10">
+              <nuxt-link
+                v-for="(item, index) in menu"
+                :key="index"
+                :to="localePath({name: item.routeName, params: $route.params})"
+                class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                active-class="bg-white bg-opacity-20 text-white"
+                :exact="item.exact"
+              >
+                <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
+              </nuxt-link>
+            </nav>
+          </div>
         </div>
-        <div class="pl-60 flex flex-col flex-row-fluid">
+        <div class="md:pl-60 flex flex-col flex-row-fluid">
           <HeaderAdmin />
           <nuxt />
         </div>
