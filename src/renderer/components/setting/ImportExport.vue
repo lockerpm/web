@@ -294,6 +294,7 @@ export default {
       collections = collections.filter(c => c.organizationId === organizationId)
       ciphers = await this.$cipherService.getAllDecrypted()
       ciphers = ciphers.filter(c => c.organizationId === organizationId)
+      ciphers = ciphers.filter(c => c.deletedDate === null)
 
       if (format === 'csv') {
         const collectionsMap = new Map()

@@ -34,7 +34,7 @@
                 <div class="mr-2 w-[22px] h-[22px] flex items-center">
                   <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
                 </div>
-                <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
+                <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
               </nuxt-link>
             </nav>
           </div>
@@ -92,6 +92,43 @@
                       class="btn btn-primary"
                       :disabled="loading"
                       @click="putInvitation(invitation.id, 'accept')"
+                    >
+                      Đồng ý
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <img src="~/assets/images/icons/invitaion.svg" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="emergencyAccessInvitations.length" class="flex-column-fluid lg:px-28 py-10 px-10">
+            <div
+              v-for="invitation in emergencyAccessInvitations.slice(0, 1)"
+              :key="invitation.id"
+              class="banner-invitation border border-black-200 rounded p-5 md:p-8"
+            >
+              <div class="flex items-center justify-between">
+                <div class="">
+                  <div class="text-lg font-semibold mb-2">
+                    Invitation to become an emergency contact
+                  </div>
+                  <div class="text-black-600 mb-5">
+                    You’ve been invited to become an emergency contact for {{ invitation.full_name }}.
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-default"
+                      :disabled="loading2"
+                      @click="deleteEmergencyAccess(invitation)"
+                    >
+                      Từ chối
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      :disabled="loading2"
+                      @click="acceptEmergencyAccessInvitation(invitation.id)"
                     >
                       Đồng ý
                     </button>
@@ -170,7 +207,8 @@ export default {
       lastActivity: null,
       idleTimer: null,
       isIdle: false,
-      shouldWelcome: 'false'
+      shouldWelcome: 'false',
+      emergencyAccessInvitations: []
     }
   },
   head () {
@@ -229,6 +267,7 @@ export default {
         this.$store.dispatch('LoadTeams')
         this.getSyncData()
         this.getInvitations()
+        this.getEmergencyAccessInvitations()
         this.reconnectSocket()
         this.$store.dispatch('LoadCurrentPlan')
       }
@@ -284,6 +323,10 @@ export default {
     async getInvitations () {
       this.invitations = await this.$axios.$get('cystack_platform/pm/users/invitations')
     },
+    async getEmergencyAccessInvitations () {
+      this.emergencyAccessInvitations = await this.$axios.$get('cystack_platform/pm/emergency_access/granted')
+      this.emergencyAccessInvitations = this.emergencyAccessInvitations.filter(invitations => invitations.status === 'invited')
+    },
     async putInvitation (id, status) {
       try {
         this.loading = true
@@ -298,6 +341,39 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    async acceptEmergencyAccessInvitation (id) {
+      try {
+        this.loading2 = true
+        await this.$axios.$post(`cystack_platform/pm/emergency_access/${id}/accept`)
+        this.getEmergencyAccessInvitations()
+        this.notify(this.$t('data.notifications.accept_invitation_success'), 'success')
+      } catch (e) {
+        this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')
+      } finally {
+        this.loading2 = false
+      }
+    },
+    async deleteEmergencyAccess (emergency_access) {
+      this.$confirm(this.$t('data.notifications.delete_emergency_contact'), emergency_access.full_name || this.$t('common.warning'), {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(async () => {
+        try {
+          this.loading2 = true
+          await this.$axios.$delete(`cystack_platform/pm/emergency_access/${emergency_access.id}`)
+          this.getEmergencyAccessInvitations()
+          this.notify(this.$t('data.notifications.remove_user_success', { user: emergency_access.email }), 'success')
+        } catch (e) {
+          // this.errors = (e.response && e.response.data && e.response.data.details) || {}
+          this.notify(this.$t('data.notifications.remove_user_failed'), 'warning')
+        } finally {
+          this.loading2 = false
+        }
+      }).catch(() => {
+
+      })
     },
     async recordActivity () {
       const now = (new Date()).getTime()
@@ -357,6 +433,9 @@ export default {
           break
         case 'members':
           this.getInvitations()
+          break
+        case 'emergency_access':
+          this.getEmergencyAccessInvitations()
           break
         default:
           break
