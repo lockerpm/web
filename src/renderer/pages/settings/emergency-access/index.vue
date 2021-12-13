@@ -104,7 +104,7 @@
                       effect="dark"
                       placement="top-start"
                     >
-                      <div slot="content">View: Can view all items in your own vault. <br> Takeover: Can reset your account with a new master password.</div>
+                      <div slot="content">View: {{ $t(`data.emergency_access.view_desc`) }} <br> Takeover: {{ $t(`data.emergency_access.takeover_desc`) }}</div>
                       <i class="el-icon-info" />
                     </el-tooltip></span>
                   </template>
@@ -237,7 +237,7 @@
                       effect="dark"
                       placement="top-start"
                     >
-                      <div slot="content">View: Can view all items in your own vault. <br> Takeover: Can reset your account with a new master password.</div>
+                      <div slot="content">View: {{ $t(`data.emergency_access.view_desc`) }} <br> Takeover: {{ $t(`data.emergency_access.takeover_desc`) }}</div>
                       <i class="el-icon-info" />
                     </el-tooltip></span>
                   </template>
