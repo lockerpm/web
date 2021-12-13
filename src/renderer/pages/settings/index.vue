@@ -12,7 +12,7 @@
           </div>
           <div>
             <button
-              class="btn btn-default !text-warning"
+              class="btn btn-default !text-warning mb-4 md:mb-0"
               @click="lock"
             >
               {{ $t('common.lock') }}
@@ -206,19 +206,19 @@
             </div>
             <div>
               <button
-                class="btn btn-default !text-danger"
+                class="btn btn-default !text-danger mb-4 md:mb-0"
                 @click="openDeauthorizeSessions()"
               >
                 {{ $t('data.settings.deauthorize_sessions') }}
               </button>
               <button
-                class="btn btn-default !text-danger"
+                class="btn btn-default !text-danger mb-4 md:mb-0"
                 @click="openPurgeVault('purge')"
               >
                 {{ $t('data.settings.delete_all_items') }}
               </button>
               <button
-                class="btn btn-default !text-danger"
+                class="btn btn-default !text-danger mb-4 md:mb-0"
                 @click="openPurgeVault('delete_account')"
               >
                 {{ $t('data.settings.delete_account') }}

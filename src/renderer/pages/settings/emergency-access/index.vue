@@ -49,7 +49,7 @@
                 :data="list_trusted"
                 style="width: 100%"
               >
-                <el-table-column label="Users">
+                <el-table-column label="Users" min-width="200">
                   <template slot-scope="scope">
                     <div class="flex items-center">
                       <el-avatar
@@ -66,6 +66,7 @@
                 <el-table-column
                   label="Status"
                   align="right"
+                  min-width="120"
                 >
                   <template slot="header">
                     <span>Status</span>
@@ -97,6 +98,7 @@
                 <el-table-column
                   label="Type"
                   align="right"
+                  min-width="100"
                 >
                   <template slot="header">
                     <span>Type <el-tooltip
@@ -185,7 +187,7 @@
                 :data="list_granted"
                 style="width: 100%"
               >
-                <el-table-column label="Users">
+                <el-table-column label="Users" min-width="200">
                   <template slot-scope="scope">
                     <div class="flex items-center">
                       <el-avatar
@@ -202,6 +204,7 @@
                 <el-table-column
                   label="Status"
                   align="right"
+                  min-width="120"
                 >
                   <template slot-scope="scope">
                     <span
@@ -230,6 +233,7 @@
                 <el-table-column
                   label="Type"
                   align="right"
+                  min-width="100"
                 >
                   <template slot="header">
                     <span>Type <el-tooltip
@@ -452,6 +456,7 @@ export default {
     EmergencyContact,
     PasswordStrengthBar
   },
+  scrollToTop: true,
   data () {
     return {
       list_trusted: [],

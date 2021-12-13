@@ -1,45 +1,47 @@
 <template>
-  <div class="flex flex-col sm:flex-row flex-1">
+  <div class="flex flex-col sm:flex-row flex-1 relative">
     <client-only>
       <template v-if="!locked">
-        <div class="w-60 h-screen bg-aside min-h-500px min-w-60 fixed flex flex-col justify-between">
-          <div>
-            <div class="mt-7 px-6">
-              <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
+        <div class="hidden md:block">
+          <div class="w-60 h-screen bg-aside min-h-500px min-w-60 fixed flex flex-col justify-between">
+            <div>
+              <div class="mt-7 px-6">
+                <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
+              </div>
+              <nav class="mt-7">
+                <nuxt-link
+                  v-for="(item, index) in menu"
+                  :key="index"
+                  :to="localePath({name: item.routeName})"
+                  class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                  active-class="bg-white bg-opacity-20 text-white"
+                >
+                  <div class="mr-2 w-[22px] h-[22px] flex items-center">
+                    <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+                  </div>
+                  <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
+                </nuxt-link>
+              </nav>
             </div>
-            <nav class="mt-7">
-              <nuxt-link
-                v-for="(item, index) in menu"
-                :key="index"
-                :to="localePath({name: item.routeName})"
-                class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
-                active-class="bg-white bg-opacity-20 text-white"
-              >
-                <div class="mr-2 w-[22px] h-[22px] flex items-center">
-                  <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
-                </div>
-                <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
-              </nuxt-link>
-            </nav>
-          </div>
-          <div>
-            <nav class="mb-10">
-              <nuxt-link
-                v-for="(item, index) in bottomMenu"
-                :key="index"
-                :to="localePath({name: item.routeName, params: item.params})"
-                class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
-                active-class="bg-white bg-opacity-20 text-white"
-              >
-                <div class="mr-2 w-[22px] h-[22px] flex items-center">
-                  <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
-                </div>
-                <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
-              </nuxt-link>
-            </nav>
+            <div>
+              <nav class="mb-10">
+                <nuxt-link
+                  v-for="(item, index) in bottomMenu"
+                  :key="index"
+                  :to="localePath({name: item.routeName, params: item.params})"
+                  class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                  active-class="bg-white bg-opacity-20 text-white"
+                >
+                  <div class="mr-2 w-[22px] h-[22px] flex items-center">
+                    <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+                  </div>
+                  <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
+                </nuxt-link>
+              </nav>
+            </div>
           </div>
         </div>
-        <div class="pl-60 flex flex-col flex-row-fluid">
+        <div class="md:pl-60 flex flex-col flex-row-fluid">
           <Header />
           <div v-if="shouldWelcome !=='false'" class="flex-column-fluid lg:px-28 py-10 px-10">
             <div class="border border-black-200 rounded p-5 md:p-8 relative">
@@ -115,7 +117,7 @@
                     Invitation to become an emergency contact
                   </div>
                   <div class="text-black-600 mb-5">
-                    You’ve been invited to become an emergency contact for {{ invitation.full_name }}.
+                    You’ve been invited to become an emergency contact for {{ invitation.full_name }}.<br>Access type: {{ invitation.type }}
                   </div>
                   <div>
                     <button
