@@ -175,10 +175,13 @@
           </div>
         </div>
       </div>
-      <div class="setting-section setting-section--hover">
+      <div
+        class="setting-section setting-section--hover"
+        @click="$router.push(localeRoute({name: 'settings-emergency-access'}))"
+      >
         <div class="setting-section-header">
           <div>
-            <div class="setting-title" @click="$router.push(localeRoute({name: 'settings-emergency-access'}))">
+            <div class="setting-title">
               {{ $t('data.settings.emergency_access') }}
             </div>
             <div class="setting-description" />

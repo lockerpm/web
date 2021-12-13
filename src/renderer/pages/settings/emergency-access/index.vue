@@ -18,10 +18,16 @@
       <div class="text-head-5 font-semibold mb-4">
         Emergency Access
       </div>
-      <div class="setting-description mb-5">
+      <div class="setting-description">
         {{ $t('data.emergency_access.emergency_access_desc') }}
       </div>
-      <div class="setting-wrapper">
+      <a
+        href="#"
+        class=""
+      >
+        {{ $t('data.emergency_access.learn_more') }}
+      </a>
+      <div class="setting-wrapper mt-5">
         <div class="setting-section">
           <div class="setting-section-header">
             <div>
@@ -61,6 +67,9 @@
                   label="Status"
                   align="right"
                 >
+                  <template slot="header">
+                    <span>Status</span>
+                  </template>
                   <template slot-scope="scope">
                     <span
                       class="label capitalize"
@@ -68,20 +77,41 @@
                                'label-success-light': scope.row.status === 'accepted',
                                'label-warning-light': scope.row.status === 'invited',
                                'label-danger-light': scope.row.status === 'expired',
-                               'label-info-light': scope.row.status === 'recovery_initiated',
-                               'label-success-light': scope.row.status === 'recovery_approved',
+                               'label-black': scope.row.status === 'recovery_initiated',
+                               'label-success': scope.row.status === 'recovery_approved',
                       }"
                     >
-                      {{ scope.row.status }}
+                      {{ emergencyAccessStatus[`${scope.row.status}`] }}
                     </span>
+                    <el-tooltip
+                      v-if="scope.row.status==='recovery_initiated'"
+                      class="item"
+                      effect="dark"
+                      placement="top-start"
+                    >
+                      <div slot="content">{{ $t('data.emergency_access.grantor_recovery_initiated_info', {day: (((scope.row.recovery_initiated_date + scope.row.wait_time_days*24*60*60)*1000 - new Date().getTime())/(1000*60*60*24)).toFixed(1)}) }}</div>
+                      <i class="el-icon-info" />
+                    </el-tooltip>
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="Type"
                   align="right"
                 >
+                  <template slot="header">
+                    <span>Type <el-tooltip
+                      class="item"
+                      effect="dark"
+                      placement="top-start"
+                    >
+                      <div slot="content">View: Can view all items in your own vault. <br> Takeover: Can reset your account with a new master password.</div>
+                      <i class="el-icon-info" />
+                    </el-tooltip></span>
+                  </template>
                   <template slot-scope="scope">
-                    {{ scope.row.type }}
+                    <span class="capitalize label label-info">
+                      {{ scope.row.type }}
+                    </span>
                   </template>
                 </el-table-column>
                 <el-table-column align="right">
@@ -98,7 +128,7 @@
                           v-if="scope.row.status === 'invited'"
                           @click.native="reinvite(scope.row)"
                         >
-                          <span class="text-success">{{ $t('common.reinvite') }}</span>
+                          <span class="text-warning">{{ $t('common.reinvite') }}</span>
                         </el-dropdown-item>
                         <el-dropdown-item
                           v-if="scope.row.status === 'accepted'"
@@ -106,24 +136,28 @@
                         >
                           <span class="text-success">{{ $t('common.confirm') }}</span>
                         </el-dropdown-item>
-                        <template v-if="scope.row.status === 'confirmed'">
+                        <!-- <template v-if="scope.row.status === 'confirmed'">
                           <el-dropdown-item @click.native="putEmergencyAccess(scope.row)">
                             {{ $t('common.edit') }}
                           </el-dropdown-item>
-                        </template>
+                        </template> -->
                         <template v-if="scope.row.status === 'recovery_initiated'">
                           <el-dropdown-item @click.native="approveEmergencyAccess(scope.row)">
-                            {{ $t('common.accept') }}
+                            <span class="text-success">
+                              {{ $t('common.accept') }}
+                            </span>
                           </el-dropdown-item>
                           <el-dropdown-item @click.native="rejectEmergencyAccess(scope.row)">
-                            {{ $t('common.reject') }}
+                            <span class="text-warning">
+                              {{ $t('common.reject') }}
+                            </span>
                           </el-dropdown-item>
                         </template>
                         <el-dropdown-item
                           v-if="scope.row.status === 'recovery_approved'"
                           @click.native="rejectEmergencyAccess(scope.row)"
                         >
-                          <span class="text-success">{{ $t('common.reject') }}</span>
+                          <span class="text-warning">{{ $t('common.reject') }}</span>
                         </el-dropdown-item>
                         <el-dropdown-item @click.native="deleteEmergencyAccess(scope.row)">
                           <span class="text-danger">
@@ -176,20 +210,41 @@
                                'label-success-light': scope.row.status === 'accepted',
                                'label-warning-light': scope.row.status === 'invited',
                                'label-danger-light': scope.row.status === 'expired',
-                               'label-info-light': scope.row.status === 'recovery_initiated',
-                               'label-success-light': scope.row.status === 'recovery_approved',
+                               'label-black': scope.row.status === 'recovery_initiated',
+                               'label-success': scope.row.status === 'recovery_approved',
                       }"
                     >
-                      {{ scope.row.status }}
+                      {{ emergencyAccessStatus[`${scope.row.status}`] }}
                     </span>
+                    <el-tooltip
+                      v-if="scope.row.status==='recovery_initiated'"
+                      class="item"
+                      effect="dark"
+                      placement="top-start"
+                    >
+                      <div slot="content">{{ $t('data.emergency_access.grantee_recovery_initiated_info', {day: (((scope.row.recovery_initiated_date + scope.row.wait_time_days*24*60*60)*1000 - new Date().getTime())/(1000*60*60*24)).toFixed(1)}) }}</div>
+                      <i class="el-icon-info" />
+                    </el-tooltip>
                   </template>
                 </el-table-column>
                 <el-table-column
                   label="Type"
                   align="right"
                 >
+                  <template slot="header">
+                    <span>Type <el-tooltip
+                      class="item"
+                      effect="dark"
+                      placement="top-start"
+                    >
+                      <div slot="content">View: Can view all items in your own vault. <br> Takeover: Can reset your account with a new master password.</div>
+                      <i class="el-icon-info" />
+                    </el-tooltip></span>
+                  </template>
                   <template slot-scope="scope">
-                    {{ scope.row.type }}
+                    <span class="capitalize label label-info">
+                      {{ scope.row.type }}
+                    </span>
                   </template>
                 </el-table-column>
                 <el-table-column align="right">
@@ -206,7 +261,9 @@
                           v-if="scope.row.status==='invited'"
                           @click.native="acceptInvite(scope.row)"
                         >
-                          {{ $t('common.accept') }}
+                          <span class="text-success">
+                            {{ $t('common.accept') }}
+                          </span>
                         </el-dropdown-item>
                         <template v-if="scope.row.status === 'confirmed'">
                           <el-dropdown-item @click.native="requestAccess(scope.row)">
@@ -415,7 +472,15 @@ export default {
       },
       showPassword: false,
       showRePassword: false,
-      loadingSetPassword: false
+      loadingSetPassword: false,
+      emergencyAccessStatus: {
+        invited: 'Invited',
+        accepted: 'Accepted',
+        confirmed: 'Confirmed',
+        expired: 'Expired',
+        recovery_initiated: 'Recovery initiated',
+        recovery_approved: 'Recovery approved'
+      }
     }
   },
   computed: {
@@ -522,24 +587,38 @@ export default {
       this.dialogConfirmVisible = false
     },
     async requestAccess (emergency_access) {
-      try {
-        await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergency_access.id}/initiate`)
-        this.closeDialogRequest()
-        this.getListGranted()
-        this.notify(this.$t('data.notifications.request_send_success', { user: emergency_access.email }), 'success')
-      } catch (e) {
-        console.log(e)
-        this.notify(this.$t('data.notifications.request_send_failed'), 'warning')
-      }
+      this.$confirm(this.$t('data.notifications.request_emergency_access', { day: emergency_access.wait_time_days }), emergency_access.full_name || this.$t('common.warning'), {
+        confirmButtonText: 'Approve',
+        cancelButtonText: 'No',
+        type: 'warning'
+      }).then(async () => {
+        try {
+          await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergency_access.id}/initiate`)
+          this.closeDialogRequest()
+          this.getListGranted()
+          this.notify(this.$t('data.notifications.request_send_success', { user: emergency_access.email }), 'success')
+        } catch (e) {
+          console.log(e)
+          this.notify(this.$t('data.notifications.request_send_failed'), 'warning')
+        }
+      }).catch(() => {})
     },
     async approveEmergencyAccess (emergency_access) {
-      try {
-        await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergency_access.id}/approve`)
-        this.getListTrusted()
-        this.notify(this.$t('data.notifications.emergency_access_approved_success'), 'success')
-      } catch (e) {
-        this.notify(this.$t('data.notifications.emergency_access_approved_failed'), 'warning')
-      }
+      this.$confirm(this.$t('data.notifications.approve_emergency_access', { user: emergency_access.full_name, type: emergency_access.type }), emergency_access.full_name || this.$t('common.warning'), {
+        confirmButtonText: 'Approve',
+        cancelButtonText: 'No',
+        type: 'warning'
+      }).then(
+        async () => {
+          try {
+            await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergency_access.id}/approve`)
+            this.getListTrusted()
+            this.notify(this.$t('data.notifications.emergency_access_approved_success'), 'success')
+          } catch (e) {
+            this.notify(this.$t('data.notifications.emergency_access_approved_failed'), 'warning')
+          }
+        }
+      ).catch(() => {})
     },
     async rejectEmergencyAccess (emergency_access) {
       try {

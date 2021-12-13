@@ -3,13 +3,15 @@
   margin: 0;
   display: inline-flex;
   align-items: center;
-  height: 20px;
   width: auto;
   border-radius: 2px;
   background-color: #EBEDF3;
   color: #3F4254;
   font-weight: 600;
   font-size: 0.875rem;
+  word-break: initial;
+  min-height: 20px;
+  min-width: min-content;
   &.label-primary-light {
     @apply bg-opacity-15 bg-primary text-primary;
   }
@@ -22,7 +24,13 @@
   &.label-success-light {
     @apply bg-opacity-15 bg-success text-success;
   }
+  &.label-success {
+    @apply bg-success-700 text-white;
+  }
   &.label-black {
     @apply bg-black text-white;
+  }
+  &.label-info {
+    @apply bg-[#337ab7] text-white;
   }
 }

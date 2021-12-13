@@ -157,7 +157,7 @@ export default {
       }
     },
     async deleteEmergencyAccess (emergency_access) {
-      this.$confirm(this.$t('data.notifications.delete_emergency_contact'), this.$t('common.warning'), {
+      this.$confirm(this.$t('data.notifications.delete_emergency_contact'), emergency_access.full_name || this.$t('common.warning'), {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
