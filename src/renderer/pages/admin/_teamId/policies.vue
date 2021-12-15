@@ -156,85 +156,99 @@
         </div>
         <div class="setting-section">
           <div class="setting-section-header">
-            <div class="md:w-[400px]">
-              <!-- <div class="form-group">
-                <label for="">Minimum password length</label>
-                <div>
-                  <input
-                    v-model="teamPolicy.min_password_length"
-                    class="h-[44px] w-[70px] mt-4 mr-3"
-                    type="number"
-                    min="0"
-                    max="128"
-                    @change="updateLength('min_password_length')"
-                  >
-                  <el-slider
-                    v-model="teamPolicy.min_password_length"
-                    :min="0"
-                    :max="128"
-                    :debounce="800"
-                  />
-                </div>
+            <div>
+              <div class="setting-title">{{ $t('data.password_policies.block_mobile') }}</div>
+              <div class="setting-description">{{ $t('data.password_policies.block_mobile_desc') }}</div>
+            </div>
+            <div>
+              <el-switch v-model="teamPolicy.block_mobile" />
+            </div>
+          </div>
+        </div>
+        <div class="setting-section">
+          <div class="setting-section-header">
+            <div>
+              <div class="setting-title">{{ $t('data.password_policies.ip_filtering') }}</div>
+              <div class="setting-description">{{ $t('data.password_policies.ip_filtering_desc') }}</div>
+            </div>
+            <div>
+              <el-switch v-model="policies_checklist.ip_filtering" />
+            </div>
+          </div>
+          <div v-if="policies_checklist.ip_filtering" class="w-full mt-10">
+            <div class="">
+              <div class="">
+                <div class="setting-description">{{ $t('data.password_policies.ip_block') }}</div>
               </div>
-              <div class="form-group">
-                <label for="">Maximum password length</label>
-                <div>
-                  <input
-                    v-model="teamPolicy.max_password_length"
-                    class="h-[44px] w-[70px] mt-4 mr-3"
-                    type="number"
-                    min="0"
-                    max="128"
-                    @change="updateLength('max_password_length')"
-                  >
-                  <el-slider
-                    v-model="teamPolicy.max_password_length"
-                    :min="0"
-                    :max="128"
-                    :debounce="800"
-                  />
-                </div>
-              </div> -->
-              <!-- <div class="form-group">
-                <div class="flex">
-                  <label for="" class="mr-2">Password Composition</label>
-                  <el-checkbox v-model="teamPolicy.password_composition" />
-                </div>
-              </div> -->
-              <!-- <div class="form-group">
-                <label for="">Failed login attempts</label>
-                <input v-model="teamPolicy.failed_login_attempts" type="number" min="0" max="128" class="form-control">
-              </div> -->
-              <!-- <div class="form-group">
-                <label for="">Failed login duration</label>
-                <el-select
-                  v-model="teamPolicy.failed_login_duration"
-                  placeholder=""
-                  :disabled="loading"
+              <div>
+                <el-tag
+                  v-for="(ip, index) in teamPolicy.ip_block"
+                  :key="index"
+                  class="mr-3 mt-3"
+                  closable
+                  type="danger"
+                  :disable-transitions="false"
+                  @close="handleClose(index, 'ip_block')"
                 >
-                  <el-option
-                    v-for="item in loginDurations"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </div> -->
-              <!-- <div class="form-group">
-                <label for="">Failed login block time</label>
-                <el-select
-                  v-model="teamPolicy.failed_login_block_time"
-                  placeholder=""
-                  :disabled="loading"
+                  {{ ip }}
+                </el-tag>
+                <el-input
+                  v-if="inputIpBlock"
+                  ref="inputIpBlock"
+                  v-model="newIpBlock"
+                  clearable
+                  class="inline-new-tag mt-3"
+                  :trigger-on-focus="false"
+                  @clear="inputIpBlock=false"
+                  @keyup.enter.native="handleInputConfirm('ip_block')"
+                />
+                <el-button v-else class="button-new-tag mt-3" size="small" @click="showInput('ip_block')">+ {{ $t('common.add') }}</el-button>
+              </div>
+            </div>
+            <div class="mt-5">
+              <div class="">
+                <div class="setting-description">{{ $t('data.password_policies.ip_allow') }}</div>
+              </div>
+              <div>
+                <el-tag
+                  v-for="(ip, index) in teamPolicy.ip_allow"
+                  :key="index"
+                  class="mr-3 mt-3"
+                  closable
+                  :disable-transitions="false"
+                  @close="handleClose(index, 'ip_allow')"
                 >
-                  <el-option
-                    v-for="item in loginDurations"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </div> -->
+                  {{ ip }}
+                </el-tag>
+                <el-input
+                  v-if="inputIpAllow"
+                  ref="inputIpAllow"
+                  v-model="newIpAllow"
+                  clearable
+                  class="inline-new-tag mt-3"
+                  :trigger-on-focus="false"
+                  @clear="inputIpAllow=false"
+                  @keyup.enter.native="handleInputConfirm('ip_allow')"
+                />
+                <el-button v-else class="button-new-tag mt-3" size="small" @click="showInput('ip_allow')">+ {{ $t('common.add') }}</el-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="setting-section">
+          <div class="setting-section-header">
+            <div>
+              <div class="setting-title">{{ $t('data.password_policies.failed_login_owner_email') }}</div>
+              <div class="setting-description">{{ $t('data.password_policies.failed_login_owner_email_desc') }}</div>
+            </div>
+            <div>
+              <el-switch v-model="teamPolicy.failed_login_owner_email" />
+            </div>
+          </div>
+        </div>
+        <div class="setting-section">
+          <div class="setting-section-header">
+            <div class="md:w-[400px]">
               <div class="form-group">
                 <button
                   class="btn btn-primary"
@@ -262,9 +276,14 @@ export default {
       policies_checklist: {
         min_password_length: false,
         max_password_length: false,
-        failed_login_attempts: false
+        failed_login_attempts: false,
+        ip_filtering: false
       },
-      teamPolicy: {}
+      teamPolicy: {},
+      newIpBlock: '',
+      newIpAllow: '',
+      inputIpBlock: false,
+      inputIpAllow: false
     }
   },
   computed: {
@@ -308,21 +327,36 @@ export default {
       this.policies_checklist.max_password_length = !!this.teamPolicy.max_password_length
       this.policies_checklist.password_composition = !!this.teamPolicy.password_composition
       this.policies_checklist.failed_login_attempts = !!this.teamPolicy.failed_login_attempts
+      this.policies_checklist.ip_filtering = !!this.teamPolicy.ip_allow.length || !!this.teamPolicy.ip_block.length
     },
     async putTeamPolicy () {
       try {
         this.loading = true
+        if (this.newIpBlock) {
+          const ipList = this.newIpBlock.split(',')
+          ipList.forEach(ip => this.teamPolicy.ip_block.push(ip.trim()))
+        }
+        if (this.newIpAllow) {
+          const ipList = this.newIpAllow.split(',')
+          ipList.forEach(ip => this.teamPolicy.ip_allow.push(ip.trim()))
+        }
         const newPolicy = {
           ...this.teamPolicy,
           min_password_length: this.policies_checklist.min_password_length ? parseInt(this.teamPolicy.min_password_length) > 0 ? parseInt(this.teamPolicy.min_password_length) : null : null,
           max_password_length: this.policies_checklist.max_password_length ? parseInt(this.teamPolicy.max_password_length) > 0 ? parseInt(this.teamPolicy.max_password_length) : null : null,
-          failed_login_attempts: this.policies_checklist.failed_login_attempts ? parseInt(this.teamPolicy.failed_login_attempts) > 0 ? parseInt(this.teamPolicy.failed_login_attempts) : null : null
+          failed_login_attempts: this.policies_checklist.failed_login_attempts ? parseInt(this.teamPolicy.failed_login_attempts) > 0 ? parseInt(this.teamPolicy.failed_login_attempts) : null : null,
+          ip_allow: this.policies_checklist.ip_filtering ? this.teamPolicy.ip_allow : [],
+          ip_block: this.policies_checklist.ip_filtering ? this.teamPolicy.ip_block : []
         }
         if (newPolicy.min_password_length && newPolicy.max_password_length && newPolicy.max_password_length < newPolicy.min_password_length) {
           this.notify(this.$t('data.notifications.max_less_than_min'), 'warning')
           return
         }
         this.team = await this.$axios.$put(`cystack_platform/pm/teams/${this.$route.params.teamId}/policy`, newPolicy)
+        this.newIpBlock = ''
+        this.newIpAllow = ''
+        this.inputIpBlock = false
+        this.inputIpAllow = false
         this.notify(this.$t('data.notifications.update_team_success'), 'success')
       } catch (e) {
         this.notify(this.$t('data.notifications.update_team_failed'), 'warning')
@@ -332,6 +366,47 @@ export default {
     },
     updateLength (v) {
       this.teamPolicy[`${v}`] = parseInt(this.teamPolicy[`${v}`])
+    },
+    handleClose (index, type) {
+      this.teamPolicy[`${type}`].splice(index, 1)
+    },
+    showInput (type) {
+      if (type === 'ip_block') {
+        this.inputIpBlock = true
+        this.$nextTick(_ => {
+          this.$refs.inputIpBlock.$refs.input.focus()
+        })
+      }
+      if (type === 'ip_allow') {
+        this.inputIpAllow = true
+        this.$nextTick(_ => {
+          this.$refs.inputIpAllow.$refs.input.focus()
+        })
+      }
+    },
+    async handleInputConfirm (type) { // check input and push to current IP list
+      if (type === 'ip_block') {
+        const ipList = this.newIpBlock.split(',')
+        ipList.forEach(ip => {
+          ip = ip.trim()
+          if (this.newIpBlock && !this.teamPolicy.ip_block.includes(ip)) {
+            this.teamPolicy.ip_block.push(ip)
+          }
+        })
+        this.inputIpBlock = false
+        this.newIpBlock = ''
+      }
+      if (type === 'ip_allow') {
+        const ipList = this.newIpAllow.split(',')
+        ipList.forEach(ip => {
+          ip = ip.trim()
+          if (this.newIpAllow && !this.teamPolicy.ip_allow.includes(ip)) {
+            this.teamPolicy.ip_allow.push(ip)
+          }
+        })
+        this.inputIpAllow = false
+        this.newIpAllow = ''
+      }
     }
   }
 }
