@@ -84,7 +84,7 @@
                 trigger="click"
                 popper-class="locker-pw-generator"
               >
-                <PasswordGenerator @generated="(p) => cipher.login.password = p" />
+                <PasswordGenerator @fill="fillPassword" />
 
                 <button
                   slot="reference"
@@ -427,7 +427,8 @@ export default {
       errors: {},
       writeableCollections: [],
       cloneMode: false,
-      currentComponent: Dialog
+      currentComponent: Dialog,
+      generated_password: ''
     }
   },
   computed: {
@@ -671,8 +672,11 @@ export default {
     async getWritableCollections (orgId) {
       const allCollections = await this.$collectionService.getAllDecrypted()
       return allCollections.filter(c => !c.readOnly && c.organizationId === orgId)
+    },
+    fillPassword (p) {
+      this.cipher.login.password = p
+      this.notify('Filled password', 'success')
     }
-
   }
 }
 </script>

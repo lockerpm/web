@@ -17,6 +17,9 @@
       <PasswordStrength v-if="password" :score="passwordStrength.score" />
     </div>
     <div class="p-5">
+      <button class="btn btn-outline-primary w-full mb-3" @click="fill">
+        {{ $t('data.tools.fill_password') }}
+      </button>
       <button
         v-clipboard:copy="password"
         v-clipboard:success="clipboardSuccessHandler"
@@ -114,6 +117,9 @@ export default {
       }
       this.password = await this.$passwordGenerationService.generatePassword(this.options)
       this.$emit('generated', this.password)
+    },
+    fill () {
+      this.$emit('fill', this.password)
     }
   }
 }
