@@ -97,14 +97,13 @@
               class="px-4 py-4 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
               :class="{'border-primary': selectedFolder.id === item.id}"
               :title="item.name"
-              @click="selectedFolder = item"
-              @dblclick="routerFolder(item)"
+              @click="routerFolder(item)"
               @contextmenu.prevent="$refs.menu.open($event, item)"
             >
               <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
               <div class="font-semibold break-all select-none">
                 {{ item.name }}
-                <div>({{ item.ciphersCount }})</div>
+                <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
               </div>
             </div>
             <component
@@ -147,29 +146,27 @@
                 class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
                 :class="{'border-primary': selectedFolder.id === item.id}"
                 :title="`${item.name} (${item.ciphersCount})`"
-                @click="selectedFolder = item"
-                @dblclick="routerCollection(item)"
+                @click="routerCollection(item)"
                 @contextmenu.prevent="canManageFolder(teams, item) ? $refs.menuTeam.open($event, item) : null"
               >
                 <div class="flex items-center">
                   <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
                   <div class="font-semibold truncate select-none">
                     {{ item.name }}
-                    <div>({{ item.ciphersCount }})</div>
+                    <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
                   </div>
                 </div>
               </div>
               <div
                 class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
                 :class="{'border-primary': selectedFolder.id === 'unassigned'}"
-                @click="selectedFolder = {id: 'unassigned'}"
-                @dblclick="routerCollection({id: 'unassigned', organizationId: key})"
+                @click="routerCollection({id: 'unassigned', organizationId: key})"
               >
                 <div class="flex items-center">
                   <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
                   <div class="font-semibold truncate select-none">
                     {{ $t('data.ciphers.unassigned_folder') }}
-                    <div>({{ countUnassignedItems(ciphers, key) }})</div>
+                    <div class="text-black-500">{{ countUnassignedItems(ciphers, key) }} {{ countUnassignedItems(ciphers, key)>1?'items':'item' }}</div>
                   </div>
                 </div>
               </div>
