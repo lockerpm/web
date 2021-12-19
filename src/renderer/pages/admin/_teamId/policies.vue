@@ -152,6 +152,25 @@
                 </el-select>
               </div>
             </div>
+            <div class="setting-section-header mt-3">
+              <div>
+                <div class="setting-description">{{ $t('data.password_policies.failed_login_owner_email') }}</div>
+              </div>
+              <div>
+                <el-select
+                  v-model="teamPolicy.failed_login_owner_email"
+                  placeholder=""
+                  :disabled="loading"
+                >
+                  <el-option
+                    v-for="item in emailOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+                </el-select>
+              </div>
+            </div>
           </div>
         </div>
         <div class="setting-section">
@@ -235,7 +254,7 @@
             </div>
           </div>
         </div>
-        <div class="setting-section">
+        <!-- <div class="setting-section">
           <div class="setting-section-header">
             <div>
               <div class="setting-title">{{ $t('data.password_policies.failed_login_owner_email') }}</div>
@@ -245,7 +264,7 @@
               <el-switch v-model="teamPolicy.failed_login_owner_email" />
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="setting-section">
           <div class="setting-section-header">
             <div class="md:w-[400px]">
@@ -307,6 +326,12 @@ export default {
         { label: this.$t('data.password_policies.failed_login_times.fiveLogins'), value: 5 },
         { label: this.$t('data.password_policies.failed_login_times.tenLogins'), value: 10 },
         { label: this.$t('data.password_policies.failed_login_times.fifteenLogins'), value: 15 }
+      ]
+    },
+    emailOptions () {
+      return [
+        { label: this.$t('common.yes'), value: true },
+        { label: this.$t('common.no'), value: false }
       ]
     }
   },

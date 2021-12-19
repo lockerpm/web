@@ -166,8 +166,9 @@ export default {
   border-radius: 2px;
   border: solid 1px #e6e8f4;
   padding-top: 16px;
+  background-color: #F3F3F3;
   &.is-hover, &.is-focus {
-    @apply border-primary;
+    @apply border-primary bg-white;
     label {
       @apply text-primary
     }
@@ -213,6 +214,7 @@ export default {
     flex: 1;
     color: #161922;
     height: 32px;
+    background-color: inherit;
   }
   .cs-textarea {
     min-height: 100px;
