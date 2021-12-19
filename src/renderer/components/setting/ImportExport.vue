@@ -557,22 +557,7 @@ export default {
     },
     async postImport (importResult) {
       let request = new ImportCiphersRequest()
-      if (this.teamId === null) {
-        for (let i = 0; i < importResult.ciphers.length; i++) {
-          const c = await this.$cipherService.encrypt(importResult.ciphers[i])
-          request.ciphers.push(new CipherRequest(c))
-        }
-        if (importResult.folders != null) {
-          for (let i = 0; i < importResult.folders.length; i++) {
-            const f = await this.$folderService.encrypt(importResult.folders[i])
-            request.folders.push(new FolderRequest(f))
-          }
-        }
-        if (importResult.folderRelationships != null) {
-          importResult.folderRelationships.forEach(r =>
-            request.folderRelationships.push(new KvpRequest(r[0], r[1])))
-        }
-      } else {
+      if (this.teamId) {
         request = new ImportOrganizationCiphersRequest()
         for (let i = 0; i < importResult.ciphers.length; i++) {
           importResult.ciphers[i].organizationId = this.teamId
@@ -596,9 +581,24 @@ export default {
             request.collections.push(new CollectionRequest(collection))
           }
         }
-        if (this.teamId && importResult.collectionRelationships != null) {
+        if (importResult.collectionRelationships != null) {
           importResult.collectionRelationships.forEach(r =>
             request.collectionRelationships.push(new KvpRequest(r[0], r[1])))
+        }
+      } else {
+        for (let i = 0; i < importResult.ciphers.length; i++) {
+          const c = await this.$cipherService.encrypt(importResult.ciphers[i])
+          request.ciphers.push(new CipherRequest(c))
+        }
+        if (importResult.folders != null) {
+          for (let i = 0; i < importResult.folders.length; i++) {
+            const f = await this.$folderService.encrypt(importResult.folders[i])
+            request.folders.push(new FolderRequest(f))
+          }
+        }
+        if (importResult.folderRelationships != null) {
+          importResult.folderRelationships.forEach(r =>
+            request.folderRelationships.push(new KvpRequest(r[0], r[1])))
         }
       }
       const url = this.teamId ? `cystack_platform/pm/teams/${this.teamId}/import` : 'cystack_platform/pm/ciphers/import'
