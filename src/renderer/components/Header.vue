@@ -46,12 +46,13 @@
       </div>
     </div>
     <div class="flex-grow">
-      <div v-if="shouldShowSearch" class="text-black-600">
-        <i class="fa fa-search mr-4" />
+      <div v-if="shouldShowSearch" class="text-black-600 p-3">
+        <i class="fa fa-search mr-4 rounded-full shadow-md p-2" />
         <input
           type="text"
           :value="searchText"
           class="w-1/2 focus:border-0 border-0"
+          placeholder="Search ..."
           @input="handleSearch"
         >
       </div>

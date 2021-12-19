@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col flex-column-fluid relative">
+  <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
     <NoCipher
       v-if="shouldRenderNoCipher"
       :type="type"
@@ -48,41 +48,47 @@
           </el-breadcrumb>
         </div>
         <div class="header-actions">
-          <el-dropdown trigger="click">
-            <div class="text-sm text-black-600 font-semibold">
-              {{ $t('data.ciphers.sort_by') }} <i class="el-icon-caret-bottom el-icon--right" />
-            </div>
-            <el-dropdown-menu slot="dropdown" class="w-[200px] ">
-              <el-dropdown-item
-                class="flex items-center justify-between"
-                @click.native="changeSort('name', 'asc')"
-              >
-                <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.ascending') }}</span>
-                <i v-if="orderString==='name_asc'" class="fa fa-check" />
-              </el-dropdown-item>
-              <el-dropdown-item
-                class="flex items-center justify-between"
-                @click.native="changeSort('name', 'desc')"
-              >
-                <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.descending') }}</span>
-                <i v-if="orderString==='name_desc'" class="fa fa-check" />
-              </el-dropdown-item>
-              <el-dropdown-item
-                class="flex items-center justify-between"
-                @click.native="changeSort('revisionDate', 'asc')"
-              >
-                <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.ascending') }}</span>
-                <i v-if="orderString==='revisionDate_asc'" class="fa fa-check" />
-              </el-dropdown-item>
-              <el-dropdown-item
-                class="flex items-center justify-between"
-                @click.native="changeSort('revisionDate', 'desc')"
-              >
-                <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.descending') }}</span>
-                <i v-if="orderString==='revisionDate_desc'" class="fa fa-check" />
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+          <div class="flex">
+            <button v-if="!['vault-folders-folderId', 'vault-teams-teamId-tfolders-tfolderId', 'vault', 'shares', 'trash'].includes(getRouteBaseName())" class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold mr-3" @click="handleAddButton">
+              <i class="el-icon-circle-plus-outline text-lg" />
+              <div class="ml-3 break-all">Add new</div>
+            </button>
+            <el-dropdown trigger="click" class="self-center">
+              <div class="text-sm text-black-600 font-semibold">
+                {{ $t('data.ciphers.sort_by') }} <i class="el-icon-caret-bottom el-icon--right" />
+              </div>
+              <el-dropdown-menu slot="dropdown" class="w-[200px] ">
+                <el-dropdown-item
+                  class="flex items-center justify-between"
+                  @click.native="changeSort('name', 'asc')"
+                >
+                  <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.ascending') }}</span>
+                  <i v-if="orderString==='name_asc'" class="fa fa-check" />
+                </el-dropdown-item>
+                <el-dropdown-item
+                  class="flex items-center justify-between"
+                  @click.native="changeSort('name', 'desc')"
+                >
+                  <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.descending') }}</span>
+                  <i v-if="orderString==='name_desc'" class="fa fa-check" />
+                </el-dropdown-item>
+                <el-dropdown-item
+                  class="flex items-center justify-between"
+                  @click.native="changeSort('revisionDate', 'asc')"
+                >
+                  <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.ascending') }}</span>
+                  <i v-if="orderString==='revisionDate_asc'" class="fa fa-check" />
+                </el-dropdown-item>
+                <el-dropdown-item
+                  class="flex items-center justify-between"
+                  @click.native="changeSort('revisionDate', 'desc')"
+                >
+                  <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.descending') }}</span>
+                  <i v-if="orderString==='revisionDate_desc'" class="fa fa-check" />
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
         </div>
       </div>
       <div
@@ -93,6 +99,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
             <div
               v-for="item in folders"
+              v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
               :key="item.id"
               class="px-4 py-4 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
               :class="{'border-primary': selectedFolder.id === item.id}"
@@ -105,6 +112,10 @@
                 {{ item.name }}
                 <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
               </div>
+            </div>
+            <div class="px-4 py-4 flex items-center cursor-pointer rounded border border-dashed border-[#E6E6E8] hover:border-primary justify-center font-semibold" @click="addEditFolder">
+              <i class="el-icon-circle-plus-outline text-lg" />
+              <div class="ml-3 break-all">New Folder</div>
             </div>
             <component
               :is="context"
@@ -142,6 +153,7 @@
             <div :key="key" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
               <div
                 v-for="item in value"
+                v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
                 :key="item.id"
                 class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
                 :class="{'border-primary': selectedFolder.id === item.id}"
@@ -169,6 +181,10 @@
                     <div class="text-black-500">{{ countUnassignedItems(ciphers, key) }} {{ countUnassignedItems(ciphers, key)>1?'items':'item' }}</div>
                   </div>
                 </div>
+              </div>
+              <div class="px-4 py-4 flex items-center cursor-pointer rounded border border-dashed border-[#E6E6E8] hover:border-primary justify-center font-semibold" @click="addEditTeamFolder">
+                <i class="el-icon-circle-plus-outline text-lg" />
+                <div class="ml-3 break-all">New Team folder</div>
               </div>
             </div>
           </template>
@@ -210,11 +226,16 @@
         </client-only>
       </div>
       <client-only>
-        <div
-          v-if="getRouteBaseName() === 'vault'"
-          class="mb font-medium"
-        >
-          {{ $t('data.ciphers.all_items') }}
+        <div v-if="getRouteBaseName() === 'vault'" class="flex justify-between">
+          <div
+            class="mb font-medium"
+          >
+            {{ $t('data.ciphers.all_items') }}
+          </div>
+          <button class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold" @click="chooseCipherType">
+            <i class="el-icon-circle-plus-outline text-lg" />
+            <div class="ml-3 break-all">Add new</div>
+          </button>
         </div>
         <el-table
           ref="multipleTable"
@@ -406,7 +427,7 @@
     <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" />
     <ShareCipher ref="shareCipher" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
-    <div class="fixed bottom-[50px] right-[55px]">
+    <!-- <div class="fixed bottom-[50px] right-[55px]">
       <el-popover
         v-if="['vault'].includes(routeName)"
         placement="right-end"
@@ -455,7 +476,7 @@
       >
         <i class="fas fa-plus text-[24px]" />
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -600,9 +621,11 @@ export default {
         const deletedFilter = c => {
           return c.isDeleted === this.deleted
         }
+        this.loading = true
         let result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
         // remove ciphers generated by authenticator
         result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
+        this.loading = false
         return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
       },
       watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
