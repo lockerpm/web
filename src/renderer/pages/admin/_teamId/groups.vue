@@ -22,6 +22,12 @@
           <el-table-column
             align="right"
           >
+            <template slot="header">
+              <button class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold float-right" @click="postGroup({})">
+                <i class="el-icon-circle-plus-outline text-lg" />
+                <div class="ml-3 break-all">{{ $t('data.groups.add_group') }}</div>
+              </button>
+            </template>
             <template slot-scope="scope">
               <el-dropdown trigger="click" :hide-on-click="false">
                 <button class="btn btn-icon btn-xs hover:bg-black-400">
@@ -52,14 +58,14 @@
     </div>
     <AddEditGroup ref="addEditGroup" @done="getGroups" />
     <AddEditGroupUsers ref="addEditGroupUsers" @done="getGroups" />
-    <div class="fixed bottom-[50px] right-[55px]">
+    <!-- <div class="fixed bottom-[50px] right-[55px]">
       <button
         class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
         @click="postGroup({})"
       >
         <i class="fas fa-plus text-[24px]" />
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 

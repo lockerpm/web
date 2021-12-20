@@ -52,7 +52,7 @@
           type="text"
           :value="searchText"
           class="w-1/2 focus:border-0 border-0"
-          placeholder="Search ..."
+          :placeholder="$t('common.search_placeholder')"
           @input="handleSearch"
         >
       </div>

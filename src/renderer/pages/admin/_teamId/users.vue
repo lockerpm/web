@@ -56,6 +56,12 @@
           <el-table-column
             align="right"
           >
+            <template slot="header">
+              <button class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold float-right" @click="postUser({})">
+                <i class="el-icon-circle-plus-outline text-lg" />
+                <div class="ml-3 break-all">{{ $t('data.members.invite_user') }}</div>
+              </button>
+            </template>
             <template slot-scope="scope">
               <el-dropdown
                 v-if="scope.row.role !=='owner' && scope.row.username !== currentUser.username"
@@ -98,14 +104,14 @@
     </div>
     <AddEditUser ref="addEditUser" @done="getUsers" />
     <AddEditUserGroups ref="addEditUserGroups" @done="getUsers" />
-    <div class="fixed bottom-[50px] right-[55px]">
+    <!-- <div class="fixed bottom-[50px] right-[55px]">
       <button
         class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
         @click="postUser({})"
       >
         <i class="fas fa-plus text-[24px]" />
       </button>
-    </div>
+    </div> -->
     <el-dialog
       :visible.sync="dialogConfirmVisible"
       width="435px"
