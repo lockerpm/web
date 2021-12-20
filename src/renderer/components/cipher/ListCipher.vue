@@ -108,7 +108,7 @@
               @contextmenu.prevent="$refs.menu.open($event, item)"
             >
               <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
-              <div class="font-semibold break-all select-none">
+              <div class="font-semibold truncate select-none line-clamp-1">
                 {{ item.name }}
                 <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
               </div>
@@ -170,6 +170,7 @@
                 </div>
               </div>
               <div
+                v-if="searchText.length<=1||(searchText.length>1&&countUnassignedItems(ciphers, key)>0)"
                 class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
                 :class="{'border-primary': selectedFolder.id === 'unassigned'}"
                 @click="routerCollection({id: 'unassigned', organizationId: key})"

@@ -9,7 +9,7 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
-        {{ user.id ? 'Chỉnh sửa người dùng' : 'Mời người dùng' }}
+        {{ user.id ? $t('data.members.edit_member') : $t('data.members.invite_user') }}
       </div>
     </div>
     <div v-if="inviteByFile && !user.id" class="text-left">
