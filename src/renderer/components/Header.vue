@@ -1,7 +1,7 @@
 <template>
   <div class="lg:px-28 px-10 h-[60px] flex items-center border-0 border-b border-black-200 relative">
     <div id="nav-content" class="md:hidden hidden fixed top-0 left-0 h-screen" style="z-index: 1000">
-      <div class="w-60 h-screen bg-aside min-h-500px min-w-60 flex flex-col justify-between relative">
+      <div class="w-60 h-screen bg-aside min-h-500px min-w-60 flex flex-col justify-between relative overflow-y-scroll">
         <button
           class="btn btn-clean absolute top-2 -right-2"
           @click="hideNavMenu"

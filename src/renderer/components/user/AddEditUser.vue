@@ -150,6 +150,7 @@
 </template>
 
 <script>
+import readXlsxFile from 'read-excel-file'
 import InputText from '../input/InputText'
 export default {
   components: {
@@ -257,6 +258,34 @@ export default {
       try {
         this.loading = true
         if (this.file && this.inviteByFile) {
+          const inputFormat = this.file.name.split('.').pop()
+          if (!['csv', 'xlsx', 'xls'].includes(inputFormat)) {
+            this.notify(this.$t('data.notifications.incorrect_format'), 'warning')
+            return
+          }
+          const userList = []
+          if (inputFormat === 'csv') {
+            let fileContents = await this.getFileContents(this.file)
+            fileContents = fileContents.split(/\r?\n/).splice(1).filter(row => row.length)
+            fileContents.forEach(row => userList.push(row.split(',')[0]))
+          } else {
+            try {
+              let rows = await readXlsxFile(this.file)
+              // `rows` is an array of rows
+              // each row being an array of cells.
+              rows = rows.splice(1)
+              rows.forEach(row => userList.push(row[0]))
+            } catch (error) {
+              this.notify(this.$t('data.notifications.incorrect_format'), 'warning')
+              return
+            }
+          }
+          const notificationMsg = this.$t('data.notifications.confirm_invite_user') + '\n' + userList.join(', ')
+          await this.$confirm(notificationMsg, this.$t('common.warning'), {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning'
+          })
           const formData = new FormData()
           formData.append('members', this.file)
           await this.$axios.$post(`cystack_platform/pm/teams/${this.$route.params.teamId}/members/multiple/file`, formData, {
@@ -271,7 +300,7 @@ export default {
             return item
           })
           const members = []
-          const usernames = user.username.split(',')
+          const usernames = user.username.split(',').map(item => item.trim()).filter(item => item.length)
           usernames.forEach(username => {
             members.push({
               username: username.trim(),
@@ -279,6 +308,14 @@ export default {
               collections: user.collections
             })
           })
+          if (members.length > 1) {
+            const notificationMsg = this.$t('data.notifications.confirm_invite_user') + '\n' + usernames.join(', ')
+            await this.$confirm(notificationMsg, this.$t('common.warning'), {
+              confirmButtonText: 'OK',
+              cancelButtonText: 'Cancel',
+              type: 'warning'
+            })
+          }
           const payload = {
             members
           }
@@ -341,6 +378,18 @@ export default {
       if (e.target && e.target.files && e.target.files.length) {
         this.file = e.target.files[0]
       }
+    },
+    getFileContents (file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.readAsText(file, 'utf-8')
+        reader.onload = evt => {
+          resolve(evt.target.result)
+        }
+        reader.onerror = () => {
+          reject('Error')
+        }
+      })
     }
   }
 }
