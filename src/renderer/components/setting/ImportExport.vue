@@ -462,7 +462,7 @@ export default {
         } catch { }
       }
       if (!fileContents) {
-        this.notify('Vui lòng chọn File phù hợp', 'warning')
+        this.notify(this.$t('data.notifications.select_appropriate_file'), 'warning')
         this.loading = false
         return
       }
@@ -470,7 +470,7 @@ export default {
         const importResult = await importer.parse(fileContents)
         if (importResult.success) {
           if (importResult.folders.length === 0 && importResult.ciphers.length === 0) {
-            this.notify('Không có dữ liệu', 'warning')
+            this.notify(this.$t('data.notifications.no_data'), 'warning')
             this.loading = false
             return
           } else if (importResult.ciphers.length > 0) {
@@ -480,7 +480,7 @@ export default {
             if (this.badData(importResult.ciphers[0]) &&
                 this.badData(importResult.ciphers[halfway]) &&
                 this.badData(importResult.ciphers[last])) {
-              this.notify('Dữ liệu không đúng định dạng.', 'warning')
+              this.notify(this.$t('data.notifications.incorrect_format'), 'warning')
               this.loading = false
               return
             }
@@ -517,13 +517,13 @@ export default {
               return
             }
             console.log(error)
-            this.notify('Dữ liệu không đúng định dạng..', 'warning')
+            this.notify(this.$t('data.notifications.incorrect_format') + '..', 'warning')
           }
         } else {
-          this.notify('Dữ liệu không đúng định dạng...', 'warning')
+          this.notify(this.$t('data.notifications.incorrect_format') + '...', 'warning')
         }
       } catch {
-        this.notify('Nhập dữ liệu thất bại', 'warning')
+        this.notify(this.$t('data.notifications.import_failed'), 'warning')
       }
       this.loading = false
     },
@@ -603,7 +603,7 @@ export default {
       }
       const url = this.teamId ? `cystack_platform/pm/teams/${this.teamId}/import` : 'cystack_platform/pm/ciphers/import'
       await this.$axios.$post(url, request)
-      this.notify('Nhập dữ liệu thành công', 'success')
+      this.notify(this.$t('data.notifications.import_success'), 'success')
       this.$router.push(this.localeRoute({ name: 'vault' }))
     },
     handleServerError (errorResponse, importResult) {

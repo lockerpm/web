@@ -21,6 +21,13 @@
             </template>
           </el-table-column>
           <el-table-column
+            label="Email"
+          >
+            <template slot-scope="scope">
+              {{ scope.row.email }}
+            </template>
+          </el-table-column>
+          <el-table-column
             label="Status"
             align="right"
           >
@@ -55,11 +62,12 @@
           </el-table-column>
           <el-table-column
             align="right"
+            min-width="150"
           >
             <template slot="header">
               <button class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold float-right" @click="postUser({})">
                 <i class="el-icon-circle-plus-outline text-lg" />
-                <div class="ml-3 break-all">{{ $t('data.members.invite_user') }}</div>
+                <div class="ml-3">{{ $t('data.members.invite_user') }}</div>
               </button>
             </template>
             <template slot-scope="scope">

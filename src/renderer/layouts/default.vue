@@ -3,7 +3,7 @@
     <client-only>
       <template v-if="!locked">
         <div class="hidden md:block">
-          <div class="w-60 h-screen bg-aside min-h-500px min-w-60 fixed flex flex-col justify-between">
+          <div class="w-60 h-screen bg-aside min-h-500px min-w-60 fixed flex flex-col justify-between overflow-y-scroll">
             <div>
               <div class="mt-7 px-6">
                 <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
