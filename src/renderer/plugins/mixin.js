@@ -158,6 +158,12 @@ Vue.mixin({
       }
     },
     async login () {
+      const lockerDeviceId = this.$cookies.get('locker_device_id')
+      const deviceIdentifier = lockerDeviceId || this.randomString()
+      if (!lockerDeviceId) {
+        const expireTime = 50 * 365 * 24 * 3600
+        this.$cookies.set('locker_device_id', deviceIdentifier, { maxAge: expireTime })
+      }
       try {
         await this.clearKeys()
         const key = await this.$cryptoService.makeKey(this.masterPassword, this.currentUser.email, 0, 100000)
@@ -167,7 +173,7 @@ Vue.mixin({
           password: hashedPassword,
           device_name: this.$platformUtilsService.getDeviceString(),
           device_type: this.$platformUtilsService.getDevice(),
-          device_identifier: this.$cookies.get('device_id') || this.randomString()
+          device_identifier: deviceIdentifier
         })
         this.$messagingService.send('loggedIn')
         await this.$tokenService.setTokens(res.access_token, res.refresh_token)
