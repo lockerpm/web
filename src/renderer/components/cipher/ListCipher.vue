@@ -1,11 +1,48 @@
 <template>
   <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
+    <!-- <div>
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="User" name="first" />
+        <el-tab-pane label="Config" name="second" />
+        <el-tab-pane label="Role" name="third" />
+        <el-tab-pane label="Task" name="fourth" />
+      </el-tabs>
+    </div> -->
+    <div class="flex mb-5 border-b border-black-400 py-3 lg:px-28 px-10">
+      <nuxt-link
+        v-for="(item, index) in menu"
+        :key="index"
+        :to="localeRoute({name: item.routeName})"
+        active-class="!text-primary"
+        class="text-black-600 font-bold mr-8 last:mr-0 hover:no-underline"
+        exact
+      >
+        {{ $t(`sidebar.${item.label}`) }}
+      </nuxt-link>
+    </div>
     <NoCipher
       v-if="shouldRenderNoCipher"
       :type="type"
       @add-cipher="handleAddButton"
     />
     <div v-else class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
+      <div v-if="getRouteBaseName() === 'vault'" class="mb-10">
+        <div class="flex">
+          <div class="text-head-4">
+            All items
+          </div>
+          <div class="mx-6 text-head-4"> | </div>
+          <div>
+            <button class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold" @click="chooseCipherType">
+              <i class="el-icon-circle-plus-outline text-lg" />
+              <div class="ml-3 break-all">Add new</div>
+            </button>
+          </div>
+        </div>
+        <div v-if="allCiphers" class="uppercase text-head-6">
+          <span class="text-primary font-semibold">{{ allCiphers.length }}</span> items
+        </div>
+      </div>
       <div class="flex items-center justify-between mb-5">
         <div class="flex-grow">
           <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -539,8 +576,34 @@ export default {
       context: '',
       publicKey: '',
       indexing: false,
-      index: null
-      // allCiphers: []
+      index: null,
+      menu: [
+        {
+          label: 'all',
+          routeName: 'vault',
+          icon: 'all'
+        },
+        {
+          label: 'passwords',
+          routeName: 'passwords',
+          icon: 'passwords'
+        },
+        {
+          label: 'notes',
+          routeName: 'notes',
+          icon: 'notes'
+        },
+        {
+          label: 'cards',
+          routeName: 'cards',
+          icon: 'cards'
+        },
+        {
+          label: 'identities',
+          routeName: 'identities',
+          icon: 'identities'
+        }
+      ]
     }
   },
   computed: {

@@ -21,6 +21,9 @@
                   class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
                   active-class="bg-white bg-opacity-20 text-white"
                 >
+                  <div class="mr-2 w-[22px] h-[22px] flex items-center">
+                    <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+                  </div>
                   <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
                 </div>
                 <ul>
@@ -30,7 +33,7 @@
                   >
                     <nuxt-link
                       :to="localePath({name: itemMenu.routeName})"
-                      class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                      class="flex items-center py-2 pl-12 pr-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
                       active-class="bg-white bg-opacity-20 text-white"
                     >
                       <!-- <div class="mr-2 w-[22px] h-[22px] flex items-center">
@@ -176,7 +179,7 @@ export default {
       // ]
       menu: [
         {
-          label: 'Inventory',
+          label: 'inventory',
           icon: 'all',
           collapse: true,
           items: [
@@ -185,7 +188,7 @@ export default {
               routeName: 'vault'
             },
             {
-              label: 'Password',
+              label: 'passwords',
               routeName: 'passwords'
             },
             {
@@ -216,6 +219,11 @@ export default {
           label: 'trash',
           icon: 'trash',
           routeName: 'trash'
+        },
+        {
+          label: 'tools',
+          routeName: 'tools',
+          icon: 'tools'
         }
       ]
     }
@@ -253,9 +261,9 @@ export default {
           icon: 'settings'
         },
         {
-          label: 'tools',
-          routeName: 'tools',
-          icon: 'tools'
+          label: 'help',
+          routeName: 'help',
+          icon: 'help'
         }
       ]
     }
