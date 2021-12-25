@@ -1,9 +1,9 @@
 <template>
-  <div class="lg:px-28 px-10 h-[60px] flex items-center border-0 border-b border-black-200 relative">
-    <div id="nav-content" class="md:hidden hidden fixed top-0 left-0 h-screen" style="z-index: 1000">
-      <div class="w-60 h-screen bg-aside min-h-500px min-w-60 flex flex-col justify-between relative overflow-y-scroll">
+  <div id="header-default" class="lg:px-28 px-10 h-[60px] flex items-center border-0 border-b border-black-200 relative">
+    <div id="nav-content" class="sidebar" style="z-index: 1000">
+      <div class="w-60 h-screen bg-aside min-h-500px min-w-60 flex flex-col justify-between relative overflow-y-scroll overflow-x-hidden">
         <button
-          class="btn btn-clean absolute top-2 -right-2"
+          class="btn btn-clean absolute top-2 -right-6"
           @click="hideNavMenu"
         >
           <i class="el-icon-close text-lg text-white" />
@@ -13,18 +13,47 @@
             <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
           </div>
           <nav class="mt-7">
-            <nuxt-link
+            <template
               v-for="(item, index) in menu"
-              :key="index"
-              :to="localePath({name: item.routeName})"
-              class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
-              active-class="bg-white bg-opacity-20 text-white"
             >
-              <div class="mr-2 w-[22px] h-[22px] flex items-center">
-                <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+              <div v-if="item.collapse" :key="index">
+                <div
+                  class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                  active-class="bg-white bg-opacity-20 text-white"
+                >
+                  <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
+                </div>
+                <ul>
+                  <li
+                    v-for="(itemMenu, id) in item.items"
+                    :key="id"
+                  >
+                    <nuxt-link
+                      :to="localePath({name: itemMenu.routeName})"
+                      class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                      active-class="bg-white bg-opacity-20 text-white"
+                    >
+                      <!-- <div class="mr-2 w-[22px] h-[22px] flex items-center">
+                    <img :src="require(`~/assets/images/icons/${itemMenu.icon}.svg`)" alt="">
+                  </div> -->
+                      <span class="text-sm font-medium">{{ $t(`sidebar.${itemMenu.label}`) }}</span>
+                    </nuxt-link>
+                  </li>
+                </ul>
               </div>
-              <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
-            </nuxt-link>
+              <nuxt-link
+                v-else
+                :key="index"
+                :to="localePath({name: item.routeName})"
+                class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                active-class="bg-white bg-opacity-20 text-white"
+              >
+                <div class="mr-2 w-[22px] h-[22px] flex items-center">
+                  <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+                </div>
+                <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
+              </nuxt-link>
+            </template>
           </nav>
         </div>
         <div>
@@ -47,11 +76,11 @@
     </div>
     <div class="flex-grow">
       <div v-if="shouldShowSearch" class="text-black-600 p-3">
-        <i class="fa fa-search mr-4 rounded-full shadow-md p-2" />
+        <i class="!hidden sm:!inline-block fa fa-search mr-4 rounded-full shadow-md p-2" />
         <input
           type="text"
           :value="searchText"
-          class="w-1/2 focus:border-0 border-0"
+          class="sm:w-1/2 w-full focus:border-0 border-0 truncate"
           :placeholder="$t('common.search_placeholder')"
           @input="handleSearch"
         >
@@ -108,41 +137,85 @@ import debounce from 'lodash/debounce'
 export default {
   data () {
     return {
+      // menu: [
+      //   {
+      //     label: 'all',
+      //     routeName: 'vault',
+      //     icon: 'all'
+      //   },
+      //   {
+      //     label: 'passwords',
+      //     routeName: 'passwords',
+      //     icon: 'passwords'
+      //   },
+      //   {
+      //     label: 'notes',
+      //     routeName: 'notes',
+      //     icon: 'notes'
+      //   },
+      //   {
+      //     label: 'cards',
+      //     routeName: 'cards',
+      //     icon: 'cards'
+      //   },
+      //   {
+      //     label: 'identities',
+      //     routeName: 'identities',
+      //     icon: 'identities'
+      //   },
+      //   {
+      //     label: 'shares',
+      //     routeName: 'shares',
+      //     icon: 'shares'
+      //   },
+      //   {
+      //     label: 'trash',
+      //     routeName: 'trash',
+      //     icon: 'trash'
+      //   }
+      // ]
       menu: [
         {
-          label: 'all',
-          routeName: 'vault',
-          icon: 'all'
+          label: 'Inventory',
+          icon: 'all',
+          collapse: true,
+          items: [
+            {
+              label: 'all',
+              routeName: 'vault'
+            },
+            {
+              label: 'Password',
+              routeName: 'passwords'
+            },
+            {
+              label: 'notes',
+              routeName: 'notes'
+            },
+            {
+              label: 'cards',
+              routeName: 'cards'
+            },
+            {
+              label: 'identities',
+              routeName: 'identities'
+            }
+          ]
         },
-        {
-          label: 'passwords',
-          routeName: 'passwords',
-          icon: 'passwords'
-        },
-        {
-          label: 'notes',
-          routeName: 'notes',
-          icon: 'notes'
-        },
-        {
-          label: 'cards',
-          routeName: 'cards',
-          icon: 'cards'
-        },
-        {
-          label: 'identities',
-          routeName: 'identities',
-          icon: 'identities'
-        },
+        // {
+        //   label: 'Security',
+        //   icon: 'shield-alt',
+        //   routeName: ''
+        // }
         {
           label: 'shares',
-          routeName: 'shares',
-          icon: 'shares'
+          icon: 'shares',
+          routeName: 'shares'
         },
         {
           label: 'trash',
-          routeName: 'trash',
-          icon: 'trash'
+          icon: 'trash',
+          routeName: 'trash'
         }
       ]
     }
@@ -190,6 +263,7 @@ export default {
   mounted () {
     // Set click event
     const navMenuDiv = document.getElementById('nav-content')
+    const headerDiv = document.getElementById('header-default')
     const navMenu = document.getElementById('nav-toggle')
 
     document.onclick = check
@@ -201,14 +275,20 @@ export default {
         // click NOT on the menu
         if (checkParent(target, navMenu)) {
           // click on the link
-          if (navMenuDiv.classList.contains('hidden')) {
-            navMenuDiv.classList.remove('hidden')
+          // if (navMenuDiv.classList.contains('hidden')) {
+          //   navMenuDiv.classList.remove('hidden')
+          // } else {
+          //   navMenuDiv.classList.add('hidden')
+          // }
+          if (headerDiv.classList.contains('sidebar-open')) {
+            headerDiv.classList.remove('sidebar-open')
           } else {
-            navMenuDiv.classList.add('hidden')
+            headerDiv.classList.add('sidebar-open')
           }
-        } else {
+        } else if (headerDiv.classList.contains('sidebar-open')) {
           // click both outside link and outside menu, hide menu
-          navMenuDiv.classList.add('hidden')
+          // navMenuDiv.classList.add('hidden')
+          headerDiv.classList.remove('sidebar-open')
         }
       }
     }
@@ -230,13 +310,26 @@ export default {
       this.$router.push(this.localeRoute({ name }))
     },
     hideNavMenu () {
-      const navMenuDiv = document.getElementById('nav-content')
-      if (navMenuDiv.classList.contains('hidden')) {
-        navMenuDiv.classList.remove('hidden')
-      } else {
-        navMenuDiv.classList.add('hidden')
+      // const navMenuDiv = document.getElementById('nav-content')
+      // if (navMenuDiv.classList.contains('hidden')) {
+      //   navMenuDiv.classList.remove('hidden')
+      // } else {
+      //   navMenuDiv.classList.add('hidden')
+      // }
+      const headerDiv = document.getElementById('header-default')
+      if (headerDiv.classList.contains('sidebar-open')) {
+        headerDiv.classList.remove('sidebar-open')
       }
     }
   }
 }
 </script>
+<style scoped>
+.sidebar-open .sidebar{
+  transform: translateX(0);
+}
+.sidebar {
+  @apply transition-transform md:hidden fixed top-0 left-0 h-screen;
+  transform: translateX(-100%);
+}
+</style>

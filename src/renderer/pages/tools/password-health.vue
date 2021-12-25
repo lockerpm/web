@@ -181,9 +181,17 @@ export default {
     }
   },
   asyncComputed: {
+    ciphers: {
+      async get () {
+        const result = await this.$cipherService.getAllDecrypted()
+        return result
+      },
+      watch: ['$store.state.syncedCiphersToggle']
+    },
     weakPasswordCiphers: {
       async get () {
-        const allCiphers = await this.$cipherService.getAllDecrypted()
+        // const allCiphers = await this.$cipherService.getAllDecrypted()
+        const allCiphers = this.ciphers
         const weakPasswordCiphers = []
         const isUserNameNotEmpty = c => {
           return c.login.username != null && c.login.username.trim() !== ''
@@ -228,11 +236,13 @@ export default {
 
         return weakPasswordCiphers
       },
-      watch: ['$store.state.syncedCiphersToggle']
+      // watch: ['$store.state.syncedCiphersToggle']
+      watch: ['ciphers']
     },
     reusedPasswordCiphers: {
       async get () {
-        const allCiphers = await this.$cipherService.getAllDecrypted()
+        // const allCiphers = await this.$cipherService.getAllDecrypted()
+        const allCiphers = this.ciphers
         const ciphersWithPasswords = []
         this.passwordUseMap = new Map()
         allCiphers.forEach(c => {
@@ -251,7 +261,8 @@ export default {
 
         return reusedPasswordCiphers
       },
-      watch: ['$store.state.syncedCiphersToggle']
+      // watch: ['$store.state.syncedCiphersToggle']
+      watch: ['ciphers']
     }
   },
   methods: {
