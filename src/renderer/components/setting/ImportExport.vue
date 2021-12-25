@@ -133,7 +133,9 @@ import { ImportOrganizationCiphersRequest } from '../../jslib/src/models/request
 import { KvpRequest } from '../../jslib/src/models/request/kvpRequest'
 import { CollectionWithId as CollectionExport } from '../../jslib/src/models/export/collectionWithId'
 import { CipherWithIds as CipherExport } from '../../jslib/src/models/export/cipherWithIds'
+import { FolderWithId as FolderExport } from '../../jslib/src/models/export/folderWithId'
 import { Collection } from '../../jslib/src/models/domain/collection'
+import { Cipher } from '../../jslib/src/models/domain'
 export default {
   components: {
     Instructions,
@@ -246,7 +248,7 @@ export default {
       this.$refs.reConfirmMasterPassword.openDialog()
     },
     async exportData (type) {
-      const data = this.teamId ? await this.getOrganizationExport(this.teamId, type) : await this.$exportService.getExport(type)
+      const data = this.teamId ? await this.getOrganizationExport(this.teamId, type) : await this.getExport(type)
       this.downloadFile(data)
     },
     getOrganizationExport (organizationId, format) {
@@ -255,6 +257,116 @@ export default {
       } else {
         return this.getOrganizationDecryptedExport(organizationId, format)
       }
+    },
+    getExport (format) {
+      if (format === 'encrypted_json') {
+        return this.getEncryptedExport()
+      } else {
+        return this.getDecryptedExport(format)
+      }
+    },
+    async getDecryptedExport (format) {
+      let folders = []
+      let ciphers = []
+
+      folders = await this.$folderService.getAllDecrypted()
+
+      ciphers = await this.$cipherService.getAllDecrypted()
+      ciphers = ciphers.filter(c => c.organizationId === null)
+      ciphers = ciphers.filter(c => c.deletedDate === null)
+      ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
+      if (format === 'csv') {
+        const foldersMap = new Map()
+        folders.forEach(f => {
+          if (f.id != null) {
+            foldersMap.set(f.id, f)
+          }
+        })
+
+        const exportCiphers = []
+        ciphers.forEach(c => {
+          // only export logins and secure notes
+          if (c.type !== CipherType.Login && c.type !== CipherType.SecureNote) {
+            return
+          }
+          if (c.organizationId != null) {
+            return
+          }
+
+          const cipher = {}
+          cipher.folder = c.folderId != null && foldersMap.has(c.folderId)
+            ? foldersMap.get(c.folderId).name
+            : null
+          cipher.favorite = c.favorite ? 1 : null
+          this.buildCommonCipher(cipher, c)
+          exportCiphers.push(cipher)
+        })
+
+        return papa.unparse(exportCiphers)
+      } else {
+        const jsonDoc = {
+          encrypted: false,
+          folders: [],
+          items: []
+        }
+
+        folders.forEach(f => {
+          if (f.id == null) {
+            return
+          }
+          const folder = new FolderExport()
+          folder.build(f)
+          jsonDoc.folders.push(folder)
+        })
+
+        ciphers.forEach(c => {
+          if (c.organizationId != null) {
+            return
+          }
+          const cipher = new CipherExport()
+          cipher.build(c)
+          cipher.collectionIds = null
+          jsonDoc.items.push(cipher)
+        })
+
+        return JSON.stringify(jsonDoc, null, '  ')
+      }
+    },
+    async getEncryptedExport () {
+      let folders = []
+      let ciphers = []
+
+      folders = await this.$folderService.getAll()
+      ciphers = await this.$cipherService.getAll()
+      ciphers = ciphers.filter(c => c.organizationId === null)
+      ciphers = ciphers.filter(c => c.deletedDate === null)
+      ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
+      const jsonDoc = {
+        encrypted: true,
+        folders: [],
+        items: []
+      }
+
+      folders.forEach(f => {
+        if (f.id == null) {
+          return
+        }
+        const folder = new FolderExport()
+        folder.build(f)
+        jsonDoc.folders.push(folder)
+      })
+
+      ciphers.forEach(c => {
+        if (c.organizationId != null) {
+          return
+        }
+        const cipher = new CipherExport()
+        cipher.build(c)
+        cipher.collectionIds = null
+        jsonDoc.items.push(cipher)
+      })
+
+      return JSON.stringify(jsonDoc, null, '  ')
     },
     async getOrganizationEncryptedExport (organizationId) {
       let collections = []
@@ -265,6 +377,8 @@ export default {
 
       ciphers = await this.$cipherService.getAll()
       ciphers = ciphers.filter(c => c.organizationId === organizationId)
+      ciphers = ciphers.filter(c => c.deletedDate === null)
+      ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
 
       const jsonDoc = {
         encrypted: true,
@@ -295,6 +409,7 @@ export default {
       ciphers = await this.$cipherService.getAllDecrypted()
       ciphers = ciphers.filter(c => c.organizationId === organizationId)
       ciphers = ciphers.filter(c => c.deletedDate === null)
+      ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
 
       if (format === 'csv') {
         const collectionsMap = new Map()
