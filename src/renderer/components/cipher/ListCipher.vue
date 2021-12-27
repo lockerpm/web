@@ -1,27 +1,33 @@
 <template>
   <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
-    <!-- <div>
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="User" name="first" />
-        <el-tab-pane label="Config" name="second" />
-        <el-tab-pane label="Role" name="third" />
-        <el-tab-pane label="Task" name="fourth" />
-      </el-tabs>
-    </div> -->
     <div class="flex mb-5 border-b border-black-400 py-3 lg:px-28 px-10">
-      <nuxt-link
-        v-for="(item, index) in menu"
-        :key="index"
-        :to="localeRoute({name: item.routeName})"
-        active-class="!text-primary"
-        class="text-black-600 font-bold mr-8 last:mr-0 hover:no-underline"
-        exact
-      >
-        {{ $t(`sidebar.${item.label}`) }}
-      </nuxt-link>
+      <template v-if="['vault', 'passwords', 'notes', 'identities', 'cards'].includes(getRouteBaseName())">
+        <nuxt-link
+          v-for="(item, index) in menuVault"
+          :key="index"
+          :to="localeRoute({name: item.routeName})"
+          active-class="!text-primary"
+          class="text-black-600 font-bold mr-8 last:mr-0 hover:no-underline"
+          exact
+        >
+          {{ $t(`sidebar.${item.label}`) }}
+        </nuxt-link>
+      </template>
+      <template v-if="['shares', 'shares-shared-with-you', 'shares-you-shared'].includes(getRouteBaseName())">
+        <nuxt-link
+          v-for="(item, index) in menuShares"
+          :key="index"
+          :to="localeRoute({name: item.routeName})"
+          active-class="!text-primary"
+          class="text-black-600 font-bold mr-8 last:mr-0 hover:no-underline"
+          exact
+        >
+          {{ $t(`sidebar.${item.label}`) }}
+        </nuxt-link>
+      </template>
     </div>
     <NoCipher
-      v-if="shouldRenderNoCipher"
+      v-if="shouldRenderNoCipher && !loading"
       :type="type"
       @add-cipher="handleAddButton"
     />
@@ -32,15 +38,35 @@
             All items
           </div>
           <div class="mx-6 text-head-4"> | </div>
+          <div class="text-head-4">
+            <i v-if="viewFolder" class="fas fa-folder-open" @click="viewFolder=false" />
+            <i v-else class="fas fa-folder" @click="viewFolder=true" />
+          </div>
+          <div class="mx-6 text-head-4"> | </div>
           <div>
-            <button class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold" @click="chooseCipherType">
-              <i class="el-icon-circle-plus-outline text-lg" />
-              <div class="ml-3 break-all">Add new</div>
-            </button>
+            <el-dropdown trigger="click">
+              <button class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold">
+                <i class="el-icon-circle-plus-outline text-lg" />
+                <div class="ml-3 break-all">Add new</div>
+              </button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  v-for="item in options"
+                  :key="item"
+                  class="flex items-center justify-between"
+                  @click.native="confirmDialog(item)"
+                >
+                  {{ item }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
         </div>
-        <div v-if="allCiphers" class="uppercase text-head-6">
-          <span class="text-primary font-semibold">{{ allCiphers.length }}</span> items
+        <div v-if="ciphers && !viewFolder" class="uppercase text-head-6">
+          <span class="text-primary font-semibold">{{ ciphers.length }}</span> {{ $tc('type.0', ciphers.length) }}
+        </div>
+        <div v-if="folders && viewFolder" class="uppercase text-head-6">
+          <span class="text-primary font-semibold">{{ folders.length }}</span> {{ $tc('type.Folder', folders.length) }}
         </div>
       </div>
       <div class="flex items-center justify-between mb-5">
@@ -84,7 +110,7 @@
             </template>
           </el-breadcrumb>
         </div>
-        <div class="header-actions">
+        <!-- <div class="header-actions">
           <div class="flex">
             <button v-if="!['vault-folders-folderId', 'vault-teams-teamId-tfolders-tfolderId', 'vault', 'shares', 'trash'].includes(getRouteBaseName())" class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold mr-3" @click="handleAddButton">
               <i class="el-icon-circle-plus-outline text-lg" />
@@ -126,10 +152,10 @@
               </el-dropdown-menu>
             </el-dropdown>
           </div>
-        </div>
+        </div> -->
       </div>
       <div
-        v-if="getRouteBaseName() === 'vault' && folders"
+        v-if="getRouteBaseName() === 'vault' && folders && viewFolder"
         class="mb-10"
       >
         <client-only>
@@ -179,7 +205,7 @@
         </client-only>
       </div>
       <div
-        v-if="getRouteBaseName() === 'vault' && collections"
+        v-if="getRouteBaseName() === 'vault' && collections && viewFolder"
         class="mb-10"
       >
         <client-only>
@@ -263,8 +289,8 @@
           </component>
         </client-only>
       </div>
-      <client-only>
-        <div v-if="getRouteBaseName() === 'vault'" class="flex justify-between">
+      <client-only v-if="!viewFolder">
+        <!-- <div v-if="getRouteBaseName() === 'vault'" class="flex justify-between">
           <div
             class="mb font-medium"
           >
@@ -274,10 +300,10 @@
             <i class="el-icon-circle-plus-outline text-lg" />
             <div class="ml-3 break-all">Add new</div>
           </button>
-        </div>
+        </div> -->
         <el-table
           ref="multipleTable"
-          :data="ciphers || []"
+          :data="dataRendered || []"
           style="width: 100%"
           row-class-name="hover-table-row"
           @selection-change="handleSelectionChange"
@@ -524,6 +550,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy'
 import find from 'lodash/find'
 import groupBy from 'lodash/groupBy'
+import { data } from 'cheerio/lib/api/attributes'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import AddEditFolder from '../folder/AddEditFolder'
 import AddEditTeamFolder from '../folder/AddEditTeamFolder'
@@ -577,7 +604,7 @@ export default {
       publicKey: '',
       indexing: false,
       index: null,
-      menu: [
+      menuVault: [
         {
           label: 'all',
           routeName: 'vault',
@@ -603,7 +630,26 @@ export default {
           routeName: 'identities',
           icon: 'identities'
         }
-      ]
+      ],
+      menuShares: [
+        {
+          label: 'shared_with_you',
+          routeName: 'shares-shared-with-you'
+        },
+        {
+          label: 'you_shared',
+          routeName: 'shares-you-shared'
+        },
+        {
+          label: 'invitations',
+          routeName: 'shares-invitations'
+        }
+      ],
+      dataRendered: [],
+      lastIndex: 0,
+      options: ['Login', 'SecureNote', 'Card', 'Identity'],
+      type: 'Login',
+      viewFolder: false
     }
   },
   computed: {
@@ -625,26 +671,26 @@ export default {
     orderString () {
       return `${this.orderField}_${this.orderDirection}`
     },
-    type () {
-      switch (this.routeName) {
-      case 'passwords':
-        return 'Login'
-      case 'notes':
-        return 'SecureNote'
-      case 'cards':
-        return 'Card'
-      case 'identities':
-        return 'Identity'
-      case 'vault':
-        return 'Vault'
-      case 'shares':
-        return 'Shares'
-      case 'trash':
-        return 'Trash'
-      default:
-        return null
-      }
-    },
+    // type () {
+    //   switch (this.routeName) {
+    //   case 'passwords':
+    //     return 'Login'
+    //   case 'notes':
+    //     return 'SecureNote'
+    //   case 'cards':
+    //     return 'Card'
+    //   case 'identities':
+    //     return 'Identity'
+    //   case 'vault':
+    //     return 'Vault'
+    //   case 'shares':
+    //     return 'Shares'
+    //   case 'trash':
+    //     return 'Trash'
+    //   default:
+    //     return null
+    //   }
+    // },
     filteredCiphers () {
       if (this.getRouteBaseName() === 'vault' && this.ciphers) {
         return this.ciphers.filter(e => !e.folderId)
@@ -678,10 +724,18 @@ export default {
       return this.teams.some(e => ['owner', 'admin'].includes(e.role))
     }
   },
-  created () {
-  },
   mounted () {
     this.context = 'VueContext'
+    window.onscroll = () => {
+      const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
+
+      if (bottomOfWindow) {
+        this.lastIndex += 50
+        if (this.lastIndex <= this.ciphers.length) {
+          this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.lastIndex, this.lastIndex + 50))
+        }
+      }
+    }
   },
   asyncComputed: {
     allCiphers: {
@@ -692,7 +746,6 @@ export default {
         let result = await this.$cipherService.getAllDecrypted()
         // remove ciphers generated by authenticator
         result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
-        this.loading = false
         return result
         // return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
       },
@@ -704,16 +757,25 @@ export default {
           return c.isDeleted === this.deleted
         }
         this.loading = true
-        const result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-        // remove ciphers generated by authenticator
-        // result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
+        if (this.allCiphers) {
+          console.log('search ciphers')
+          const result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+          // remove ciphers generated by authenticator
+          // result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
+          console.log(result.length)
+          this.dataRendered = result.slice(0, 50)
+          this.loading = false
+          return result
+          // return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+        }
         this.loading = false
-        return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+        return []
       },
       watch: ['allCiphers']
     },
     folders: {
       async get () {
+        this.loading = true
         let folders = await this.$folderService.getAllDecrypted() || []
         folders = folders.filter(f => f.id)
         folders.forEach(f => {
@@ -726,12 +788,14 @@ export default {
     },
     collections: {
       async get () {
+        this.loading = true
         let collections = await this.$collectionService.getAllDecrypted() || []
         collections = collections.filter(f => f.id)
         collections.forEach(f => {
           const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
           f.ciphersCount = ciphers && ciphers.length
         })
+        this.loading = false
         return collections
       },
       watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
@@ -770,6 +834,7 @@ export default {
             scores: weakPasswordScores
           })
         }
+        this.loading = false
         return weakPasswordScores
       },
       watch: ['allCiphers']
@@ -969,6 +1034,11 @@ export default {
         }
         return false
       })
+    },
+    confirmDialog (type) {
+      this.type = type
+      this.$refs.addEditCipherDialog.openDialog({})
+      this.dialogVisible = false
     }
 
   }

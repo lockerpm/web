@@ -18,8 +18,9 @@
             >
               <div v-if="item.collapse" :key="index">
                 <div
-                  class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                  class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline cursor-pointer"
                   active-class="bg-white bg-opacity-20 text-white"
+                  @click="$router.push(localePath({name: 'vault'}))"
                 >
                   <div class="mr-2 w-[22px] h-[22px] flex items-center">
                     <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
@@ -33,7 +34,7 @@
                   >
                     <nuxt-link
                       :to="localePath({name: itemMenu.routeName})"
-                      class="flex items-center py-2 pl-12 pr-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                      class="flex items-center py-2 pl-[55px] pr-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
                       active-class="bg-white bg-opacity-20 text-white"
                     >
                       <!-- <div class="mr-2 w-[22px] h-[22px] flex items-center">
