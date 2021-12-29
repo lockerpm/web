@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <!-- <el-dialog
     :visible.sync="dialogVisible"
     width="435px"
     destroy-on-close
@@ -54,10 +54,6 @@
           </el-checkbox>
         </el-checkbox-group>
       </div>
-      <!-- <div v-if="cipher.organizationId && cipher.type===CipherType.Login">
-        <label class="font-semibold">{{ $t('data.ciphers.show_password') }}</label>
-        <el-checkbox v-model="cipher.viewPassword" />
-      </div> -->
     </div>
     <div
       slot="footer"
@@ -80,18 +76,75 @@
         </button>
       </div>
     </div>
+  </el-dialog> -->
+  <el-dialog
+    :visible.sync="dialogVisible"
+    width="600px"
+    destroy-on-close
+    top="5vh"
+    custom-class="locker-dialog"
+    :close-on-click-modal="false"
+  >
+    <div slot="title">
+      <div class="flex items-center">
+        <div class="text-[34px] mr-3">
+          <Vnodes :vnodes="getIconCipher(cipher, 20)" />
+        </div>
+        <div class="text-black-700 font-semibold">{{ cipher.name }}</div>
+      </div>
+    </div>
+    <div class="text-left">
+      <div class="grid grid-cols-3 gap-x-2 mb-4">
+        <InputText
+          v-model="user.username"
+          label="Email"
+          class="w-full col-span-2 !mb-4"
+        />
+        <InputSelect
+          label="Role"
+          initial-value="admin"
+          class="w-full !mb-4"
+          :options="roleOptions"
+          @change="(v) => user.role = v"
+        />
+      </div>
+    </div>
+    <div
+      slot="footer"
+      class="dialog-footer flex items-center text-left"
+    >
+      <div class="flex-grow" />
+      <div>
+        <button
+          class="btn btn-default"
+          @click="dialogVisible = false"
+        >
+          {{ $t('common.cancel') }}
+        </button>
+        <button
+          class="btn btn-primary"
+          :disabled="loading"
+          @click="shareItem(cipher)"
+        >
+          {{ isBelongToTeam ? $t('common.update') : $t('common.share') }}
+        </button>
+      </div>
+    </div>
   </el-dialog>
 </template>
 
 <script>
 
 import InputSelectTeam from '../../components/input/InputSelectTeam'
+import InputSelect from '../../components/input/InputSelect.vue'
+import InputText from '../../components/input/InputText.vue'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { CipherType } from '../../jslib/src/enums'
 import Vnodes from '../../components/Vnodes'
+import { Utils } from '../../jslib/src/misc/utils.ts'
 
 export default {
-  components: { InputSelectTeam, Vnodes },
+  components: { InputSelectTeam, Vnodes, InputSelect, InputText },
   data () {
     return {
       CipherType,
@@ -112,6 +165,10 @@ export default {
         failed_login_attempts: null,
         failed_login_duration: 0,
         failed_login_block_time: 0
+      },
+      user: {
+        username: '',
+        role: 'admin'
       }
     }
   },
@@ -127,6 +184,13 @@ export default {
         return this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
       }
       return {}
+    },
+    roleOptions () {
+      return [
+        { label: 'Viewer', value: 'viewer' },
+        { label: 'Editor', value: 'editor' },
+        { label: 'Admin', value: 'admin' }
+      ]
     }
   },
   methods: {
@@ -243,6 +307,43 @@ export default {
         }
       }
       return true
+    },
+    async getPublicKey (user) {
+      const { public_key: publicKey } = await this.$axios.$post('cystack_platform/pm/sharing/public_key', { email: user.username })
+      return publicKey
+    },
+    async generateMemberKey (publicKey, orgKey) {
+      const pk = Utils.fromB64ToArray(publicKey)
+      console.log(pk)
+      const key = await this.$cryptoService.rsaEncrypt(orgKey.key, pk.buffer)
+      return key.encryptedString
+    },
+    async shareItem (cipher) {
+      const shareKey = await this.$cryptoService.makeShareKey()
+      try {
+        this.loading = true
+        const publicKey = await this.getPublicKey(this.user)
+        console.log(publicKey)
+        const url = 'cystack_platform/pm/sharing'
+        await this.$axios.$put(url, {
+          sharing_key: shareKey[0].encryptedString,
+          cipher: { id: cipher.id },
+          members: [
+            {
+              ...this.user,
+              key: await this.generateMemberKey(publicKey, shareKey[1])
+            }
+          ]
+        })
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
+        this.closeDialog()
+        this.$emit('updated-cipher')
+      } catch (e) {
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
+        console.log(e)
+      } finally {
+        this.loading = false
+      }
     }
   }
 }

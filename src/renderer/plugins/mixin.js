@@ -196,6 +196,7 @@ Vue.mixin({
       await this.$cryptoService.clearKeys()
     },
     async getSyncData () {
+      this.$store.commit('UPDATE_SYNCING', true)
       try {
         this.$messagingService.send('syncStarted')
         let res = await this.$axios.$get('cystack_platform/pm/sync')
@@ -215,6 +216,8 @@ Vue.mixin({
       } catch (e) {
         this.$messagingService.send('syncCompleted', { successfully: false })
         this.$store.commit('UPDATE_SYNCED_CIPHERS')
+      } finally {
+        this.$store.commit('UPDATE_SYNCING', false)
       }
     },
     async getFolders () {
