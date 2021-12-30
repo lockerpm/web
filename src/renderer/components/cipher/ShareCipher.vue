@@ -79,7 +79,7 @@
   </el-dialog> -->
   <el-dialog
     :visible.sync="dialogVisible"
-    width="600px"
+    width="650px"
     destroy-on-close
     top="5vh"
     custom-class="locker-dialog"
@@ -94,14 +94,46 @@
       </div>
     </div>
     <div class="text-left">
-      <div class="grid grid-cols-3 gap-x-2 mb-4">
+      <div class="grid grid-cols-2 gap-x-2 mb-4">
+        <div class="w-full">
+          <div class="text-black-700 text-head-6 font-semibold">
+            {{ $t('data.ciphers.add_recipient_emails') }}
+          </div>
+          <div>
+            {{ $t('data.ciphers.add_recipient_emails_desc') }}
+          </div>
+        </div>
         <InputText
           v-model="user.username"
           label="Email"
-          class="w-full col-span-2 !mb-4"
+          class="w-full !mb-4"
+          :add-button="true"
+          @add="addEmail"
         />
+      </div>
+      <div v-if="members" class="w-full mb-4">
+        <el-tag
+          v-for="(email, index) in members"
+          :key="index"
+          class="mr-3 mb-3 w-full !flex justify-between items-center"
+          closable
+          :disable-transitions="false"
+          @close="handleClose(index)"
+        >
+          {{ email }}
+        </el-tag>
+      </div>
+      <div class="grid grid-cols-3 gap-x-2 mb-4">
+        <div class="col-span-2">
+          <div class="text-black-700 text-head-6 font-semibold">
+            {{ $t('data.ciphers.share_type') }}
+          </div>
+          <div>
+            {{ $t('data.ciphers.share_type_desc') }}
+          </div>
+        </div>
         <InputSelect
-          label="Role"
+          label="Share type"
           initial-value="admin"
           class="w-full !mb-4"
           :options="roleOptions"
@@ -168,8 +200,10 @@ export default {
       },
       user: {
         username: '',
-        role: 'admin'
-      }
+        role: 'admin',
+        hide_passwords: false
+      },
+      members: []
     }
   },
   computed: {
@@ -187,15 +221,25 @@ export default {
     },
     roleOptions () {
       return [
-        { label: 'Viewer', value: 'viewer' },
-        { label: 'Editor', value: 'editor' },
-        { label: 'Admin', value: 'admin' }
+        { label: 'Only Fill', value: 'member-hide_password' },
+        { label: 'View', value: 'member' },
+        { label: 'Edit', value: 'admin' }
       ]
     }
   },
   methods: {
+    addEmail () {
+      const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
+      this.members = this.members.concat(emails)
+      this.user.username = ''
+    },
+    handleClose (index) {
+      console.log(index)
+      this.members.splice(index, 1)
+    },
     async openDialog (cipher = {}) {
       this.dialogVisible = true
+      this.members = []
       this.originCipher = { organizationId: '', ...cipher }
       this.cipher = { organizationId: '', ...cipher }
       await this.handleChangeOrg(this.cipher.organizationId)
@@ -308,32 +352,42 @@ export default {
       }
       return true
     },
-    async getPublicKey (user) {
-      const { public_key: publicKey } = await this.$axios.$post('cystack_platform/pm/sharing/public_key', { email: user.username })
+    async getPublicKey (email) {
+      const { public_key: publicKey } = await this.$axios.$post('cystack_platform/pm/sharing/public_key', { email })
       return publicKey
     },
     async generateMemberKey (publicKey, orgKey) {
       const pk = Utils.fromB64ToArray(publicKey)
-      console.log(pk)
       const key = await this.$cryptoService.rsaEncrypt(orgKey.key, pk.buffer)
       return key.encryptedString
     },
     async shareItem (cipher) {
       const shareKey = await this.$cryptoService.makeShareKey()
+      const cipherEnc = await this.$cipherService.encrypt(cipher, shareKey[1])
+      const data = new CipherRequest(cipherEnc)
       try {
         this.loading = true
-        const publicKey = await this.getPublicKey(this.user)
-        console.log(publicKey)
+        if (this.user.role === 'member-hide_password') {
+          this.user.role = 'member'
+          this.user.hide_passwords = true
+        }
+        const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
+        this.members = this.members.concat(emails)
+        const members = await Promise.all(this.members.map(async email => {
+          const publicKey = await this.getPublicKey(email)
+          const key = await this.generateMemberKey(publicKey, shareKey[1])
+          return {
+            username: email,
+            role: this.user.role,
+            hide_passwords: this.user.hide_passwords,
+            key
+          }
+        }))
         const url = 'cystack_platform/pm/sharing'
         await this.$axios.$put(url, {
           sharing_key: shareKey[0].encryptedString,
-          cipher: { id: cipher.id },
-          members: [
-            {
-              ...this.user,
-              key: await this.generateMemberKey(publicKey, shareKey[1])
-            }
-          ]
+          cipher: { id: cipher.id, ...data },
+          members
         })
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
         this.closeDialog()

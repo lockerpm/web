@@ -52,6 +52,17 @@
         :class="{'fa-eye': type==='password', 'fa-eye-slash': type==='text'}"
       />
     </button>
+    <button
+      v-if="addButton"
+      class="btn btn-icon !py-0"
+      type="button"
+      tabindex="-1"
+      @click="add"
+    >
+      <i
+        class="fas fa-plus"
+      />
+    </button>
     <div v-if="errorText" class="cs-helper-text">
       {{ errorText }}
     </div>
@@ -62,6 +73,10 @@
 export default {
   props: {
     isPassword: {
+      type: Boolean,
+      default: false
+    },
+    addButton: {
       type: Boolean,
       default: false
     },
@@ -151,6 +166,9 @@ export default {
     handleHover () {
       if (this.disabled) { return }
       this.hovering = true
+    },
+    add () {
+      this.$emit('add')
     }
   }
 }

@@ -2,30 +2,16 @@
   <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
     <!-- Navigation Menu -->
     <div class="flex mb-5 border-b border-black-400 py-3 lg:px-28 px-10">
-      <template v-if="['vault', 'passwords', 'notes', 'identities', 'cards'].includes(getRouteBaseName())">
-        <nuxt-link
-          v-for="(item, index) in menuVault"
-          :key="index"
-          :to="localeRoute({name: item.routeName})"
-          active-class="!text-primary"
-          class="text-black-600 font-bold mr-8 last:mr-0 hover:no-underline"
-          exact
-        >
-          {{ $t(`sidebar.${item.label}`) }}
-        </nuxt-link>
-      </template>
-      <template v-if="['shares', 'shares-shared-with-you', 'shares-your-shares', 'shares-requests'].includes(getRouteBaseName())">
-        <nuxt-link
-          v-for="(item, index) in menuShares"
-          :key="index"
-          :to="localeRoute({name: item.routeName})"
-          active-class="!text-primary"
-          class="text-black-600 font-bold mr-8 last:mr-0 hover:no-underline"
-          exact
-        >
-          {{ $t(`sidebar.${item.label}`) }}
-        </nuxt-link>
-      </template>
+      <nuxt-link
+        v-for="(item, index) in menuShares"
+        :key="index"
+        :to="localeRoute({name: item.routeName})"
+        active-class="!text-primary"
+        class="text-black-600 font-bold mr-8 last:mr-0 hover:no-underline"
+        exact
+      >
+        {{ $t(`sidebar.${item.label}`) }}
+      </nuxt-link>
     </div>
     <!-- Navigation Menu end -->
 
@@ -35,42 +21,11 @@
       <div class="mb-10">
         <div class="flex">
           <div class="text-head-4">
-            <template v-if="getRouteBaseName() === 'vault-folders-folderId'">
-              <nuxt-link
-                class="font-medium hover:no-underline"
-                :to="localeRoute({name: 'vault'})"
-              >
-                {{ $t('sidebar.vault') }}
-              </nuxt-link>
-              <span class="font-medium">
-                &nbsp; / &nbsp; {{ folder.name }}
-              </span>
-            </template>
-            <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId'">
-              <nuxt-link
-                class="font-medium hover:no-underline"
-                :to="localeRoute({name: 'vault'})"
-              >
-                {{ $t('sidebar.vault') }}
-              </nuxt-link>
-              <span class="font-medium">
-                &nbsp; / &nbsp; {{ getTeam(teams, $route.params.teamId).name }} - {{ collection.name }}
-              </span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='vault'">
-              <span class="font-medium">All items</span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='shares'">
+            <template v-if="getRouteBaseName() ==='shares'">
               <span class="font-medium">{{ $t('sidebar.shared_with_you') }}</span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='trash'">
-              <span class="font-medium">Trash</span>
             </template>
             <template v-else-if="getRouteBaseName() ==='shares-your-shares'">
               <span class="font-medium">{{ $t('type.your_shares') }}</span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='shares-requests'">
-              <span class="font-medium">{{ $t('type.requests') }}</span>
             </template>
             <template v-else>
               <span class="font-medium">
@@ -78,40 +33,6 @@
               </span>
             </template>
           </div>
-          <template v-if="getRouteBaseName()==='vault'">
-            <div class="mx-6 text-head-4"> | </div>
-            <div class="text-head-4">
-              <i v-if="!viewFolder" class="fas fa-folder-open" @click="viewFolder=true" />
-              <i v-else class="fas fa-folder" @click="viewFolder=false" />
-            </div>
-          </template>
-          <template v-if="routeName!=='shares'">
-            <div class="mx-6 text-head-4"> | </div>
-            <div>
-              <el-dropdown v-if="routeName==='vault'" trigger="click">
-                <button class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold">
-                  <i class="el-icon-circle-plus-outline text-lg" />
-                  <div class="ml-3 break-all">Add new</div>
-                </button>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item
-                    v-for="item in options"
-                    :key="item"
-                    class="flex items-center justify-between"
-                    @click.native="confirmDialog(item)"
-                  >
-                    {{ item }}
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-              <template v-else>
-                <button class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold" @click="handleAddButton">
-                  <i class="el-icon-circle-plus-outline text-lg" />
-                  <div class="ml-3 break-all">Add new</div>
-                </button>
-              </template>
-            </div>
-          </template>
         </div>
         <div v-if="ciphers && !viewFolder" class="uppercase text-head-6">
           <span class="text-primary font-semibold">{{ ciphers.length }}</span> {{ $tc('type.0', ciphers.length) }}
@@ -123,153 +44,6 @@
       <!-- Overview end -->
 
       <!-- Details -->
-      <div class="flex items-center justify-between mb-5">
-        <!-- Folder Navigation -->
-        <!-- <div class="flex-grow">
-          <el-breadcrumb separator-class="el-icon-arrow-right">
-            <template v-if="getRouteBaseName() === 'vault-folders-folderId'">
-              <el-breadcrumb-item
-                :to="localeRoute({name: 'vault'})"
-              >
-                {{ $t('sidebar.vault') }}
-              </el-breadcrumb-item>
-              <el-breadcrumb-item class="flex items-center">
-                {{ folder.name }}
-              </el-breadcrumb-item>
-            </template>
-            <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId'">
-              <el-breadcrumb-item
-                :to="localeRoute({name: 'vault'})"
-              >
-                {{ $t('sidebar.vault') }}
-              </el-breadcrumb-item>
-              <el-breadcrumb-item class="flex items-center">
-                {{ getTeam(teams, $route.params.teamId).name }} - {{ collection.name }}
-              </el-breadcrumb-item>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='vault'">
-              <span class="font-medium">Folders</span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='shares'">
-              <span class="font-medium">Shares</span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='trash'">
-              <span class="font-medium">Trash</span>
-            </template>
-            <template v-else>
-              <el-breadcrumb-item
-                :to="localeRoute({name: routeName})"
-              >
-                {{ $tc(`type.${type}`, 2) }}
-              </el-breadcrumb-item>
-            </template>
-          </el-breadcrumb>
-        </div> -->
-        <!-- Folder Navigation end -->
-
-        <!-- <div class="header-actions">
-          <div class="flex">
-            <button v-if="!['vault-folders-folderId', 'vault-teams-teamId-tfolders-tfolderId', 'vault', 'shares', 'trash'].includes(getRouteBaseName())" class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold mr-3" @click="handleAddButton">
-              <i class="el-icon-circle-plus-outline text-lg" />
-              <div class="ml-3 break-all">Add new</div>
-            </button>
-            <el-dropdown trigger="click" class="self-center">
-              <div class="text-sm text-black-600 font-semibold">
-                {{ $t('data.ciphers.sort_by') }} <i class="el-icon-caret-bottom el-icon--right" />
-              </div>
-              <el-dropdown-menu slot="dropdown" class="w-[200px] ">
-                <el-dropdown-item
-                  class="flex items-center justify-between"
-                  @click.native="changeSort('name', 'asc')"
-                >
-                  <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.ascending') }}</span>
-                  <i v-if="orderString==='name_asc'" class="fa fa-check" />
-                </el-dropdown-item>
-                <el-dropdown-item
-                  class="flex items-center justify-between"
-                  @click.native="changeSort('name', 'desc')"
-                >
-                  <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.descending') }}</span>
-                  <i v-if="orderString==='name_desc'" class="fa fa-check" />
-                </el-dropdown-item>
-                <el-dropdown-item
-                  class="flex items-center justify-between"
-                  @click.native="changeSort('revisionDate', 'asc')"
-                >
-                  <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.ascending') }}</span>
-                  <i v-if="orderString==='revisionDate_asc'" class="fa fa-check" />
-                </el-dropdown-item>
-                <el-dropdown-item
-                  class="flex items-center justify-between"
-                  @click.native="changeSort('revisionDate', 'desc')"
-                >
-                  <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.descending') }}</span>
-                  <i v-if="orderString==='revisionDate_desc'" class="fa fa-check" />
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
-        </div> -->
-      </div>
-
-      <!-- List Folders -->
-      <div
-        v-if="getRouteBaseName() === 'vault' && folders && viewFolder"
-        class="mb-10"
-      >
-        <client-only>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
-            <div
-              v-for="item in folders"
-              v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
-              :key="item.id"
-              class="px-4 py-4 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-              :class="{'border-primary': selectedFolder.id === item.id}"
-              :title="item.name"
-              @click="routerFolder(item)"
-              @contextmenu.prevent="$refs.menu.open($event, item)"
-            >
-              <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
-              <div class="font-semibold truncate select-none line-clamp-1">
-                {{ item.name }}
-                <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
-              </div>
-            </div>
-            <div class="px-4 py-4 flex items-center cursor-pointer rounded border border-dashed border-[#E6E6E8] hover:border-primary justify-center font-semibold" @click="addEditFolder">
-              <i class="el-icon-circle-plus-outline text-lg" />
-              <div class="ml-3 break-all">New Folder</div>
-            </div>
-            <component
-              :is="context"
-              ref="menu"
-              class="el-dropdown-menu"
-              @open="openContextFolder"
-            >
-              <template #default>
-                <li
-                  class="el-dropdown-menu__item w-[200px]"
-                  @click.prevent="addEditFolder(selectedFolder, false)"
-                >
-                  {{ $t('common.rename') }}
-                </li>
-                <li
-                  class="el-dropdown-menu__item w-[200px]"
-                  @click.prevent="shareFolder(selectedFolder)"
-                >
-                  {{ $t('common.share') }}
-                </li>
-                <li
-                  class="el-dropdown-menu__item"
-                  @click.prevent="deleteFolder(selectedFolder)"
-                >
-                  <span class="text-danger">{{ $t('common.delete') }}</span>
-                </li>
-              </template>
-            </component>
-          </div>
-        </client-only>
-      </div>
-      <!-- List Folder end -->
 
       <!-- List Shared Folder -->
       <div
@@ -361,17 +135,6 @@
 
       <!-- List Ciphers -->
       <client-only v-if="!viewFolder">
-        <!-- <div v-if="getRouteBaseName() === 'vault'" class="flex justify-between">
-          <div
-            class="mb font-medium"
-          >
-            {{ $t('data.ciphers.all_items') }}
-          </div>
-          <button class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold" @click="chooseCipherType">
-            <i class="el-icon-circle-plus-outline text-lg" />
-            <div class="ml-3 break-all">Add new</div>
-          </button>
-        </div> -->
         <el-table
           ref="multipleTable"
           :data="dataRendered || []"
@@ -438,14 +201,24 @@
                     :class="{'opacity-80': scope.row.isDeleted}"
                     @click="routerCipher(scope.row, addEdit)"
                   >
-                    {{ scope.row.name }}
+                    {{ scope.row.name || 'N/A' }}
                     <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
                   </a>
                   <div>
-                    {{ scope.row.subTitle }}
+                    {{ scope.row.subTitle || 'N/A' }}
                   </div>
                 </div>
               </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            v-if="getRouteBaseName()!=='shares-your-shares'"
+            align="right"
+            :label="$t('common.owner')"
+            show-overflow-tooltip
+          >
+            <template slot-scope="scope">
+              <span>{{ scope.row.owner? scope.row.owner.full_name : getTeam(organizations, scope.row.organizationId).name }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -459,100 +232,182 @@
           </el-table-column>
           <el-table-column
             align="right"
-            :label="$t('common.ownership')"
-            show-overflow-tooltip
-          >
-            <template slot-scope="scope">
-              <span>{{ getTeam(organizations, scope.row.organizationId).name || $t('common.me') }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
             :label="$t('data.ciphers.updated_time')"
           >
             <template slot-scope="scope">
-              {{ $moment(scope.row.revisionDate).fromNow() }}
+              <span class="break-normal">
+                {{ scope.row.revisionDate? $moment(scope.row.revisionDate).fromNow() : $moment(scope.row.access_time*1000).fromNow() }}
+              </span>
             </template>
           </el-table-column>
+          <template v-if="getRouteBaseName()==='shares-your-shares'">
+            <el-table-column
+              align="right"
+              :label="$t('common.user')"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span>{{ scope.row.user.full_name || 'N/A' }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              align="right"
+              :label="$t('common.status')"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <!-- <span>{{ scope.row.user.status || 'N/A' }}</span> -->
+                <span
+                  class="label"
+                  :class="{'label-primary-light': scope.row.user.status === 'confirmed',
+                           'label-success-light': scope.row.user.status === 'accepted',
+                           'label-warning-light': scope.row.user.status === 'invited',
+                           'label-danger-light': scope.row.user.status === 'expired',
+                           'label-success': !scope.row.user.status
+                  }"
+                >
+                  {{ shareInvitationStatus[`${scope.row.user.status || 'shared'}`] }}
+                </span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              align="right"
+              :label="$t('common.share_type')"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span>{{ scope.row.user.share_type || 'N/A' }}</span>
+              </template>
+            </el-table-column>
+          </template>
+          <template v-if="getRouteBaseName() === 'shares'">
+            <el-table-column
+              align="right"
+              :label="$t('common.status')"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <!-- <span>{{ scope.row.status || 'Shared' }}</span> -->
+                <span
+                  class="label"
+                  :class="{'label-primary-light': scope.row.status === 'confirmed',
+                           'label-success-light': scope.row.status === 'accepted',
+                           'label-warning-light': scope.row.status === 'invited',
+                           'label-danger-light': scope.row.status === 'expired',
+                           'label-success': !scope.row.status
+                  }"
+                >
+                  {{ shareInvitationStatus[`${scope.row.status || 'shared'}`] }}
+                </span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              align="right"
+              :label="$t('common.share_type')"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span>{{ scope.row.role || 'N/A' }}</span>
+              </template>
+            </el-table-column>
+          </template>
           <el-table-column
             label=""
             align="right"
           >
             <template slot-scope="scope">
               <div class="col-actions">
-                <button
-                  v-if="scope.row.login.canLaunch"
-                  class="btn btn-icon btn-xs hover:bg-black-400"
-                  :title="$t('common.go_to_website')"
-                  @click="openNewTab(scope.row.login.uri)"
-                >
-                  <i class="fas fa-external-link-square-alt" />
-                </button>
-                <el-dropdown v-if="canManageItem(teams, scope.row)" trigger="click" :hide-on-click="false">
-                  <button class="btn btn-icon btn-xs hover:bg-black-400">
-                    <i class="fas fa-ellipsis-h" />
+                <template v-if="scope.row.status !== 'invited'">
+                  <button
+                    v-if="scope.row.login.canLaunch"
+                    class="btn btn-icon btn-xs hover:bg-black-400"
+                    :title="$t('common.go_to_website')"
+                    @click="openNewTab(scope.row.login.uri)"
+                  >
+                    <i class="fas fa-external-link-square-alt" />
                   </button>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click.native="addEdit(scope.row)">
-                      {{ $t('common.edit') }}
-                    </el-dropdown-item>
-                    <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.Login">
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.login.username"
-                        v-clipboard:success="clipboardSuccessHandler"
-                        divided
-                      >
-                        {{ $t('common.copy') }} {{ $t('common.username') }}
+                  <el-dropdown v-if="canManageItem(teams, scope.row)" trigger="click" :hide-on-click="false">
+                    <button class="btn btn-icon btn-xs hover:bg-black-400">
+                      <i class="fas fa-ellipsis-h" />
+                    </button>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item @click.native="addEdit(scope.row)">
+                        {{ $t('common.edit') }}
                       </el-dropdown-item>
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.login.password"
-                        v-clipboard:success="clipboardSuccessHandler"
-                      >
-                        {{ $t('common.copy') }} {{ $t('common.password') }}
+                      <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.Login">
+                        <el-dropdown-item
+                          v-clipboard:copy="scope.row.login.username"
+                          v-clipboard:success="clipboardSuccessHandler"
+                          divided
+                        >
+                          {{ $t('common.copy') }} {{ $t('common.username') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                          v-clipboard:copy="scope.row.login.password"
+                          v-clipboard:success="clipboardSuccessHandler"
+                        >
+                          {{ $t('common.copy') }} {{ $t('common.password') }}
+                        </el-dropdown-item>
+                      </template>
+                      <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.SecureNote">
+                        <el-dropdown-item
+                          v-clipboard:copy="scope.row.notes"
+                          v-clipboard:success="clipboardSuccessHandler"
+                          divided
+                        >
+                          {{ $t('common.copy') }} {{ $t('common.note') }}
+                        </el-dropdown-item>
+                      </template>
+                      <template v-if="!scope.row.isDeleted">
+                        <el-dropdown-item divided @click.native="cloneCipher(scope.row)">
+                          {{ $t('common.clone') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                          v-if="!scope.row.organizationId && canManageTeamFolder"
+                          @click.native="shareItem(scope.row)"
+                        >
+                          {{ $t('common.share') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item @click.native="moveFolders([scope.row.id])">
+                          {{ $t('common.move_folder') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item
+                          v-if="scope.row.organizationId && canManageTeamFolder"
+                          divided
+                          @click.native="shareItem(scope.row)"
+                        >
+                          {{ $t('common.collections') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item divided @click.native="moveTrashCiphers([scope.row.id])">
+                          <span class="text-danger">{{ $t('common.delete') }}</span>
+                        </el-dropdown-item>
+                      </template>
+                      <template v-else>
+                        <el-dropdown-item divided @click.native="restoreCiphers([scope.row.id])">
+                          {{ $t('common.restore') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item @click.native="deleteCiphers([scope.row.id])">
+                          <span class="text-danger">{{ $t('common.permanently_delete') }}</span>
+                        </el-dropdown-item>
+                      </template>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </template>
+                <template v-else>
+                  <el-dropdown trigger="click" :hide-on-click="false">
+                    <button class="btn btn-icon btn-xs hover:bg-black-400">
+                      <i class="fas fa-ellipsis-h" />
+                    </button>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item @click.native="acceptShareInvitation(scope.row)">
+                        {{ $t('common.accept') }}
                       </el-dropdown-item>
-                    </template>
-                    <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.SecureNote">
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.notes"
-                        v-clipboard:success="clipboardSuccessHandler"
-                        divided
-                      >
-                        {{ $t('common.copy') }} {{ $t('common.note') }}
+                      <el-dropdown-item @click.native="declineShareInvitation(scope.row)">
+                        {{ $t('common.decline') }}
                       </el-dropdown-item>
-                    </template>
-                    <template v-if="!scope.row.isDeleted">
-                      <el-dropdown-item divided @click.native="cloneCipher(scope.row)">
-                        {{ $t('common.clone') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item
-                        @click.native="shareItem(scope.row)"
-                      >
-                        {{ $t('common.share') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item @click.native="moveFolders([scope.row.id])">
-                        {{ $t('common.move_folder') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item
-                        v-if="scope.row.organizationId && canManageTeamFolder"
-                        divided
-                        @click.native="shareItem(scope.row)"
-                      >
-                        {{ $t('common.collections') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item divided @click.native="moveTrashCiphers([scope.row.id])">
-                        <span class="text-danger">{{ $t('common.delete') }}</span>
-                      </el-dropdown-item>
-                    </template>
-                    <template v-else>
-                      <el-dropdown-item divided @click.native="restoreCiphers([scope.row.id])">
-                        {{ $t('common.restore') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item @click.native="deleteCiphers([scope.row.id])">
-                        <span class="text-danger">{{ $t('common.permanently_delete') }}</span>
-                      </el-dropdown-item>
-                    </template>
-                  </el-dropdown-menu>
-                </el-dropdown>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </template>
               </div>
             </template>
           </el-table-column>
@@ -574,56 +429,6 @@
     <ShareCipher ref="shareCipher" />
     <ShareFolder ref="shareFolder" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
-    <!-- <div class="fixed bottom-[50px] right-[55px]">
-      <el-popover
-        v-if="['vault'].includes(routeName)"
-        placement="right-end"
-        width="200"
-        trigger="click"
-        popper-class="!p-0"
-      >
-        <div class="text-black">
-          <div class="px-5 pt-5 text-xs">
-            {{ $t('common.add') }}
-          </div>
-          <ul class="el-dropdown-menu !static !border-0 !shadow-none">
-            <li
-              v-if="getRouteBaseName() ==='vault'"
-              class="el-dropdown-menu__item font-semibold !text-black"
-              @click="addEditFolder({}, true)"
-            >
-              {{ $t('data.folders.add_folder') }}
-            </li>
-            <li
-              v-if="getRouteBaseName() ==='vault' && canCreateTeamFolder"
-              class="el-dropdown-menu__item font-semibold !text-black"
-              @click="addEditTeamFolder({})"
-            >
-              {{ $t('data.folders.add_team_folder') }}
-            </li>
-            <li
-              class="el-dropdown-menu__item font-semibold !text-black"
-              @click="chooseCipherType"
-            >
-              {{ $t('data.ciphers.add_item') }}
-            </li>
-          </ul>
-        </div>
-        <button
-          slot="reference"
-          class="btn btn-fab rounded-full flex items-center justify-center btn-primary"
-        >
-          <i class="fas fa-plus text-[24px]" />
-        </button>
-      </el-popover>
-      <button
-        v-else
-        class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
-        @click="handleAddButton"
-      >
-        <i class="fas fa-plus text-[24px]" />
-      </button>
-    </div> -->
   </div>
 </template>
 
@@ -689,33 +494,6 @@ export default {
       publicKey: '',
       indexing: false,
       index: null,
-      menuVault: [
-        {
-          label: 'all',
-          routeName: 'vault',
-          icon: 'all'
-        },
-        {
-          label: 'passwords',
-          routeName: 'passwords',
-          icon: 'passwords'
-        },
-        {
-          label: 'notes',
-          routeName: 'notes',
-          icon: 'notes'
-        },
-        {
-          label: 'cards',
-          routeName: 'cards',
-          icon: 'cards'
-        },
-        {
-          label: 'identities',
-          routeName: 'identities',
-          icon: 'identities'
-        }
-      ],
       menuShares: [
         {
           label: 'shared_with_you',
@@ -724,17 +502,20 @@ export default {
         {
           label: 'your_shares',
           routeName: 'shares-your-shares'
-        },
-        {
-          label: 'requests',
-          routeName: 'shares-requests'
         }
       ],
       dataRendered: [],
       lastIndex: 0,
       options: ['Login', 'SecureNote', 'Card', 'Identity'],
       selectedType: 'Login',
-      viewFolder: false
+      viewFolder: false,
+      shareInvitationStatus: {
+        invited: 'Pending',
+        accepted: 'Accepted',
+        confirmed: 'Confirmed',
+        shared: 'Shared',
+        waiting: 'Waiting for confirmation'
+      }
     }
   },
   computed: {
@@ -787,9 +568,9 @@ export default {
       if (this.getRouteBaseName() === 'vault') {
         return this.folders && !this.folders.length && !haveCipher
       }
-      if (this.getRouteBaseName() === 'shares') {
-        return this.collections && !this.collections.length
-      }
+      // if (this.getRouteBaseName() === 'shares') {
+      //   return this.collections && !this.collections.length
+      // }
       if (this.getRouteBaseName() === 'vault-folders-folderId') {
         return false
       }
@@ -811,10 +592,6 @@ export default {
   },
   async mounted () {
     this.context = 'VueContext'
-    // const shareKey = await this.$cryptoService.makeShareKey()
-    // const orgKey = await this.$cryptoService.getOrgKey('fdvwsd')
-    // console.log(shareKey)
-    // console.log(orgKey.key)
     window.onscroll = () => {
       const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
 
@@ -830,18 +607,15 @@ export default {
     allCiphers: {
       async get () {
         this.loading = true
-        // let result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
         let result = await this.$cipherService.getAllDecrypted()
         // remove ciphers generated by authenticator
         result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
         return result
-        // return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
       },
       watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
     },
     organizations: {
       async get () {
-        this.loading = true
         const result = await this.$userService.getAllOrganizations()
         return result
       },
@@ -852,15 +626,30 @@ export default {
         const deletedFilter = c => {
           return c.isDeleted === this.deleted
         }
-        if (this.allCiphers) {
-          const result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-          // remove ciphers generated by authenticator
-          // result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
-          this.dataRendered = result.slice(0, 50)
-          // return result
-          return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+        let result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+        if (this.getRouteBaseName() === 'shares') {
+          result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)
+          const invitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
+          result = invitations.concat(result)
+        } else if (this.getRouteBaseName() === 'shares-your-shares') {
+          const myShare = await this.$axios.$get('cystack_platform/pm/sharing/my_share') || []
+          result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type === 0)
+          const resultMapping = []
+          result.forEach(item => {
+            const org = find(myShare, e => e.organization_id === item.organizationId) || {}
+            const members = org.members || []
+            members.forEach(member => {
+              resultMapping.push({
+                ...item,
+                user: member
+              })
+            })
+          })
+          result = resultMapping
         }
-        return []
+        this.dataRendered = result.slice(0, 50)
+        this.loading = false
+        return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
       },
       watch: ['allCiphers']
     },
@@ -887,47 +676,6 @@ export default {
         return collections
       },
       watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
-    },
-    weakPasswordScores: {
-      async get () {
-        const weakPasswordScores = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
-        if (this.getRouteBaseName() === 'vault') {
-          // const allCiphers = await this.$cipherService.getAllDecrypted()
-          const allCiphers = this.allCiphers
-          const isUserNameNotEmpty = c => {
-            return c.login.username != null && c.login.username.trim() !== ''
-          }
-          allCiphers.forEach(c => {
-            if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted || c.organizationId) {
-              return
-            }
-            const hasUserName = isUserNameNotEmpty(c)
-            let userInput = []
-            if (hasUserName) {
-              const atPosition = c.login.username.indexOf('@')
-              if (atPosition > -1) {
-                userInput = userInput.concat(
-                  c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
-                  .filter(i => i.length >= 3)
-              } else {
-                userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
-                  .filter(i => i.length >= 3)
-              }
-            }
-            const result = this.$passwordGenerationService.passwordStrength(c.login.password,
-              userInput.length > 0 ? userInput : null)
-            weakPasswordScores[result.score]++
-          })
-          await this.$axios.$put('/cystack_platform/pm/users/me', {
-            scores: weakPasswordScores
-          })
-        }
-        if (!this.$store.state.syncing) {
-          this.loading = false
-        }
-        return weakPasswordScores
-      },
-      watch: ['allCiphers']
     }
   },
   methods: {
@@ -1128,11 +876,22 @@ export default {
         return false
       })
     },
-    confirmDialog (type) {
-      this.$refs.chooseCipherType.confirmDialog(type)
-      this.dialogVisible = false
+    getSharedInvitations () {
+      this.loading = true
+      this.$axios.$get('cystack_platform/pm/sharing/invitations')
+        .then(res => {
+          this.sharedInvitations = res
+          this.loading = false
+        })
+    },
+    async acceptShareInvitation (cipher) {
+      try {
+        await this.$axios.$put(`cystack_platform/pm/sharing/invitations/${cipher.id}`, { status: 'accept' })
+        this.notify(this.$t('data.notifications.accept_invitation_success'), 'success')
+      } catch (e) {
+        this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')
+      }
     }
-
   }
 }
 </script>

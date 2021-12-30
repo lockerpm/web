@@ -1,12 +1,12 @@
 <template>
-  <ListCipher route-name="shares" :filter="c => c.organizationId" />
+  <ListSharedCipher route-name="shares" :filter="c => c.organizationId" />
 </template>
 
 <script>
-import ListCipher from '../../components/cipher/ListCipher'
+import ListSharedCipher from '../../components/cipher/ListSharedCipher'
 export default {
   components: {
-    ListCipher
+    ListSharedCipher
   },
   mounted () {
   },
