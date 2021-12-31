@@ -316,7 +316,7 @@
                         {{ $t('common.edit') }}
                       </el-dropdown-item>
                       <el-dropdown-item @click.native="stopSharing(scope.row)">
-                        {{ $t('common.stop_sharing') }}
+                        {{ $t('data.ciphers.stop_sharing') }}
                       </el-dropdown-item>
                     </template>
                   </el-dropdown-menu>
@@ -340,8 +340,48 @@
     <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" />
     <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" />
     <ShareCipher ref="shareCipher" :cipher-options="allCiphers" />
+    <EditSharedCipher ref="editSharedCipher" />
     <ShareFolder ref="shareFolder" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
+    <el-dialog
+      :visible.sync="dialogConfirmVisible"
+      width="435px"
+      destroy-on-close
+      top="15vh"
+      custom-class="locker-dialog"
+      :close-on-click-modal="false"
+    >
+      <div slot="title">
+        <div class="text-head-5 text-black-700 font-semibold truncate">
+          {{ $t('data.notifications.fingerprint_title') }}
+        </div>
+      </div>
+      <div class="text-left">
+        <div class="text-head-6 mb-4">{{ $t('data.notifications.fingerprint_description_1') }}</div>
+        <div class="text-danger-400 bg-black-200 bg-opacity-50 rounded px-4 py-2 mb-4">
+          {{ userFingerPrint }}
+        </div>
+        <div class="text-sm">{{ $t('data.notifications.fingerprint_description_2') }}</div>
+      </div>
+      <div slot="footer" class="dialog-footer flex items-center text-left">
+        <div class="flex-grow" />
+        <div>
+          <button
+            class="btn btn-default"
+            @click="dialogConfirmVisible = false"
+          >
+            {{ $t('common.cancel') }}
+          </button>
+          <button
+            class="btn btn-primary"
+            :disabled="loadingConfirm"
+            @click="confirmUser(selectedUser)"
+          >
+            {{ $t('common.confirm') }}
+          </button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -358,6 +398,7 @@ import AddEditTeamFolder from '../folder/AddEditTeamFolder'
 import AddEditTeamFolderUsers from '../folder/AddEditTeamFolderUsers'
 import AddEditTeamFolderGroups from '../folder/AddEditTeamFolderGroups'
 import ShareCipher from '../../components/cipher/ShareCipher'
+import EditSharedCipher from '../../components/cipher/EditSharedCipher'
 import ShareFolder from '../../components/folder/ShareFolder'
 import MoveFolder from '../folder/MoveFolder'
 import NoCipher from '../../components/cipher/NoCipher'
@@ -365,6 +406,7 @@ import { CipherType } from '../../jslib/src/enums'
 import Vnodes from '../../components/Vnodes'
 import ChooseCipherType from '../../components/cipher/ChooseCipherType'
 import { CipherRequest } from '../../jslib/src/models/request'
+import { Utils } from '../../jslib/src/misc/utils.ts'
 export default {
   components: {
     ChooseCipherType,
@@ -372,6 +414,7 @@ export default {
     AddEditFolder,
     AddEditTeamFolder,
     ShareCipher,
+    EditSharedCipher,
     ShareFolder,
     MoveFolder,
     NoCipher,
@@ -429,7 +472,11 @@ export default {
         confirmed: 'Confirmed',
         shared: 'Shared',
         waiting: 'Waiting for confirmation'
-      }
+      },
+      userFingerPrint: '',
+      selectedUser: {},
+      loadingConfirm: false,
+      dialogConfirmVisible: false
     }
   },
   computed: {
@@ -444,9 +491,6 @@ export default {
         return find(this.collections, e => e.id === this.$route.params.tfolderId) || { name: 'Unassigned Folder' }
       }
       return {}
-    },
-    filteredCollection () {
-      return groupBy(this.collections, 'organizationId')
     },
     orderString () {
       return `${this.orderField}_${this.orderDirection}`
@@ -793,7 +837,7 @@ export default {
       }
     },
     editShareType (cipher) {
-      console.log(cipher)
+      this.$refs.editSharedCipher.openDialog(cipher)
     },
     async stopSharing (cipher) {
       try {
@@ -823,6 +867,50 @@ export default {
       } catch (error) {
         this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
         console.log(error)
+      }
+    },
+    async generateOrgKey (orgId) {
+      const pk = Utils.fromB64ToArray(this.publicKey)
+      const orgKey = await this.$cryptoService.getOrgKey(orgId)
+      const key = await this.$cryptoService.rsaEncrypt(orgKey.key, pk.buffer)
+      return key.encryptedString
+    },
+    async getPublicKey (email) {
+      this.userFingerPrint = ''
+      const { public_key: publicKey } = await this.$axios.$post('cystack_platform/pm/sharing/public_key', { email })
+      return publicKey
+    },
+    async promptConfirmUser (user) {
+      this.publicKey = await this.getPublicKey(user)
+      const publicKey = Utils.fromB64ToArray(this.publicKey)
+      const fingerprint = await this.$cryptoService.getFingerprint(user.id, publicKey.buffer)
+      if (fingerprint) {
+        this.userFingerPrint = fingerprint.join('-')
+      }
+      this.dontAskAgain = await this.$storageService.get('autoConfirmFingerprints')
+      this.openDialogConfirm()
+    },
+    openDialogConfirm () {
+      this.dialogConfirmVisible = true
+    },
+    closeDialogConfirm () {
+      this.dialogConfirmVisible = false
+    },
+    async confirmShare (cipher) {
+      try {
+        this.loadingConfirm = true
+        const key = await this.generateOrgKey(cipher.organizationId)
+        await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${cipher.user.id}`, {
+          key
+        })
+        this.closeDialogConfirm()
+        this.getUsers()
+        this.notify(this.$t('data.notifications.confirm_member_success'), 'success')
+      } catch (e) {
+        console.log(e)
+        this.notify(this.$t('data.notifications.confirm_member_failed'), 'warning')
+      } finally {
+        this.loadingConfirm = false
       }
     },
     newShare () {

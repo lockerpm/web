@@ -207,7 +207,7 @@ export default {
   props: {
     cipherOptions: {
       type: Array,
-      default: new Array([])
+      default: () => new Array([])
     }
   },
   data () {
@@ -255,7 +255,7 @@ export default {
     },
     roleOptions () {
       return [
-        { label: 'Only Fill', value: 'member-hide_password' },
+        { label: 'Only Fill', value: 'member-hide_passwords' },
         { label: 'View', value: 'member' },
         { label: 'Edit', value: 'admin' }
       ]
@@ -410,7 +410,7 @@ export default {
 
         const cipherEnc = await this.$cipherService.encrypt(cipher, orgKey)
         const data = new CipherRequest(cipherEnc)
-        if (this.user.role === 'member-hide_password') {
+        if (this.user.role === 'member-hide_passwords') {
           this.user.role = 'member'
           this.user.hide_passwords = true
         }
