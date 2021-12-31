@@ -33,6 +33,14 @@
               </span>
             </template>
           </div>
+          <template v-if="getRouteBaseName()=='shares-your-shares'">
+            <div class="mx-6 text-head-4"> | </div>
+            <div>
+              <button class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold" @click="newShare">
+                <div class="break-normal">New Share</div>
+              </button>
+            </div>
+          </template>
         </div>
         <div v-if="ciphers && !viewFolder" class="uppercase text-head-6">
           <span class="text-primary font-semibold">{{ ciphers.length }}</span> {{ $tc('type.0', ciphers.length) }}
@@ -44,95 +52,6 @@
       <!-- Overview end -->
 
       <!-- Details -->
-
-      <!-- List Shared Folder -->
-      <div
-        v-if="getRouteBaseName() === 'vault' && collections && viewFolder"
-        class="mb-10"
-      >
-        <client-only>
-          <template v-for="(value, key) in filteredCollection">
-            <div class="mb-5 font-medium">
-              {{ getTeam(teams, key).name }}
-            </div>
-            <div :key="key" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
-              <div
-                v-for="item in value"
-                v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
-                :key="item.id"
-                class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                :class="{'border-primary': selectedFolder.id === item.id}"
-                :title="`${item.name} (${item.ciphersCount})`"
-                @click="routerCollection(item)"
-                @contextmenu.prevent="canManageFolder(teams, item) ? $refs.menuTeam.open($event, item) : null"
-              >
-                <div class="flex items-center">
-                  <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
-                  <div class="font-semibold truncate select-none">
-                    {{ item.name }}
-                    <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
-                  </div>
-                </div>
-              </div>
-              <div
-                v-if="searchText.length<=1||(searchText.length>1&&countUnassignedItems(ciphers, key)>0)"
-                class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                :class="{'border-primary': selectedFolder.id === 'unassigned'}"
-                @click="routerCollection({id: 'unassigned', organizationId: key})"
-              >
-                <div class="flex items-center">
-                  <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
-                  <div class="font-semibold truncate select-none">
-                    {{ $t('data.ciphers.unassigned_folder') }}
-                    <div class="text-black-500">{{ countUnassignedItems(ciphers, key) }} {{ countUnassignedItems(ciphers, key)>1?'items':'item' }}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="px-4 py-4 flex items-center cursor-pointer rounded border border-dashed border-[#E6E6E8] hover:border-primary justify-center font-semibold" @click="addEditTeamFolder">
-                <i class="el-icon-circle-plus-outline text-lg" />
-                <div class="ml-3 break-all">New Team folder</div>
-              </div>
-            </div>
-          </template>
-          <component
-            :is="context"
-            ref="menuTeam"
-            class="el-dropdown-menu"
-            @open="openContextTeamFolder"
-          >
-            <template #default>
-              <li
-                class="el-dropdown-menu__item w-[200px]"
-                @click.prevent="addEditTeamFolder(selectedFolder, false)"
-              >
-                {{ $t('common.rename') }}
-              </li>
-              <li
-                v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
-                class="el-dropdown-menu__item w-[200px]"
-                @click.prevent="putTeamFolderUsers(selectedFolder)"
-              >
-                {{ $t('data.groups.user_access') }}
-              </li>
-              <li
-                v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
-                class="el-dropdown-menu__item w-[200px]"
-                @click.prevent="putTeamFolderGroups(selectedFolder)"
-              >
-                {{ $t('data.folders.groups_access') }}
-              </li>
-              <li
-                class="el-dropdown-menu__item"
-                @click.prevent="deleteTeamFolder(selectedFolder)"
-              >
-                <span class="text-danger">{{ $t('common.delete') }}</span>
-              </li>
-            </template>
-          </component>
-        </client-only>
-      </div>
-      <!-- List Shared folders end -->
-
       <!-- List Ciphers -->
       <client-only v-if="!viewFolder">
         <el-table
@@ -247,7 +166,7 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{ scope.row.user.full_name || 'N/A' }}</span>
+                <span>{{ scope.row.user?scope.row.user.email : 'N/A' }}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -258,6 +177,7 @@
               <template slot-scope="scope">
                 <!-- <span>{{ scope.row.user.status || 'N/A' }}</span> -->
                 <span
+                  v-if="scope.row.user"
                   class="label"
                   :class="{'label-primary-light': scope.row.user.status === 'confirmed',
                            'label-success-light': scope.row.user.status === 'accepted',
@@ -276,7 +196,7 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{ scope.row.user.share_type || 'N/A' }}</span>
+                <span>{{ scope.row.user? scope.row.user.share_type : 'N/A' }}</span>
               </template>
             </el-table-column>
           </template>
@@ -307,7 +227,7 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{ scope.row.role || 'N/A' }}</span>
+                <span>{{ scope.row.share_type || 'N/A' }}</span>
               </template>
             </el-table-column>
           </template>
@@ -317,20 +237,20 @@
           >
             <template slot-scope="scope">
               <div class="col-actions">
-                <template v-if="scope.row.status !== 'invited'">
-                  <button
+                <!-- <button
                     v-if="scope.row.login.canLaunch"
                     class="btn btn-icon btn-xs hover:bg-black-400"
                     :title="$t('common.go_to_website')"
                     @click="openNewTab(scope.row.login.uri)"
                   >
                     <i class="fas fa-external-link-square-alt" />
+                  </button> -->
+                <el-dropdown trigger="click" :hide-on-click="false">
+                  <button class="btn btn-icon btn-xs hover:bg-black-400">
+                    <i class="fas fa-ellipsis-h" />
                   </button>
-                  <el-dropdown v-if="canManageItem(teams, scope.row)" trigger="click" :hide-on-click="false">
-                    <button class="btn btn-icon btn-xs hover:bg-black-400">
-                      <i class="fas fa-ellipsis-h" />
-                    </button>
-                    <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-menu slot="dropdown">
+                    <template v-if="scope.row.status !== 'invited' && getRouteBaseName() === 'shares'">
                       <el-dropdown-item @click.native="addEdit(scope.row)">
                         {{ $t('common.edit') }}
                       </el-dropdown-item>
@@ -371,43 +291,36 @@
                         <el-dropdown-item @click.native="moveFolders([scope.row.id])">
                           {{ $t('common.move_folder') }}
                         </el-dropdown-item>
-                        <el-dropdown-item
-                          v-if="scope.row.organizationId && canManageTeamFolder"
-                          divided
-                          @click.native="shareItem(scope.row)"
-                        >
-                          {{ $t('common.collections') }}
-                        </el-dropdown-item>
-                        <el-dropdown-item divided @click.native="moveTrashCiphers([scope.row.id])">
+                      </template>
+                      <template v-if="!scope.row.isDeleted">
+                        <el-dropdown-item divided @click.native="leaveShare(scope.row)">
                           <span class="text-danger">{{ $t('common.delete') }}</span>
                         </el-dropdown-item>
                       </template>
-                      <template v-else>
-                        <el-dropdown-item divided @click.native="restoreCiphers([scope.row.id])">
-                          {{ $t('common.restore') }}
-                        </el-dropdown-item>
-                        <el-dropdown-item @click.native="deleteCiphers([scope.row.id])">
-                          <span class="text-danger">{{ $t('common.permanently_delete') }}</span>
-                        </el-dropdown-item>
-                      </template>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </template>
-                <template v-else>
-                  <el-dropdown trigger="click" :hide-on-click="false">
-                    <button class="btn btn-icon btn-xs hover:bg-black-400">
-                      <i class="fas fa-ellipsis-h" />
-                    </button>
-                    <el-dropdown-menu slot="dropdown">
+                    </template>
+                    <template v-else-if="getRouteBaseName()==='shares'">
                       <el-dropdown-item @click.native="acceptShareInvitation(scope.row)">
                         {{ $t('common.accept') }}
                       </el-dropdown-item>
-                      <el-dropdown-item @click.native="declineShareInvitation(scope.row)">
-                        {{ $t('common.decline') }}
+                      <el-dropdown-item @click.native="rejectShareInvitation(scope.row)">
+                        {{ $t('common.reject') }}
                       </el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </template>
+                    </template>
+                    <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user.status === 'invited'">
+                      <el-dropdown-item @click.native="stopSharing(scope.row)">
+                        {{ $t('common.cancel') }}
+                      </el-dropdown-item>
+                    </template>
+                    <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user.status === 'confirmed'">
+                      <el-dropdown-item @click.native="editShareType(scope.row)">
+                        {{ $t('common.edit') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item @click.native="stopSharing(scope.row)">
+                        {{ $t('common.stop_sharing') }}
+                      </el-dropdown-item>
+                    </template>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </div>
             </template>
           </el-table-column>
@@ -426,7 +339,7 @@
     <AddEditTeamFolder ref="addEditTeamFolder" />
     <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" />
     <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" />
-    <ShareCipher ref="shareCipher" />
+    <ShareCipher ref="shareCipher" :cipher-options="allCiphers" />
     <ShareFolder ref="shareFolder" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
   </div>
@@ -451,6 +364,7 @@ import NoCipher from '../../components/cipher/NoCipher'
 import { CipherType } from '../../jslib/src/enums'
 import Vnodes from '../../components/Vnodes'
 import ChooseCipherType from '../../components/cipher/ChooseCipherType'
+import { CipherRequest } from '../../jslib/src/models/request'
 export default {
   components: {
     ChooseCipherType,
@@ -648,34 +562,12 @@ export default {
           result = resultMapping
         }
         this.dataRendered = result.slice(0, 50)
-        this.loading = false
+        if (!this.$store.state.syncing) {
+          this.loading = false
+        }
         return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
       },
       watch: ['allCiphers']
-    },
-    folders: {
-      async get () {
-        let folders = await this.$folderService.getAllDecrypted() || []
-        folders = folders.filter(f => f.id)
-        folders.forEach(f => {
-          const ciphers = this.ciphers && (this.ciphers.filter(c => c.folderId === f.id) || [])
-          f.ciphersCount = ciphers && ciphers.length
-        })
-        return folders
-      },
-      watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
-    },
-    collections: {
-      async get () {
-        let collections = await this.$collectionService.getAllDecrypted() || []
-        collections = collections.filter(f => f.id)
-        collections.forEach(f => {
-          const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
-          f.ciphersCount = ciphers && ciphers.length
-        })
-        return collections
-      },
-      watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
     }
   },
   methods: {
@@ -891,6 +783,50 @@ export default {
       } catch (e) {
         this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')
       }
+    },
+    async rejectShareInvitation (cipher) {
+      try {
+        await this.$axios.$put(`cystack_platform/pm/sharing/invitations/${cipher.id}`, { status: 'reject' })
+        this.notify(this.$t('data.notifications.accept_invitation_success'), 'success')
+      } catch (e) {
+        this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')
+      }
+    },
+    editShareType (cipher) {
+      console.log(cipher)
+    },
+    async stopSharing (cipher) {
+      try {
+        let memberId = null
+        if (cipher.user) {
+          memberId = cipher.user.id
+          delete cipher.user
+        }
+        const personalKey = await this.$cryptoService.getEncKey()
+        const cipherEnc = await this.$cipherService.encrypt(cipher, personalKey)
+        const data = new CipherRequest(cipherEnc)
+        console.log(data)
+        await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, {
+          folder: null,
+          cipher: { ...data, id: cipher.id }
+        })
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'success')
+      } catch (error) {
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
+        console.log(error)
+      }
+    },
+    async leaveShare (cipher) {
+      try {
+        await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/leave`)
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'success')
+      } catch (error) {
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
+        console.log(error)
+      }
+    },
+    newShare () {
+      this.$refs.shareCipher.openDialog({})
     }
   }
 }

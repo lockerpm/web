@@ -87,13 +87,40 @@
   >
     <div slot="title">
       <div class="flex items-center">
-        <div class="text-[34px] mr-3">
-          <Vnodes :vnodes="getIconCipher(cipher, 20)" />
-        </div>
-        <div class="text-black-700 font-semibold">{{ cipher.name }}</div>
+        <template v-if="cipher.id">
+          <div class="text-[34px] mr-3">
+            <Vnodes :vnodes="getIconCipher(cipher, 20)" />
+          </div>
+          <div class="text-black-700 font-semibold">{{ cipher.name }}</div>
+        </template>
+        <template v-else>
+          <div class="text-black-700 font-semibold">New share</div>
+        </template>
       </div>
     </div>
     <div class="text-left">
+      <div v-if="!cipher.id" class="grid grid-cols-2 gap-x-2 mb-4">
+        <div class="w-full">
+          <div class="text-black-700 text-head-6 font-semibold">
+            {{ $t('data.ciphers.choose_file_folder') }}
+          </div>
+          <div>
+            {{ $t('data.ciphers.choose_file_folder_desc') }}
+          </div>
+        </div>
+        <InputSelect
+          v-model="ciphers"
+          placeholder="Search Inventory ..."
+          :multiple="true"
+          :collapse-tags="true"
+          :filterable="true"
+          class="w-full !mb-4"
+          :options="cipherOptions"
+          :key-label="'name'"
+          :key-value="'id'"
+          @change="(v) => ciphers = v"
+        />
+      </div>
       <div class="grid grid-cols-2 gap-x-2 mb-4">
         <div class="w-full">
           <div class="text-black-700 text-head-6 font-semibold">
@@ -134,7 +161,7 @@
         </div>
         <InputSelect
           label="Share type"
-          initial-value="admin"
+          initial-value="member"
           class="w-full !mb-4"
           :options="roleOptions"
           @change="(v) => user.role = v"
@@ -156,7 +183,7 @@
         <button
           class="btn btn-primary"
           :disabled="loading"
-          @click="shareItem(cipher)"
+          @click="cipher.id?shareItem(cipher):shareMultiple()"
         >
           {{ isBelongToTeam ? $t('common.update') : $t('common.share') }}
         </button>
@@ -177,6 +204,12 @@ import { Utils } from '../../jslib/src/misc/utils.ts'
 
 export default {
   components: { InputSelectTeam, Vnodes, InputSelect, InputText },
+  props: {
+    cipherOptions: {
+      type: Array,
+      default: new Array([])
+    }
+  },
   data () {
     return {
       CipherType,
@@ -203,7 +236,8 @@ export default {
         role: 'admin',
         hide_passwords: false
       },
-      members: []
+      members: [],
+      ciphers: []
     }
   },
   computed: {
@@ -245,6 +279,7 @@ export default {
       await this.handleChangeOrg(this.cipher.organizationId)
     },
     closeDialog () {
+      this.members = []
       this.dialogVisible = false
     },
     async shareCipher (cipher) {
@@ -362,30 +397,38 @@ export default {
       return key.encryptedString
     },
     async shareItem (cipher) {
-      const shareKey = await this.$cryptoService.makeShareKey()
-      const cipherEnc = await this.$cipherService.encrypt(cipher, shareKey[1])
-      const data = new CipherRequest(cipherEnc)
       try {
         this.loading = true
+        let orgKey = null
+        let shareKey = null
+        if (cipher.organizationId) { // check if the cipher is shared
+          orgKey = await this.$cryptoService.getOrgKey(cipher.organizationId)
+        } else {
+          shareKey = await this.$cryptoService.makeShareKey()
+          orgKey = shareKey[1]
+        }
+
+        const cipherEnc = await this.$cipherService.encrypt(cipher, orgKey)
+        const data = new CipherRequest(cipherEnc)
         if (this.user.role === 'member-hide_password') {
           this.user.role = 'member'
           this.user.hide_passwords = true
         }
         const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
         this.members = this.members.concat(emails)
+        this.user.username = ''
         const members = await Promise.all(this.members.map(async email => {
           const publicKey = await this.getPublicKey(email)
-          const key = await this.generateMemberKey(publicKey, shareKey[1])
           return {
             username: email,
             role: this.user.role,
             hide_passwords: this.user.hide_passwords,
-            key
+            key: publicKey ? await this.generateMemberKey(publicKey, orgKey) : null
           }
         }))
         const url = 'cystack_platform/pm/sharing'
         await this.$axios.$put(url, {
-          sharing_key: shareKey[0].encryptedString,
+          sharing_key: shareKey ? shareKey[0].encryptedString : null,
           cipher: { id: cipher.id, ...data },
           members
         })
@@ -398,6 +441,9 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    shareMultiple () {
+      console.log(this.ciphers)
     }
   }
 }

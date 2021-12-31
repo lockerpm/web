@@ -812,9 +812,9 @@ export default {
   async mounted () {
     this.context = 'VueContext'
     // const shareKey = await this.$cryptoService.makeShareKey()
-    // const orgKey = await this.$cryptoService.getOrgKey('fdvwsd')
+    // const orgKey = await this.$cryptoService.getOrgKey('6882534693417385984')
     // console.log(shareKey)
-    // console.log(orgKey.key)
+    // console.log(orgKey)
     window.onscroll = () => {
       const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
 
