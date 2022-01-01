@@ -42,7 +42,8 @@
           </el-table-column>
           <el-table-column>
             <template slot-scope="scope">
-              {{ $moment(scope.row.date).utc().format('LLLZ') }}
+              {{ $moment(scope.row.creation_date * 1000).format('LLL') }}
+              <!-- {{ scope.row.creation_date }} -->
             </template>
           </el-table-column>
         </el-table>
@@ -75,7 +76,8 @@ export default {
         }
       },
       continuationToken: null,
-      loading: false
+      loading: false,
+      page: 1
     }
   },
   mounted () {
@@ -92,12 +94,16 @@ export default {
           params: {
             from,
             to,
-            continuation_token: this.continuationToken
+            page: this.page
           }
         })
           .then(res => {
             this.logs = this.logs.concat(res.results)
-            this.continuationToken = res.continuation_token
+            // this.continuationToken = res.continuation_token
+            this.continuationToken = res.next
+            if (this.continuationToken) {
+              this.page += 1
+            }
           })
           .finally(() => {
             this.loading = false
@@ -107,6 +113,7 @@ export default {
     handleChange (value) {
       this.continuationToken = null
       this.logs = []
+      this.page = 1
       this.getLogs()
     }
   }

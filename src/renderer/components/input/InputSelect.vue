@@ -11,7 +11,10 @@
     <label>{{ label }}<span v-if="required" class="text-danger">*</span></label>
     <el-select
       v-model="value"
+      :multiple="multiple"
+      :collapse-tags="collapseTags"
       :placeholder="placeholder"
+      :filterable="filterable"
       class="cs-select w-full"
       :disabled="disabled"
       @focus="handleFocus"
@@ -94,6 +97,18 @@ export default {
     keyLabel: {
       type: String,
       default: 'label'
+    },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    collapseTags: {
+      type: Boolean,
+      default: false
+    },
+    filterable: {
+      type: Boolean,
+      default: false
     }
   },
   data () {

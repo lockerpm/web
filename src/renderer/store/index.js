@@ -15,6 +15,7 @@ export const state = () => ({
   isDev: 'dev',
   environment: 'dev',
   loading: false,
+  syncing: false,
   userPw: {},
   isLoggedInPw: false,
   syncedCiphersToggle: false,
@@ -72,6 +73,9 @@ export const mutations = {
   },
   UPDATE_LOADING (state, loading) {
     state.loading = loading
+  },
+  UPDATE_SYNCING (state, syncing) {
+    state.syncing = syncing
   },
   UPDATE_IS_LOGGEDIN_PW (state, value) {
     state.isLoggedInPw = value
