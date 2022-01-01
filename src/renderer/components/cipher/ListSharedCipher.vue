@@ -319,6 +319,14 @@
                         {{ $t('data.ciphers.stop_sharing') }}
                       </el-dropdown-item>
                     </template>
+                    <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user.status === 'accepted'">
+                      <el-dropdown-item @click.native="promptConfirmUser(scope.row)">
+                        {{ $t('common.confirm') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item @click.native="stopSharing(scope.row)">
+                        {{ $t('common.cancel') }}
+                      </el-dropdown-item>
+                    </template>
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
@@ -375,7 +383,7 @@
           <button
             class="btn btn-primary"
             :disabled="loadingConfirm"
-            @click="confirmUser(selectedUser)"
+            @click="confirmUser(selectedCipher)"
           >
             {{ $t('common.confirm') }}
           </button>
@@ -476,7 +484,8 @@ export default {
       userFingerPrint: '',
       selectedUser: {},
       loadingConfirm: false,
-      dialogConfirmVisible: false
+      dialogConfirmVisible: false,
+      selectedCipher: {}
     }
   },
   computed: {
@@ -880,8 +889,10 @@ export default {
       const { public_key: publicKey } = await this.$axios.$post('cystack_platform/pm/sharing/public_key', { email })
       return publicKey
     },
-    async promptConfirmUser (user) {
-      this.publicKey = await this.getPublicKey(user)
+    async promptConfirmUser (cipher) {
+      this.selectedCipher = cipher
+      const user = cipher.user || {}
+      this.publicKey = await this.getPublicKey(user.email)
       const publicKey = Utils.fromB64ToArray(this.publicKey)
       const fingerprint = await this.$cryptoService.getFingerprint(user.id, publicKey.buffer)
       if (fingerprint) {

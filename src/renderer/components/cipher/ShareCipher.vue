@@ -233,7 +233,7 @@ export default {
       },
       user: {
         username: '',
-        role: 'admin',
+        role: 'member',
         hide_passwords: false
       },
       members: [],
@@ -432,18 +432,24 @@ export default {
           cipher: { id: cipher.id, ...data },
           members
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'success')
         this.closeDialog()
         this.$emit('updated-cipher')
       } catch (e) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
         console.log(e)
       } finally {
         this.loading = false
       }
     },
-    shareMultiple () {
+    async shareMultiple () {
+      const promises = []
+      this.ciphers = this.ciphers.map(cipherId => this.cipherOptions.find(cipher => cipher.id === cipherId))
       console.log(this.ciphers)
+      this.ciphers.forEach(cipher => {
+        promises.push(this.shareItem(cipher))
+      })
+      await Promise.all(promises)
     }
   }
 }
