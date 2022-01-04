@@ -1,14 +1,14 @@
 <template>
   <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
     <!-- Navigation Menu -->
-    <div class="flex mb-5 border-b border-black-400 py-3 lg:px-28 px-10">
+    <div class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10">
       <template v-if="['vault', 'passwords', 'notes', 'identities', 'cards'].includes(getRouteBaseName())">
         <nuxt-link
           v-for="(item, index) in menuVault"
           :key="index"
           :to="localeRoute({name: item.routeName})"
-          active-class="!text-primary"
-          class="text-black-600 font-bold mr-8 last:mr-0 hover:no-underline"
+          active-class="!text-black font-semibold border-b-2 border-primary pb-3"
+          class="text-black-600 mr-8 last:mr-0 hover:no-underline"
           exact
         >
           {{ $t(`sidebar.${item.label}`) }}
@@ -81,11 +81,11 @@
           <template v-if="getRouteBaseName()==='vault'">
             <div class="mx-6 text-head-4"> | </div>
             <div class="text-head-4">
-              <i v-if="!viewFolder" class="fas fa-folder-open" @click="viewFolder=true" />
-              <i v-else class="fas fa-folder" @click="viewFolder=false" />
+              <!-- <i v-if="!viewFolder" class="fas fa-folder-open" @click="viewFolder=true" /> -->
+              <i :class="viewFolder?'fas':'far'" class="fa-folder cursor-pointer" @click="viewFolder=!viewFolder" />
             </div>
           </template>
-          <template v-if="routeName!=='shares'">
+          <template v-if="!['shares', 'trash'].includes(routeName)">
             <div class="mx-6 text-head-4"> | </div>
             <div>
               <el-dropdown v-if="routeName==='vault'" trigger="click">
@@ -448,7 +448,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column
+          <!-- <el-table-column
             align="right"
             :label="$t('common.type')"
             show-overflow-tooltip
@@ -465,18 +465,18 @@
             <template slot-scope="scope">
               <span>{{ getTeam(organizations, scope.row.organizationId).name || $t('common.me') }}</span>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
             align="right"
             :label="$t('data.ciphers.updated_time')"
           >
             <template slot-scope="scope">
-              {{ $moment(scope.row.revisionDate).fromNow() }}
+              <span class="break-normal">{{ $moment(scope.row.revisionDate).fromNow() }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label=""
             align="right"
+            :label="$t('common.actions')"
           >
             <template slot-scope="scope">
               <div class="col-actions">
@@ -488,19 +488,18 @@
                 >
                   <i class="fas fa-external-link-square-alt" />
                 </button>
-                <el-dropdown v-if="canManageItem(teams, scope.row)" trigger="click" :hide-on-click="false">
-                  <button class="btn btn-icon btn-xs hover:bg-black-400">
-                    <i class="fas fa-ellipsis-h" />
+                <el-dropdown
+                  trigger="click"
+                  :hide-on-click="false"
+                >
+                  <button class="btn btn-icon btn-xs hover:text-primary hover:bg-black-400">
+                    <i class="far fa-clone" />
                   </button>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click.native="addEdit(scope.row)">
-                      {{ $t('common.edit') }}
-                    </el-dropdown-item>
-                    <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.Login">
+                    <template v-if="scope.row.type === CipherType.Login">
                       <el-dropdown-item
                         v-clipboard:copy="scope.row.login.username"
                         v-clipboard:success="clipboardSuccessHandler"
-                        divided
                       >
                         {{ $t('common.copy') }} {{ $t('common.username') }}
                       </el-dropdown-item>
@@ -511,7 +510,7 @@
                         {{ $t('common.copy') }} {{ $t('common.password') }}
                       </el-dropdown-item>
                     </template>
-                    <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.SecureNote">
+                    <template v-if="scope.row.type === CipherType.SecureNote">
                       <el-dropdown-item
                         v-clipboard:copy="scope.row.notes"
                         v-clipboard:success="clipboardSuccessHandler"
@@ -520,24 +519,32 @@
                         {{ $t('common.copy') }} {{ $t('common.note') }}
                       </el-dropdown-item>
                     </template>
-                    <template v-if="!scope.row.isDeleted">
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <button
+                  v-if="canShareItem(organizations, scope.row)"
+                  class="btn btn-icon btn-xs hover:bg-black-400"
+                  :title="$t('common.share')"
+                  @click="shareItem(scope.row)"
+                >
+                  <i class="far fa-share-square" />
+                </button>
+                <el-dropdown trigger="click" :hide-on-click="false">
+                  <button class="btn btn-icon btn-xs hover:bg-black-400">
+                    <i class="fas fa-ellipsis-h" />
+                  </button>
+                  <el-dropdown-menu slot="dropdown">
+                    <template v-if="canManageItem(organizations, scope.row)">
+                      <el-dropdown-item @click.native="addEdit(scope.row)">
+                        {{ $t('common.edit') }}
+                      </el-dropdown-item>
                       <el-dropdown-item divided @click.native="cloneCipher(scope.row)">
                         {{ $t('common.clone') }}
                       </el-dropdown-item>
-                      <el-dropdown-item
-                        @click.native="shareItem(scope.row)"
-                      >
-                        {{ $t('common.share') }}
-                      </el-dropdown-item>
+                    </template>
+                    <template v-if="!scope.row.isDeleted">
                       <el-dropdown-item @click.native="moveFolders([scope.row.id])">
                         {{ $t('common.move_folder') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item
-                        v-if="scope.row.organizationId && canManageTeamFolder"
-                        divided
-                        @click.native="shareItem(scope.row)"
-                      >
-                        {{ $t('common.collections') }}
                       </el-dropdown-item>
                       <el-dropdown-item divided @click.native="moveTrashCiphers([scope.row.id])">
                         <span class="text-danger">{{ $t('common.delete') }}</span>

@@ -1,13 +1,13 @@
 <template>
   <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
     <!-- Navigation Menu -->
-    <div class="flex mb-5 border-b border-black-400 py-3 lg:px-28 px-10">
+    <div class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10">
       <nuxt-link
         v-for="(item, index) in menuShares"
         :key="index"
         :to="localeRoute({name: item.routeName})"
-        active-class="!text-primary"
-        class="text-black-600 font-bold mr-8 last:mr-0 hover:no-underline"
+        active-class="!text-black font-semibold border-b-2 border-primary pb-3"
+        class="text-black-600 mr-8 last:mr-0 hover:no-underline"
         exact
       >
         {{ $t(`sidebar.${item.label}`) }}
@@ -152,6 +152,7 @@
           <el-table-column
             align="right"
             :label="$t('data.ciphers.updated_time')"
+            width="150"
           >
             <template slot-scope="scope">
               <span class="break-normal">
@@ -172,15 +173,16 @@
             <el-table-column
               align="right"
               :label="$t('common.status')"
+              min-width="120"
               show-overflow-tooltip
             >
               <template slot-scope="scope">
                 <!-- <span>{{ scope.row.user.status || 'N/A' }}</span> -->
                 <span
                   v-if="scope.row.user"
-                  class="label"
+                  class="label whitespace-normal"
                   :class="{'label-primary-light': scope.row.user.status === 'confirmed',
-                           'label-success-light': scope.row.user.status === 'accepted',
+                           'label-info': scope.row.user.status === 'accepted',
                            'label-warning-light': scope.row.user.status === 'invited',
                            'label-danger-light': scope.row.user.status === 'expired',
                            'label-success': !scope.row.user.status
@@ -204,14 +206,15 @@
             <el-table-column
               align="right"
               :label="$t('common.status')"
+              min-width="120"
               show-overflow-tooltip
             >
               <template slot-scope="scope">
                 <!-- <span>{{ scope.row.status || 'Shared' }}</span> -->
                 <span
-                  class="label"
+                  class="label whitespace-normal"
                   :class="{'label-primary-light': scope.row.status === 'confirmed',
-                           'label-success-light': scope.row.status === 'accepted',
+                           'label-info': scope.row.status === 'accepted',
                            'label-warning-light': scope.row.status === 'invited',
                            'label-danger-light': scope.row.status === 'expired',
                            'label-success': !scope.row.status
@@ -250,60 +253,69 @@
                     <i class="fas fa-ellipsis-h" />
                   </button>
                   <el-dropdown-menu slot="dropdown">
-                    <template v-if="scope.row.status !== 'invited' && getRouteBaseName() === 'shares'">
-                      <el-dropdown-item @click.native="addEdit(scope.row)">
-                        {{ $t('common.edit') }}
-                      </el-dropdown-item>
-                      <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.Login">
-                        <el-dropdown-item
-                          v-clipboard:copy="scope.row.login.username"
-                          v-clipboard:success="clipboardSuccessHandler"
-                          divided
-                        >
-                          {{ $t('common.copy') }} {{ $t('common.username') }}
+                    <template v-if="!['invited', 'accepted'].includes(scope.row.status) && getRouteBaseName() === 'shares'">
+                      <template v-if="canManageItem(organizations, scope.row)">
+                        <el-dropdown-item @click.native="addEdit(scope.row)">
+                          {{ $t('common.edit') }}
                         </el-dropdown-item>
                         <el-dropdown-item
-                          v-clipboard:copy="scope.row.login.password"
-                          v-clipboard:success="clipboardSuccessHandler"
-                        >
-                          {{ $t('common.copy') }} {{ $t('common.password') }}
-                        </el-dropdown-item>
-                      </template>
-                      <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.SecureNote">
-                        <el-dropdown-item
-                          v-clipboard:copy="scope.row.notes"
-                          v-clipboard:success="clipboardSuccessHandler"
-                          divided
-                        >
-                          {{ $t('common.copy') }} {{ $t('common.note') }}
-                        </el-dropdown-item>
-                      </template>
-                      <template v-if="!scope.row.isDeleted">
-                        <el-dropdown-item divided @click.native="cloneCipher(scope.row)">
-                          {{ $t('common.clone') }}
-                        </el-dropdown-item>
-                        <el-dropdown-item
-                          v-if="!scope.row.organizationId && canManageTeamFolder"
+                          v-if="canShareItem(organizations, scope.row)"
                           @click.native="shareItem(scope.row)"
                         >
                           {{ $t('common.share') }}
                         </el-dropdown-item>
-                        <el-dropdown-item @click.native="moveFolders([scope.row.id])">
+                      </template>
+                      <template v-if="canViewItem(organizations, scope.row)">
+                        <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.Login">
+                          <el-dropdown-item
+                            v-clipboard:copy="scope.row.login.username"
+                            v-clipboard:success="clipboardSuccessHandler"
+                            divided
+                          >
+                            {{ $t('common.copy') }} {{ $t('common.username') }}
+                          </el-dropdown-item>
+                          <el-dropdown-item
+                            v-clipboard:copy="scope.row.login.password"
+                            v-clipboard:success="clipboardSuccessHandler"
+                          >
+                            {{ $t('common.copy') }} {{ $t('common.password') }}
+                          </el-dropdown-item>
+                        </template>
+                        <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.SecureNote">
+                          <el-dropdown-item
+                            v-clipboard:copy="scope.row.notes"
+                            v-clipboard:success="clipboardSuccessHandler"
+                            divided
+                          >
+                            {{ $t('common.copy') }} {{ $t('common.note') }}
+                          </el-dropdown-item>
+                        </template>
+                        <el-dropdown-item @click.native="cloneCipher(scope.row)">
+                          {{ $t('common.clone') }}
+                        </el-dropdown-item>
+                      </template>
+                      <template v-if="!scope.row.isDeleted">
+                        <el-dropdown-item divided @click.native="moveFolders([scope.row.id])">
                           {{ $t('common.move_folder') }}
                         </el-dropdown-item>
                       </template>
                       <template v-if="!scope.row.isDeleted">
                         <el-dropdown-item divided @click.native="leaveShare(scope.row)">
-                          <span class="text-danger">{{ $t('common.delete') }}</span>
+                          <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
                         </el-dropdown-item>
                       </template>
                     </template>
-                    <template v-else-if="getRouteBaseName()==='shares'">
+                    <template v-else-if="scope.row.status === 'invited' && getRouteBaseName()==='shares'">
                       <el-dropdown-item @click.native="acceptShareInvitation(scope.row)">
                         {{ $t('common.accept') }}
                       </el-dropdown-item>
                       <el-dropdown-item @click.native="rejectShareInvitation(scope.row)">
                         {{ $t('common.reject') }}
+                      </el-dropdown-item>
+                    </template>
+                    <template v-else-if="scope.row.status === 'accepted' && getRouteBaseName()==='shares'">
+                      <el-dropdown-item divided @click.native="leaveShare(scope.row)">
+                        <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
                       </el-dropdown-item>
                     </template>
                     <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user.status === 'invited'">
@@ -336,17 +348,14 @@
       </client-only>
       <!-- List Ciphers end -->
     </div>
-    <NoCipher
+    <ShareNoCipher
       v-else-if="!loading"
       :type="type"
-      @add-cipher="handleAddButton"
+      @add-share="newShare"
     />
     <AddEditCipher ref="addEditCipherDialog" :type="type" />
-    <ChooseCipherType ref="chooseCipherType" />
     <AddEditFolder ref="addEditFolder" />
     <AddEditTeamFolder ref="addEditTeamFolder" />
-    <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" />
-    <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" />
     <ShareCipher ref="shareCipher" :cipher-options="allCiphers" />
     <EditSharedCipher ref="editSharedCipher" />
     <ShareFolder ref="shareFolder" />
@@ -383,7 +392,7 @@
           <button
             class="btn btn-primary"
             :disabled="loadingConfirm"
-            @click="confirmUser(selectedCipher)"
+            @click="confirmShare(selectedCipher)"
           >
             {{ $t('common.confirm') }}
           </button>
@@ -403,21 +412,17 @@ import { data } from 'cheerio/lib/api/attributes'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import AddEditFolder from '../folder/AddEditFolder'
 import AddEditTeamFolder from '../folder/AddEditTeamFolder'
-import AddEditTeamFolderUsers from '../folder/AddEditTeamFolderUsers'
-import AddEditTeamFolderGroups from '../folder/AddEditTeamFolderGroups'
 import ShareCipher from '../../components/cipher/ShareCipher'
 import EditSharedCipher from '../../components/cipher/EditSharedCipher'
 import ShareFolder from '../../components/folder/ShareFolder'
 import MoveFolder from '../folder/MoveFolder'
-import NoCipher from '../../components/cipher/NoCipher'
+import ShareNoCipher from '../../components/cipher/ShareNoCipher'
 import { CipherType } from '../../jslib/src/enums'
 import Vnodes from '../../components/Vnodes'
-import ChooseCipherType from '../../components/cipher/ChooseCipherType'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { Utils } from '../../jslib/src/misc/utils.ts'
 export default {
   components: {
-    ChooseCipherType,
     AddEditCipher,
     AddEditFolder,
     AddEditTeamFolder,
@@ -425,9 +430,7 @@ export default {
     EditSharedCipher,
     ShareFolder,
     MoveFolder,
-    NoCipher,
-    AddEditTeamFolderUsers,
-    AddEditTeamFolderGroups,
+    ShareNoCipher,
     VueContext: () => import('../../plugins/vue-context'),
     Vnodes
   },
@@ -453,7 +456,7 @@ export default {
       multipleSelection: [],
       loading: false,
       orderField: 'name', // revisionDate
-      orderDirection: 'asc',
+      orderDirection: 'desc',
       selectedFolder: {},
       context: '',
       publicKey: '',
@@ -476,8 +479,8 @@ export default {
       viewFolder: false,
       shareInvitationStatus: {
         invited: 'Pending',
-        accepted: 'Accepted',
-        confirmed: 'Confirmed',
+        accepted: 'Waiting for confirmation',
+        confirmed: 'Shared',
         shared: 'Shared',
         waiting: 'Waiting for confirmation'
       },
@@ -555,6 +558,13 @@ export default {
     },
     canCreateTeamFolder () {
       return this.teams.some(e => ['owner', 'admin'].includes(e.role))
+    },
+    shareTypeMapping () {
+      return {
+        1: 'Edit',
+        2: 'Only fill',
+        3: 'View'
+      }
     }
   },
   async mounted () {
@@ -596,6 +606,13 @@ export default {
         let result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
         if (this.getRouteBaseName() === 'shares') {
           result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)
+          result = result.map(item => {
+            const org = this.getTeam(this.organizations, item.organizationId)
+            return {
+              ...item,
+              share_type: this.shareTypeMapping[org.type]
+            }
+          })
           const invitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
           result = invitations.concat(result)
         } else if (this.getRouteBaseName() === 'shares-your-shares') {
@@ -614,11 +631,12 @@ export default {
           })
           result = resultMapping
         }
+        result = orderBy(result, ['user.status'], [this.orderDirection]) || []
         this.dataRendered = result.slice(0, 50)
         if (!this.$store.state.syncing) {
           this.loading = false
         }
-        return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+        return result
       },
       watch: ['allCiphers']
     }
@@ -626,17 +644,6 @@ export default {
   methods: {
     addEdit (cipher) {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
-    },
-    handleAddButton () {
-      if (this.getRouteBaseName() === 'vault-tfolders-tfolderId' && !this.collection.readOnly) {
-        this.addEdit({
-          organizationId: this.collection.organizationId
-        })
-      } else if (!['vault', 'shares'].includes(this.getRouteBaseName())) {
-        this.addEdit({})
-      } else {
-        this.chooseCipherType()
-      }
     },
     handleSelectionChange (val) {
       this.multipleSelection = val
@@ -705,15 +712,6 @@ export default {
     },
     shareFolder (folder) {
       this.$refs.shareFolder.openDialog(folder)
-    },
-    putTeamFolderGroups (folder) {
-      this.$refs.addEditTeamFolderGroups.openDialog(folder)
-    },
-    putTeamFolderUsers (folder) {
-      this.$refs.addEditTeamFolderUsers.openDialog(folder)
-    },
-    chooseCipherType () {
-      this.$refs.chooseCipherType.openDialog()
     },
     countUnassignedItems (ciphers = [], organizationId) {
       if (ciphers) {
@@ -894,7 +892,7 @@ export default {
       const user = cipher.user || {}
       this.publicKey = await this.getPublicKey(user.email)
       const publicKey = Utils.fromB64ToArray(this.publicKey)
-      const fingerprint = await this.$cryptoService.getFingerprint(user.id, publicKey.buffer)
+      const fingerprint = await this.$cryptoService.getFingerprint(user.pwd_user_id, publicKey.buffer)
       if (fingerprint) {
         this.userFingerPrint = fingerprint.join('-')
       }
@@ -915,7 +913,6 @@ export default {
           key
         })
         this.closeDialogConfirm()
-        this.getUsers()
         this.notify(this.$t('data.notifications.confirm_member_success'), 'success')
       } catch (e) {
         console.log(e)
