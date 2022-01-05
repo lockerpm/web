@@ -91,6 +91,11 @@
       </div>
     </div>
     <div class="flex">
+      <div class="mr-3">
+        <button class="btn btn-primary" @click="$router.push(localePath({name: 'plans'}))">
+          Manage Plans
+        </button>
+      </div>
       <el-dropdown trigger="click">
         <div class="flex items-center">
           <el-avatar :size="35" :src="currentUser.avatar" class="mr-2" />
@@ -231,7 +236,7 @@ export default {
   },
   computed: {
     shouldShowSearch () {
-      return ['vault', 'passwords', 'notes', 'identities', 'shares', 'trash', 'vault-tfolders-tfolderId', 'vault-folders-folderId', 'shares-your-shares'].includes(this.getRouteBaseName())
+      return ['vault', 'passwords', 'notes', 'cards', 'identities', 'shares', 'trash', 'vault-tfolders-tfolderId', 'vault-folders-folderId', 'shares-your-shares'].includes(this.getRouteBaseName())
     },
     currentPlan () {
       return this.$store.state.currentPlan

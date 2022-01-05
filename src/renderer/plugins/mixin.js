@@ -330,10 +330,27 @@ Vue.mixin({
     getTeam (teams, orgId) {
       return find(teams, e => e.id === orgId) || {}
     },
+    canShareItem (teams, item) {
+      const team = this.getTeam(teams, item.organizationId)
+      if (team.id) {
+        return team.type === 0
+      }
+      return true
+    },
     canManageItem (teams, item) {
       const team = this.getTeam(teams, item.organizationId)
-      if (team.organization_id) {
-        return ['owner', 'admin', 'manager'].includes(team.role)
+      // if (team.organization_id) {
+      //   return ['owner', 'admin', 'manager'].includes(team.role)
+      // }
+      if (team.id) {
+        return [0, 1].includes(team.type)
+      }
+      return true
+    },
+    canViewItem (teams, item) {
+      const team = this.getTeam(teams, item.organizationId)
+      if (team.id) {
+        return [0, 1, 3].includes(team.type)
       }
       return true
     },
