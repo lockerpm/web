@@ -11,6 +11,7 @@
         exact
       >
         {{ $t(`sidebar.${item.label}`) }}
+        <span v-if="item.pending && item.pending>0"><el-badge :value="item.pending" class="item" /></span>
       </nuxt-link>
     </div>
     <!-- Navigation Menu end -->
@@ -462,16 +463,6 @@ export default {
       publicKey: '',
       indexing: false,
       index: null,
-      menuShares: [
-        {
-          label: 'shared_with_you',
-          routeName: 'shares'
-        },
-        {
-          label: 'your_shares',
-          routeName: 'shares-your-shares'
-        }
-      ],
       dataRendered: [],
       lastIndex: 0,
       options: ['Login', 'SecureNote', 'Card', 'Identity'],
@@ -488,10 +479,24 @@ export default {
       selectedUser: {},
       loadingConfirm: false,
       dialogConfirmVisible: false,
-      selectedCipher: {}
+      selectedCipher: {},
+      pendingShares: 0
     }
   },
   computed: {
+    menuShares () {
+      return [
+        {
+          label: 'shared_with_you',
+          routeName: 'shares',
+          pending: this.pendingShares
+        },
+        {
+          label: 'your_shares',
+          routeName: 'shares-your-shares'
+        }
+      ]
+    },
     folder () {
       if (this.folders) {
         return find(this.folders, e => e.id === this.$route.params.folderId) || {}
@@ -579,6 +584,8 @@ export default {
         }
       }
     }
+    const invitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
+    this.pendingShares = invitations.filter(item => item.status === 'invited').length
   },
   asyncComputed: {
     allCiphers: {
@@ -830,6 +837,7 @@ export default {
     async acceptShareInvitation (cipher) {
       try {
         await this.$axios.$put(`cystack_platform/pm/sharing/invitations/${cipher.id}`, { status: 'accept' })
+        this.getSyncData()
         this.notify(this.$t('data.notifications.accept_invitation_success'), 'success')
       } catch (e) {
         this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')

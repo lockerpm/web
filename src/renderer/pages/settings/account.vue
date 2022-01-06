@@ -1,0 +1,187 @@
+<template>
+  <div class="md:w-2/3 mx-auto">
+    <div class="text-head-4 font-semibold mb-2">
+      {{ $t('data.settings.account') }}
+    </div>
+    <div class="text-lg text-black-600 mb-4">
+      {{ $t('data.settings.account_desc') }}
+    </div>
+    <div class="setting-wrapper">
+      <div class="setting-section">
+        <div class="setting-section-header">
+          <div class="text-head-5 font-semibold">{{ $t('data.settings.your_profile') }}</div>
+        </div>
+      </div>
+      <div class="setting-section">
+        <div class="setting-section-header">
+          <div class="flex items-center">
+            <el-avatar :size="70" :src="currentUser.avatar" class="mr-4" />
+            <div>
+              <div class="setting-title">{{ currentUser.full_name }}</div>
+              <div class="setting-description">{{ currentPlan.name }}</div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="btn btn-default !text-warning mb-4 md:mb-0"
+              @click="lock"
+            >
+              {{ $t('common.lock') }}
+            </button>
+            <button
+              class="btn btn-default !text-danger"
+              @click="logout"
+            >
+              {{ $t('common.logout') }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="setting-section">
+        <div v-if="currentUser.email" class="text-black mb-3">
+          <div>{{ $t('common.email') }}</div>
+          <div class="font-semibold">{{ currentUser.email }}</div>
+        </div>
+        <div v-if="currentUser.organization" class="text-black mb-3">
+          <div>{{ $t('common.organization') }}</div>
+          <div class="font-semibold">{{ currentUser.organization }}</div>
+        </div>
+        <div v-if="currentUser.country" class="text-black mb-3">
+          <div>{{ $t('common.country') }}</div>
+          <div class="font-semibold">{{ currentUser.country }}</div>
+        </div>
+        <div class="flex">
+          <a href="https://id.cystack.net/" target="_blank" class="mr-4">
+            <button
+              class="btn btn-default mb-4 md:mb-0"
+            >
+              <span>{{ $t('data.settings.edit_profile') }} <i class="fas fa-external-link-alt" /></span>
+            </button>
+          </a>
+          <a href="https://id.cystack.net/security/password" target="_blank">
+            <button
+              class="btn btn-default mb-4 md:mb-0"
+            >
+              <span>{{ $t('data.settings.change_password') }} <i class="fas fa-external-link-alt" /></span>
+            </button>
+          </a>
+        </div>
+      </div>
+      <div class="setting-section">
+        <div class="setting-section-header">
+          <div>
+            <div class="setting-title">{{ $t('data.settings.fingerprint') }}</div>
+            <div class="setting-description !text-danger-400">{{ fingerprint }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="setting-wrapper">
+      <div class="setting-section">
+        <div class="setting-section-header">
+          <div>
+            <div class="setting-title">{{ $t('data.settings.manage_sessions') }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="setting-wrapper">
+      <div class="setting-section">
+        <div class="setting-section-header">
+          <div>
+            <div class="setting-title">{{ $t('common.delete') }}</div>
+            <div class="setting-description mb-4">
+              {{ $t('data.settings.danger_zone_note') }}
+            </div>
+            <div>
+              <button
+                class="btn btn-default !text-danger mb-4 md:mb-0"
+                @click="openDeauthorizeSessions()"
+              >
+                {{ $t('data.settings.deauthorize_sessions') }}
+              </button>
+              <button
+                class="btn btn-default !text-danger mb-4 md:mb-0"
+                @click="openPurgeVault('purge')"
+              >
+                {{ $t('data.settings.delete_all_items') }}
+              </button>
+              <button
+                class="btn btn-default !text-danger mb-4 md:mb-0"
+                @click="openPurgeVault('delete_account')"
+              >
+                {{ $t('data.settings.delete_account') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <PurgeVault ref="purgeVault" />
+    <DeauthorizeSessions ref="deauthorizeSessions" />
+  </div>
+</template>
+
+<script>
+import PurgeVault from '../../components/setting/PurgeVault'
+import DeauthorizeSessions from '../../components/setting/DeauthorizeSessions'
+export default {
+  components: {
+    PurgeVault, DeauthorizeSessions
+  },
+  data () {
+    return {
+      user: {},
+      loading: false,
+      collapsed: false,
+      fingerprint: ''
+    }
+  },
+  computed: {
+    currentPlan () {
+      return this.$store.state.currentPlan
+    }
+  },
+  mounted () {
+    this.getUser()
+  },
+  asyncComputed: {
+    fingerprint: {
+      async get () {
+        const fingerprint = await this.$cryptoService.getFingerprint(await this.$userService.getUserId())
+        if (fingerprint != null) {
+          return fingerprint.join('-')
+        }
+        return ''
+      },
+      watch: ['$store.state.syncedCiphersToggle']
+    }
+  },
+  methods: {
+    async getUser () {
+      const user = await this.$store.dispatch('LoadCurrentUserPw')
+      this.user = { ...user }
+    },
+    async putUser () {
+      try {
+        this.loading = true
+        await this.$axios.$put('cystack_platform/pm/users/me', this.user)
+        this.$store.commit('UPDATE_USER_PW', this.user)
+        this.$vaultTimeoutService.setVaultTimeoutOptions(this.user.timeout, this.user.timeout_action)
+        this.notify(this.$t('data.notifications.update_settings_success'), 'success')
+      } catch (e) {
+        console.log(e)
+        this.notify(this.$t('data.notifications.update_settings_failed'), 'warning')
+      } finally {
+        this.loading = false
+      }
+    },
+    openPurgeVault (type) {
+      this.$refs.purgeVault.openDialog(type)
+    },
+    openDeauthorizeSessions () {
+      this.$refs.deauthorizeSessions.openDialog()
+    }
+  }
+}
+</script>
