@@ -416,6 +416,9 @@ export default {
         }
         const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
         this.members = this.members.concat(emails)
+        if (!this.members.length) {
+          return
+        }
         this.user.username = ''
         const members = await Promise.all(this.members.map(async email => {
           const publicKey = await this.getPublicKey(email)

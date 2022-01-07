@@ -95,7 +95,7 @@
           :key="item.id_card"
           class="!flex mb-4 items-center"
         >
-          <div class="flex items-center w-[200px]">
+          <div class="flex items-center w-[300px]">
             <div class="bg-[#f5f8fa] w-10 h-10 rounded flex items-center justify-center p-1 mr-4">
               <img v-if="item.card_type === 'Visa'" src="~/assets/images/icons/cards/visa.svg" alt="">
               <img v-else-if="item.card_type === 'MasterCard'" src="~/assets/images/icons/cards/master.svg" alt="">
@@ -104,7 +104,7 @@
               <img v-else-if="item.card_type === 'JCB'" src="~/assets/images/icons/cards/jcb.svg" alt="">
               <img v-else src="~/assets/images/icons/cards/card.svg" alt="">
             </div>
-            <div class="">
+            <div class="mr-10">
               <div class="text-black font-bold mb-2">{{ item.card_type }}</div>
               <div class="flex items-center justify-between">
                 <div class="text-black-500 mr-10">{{ item.expire }}</div>
@@ -116,6 +116,20 @@
                   <span>{{ item.last4 }}</span>
                 </div>
               </div>
+            </div>
+            <div class="mr-4">
+              <button
+                class="btn btn-icon"
+              >
+                <i class="fa fa-edit" />
+              </button>
+            </div>
+            <div class="">
+              <button
+                class="btn btn-icon !text-danger"
+              >
+                <i class="fa fa-trash" />
+              </button>
             </div>
           </div>
         </div>

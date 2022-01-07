@@ -584,8 +584,7 @@ export default {
         }
       }
     }
-    const invitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
-    this.pendingShares = invitations.filter(item => item.status === 'invited').length
+    this.getPendingShares()
   },
   asyncComputed: {
     allCiphers: {
@@ -838,6 +837,7 @@ export default {
       try {
         await this.$axios.$put(`cystack_platform/pm/sharing/invitations/${cipher.id}`, { status: 'accept' })
         this.getSyncData()
+        this.getPendingShares()
         this.notify(this.$t('data.notifications.accept_invitation_success'), 'success')
       } catch (e) {
         this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')
@@ -931,6 +931,10 @@ export default {
     },
     newShare () {
       this.$refs.shareCipher.openDialog({})
+    },
+    async getPendingShares () {
+      const invitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
+      this.pendingShares = invitations.filter(item => item.status === 'invited').length
     }
   }
 }

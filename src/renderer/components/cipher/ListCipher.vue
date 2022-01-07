@@ -481,7 +481,7 @@
             <template slot-scope="scope">
               <div class="col-actions">
                 <button
-                  v-if="scope.row.login.canLaunch"
+                  v-if="!scope.row.isDeleted && scope.row.login.canLaunch"
                   class="btn btn-icon btn-xs hover:bg-black-400"
                   :title="$t('common.go_to_website')"
                   @click="openNewTab(scope.row.login.uri)"
@@ -489,6 +489,7 @@
                   <i class="fas fa-external-link-square-alt" />
                 </button>
                 <el-dropdown
+                  v-if="!scope.row.isDeleted"
                   trigger="click"
                   :hide-on-click="false"
                 >
@@ -522,7 +523,7 @@
                   </el-dropdown-menu>
                 </el-dropdown>
                 <button
-                  v-if="canShareItem(organizations, scope.row)"
+                  v-if="!scope.row.isDeleted && canShareItem(organizations, scope.row)"
                   class="btn btn-icon btn-xs hover:bg-black-400"
                   :title="$t('common.share')"
                   @click="shareItem(scope.row)"
@@ -534,7 +535,7 @@
                     <i class="fas fa-ellipsis-h" />
                   </button>
                   <el-dropdown-menu slot="dropdown">
-                    <template v-if="canManageItem(organizations, scope.row)">
+                    <template v-if="!scope.row.isDeleted && canManageItem(organizations, scope.row)">
                       <el-dropdown-item @click.native="addEdit(scope.row)">
                         {{ $t('common.edit') }}
                       </el-dropdown-item>
