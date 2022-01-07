@@ -95,7 +95,7 @@
           :key="item.id_card"
           class="!flex mb-4 items-center"
         >
-          <div class="flex items-center w-[300px]">
+          <div class="flex items-center w-[400px]">
             <div class="bg-[#f5f8fa] w-10 h-10 rounded flex items-center justify-center p-1 mr-4">
               <img v-if="item.card_type === 'Visa'" src="~/assets/images/icons/cards/visa.svg" alt="">
               <img v-else-if="item.card_type === 'MasterCard'" src="~/assets/images/icons/cards/master.svg" alt="">
@@ -120,6 +120,7 @@
             <div class="mr-4">
               <button
                 class="btn btn-icon"
+                @click="editCard(item)"
               >
                 <i class="fa fa-edit" />
               </button>
@@ -127,6 +128,7 @@
             <div class="">
               <button
                 class="btn btn-icon !text-danger"
+                @click="deleteCard(item)"
               >
                 <i class="fa fa-trash" />
               </button>
@@ -232,12 +234,17 @@
         </div>
       </div>
     </div>
+    <EditPaymentDialog ref="editPaymentDialog" @handle-done="handleEditDone" />
   </div>
 </template>
 
 <script>
 import find from 'lodash/find'
+import EditPaymentDialog from '../../components/upgrade/EditPaymentDetail.vue'
 export default {
+  components: {
+    EditPaymentDialog
+  },
   data () {
     return {
       cards: [],
@@ -325,6 +332,29 @@ export default {
           })
       }).catch(() => {
       })
+    },
+    deleteCard (card) {
+      this.$confirm(this.$t('data.billing.confirm_delete_card_all'), this.$t('data.billing.confirm_delete_card'), {
+        confirmButtonText: 'OK',
+        cancelButtonText: this.$t('common.cancel'),
+        type: 'warning'
+      }).then(() => {
+        this.$axios.$delete(`cystack_platform/payments/cards/${card.id_card}`)
+          .then(() => {
+            this.notify(this.$t('data.billing.delete_card_success'), 'success')
+            this.getCards()
+          })
+          .catch(() => {
+            this.notify(this.$t('data.billing.delete_card_failed'), 'warning')
+          })
+      }).catch(() => {
+      })
+    },
+    editCard (card) {
+      this.$refs.editPaymentDialog.openDialog(card)
+    },
+    handleEditDone () {
+      this.getCards()
     }
   }
 }

@@ -2,7 +2,6 @@
   <el-dialog
     :visible.sync="dialogVisible"
     md:width="575px"
-    width="90%"
     destroy-on-close
     top="5vh"
     custom-class="locker-dialog"

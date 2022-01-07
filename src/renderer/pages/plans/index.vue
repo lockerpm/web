@@ -127,7 +127,7 @@
               </template>
               <template v-if="step===2">
                 <div
-                  v-if="paymentMethod==='card'"
+                  v-if="paymentMethod==='card' && cards.length"
                   class="border rounded p-5 border-black-200 cursor-pointer"
                 >
                   <div class="">
@@ -171,7 +171,7 @@
                     </button>
                   </div>
                 </div>
-                <Payment v-if="paymentVisible" ref="payment" @handle-done="handleDone" @handle-cancel="handleCancel" />
+                <Payment v-if="paymentVisible || !cards.length" ref="payment" @handle-done="handleDone" @handle-cancel="handleCancel" />
               </template>
               <template v-if="step===3">
                 <div class="border rounded p-5 border-black-200 cursor-pointer lg:w-1/2">

@@ -616,7 +616,8 @@ export default {
             const org = this.getTeam(this.organizations, item.organizationId)
             return {
               ...item,
-              share_type: this.shareTypeMapping[org.type]
+              // share_type: this.shareTypeMapping[org.type]
+              share_type: org.type === 1 ? 'Edit' : item.viewPassword ? 'View' : 'Only fill'
             }
           })
           const invitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
