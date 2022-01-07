@@ -6,7 +6,7 @@
           :key="index"
           :class="step===index+1?'!text-black font-semibold border-b-2 border-primary pb-3':''"
           class="text-black-600 mr-8 last:mr-0 cursor-pointer"
-          @click="step=index+1"
+          @click="index!==2?step=index+1:()=>{}"
         >
           {{ $t(`sidebar.${item.label}`) }}
         </div>
@@ -14,7 +14,7 @@
     </div>
     <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <div class="flex mb-5">
-        <div class="">
+        <div class="w-full">
           <!--Banner Upgrade to Premium -->
           <!-- <div v-if="currentPlan.alias === 'pm_free'" class="border border-black-200 rounded p-5 md:px-5 md:py-7 relative bg-gradient-to-r from-[#05A49F] to-[#1AB0AC] mb-6">
               <div class="flex items-center justify-between text-white">
@@ -74,8 +74,8 @@
                     v-for="item in plans"
                     :key="item.id"
                     :class="selectedPlan.alias===item.alias?'!border-primary':''"
-                    class="p-8 border border-black-200 rounded cursor-pointer hover:border-primary"
-                    @click="selectPlan(item)"
+                    class="p-8 border border-black-200 rounded cursor-pointer hover:border-primary relative"
+                    @click="item.alias !=='pm_free'?selectPlan(item):''"
                   >
                     <div class="h-full flex flex-col">
                       <div class="2xl:flex items-center text-center">
@@ -85,6 +85,9 @@
                         <span class="text-black-600 ml-2">
                           {{ getPlanName(item.name).tag }}
                         </span>
+                      </div>
+                      <div class="text-black-600  mt-2">
+                        {{ $t(`data.plans.descriptions.${item.alias}`) }}
                       </div>
                       <div class="mt-2.5 mb-6 2xl:flex items-center">
                         <div class="text-head-3 font-semibold text-center 2xl:mr-2">
@@ -107,18 +110,16 @@
                           <div class="ml-2">{{ $t(`data.plans.features.${feature}`) }}</div>
                         </div>
                       </div>
-                      <div v-if="item.alias !== 'pm_free'">
-                        <button
-                          v-if="currentPlan.alias === item.alias"
-                          class="btn btn-default w-full"
-                        >
-                          Hiện tại
-                        </button>
-                      </div>
-                      <div v-else-if="currentPlan.alias === 'pm_free'">
+                      <!-- <div v-if="currentPlan.alias === item.alias">
                         <button class="btn btn-primary w-full">
                           Hiện tại
                         </button>
+                      </div> -->
+                    </div>
+                    <div v-if="currentPlan.alias === item.alias" class="absolute bottom-[-50px] w-full left-0 right-0 text-center">
+                      <i class="fas fa-sort-up" />
+                      <div>
+                        Your current plan
                       </div>
                     </div>
                   </div>
@@ -127,7 +128,7 @@
               <template v-if="step===2">
                 <div
                   v-if="paymentMethod==='card'"
-                  class="border rounded p-5 border-black-200 cursor-pointer col-span-2"
+                  class="border rounded p-5 border-black-200 cursor-pointer"
                 >
                   <div class="">
                     <el-radio-group v-model="selectedCard" class="w-full">
@@ -173,12 +174,20 @@
                 <Payment v-if="paymentVisible" ref="payment" @handle-done="handleDone" @handle-cancel="handleCancel" />
               </template>
               <template v-if="step===3">
-                <div>
-                  step3
+                <div class="border rounded p-5 border-black-200 cursor-pointer lg:w-1/2">
+                  <div class="text-black font-bold mb-2">Order details</div>
+                  <div class="flex justify-between text-head-6 font-semibold">
+                    <div>
+                      {{ selectedPlan.name }} ( {{ duration==='yearly'?'12 months':'1 month' }})
+                    </div>
+                    <div>
+                      {{ result.total_price }} {{ result.currency }}
+                    </div>
+                  </div>
                 </div>
               </template>
             </div>
-            <div>
+            <div v-if="step!==3">
               <div
                 class="pl-6 py-7 rounded"
                 style="background: linear-gradient(90deg, rgba(219,223,225,0.16) 0%, rgba(219,223,225,0) 100%);"
@@ -202,16 +211,19 @@
                       <span v-if="selectedPlan.id === 4"> x {{ $tc('data.plans.members', number_members, { count: number_members }) }}</span>
                     </div>
                   </div>
-                  <div>
+                  <div v-if="result.duration === 'monthly'" class="font-semibold">
                     {{ result.price | formatNumber }} {{ result.currency }}
                   </div>
-                </div>
-                <div v-if="result.immediate_payment" class="flex items-center justify-between">
-                  <div>
-                    {{ $t('data.billing.charged_today') }}
+                  <div v-else-if="result.plan" class="font-semibold">
+                    {{ result.currency === 'USD'?result.plan.price.usd*12:result.plan.price.vnd*12 | formatNumber }} {{ result.currency }}
                   </div>
+                </div>
+                <div v-if="result.duration && result.duration==='yearly' && result.plan" class="flex items-center justify-between text-primary">
                   <div>
-                    {{ result.immediate_payment | formatNumber }} {{ result.currency }}
+                    {{ $t('data.billing.yearly_discount', {discount: result.alias==='pm_premium'?'75%':result.alias==='pm_family'?'40%':''}) }}
+                  </div>
+                  <div class="font-semibold">
+                    -{{ result.currency === 'USD'?(result.plan.price.usd*12-result.total_price):(result.plan.price.vnd*12-result.total_price) | formatNumber }} {{ result.currency }}
                   </div>
                 </div>
                 <div class="my-8 h-[1px] bg-[#E8EAED]" />
@@ -224,15 +236,15 @@
                 <div class="my-8 h-[1px] bg-[#E8EAED]" />
                 <div>
                   <ul class="mb-3">
-                    <li>
-                      {{ `You'll pay ${result.total_price || 0} ${result.currency || 'USD'} now, which is prorated for the current billing period.` }}
+                    <li v-html="this.$t('data.billing.plan_details[0]', {total:this.result.total_price || 0, currency:this.result.currency || 'USD'})">
+                      <!-- {{ `You'll pay ${result.total_price || 0} ${result.currency || 'USD'} now, which is prorated for the current billing period.` }} -->
                     </li>
-                    <li>
-                      {{ `Your plan is billed ${result.duration || 'yearly'} and will renew for ${result.price || 0} ${result.currency || 'USD'} (plus any applicable taxes and minus any discounts) on Jan 24, 2022.` }}
+                    <li v-html="this.$t('data.billing.plan_details[1]', {duration:this.result.duration || 'yearly', price:this.result.price || 0, currency:this.result.currency || 'USD', next_bill:this.nextBill||''})">
+                      <!-- {{ `Your plan is billed ${result.duration || 'yearly'} and will renew for ${result.price || 0} ${result.currency || 'USD'} (plus any applicable taxes and minus any discounts) on ${nextBill}.` }} -->
                     </li>
                     <li>You can cancel any time before this date.</li>
                   </ul>
-                  <button :disabled="step===2?selectedCard:false" class="btn btn-primary w-full" @click="step===1?toStep2():confirmPlan()">
+                  <button :disabled="step===2 && !selectedCard || step ===3" class="btn btn-primary w-full" @click="step===1?selectedPlan.alias==='pm_family'?addMember():toStep2():confirmPlan()">
                     {{ step===1?'Continue': 'Pay & Upgrade' }}
                   </button>
                 </div>
@@ -253,7 +265,7 @@
             </div>
           </div>
           <el-dialog
-            :visible.sync="dialogChange"
+            :visible.sync="dialogEnterMembers"
             width="675px"
             destroy-on-close
             top="15vh"
@@ -261,178 +273,18 @@
             :close-on-click-modal="false"
             :close-on-press-escape="false"
           >
-            <div slot="title">
-              <div class="text-head-5 text-black-700 font-semibold truncate">
-                Thay đổi gói đăng ký
+            <div class="text-left">
+              <div class="form-group flex justify-between">
+                <label for="">{{ $t('data.members.enter_email') }}</label>
               </div>
-            </div>
-            <div class="text-left text-black">
-              <div class="flex items-center justify-between mb-5">
-                <div class="text-head-6 text-black font-semibold">Gói hiện tại:</div>
-                <div class="flex items-center">
-                  <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
-                    {{ getPlanName(currentPlan.name).name }}
-                  </div>
-                  <div class="text-black-600 ml-2">
-                    {{ getPlanName(currentPlan.name).tag }}
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex items-center justify-between mb-5">
-                <div class="text-head-6 text-black font-semibold">Gói đăng ký mới:</div>
-                <div class="flex items-center">
-                  <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
-                    {{ getPlanName(selectedPlan.name).name }}
-                  </div>
-                  <div class="text-black-600 ml-2">
-                    {{ getPlanName(selectedPlan.name).tag }}
-                  </div>
-                </div>
-              </div>
-              <div class="my-4 h-[1px] bg-[#E8EAED]" />
-              <div class="mb-5">
-                <div class="font-semibold mb-6">
-                  Choose subscription period
-                </div>
-                <div class="grid grid-cols-3 gap-x-6">
-                  <div
-                    v-for="(item) in periods"
-                    :key="item.value"
-                    class="transition-card py-5 px-3 border border-black-200 rounded text-center cursor-pointer"
-                    :class="{'border-primary': selectedPeriod.label===item.label}"
-                    @click="selectPeriod(item)"
-                  >
-                    <div class="font-semibold text-[1rem] mb-2.5">{{ $t(`data.plans.price.${item.label}`) }}</div>
-                    <template v-if="selectedPlan[item.label]">
-                      <div class="font-semibold">
-                        <span>
-                          <span class="text-head-5">{{ symbol }}{{ selectedPlan[item.label][currency]/item.value | formatNumber }}</span>
-                          <span> / Mo </span>
-                          <div v-if="selectedPlan.max_number" class="text-black-600">/ {{ selectedPlan.max_number }} members </div>
-                          <div v-else-if="selectedPlan.alias === 'pm_business_premium'" class="text-black-600">/ 1 member </div>
-                        </span>
-                      </div>
-                    </template>
-                  </div>
-                </div>
-              </div>
-              <div v-if="selectedPlan.alias === 'pm_business_premium'" class="mb-5">
-                <div class="font-semibold mb-6">
-                  Choose number of members
-                </div>
-                <el-input-number
-                  v-model="number_members"
-                  controls-position="right"
-                  :min="currentPlan.max_number ? currentPlan.max_number : 1"
-                  :max="1000"
-                  @change="calcPrice"
-                />
-              </div>
-              <div class="mb-5">
-                <div class="font-semibold mb-5">
-                  Select a payment method
-                </div>
-                <div class="grid gap-5">
-                  <div
-                    v-if="currentPlan.payment_method ==='wallet' || currentPlan.payment_method ==='banking'"
-                    class="border rounded px-5 py-4 hover:border-primary cursor-pointer"
-                    :class="{
-                      'border-primary': paymentMethod === 'wallet',
-                      'border-black-200': paymentMethod !== 'wallet'
-                    }"
-                    @click="selectMethod('wallet')"
-                  >
-                    <div class="text-lg  mb-2 flex items-center justify-between">
-                      <span class="font-semibold">CyStack Wallet</span>
-                      <span class="">{{ balance | formatNumber }} VND</span>
-                    </div>
-                    <div class=" flex items-center justify-between">
-                      <span class="italic">*This is a payment method only for Vietnamese</span>
-                      <a
-                        href="https://id.cystack.net/wallet/vnd"
-                        target="_blank"
-                        class="btn btn-outline-primary rounded-full btn-xs hover:no-underline"
-                      >
-                        <i class="fa fa-plus" /> Topup
-                      </a>
-                    </div>
-                  </div>
-                  <div
-                    v-if="currentPlan.payment_method==='card'"
-                    class="border rounded p-5 border-black-200 cursor-pointer col-span-2"
-                  >
-                    <div class="">
-                      <el-radio-group v-model="selectedCard" class="w-full">
-                        <el-radio
-                          v-for="item in cards"
-                          :key="item.id_card"
-                          :label="item.id_card"
-                          class="!flex mb-4 items-center"
-                        >
-                          <div class="flex items-center w-[200px]">
-                            <div class="bg-[#f5f8fa] w-10 h-10 rounded flex items-center justify-center p-1 mr-4">
-                              <img v-if="item.card_type === 'Visa'" src="~/assets/images/icons/cards/visa.svg" alt="">
-                              <img v-else-if="item.card_type === 'MasterCard'" src="~/assets/images/icons/cards/master.svg" alt="">
-                              <img v-else-if="item.card_type === 'American Express'" src="~/assets/images/icons/cards/amex.svg" alt="">
-                              <img v-else-if="item.card_type === 'Discover'" src="~/assets/images/icons/cards/discover.svg" alt="">
-                              <img v-else-if="item.card_type === 'JCB'" src="~/assets/images/icons/cards/jcb.svg" alt="">
-                              <img v-else src="~/assets/images/icons/cards/card.svg" alt="">
-                            </div>
-                            <div class="">
-                              <div class="text-black font-bold mb-2">{{ item.card_type }}</div>
-                              <div class="flex items-center justify-between">
-                                <div class="text-black-500 mr-10">{{ item.expire }}</div>
-                                <div class="text-black-500 flex items-center">
-                                  <span class="bg-black-500 w-[4px] h-[4px] rounded-full mr-0.5" />
-                                  <span class="bg-black-500 w-[4px] h-[4px] rounded-full mr-0.5" />
-                                  <span class="bg-black-500 w-[4px] h-[4px] rounded-full mr-0.5" />
-                                  <span class="bg-black-500 w-[4px] h-[4px] rounded-full mr-0.5" />
-                                  <span>{{ item.last4 }}</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </el-radio>
-                      </el-radio-group>
-                      <button
-                        class="btn btn-default btn-xs"
-                        @click="editBilling"
-                      >
-                        Thêm thẻ mới
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="text-lg">
-                <div class="font-semibold mb-6">
-                  Summary
-                </div>
-                <div v-if="result.next_billing_time" class="flex items-center justify-between">
-                  <div>
-                    {{ $t('data.billing.next_billing') }}:
-                    <span class="font-semibold">{{ $moment(result.next_billing_time*1000).format('LL') }}</span>
-                  </div>
-                  <div>
-                    {{ result.price | formatNumber }} {{ result.currency }}
-                  </div>
-                </div>
-                <div v-if="result.immediate_payment" class="flex items-center justify-between">
-                  <div>
-                    {{ $t('data.billing.charged_today') }}
-                  </div>
-                  <div>
-                    {{ result.immediate_payment | formatNumber }} {{ result.currency }}
-                  </div>
-                </div>
-                <div class="my-4 h-[1px] bg-[#E8EAED]" />
-                <div class="flex items-center justify-between text-[20px] font-semibold">
-                  <div>Total</div>
-                  <div>
-                    {{ result.total_price | formatNumber }} {{ result.currency }}
-                  </div>
-                </div>
+              <InputText
+                v-model="emails"
+                label="Emails"
+                class="w-full"
+                :error-text="errors.family_members && errors.family_members[0]"
+              />
+              <div class="!break-words !whitespace-normal font-normal text-black-500 mb-3 italic">
+                {{ $t(`data.members.invite_member.description`) }}
               </div>
             </div>
             <div slot="footer" class="dialog-footer flex items-center text-left">
@@ -440,17 +292,16 @@
               <div>
                 <button
                   class="btn btn-default"
-                  :disabled="loading || loadingCalc"
-                  @click="dialogChange = false"
+                  @click="dialogEnterMembers = false"
                 >
-                  {{ $t('common.cancel') }}
+                  Cancel
                 </button>
                 <button
                   class="btn btn-primary"
-                  :disabled="loading || loadingCalc"
-                  @click="confirmPlan"
+                  :disabled="loading"
+                  @click="toStep2"
                 >
-                  {{ $t('common.confirm') }}
+                  Save
                 </button>
               </div>
             </div>
@@ -494,19 +345,31 @@ import debounce from 'lodash/debounce'
 import find from 'lodash/find'
 import Payment from '../../components/upgrade/Payment'
 import Check from '../../components/icons/check'
-
+import InputText from '../../components/input/InputText'
 export default {
-  components: { Check, Payment },
+  components: { Check, Payment, InputText },
   data () {
     return {
       step: 1,
       plans: [],
       features: {
         pm_free: [
-          'store_password',
-          'cards_and_notes',
+          'secure_data',
+          'auto_fill',
           'password_generator',
           'sync_devices'
+        ],
+        pm_premium: [
+          'unlimited_storage',
+          'data_breach',
+          'emergency_access',
+          'share_passwords'
+        ],
+        pm_family: [
+          'unlimited_storage',
+          'data_breach',
+          'emergency_access',
+          'share_passwords'
         ],
         pm_personal_premium: [
           'store_password',
@@ -589,10 +452,19 @@ export default {
           label: 'confirmation'
         }
       ],
-      paymentVisible: false
+      paymentVisible: false,
+      dialogEnterMembers: false,
+      emails: '',
+      family_members: [],
+      errors: {}
     }
   },
   computed: {
+    nextBill () {
+      const now = new Date().getTime()
+      const nextBill = this.result.duration === 'yearly' ? this.$moment(now).add(1, 'years').format('DD MMM YYYY') : this.$moment(now).add(1, 'months').format('DD MMM YYYY')
+      return nextBill
+    },
     currency () {
       return this.language === 'vi' ? 'vnd' : 'usd'
     },
@@ -627,11 +499,6 @@ export default {
   mounted () {
     this.getPlans()
     this.getCards()
-    this.getBalance()
-    this.getBanks()
-    this.intervalBalance = setTimeout(() => {
-      this.getBalance()
-    }, 10000)
     this.$store.dispatch('LoadCurrentPlan')
   },
   methods: {
@@ -659,6 +526,7 @@ export default {
       this.paymentVisible = false
     },
     handleDone (card) {
+      this.paymentVisible = false
       this.getCards()
       this.$nextTick(() => {
         this.selectedCard = card.id_card
@@ -741,7 +609,7 @@ export default {
         const orgKey = shareKey[0].encryptedString
         const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
         const collectionName = collection.encryptedString
-
+        this.family_members = this.selectedPlan.alias === 'pm_family' ? this.family_members : []
         const data = await this.$axios.$post('cystack_platform/pm/payments/plan', {
           plan_alias: this.selectedPlan.alias,
           duration: this.selectedPeriod.duration,
@@ -751,10 +619,11 @@ export default {
           number_members: this.number_members,
           key: orgKey,
           collection_name: collectionName,
+          family_members: this.family_members,
           bank_id: this.bank.id
         })
         this.$store.dispatch('LoadCurrentPlan')
-        this.step = 1
+        this.step = 3
         this.dialogChange = false
         if (this.paymentMethod === 'banking') {
           this.order = data
@@ -768,22 +637,6 @@ export default {
         this.loading = false
       }
     },
-    async getBalance () {
-      const { balance } = await this.$axios.$get('sso/me/wallet/VND')
-      this.balance = balance
-    },
-    confirmChange () {},
-    getBanks () {
-      this.$axios.$get('resources/wallet/banks')
-        .then(res => {
-          this.banks = res
-          if (res && res.length) {
-            this.bank = res[0]
-          }
-        })
-        .finally(() => {
-        })
-    },
     postDeposit (order) {
       this.$axios.$post(`cystack_platform/pm/payments/invoices/${order.payment_id}/processing`)
         .then(res => {
@@ -793,7 +646,12 @@ export default {
     },
     toStep2 () {
       this.step = 2
+      this.dialogEnterMembers = false
+      this.family_members = this.emails.split(',').map(item => item.trim()).filter(item => item.length)
       this.selectMethod('card')
+    },
+    addMember () {
+      this.dialogEnterMembers = true
     }
   }
 }

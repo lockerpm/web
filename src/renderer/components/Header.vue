@@ -79,7 +79,7 @@
       </div>
     </div>
     <div class="flex-grow">
-      <div v-if="shouldShowSearch" class="text-black-600 p-3">
+      <div v-if="shouldShowSearch" class="text-black-600 py-3">
         <i class="!hidden sm:!inline-block fa fa-search mr-4 rounded-full shadow-md p-2" />
         <input
           type="text"

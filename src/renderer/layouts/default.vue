@@ -13,13 +13,16 @@
                   v-for="(item, index) in menu"
                   :key="index"
                   :to="localePath({name: item.routeName})"
-                  class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+                  class="flex items-center justify-between py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
                   active-class="bg-white bg-opacity-20 text-white"
                 >
-                  <div class="mr-2 w-[22px] h-[22px] flex items-center">
-                    <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+                  <div class="flex">
+                    <div class="mr-2 w-[22px] h-[22px] flex items-center">
+                      <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+                    </div>
+                    <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
                   </div>
-                  <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
+                  <div v-if="item.routeName==='shares' && pendingShares>0"><el-badge :value="pendingShares" class="item" /></div>
                 </nuxt-link>
               </nav>
             </div>
@@ -210,7 +213,8 @@ export default {
       idleTimer: null,
       isIdle: false,
       shouldWelcome: 'false',
-      emergencyAccessInvitations: []
+      emergencyAccessInvitations: [],
+      pendingShares: 0
     }
   },
   head () {
@@ -272,6 +276,7 @@ export default {
         this.getInvitations()
         this.getEmergencyAccessInvitations()
         this.reconnectSocket()
+        this.getShareInvitations()
         this.$store.dispatch('LoadCurrentPlan')
       }
     }
@@ -325,6 +330,10 @@ export default {
     },
     async getInvitations () {
       this.invitations = await this.$axios.$get('cystack_platform/pm/users/invitations')
+    },
+    async getShareInvitations () {
+      const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
+      this.pendingShares = shareInvitations.filter(item => item.status === 'invited').length
     },
     async getEmergencyAccessInvitations () {
       this.emergencyAccessInvitations = await this.$axios.$get('cystack_platform/pm/emergency_access/granted')
