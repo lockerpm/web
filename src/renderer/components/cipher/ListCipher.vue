@@ -1,26 +1,14 @@
 <template>
   <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
     <!-- Navigation Menu -->
-    <div class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10">
+    <div class="navigation-bar">
       <template v-if="['vault', 'passwords', 'notes', 'identities', 'cards'].includes(getRouteBaseName())">
         <nuxt-link
           v-for="(item, index) in menuVault"
           :key="index"
           :to="localeRoute({name: item.routeName})"
-          active-class="!text-black font-semibold border-b-2 border-primary pb-3"
-          class="text-black-600 mr-8 last:mr-0 hover:no-underline"
-          exact
-        >
-          {{ $t(`sidebar.${item.label}`) }}
-        </nuxt-link>
-      </template>
-      <template v-if="['shares', 'shares-shared-with-you', 'shares-your-shares', 'shares-requests'].includes(getRouteBaseName())">
-        <nuxt-link
-          v-for="(item, index) in menuShares"
-          :key="index"
-          :to="localeRoute({name: item.routeName})"
-          active-class="!text-primary"
-          class="text-black-600 font-bold mr-8 last:mr-0 hover:no-underline"
+          active-class="navigation-item__active"
+          class="navigation-item"
           exact
         >
           {{ $t(`sidebar.${item.label}`) }}

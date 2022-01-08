@@ -316,3 +316,13 @@ input:-webkit-autofill:active
     border-color: transparent;
   }
 }
+.navigation-bar {
+  @apply flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10;
+  .navigation-item {
+    @apply text-black-600 mr-8 last:mr-0 hover:no-underline
+  }
+  .navigation-item__active {
+    @apply font-semibold border-b-2 border-primary pb-2;
+    color: black !important;
+  }
+}
