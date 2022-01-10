@@ -75,7 +75,7 @@
                     :key="item.id"
                     :class="selectedPlan.alias===item.alias?'!border-primary':''"
                     class="p-8 border border-black-200 rounded cursor-pointer hover:border-primary relative"
-                    @click="item.alias !=='pm_free' && currentPlan.alias === 'pm_free'?selectPlan(item):''"
+                    @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''"
                   >
                     <div class="h-full flex flex-col">
                       <div class="2xl:flex items-center text-center">
@@ -220,10 +220,11 @@
                 </div>
                 <div v-if="result.duration && result.duration==='yearly' && result.plan" class="flex items-center justify-between text-primary">
                   <div>
-                    {{ $t('data.billing.yearly_discount', {discount: result.alias==='pm_premium'?'75%':result.alias==='pm_family'?'40%':''}) }}
+                    <!-- {{ $t('data.billing.yearly_discount', {discount: result.alias==='pm_premium'?'75%':result.alias==='pm_family'?'40%':''}) }} -->
+                    {{ $t('data.billing.yearly_discount', {discount: discountPercentage + '%'}) }}
                   </div>
                   <div class="font-semibold">
-                    -{{ result.currency === 'USD'?(result.plan.price.usd*12-result.total_price):(result.plan.price.vnd*12-result.total_price) | formatNumber }} {{ result.currency }}
+                    -{{ result.currency === 'USD'?(result.plan.price.usd*12-result.price):(result.plan.price.vnd*12-result.price) | formatNumber }} {{ result.currency }}
                   </div>
                 </div>
                 <div class="my-8 h-[1px] bg-[#E8EAED]" />
@@ -343,6 +344,7 @@
 <script>
 import debounce from 'lodash/debounce'
 import find from 'lodash/find'
+import numeral from 'numeral'
 import Payment from '../../components/upgrade/Payment'
 import Check from '../../components/icons/check'
 import InputText from '../../components/input/InputText'
@@ -462,8 +464,17 @@ export default {
   computed: {
     nextBill () {
       const now = new Date().getTime()
-      const nextBill = this.result.duration === 'yearly' ? this.$moment(now).add(1, 'years').format('DD MMM YYYY') : this.$moment(now).add(1, 'months').format('DD MMM YYYY')
+      const nextBill = this.result.next_billing_time ? this.$moment(this.result.next_billing_time * 1000).format('DD MMM YYYY') : this.result.duration === 'yearly' ? this.$moment(now).add(1, 'years').format('DD MMM YYYY') : this.$moment(now).add(1, 'months').format('DD MMM YYYY')
       return nextBill
+    },
+    discountPercentage () {
+      const price_12_month = this.result.currency === 'USD' ? this.result.plan.price.usd * 12 : this.result.plan.price.vnd * 12
+      const discount = price_12_month - this.result.price
+      const discountPercentage = discount * 100 / price_12_month
+      if (!Number.isNaN(discountPercentage)) {
+        return numeral(discountPercentage).format('0,0')
+      }
+      return 0
     },
     currency () {
       return this.language === 'vi' ? 'vnd' : 'usd'

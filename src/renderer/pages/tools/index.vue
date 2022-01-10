@@ -47,7 +47,7 @@
 
         <div
           class="setting-section setting-section--hover"
-          @click="currentPlan.alias === 'pm_free' ? () => {} : go('tools-password-health')"
+          @click="currentPlan.alias === 'pm_free' ? upgrade() : go('tools-password-health')"
         >
           <div class="setting-section-header">
             <div class="flex items-center">
@@ -69,7 +69,7 @@
             <div>
               <button
                 class="btn btn-icon !text-black-600"
-                @click="go({name: 'tools-password-health'})"
+                @click="currentPlan.alias === 'pm_free'?upgrade():go({name: 'tools-password-health'})"
               >
                 <i class="fa fa-chevron-right" />
               </button>
@@ -78,7 +78,7 @@
         </div>
         <div
           class="setting-section setting-section--hover"
-          @click="currentPlan.alias === 'pm_free' ? () => {} : go('tools-breach')"
+          @click="currentPlan.alias === 'pm_free' ? upgrade() : go('tools-breach')"
         >
           <div class="setting-section-header">
             <div class="flex items-center">
@@ -100,7 +100,7 @@
             <div>
               <button
                 class="btn btn-icon !text-black-600"
-                @click="currentPlan.alias === 'pm_free' ? () => {} : go('tools-breach')"
+                @click="currentPlan.alias === 'pm_free' ? upgrade(): go('tools-breach')"
               >
                 <i class="fa fa-chevron-right" />
               </button>
@@ -109,15 +109,29 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      title="Tips"
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
+      <span>Upgrade to Premium plan to access this feature</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="$router.push(localeRoute({name: 'plans'}))">Upgrade</el-button>
+      </span>
+    </el-dialog>
+    <PremiumDialog ref="premiumDialog" />
   </div>
 </template>
 
 <script>
 import PasswordGenerator from '../../components/password/PasswordGenerator'
+import PremiumDialog from '../../components/upgrade/PremiumDialog'
 export default {
-  components: { PasswordGenerator },
+  components: { PasswordGenerator, PremiumDialog },
   data () {
     return {
+      dialogVisible: false
     }
   },
   computed: {
@@ -128,6 +142,10 @@ export default {
   methods: {
     go (route) {
       this.$router.push(this.localeRoute(route))
+    },
+    upgrade () {
+      // this.dialogVisible = true
+      this.$refs.premiumDialog.openDialog()
     }
   }
 }

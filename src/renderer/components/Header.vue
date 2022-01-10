@@ -1,84 +1,7 @@
 <template>
   <div id="header-default" class="lg:px-28 px-10 h-[60px] flex items-center border-0 border-b border-black-200 relative">
     <div id="nav-content" class="sidebar" style="z-index: 1000">
-      <div class="w-60 h-screen bg-aside min-h-500px min-w-60 flex flex-col justify-between relative overflow-y-scroll overflow-x-hidden">
-        <button
-          class="btn btn-clean absolute top-2 -right-6"
-          @click="hideNavMenu"
-        >
-          <i class="el-icon-close text-lg text-white" />
-        </button>
-        <div>
-          <div class="mt-7 px-6">
-            <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
-          </div>
-          <nav class="mt-7">
-            <template
-              v-for="(item, index) in menu"
-            >
-              <div v-if="item.collapse" :key="index">
-                <div
-                  class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline cursor-pointer"
-                  active-class="bg-white bg-opacity-20 text-white"
-                  @click="$router.push(localePath({name: 'vault'}))"
-                >
-                  <div class="mr-2 w-[22px] h-[22px] flex items-center">
-                    <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
-                  </div>
-                  <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
-                </div>
-                <!-- <transition name="slide-fade" mode="out-in"> -->
-                <ul v-if="['vault', 'passwords', 'notes', 'cards', 'identities'].includes(getRouteBaseName())" key="1">
-                  <li
-                    v-for="(itemMenu, id) in item.items"
-                    :key="id"
-                  >
-                    <nuxt-link
-                      :to="localePath({name: itemMenu.routeName})"
-                      class="flex items-center py-2 pl-[55px] pr-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
-                      active-class="bg-white bg-opacity-20 text-white"
-                    >
-                      <!-- <div class="mr-2 w-[22px] h-[22px] flex items-center">
-                    <img :src="require(`~/assets/images/icons/${itemMenu.icon}.svg`)" alt="">
-                  </div> -->
-                      <span class="text-sm font-medium">{{ $t(`sidebar.${itemMenu.label}`) }}</span>
-                    </nuxt-link>
-                  </li>
-                </ul>
-                <!-- </transition> -->
-              </div>
-              <nuxt-link
-                v-else
-                :key="index"
-                :to="localePath({name: item.routeName})"
-                class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
-                active-class="bg-white bg-opacity-20 text-white"
-              >
-                <div class="mr-2 w-[22px] h-[22px] flex items-center">
-                  <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
-                </div>
-                <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
-              </nuxt-link>
-            </template>
-          </nav>
-        </div>
-        <div>
-          <nav class="mb-10">
-            <nuxt-link
-              v-for="(item, index) in bottomMenu"
-              :key="index"
-              :to="localePath({name: item.routeName, params: item.params})"
-              class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
-              active-class="bg-white bg-opacity-20 text-white"
-            >
-              <div class="mr-2 w-[22px] h-[22px] flex items-center">
-                <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
-              </div>
-              <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
-            </nuxt-link>
-          </nav>
-        </div>
-      </div>
+      <SideBarMenu :closable="true" :pending-shares="pendingShares" @close="hideNavMenu" />
     </div>
     <div class="flex-grow">
       <div v-if="shouldShowSearch" class="text-black-600 py-3">
@@ -145,95 +68,24 @@
 
 <script>
 import debounce from 'lodash/debounce'
+import SideBarMenu from '../components/SideBarMenu.vue'
 export default {
-  data () {
-    return {
-      // menu: [
-      //   {
-      //     label: 'all',
-      //     routeName: 'vault',
-      //     icon: 'all'
-      //   },
-      //   {
-      //     label: 'passwords',
-      //     routeName: 'passwords',
-      //     icon: 'passwords'
-      //   },
-      //   {
-      //     label: 'notes',
-      //     routeName: 'notes',
-      //     icon: 'notes'
-      //   },
-      //   {
-      //     label: 'cards',
-      //     routeName: 'cards',
-      //     icon: 'cards'
-      //   },
-      //   {
-      //     label: 'identities',
-      //     routeName: 'identities',
-      //     icon: 'identities'
-      //   },
-      //   {
-      //     label: 'shares',
-      //     routeName: 'shares',
-      //     icon: 'shares'
-      //   },
-      //   {
-      //     label: 'trash',
-      //     routeName: 'trash',
-      //     icon: 'trash'
-      //   }
-      // ]
-      menu: [
-        {
-          label: 'inventory',
-          icon: 'all',
-          collapse: true,
-          items: [
-            {
-              label: 'all',
-              routeName: 'vault'
-            },
-            {
-              label: 'passwords',
-              routeName: 'passwords'
-            },
-            {
-              label: 'notes',
-              routeName: 'notes'
-            },
-            {
-              label: 'cards',
-              routeName: 'cards'
-            },
-            {
-              label: 'identities',
-              routeName: 'identities'
-            }
-          ]
-        },
-        // {
-        //   label: 'Security',
-        //   icon: 'shield-alt',
-        //   routeName: ''
-        // }
-        {
-          label: 'shares',
-          icon: 'shares',
-          routeName: 'shares'
-        },
-        {
-          label: 'trash',
-          icon: 'trash',
-          routeName: 'trash'
-        },
-        {
-          label: 'tools',
-          routeName: 'tools',
-          icon: 'tools'
+  components: {
+    SideBarMenu
+  },
+  asyncComputed: {
+    async locked () {
+      return await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
+    },
+    pendingShares: {
+      async get () {
+        if (this.locked === false) {
+          const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
+          return shareInvitations.filter(item => item.status === 'invited').length
         }
-      ]
+        return 0
+      },
+      watch: ['$store.state.syncedCiphersToggle']
     }
   },
   computed: {
@@ -245,35 +97,6 @@ export default {
     },
     manageableTeams () {
       return this.teams.filter(e => ['owner', 'admin'].includes(e.role) && e.is_business)
-    },
-    bottomMenu () {
-      return [
-        ...this.currentPlan.alias === 'pm_free'
-          ? [{
-            label: 'upgrade',
-            routeName: 'upgrade',
-            icon: 'upgrade'
-          }]
-          : [],
-        ...this.manageableTeams && this.manageableTeams.length
-          ? [{
-            label: 'dashboard',
-            routeName: 'admin-teamId',
-            icon: 'dashboard',
-            params: { teamId: this.manageableTeams[0].id }
-          }]
-          : [],
-        {
-          label: 'settings',
-          routeName: 'settings',
-          icon: 'settings'
-        },
-        {
-          label: 'help',
-          routeName: 'help',
-          icon: 'help'
-        }
-      ]
     }
   },
   mounted () {

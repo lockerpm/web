@@ -93,7 +93,7 @@
                 <div>
                   <div v-if="item.os"><span class="font-semibold">{{ item.os.family }} {{ item.os.version }}</span> &nbsp; &nbsp; {{ item.browser.family }} {{ item.browser.version }}</div>
                   <div class="text-black-600">
-                    Web Application
+                    {{ item.client_id === 'browser' ? 'Web Extension' : item.client_id === 'mobile'?'Mobile Application':'Web Application' }}
                   </div>
                 </div>
               </div>
@@ -144,7 +144,7 @@
     </div>
     <PurgeVault ref="purgeVault" />
     <DeauthorizeSessions ref="deauthorizeSessions" />
-    <ReConfirmMasterPassword ref="reConfirmMasterPassword" @done="revokeAll()" />
+    <ReConfirmMasterPassword ref="reConfirmMasterPassword" @done="revokeAll" />
   </div>
 </template>
 
@@ -218,10 +218,15 @@ export default {
     confirmMasterPassword () {
       this.$refs.reConfirmMasterPassword.openDialog()
     },
-    async revokeAll (data) {
-      // console.log(data)
-      // await this.$axios.$post('cystack_platform/pm/users/session/revoke_all', {
-      // })
+    async revokeAll (keyHash) {
+      try {
+        await this.$axios.$post('cystack_platform/pm/users/session/revoke_all', {
+          master_password_hash: keyHash
+        })
+        this.getListDevices()
+      } catch (error) {
+        console.log(error)
+      }
     },
     openPurgeVault (type) {
       this.$refs.purgeVault.openDialog(type)
