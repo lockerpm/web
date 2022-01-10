@@ -3,51 +3,7 @@
     <client-only>
       <template v-if="!locked">
         <div class="hidden md:block">
-          <div class="w-60 h-screen bg-aside min-h-500px min-w-60 fixed flex flex-col justify-between overflow-y-scroll">
-            <div>
-              <div class="mt-7 px-6">
-                <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
-              </div>
-              <nav class="mt-7">
-                <nuxt-link
-                  v-for="(item, index) in menu"
-                  :key="index"
-                  :to="localePath({name: item.routeName})"
-                  class="flex items-center justify-between py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
-                  active-class="bg-white bg-opacity-20 text-white"
-                >
-                  <div class="flex">
-                    <div class="mr-2 w-[22px] h-[22px] flex items-center">
-                      <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
-                    </div>
-                    <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
-                  </div>
-                  <!-- <div v-if="item.routeName==='shares' && pendingShares>0"><el-badge :value="pendingShares" class="item" /></div> -->
-                  <div v-if="item.routeName==='shares' && pendingShares>0">
-                    <div class="notification-badge">
-                      {{ pendingShares }}
-                    </div>
-                  </div>
-                </nuxt-link>
-              </nav>
-            </div>
-            <div>
-              <nav class="mb-10">
-                <nuxt-link
-                  v-for="(item, index) in bottomMenu"
-                  :key="index"
-                  :to="localePath({name: item.routeName, params: item.params})"
-                  class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
-                  active-class="bg-white bg-opacity-20 text-white"
-                >
-                  <div class="mr-2 w-[22px] h-[22px] flex items-center">
-                    <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
-                  </div>
-                  <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
-                </nuxt-link>
-              </nav>
-            </div>
-          </div>
+          <SideBarMenu :closable="false" :pending-shares="pendingShares" />
         </div>
         <div class="md:pl-60 flex flex-col flex-row-fluid">
           <Header />
@@ -159,6 +115,7 @@
 
 <script>
 import Header from '../components/Header'
+import SideBarMenu from '../components/SideBarMenu.vue'
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
   var { remote } = require('electron')
@@ -168,49 +125,12 @@ const IdleTimeout = 60000 * 10 // 10 minutes
 
 export default {
   components: {
-    Header
+    Header, SideBarMenu
   },
   middleware: ['LoggedIn', 'UserInfo', 'NotHaveAccountService'],
   data () {
     return {
       externalContent: '',
-      menu: [
-        {
-          label: 'all',
-          routeName: 'vault',
-          icon: 'all'
-        },
-        {
-          label: 'passwords',
-          routeName: 'passwords',
-          icon: 'passwords'
-        },
-        {
-          label: 'notes',
-          routeName: 'notes',
-          icon: 'notes'
-        },
-        {
-          label: 'cards',
-          routeName: 'cards',
-          icon: 'cards'
-        },
-        {
-          label: 'identities',
-          routeName: 'identities',
-          icon: 'identities'
-        },
-        {
-          label: 'shares',
-          routeName: 'shares',
-          icon: 'shares'
-        },
-        {
-          label: 'trash',
-          routeName: 'trash',
-          icon: 'trash'
-        }
-      ],
       locked: true,
       invitations: [],
       loading: false,
@@ -232,35 +152,6 @@ export default {
   computed: {
     manageableTeams () {
       return this.teams.filter(e => ['owner', 'admin'].includes(e.role) && e.is_business)
-    },
-    bottomMenu () {
-      return [
-        ...this.currentPlan.alias === 'pm_free'
-          ? [{
-            label: 'upgrade',
-            routeName: 'plans',
-            icon: 'upgrade'
-          }]
-          : [],
-        ...this.manageableTeams && this.manageableTeams.length
-          ? [{
-            label: 'dashboard',
-            routeName: 'admin-teamId',
-            icon: 'dashboard',
-            params: { teamId: this.manageableTeams[0].id }
-          }]
-          : [],
-        {
-          label: 'settings',
-          routeName: 'settings',
-          icon: 'settings'
-        },
-        {
-          label: 'tools',
-          routeName: 'tools',
-          icon: 'tools'
-        }
-      ]
     }
   },
   watch: {
@@ -327,7 +218,7 @@ export default {
           const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
           return shareInvitations.filter(item => item.status === 'invited').length
         }
-        return []
+        return 0
       },
       watch: ['$store.state.syncedCiphersToggle']
     }

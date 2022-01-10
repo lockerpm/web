@@ -36,22 +36,22 @@
             </div>
             <div id="card-number" ref="cardNumber" />
           </div>
-          <div v-if="eventChangeNumber.error" class="invalid-feedback">
-            {{ $t(`data.error_code.${eventChangeNumber.error.code}`) }}
+          <div v-if="eventChangeNumber.error" class="invalid-feedback !block">
+            {{ $t(`errors.${eventChangeNumber.error.code}`) }}
           </div>
         </div>
         <div class="form-group" :class="eventChangeExpiry.error ? 'has-danger':''">
           <label class="">* {{ $t('data.billing.expiration') }}</label>
           <div id="card-expiry" ref="cardExpiry" />
-          <div v-if="eventChangeExpiry.error" class="invalid-feedback">
-            {{ $t(`data.error_code.${eventChangeExpiry.error.code}`) }}
+          <div v-if="eventChangeExpiry.error" class="invalid-feedback !block">
+            {{ $t(`errors.${eventChangeExpiry.error.code}`) }}
           </div>
         </div>
         <div class="form-group" :class="eventChangeCvc.error ? 'has-danger':''">
           <label class="">* {{ $t('data.billing.cvc') }}</label>
           <div id="card-cvc" ref="cardCvc" />
-          <div v-if="eventChangeCvc.error" class="invalid-feedback">
-            {{ $t(`data.error_code.${eventChangeCvc.error.code}`) }}
+          <div v-if="eventChangeCvc.error" class="invalid-feedback !block">
+            {{ $t(`errors.${eventChangeCvc.error.code}`) }}
           </div>
         </div>
         <div class="form-group col-span-2 text-right">
