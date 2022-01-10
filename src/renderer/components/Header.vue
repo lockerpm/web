@@ -27,7 +27,8 @@
                   </div>
                   <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
                 </div>
-                <ul>
+                <!-- <transition name="slide-fade" mode="out-in"> -->
+                <ul v-if="['vault', 'passwords', 'notes', 'cards', 'identities'].includes(getRouteBaseName())" key="1">
                   <li
                     v-for="(itemMenu, id) in item.items"
                     :key="id"
@@ -44,6 +45,7 @@
                     </nuxt-link>
                   </li>
                 </ul>
+                <!-- </transition> -->
               </div>
               <nuxt-link
                 v-else
@@ -345,5 +347,18 @@ export default {
 .sidebar {
   @apply transition-transform md:hidden fixed top-0 left-0 h-screen;
   transform: translateX(-100%);
+}
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .2s ease;
+}
+.slide-fade-leave-active {
+  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>

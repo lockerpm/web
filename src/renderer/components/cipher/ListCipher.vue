@@ -1,26 +1,14 @@
 <template>
   <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
     <!-- Navigation Menu -->
-    <div class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10">
+    <div class="navigation-bar">
       <template v-if="['vault', 'passwords', 'notes', 'identities', 'cards'].includes(getRouteBaseName())">
         <nuxt-link
           v-for="(item, index) in menuVault"
           :key="index"
           :to="localeRoute({name: item.routeName})"
-          active-class="!text-black font-semibold border-b-2 border-primary pb-3"
-          class="text-black-600 mr-8 last:mr-0 hover:no-underline"
-          exact
-        >
-          {{ $t(`sidebar.${item.label}`) }}
-        </nuxt-link>
-      </template>
-      <template v-if="['shares', 'shares-shared-with-you', 'shares-your-shares', 'shares-requests'].includes(getRouteBaseName())">
-        <nuxt-link
-          v-for="(item, index) in menuShares"
-          :key="index"
-          :to="localeRoute({name: item.routeName})"
-          active-class="!text-primary"
-          class="text-black-600 font-bold mr-8 last:mr-0 hover:no-underline"
+          active-class="navigation-item__active"
+          class="navigation-item"
           exact
         >
           {{ $t(`sidebar.${item.label}`) }}
@@ -33,85 +21,87 @@
     <div v-if="!shouldRenderNoCipher" class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <!-- Overview -->
       <div class="mb-10">
-        <div class="flex">
-          <div class="text-head-4">
-            <template v-if="getRouteBaseName() === 'vault-folders-folderId'">
-              <nuxt-link
-                class="font-medium hover:no-underline"
-                :to="localeRoute({name: 'vault'})"
-              >
-                {{ $t('sidebar.vault') }}
-              </nuxt-link>
-              <span class="font-medium">
-                &nbsp; / &nbsp; {{ folder.name }}
-              </span>
-            </template>
-            <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId'">
-              <nuxt-link
-                class="font-medium hover:no-underline"
-                :to="localeRoute({name: 'vault'})"
-              >
-                {{ $t('sidebar.vault') }}
-              </nuxt-link>
-              <span class="font-medium">
-                &nbsp; / &nbsp; {{ getTeam(teams, $route.params.teamId).name }} - {{ collection.name }}
-              </span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='vault'">
-              <span class="font-medium">All items</span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='shares'">
-              <span class="font-medium">{{ $t('sidebar.shared_with_you') }}</span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='trash'">
-              <span class="font-medium">Trash</span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='shares-your-shares'">
-              <span class="font-medium">{{ $t('type.your_shares') }}</span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='shares-requests'">
-              <span class="font-medium">{{ $t('type.requests') }}</span>
-            </template>
-            <template v-else>
-              <span class="font-medium">
-                {{ $tc(`type.${type}`, 2) }}
-              </span>
-            </template>
-          </div>
-          <template v-if="getRouteBaseName()==='vault'">
-            <div class="mx-6 text-head-4"> | </div>
+        <div class="flex justify-between">
+          <div class="flex">
             <div class="text-head-4">
-              <!-- <i v-if="!viewFolder" class="fas fa-folder-open" @click="viewFolder=true" /> -->
-              <i :class="viewFolder?'fas':'far'" class="fa-folder cursor-pointer" @click="viewFolder=!viewFolder" />
-            </div>
-          </template>
-          <template v-if="!['shares', 'trash'].includes(routeName)">
-            <div class="mx-6 text-head-4"> | </div>
-            <div>
-              <el-dropdown v-if="routeName==='vault'" trigger="click">
-                <button class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold">
-                  <i class="el-icon-circle-plus-outline text-lg" />
-                  <div class="ml-3 break-all">Add new</div>
-                </button>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item
-                    v-for="item in options"
-                    :key="item"
-                    class="flex items-center justify-between"
-                    @click.native="confirmDialog(item)"
-                  >
-                    {{ item }}
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
+              <template v-if="getRouteBaseName() === 'vault-folders-folderId'">
+                <nuxt-link
+                  class="font-medium hover:no-underline"
+                  :to="localeRoute({name: 'vault'})"
+                >
+                  {{ $t('sidebar.vault') }}
+                </nuxt-link>
+                <span class="font-medium">
+                  &nbsp; / &nbsp; {{ folder.name }}
+                </span>
+              </template>
+              <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId'">
+                <nuxt-link
+                  class="font-medium hover:no-underline"
+                  :to="localeRoute({name: 'vault'})"
+                >
+                  {{ $t('sidebar.vault') }}
+                </nuxt-link>
+                <span class="font-medium">
+                  &nbsp; / &nbsp; {{ getTeam(teams, $route.params.teamId).name }} - {{ collection.name }}
+                </span>
+              </template>
+              <template v-else-if="getRouteBaseName() ==='vault'">
+                <span class="font-medium">All items</span>
+              </template>
+              <template v-else-if="getRouteBaseName() ==='shares'">
+                <span class="font-medium">{{ $t('sidebar.shared_with_you') }}</span>
+              </template>
+              <template v-else-if="getRouteBaseName() ==='trash'">
+                <span class="font-medium">Trash</span>
+              </template>
+              <template v-else-if="getRouteBaseName() ==='shares-your-shares'">
+                <span class="font-medium">{{ $t('type.your_shares') }}</span>
+              </template>
+              <template v-else-if="getRouteBaseName() ==='shares-requests'">
+                <span class="font-medium">{{ $t('type.requests') }}</span>
+              </template>
               <template v-else>
-                <button class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold" @click="handleAddButton">
-                  <i class="el-icon-circle-plus-outline text-lg" />
-                  <div class="ml-3 break-all">Add new</div>
-                </button>
+                <span class="font-medium">
+                  {{ $tc(`type.${type}`, 2) }}
+                </span>
               </template>
             </div>
-          </template>
+            <template v-if="!['shares', 'trash'].includes(routeName)">
+              <div class="mx-6 text-head-4"> | </div>
+              <div>
+                <el-dropdown v-if="routeName==='vault'" trigger="click">
+                  <button class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold">
+                    <i class="el-icon-plus text-lg" />
+                    <div class="ml-3 break-all">Add new</div>
+                  </button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      v-for="item in options"
+                      :key="item"
+                      class="flex items-center justify-between"
+                      @click.native="confirmDialog(item)"
+                    >
+                      {{ item }}
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <template v-else>
+                  <button class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold" @click="handleAddButton">
+                    <i class="el-icon-plus text-lg" />
+                    <div class="ml-3 break-all">Add new</div>
+                  </button>
+                </template>
+              </div>
+            </template>
+          </div>
+          <div v-if="getRouteBaseName()==='vault'">
+            <button class="btn btn-icon hover:bg-[#E5E5E5]" :class="viewFolder?'bg-[#E5E5E5]':''" @click="viewFolder=!viewFolder">
+              <!-- <i v-if="!viewFolder" class="fas fa-folder-open" @click="viewFolder=true" /> -->
+              View in folder
+              <span><i :class="viewFolder?'fas':'far'" class="fa-folder cursor-pointer" /></span>
+            </button>
+          </div>
         </div>
         <div v-if="ciphers && !viewFolder" class="uppercase text-head-6">
           <span class="text-primary font-semibold">{{ ciphers.length }}</span> {{ $tc('type.0', ciphers.length) }}
@@ -493,7 +483,7 @@
                   trigger="click"
                   :hide-on-click="false"
                 >
-                  <button class="btn btn-icon btn-xs hover:text-primary hover:bg-black-400">
+                  <button class="btn btn-icon btn-xs hover:bg-black-400">
                     <i class="far fa-clone" />
                   </button>
                   <el-dropdown-menu slot="dropdown">
@@ -740,7 +730,7 @@ export default {
       ],
       dataRendered: [],
       lastIndex: 0,
-      options: ['Login', 'SecureNote', 'Card', 'Identity'],
+      options: ['Login', 'SecureNote', 'Card', 'Identity', 'Folder'],
       selectedType: 'Login',
       viewFolder: false
     }
@@ -1137,7 +1127,11 @@ export default {
       })
     },
     confirmDialog (type) {
-      this.$refs.chooseCipherType.confirmDialog(type)
+      if (type === 'Folder') {
+        this.addEditFolder()
+      } else {
+        this.$refs.chooseCipherType.confirmDialog(type)
+      }
       this.dialogVisible = false
     }
 

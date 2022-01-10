@@ -40,15 +40,16 @@
             {{ cipher.name }}
           </el-breadcrumb-item>
         </el-breadcrumb>
-        <div v-if="canManageItem(teams, cipher)" class="header-actions">
+        <div class="header-actions">
           <button
+            v-if="canManageItem(organizations, cipher)"
             class="btn btn-icon btn-xs btn-action"
             @click="addEdit"
           >
             <i class="fa fa-pen" />
           </button>
           <button
-            v-if="!cipher.organizationId"
+            v-if="canShareItem(organizations, cipher)"
             class="btn btn-icon btn-xs btn-action"
             @click="shareItem(cipher)"
           >
@@ -62,8 +63,11 @@
               <el-dropdown-item @click.native="moveFolders([cipher.id])">
                 {{ $t('common.move_folder') }}
               </el-dropdown-item>
-              <el-dropdown-item @click.native="deleteCiphers([cipher.id])">
+              <el-dropdown-item v-if="isOwner(organizations, cipher)" @click.native="deleteCiphers([cipher.id])">
                 <span class="text-danger">{{ $t('common.delete') }}</span>
+              </el-dropdown-item>
+              <el-dropdown-item v-else @click.native="leaveShare(cipher)">
+                <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -139,7 +143,7 @@
           <div class="grid md:grid-cols-6 cipher-item">
             <div class="">{{ $t('data.ciphers.owned_by') }}</div>
             <div class="col-span-4 font-semibold flex items-center">
-              <span>{{ getTeam(teams, cipher.organizationId).name || $t('common.me') }}</span>
+              <span>{{ isOwner(organizations, cipher)? $t('common.name') : getTeam(organizations, cipher.organizationId).name || $t('common.me') }}</span>
             </div>
           </div>
           <div class="grid md:grid-cols-6 cipher-item">
@@ -245,6 +249,13 @@ export default {
       },
       watch: ['$store.state.syncedCiphersToggle']
     },
+    organizations: {
+      async get () {
+        const result = await this.$userService.getAllOrganizations()
+        return result
+      },
+      watch: ['ciphers']
+    },
     folders: {
       async get () {
         return await this.$folderService.getAllDecrypted() || []
@@ -302,6 +313,26 @@ export default {
     },
     findFolder (folders, id) {
       return find(folders, e => e.id === id) || { name: this.$t('data.folders.no_folder'), id: 'unassigned' }
+    },
+    async leaveShare (cipher) {
+      this.$confirm(this.$tc('data.notifications.leave_share', 1), this.$t('common.warning'), {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(async () => {
+        try {
+          await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/leave`)
+          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'success')
+          this.$router.back()
+        } catch (error) {
+          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
+          console.log(error)
+        } finally {
+          this.loading = false
+        }
+      }).catch(() => {
+
+      })
     }
   }
 }

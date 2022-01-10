@@ -83,6 +83,31 @@
             <div class="setting-title">{{ $t('data.settings.manage_sessions') }}</div>
           </div>
         </div>
+        <div>
+          <template v-for="item in listDevices.filter(device => device.is_active)">
+            <div :key="item.device_identifier" class="flex justify-between items-center setting-section">
+              <div class="flex items-center">
+                <div class="mr-10 text-head-3">
+                  <i class="fas" :class="item.client_id === 'web'?'fa-laptop':'fa-mobile-alt'" />
+                </div>
+                <div>
+                  <div v-if="item.os"><span class="font-semibold">{{ item.os.family }} {{ item.os.version }}</span> &nbsp; &nbsp; {{ item.browser.family }} {{ item.browser.version }}</div>
+                  <div class="text-black-600">
+                    Web Application
+                  </div>
+                </div>
+              </div>
+              <div>
+                <span class="h-2 w-2 bg-green-600 rounded-full inline-block mr-2" />Active
+              </div>
+            </div>
+          </template>
+        </div>
+        <div>
+          <button class="btn btn-default" @click="confirmMasterPassword">
+            Log out of all devices
+          </button>
+        </div>
       </div>
     </div>
     <div class="setting-wrapper">
@@ -119,22 +144,25 @@
     </div>
     <PurgeVault ref="purgeVault" />
     <DeauthorizeSessions ref="deauthorizeSessions" />
+    <ReConfirmMasterPassword ref="reConfirmMasterPassword" @done="revokeAll()" />
   </div>
 </template>
 
 <script>
 import PurgeVault from '../../components/setting/PurgeVault'
 import DeauthorizeSessions from '../../components/setting/DeauthorizeSessions'
+import ReConfirmMasterPassword from '../../components/password/ReConfirmMasterPassword'
 export default {
   components: {
-    PurgeVault, DeauthorizeSessions
+    PurgeVault, DeauthorizeSessions, ReConfirmMasterPassword
   },
   data () {
     return {
       user: {},
       loading: false,
       collapsed: false,
-      fingerprint: ''
+      fingerprint: '',
+      listDevices: []
     }
   },
   computed: {
@@ -144,6 +172,7 @@ export default {
   },
   mounted () {
     this.getUser()
+    this.getListDevices()
   },
   asyncComputed: {
     fingerprint: {
@@ -175,6 +204,24 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    async getListDevices () {
+      try {
+        this.loading = true
+        this.listDevices = await this.$axios.$get('cystack_platform/pm/users/me/devices')
+      } catch (e) {
+        console.log(e)
+      } finally {
+        this.loading = false
+      }
+    },
+    confirmMasterPassword () {
+      this.$refs.reConfirmMasterPassword.openDialog()
+    },
+    async revokeAll (data) {
+      // console.log(data)
+      // await this.$axios.$post('cystack_platform/pm/users/session/revoke_all', {
+      // })
     },
     openPurgeVault (type) {
       this.$refs.purgeVault.openDialog(type)

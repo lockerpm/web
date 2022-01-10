@@ -22,7 +22,12 @@
                     </div>
                     <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
                   </div>
-                  <div v-if="item.routeName==='shares' && pendingShares>0"><el-badge :value="pendingShares" class="item" /></div>
+                  <!-- <div v-if="item.routeName==='shares' && pendingShares>0"><el-badge :value="pendingShares" class="item" /></div> -->
+                  <div v-if="item.routeName==='shares' && pendingShares>0">
+                    <div class="notification-badge">
+                      {{ pendingShares }}
+                    </div>
+                  </div>
                 </nuxt-link>
               </nav>
             </div>
@@ -213,8 +218,8 @@ export default {
       idleTimer: null,
       isIdle: false,
       shouldWelcome: 'false',
-      emergencyAccessInvitations: [],
-      pendingShares: 0
+      emergencyAccessInvitations: []
+      // pendingShares: 0
     }
   },
   head () {
@@ -233,7 +238,7 @@ export default {
         ...this.currentPlan.alias === 'pm_free'
           ? [{
             label: 'upgrade',
-            routeName: 'upgrade',
+            routeName: 'plans',
             icon: 'upgrade'
           }]
           : [],
@@ -276,7 +281,7 @@ export default {
         this.getInvitations()
         this.getEmergencyAccessInvitations()
         this.reconnectSocket()
-        this.getShareInvitations()
+        // this.getShareInvitations()
         this.$store.dispatch('LoadCurrentPlan')
       }
     }
@@ -315,6 +320,16 @@ export default {
   asyncComputed: {
     async locked () {
       return await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
+    },
+    pendingShares: {
+      async get () {
+        if (this.locked === false) {
+          const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
+          return shareInvitations.filter(item => item.status === 'invited').length
+        }
+        return []
+      },
+      watch: ['$store.state.syncedCiphersToggle']
     }
   },
   beforeDestroy () {

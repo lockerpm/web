@@ -327,6 +327,16 @@ Vue.mixin({
         params: { id: cipher.id }
       }))
     },
+    isOwner (teams, cipher) {
+      if (cipher.organizationId) {
+        const team = this.getTeam(teams, cipher.organizationId)
+        if (team.type === 0) {
+          return true
+        }
+        return false
+      }
+      return true
+    },
     getTeam (teams, orgId) {
       return find(teams, e => e.id === orgId) || {}
     },

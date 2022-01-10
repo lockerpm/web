@@ -1,17 +1,18 @@
 <template>
   <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
     <!-- Navigation Menu -->
-    <div class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10">
+    <div class="navigation-bar">
       <nuxt-link
         v-for="(item, index) in menuShares"
         :key="index"
         :to="localeRoute({name: item.routeName})"
-        active-class="!text-black font-semibold border-b-2 border-primary pb-3"
-        class="text-black-600 mr-8 last:mr-0 hover:no-underline"
+        active-class="navigation-item__active"
+        class="navigation-item"
         exact
       >
         {{ $t(`sidebar.${item.label}`) }}
-        <span v-if="item.pending && item.pending>0"><el-badge :value="item.pending" class="item" /></span>
+        <!-- <span v-if="item.pending && item.pending>0"><el-badge :value="item.pending" class="item" /></span> -->
+        <span v-if="item.pending && item.pending>0"><div class="notification-badge">{{ item.pending }}</div></span>
       </nuxt-link>
     </div>
     <!-- Navigation Menu end -->
@@ -616,7 +617,8 @@ export default {
             const org = this.getTeam(this.organizations, item.organizationId)
             return {
               ...item,
-              share_type: this.shareTypeMapping[org.type]
+              // share_type: this.shareTypeMapping[org.type]
+              share_type: org.type === 1 ? 'Edit' : item.viewPassword ? 'View' : 'Only fill'
             }
           })
           const invitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
@@ -846,6 +848,8 @@ export default {
     async rejectShareInvitation (cipher) {
       try {
         await this.$axios.$put(`cystack_platform/pm/sharing/invitations/${cipher.id}`, { status: 'reject' })
+        this.getSyncData()
+        this.getPendingShares()
         this.notify(this.$t('data.notifications.accept_invitation_success'), 'success')
       } catch (e) {
         this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')
@@ -876,13 +880,19 @@ export default {
       }
     },
     async leaveShare (cipher) {
-      try {
-        await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/leave`)
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'success')
-      } catch (error) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
-        console.log(error)
-      }
+      this.$confirm(this.$tc('data.notifications.leave_share', 1), this.$t('common.warning'), {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(async () => {
+        try {
+          await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/leave`)
+          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'success')
+        } catch (error) {
+          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
+          console.log(error)
+        }
+      })
     },
     async generateOrgKey (orgId) {
       const pk = Utils.fromB64ToArray(this.publicKey)

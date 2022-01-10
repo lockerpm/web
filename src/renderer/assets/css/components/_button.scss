@@ -1,5 +1,6 @@
 .btn {
-  @apply px-8 py-2.5 whitespace-nowrap text-sm font-semibold rounded-md text-black-700;
+  // @apply px-8 py-2.5 whitespace-nowrap text-sm font-semibold rounded-md text-black-700;
+  @apply px-5 py-1.5 whitespace-nowrap text-sm font-semibold rounded-[4px] text-black-700;
   cursor: pointer;
   &.btn-icon {
     @apply p-2.5;
