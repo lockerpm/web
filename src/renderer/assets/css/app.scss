@@ -326,3 +326,16 @@ input:-webkit-autofill:active
     color: black !important;
   }
 }
+
+.notification-badge {
+  background-color: #da112c;
+  border-radius: 10px;
+  color: #fff;
+  display: inline-block;
+  font-size: 12px;
+  height: 18px;
+  line-height: 18px;
+  padding: 0 7px;
+  text-align: center;
+  white-space: nowrap;
+}

@@ -242,6 +242,9 @@ export default {
   components: {
     ChangeMasterPassword, PurgeVault, DeauthorizeSessions
   },
+  asyncData ({ isDev, route, store, env, params, query, req, res, redirect, error }) {
+    redirect(301, '/settings/account')
+  },
   data () {
     return {
       user: {},

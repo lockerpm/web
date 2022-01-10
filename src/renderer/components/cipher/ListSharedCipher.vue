@@ -11,7 +11,8 @@
         exact
       >
         {{ $t(`sidebar.${item.label}`) }}
-        <span v-if="item.pending && item.pending>0"><el-badge :value="item.pending" class="item" /></span>
+        <!-- <span v-if="item.pending && item.pending>0"><el-badge :value="item.pending" class="item" /></span> -->
+        <span v-if="item.pending && item.pending>0"><div class="notification-badge">{{ item.pending }}</div></span>
       </nuxt-link>
     </div>
     <!-- Navigation Menu end -->
@@ -847,6 +848,8 @@ export default {
     async rejectShareInvitation (cipher) {
       try {
         await this.$axios.$put(`cystack_platform/pm/sharing/invitations/${cipher.id}`, { status: 'reject' })
+        this.getSyncData()
+        this.getPendingShares()
         this.notify(this.$t('data.notifications.accept_invitation_success'), 'success')
       } catch (e) {
         this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')

@@ -50,14 +50,14 @@ export default {
     },
     menu () {
       return [
-        {
-          label: 'general',
-          routeName: 'settings'
-        },
-        {
-          label: 'import_export',
-          routeName: 'settings-import-export'
-        },
+        // {
+        //   label: 'general',
+        //   routeName: 'settings'
+        // },
+        // {
+        //   label: 'import_export',
+        //   routeName: 'settings-import-export'
+        // },
         // {
         //   label: 'download',
         //   routeName: 'settings-download'

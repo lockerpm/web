@@ -6,7 +6,7 @@
           :key="index"
           :class="step===index+1?'!text-black font-semibold border-b-2 border-primary pb-3':''"
           class="text-black-600 mr-8 last:mr-0 cursor-pointer"
-          @click="index!==2?step=index+1:()=>{}"
+          @click="index===0?step=index+1:()=>{}"
         >
           {{ $t(`sidebar.${item.label}`) }}
         </div>
@@ -75,7 +75,7 @@
                     :key="item.id"
                     :class="selectedPlan.alias===item.alias?'!border-primary':''"
                     class="p-8 border border-black-200 rounded cursor-pointer hover:border-primary relative"
-                    @click="item.alias !=='pm_free'?selectPlan(item):''"
+                    @click="item.alias !=='pm_free' && currentPlan.alias === 'pm_free'?selectPlan(item):''"
                   >
                     <div class="h-full flex flex-col">
                       <div class="2xl:flex items-center text-center">
@@ -178,7 +178,7 @@
                   <div class="text-black font-bold mb-2">Order details</div>
                   <div class="flex justify-between text-head-6 font-semibold">
                     <div>
-                      {{ selectedPlan.name }} ( {{ duration==='yearly'?'12 months':'1 month' }})
+                      {{ selectedPlan.name }} ( {{ result.duration==='yearly'?'12 months':'1 month' }})
                     </div>
                     <div>
                       {{ result.total_price }} {{ result.currency }}
@@ -244,7 +244,7 @@
                     </li>
                     <li>You can cancel any time before this date.</li>
                   </ul>
-                  <button :disabled="step===2 && !selectedCard || step ===3" class="btn btn-primary w-full" @click="step===1?selectedPlan.alias==='pm_family'?addMember():toStep2():confirmPlan()">
+                  <button :disabled="step===2 && !selectedCard || step===1 && !selectedPlan.alias || step ===3" class="btn btn-primary w-full" @click="step===1?selectedPlan.alias==='pm_family'?addMember():toStep2():confirmPlan()">
                     {{ step===1?'Continue': 'Pay & Upgrade' }}
                   </button>
                 </div>
