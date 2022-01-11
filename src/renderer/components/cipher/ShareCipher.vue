@@ -440,8 +440,8 @@ export default {
         this.closeDialog()
         this.$emit('updated-cipher')
       } catch (e) {
-        if (e.response && e.response.message && e.response.code === '7002') {
-          this.notify(e.response.message, 'warning')
+        if (e.response && e.response.data && e.response.data.code === '7002') {
+          this.notify(e.response.data.message, 'warning')
           this.$emit('upgrade-plan')
         }
         this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
