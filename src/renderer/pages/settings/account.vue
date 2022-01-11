@@ -88,7 +88,7 @@
             <div :key="item.device_identifier" class="flex justify-between items-center setting-section">
               <div class="flex items-center">
                 <div class="mr-10 text-head-3">
-                  <i class="fas" :class="item.client_id === 'web'?'fa-laptop':'fa-mobile-alt'" />
+                  <i class="fas" :class="item.client_id === 'web'?'fa-laptop': item.client_id==='browser'?'fa-puzzle-piece':'fa-mobile-alt'" />
                 </div>
                 <div>
                   <div v-if="item.os"><span class="font-semibold">{{ item.os.family }} {{ item.os.version }}</span> &nbsp; &nbsp; {{ item.browser.family }} {{ item.browser.version }}</div>

@@ -358,10 +358,11 @@
     <AddEditCipher ref="addEditCipherDialog" :type="type" />
     <AddEditFolder ref="addEditFolder" />
     <AddEditTeamFolder ref="addEditTeamFolder" />
-    <ShareCipher ref="shareCipher" :cipher-options="allCiphers" />
+    <ShareCipher ref="shareCipher" :cipher-options="allCiphers" @upgrade-plan="upgradePlan" />
     <EditSharedCipher ref="editSharedCipher" />
     <ShareFolder ref="shareFolder" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
+    <PremiumDialog ref="premiumDialog" />
     <el-dialog
       :visible.sync="dialogConfirmVisible"
       width="435px"
@@ -423,6 +424,7 @@ import { CipherType } from '../../jslib/src/enums'
 import Vnodes from '../../components/Vnodes'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { Utils } from '../../jslib/src/misc/utils.ts'
+import PremiumDialog from '../../components/upgrade/PremiumDialog'
 export default {
   components: {
     AddEditCipher,
@@ -434,7 +436,8 @@ export default {
     MoveFolder,
     ShareNoCipher,
     VueContext: () => import('../../plugins/vue-context'),
-    Vnodes
+    Vnodes,
+    PremiumDialog
   },
   props: {
     deleted: {
@@ -945,6 +948,10 @@ export default {
     async getPendingShares () {
       const invitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
       this.pendingShares = invitations.filter(item => item.status === 'invited').length
+    },
+    upgradePlan () {
+      this.$refs.shareCipher.closeDialog()
+      this.$refs.premiumDialog.openDialog()
     }
   }
 }

@@ -170,7 +170,7 @@ export default {
           : [],
         {
           label: 'settings',
-          routeName: 'settings',
+          routeName: 'settings-account',
           icon: 'setting'
         },
         // {

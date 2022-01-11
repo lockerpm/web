@@ -165,9 +165,10 @@
           </div>
         </div>
       </client-only>
-      <ShareCipher ref="shareCipher" />
+      <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
       <MoveFolder ref="moveFolder" />
       <AddEditCipher ref="addEditCipherDialog" />
+      <PremiumDialog ref="premiumDialog" />
       <div class="max-w-[585px] mx-auto">
         <AddEditCipher
           ref="addEditCipherDialog"
@@ -188,6 +189,8 @@ import TextHaveCopy from '../../components/cipher/TextHaveCopy'
 import Vnodes from '../../components/Vnodes'
 import ShareCipher from '../../components/cipher/ShareCipher'
 import MoveFolder from '../folder/MoveFolder'
+import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
+
 export default {
   components: {
     TextHaveCopy,
@@ -195,7 +198,8 @@ export default {
     PasswordStrength,
     Vnodes,
     ShareCipher,
-    MoveFolder
+    MoveFolder,
+    PremiumDialog
   },
   props: {
     type: {
@@ -333,6 +337,10 @@ export default {
       }).catch(() => {
 
       })
+    },
+    upgradePlan () {
+      this.$refs.shareCipher.closeDialog()
+      this.$refs.premiumDialog.openDialog()
     }
   }
 }

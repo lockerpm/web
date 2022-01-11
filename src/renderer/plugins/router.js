@@ -1,4 +1,4 @@
-export default ({ store, app }) => {
+export default ({ store, app, i18n }) => {
   // Every time the route changes (fired on initialization too)
   app.router.beforeEach(async (toRoute, fromRoute, next) => {
     if (fromRoute && toRoute && fromRoute.path && toRoute.path && !fromRoute.path.includes('/login') && !toRoute.path.includes('/login') && !fromRoute.path.includes('/lock') && !toRoute.path.includes('/lock') && !fromRoute.path.includes('/set-master-password') && !toRoute.path.includes('/set-master-password')
@@ -6,10 +6,13 @@ export default ({ store, app }) => {
       store.commit('UPDATE_PATH', toRoute.fullPath)
       store.commit('UPDATE_PREVIOUS_PATH', fromRoute.fullPath)
     }
-    // if (store.state.isLoggedIn) {
-    //   await store.dispatch('LoadCurrentUser')
-    //   await store.dispatch('LoadCurrentUserPw')
-    // }
+    if (store.state.isLoggedIn) {
+      store.dispatch('LoadCurrentUser')
+        .then(res => {
+          i18n.setLocale(res.language)
+        })
+      // await store.dispatch('LoadCurrentUserPw')
+    }
     next()
   })
 }

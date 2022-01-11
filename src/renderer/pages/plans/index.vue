@@ -89,11 +89,23 @@
                       <div class="text-black-600  mt-2">
                         {{ $t(`data.plans.descriptions.${item.alias}`) }}
                       </div>
-                      <div class="mt-2.5 mb-6 2xl:flex items-center">
-                        <div class="text-head-3 font-semibold text-center 2xl:mr-2">
-                          <span v-if="language==='vi'">đ{{ item.price.vnd | formatNumber }}</span>
-                          <span v-if="language==='en'">${{ item.price.usd | formatNumber }}</span>
-                        </div>
+                      <div class="mt-2.5 mb-6">
+                        <template v-if="item.alias==='pm_free'">
+                          <div class="text-head-3 font-semibold text-center">
+                            <span v-if="language==='vi'">đ{{ item.price.vnd | formatNumber }}</span>
+                            <span v-if="language==='en'">${{ item.price.usd | formatNumber }}</span>
+                          </div>
+                        </template>
+                        <template v-else>
+                          <div v-if="language==='vi'" class="text-head-3 font-semibold text-center">
+                            <span :class="periodSwitch?'line-through':''">đ{{ item.price.vnd | formatNumber }}</span>
+                            <span v-if="periodSwitch">đ{{ (item.yearly_price.vnd / 12) | formatNumber }}</span>
+                          </div>
+                          <div v-if="language==='en'" class="text-head-3 font-semibold text-center">
+                            <span :class="periodSwitch?'line-through':''">${{ item.price.usd | formatNumber }}</span>
+                            <span v-if="periodSwitch">${{ (item.yearly_price.usd / 12) | formatNumber }}</span>
+                          </div>
+                        </template>
                         <div class="text-center">
                           <span class="text-black-600">/ mo</span>
                           <span v-if="item.max_number" class="text-black-600">/ {{ $tc('data.plans.members',item.max_number ,{count: item.max_number}) }} </span>
@@ -116,10 +128,10 @@
                         </button>
                       </div> -->
                     </div>
-                    <div v-if="currentPlan.alias === item.alias" class="absolute bottom-[-50px] w-full left-0 right-0 text-center">
+                    <div v-if="currentPlan.alias === item.alias" class="absolute bottom-0 lg:bottom-[-50px] w-full left-0 right-0 text-center">
                       <i class="fas fa-sort-up" />
                       <div>
-                        Your current plan
+                        {{ $t('data.plans.current_plan') }}
                       </div>
                     </div>
                   </div>

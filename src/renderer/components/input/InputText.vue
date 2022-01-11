@@ -37,6 +37,7 @@
         @blur="focusing = false"
         @input="handleInput"
         @mouseenter="handleHover"
+        @keyup.enter="keyupEnter"
       >
     </template>
 
@@ -169,6 +170,9 @@ export default {
     },
     add () {
       this.$emit('add')
+    },
+    keyupEnter () {
+      this.$emit('keyupEnter')
     }
   }
 }

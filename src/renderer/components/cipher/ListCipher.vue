@@ -569,9 +569,10 @@
     <AddEditTeamFolder ref="addEditTeamFolder" />
     <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" />
     <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" />
-    <ShareCipher ref="shareCipher" />
+    <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
     <ShareFolder ref="shareFolder" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
+    <PremiumDialog ref="premiumDialog" />
     <!-- <div class="fixed bottom-[50px] right-[55px]">
       <el-popover
         v-if="['vault'].includes(routeName)"
@@ -644,6 +645,7 @@ import NoCipher from '../../components/cipher/NoCipher'
 import { CipherType } from '../../jslib/src/enums'
 import Vnodes from '../../components/Vnodes'
 import ChooseCipherType from '../../components/cipher/ChooseCipherType'
+import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
 export default {
   components: {
     ChooseCipherType,
@@ -657,7 +659,8 @@ export default {
     AddEditTeamFolderUsers,
     AddEditTeamFolderGroups,
     VueContext: () => import('../../plugins/vue-context'),
-    Vnodes
+    Vnodes,
+    PremiumDialog
   },
   props: {
     deleted: {
@@ -1133,6 +1136,10 @@ export default {
         this.$refs.chooseCipherType.confirmDialog(type)
       }
       this.dialogVisible = false
+    },
+    upgradePlan () {
+      this.$refs.shareCipher.closeDialog()
+      this.$refs.premiumDialog.openDialog()
     }
 
   }
