@@ -136,6 +136,7 @@
           class="w-full !mb-4"
           :add-button="true"
           @add="addEmail"
+          @keyupEnter="addEmail"
         />
       </div>
       <div v-if="members" class="w-full mb-4">
@@ -439,6 +440,10 @@ export default {
         this.closeDialog()
         this.$emit('updated-cipher')
       } catch (e) {
+        if (e.response && e.response.message && e.response.code === '7002') {
+          this.notify(e.response.message, 'warning')
+          this.$emit('upgrade-plan')
+        }
         this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
         console.log(e)
       } finally {
