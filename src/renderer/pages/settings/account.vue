@@ -50,7 +50,7 @@
           <div>{{ $t('common.country') }}</div>
           <div class="font-semibold">{{ currentUser.country }}</div>
         </div>
-        <div class="flex">
+        <div class="sm:flex">
           <a href="https://id.cystack.net/" target="_blank" class="mr-4">
             <button
               class="btn btn-default mb-4 md:mb-0"
@@ -87,7 +87,7 @@
           <template v-for="item in listDevices.filter(device => device.is_active)">
             <div :key="item.device_identifier" class="flex justify-between items-center setting-section">
               <div class="flex items-center">
-                <div class="mr-10 text-head-3">
+                <div class="mr-10 text-head-3 w-10 text-center">
                   <i class="fas" :class="item.client_id === 'web'?'fa-laptop': item.client_id==='browser'?'fa-puzzle-piece':'fa-mobile-alt'" />
                 </div>
                 <div>
@@ -104,7 +104,7 @@
           </template>
         </div>
         <div>
-          <button class="btn btn-default" @click="confirmMasterPassword">
+          <button class="btn btn-default" @click="openDeauthorizeSessions()">
             Log out of all devices
           </button>
         </div>
@@ -119,12 +119,12 @@
               {{ $t('data.settings.danger_zone_note') }}
             </div>
             <div>
-              <button
+              <!-- <button
                 class="btn btn-default !text-danger mb-4 md:mb-0"
                 @click="openDeauthorizeSessions()"
               >
                 {{ $t('data.settings.deauthorize_sessions') }}
-              </button>
+              </button> -->
               <button
                 class="btn btn-default !text-danger mb-4 md:mb-0"
                 @click="openPurgeVault('purge')"
