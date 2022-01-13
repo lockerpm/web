@@ -164,13 +164,6 @@ export default {
 }
 </script>
 <style scoped>
-.sidebar-open .sidebar{
-  transform: translateX(0);
-}
-.sidebar {
-  @apply transition-transform md:hidden fixed top-0 left-0 h-screen;
-  transform: translateX(-100%);
-}
 /* Enter and leave animations can use different */
 /* durations and timing functions.              */
 .slide-fade-enter-active {

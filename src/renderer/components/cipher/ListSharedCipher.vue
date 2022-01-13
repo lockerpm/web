@@ -613,7 +613,10 @@ export default {
         const deletedFilter = c => {
           return c.isDeleted === this.deleted
         }
-        let result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+        let result = []
+        if (this.allCiphers) {
+          result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+        }
         if (this.getRouteBaseName() === 'shares') {
           result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)
           result = result.map(item => {

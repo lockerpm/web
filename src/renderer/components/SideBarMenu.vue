@@ -72,12 +72,12 @@
       </nav>
     </div>
     <div>
-      <nav class="mb-10">
+      <nav class="my-10">
         <nuxt-link
           v-for="(item, index) in bottomMenu"
           :key="index"
           :to="localePath({name: item.routeName, params: item.params})"
-          class="flex items-center py-2 px-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+          class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
           active-class="bg-white bg-opacity-20 !text-white"
         >
           <div class="mr-2 w-[22px] h-[22px] flex items-center">
@@ -194,6 +194,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
+<style>
+.sidebar-open .sidebar{
+  transform: translateX(0);
+}
+.sidebar {
+  @apply transition-transform md:hidden fixed top-0 left-0 h-screen;
+  transform: translateX(-100%);
+}
 </style>
