@@ -230,6 +230,9 @@ svg {
 }
 .el-avatar {
   background: transparent;
+  img {
+    object-fit: contain !important;
+  }
 }
 
 a {
@@ -349,5 +352,15 @@ input:-webkit-autofill:active
 @media only screen and (max-width: 768px){
   .premium-dialog .el-dialog{
     width: 400px !important;
+  }
+}
+.el-collapse-item__header, .el-collapse-item__wrap {
+  background: transparent !important;
+  border: 0 !important;
+}
+.el-collapse-item__header {
+  @apply px-5 text-black-400;
+  .el-collapse-item__arrow {
+    display: none;
   }
 }

@@ -67,6 +67,7 @@ import { SyncService as SyncServiceAbstraction } from '../jslib/src/abstractions
 // import { TotpService as TotpServiceAbstraction } from '../jslib/src/abstractions/totp.service';
 // import { UserService as UserServiceAbstraction } from '../jslib/src/abstractions/user.service';
 import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from '../jslib/src/abstractions/vaultTimeout.service';
+import { MyServices } from './myServices';
 // import { PasswordRepromptService } from '../jslib/src/services/passwordReprompt.service';
 
 const i18nService = new I18nService(window.navigator.language, 'locales');
@@ -120,7 +121,16 @@ const importService = new ImportService(cipherService, folderService, apiService
 const auditService = new AuditService(cryptoFunctionService, apiService);
 // const eventLoggingService = new EventLoggingService(storageService, apiService, userService, cipherService);
 // const passwordRepromptService = new PasswordRepromptService(i18nService, cryptoService, platformUtilsService);
-
+const myServices = new MyServices(
+  cryptoService,
+  userService,
+  settingsService,
+  apiService,
+  fileUploadService,
+  storageService,
+  i18nService,
+  () => searchService
+);
 containerService.attachToWindow(window);
 // const IdleTimeout = 60000 * 10 // 10 minutes
 
@@ -146,5 +156,6 @@ export default async ({ app, store }, inject) => {
     inject('exportService', exportService)
     inject('importService', importService)
     inject('auditService', auditService)
+    inject('myServices', myServices)
 
 }
