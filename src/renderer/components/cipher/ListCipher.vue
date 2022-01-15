@@ -106,6 +106,9 @@
         </div>
         <div v-if="ciphers && !viewFolder" class="uppercase text-head-6">
           <span class="text-primary font-semibold">{{ ciphers.length }}</span> {{ $tc('type.0', ciphers.length) }}
+          <el-tooltip :content="'Show logo: ' + showLogo" placement="top">
+            <el-switch v-model="showLogo" @change="changeShowLogo" />
+          </el-tooltip>
         </div>
         <div v-if="folders && viewFolder" class="uppercase text-head-6">
           <span class="text-primary font-semibold">{{ folders.length }}</span> {{ $tc('type.Folder', folders.length) }}
@@ -368,6 +371,7 @@
           :data="dataRendered || []"
           style="width: 100%"
           row-class-name="hover-table-row"
+          lazy
           @selection-change="handleSelectionChange"
         >
           <el-table-column
@@ -421,7 +425,7 @@
                   class="text-[34px] mr-3 flex-shrink-0"
                   :class="{'filter grayscale': scope.row.isDeleted}"
                 >
-                  <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
+                  <Vnodes :vnodes="getIconCipher(scope.row, 34, !showLogo)" />
                 </div>
                 <div class="flex flex-col">
                   <a
@@ -574,56 +578,6 @@
     <ShareFolder ref="shareFolder" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
     <PremiumDialog ref="premiumDialog" />
-    <!-- <div class="fixed bottom-[50px] right-[55px]">
-      <el-popover
-        v-if="['vault'].includes(routeName)"
-        placement="right-end"
-        width="200"
-        trigger="click"
-        popper-class="!p-0"
-      >
-        <div class="text-black">
-          <div class="px-5 pt-5 text-xs">
-            {{ $t('common.add') }}
-          </div>
-          <ul class="el-dropdown-menu !static !border-0 !shadow-none">
-            <li
-              v-if="getRouteBaseName() ==='vault'"
-              class="el-dropdown-menu__item font-semibold !text-black"
-              @click="addEditFolder({}, true)"
-            >
-              {{ $t('data.folders.add_folder') }}
-            </li>
-            <li
-              v-if="getRouteBaseName() ==='vault' && canCreateTeamFolder"
-              class="el-dropdown-menu__item font-semibold !text-black"
-              @click="addEditTeamFolder({})"
-            >
-              {{ $t('data.folders.add_team_folder') }}
-            </li>
-            <li
-              class="el-dropdown-menu__item font-semibold !text-black"
-              @click="chooseCipherType"
-            >
-              {{ $t('data.ciphers.add_item') }}
-            </li>
-          </ul>
-        </div>
-        <button
-          slot="reference"
-          class="btn btn-fab rounded-full flex items-center justify-center btn-primary"
-        >
-          <i class="fas fa-plus text-[24px]" />
-        </button>
-      </el-popover>
-      <button
-        v-else
-        class="btn btn-fab btn-primary rounded-full flex items-center justify-center"
-        @click="handleAddButton"
-      >
-        <i class="fas fa-plus text-[24px]" />
-      </button>
-    </div> -->
   </div>
 </template>
 
@@ -647,6 +601,8 @@ import { CipherType } from '../../jslib/src/enums'
 import Vnodes from '../../components/Vnodes'
 import ChooseCipherType from '../../components/cipher/ChooseCipherType'
 import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
+CipherType.CryptoAccount = 6
+CipherType.CryptoWallet = 7
 export default {
   components: {
     ChooseCipherType,
@@ -733,10 +689,11 @@ export default {
         }
       ],
       dataRendered: [],
-      lastIndex: 0,
+      renderIndex: 0,
       // options: ['Login', 'SecureNote', 'Card', 'Identity', 'Folder'],
       selectedType: 'Login',
-      viewFolder: false
+      viewFolder: false,
+      showLogo: this.$cookies.get('show-logo') || false
     }
   },
   computed: {
@@ -758,6 +715,10 @@ export default {
           label: 'Identity',
           value: 'Identity'
         },
+        // {
+        //   label: 'Crypto Assets',
+        //   value: 'CryptoAccount'
+        // },
         {
           label: 'Folder',
           value: 'Folder'
@@ -845,9 +806,9 @@ export default {
       const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
 
       if (bottomOfWindow) {
-        this.lastIndex += 50
-        if (this.lastIndex <= this.ciphers.length) {
-          this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.lastIndex, this.lastIndex + 50))
+        this.renderIndex += 50
+        if (this.renderIndex <= this.ciphers.length) {
+          this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.renderIndex, this.renderIndex + 50))
         }
       }
     }
@@ -857,65 +818,20 @@ export default {
       async get () {
         this.loading = true
         // let result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+        console.log(this.$store.state.syncedCiphersToggle)
+        console.log('get all')
         let result = await this.$cipherService.getAllDecrypted() || []
+        console.log(result.length)
         // remove ciphers generated by authenticator
-        result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
+        result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity, CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type))
         return result
         // return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
       },
-      watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
-    },
-    organizations: {
-      async get () {
-        this.loading = true
-        const result = await this.$userService.getAllOrganizations()
-        return result
-      },
-      watch: ['allCiphers']
-    },
-    ciphers: {
-      async get () {
-        const deletedFilter = c => {
-          return c.isDeleted === this.deleted
-        }
-        if (this.allCiphers) {
-          const result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-          // remove ciphers generated by authenticator
-          // result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
-          this.dataRendered = result.slice(0, 50)
-          // return result
-          return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
-        }
-        return []
-      },
-      watch: ['allCiphers']
-    },
-    folders: {
-      async get () {
-        let folders = await this.$folderService.getAllDecrypted() || []
-        folders = folders.filter(f => f.id)
-        folders.forEach(f => {
-          const ciphers = this.ciphers && (this.ciphers.filter(c => c.folderId === f.id) || [])
-          f.ciphersCount = ciphers && ciphers.length
-        })
-        return folders
-      },
-      watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
-    },
-    collections: {
-      async get () {
-        let collections = await this.$collectionService.getAllDecrypted() || []
-        collections = collections.filter(f => f.id)
-        collections.forEach(f => {
-          const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
-          f.ciphersCount = ciphers && ciphers.length
-        })
-        return collections
-      },
-      watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
+      watch: ['$store.state.syncedCiphersToggle']
     },
     weakPasswordScores: {
       async get () {
+        this.loading = true
         const weakPasswordScores = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
         if (this.getRouteBaseName() === 'vault') {
           // const allCiphers = await this.$cipherService.getAllDecrypted()
@@ -953,7 +869,72 @@ export default {
         }
         return weakPasswordScores
       },
+      // watch: ['allCiphers']
+      watch: ['$store.state.syncedCiphersToggle']
+    },
+    organizations: {
+      async get () {
+        this.loading = true
+        const result = await this.$userService.getAllOrganizations()
+        return result
+      },
       watch: ['allCiphers']
+    },
+    ciphers: {
+      async get () {
+        const deletedFilter = c => {
+          return c.isDeleted === this.deleted
+        }
+        if (this.allCiphers) {
+          const result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+          this.dataRendered = result.slice(0, 50)
+          this.renderIndex = 0
+          return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+        }
+        return []
+      },
+      watch: ['allCiphers', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
+    },
+    // ciphers: {
+    //   async get () {
+    //     this.loading = true
+    //     const deletedFilter = c => {
+    //       return c.isDeleted === this.deleted
+    //     }
+    //     let result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+    //     // remove ciphers generated by authenticator
+    //     result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
+    //     this.dataRendered = result.slice(0, 50)
+    //     return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+    //   },
+    //   watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
+    // },
+    folders: {
+      async get () {
+        let folders = await this.$folderService.getAllDecrypted() || []
+        folders = folders.filter(f => f.id)
+        folders.forEach(f => {
+          const ciphers = this.ciphers && (this.ciphers.filter(c => c.folderId === f.id) || [])
+          f.ciphersCount = ciphers && ciphers.length
+        })
+        return folders
+      },
+      watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
+    },
+    collections: {
+      async get () {
+        let collections = await this.$collectionService.getAllDecrypted() || []
+        collections = collections.filter(f => f.id)
+        collections.forEach(f => {
+          const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
+          f.ciphersCount = ciphers && ciphers.length
+        })
+        if (!this.$store.state.syncing) {
+          this.loading = false
+        }
+        return collections
+      },
+      watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
     }
   },
   methods: {
@@ -1165,8 +1146,10 @@ export default {
     upgradePlan () {
       this.$refs.shareCipher.closeDialog()
       this.$refs.premiumDialog.openDialog()
+    },
+    changeShowLogo (value) {
+      this.$cookies.set('show-logo', value)
     }
-
   }
 }
 </script>

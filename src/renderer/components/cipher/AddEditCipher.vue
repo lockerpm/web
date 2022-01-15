@@ -267,6 +267,61 @@
             />
           </div>
         </template>
+        <template v-if="cipher.type === CipherType.CryptoAccount">
+          <InputText
+            v-model="cryptoAccount.username"
+            label="Email / Username"
+            class="w-full"
+          />
+          <template>
+            <InputText
+              v-model="cryptoAccount.password"
+              :label="$t('data.ciphers.password')"
+              class="w-full"
+              :disabled="isDeleted"
+              is-password
+            />
+            <PasswordStrengthBar
+              :score="passwordStrength.score"
+              class="mt-2"
+            />
+            <div
+              v-if="!isDeleted && !cipher.id"
+              class="text-right"
+            >
+              <el-popover
+                placement="right"
+                width="280"
+                trigger="click"
+                popper-class="locker-pw-generator"
+              >
+                <PasswordGenerator @fill="fillPassword" />
+
+                <button
+                  slot="reference"
+                  class="btn btn-clean !text-primary"
+                >
+                  {{ $t('data.ciphers.generate_random_password') }}
+                </button>
+              </el-popover>
+            </div>
+          </template>
+          <div class="mb-4 text-black-700 text-head-6 font-semibold">
+            {{ $t('data.ciphers.additional_info') }}
+          </div>
+          <InputText
+            v-model="cryptoAccount.phone"
+            :label="$t('data.ciphers.phone')"
+            class="w-full"
+            :disabled="isDeleted"
+          />
+          <InputText
+            v-model="cryptoAccount.emailRecovery"
+            label="Recovery Email"
+            class="w-full"
+            :disabled="isDeleted"
+          />
+        </template>
         <div
           v-if="cipher.type !== CipherType.SecureNote"
           class="my-5 text-black-700 text-head-6 font-semibold"
@@ -391,6 +446,8 @@ import InputSelect from '../input/InputSelect'
 import InputSelectFolder from '../input/InputSelectFolder'
 import InputSelectOrg from '../input/InputSelectOrg'
 import InlineEditCipher from './InlineEditCipher'
+CipherType.CryptoAccount = 6
+CipherType.CryptoWallet = 7
 export default {
   components: {
     AddEditFolder,
@@ -417,7 +474,11 @@ export default {
   },
   data () {
     return {
-      cipher: new CipherView(),
+      cipher: {
+        ...new CipherView(),
+        cryptoAccount: {},
+        cryptoWallet: {}
+      },
       folders: [],
       showPassword: false,
       showCardCode: false,
@@ -428,7 +489,23 @@ export default {
       writeableCollections: [],
       cloneMode: false,
       currentComponent: Dialog,
-      generated_password: ''
+      generated_password: '',
+      cryptoAccount: {
+        username: null,
+        password: null,
+        phone: null,
+        emailRecovery: null,
+        response: null,
+        uris: {
+          match: null,
+          response: null,
+          uri: null
+        }
+      },
+      cryptoWallet: {
+        email: null,
+        seed: null
+      }
     }
   },
   computed: {
@@ -501,6 +578,14 @@ export default {
     },
     shouldDisableBtn () {
       return this.loading || !this.cipher.name || (this.cipher.type === CipherType.Card || !this.cipher.card.cardholderName)
+    }
+  },
+  watch: {
+    cryptoAccount () {
+      this.cipher.cryptoAccount = this.cryptoAccount
+    },
+    cryptoWallet () {
+      this.cipher.cryptoWallet = this.cryptoWallet
     }
   },
   mounted () {
@@ -649,6 +734,22 @@ export default {
       this.cipher.identity = new IdentityView()
       this.cipher.secureNote = new SecureNoteView()
       this.cipher.secureNote.type = SecureNoteType.Generic
+      this.cryptoAccount = {
+        username: null,
+        password: null,
+        phone: null,
+        emailRecovery: null,
+        response: null,
+        uris: {
+          match: null,
+          response: null,
+          uri: null
+        }
+      }
+      this.cryptoWallet = {
+        email: null,
+        seed: null
+      }
       this.cipher.folderId = this.$route.params.folderId || null
       this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
       if (this.cipher.organizationId) {

@@ -226,30 +226,32 @@ Vue.mixin({
     clipboardSuccessHandler () {
       this.notify(this.$t('common.copied'), 'success')
     },
-    getIconCipher (cipher, size = 70) {
+    getIconCipher (cipher, size = 70, defaultIcon = false) {
       switch (cipher.type) {
       case CipherType.Login:
-        if (cipher.login && cipher.login.uris && cipher.login.uris.length) {
-          try {
-            const domain = extractDomain(cipher.login.uris[0]._uri)
-            if (domain) {
-              return (this.$createElement(Avatar, {
-                props: {
-                  src: `${process.env.logoUrl}${domain}?size=${size}`,
-                  size,
-                  alt: domain,
-                  shape: 'square'
-                }
-              }, [
-                this.$createElement('img', {
-                  attrs: {
-                    src: require('~/assets/images/icons/icon_Login.svg')
+        if (!defaultIcon) {
+          if (cipher.login && cipher.login.uris && cipher.login.uris.length) {
+            try {
+              const domain = extractDomain(cipher.login.uris[0]._uri)
+              if (domain) {
+                return (this.$createElement(Avatar, {
+                  props: {
+                    src: `${process.env.logoUrl}${domain}?size=${size}`,
+                    size,
+                    alt: domain,
+                    shape: 'square'
                   }
-                })
-              ]))
+                }, [
+                  this.$createElement('img', {
+                    attrs: {
+                      src: require('~/assets/images/icons/icon_Login.svg')
+                    }
+                  })
+                ]))
+              }
+            } catch (e) {
+              return this.getIconDefaultCipher('Login', size)
             }
-          } catch (e) {
-            return this.getIconDefaultCipher('Login', size)
           }
         }
         return this.getIconDefaultCipher('Login', size)

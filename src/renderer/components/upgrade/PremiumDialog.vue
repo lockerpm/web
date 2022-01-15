@@ -9,7 +9,7 @@
         slot="title"
       >
         <nuxt-link :to="localeRoute({name: 'plans'})">
-          <img src="~/assets/images/upgrade_premium.png">
+          <img width="100%" src="~/assets/images/upgrade_premium.png">
         </nuxt-link>
       </div>
     </el-dialog>
