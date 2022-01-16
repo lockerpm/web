@@ -64,6 +64,8 @@ const Keys = {
 const DomainMatchBlacklist = new Map<string, Set<string>>([
   ["google.com", new Set(["script.google.com"])]
 ]);
+const CryptoAccount = 6
+const CryptoWallet = 7
 export class MyServices implements CipherServiceAbstraction {
          // tslint:disable-next-line
          _decryptedCipherCache: CipherView[];
@@ -383,6 +385,7 @@ export class MyServices implements CipherServiceAbstraction {
              [id: string]: CipherData;
            }>(Keys.ciphersPrefix + userId);
            const response: Cipher[] = [];
+          //  console.log(userId, localData, ciphers.length)
            for (const id in ciphers) {
              if (ciphers.hasOwnProperty(id)) {
                response.push(
@@ -422,7 +425,9 @@ export class MyServices implements CipherServiceAbstraction {
              promises.push(cipher.decrypt().then(c => decCiphers.push(c)));
            });
 
-           await Promise.all(promises);
+          //  await Promise.all(promises.slice(0, Math.floor(promises.length / 2)));
+          //  await Promise.all(promises.slice(Math.floor(promises.length/2)))
+           await Promise.all(promises)
            decCiphers.sort(this.getLocaleSortingFunction());
            this.decryptedCipherCache = decCiphers;
            return this.decryptedCipherCache;
@@ -1421,7 +1426,7 @@ export class MyServices implements CipherServiceAbstraction {
                  key
                );
                return;
-            //  case 6:
+            //  case CryptoAccount:
             //    cipher.cryptoAccount = {
             //      username: EncString,
             //      password: EncString,

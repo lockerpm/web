@@ -764,9 +764,9 @@ export default {
       }
     },
     filteredCiphers () {
-      if (this.getRouteBaseName() === 'vault' && this.ciphers) {
-        return this.ciphers.filter(e => !e.folderId)
-      }
+      // if (this.getRouteBaseName() === 'vault' && this.ciphers) {
+      //   return this.ciphers.filter(e => !e.folderId)
+      // }
       return this.ciphers || []
     },
     shouldRenderNoCipher () {
@@ -806,10 +806,10 @@ export default {
       const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
 
       if (bottomOfWindow) {
-        this.renderIndex += 50
         if (this.renderIndex <= this.ciphers.length) {
           this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.renderIndex, this.renderIndex + 50))
         }
+        this.renderIndex += 50
       }
     }
   },
@@ -887,8 +887,8 @@ export default {
         }
         if (this.allCiphers) {
           const result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-          this.dataRendered = result.slice(0, 50)
-          this.renderIndex = 0
+          this.dataRendered = result.slice(0, 30)
+          this.renderIndex = 30
           return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
         }
         return []
