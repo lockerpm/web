@@ -213,22 +213,23 @@
       >
         <client-only>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
-            <div
-              v-for="item in folders"
-              v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
-              :key="item.id"
-              class="px-4 py-4 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-              :class="{'border-primary': selectedFolder.id === item.id}"
-              :title="item.name"
-              @click="routerFolder(item)"
-              @contextmenu.prevent="$refs.menu.open($event, item)"
-            >
-              <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
-              <div class="font-semibold truncate select-none line-clamp-1">
-                {{ item.name }}
-                <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
+            <template v-for="item in folders">
+              <div
+                v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
+                :key="item.id"
+                class="px-4 py-4 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+                :class="{'border-primary': selectedFolder.id === item.id}"
+                :title="item.name"
+                @click="routerFolder(item)"
+                @contextmenu.prevent="$refs.menu.open($event, item)"
+              >
+                <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
+                <div class="font-semibold truncate select-none line-clamp-1">
+                  {{ item.name }}
+                  <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
+                </div>
               </div>
-            </div>
+            </template>
             <!-- <div class="px-4 py-4 flex items-center cursor-pointer rounded border border-dashed border-[#E6E6E8] hover:border-primary justify-center font-semibold" @click="addEditFolder">
               <i class="el-icon-circle-plus-outline text-lg" />
               <div class="ml-3 break-all">New Folder</div>
@@ -956,26 +957,21 @@ export default {
   },
   async mounted () {
     this.context = 'VueContext'
-    console.log('mounted')
-    // await this.demoAsyncCall()
-    // const shareKey = await this.$cryptoService.makeShareKey()
-    // const orgKey = await this.$cryptoService.getOrgKey('6882534693417385984')
-    // console.log(shareKey)
-    // console.log(orgKey)
-    window.onscroll = () => {
-      const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
+    // console.log('mounted')
+    // window.onscroll = () => {
+    //   const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
 
-      if (bottomOfWindow) {
-        if (this.renderIndex <= this.ciphers.length) {
-          this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.renderIndex, this.renderIndex + 50))
-        }
-        this.renderIndex += 50
-      }
-    }
+    //   if (bottomOfWindow) {
+    //     if (this.renderIndex <= this.ciphers.length) {
+    //       this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.renderIndex, this.renderIndex + 50))
+    //     }
+    //     this.renderIndex += 50
+    //   }
+    // }
   },
-  updated () {
-    this.loading = false
-  },
+  // updated () {
+  //   this.loading = false
+  // },
   asyncComputed: {
     // allCiphers: {
     //   async get () {
@@ -1082,7 +1078,6 @@ export default {
             checked: false
           }
         })
-        this.dataRendered = result.slice(0, 50)
         return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
       },
       watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
@@ -1102,6 +1097,11 @@ export default {
           const ciphers = this.ciphers && (this.ciphers.filter(c => c.folderId === f.id) || [])
           f.ciphersCount = ciphers && ciphers.length
         })
+        const userId = await this.$userService.getUserId()
+        const ciphers = window.localStorage.getItem('ciphers_' + userId)
+        if (ciphers) {
+          this.loading = false
+        }
         return folders
       },
       watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
