@@ -71,29 +71,29 @@ export class CipherRequest {
         })
       }
       break
-    case 6:
-      this.cryptoAccount = new CryptoAccountApi()
-      this.cryptoAccount.username = cipher.cryptoAccount.username
-        ? cipher.cryptoAccount.username.encryptedString
-        : null
-      this.cryptoAccount.password = cipher.cryptoAccount.password
-        ? cipher.cryptoAccount.password.encryptedString
-        : null
-      this.cryptoAccount.phone = cipher.cryptoAccount.phone
-        ? cipher.cryptoAccount.phone.encryptedString
-        : null
-      this.cryptoAccount.emailRecovery = cipher.cryptoAccount.emailRecovery
-        ? cipher.cryptoAccount.emailRecovery.encryptedString
-        : null
-      if (cipher.cryptoAccount.uris != null) {
-        this.login.uris = cipher.login.uris.map(u => {
-          const uri = new LoginUriApi()
-          uri.uri = u.uri != null ? u.uri.encryptedString : null
-          uri.match = u.match != null ? u.match : null
-          return uri
-        })
-      }
-      break
+    // case 6:
+    //   this.cryptoAccount = new CryptoAccountApi()
+    //   this.cryptoAccount.username = cipher.cryptoAccount.username
+    //     ? cipher.cryptoAccount.username.encryptedString
+    //     : null
+    //   this.cryptoAccount.password = cipher.cryptoAccount.password
+    //     ? cipher.cryptoAccount.password.encryptedString
+    //     : null
+    //   this.cryptoAccount.phone = cipher.cryptoAccount.phone
+    //     ? cipher.cryptoAccount.phone.encryptedString
+    //     : null
+    //   this.cryptoAccount.emailRecovery = cipher.cryptoAccount.emailRecovery
+    //     ? cipher.cryptoAccount.emailRecovery.encryptedString
+    //     : null
+    //   if (cipher.cryptoAccount.uris != null) {
+    //     this.login.uris = cipher.login.uris.map(u => {
+    //       const uri = new LoginUriApi()
+    //       uri.uri = u.uri != null ? u.uri.encryptedString : null
+    //       uri.match = u.match != null ? u.match : null
+    //       return uri
+    //     })
+    //   }
+    //   break
     case CipherType.SecureNote:
       this.secureNote = new SecureNoteApi()
       this.secureNote.type = cipher.secureNote.type
