@@ -957,22 +957,17 @@ export default {
   },
   async mounted () {
     this.context = 'VueContext'
-    console.log('mounted')
-    // await this.demoAsyncCall()
-    // const shareKey = await this.$cryptoService.makeShareKey()
-    // const orgKey = await this.$cryptoService.getOrgKey('6882534693417385984')
-    // console.log(shareKey)
-    // console.log(orgKey)
-    window.onscroll = () => {
-      const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
+    // console.log('mounted')
+    // window.onscroll = () => {
+    //   const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
 
-      if (bottomOfWindow) {
-        if (this.renderIndex <= this.ciphers.length) {
-          this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.renderIndex, this.renderIndex + 50))
-        }
-        this.renderIndex += 50
-      }
-    }
+    //   if (bottomOfWindow) {
+    //     if (this.renderIndex <= this.ciphers.length) {
+    //       this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.renderIndex, this.renderIndex + 50))
+    //     }
+    //     this.renderIndex += 50
+    //   }
+    // }
   },
   // updated () {
   //   this.loading = false
@@ -1083,7 +1078,6 @@ export default {
             checked: false
           }
         })
-        this.dataRendered = result.slice(0, 50)
         return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
       },
       watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
