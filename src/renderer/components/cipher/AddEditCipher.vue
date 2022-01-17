@@ -616,7 +616,7 @@ export default {
       try {
         this.loading = true
         this.errors = {}
-        const cipherEnc = await this.$myServices.encrypt(cipher)
+        const cipherEnc = await this.$cipherService.encrypt(cipher)
         console.log('cipherEnc ', cipherEnc)
         const data = new CipherRequest(cipherEnc)
         await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {

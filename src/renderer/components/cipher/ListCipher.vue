@@ -873,10 +873,10 @@ export default {
           label: 'Identity',
           value: 'Identity'
         },
-        {
-          label: 'Crypto Assets',
-          value: 'CryptoAccount'
-        },
+        // {
+        //   label: 'Crypto Assets',
+        //   value: 'CryptoAccount'
+        // },
         {
           label: 'Folder',
           value: 'Folder'
