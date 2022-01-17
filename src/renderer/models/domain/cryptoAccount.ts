@@ -2,12 +2,13 @@
 import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
 import Domain from '@/jslib/src/models/domain/domainBase'
 import { EncString } from '@/jslib/src/models/domain/encString'
+import { LoginUri } from '@/jslib/src/models/domain/loginUri'
 import { CryptoAccountData } from '../data/cryptoAccountData'
-
 import { CryptoAccountView } from '../view/cryptoAccountView'
 
 export class CryptoAccount extends Domain {
   username: EncString;
+  uris: LoginUri[];
   password: EncString;
   phone: EncString;
   emailRecovery: EncString;
@@ -29,6 +30,12 @@ export class CryptoAccount extends Domain {
       alreadyEncrypted,
       []
     )
+    if (obj.uris) {
+      this.uris = []
+      obj.uris.forEach(u => {
+        this.uris.push(new LoginUri(u, alreadyEncrypted))
+      })
+    }
   }
 
   async decrypt (

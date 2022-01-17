@@ -75,7 +75,7 @@
               class="mt-2"
             />
             <div
-              v-if="!isDeleted && !cipher.id"
+              v-if="!isDeleted"
               class="text-right"
             >
               <el-popover
@@ -436,7 +436,8 @@ import { Dialog } from 'element-ui'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { CipherType, SecureNoteType } from '../../jslib/src/enums'
 import { Cipher } from '../../jslib/src/models/domain'
-import { CipherRequest } from '../../jslib/src/models/request'
+// import { CipherRequest } from '../../jslib/src/models/request'
+import { CipherRequest } from '../../models/request/cipherRequest'
 import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView } from '../../jslib/src/models/view'
 import AddEditFolder from '../folder/AddEditFolder'
 import PasswordGenerator from '../password/PasswordGenerator'
@@ -616,6 +617,7 @@ export default {
         this.loading = true
         this.errors = {}
         const cipherEnc = await this.$cipherService.encrypt(cipher)
+        console.log('cipherEnc ', cipherEnc)
         const data = new CipherRequest(cipherEnc)
         await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
           ...data,

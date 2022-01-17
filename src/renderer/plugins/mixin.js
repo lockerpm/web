@@ -130,7 +130,7 @@ Vue.mixin({
       ])
 
       this.$folderService.clearCache()
-      this.$cipherService.clearCache()
+      // this.$cipherService.clearCache()
       this.$collectionService.clearCache()
       this.$searchService.clearIndex()
       this.$router.push(this.localeRoute({ name: 'lock' }))
@@ -187,6 +187,7 @@ Vue.mixin({
           this.$vaultTimeoutService.biometricLocked = false
         }
         // this.$messagingService.send('unlocked')
+        this.$store.commit('UPDATE_SYNCING', true)
         this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/vault' : this.$store.state.currentPath }))
       } catch (e) {
         this.notify('Xác thực thông tin thất bại', 'warning')
@@ -212,6 +213,7 @@ Vue.mixin({
         await this.$syncService.syncPolicies(res.policies)
         await this.$syncService.setLastSync(new Date())
         this.$messagingService.send('syncCompleted', { successfully: true })
+        console.log('sync completed')
         this.$store.commit('UPDATE_SYNCED_CIPHERS')
       } catch (e) {
         this.$messagingService.send('syncCompleted', { successfully: false })
