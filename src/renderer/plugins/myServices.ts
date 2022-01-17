@@ -1426,41 +1426,41 @@ export class MyServices implements CipherServiceAbstraction {
                  key
                );
                return;
-             case CryptoAccount:
-               cipher.cryptoAccount = {
-                 username: EncString,
-                 password: EncString,
-                 emailRecovery: EncString,
-                 phone: EncString,
-               };
-               await this.encryptObjProperty(
-                 model.cryptoAccount,
-                 cipher.cryptoAccount,
-                 {
-                   username: null,
-                   password: null,
-                   emailRecovery: null,
-                   phone: null
-                 },
-                 key
-               )
-               if (model.login.uris != null) {
-                 cipher.login.uris = [];
-                 for (let i = 0; i < model.login.uris.length; i++) {
-                   const loginUri = new LoginUri();
-                   loginUri.match = model.login.uris[i].match;
-                   await this.encryptObjProperty(
-                     model.login.uris[i],
-                     loginUri,
-                     {
-                       uri: null
-                     },
-                     key
-                   );
-                   cipher.login.uris.push(loginUri);
-                 }
-               }
-               return;
+            //  case CryptoAccount:
+            //    cipher.cryptoAccount = {
+            //      username: EncString,
+            //      password: EncString,
+            //      emailRecovery: EncString,
+            //      phone: EncString,
+            //    };
+            //    await this.encryptObjProperty(
+            //      model.cryptoAccount,
+            //      cipher.cryptoAccount,
+            //      {
+            //        username: null,
+            //        password: null,
+            //        emailRecovery: null,
+            //        phone: null
+            //      },
+            //      key
+            //    )
+            //    if (model.login.uris != null) {
+            //      cipher.login.uris = [];
+            //      for (let i = 0; i < model.login.uris.length; i++) {
+            //        const loginUri = new LoginUri();
+            //        loginUri.match = model.login.uris[i].match;
+            //        await this.encryptObjProperty(
+            //          model.login.uris[i],
+            //          loginUri,
+            //          {
+            //            uri: null
+            //          },
+            //          key
+            //        );
+            //        cipher.login.uris.push(loginUri);
+            //      }
+            //    }
+            //    return;
              default:
                throw new Error("Unknown cipher type.");
            }
