@@ -266,34 +266,35 @@
       <!-- List Folder end -->
 
       <!-- List Shared Folder -->
-      <div
+      <!-- <div
         v-if="getRouteBaseName() === 'vault' && collections && viewFolder"
         class="mb-10"
       >
         <client-only>
           <template v-for="(value, key) in filteredCollection">
-            <div class="mb-5 font-medium">
+            <div :key="key" class="mb-5 font-medium">
               {{ getTeam(teams, key).name }}
             </div>
             <div :key="key" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
-              <div
-                v-for="item in value"
-                v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
-                :key="item.id"
-                class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                :class="{'border-primary': selectedFolder.id === item.id}"
-                :title="`${item.name} (${item.ciphersCount})`"
-                @click="routerCollection(item)"
-                @contextmenu.prevent="canManageFolder(teams, item) ? $refs.menuTeam.open($event, item) : null"
-              >
-                <div class="flex items-center">
-                  <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
-                  <div class="font-semibold truncate select-none">
-                    {{ item.name }}
-                    <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
+              <template v-for="item in value">
+                <div
+                  v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
+                  :key="item.id"
+                  class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+                  :class="{'border-primary': selectedFolder.id === item.id}"
+                  :title="`${item.name} (${item.ciphersCount})`"
+                  @click="routerCollection(item)"
+                  @contextmenu.prevent="canManageFolder(teams, item) ? $refs.menuTeam.open($event, item) : null"
+                >
+                  <div class="flex items-center">
+                    <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
+                    <div class="font-semibold truncate select-none">
+                      {{ item.name }}
+                      <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </template>
               <div
                 v-if="searchText.length<=1||(searchText.length>1&&countUnassignedItems(ciphers, key)>0)"
                 class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
@@ -350,7 +351,7 @@
             </template>
           </component>
         </client-only>
-      </div>
+      </div> -->
       <!-- List Shared folders end -->
 
       <!-- List Ciphers -->
@@ -366,7 +367,7 @@
             <div class="ml-3 break-all">Add new</div>
           </button>
         </div> -->
-        <el-table
+        <!-- <el-table
           ref="multipleTable"
           :data="dataRendered || []"
           style="width: 100%"
@@ -443,24 +444,6 @@
               </div>
             </template>
           </el-table-column>
-          <!-- <el-table-column
-            align="right"
-            :label="$t('common.type')"
-            show-overflow-tooltip
-          >
-            <template slot-scope="scope">
-              <span>{{ CipherType[scope.row.cipher_type] || CipherType[scope.row.type] }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            :label="$t('common.ownership')"
-            show-overflow-tooltip
-          >
-            <template slot-scope="scope">
-              <span>{{ getTeam(organizations, scope.row.organizationId).name || $t('common.me') }}</span>
-            </template>
-          </el-table-column> -->
           <el-table-column
             align="right"
             :label="$t('data.ciphers.updated_time')"
@@ -559,16 +542,177 @@
               </div>
             </template>
           </el-table-column>
-        </el-table>
+        </el-table> -->
+        <RecycleScroller ref="list" page-mode :item-size="65" :items="ciphers || []">
+          <template slot="before">
+            <div class="th">
+              <div v-if="multipleSelection.length" class="flex items-center ">
+                <div class="text-black mr-8 whitespace-nowrap">
+                  {{ multipleSelection.length }} {{ $t('data.ciphers.selected_items') }}
+                </div>
+                <div v-if="deleted">
+                  <button
+                    class="btn btn-default btn-xs"
+                    @click="restoreCiphers(multipleSelection.map(e => e.id))"
+                  >
+                    {{ $t('common.restore') }}
+                  </button>
+                  <button
+                    class="btn btn-default btn-xs !text-danger"
+                    @click="deleteCiphers(multipleSelection.map(e => e.id))"
+                  >
+                    {{ $t('common.permanently_delete') }}
+                  </button>
+                </div>
+                <div v-else class="">
+                  <button
+                    class="btn btn-default btn-xs"
+                    @click="moveFolders(multipleSelection.map(e => e.id))"
+                  >
+                    {{ $t('common.move_folder') }}
+                  </button>
+                  <button
+                    class="btn btn-default btn-xs !text-danger"
+                    @click="moveTrashCiphers(multipleSelection.map(e => e.id))"
+                  >
+                    {{ $t('common.delete') }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div v-for="header in headers" :key="header" class="th">
+              {{ header }}
+            </div>
+          </template>
+          <template #default="{item}">
+            <div class="td">
+              <div class="flex items-center">
+                <div class="mr-4">
+                  <el-checkbox :value="item.checked?true:false" @change="changeSelection(item)" />
+                  <!-- <button @click="changeSelection(item)">
+                    {{ item.checked || 'false' }}
+                  </button> -->
+                </div>
+                <div
+                  class="text-[34px] mr-3 flex-shrink-0"
+                  :class="{'filter grayscale': item.isDeleted}"
+                >
+                  <Vnodes :vnodes="getIconCipher(item, 34, !showLogo)" />
+                </div>
+                <div class="flex flex-col">
+                  <a
+                    class="text-black font-semibold truncate flex items-center"
+                    :class="{'opacity-80': item.isDeleted}"
+                    @click="routerCipher(item, addEdit)"
+                  >
+                    {{ item.name }}
+                    <img v-if="item.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
+                  </a>
+                  <div>
+                    {{ item.subTitle }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="td">
+              <span class="break-normal">{{ $moment(item.revisionDate).fromNow() }}</span>
+            </div>
+            <div class="td">
+              <div class="col-actions text-right">
+                <button
+                  v-if="!item.isDeleted && item.login.canLaunch"
+                  class="btn btn-icon btn-xs hover:bg-black-400"
+                  :title="$t('common.go_to_website')"
+                  @click="openNewTab(item.login.uri)"
+                >
+                  <i class="fas fa-external-link-square-alt" />
+                </button>
+                <el-dropdown
+                  v-if="!item.isDeleted"
+                  trigger="click"
+                  :hide-on-click="false"
+                >
+                  <button class="btn btn-icon btn-xs hover:bg-black-400">
+                    <i class="far fa-clone" />
+                  </button>
+                  <el-dropdown-menu slot="dropdown">
+                    <template v-if="item.type === CipherType.Login">
+                      <el-dropdown-item
+                        v-clipboard:copy="item.login.username"
+                        v-clipboard:success="clipboardSuccessHandler"
+                      >
+                        {{ $t('common.copy') }} {{ $t('common.username') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item
+                        v-clipboard:copy="item.login.password"
+                        v-clipboard:success="clipboardSuccessHandler"
+                      >
+                        {{ $t('common.copy') }} {{ $t('common.password') }}
+                      </el-dropdown-item>
+                    </template>
+                    <template v-if="item.type === CipherType.SecureNote">
+                      <el-dropdown-item
+                        v-clipboard:copy="item.notes"
+                        v-clipboard:success="clipboardSuccessHandler"
+                        divided
+                      >
+                        {{ $t('common.copy') }} {{ $t('common.note') }}
+                      </el-dropdown-item>
+                    </template>
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <button
+                  v-if="!item.isDeleted && canShareItem(organizations, item)"
+                  class="btn btn-icon btn-xs hover:bg-black-400"
+                  :title="$t('common.share')"
+                  @click="shareItem(item)"
+                >
+                  <i class="far fa-share-square" />
+                </button>
+                <el-dropdown trigger="click" :hide-on-click="false">
+                  <button class="btn btn-icon btn-xs hover:bg-black-400">
+                    <i class="fas fa-ellipsis-h" />
+                  </button>
+                  <el-dropdown-menu slot="dropdown">
+                    <template v-if="!item.isDeleted && canManageItem(organizations, item)">
+                      <el-dropdown-item @click.native="addEdit(item)">
+                        {{ $t('common.edit') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item divided @click.native="cloneCipher(item)">
+                        {{ $t('common.clone') }}
+                      </el-dropdown-item>
+                    </template>
+                    <template v-if="!item.isDeleted">
+                      <el-dropdown-item @click.native="moveFolders([item.id])">
+                        {{ $t('common.move_folder') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item divided @click.native="moveTrashCiphers([item.id])">
+                        <span class="text-danger">{{ $t('common.delete') }}</span>
+                      </el-dropdown-item>
+                    </template>
+                    <template v-else>
+                      <el-dropdown-item divided @click.native="restoreCiphers([item.id])">
+                        {{ $t('common.restore') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item @click.native="deleteCiphers([item.id])">
+                        <span class="text-danger">{{ $t('common.permanently_delete') }}</span>
+                      </el-dropdown-item>
+                    </template>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </div>
+            </div>
+          </template>
+        </RecycleScroller>
       </client-only>
       <!-- List Ciphers end -->
     </div>
     <NoCipher
-      v-else-if="!loading"
+      v-else-if="!$store.state.syncing"
       :type="type"
       @add-cipher="handleAddButton"
     />
-    <AddEditCipher ref="addEditCipherDialog" :type="type" />
+    <AddEditCipher ref="addEditCipherDialog" :type="type" @reset-selection="multipleSelection = []" @trashed-cipher="multipleSelection = []" />
     <ChooseCipherType ref="chooseCipherType" />
     <AddEditFolder ref="addEditFolder" />
     <AddEditTeamFolder ref="addEditTeamFolder" />
@@ -578,6 +722,18 @@
     <ShareFolder ref="shareFolder" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
     <PremiumDialog ref="premiumDialog" />
+    <!-- <RecycleScroller
+      v-slot="{ item }"
+      class="scroller"
+      :items="ciphers || []"
+      :item-size="30"
+      key-field="id"
+      page-mode
+    >
+      <div class="user">
+        {{ item.name }}
+      </div>
+    </RecycleScroller> -->
   </div>
 </template>
 
@@ -587,7 +743,6 @@ import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy'
 import find from 'lodash/find'
 import groupBy from 'lodash/groupBy'
-import { data } from 'cheerio/lib/api/attributes'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import AddEditFolder from '../folder/AddEditFolder'
 import AddEditTeamFolder from '../folder/AddEditTeamFolder'
@@ -639,7 +794,7 @@ export default {
       data: {},
       CipherType,
       multipleSelection: [],
-      loading: false,
+      loading: true,
       orderField: 'name', // revisionDate
       orderDirection: 'asc',
       selectedFolder: {},
@@ -693,7 +848,10 @@ export default {
       // options: ['Login', 'SecureNote', 'Card', 'Identity', 'Folder'],
       selectedType: 'Login',
       viewFolder: false,
-      showLogo: this.$cookies.get('show-logo') || false
+      showLogo: this.$cookies.get('show-logo') || false,
+      headers: ['Updated time', 'Actions'],
+      folders: [],
+      collections: []
     }
   },
   computed: {
@@ -715,10 +873,10 @@ export default {
           label: 'Identity',
           value: 'Identity'
         },
-        // {
-        //   label: 'Crypto Assets',
-        //   value: 'CryptoAccount'
-        // },
+        {
+          label: 'Crypto Assets',
+          value: 'CryptoAccount'
+        },
         {
           label: 'Folder',
           value: 'Folder'
@@ -798,6 +956,8 @@ export default {
   },
   async mounted () {
     this.context = 'VueContext'
+    console.log('mounted')
+    // await this.demoAsyncCall()
     // const shareKey = await this.$cryptoService.makeShareKey()
     // const orgKey = await this.$cryptoService.getOrgKey('6882534693417385984')
     // console.log(shareKey)
@@ -813,102 +973,127 @@ export default {
       }
     }
   },
+  updated () {
+    this.loading = false
+  },
   asyncComputed: {
-    allCiphers: {
-      async get () {
-        this.loading = true
-        // let result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-        console.log(this.$store.state.syncedCiphersToggle)
-        console.log('get all')
-        let result = await this.$cipherService.getAllDecrypted() || []
-        console.log(result.length)
-        // remove ciphers generated by authenticator
-        result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity, CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type))
-        return result
-        // return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
-      },
-      watch: ['$store.state.syncedCiphersToggle']
-    },
-    weakPasswordScores: {
-      async get () {
-        this.loading = true
-        const weakPasswordScores = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
-        if (this.getRouteBaseName() === 'vault') {
-          // const allCiphers = await this.$cipherService.getAllDecrypted()
-          const allCiphers = this.allCiphers || []
-          const isUserNameNotEmpty = c => {
-            return c.login.username != null && c.login.username.trim() !== ''
-          }
-          allCiphers.forEach(c => {
-            if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted || c.organizationId) {
-              return
-            }
-            const hasUserName = isUserNameNotEmpty(c)
-            let userInput = []
-            if (hasUserName) {
-              const atPosition = c.login.username.indexOf('@')
-              if (atPosition > -1) {
-                userInput = userInput.concat(
-                  c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
-                  .filter(i => i.length >= 3)
-              } else {
-                userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
-                  .filter(i => i.length >= 3)
-              }
-            }
-            const result = this.$passwordGenerationService.passwordStrength(c.login.password,
-              userInput.length > 0 ? userInput : null)
-            weakPasswordScores[result.score]++
-          })
-          await this.$axios.$put('/cystack_platform/pm/users/me', {
-            scores: weakPasswordScores
-          })
-        }
-        if (!this.$store.state.syncing) {
-          this.loading = false
-        }
-        return weakPasswordScores
-      },
-      // watch: ['allCiphers']
-      watch: ['$store.state.syncedCiphersToggle']
-    },
-    organizations: {
-      async get () {
-        this.loading = true
-        const result = await this.$userService.getAllOrganizations()
-        return result
-      },
-      watch: ['allCiphers']
-    },
+    // allCiphers: {
+    //   async get () {
+    //     this.loading = true
+    //     // let result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+    //     console.log(this.$store.state.syncedCiphersToggle)
+    //     console.log('get all')
+    //     const startTime = Date.now()
+    //     let result = await this.$cipherService.getAllDecrypted() || []
+    //     const endTime = Date.now()
+    //     const timeDiff = endTime - startTime // in ms
+    //     // strip the ms
+
+    //     // get seconds
+    //     const seconds = Math.round(timeDiff)
+    //     console.log(seconds + ' seconds')
+    //     console.log(result.length)
+    //     // remove ciphers generated by authenticator
+    //     result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity, CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type))
+    //     return result
+    //     // return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+    //   },
+    //   watch: ['$store.state.syncedCiphersToggle']
+    // },
+    // weakPasswordScores: {
+    //   async get () {
+    //     this.loading = true
+    //     const weakPasswordScores = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
+    //     if (this.getRouteBaseName() === 'vault') {
+    //       // const allCiphers = await this.$cipherService.getAllDecrypted()
+    //       const allCiphers = this.allCiphers || []
+    //       const isUserNameNotEmpty = c => {
+    //         return c.login.username != null && c.login.username.trim() !== ''
+    //       }
+    //       allCiphers.forEach(c => {
+    //         if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted || c.organizationId) {
+    //           return
+    //         }
+    //         const hasUserName = isUserNameNotEmpty(c)
+    //         let userInput = []
+    //         if (hasUserName) {
+    //           const atPosition = c.login.username.indexOf('@')
+    //           if (atPosition > -1) {
+    //             userInput = userInput.concat(
+    //               c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
+    //               .filter(i => i.length >= 3)
+    //           } else {
+    //             userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
+    //               .filter(i => i.length >= 3)
+    //           }
+    //         }
+    //         const result = this.$passwordGenerationService.passwordStrength(c.login.password,
+    //           userInput.length > 0 ? userInput : null)
+    //         weakPasswordScores[result.score]++
+    //       })
+    //       await this.$axios.$put('/cystack_platform/pm/users/me', {
+    //         scores: weakPasswordScores
+    //       })
+    //     }
+    //     if (!this.$store.state.syncing) {
+    //       this.loading = false
+    //     }
+    //     return weakPasswordScores
+    //   },
+    //   // watch: ['allCiphers']
+    //   watch: ['$store.state.syncedCiphersToggle']
+    // },
+    // ciphers: {
+    //   async get () {
+    //     const deletedFilter = c => {
+    //       return c.isDeleted === this.deleted
+    //     }
+    //     if (this.allCiphers) {
+    //       const startTime = Date.now()
+    //       const result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+    //       const endTime = Date.now()
+    //       const timeDiff = endTime - startTime // in ms
+    //       // strip the ms
+
+    //       // get seconds
+    //       const seconds = Math.round(timeDiff)
+    //       console.log(seconds + ' seconds')
+    //       this.dataRendered = result.slice(0, 30)
+    //       this.renderIndex = 30
+    //       return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+    //     }
+    //     return []
+    //   },
+    //   watch: ['allCiphers', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
+    // },
     ciphers: {
       async get () {
         const deletedFilter = c => {
           return c.isDeleted === this.deleted
         }
-        if (this.allCiphers) {
-          const result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-          this.dataRendered = result.slice(0, 30)
-          this.renderIndex = 30
-          return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
-        }
-        return []
+        console.log('search ciphers')
+        let result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+        console.log(result.length)
+        // remove ciphers generated by authenticator
+        result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
+        result.map(item => {
+          return {
+            ...item,
+            checked: false
+          }
+        })
+        this.dataRendered = result.slice(0, 50)
+        return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
       },
-      watch: ['allCiphers', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
+      watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
     },
-    // ciphers: {
-    //   async get () {
-    //     this.loading = true
-    //     const deletedFilter = c => {
-    //       return c.isDeleted === this.deleted
-    //     }
-    //     let result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-    //     // remove ciphers generated by authenticator
-    //     result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
-    //     this.dataRendered = result.slice(0, 50)
-    //     return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
-    //   },
-    //   watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
-    // },
+    organizations: {
+      async get () {
+        const result = await this.$userService.getAllOrganizations()
+        return result
+      },
+      watch: ['$store.state.syncedCiphersToggle']
+    },
     folders: {
       async get () {
         let folders = await this.$folderService.getAllDecrypted() || []
@@ -920,22 +1105,27 @@ export default {
         return folders
       },
       watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
-    },
-    collections: {
-      async get () {
-        let collections = await this.$collectionService.getAllDecrypted() || []
-        collections = collections.filter(f => f.id)
-        collections.forEach(f => {
-          const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
-          f.ciphersCount = ciphers && ciphers.length
-        })
-        if (!this.$store.state.syncing) {
-          this.loading = false
-        }
-        return collections
-      },
-      watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
     }
+    // collections: {
+    //   async get () {
+    //     if (this.$store.state.syncing) {
+    //       console.log('get collection return')
+    //       return
+    //     }
+    //     console.log('get collections')
+    //     let collections = await this.$collectionService.getAllDecrypted() || []
+    //     collections = collections.filter(f => f.id)
+    //     collections.forEach(f => {
+    //       const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
+    //       f.ciphersCount = ciphers && ciphers.length
+    //     })
+    //     if (!this.$store.state.syncing) {
+    //       this.loading = false
+    //     }
+    //     return collections
+    //   },
+    //   watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
+    // }
   },
   methods: {
     addEdit (cipher) {
@@ -954,6 +1144,17 @@ export default {
     },
     handleSelectionChange (val) {
       this.multipleSelection = val
+    },
+    changeSelection (item) {
+      item.checked = !item.checked || false
+      if (item.checked) {
+        this.multipleSelection.push(item)
+      } else {
+        const index = this.multipleSelection.indexOf(item)
+        if (index > -1) {
+          this.multipleSelection.splice(index, 1)
+        }
+      }
     },
     cloneCipher (cipher) {
       const _cipher = cloneDeep(cipher)
@@ -1149,7 +1350,44 @@ export default {
     },
     changeShowLogo (value) {
       this.$cookies.set('show-logo', value)
+    },
+    async demoAsyncCall () {
+      const userId = await this.$userService.getUserId()
+      const ciphers = await this.$storageService.get('ciphers_' + userId)
+      return new Promise(resolve => setTimeout(() => resolve(), ciphers ? 0 : 3000))
     }
   }
 }
 </script>
+<style>
+.scroller {
+  height: 100%;
+}
+
+.user {
+  height: 32%;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+}
+.vue-recycle-scroller__slot,
+.vue-recycle-scroller__item-view {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.vue-recycle-scroller__item-view {
+  @apply border-t-[1px] border-black-400 pt-2 mt-2;
+}
+.th,
+.td {
+  flex: 1;
+}
+.vue-recycle-scroller__slot .th:first-child,
+.vue-recycle-scroller__item-view .td:first-child {
+  flex: 2;
+}
+.th:last-child {
+  text-align: right;
+}
+</style>

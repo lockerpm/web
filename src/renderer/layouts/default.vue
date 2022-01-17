@@ -210,6 +210,7 @@ export default {
   },
   asyncComputed: {
     async locked () {
+      console.log('locked status: ', await this.$vaultTimeoutService.isLocked())
       return await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
     },
     pendingShares: {
