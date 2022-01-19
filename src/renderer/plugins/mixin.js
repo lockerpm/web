@@ -199,11 +199,34 @@ Vue.mixin({
     async getSyncData () {
       this.$store.commit('UPDATE_SYNCING', true)
       try {
+        const userId = await this.$userService.getUserId()
+        // partial sync if no ciphers in storage
+        if (!window.localStorage.getItem('ciphers_' + userId)) {
+          try {
+            this.$messagingService.send('syncStarted')
+            let res = await this.$axios.$get('cystack_platform/pm/sync?paging=1&size=50&page=1')
+            res = new SyncResponse(res)
+
+            await this.$syncService.syncProfile(res.profile)
+            await this.$syncService.syncFolders(userId, res.folders)
+            await this.$syncService.syncCollections(res.collections)
+            await this.$syncService.syncCiphers(userId, res.ciphers)
+            await this.$syncService.syncSends(userId, res.sends)
+            await this.$syncService.syncSettings(userId, res.domains)
+            await this.$syncService.syncPolicies(res.policies)
+            await this.$syncService.setLastSync(new Date())
+            this.$messagingService.send('syncCompleted', { successfully: true })
+            this.$store.commit('UPDATE_SYNCED_CIPHERS')
+          } catch (error) {
+            this.$messagingService.send('syncCompleted', { successfully: false })
+            this.$store.commit('UPDATE_SYNCED_CIPHERS')
+          }
+        }
         this.$messagingService.send('syncStarted')
         let res = await this.$axios.$get('cystack_platform/pm/sync')
         res = new SyncResponse(res)
 
-        const userId = await this.$userService.getUserId()
+        // const userId = await this.$userService.getUserId()
         await this.$syncService.syncProfile(res.profile)
         await this.$syncService.syncFolders(userId, res.folders)
         await this.$syncService.syncCollections(res.collections)

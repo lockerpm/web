@@ -590,9 +590,6 @@
               <div class="flex items-center">
                 <div class="mr-4">
                   <el-checkbox :value="item.checked?true:false" @change="changeSelection(item)" />
-                  <!-- <button @click="changeSelection(item)">
-                    {{ item.checked || 'false' }}
-                  </button> -->
                 </div>
                 <div
                   class="text-[34px] mr-3 flex-shrink-0"
@@ -996,49 +993,6 @@ export default {
     //   },
     //   watch: ['$store.state.syncedCiphersToggle']
     // },
-    // weakPasswordScores: {
-    //   async get () {
-    //     this.loading = true
-    //     const weakPasswordScores = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
-    //     if (this.getRouteBaseName() === 'vault') {
-    //       // const allCiphers = await this.$cipherService.getAllDecrypted()
-    //       const allCiphers = this.allCiphers || []
-    //       const isUserNameNotEmpty = c => {
-    //         return c.login.username != null && c.login.username.trim() !== ''
-    //       }
-    //       allCiphers.forEach(c => {
-    //         if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted || c.organizationId) {
-    //           return
-    //         }
-    //         const hasUserName = isUserNameNotEmpty(c)
-    //         let userInput = []
-    //         if (hasUserName) {
-    //           const atPosition = c.login.username.indexOf('@')
-    //           if (atPosition > -1) {
-    //             userInput = userInput.concat(
-    //               c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
-    //               .filter(i => i.length >= 3)
-    //           } else {
-    //             userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
-    //               .filter(i => i.length >= 3)
-    //           }
-    //         }
-    //         const result = this.$passwordGenerationService.passwordStrength(c.login.password,
-    //           userInput.length > 0 ? userInput : null)
-    //         weakPasswordScores[result.score]++
-    //       })
-    //       await this.$axios.$put('/cystack_platform/pm/users/me', {
-    //         scores: weakPasswordScores
-    //       })
-    //     }
-    //     if (!this.$store.state.syncing) {
-    //       this.loading = false
-    //     }
-    //     return weakPasswordScores
-    //   },
-    //   // watch: ['allCiphers']
-    //   watch: ['$store.state.syncedCiphersToggle']
-    // },
     // ciphers: {
     //   async get () {
     //     const deletedFilter = c => {
@@ -1106,6 +1060,45 @@ export default {
       },
       watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
     }
+    // weakPasswordScores: {
+    //   async get () {
+    //     const weakPasswordScores = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
+    //     if (this.getRouteBaseName() === 'vault') {
+    //       const allCiphers = await this.$cipherService.getAllDecrypted()
+    //       // const allCiphers = this.allCiphers || []
+    //       const isUserNameNotEmpty = c => {
+    //         return c.login.username != null && c.login.username.trim() !== ''
+    //       }
+    //       allCiphers.forEach(c => {
+    //         if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted || c.organizationId) {
+    //           return
+    //         }
+    //         const hasUserName = isUserNameNotEmpty(c)
+    //         let userInput = []
+    //         if (hasUserName) {
+    //           const atPosition = c.login.username.indexOf('@')
+    //           if (atPosition > -1) {
+    //             userInput = userInput.concat(
+    //               c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
+    //               .filter(i => i.length >= 3)
+    //           } else {
+    //             userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
+    //               .filter(i => i.length >= 3)
+    //           }
+    //         }
+    //         const result = this.$passwordGenerationService.passwordStrength(c.login.password,
+    //           userInput.length > 0 ? userInput : null)
+    //         weakPasswordScores[result.score]++
+    //       })
+    //       await this.$axios.$put('/cystack_platform/pm/users/me', {
+    //         scores: weakPasswordScores
+    //       })
+    //     }
+    //     return weakPasswordScores
+    //   },
+    //   // watch: ['allCiphers']
+    //   watch: ['$store.state.syncedCiphersToggle']
+    // }
     // collections: {
     //   async get () {
     //     if (this.$store.state.syncing) {
