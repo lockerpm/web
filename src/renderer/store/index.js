@@ -22,7 +22,8 @@ export const state = () => ({
   searchText: '',
   teams: [],
   currentTeam: {},
-  currentPlan: {}
+  currentPlan: {},
+  cipherCount: null
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -94,6 +95,9 @@ export const mutations = {
   },
   UPDATE_CURRENT_PLAN (state, plan) {
     state.currentPlan = plan
+  },
+  UPDATE_CIPHER_COUNT (state, value) {
+    state.cipherCount = value
   }
 }
 export const actions = {

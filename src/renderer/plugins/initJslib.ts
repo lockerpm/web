@@ -25,10 +25,12 @@ import { ImportService } from '../jslib/src/services/import.service';
 import { PasswordGenerationService } from '../jslib/src/services/passwordGeneration.service';
 import { PolicyService } from '../jslib/src/services/policy.service';
 import { SearchService } from '../jslib/src/services/search.service';
+import { MySearchService } from "../services/search.service"
 import { SendService } from '../jslib/src/services/send.service';
 import { SettingsService } from '../jslib/src/services/settings.service';
 import { StateService } from '../jslib/src/services/state.service';
 import { SyncService } from '../jslib/src/services/sync.service';
+import { MySyncService } from "../services/sync.service";
 import { TokenService } from '../jslib/src/services/token.service';
 // import { TotpService } from '../jslib/src/services/totp.service';
 import { UserService } from '../jslib/src/services/user.service';
@@ -67,7 +69,7 @@ import { SyncService as SyncServiceAbstraction } from '../jslib/src/abstractions
 // import { TotpService as TotpServiceAbstraction } from '../jslib/src/abstractions/totp.service';
 // import { UserService as UserServiceAbstraction } from '../jslib/src/abstractions/user.service';
 import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from '../jslib/src/abstractions/vaultTimeout.service';
-import { MyServices } from './myServices';
+import { MyCipherService } from './myCipherService';
 // import { PasswordRepromptService } from '../jslib/src/services/passwordReprompt.service';
 
 const i18nService = new I18nService(window.navigator.language, 'locales');
@@ -91,12 +93,24 @@ const apiService = new ApiService(tokenService, platformUtilsService,
 const userService = new UserService(tokenService, storageService);
 const settingsService = new SettingsService(userService, storageService);
 export let searchService: SearchService = null;
+export let mySearchService: MySearchService = null;
 const fileUploadService = new FileUploadService(consoleLogService, apiService);
 const cipherService = new CipherService(cryptoService, userService, settingsService, apiService, fileUploadService, storageService, i18nService, () => searchService);
+const myCipherService = new MyCipherService(
+  cryptoService,
+  userService,
+  settingsService,
+  apiService,
+  fileUploadService,
+  storageService,
+  i18nService,
+  () => searchService
+);
 const folderService = new FolderService(cryptoService, userService, apiService, storageService,
     i18nService, cipherService);
 const collectionService = new CollectionService(cryptoService, userService, storageService, i18nService);
 searchService = new SearchService(cipherService, consoleLogService, i18nService);
+mySearchService = new MySearchService(myCipherService, consoleLogService, i18nService);
 const policyService = new PolicyService(userService, storageService);
 const sendService = new SendService(cryptoService, userService, apiService, fileUploadService, storageService,
     i18nService, cryptoFunctionService);
@@ -105,6 +119,9 @@ const vaultTimeoutService = new VaultTimeoutService(cipherService, folderService
     null, async () => messagingService.send('logout', { expired: false }));
 const syncService = new SyncService(userService, apiService, settingsService, folderService,
     cipherService, cryptoService, collectionService, storageService, messagingService, policyService,
+  sendService, async (expired: boolean) => messagingService.send('logout-11111', { expired: expired }));
+const mySyncService = new MySyncService(userService, apiService, settingsService, folderService,
+    myCipherService, cryptoService, collectionService, storageService, messagingService, policyService,
     sendService, async (expired: boolean) => messagingService.send('logout-11111', { expired: expired }));
 const passwordGenerationService = new PasswordGenerationService(cryptoService, storageService, policyService);
 // const totpService = new TotpService(storageService, cryptoFunctionService);
@@ -121,16 +138,6 @@ const importService = new ImportService(cipherService, folderService, apiService
 const auditService = new AuditService(cryptoFunctionService, apiService);
 // const eventLoggingService = new EventLoggingService(storageService, apiService, userService, cipherService);
 // const passwordRepromptService = new PasswordRepromptService(i18nService, cryptoService, platformUtilsService);
-const myServices = new MyServices(
-  cryptoService,
-  userService,
-  settingsService,
-  apiService,
-  fileUploadService,
-  storageService,
-  i18nService,
-  () => searchService
-);
 containerService.attachToWindow(window);
 // const IdleTimeout = 60000 * 10 // 10 minutes
 
@@ -142,8 +149,10 @@ export default async ({ app, store }, inject) => {
     inject('cipherService', cipherService)
     inject('userService', userService)
     inject('syncService', syncService)
+    inject("mySyncService", mySyncService);
     inject('tokenService', tokenService)
     inject('searchService', searchService)
+    inject("mySearchService", mySearchService);
     inject('containerService', containerService)
     inject('platformUtilsService', platformUtilsService)
     inject('vaultTimeoutService', vaultTimeoutService)
@@ -156,6 +165,6 @@ export default async ({ app, store }, inject) => {
     inject('exportService', exportService)
     inject('importService', importService)
     inject('auditService', auditService)
-    inject('myServices', myServices)
+    inject('myCipherService', myCipherService)
 
 }
