@@ -1,7 +1,4 @@
 import { CipherRepromptType } from '@/jslib/src/enums/cipherRepromptType'
-import { CipherType } from '@/jslib/src/enums/cipherType'
-
-import { Cipher } from '@/jslib/src/models/domain/cipher'
 
 import { CardApi } from '@/jslib/src/models/api/cardApi'
 import { FieldApi } from '@/jslib/src/models/api/fieldApi'
@@ -12,6 +9,8 @@ import { SecureNoteApi } from '@/jslib/src/models/api/secureNoteApi'
 
 import { AttachmentRequest } from '@/jslib/src/models/request/attachmentRequest'
 import { PasswordHistoryRequest } from '@/jslib/src/models/request/passwordHistoryRequest'
+import { Cipher } from '../domain/cipher'
+import { CipherType } from '../../enums/cipherType'
 import { CryptoAccountApi } from '../api/cryptoAccountApi'
 
 export class CipherRequest {
@@ -71,29 +70,29 @@ export class CipherRequest {
         })
       }
       break
-    // case 6:
-    //   this.cryptoAccount = new CryptoAccountApi()
-    //   this.cryptoAccount.username = cipher.cryptoAccount.username
-    //     ? cipher.cryptoAccount.username.encryptedString
-    //     : null
-    //   this.cryptoAccount.password = cipher.cryptoAccount.password
-    //     ? cipher.cryptoAccount.password.encryptedString
-    //     : null
-    //   this.cryptoAccount.phone = cipher.cryptoAccount.phone
-    //     ? cipher.cryptoAccount.phone.encryptedString
-    //     : null
-    //   this.cryptoAccount.emailRecovery = cipher.cryptoAccount.emailRecovery
-    //     ? cipher.cryptoAccount.emailRecovery.encryptedString
-    //     : null
-    //   if (cipher.cryptoAccount.uris != null) {
-    //     this.login.uris = cipher.login.uris.map(u => {
-    //       const uri = new LoginUriApi()
-    //       uri.uri = u.uri != null ? u.uri.encryptedString : null
-    //       uri.match = u.match != null ? u.match : null
-    //       return uri
-    //     })
-    //   }
-    //   break
+    case CipherType.CryptoAccount:
+      this.cryptoAccount = new CryptoAccountApi()
+      this.cryptoAccount.username = cipher.cryptoAccount.username
+        ? cipher.cryptoAccount.username.encryptedString
+        : null
+      this.cryptoAccount.password = cipher.cryptoAccount.password
+        ? cipher.cryptoAccount.password.encryptedString
+        : null
+      this.cryptoAccount.phone = cipher.cryptoAccount.phone
+        ? cipher.cryptoAccount.phone.encryptedString
+        : null
+      this.cryptoAccount.emailRecovery = cipher.cryptoAccount.emailRecovery
+        ? cipher.cryptoAccount.emailRecovery.encryptedString
+        : null
+      if (cipher.cryptoAccount.uris != null) {
+        this.cryptoAccount.uris = cipher.cryptoAccount.uris.map(u => {
+          const uri = new LoginUriApi()
+          uri.uri = u.uri != null ? u.uri.encryptedString : null
+          uri.match = u.match != null ? u.match : null
+          return uri
+        })
+      }
+      break
     case CipherType.SecureNote:
       this.secureNote = new SecureNoteApi()
       this.secureNote.type = cipher.secureNote.type

@@ -31,6 +31,9 @@ Vue.mixin({
     currentPlan () {
       return this.$store.state.currentPlan
     },
+    cipherCount () {
+      return this.$store.state.cipherCount
+    },
     blog_categories () {
       return [
         {
@@ -205,8 +208,10 @@ Vue.mixin({
           try {
             this.$messagingService.send('syncStarted')
             let res = await this.$axios.$get('cystack_platform/pm/sync?paging=1&size=50&page=1')
+            if (res.count && res.count.ciphers) {
+              this.$store.commit('UPDATE_CIPHER_COUNT', res.count.ciphers)
+            }
             res = new SyncResponse(res)
-
             await this.$syncService.syncProfile(res.profile)
             await this.$syncService.syncFolders(userId, res.folders)
             await this.$syncService.syncCollections(res.collections)
@@ -225,7 +230,6 @@ Vue.mixin({
         this.$messagingService.send('syncStarted')
         let res = await this.$axios.$get('cystack_platform/pm/sync')
         res = new SyncResponse(res)
-
         // const userId = await this.$userService.getUserId()
         await this.$syncService.syncProfile(res.profile)
         await this.$syncService.syncFolders(userId, res.folders)
@@ -238,12 +242,45 @@ Vue.mixin({
         this.$messagingService.send('syncCompleted', { successfully: true })
         console.log('sync completed')
         this.$store.commit('UPDATE_SYNCED_CIPHERS')
+        await this.weakPasswordScores()
       } catch (e) {
         this.$messagingService.send('syncCompleted', { successfully: false })
         this.$store.commit('UPDATE_SYNCED_CIPHERS')
       } finally {
         this.$store.commit('UPDATE_SYNCING', false)
       }
+    },
+    async weakPasswordScores () {
+      const weakPasswordScores = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
+      const allCiphers = await this.$cipherService.getAllDecrypted()
+      const isUserNameNotEmpty = c => {
+        return c.login.username != null && c.login.username.trim() !== ''
+      }
+      allCiphers.forEach(c => {
+        if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted || c.organizationId) {
+          return
+        }
+        const hasUserName = isUserNameNotEmpty(c)
+        let userInput = []
+        if (hasUserName) {
+          const atPosition = c.login.username.indexOf('@')
+          if (atPosition > -1) {
+            userInput = userInput.concat(
+              c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
+              .filter(i => i.length >= 3)
+          } else {
+            userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
+              .filter(i => i.length >= 3)
+          }
+        }
+        const result = this.$passwordGenerationService.passwordStrength(c.login.password,
+          userInput.length > 0 ? userInput : null)
+        weakPasswordScores[result.score]++
+      })
+      await this.$axios.$put('/cystack_platform/pm/users/me', {
+        scores: weakPasswordScores
+      })
+      return weakPasswordScores
     },
     async getFolders () {
       return await this.$folderService.getAllDecrypted()
