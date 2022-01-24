@@ -359,9 +359,26 @@ export class MyCipherService implements CipherServiceAbstraction {
     const ciphers = await this.storageService.get<{
       [id: string]: CipherData;
     }>(Keys.ciphersPrefix + userId);
-    console.log('get all', ciphers.length)
     const response: Cipher[] = [];
     for (const id in ciphers) {
+      if (ciphers.hasOwnProperty(id)) {
+        response.push(
+          new Cipher(ciphers[id], false, localData ? localData[id] : null)
+        );
+      }
+    }
+    return response;
+  }
+
+  async getCiphers(startIndex): Promise<Cipher[]> {
+    const userId = await this.userService.getUserId();
+    const localData = await this.storageService.get<any>(Keys.localData);
+    let ciphers = await this.storageService.get<{
+      [id: string]: CipherData;
+    }>(Keys.ciphersPrefix + userId);
+    const cipherIds = Object.keys(ciphers)
+    const response: Cipher[] = [];
+    for (const id of cipherIds.slice(startIndex, startIndex+100)) {
       if (ciphers.hasOwnProperty(id)) {
         response.push(
           new Cipher(ciphers[id], false, localData ? localData[id] : null)
@@ -391,7 +408,8 @@ export class MyCipherService implements CipherServiceAbstraction {
     }
 
     const promises: any[] = [];
-    const ciphers = await this.getAll();
+    // const ciphers = await this.getAll();
+    const ciphers = await this.getCiphers(0);
     console.log('cipher encrypted', ciphers.length)
     ciphers.forEach(cipher => {
       promises.push(cipher.decrypt().then(c => decCiphers.push(c)));
@@ -403,6 +421,39 @@ export class MyCipherService implements CipherServiceAbstraction {
     decCiphers.sort(this.getLocaleSortingFunction());
     this.decryptedCipherCache = decCiphers;
     return this.decryptedCipherCache;
+  }
+
+  async getDecryptedCiphers(startIndex): Promise<CipherView[]> {
+    // if (this.decryptedCipherCache != null) {
+    //   const userId = await this.userService.getUserId();
+    //   if ((this.searchService().indexedEntityId ?? userId) !== userId) {
+    //     await this.searchService().indexCiphers(
+    //       userId,
+    //       this.decryptedCipherCache
+    //     );
+    //   }
+    //   return this.decryptedCipherCache;
+    // }
+
+    const decCiphers: CipherView[] = [];
+    const hasKey = await this.cryptoService.hasKey();
+    if (!hasKey) {
+      throw new Error("No key.");
+    }
+
+    const promises: any[] = [];
+    const ciphers = await this.getCiphers(startIndex);
+    console.log('cipher encrypted', ciphers.length)
+    ciphers.forEach(cipher => {
+      promises.push(cipher.decrypt().then(c => decCiphers.push(c)));
+    });
+
+    //  await Promise.all(promises.slice(0, Math.floor(promises.length / 2)));
+    //  await Promise.all(promises.slice(Math.floor(promises.length/2)))
+    await Promise.all(promises);
+    decCiphers.sort(this.getLocaleSortingFunction());
+    // this.decryptedCipherCache = decCiphers;
+    return decCiphers;
   }
 
   async getAllDecryptedForGrouping(
