@@ -242,7 +242,7 @@ Vue.mixin({
         this.$messagingService.send('syncCompleted', { successfully: true })
         console.log('sync completed')
         this.$store.commit('UPDATE_SYNCED_CIPHERS')
-        await this.weakPasswordScores()
+        // await this.weakPasswordScores()
       } catch (e) {
         this.$messagingService.send('syncCompleted', { successfully: false })
         this.$store.commit('UPDATE_SYNCED_CIPHERS')
