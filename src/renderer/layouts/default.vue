@@ -138,8 +138,8 @@ export default {
       idleTimer: null,
       isIdle: false,
       shouldWelcome: 'false',
-      emergencyAccessInvitations: []
-      // pendingShares: 0
+      emergencyAccessInvitations: [],
+      pendingShares: 0
     }
   },
   head () {
@@ -169,10 +169,10 @@ export default {
         this.$store.dispatch('LoadTeams')
         console.log('unlocked sync')
         this.getSyncData()
-        this.getInvitations()
+        // this.getInvitations()
         this.getEmergencyAccessInvitations()
         this.reconnectSocket()
-        // this.getShareInvitations()
+        this.getShareInvitations()
         this.$store.dispatch('LoadCurrentPlan')
       }
     }
@@ -210,19 +210,19 @@ export default {
   },
   asyncComputed: {
     async locked () {
-      console.log('locked status: ', await this.$vaultTimeoutService.isLocked())
+      // console.log('locked status: ', await this.$vaultTimeoutService.isLocked())
       return await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
-    },
-    pendingShares: {
-      async get () {
-        if (this.locked === false) {
-          const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
-          return shareInvitations.filter(item => item.status === 'invited').length
-        }
-        return 0
-      },
-      watch: ['$store.state.syncedCiphersToggle']
     }
+    // pendingShares: {
+    //   async get () {
+    //     if (this.locked === false) {
+    //       const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
+    //       return shareInvitations.filter(item => item.status === 'invited').length
+    //     }
+    //     return 0
+    //   },
+    //   watch: ['$store.state.syncedCiphersToggle']
+    // }
   },
   beforeDestroy () {
     this.$broadcasterService.unsubscribe(BroadcasterSubscriptionId)

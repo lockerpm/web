@@ -1,7 +1,7 @@
 <template>
   <div id="header-default" class="lg:px-28 px-10 h-[60px] flex items-center border-0 border-b border-black-200 relative">
     <div id="nav-content" class="sidebar" style="z-index: 1000">
-      <SideBarMenu :closable="true" :pending-shares="pendingShares" @close="hideNavMenu" />
+      <SideBarMenu :closable="true" @close="hideNavMenu" />
     </div>
     <div class="flex-grow">
       <div v-if="shouldShowSearch" class="text-black-600 py-3">
@@ -76,17 +76,17 @@ export default {
   asyncComputed: {
     async locked () {
       return await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
-    },
-    pendingShares: {
-      async get () {
-        if (this.locked === false) {
-          const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
-          return shareInvitations.filter(item => item.status === 'invited').length
-        }
-        return 0
-      },
-      watch: ['$store.state.syncedCiphersToggle']
     }
+    // pendingShares: {
+    //   async get () {
+    //     if (this.locked === false) {
+    //       const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
+    //       return shareInvitations.filter(item => item.status === 'invited').length
+    //     }
+    //     return 0
+    //   },
+    //   watch: ['$store.state.syncedCiphersToggle']
+    // }
   },
   computed: {
     shouldShowSearch () {

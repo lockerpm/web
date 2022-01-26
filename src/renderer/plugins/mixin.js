@@ -133,7 +133,7 @@ Vue.mixin({
       ])
 
       this.$folderService.clearCache()
-      // this.$cipherService.clearCache()
+      this.$cipherService.clearCache()
       this.$collectionService.clearCache()
       this.$searchService.clearIndex()
       this.$router.push(this.localeRoute({ name: 'lock' }))
@@ -204,7 +204,7 @@ Vue.mixin({
       try {
         const userId = await this.$userService.getUserId()
         // partial sync if no ciphers in storage
-        if (!window.localStorage.getItem('ciphers_' + userId)) {
+        if (await this.$storageService.get('ciphers_' + userId)) {
           try {
             this.$messagingService.send('syncStarted')
             let res = await this.$axios.$get('cystack_platform/pm/sync?paging=1&size=50&page=1')
@@ -229,6 +229,9 @@ Vue.mixin({
         }
         this.$messagingService.send('syncStarted')
         let res = await this.$axios.$get('cystack_platform/pm/sync')
+        if (res.count && res.count.ciphers) {
+          this.$store.commit('UPDATE_CIPHER_COUNT', res.count.ciphers)
+        }
         res = new SyncResponse(res)
         // const userId = await this.$userService.getUserId()
         await this.$syncService.syncProfile(res.profile)
@@ -242,7 +245,8 @@ Vue.mixin({
         this.$messagingService.send('syncCompleted', { successfully: true })
         console.log('sync completed')
         this.$store.commit('UPDATE_SYNCED_CIPHERS')
-        // await this.weakPasswordScores()
+        // console.log('PUT scores')
+        // console.log('PUT scores completed')
       } catch (e) {
         this.$messagingService.send('syncCompleted', { successfully: false })
         this.$store.commit('UPDATE_SYNCED_CIPHERS')

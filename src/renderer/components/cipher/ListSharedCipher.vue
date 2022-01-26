@@ -632,6 +632,7 @@ export default {
         } else if (this.getRouteBaseName() === 'shares-your-shares') {
           const myShare = await this.$axios.$get('cystack_platform/pm/sharing/my_share') || []
           result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type === 0)
+          console.log(result.length)
           const resultMapping = []
           result.forEach(item => {
             const org = find(myShare, e => e.organization_id === item.organizationId) || {}
@@ -646,6 +647,7 @@ export default {
           result = resultMapping
         }
         result = orderBy(result, ['user.status'], [this.orderDirection]) || []
+        console.log(result.length)
         this.dataRendered = result.slice(0, 50)
         if (!this.$store.state.syncing) {
           this.loading = false

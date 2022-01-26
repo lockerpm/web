@@ -8,7 +8,7 @@ export class HtmlStorageService implements StorageService {
         ConstantsService.localeKey, ConstantsService.autoConfirmFingerprints,
         ConstantsService.vaultTimeoutKey, ConstantsService.vaultTimeoutActionKey, ConstantsService.ssoCodeVerifierKey,
         ConstantsService.ssoStateKey, 'ssoOrgIdentifier']);
-    private localStorageStartsWithKeys = ['twoFactorToken_', ConstantsService.collapsedGroupingsKey + '_', 'ciphers_'];
+    private localStorageStartsWithKeys = ['twoFactorToken_', ConstantsService.collapsedGroupingsKey + '_'];
     private memoryStorageStartsWithKeys = ['folders_', 'collections_', 'settings_', 'lastSync_'];
     private memoryStorage = new Map<string, string>();
 
