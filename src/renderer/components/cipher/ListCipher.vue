@@ -1,5 +1,8 @@
 <template>
-  <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
+  <div
+    v-loading="loading"
+    class="flex flex-col flex-column-fluid relative"
+  >
     <!-- Navigation Menu -->
     <div class="navigation-bar">
       <template v-if="['vault', 'passwords', 'notes', 'identities', 'cards'].includes(getRouteBaseName())">
@@ -18,7 +21,10 @@
     <!-- Navigation Menu end -->
 
     <!-- List Ciphers, Folders, ... -->
-    <div v-if="!shouldRenderNoCipher" class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
+    <div
+      v-if="!shouldRenderNoCipher"
+      class="flex-column-fluid lg:px-28 py-10 px-10 mb-20"
+    >
       <!-- Overview -->
       <div class="mb-10">
         <div class="flex justify-between">
@@ -70,7 +76,10 @@
             <template v-if="!['shares', 'trash'].includes(routeName)">
               <div class="mx-6 text-head-4"> | </div>
               <div class="self-center">
-                <el-dropdown v-if="routeName==='vault'" trigger="click">
+                <el-dropdown
+                  v-if="routeName==='vault'"
+                  trigger="click"
+                >
                   <button class="btn btn-outline-primary">
                     <i class="el-icon-plus text-lg" />
                     <span class="ml-3 break-all">Add new</span>
@@ -88,7 +97,10 @@
                   </el-dropdown-menu>
                 </el-dropdown>
                 <template v-else>
-                  <button class="btn btn-outline-primary" @click="handleAddButton">
+                  <button
+                    class="btn btn-outline-primary"
+                    @click="handleAddButton"
+                  >
                     <i class="el-icon-plus text-lg" />
                     <span class="ml-3 break-all">Add new</span>
                   </button>
@@ -96,21 +108,44 @@
               </div>
             </template>
           </div>
-          <div v-if="getRouteBaseName()==='vault'" class="self-center">
-            <button class="btn btn-icon hover:bg-[#E5E5E5]" :class="viewFolder?'bg-[#E5E5E5]':''" @click="viewFolder=!viewFolder">
+          <div
+            v-if="getRouteBaseName()==='vault'"
+            class="self-center"
+          >
+            <button
+              class="btn btn-icon hover:bg-[#E5E5E5]"
+              :class="viewFolder?'bg-[#E5E5E5]':''"
+              @click="viewFolder=!viewFolder"
+            >
               <!-- <i v-if="!viewFolder" class="fas fa-folder-open" @click="viewFolder=true" /> -->
               View in folder
-              <span><i :class="viewFolder?'fas':'far'" class="fa-folder cursor-pointer" /></span>
+              <span><i
+                :class="viewFolder?'fas':'far'"
+                class="fa-folder cursor-pointer"
+              /></span>
             </button>
           </div>
         </div>
-        <div v-if="ciphers && !viewFolder" class="uppercase text-head-6">
+        <div
+          v-if="ciphers && !viewFolder"
+          class="uppercase text-head-6"
+        >
           <span class="text-primary font-semibold">{{ ($store.state.syncing && cipherCount!=null)?cipherCount : ciphers.length }}</span> {{ $tc('type.0', ciphers.length) }}
-          <el-tooltip :content="'Show logo: ' + showLogo" placement="top">
-            <el-switch v-model="showLogo" @change="changeShowLogo" />
+          <el-tooltip
+            :content="'Show logo: ' + showLogo"
+            placement="top"
+          >
+            <el-switch
+              v-model="showLogo"
+              @change="changeShowLogo"
+            />
           </el-tooltip>
+          <!-- {{ decryptedCiphers.length }} -->
         </div>
-        <div v-if="folders && viewFolder" class="uppercase text-head-6">
+        <div
+          v-if="folders && viewFolder"
+          class="uppercase text-head-6"
+        >
           <span class="text-primary font-semibold">{{ folders.length }}</span> {{ $tc('type.Folder', folders.length) }}
         </div>
       </div>
@@ -223,7 +258,11 @@
                 @click="routerFolder(item)"
                 @contextmenu.prevent="$refs.menu.open($event, item)"
               >
-                <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
+                <img
+                  src="~/assets/images/icons/folderSolid.svg"
+                  alt=""
+                  class="select-none mr-2"
+                >
                 <div class="font-semibold truncate select-none line-clamp-1">
                   {{ item.name }}
                   <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
@@ -544,10 +583,18 @@
             </template>
           </el-table-column>
         </el-table> -->
-        <RecycleScroller ref="list" page-mode :item-size="65" :items="ciphers || []">
+        <RecycleScroller
+          ref="list"
+          page-mode
+          :item-size="65"
+          :items="ciphers || []"
+        >
           <template slot="before">
             <div class="th">
-              <div v-if="multipleSelection.length" class="flex items-center ">
+              <div
+                v-if="multipleSelection.length"
+                class="flex items-center "
+              >
                 <div class="text-black mr-8 whitespace-nowrap">
                   {{ multipleSelection.length }} {{ $t('data.ciphers.selected_items') }}
                 </div>
@@ -565,7 +612,10 @@
                     {{ $t('common.permanently_delete') }}
                   </button>
                 </div>
-                <div v-else class="">
+                <div
+                  v-else
+                  class=""
+                >
                   <button
                     class="btn btn-default btn-xs"
                     @click="moveFolders(multipleSelection.map(e => e.id))"
@@ -581,7 +631,11 @@
                 </div>
               </div>
             </div>
-            <div v-for="header in headers" :key="header" class="th">
+            <div
+              v-for="header in headers"
+              :key="header"
+              class="th"
+            >
               {{ header }}
             </div>
           </template>
@@ -589,7 +643,10 @@
             <div class="td">
               <div class="flex items-center">
                 <div class="mr-4">
-                  <el-checkbox :value="item.checked?true:false" @change="changeSelection(item)" />
+                  <el-checkbox
+                    :value="item.checked?true:false"
+                    @change="changeSelection(item)"
+                  />
                 </div>
                 <div
                   class="text-[34px] mr-3 flex-shrink-0"
@@ -604,7 +661,13 @@
                     @click="routerCipher(item, addEdit)"
                   >
                     {{ item.name }}
-                    <img v-if="item.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
+                    <img
+                      v-if="item.organizationId"
+                      src="~/assets/images/icons/shares.svg"
+                      alt="Shared"
+                      :title="$t('common.shared_with_you')"
+                      class="inline-block ml-2"
+                    >
                   </a>
                   <div>
                     {{ item.subTitle }}
@@ -667,7 +730,10 @@
                 >
                   <i class="far fa-share-square" />
                 </button>
-                <el-dropdown trigger="click" :hide-on-click="false">
+                <el-dropdown
+                  trigger="click"
+                  :hide-on-click="false"
+                >
                   <button class="btn btn-icon btn-xs hover:bg-black-400">
                     <i class="fas fa-ellipsis-h" />
                   </button>
@@ -676,7 +742,10 @@
                       <el-dropdown-item @click.native="addEdit(item)">
                         {{ $t('common.edit') }}
                       </el-dropdown-item>
-                      <el-dropdown-item divided @click.native="cloneCipher(item)">
+                      <el-dropdown-item
+                        divided
+                        @click.native="cloneCipher(item)"
+                      >
                         {{ $t('common.clone') }}
                       </el-dropdown-item>
                     </template>
@@ -684,12 +753,18 @@
                       <el-dropdown-item @click.native="moveFolders([item.id])">
                         {{ $t('common.move_folder') }}
                       </el-dropdown-item>
-                      <el-dropdown-item divided @click.native="moveTrashCiphers([item.id])">
+                      <el-dropdown-item
+                        divided
+                        @click.native="moveTrashCiphers([item.id])"
+                      >
                         <span class="text-danger">{{ $t('common.delete') }}</span>
                       </el-dropdown-item>
                     </template>
                     <template v-else>
-                      <el-dropdown-item divided @click.native="restoreCiphers([item.id])">
+                      <el-dropdown-item
+                        divided
+                        @click.native="restoreCiphers([item.id])"
+                      >
                         {{ $t('common.restore') }}
                       </el-dropdown-item>
                       <el-dropdown-item @click.native="deleteCiphers([item.id])">
@@ -710,15 +785,26 @@
       :type="type"
       @add-cipher="handleAddButton"
     />
-    <AddEditCipher ref="addEditCipherDialog" :type="type" @reset-selection="multipleSelection = []" @trashed-cipher="multipleSelection = []" />
+    <AddEditCipher
+      ref="addEditCipherDialog"
+      :type="type"
+      @reset-selection="multipleSelection = []"
+      @trashed-cipher="multipleSelection = []"
+    />
     <ChooseCipherType ref="chooseCipherType" />
     <AddEditFolder ref="addEditFolder" />
     <AddEditTeamFolder ref="addEditTeamFolder" />
     <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" />
     <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" />
-    <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
+    <ShareCipher
+      ref="shareCipher"
+      @upgrade-plan="upgradePlan"
+    />
     <ShareFolder ref="shareFolder" />
-    <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
+    <MoveFolder
+      ref="moveFolder"
+      @reset-selection="multipleSelection = []"
+    />
     <PremiumDialog ref="premiumDialog" />
     <!-- <RecycleScroller
       v-slot="{ item }"
@@ -849,7 +935,10 @@ export default {
       showLogo: this.$cookies.get('show-logo') || false,
       headers: ['Updated time', 'Actions'],
       folders: [],
-      collections: []
+      collections: [],
+      decryptIndex: 0,
+      decrypting: true,
+      decryptedCiphers: []
     }
   },
   computed: {
@@ -961,20 +1050,40 @@ export default {
         this.loading = false
       }
     }
+    // decryptedCiphers () {
+    //   this.allCiphers = this.decryptedCiphers
+    //   this.decryptIndex = this.cipherCount
+    // },
+    // async '$store.state.syncedCiphersToggle' () {
+    //   await new Promise(resolve => setTimeout(async () => {
+    //     await this.iteratorDecryptCiphers()
+    //     return resolve
+    //   }, 1000))
+    // }
   },
   async mounted () {
     this.context = 'VueContext'
-    // console.log('mounted')
-    // window.onscroll = () => {
+    // window.onscroll = async () => {
     //   const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
 
     //   if (bottomOfWindow) {
-    //     if (this.renderIndex <= this.ciphers.length) {
-    //       this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.renderIndex, this.renderIndex + 50))
+    //     // if (this.renderIndex <= this.ciphers.length) {
+    //     //   this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.renderIndex, this.renderIndex + 50))
+    //     // }
+    //     // this.renderIndex += 50
+    //     if (this.decryptIndex < this.cipherCount) {
+    //       let decryptedCiphers = await this.$myCipherService.getDecryptedCiphers(this.decryptIndex) || []
+    //       decryptedCiphers = decryptedCiphers.concat(this.allCiphers)
+    //       console.log('concat: ', decryptedCiphers.length)
+    //       this.allCiphers = decryptedCiphers
     //     }
-    //     this.renderIndex += 50
+    //     this.decryptIndex += 100
     //   }
     // }
+    // await new Promise(resolve => setTimeout(async () => {
+    //   await this.iteratorDecryptCiphers()
+    //   return resolve
+    // }, 1000))
   },
   asyncComputed: {
     // allCiphers: {
@@ -982,18 +1091,24 @@ export default {
     //     console.log('get all')
     //     const startTime = Date.now()
     //     let result = await this.$myCipherService.getDecryptedCiphers(0) || []
+    //     this.decryptIndex += 100
+    //     // let result = await this.$cipherService.getAllDecrypted() || []
 
     //     const endTime = Date.now()
     //     const timeDiff = endTime - startTime // in ms
     //     // get seconds
     //     const seconds = Math.round(timeDiff)
-    //     console.log(seconds + ' seconds')
+    //     // console.log(seconds + ' seconds')
     //     console.log(result.length)
 
     //     // remove ciphers generated by authenticator
     //     result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity, CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type))
     //     return result
     //     // return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+    //   },
+    //   set (newValue) {
+    //     const result = newValue
+    //     return result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity, CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type))
     //   },
     //   watch: ['$store.state.syncedCiphersToggle']
     // },
@@ -1005,15 +1120,15 @@ export default {
     //     }
     //     if (this.allCiphers) {
     //       const startTime = Date.now()
-    //       // const result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-    //       const result = this.allCiphers.filter(deletedFilter)
+    //       const result = await this.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+    //       // const result = this.allCiphers.filter(deletedFilter)
     //       const endTime = Date.now()
     //       const timeDiff = endTime - startTime // in ms
     //       // strip the ms
 
     //       // get seconds
     //       const seconds = Math.round(timeDiff)
-    //       console.log(seconds + ' seconds')
+    //       // console.log(seconds + ' seconds')
     //       this.dataRendered = result.slice(0, 30)
     //       this.renderIndex = 30
     //       return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
@@ -1024,12 +1139,13 @@ export default {
     // },
     ciphers: {
       async get () {
+        // this.loading = true
+        const startTime = Date.now()
         const deletedFilter = c => {
           return c.isDeleted === this.deleted
         }
         console.log('search ciphers')
         let result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-        console.log(result.length)
         // remove ciphers generated by authenticator
         result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity, CipherType.CryptoAccount].includes(cipher.type))
         result.map(item => {
@@ -1038,6 +1154,13 @@ export default {
             checked: false
           }
         })
+        const endTime = Date.now()
+        const timeDiff = endTime - startTime // in ms
+        // get seconds
+        const seconds = Math.round(timeDiff)
+        console.log(seconds + ' seconds')
+        console.log(result.length)
+        // this.loading = false
         // this.dataRendered = result.slice(0, 30)
         // this.renderIndex = 30
         return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
@@ -1129,6 +1252,26 @@ export default {
     // }
   },
   methods: {
+    async iteratorDecryptCiphers () {
+      console.log('iterator decrypt ciphers')
+      const startTime = Date.now()
+      let index = 0
+      let result = []
+      while (index < this.cipherCount) {
+        const ciphers = await this.$myCipherService.getDecryptedCiphers(index) || []
+        result = result.concat(ciphers)
+        index += 100
+      }
+      this.decrypting = false
+      const endTime = Date.now()
+      const timeDiff = endTime - startTime // in ms
+      // strip the ms
+
+      // get seconds
+      const seconds = Math.round(timeDiff)
+      console.log(seconds + ' seconds')
+      this.decryptedCiphers = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity, CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type))
+    },
     addEdit (cipher) {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     },
@@ -1310,7 +1453,7 @@ export default {
     },
     isSearchable (query) {
       const notSearchable = query == null || (this.index == null && query.length < this.searchableMinLength) ||
-            (this.index != null && query.length < this.searchableMinLength && query.indexOf('>') !== 0)
+        (this.index != null && query.length < this.searchableMinLength && query.indexOf('>') !== 0)
       return !notSearchable
     },
     getIndexForSearch () {
@@ -1353,9 +1496,9 @@ export default {
       this.$cookies.set('show-logo', value)
     },
     async demoAsyncCall () {
-      const userId = await this.$userService.getUserId()
-      const ciphers = await this.$storageService.get('ciphers_' + userId)
-      return new Promise(resolve => setTimeout(() => resolve(), ciphers ? 0 : 3000))
+      // const userId = await this.$userService.getUserId()
+      // const ciphers = await this.$storageService.get('ciphers_' + userId)
+      return new Promise(resolve => setTimeout(() => resolve(), 5000))
     }
   }
 }
