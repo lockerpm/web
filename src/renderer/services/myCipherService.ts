@@ -1120,7 +1120,6 @@ export class MyCipherService implements CipherServiceAbstraction {
         const promises: Promise<CipherView>[] = []
         const hasKey = await this.cryptoService.hasKey();
       for (let id in ciphers) {
-            console.log(data[id])
             data[id] = ciphers[id]
             const c = new Cipher(ciphers[id], false)
             if (hasKey) {
