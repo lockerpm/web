@@ -350,10 +350,11 @@ export default {
         case 'sync':
           console.log('socket sync')
           this.getSyncData()
+          this.getShareInvitations()
           break
-        case 'members':
-          this.getInvitations()
-          break
+        // case 'members':
+        //   this.getInvitations()
+        //   break
         case 'emergency_access':
           this.getEmergencyAccessInvitations()
           break
