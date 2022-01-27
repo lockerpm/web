@@ -1,13 +1,13 @@
 import * as lunr from 'lunr';
 
-import { CipherView } from '../models/view/cipherView';
+import { CipherView } from '../jslib/src/models/view/cipherView';
 
 import { CipherService } from '../abstractions/cipher.service';
 import { I18nService } from '../jslib/src/abstractions/i18n.service';
 import { LogService } from "../jslib/src/abstractions/log.service";
 import { SearchService as SearchServiceAbstraction } from '../abstractions/search.service';
 
-import { CipherType } from '../enums/cipherType';
+import { CipherType } from "../jslib/src/enums/cipherType";
 import { FieldType } from "../jslib/src/enums/fieldType";
 import { UriMatchType } from "../jslib/src/enums/uriMatchType";
 import { SendView } from "../jslib/src/models/view/sendView";
@@ -92,7 +92,7 @@ export class MySearchService implements SearchServiceAbstraction {
 
         if (ciphers == null) {
           ciphers = await this.cipherService.getAllDecrypted();
-          console.log(ciphers.length)
+          // console.log(ciphers.length)
         }
 
         if (filter != null && Array.isArray(filter) && filter.length > 0) {

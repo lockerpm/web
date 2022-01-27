@@ -249,7 +249,7 @@ export default {
         const deletedFilter = c => {
           return c.isDeleted === false
         }
-        return await this.$searchService.searchCiphers('', [null, deletedFilter], null) || []
+        return await this.$mySearchService.searchCiphers('', [null, deletedFilter], null) || []
       },
       watch: ['$store.state.syncedCiphersToggle']
     },

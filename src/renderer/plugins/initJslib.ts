@@ -69,7 +69,7 @@ import { SyncService as SyncServiceAbstraction } from '../jslib/src/abstractions
 // import { TotpService as TotpServiceAbstraction } from '../jslib/src/abstractions/totp.service';
 // import { UserService as UserServiceAbstraction } from '../jslib/src/abstractions/user.service';
 import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from '../jslib/src/abstractions/vaultTimeout.service';
-import { MyCipherService } from './myCipherService';
+import { MyCipherService } from '../services/myCipherService';
 // import { PasswordRepromptService } from '../jslib/src/services/passwordReprompt.service';
 
 const i18nService = new I18nService(window.navigator.language, 'locales');

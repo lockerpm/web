@@ -56,42 +56,50 @@
           </div>
           <div v-if="currentPlan.alias==='pm_free'">
             <template v-if="ciphers">
-              <div class="flex justify-between">
-                <div>
-                  Password
+              <template v-if="ciphers.passwords">
+                <div class="flex justify-between">
+                  <div>
+                    Password
+                  </div>
+                  <div>
+                    {{ ciphers.passwords.length }}/200
+                  </div>
                 </div>
-                <div>
-                  {{ ciphers.passwords.length }}/200
+                <el-progress :show-text="false" :percentage="ciphers.passwords.length*100/200" :status="cipherStatus(ciphers.passwords.length)" />
+              </template>
+              <template v-if="ciphers.notes">
+                <div class="flex justify-between mt-4">
+                  <div>
+                    Note
+                  </div>
+                  <div>
+                    {{ ciphers.notes.length }}/200
+                  </div>
                 </div>
+                <el-progress :show-text="false" :percentage="ciphers.notes.length*100/200" :status="cipherStatus(ciphers.notes.length)" />
+              </template>
+              <template v-if="ciphers.cards">
+                <div class="flex justify-between mt-4">
+                  <div>
+                    Cards
+                  </div>
+                  <div>
+                    {{ ciphers.cards.length }}/200
+                  </div>
+                </div>
+                <el-progress :show-text="false" :percentage="ciphers.cards.length*100/200" :status="cipherStatus(ciphers.cards.length)" />
+              </template>
+              <div v-if="ciphers.identities">
+                <div class="flex justify-between mt-4">
+                  <div>
+                    Identities
+                  </div>
+                  <div>
+                    {{ ciphers.identities.length }}/200
+                  </div>
+                </div>
+                <el-progress :show-text="false" :percentage="ciphers.identities.length*100/200" :status="cipherStatus(ciphers.identities.length)" />
               </div>
-              <el-progress :show-text="false" :percentage="ciphers.passwords.length*100/200" :status="cipherStatus(ciphers.passwords.length)" />
-              <div class="flex justify-between mt-4">
-                <div>
-                  Note
-                </div>
-                <div>
-                  {{ ciphers.notes.length }}/200
-                </div>
-              </div>
-              <el-progress :show-text="false" :percentage="ciphers.notes.length*100/200" :status="cipherStatus(ciphers.notes.length)" />
-              <div class="flex justify-between mt-4">
-                <div>
-                  Cards
-                </div>
-                <div>
-                  {{ ciphers.cards.length }}/200
-                </div>
-              </div>
-              <el-progress :show-text="false" :percentage="ciphers.cards.length*100/200" :status="cipherStatus(ciphers.cards.length)" />
-              <div class="flex justify-between mt-4">
-                <div>
-                  Identities
-                </div>
-                <div>
-                  {{ ciphers.identities.length }}/200
-                </div>
-              </div>
-              <el-progress :show-text="false" :percentage="ciphers.identities.length*100/200" :status="cipherStatus(ciphers.identities.length)" />
             </template>
           </div>
           <div v-else class="text-center font-semibold">
