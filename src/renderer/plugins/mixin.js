@@ -204,6 +204,7 @@ Vue.mixin({
       const pageSize = 100
       try {
         let page = 1
+        let allCiphers = []
         const userId = await this.$userService.getUserId()
         this.$messagingService.send('syncStarted')
         while (true) {
@@ -212,6 +213,7 @@ Vue.mixin({
             this.$store.commit('UPDATE_CIPHER_COUNT', res.count.ciphers)
           }
           res = new SyncResponse(res)
+          allCiphers = allCiphers.concat(res.ciphers)
           await this.$mySyncService.syncProfile(res.profile)
           await this.$mySyncService.syncFolders(userId, res.folders)
           await this.$mySyncService.syncCollections(res.collections)
@@ -226,6 +228,15 @@ Vue.mixin({
           }
           page += 1
         }
+        // delete cached cipher if it is not in sync data
+        const decryptedCipherCache = this.$myCipherService.decryptedCipherCache
+        decryptedCipherCache.forEach(function (cipher, i) {
+          const syncIndex = allCiphers.findIndex(c => c.id === cipher.id)
+          if (syncIndex < 0) {
+            decryptedCipherCache.splice(i, 1)
+          }
+        })
+        // this.$myCipherService.decryptedCipherCache(decryptedCipherCache)
         this.$messagingService.send('syncCompleted', { successfully: true })
         console.log('sync completed')
       } catch (e) {
