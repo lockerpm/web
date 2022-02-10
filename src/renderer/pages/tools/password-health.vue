@@ -183,7 +183,7 @@ export default {
   asyncComputed: {
     ciphers: {
       async get () {
-        const result = await this.$cipherService.getAllDecrypted()
+        const result = await this.$myCipherService.getAllDecrypted()
         return result
       },
       watch: ['$store.state.syncedCiphersToggle']
