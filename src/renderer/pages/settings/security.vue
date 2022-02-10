@@ -671,10 +671,15 @@ export default {
       }
     }
   },
-  mounted () {
-    this.getUser()
-    this.getListTrusted()
-    this.getListGranted()
+  async mounted () {
+    const locked = await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
+    if (!locked) {
+      await Promise.all([
+        this.getUser(),
+        this.getListTrusted(),
+        this.getListGranted()
+      ])
+    }
   },
   methods: {
     async getUser () {

@@ -502,9 +502,14 @@ export default {
       }
     }
   },
-  mounted () {
-    this.getListTrusted()
-    this.getListGranted()
+  async mounted () {
+    const locked = await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
+    if (!locked) {
+      await Promise.all([
+        this.getListTrusted(),
+        this.getListGranted()
+      ])
+    }
   },
   methods: {
     getEmergencyAccess () {

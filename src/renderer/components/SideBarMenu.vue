@@ -125,11 +125,11 @@ export default {
     closable: {
       type: Boolean,
       default: true
-    },
-    pendingShares: {
-      type: Number,
-      default: 0
     }
+    // pendingShares: {
+    //   type: Number,
+    //   default: 0
+    // }
   },
   data () {
     return {

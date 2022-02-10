@@ -134,12 +134,13 @@ export default {
       locked: true,
       invitations: [],
       loading: false,
+      loading2: false,
       lastActivity: null,
       idleTimer: null,
       isIdle: false,
       shouldWelcome: 'false',
-      emergencyAccessInvitations: [],
-      pendingShares: 0
+      emergencyAccessInvitations: []
+      // pendingShares: 0
     }
   },
   head () {
@@ -240,7 +241,8 @@ export default {
     },
     async getShareInvitations () {
       const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
-      this.pendingShares = shareInvitations.filter(item => item.status === 'invited').length
+      this.$store.commit('UPDATE_PENDING_SHARES', shareInvitations.filter(item => item.status === 'invited').length)
+      // this.pendingShares = shareInvitations.filter(item => item.status === 'invited').length
     },
     async getEmergencyAccessInvitations () {
       this.emergencyAccessInvitations = await this.$axios.$get('cystack_platform/pm/emergency_access/granted')
