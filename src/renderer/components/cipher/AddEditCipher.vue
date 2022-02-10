@@ -616,9 +616,15 @@ export default {
       try {
         this.loading = true
         this.errors = {}
+        // if (this.cipher.type === CipherType.CryptoAccount) {
+        //   this.cipher.notes = JSON.stringify(this.cryptoAccount)
+        //   this.cipher.type = CipherType.SecureNote
+        // }
         const cipherEnc = await this.$cipherService.encrypt(cipher)
-        console.log('cipherEnc ', cipherEnc)
         const data = new CipherRequest(cipherEnc)
+        // if (this.type === 'CryptoAccount') {
+        //   data.type = CipherType.CryptoAccount
+        // }
         await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
           ...data,
           score: this.passwordStrength.score,

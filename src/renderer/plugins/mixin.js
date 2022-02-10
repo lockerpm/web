@@ -34,6 +34,9 @@ Vue.mixin({
     cipherCount () {
       return this.$store.state.cipherCount
     },
+    pendingShares () {
+      return this.$store.state.pendingShares
+    },
     blog_categories () {
       return [
         {

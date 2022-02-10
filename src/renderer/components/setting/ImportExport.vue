@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-head-5 font-semibold mb-4">
+    <div id="import" class="text-head-5 font-semibold mb-4">
       {{ $t('data.importFile.import') }}
     </div>
     <div class="setting-wrapper">

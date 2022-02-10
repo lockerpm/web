@@ -170,9 +170,14 @@ export default {
       return this.$store.state.currentPlan
     }
   },
-  mounted () {
-    this.getUser()
-    this.getListDevices()
+  async mounted () {
+    const locked = await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
+    if (!locked) {
+      await Promise.all([
+        this.getUser(),
+        this.getListDevices()
+      ])
+    }
   },
   asyncComputed: {
     fingerprint: {

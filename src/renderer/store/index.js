@@ -23,7 +23,8 @@ export const state = () => ({
   teams: [],
   currentTeam: {},
   currentPlan: {},
-  cipherCount: null
+  cipherCount: null,
+  pendingShares: 0
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -98,6 +99,9 @@ export const mutations = {
   },
   UPDATE_CIPHER_COUNT (state, value) {
     state.cipherCount = value
+  },
+  UPDATE_PENDING_SHARES (state, value) {
+    state.pendingShares = value
   }
 }
 export const actions = {

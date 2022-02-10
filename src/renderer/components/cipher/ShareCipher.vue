@@ -99,7 +99,10 @@
       </div>
     </div>
     <div class="text-left">
-      <div v-if="!cipher.id" class="grid grid-cols-2 gap-x-2 mb-4">
+      <div
+        v-if="!cipher.id"
+        class="grid grid-cols-2 gap-x-2 mb-4"
+      >
         <div class="w-full">
           <div class="text-black-700 text-head-6 font-semibold">
             {{ $t('data.ciphers.choose_file_folder') }}
@@ -139,7 +142,10 @@
           @keyupEnter="addEmail"
         />
       </div>
-      <div v-if="members" class="w-full mb-4">
+      <div
+        v-if="members"
+        class="w-full mb-4"
+      >
         <el-tag
           v-for="(email, index) in members"
           :key="index"
@@ -298,7 +304,7 @@ export default {
           })
           this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
           this.closeDialog()
-          this.$emit('updated-cipher')
+          this.$emit('shared-cipher')
         } catch (e) {
           this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
           console.log(e)
@@ -438,7 +444,7 @@ export default {
         })
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'success')
         this.closeDialog()
-        this.$emit('updated-cipher')
+        this.$emit('shared-cipher')
       } catch (e) {
         if (e.response && e.response.data && e.response.data.code === '7002') {
           this.notify(e.response.data.message, 'warning')
@@ -452,12 +458,82 @@ export default {
     },
     async shareMultiple () {
       const promises = []
+      if (this.ciphers.length > 20) {
+        this.notify(this.$t('data.notifications.share_less_than_20'), 'warning')
+        return
+      }
       this.ciphers = this.ciphers.map(cipherId => this.cipherOptions.find(cipher => cipher.id === cipherId))
-      console.log(this.ciphers)
-      this.ciphers.forEach(cipher => {
-        promises.push(this.shareItem(cipher))
-      })
-      await Promise.all(promises)
+      const sharedCiphers = []
+      // console.log(this.ciphers)
+      // this.ciphers.forEach(cipher => {
+      //   promises.push(this.shareItem(cipher))
+      // })
+      // await Promise.all(promises)
+      try {
+        this.loading = true
+        if (this.user.role === 'member-hide_passwords') {
+          this.user.role = 'member'
+          this.user.hide_passwords = true
+        }
+        const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
+        this.members = this.members.concat(emails)
+        if (!this.members.length) {
+          return
+        }
+        this.members = await Promise.all(this.members.map(async email => {
+          const publicKey = await this.getPublicKey(email)
+          return {
+            email,
+            publicKey
+          }
+        }))
+        let orgKey = null
+        let shareKey = null
+        shareKey = await this.$cryptoService.makeShareKey()
+        orgKey = shareKey[1]
+        this.ciphers.forEach(cipher => {
+          promises.push(this.encryptCipher(cipher, orgKey, sharedCiphers))
+        })
+        this.user.username = ''
+        await Promise.all(promises)
+        const url = 'cystack_platform/pm/sharing/multiple'
+        await this.$axios.$put(url, {
+          sharing_key: shareKey ? shareKey[0].encryptedString : null,
+          ciphers: sharedCiphers
+        })
+        this.notify(this.$tc('data.notifications.share_success', this.ciphers.length), 'success')
+        this.closeDialog()
+        this.$emit('shared-cipher')
+      } catch (e) {
+        if (e.response && e.response.data && e.response.data.code === '7002') {
+          this.notify(e.response.data.message, 'warning')
+          this.$emit('upgrade-plan')
+        }
+        this.notify(this.$tc('data.notifications.share_failed', this.ciphers.length), 'warning')
+        console.log(e)
+      } finally {
+        this.members = []
+        this.loading = false
+      }
+    },
+    async encryptCipher (cipher, orgKey, sharedCiphers) {
+      let _orgKey = orgKey
+      if (cipher.organizationId) { // check if the cipher is shared
+        console.log(cipher.organizationId)
+        _orgKey = await this.$cryptoService.getOrgKey(cipher.organizationId)
+      }
+      const cipherEnc = await this.$cipherService.encrypt(cipher, _orgKey)
+      const data = new CipherRequest(cipherEnc)
+      const members = await Promise.all(this.members.map(async user => {
+        return {
+          username: user.email,
+          role: this.user.role,
+          hide_passwords: this.user.hide_passwords,
+          key: user.publicKey ? await this.generateMemberKey(user.publicKey, _orgKey) : null
+        }
+      }))
+      sharedCiphers.push({ cipher: { id: cipher.id, ...data }, members })
+      return sharedCiphers
     }
   }
 }

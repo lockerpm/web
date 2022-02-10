@@ -1050,16 +1050,6 @@ export default {
         this.loading = false
       }
     }
-    // decryptedCiphers () {
-    //   this.allCiphers = this.decryptedCiphers
-    //   this.decryptIndex = this.cipherCount
-    // },
-    // async '$store.state.syncedCiphersToggle' () {
-    //   await new Promise(resolve => setTimeout(async () => {
-    //     await this.iteratorDecryptCiphers()
-    //     return resolve
-    //   }, 1000))
-    // }
   },
   async mounted () {
     this.context = 'VueContext'
@@ -1080,10 +1070,6 @@ export default {
     //     this.decryptIndex += 100
     //   }
     // }
-    // await new Promise(resolve => setTimeout(async () => {
-    //   await this.iteratorDecryptCiphers()
-    //   return resolve
-    // }, 1000))
   },
   asyncComputed: {
     // allCiphers: {
