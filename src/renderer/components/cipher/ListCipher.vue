@@ -1292,6 +1292,8 @@ export default {
       this.$refs.addEditCipherDialog.openDialog(_cipher, true)
     },
     moveFolders (ids) {
+      const cipher = this.ciphers.find(c => c.id === ids[0])
+      this.$refs.moveFolder.folderId = cipher ? cipher.folderId : null
       this.$refs.moveFolder.openDialog(ids)
     },
     deleteCiphers (ids) {

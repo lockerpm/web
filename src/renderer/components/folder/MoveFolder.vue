@@ -20,6 +20,7 @@
           </label>
           <InputSelectFolder
             v-if="dialogVisible"
+            ref="inputSelectFolder"
             :initial-value="folderId"
             :options="folders"
             :label="$t('data.folders.select_folder')"
@@ -112,10 +113,13 @@ export default {
     },
     async handleCreatedFolder (folder) {
       // this.folders = await this.getFolders()
-      setTimeout(async () => {
-        this.folders = await this.getFolders()
-      }, 300)
+      // setTimeout(async () => {
+      //   this.folders = await this.getFolders()
+      // }, 300)
+      this.folders.push(folder)
       this.cipher.folderId = folder.id
+      this.folderId = folder.id
+      this.$refs.inputSelectFolder.value = folder.id
     }
   }
 }
