@@ -336,6 +336,7 @@
           is-textarea
         />
         <InputSelectFolder
+          ref="inputSelectFolder"
           :label="$t('data.folders.select_folder')"
           :initial-value="cipher.folderId"
           :options="folders"
@@ -732,6 +733,7 @@ export default {
     async handleCreatedFolder (folder) {
       this.folders.push(folder)
       this.cipher.folderId = folder.id
+      this.$refs.inputSelectFolder.value = folder.id
     },
     newCipher (type, data) {
       this.cipher = new CipherView()
