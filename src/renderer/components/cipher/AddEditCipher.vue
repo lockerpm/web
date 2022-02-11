@@ -600,6 +600,7 @@ export default {
       this.cloneMode = cloneMode
       if (data.id || this.cloneMode) {
         this.cipher = new Cipher({ ...data }, true)
+        this.$refs.inputSelectFolder.value = this.cipher.folderId
         this.writeableCollections = await this.getWritableCollections(this.cipher.organizationId)
       } else if (CipherType[this.type]) {
         this.newCipher(this.type, data)
