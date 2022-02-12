@@ -158,7 +158,7 @@ export default {
       })
 
       await Promise.all(promises)
-      decCiphers.sort(this.$cipherService.getLocaleSortingFunction())
+      decCiphers.sort(this.$myCipherService.getLocaleSortingFunction())
 
       return decCiphers
     },

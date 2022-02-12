@@ -271,7 +271,7 @@ export default {
 
       folders = await this.$folderService.getAllDecrypted()
 
-      ciphers = await this.$cipherService.getAllDecrypted()
+      ciphers = await this.$myCipherService.getAllDecrypted()
       ciphers = ciphers.filter(c => c.organizationId === null)
       ciphers = ciphers.filter(c => c.deletedDate === null)
       ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
@@ -337,7 +337,7 @@ export default {
       let ciphers = []
 
       folders = await this.$folderService.getAll()
-      ciphers = await this.$cipherService.getAll()
+      ciphers = await this.$myCipherService.getAll()
       ciphers = ciphers.filter(c => c.organizationId === null)
       ciphers = ciphers.filter(c => c.deletedDate === null)
       ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
@@ -375,7 +375,7 @@ export default {
       collections = await this.$collectionService.getAll()
       collections = collections.filter(c => c.organizationId === organizationId)
 
-      ciphers = await this.$cipherService.getAll()
+      ciphers = await this.$myCipherService.getAll()
       ciphers = ciphers.filter(c => c.organizationId === organizationId)
       ciphers = ciphers.filter(c => c.deletedDate === null)
       ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
@@ -406,7 +406,7 @@ export default {
 
       collections = await this.$collectionService.getAllDecrypted()
       collections = collections.filter(c => c.organizationId === organizationId)
-      ciphers = await this.$cipherService.getAllDecrypted()
+      ciphers = await this.$myCipherService.getAllDecrypted()
       ciphers = ciphers.filter(c => c.organizationId === organizationId)
       ciphers = ciphers.filter(c => c.deletedDate === null)
       ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
