@@ -960,10 +960,10 @@ export default {
           label: 'Identity',
           value: 'Identity'
         },
-        // {
-        //   label: 'Crypto Asset',
-        //   value: 'CryptoAccount'
-        // },
+        {
+          label: 'Crypto Asset',
+          value: 'CryptoAccount'
+        },
         {
           label: 'Folder',
           value: 'Folder'
@@ -1140,6 +1140,14 @@ export default {
             try {
               item.cryptoAccount = JSON.parse(item.notes)
               item.notes = item.cryptoAccount ? item.cryptoAccount.notes : ''
+            } catch (error) {
+              console.log(error)
+            }
+          }
+          if (item.type === CipherType.CryptoWallet) {
+            try {
+              item.cryptoWallet = JSON.parse(item.notes)
+              item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
             } catch (error) {
               console.log(error)
             }

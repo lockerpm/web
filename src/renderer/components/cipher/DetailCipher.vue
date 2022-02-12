@@ -170,6 +170,10 @@
             <TextHaveCopy :label="$t('data.ciphers.phone')" :text="cipher.cryptoAccount.phone" />
             <TextHaveCopy :label="$t('data.ciphers.recovery_email')" :text="cipher.cryptoAccount.emailRecovery" />
           </template>
+          <template v-if="cipher.type === CipherType.CryptoWallet">
+            <TextHaveCopy label="Email" :text="cipher.cryptoWallet.email" />
+            <TextHaveCopy :label="$t('data.ciphers.seed')" :text="cipher.cryptoWallet.seed" />
+          </template>
           <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.notes" />
           <div class="grid md:grid-cols-6 cipher-item">
             <div class="">{{ $t('data.ciphers.owned_by') }}</div>
@@ -293,6 +297,14 @@ export default {
               console.log(error)
             }
           }
+          if (item.type === CipherType.CryptoWallet) {
+            try {
+              item.cryptoWallet = JSON.parse(item.notes)
+              item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
+            } catch (error) {
+              console.log(error)
+            }
+          }
           return item
         })
         return result
@@ -328,13 +340,15 @@ export default {
   methods: {
     addEdit () {
       this.editMode = true
-      this.$refs.addEditCipherDialog.type = this.cipher.type === 6 ? 'CryptoAccount' : ''
+      // this.$refs.addEditCipherDialog.type = this.cipher.type === CipherType.CryptoAccount ? 'CryptoAccount' : this.cipher.type === CipherType.CryptoWallet ? 'CryptoWallet' : ''
       this.$refs.addEditCipherDialog.openDialog(this.cipher, false, true)
     },
     shareItem (cipher) {
       this.$refs.shareCipher.openDialog(cipher)
     },
     moveFolders (ids) {
+      const cipher = this.ciphers.find(c => c.id === ids[0])
+      this.$refs.moveFolder.folderId = cipher ? cipher.folderId : null
       this.$refs.moveFolder.openDialog(ids)
     },
     deleteCiphers (ids) {
