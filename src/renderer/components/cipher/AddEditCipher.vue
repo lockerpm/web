@@ -37,6 +37,18 @@
         <!--            />-->
         <!--          </el-select>-->
         <!--        </div>-->
+        <template v-if="cipher.type === CipherType.CryptoAccount || cipher.type === CipherType.CryptoWallet">
+          <div class="mb-3">
+            <el-radio-group v-model="cipher.type">
+              <el-radio :label="6" border>
+                <span><i class="fas fa-globe-asia" /> Account</span>
+              </el-radio>
+              <el-radio :label="7" border>
+                <span><i class="fas fa-wallet" /> Wallet</span>
+              </el-radio>
+            </el-radio-group>
+          </div>
+        </template>
         <ValidationProvider
           v-slot="{ errors: err }"
           rules="required"
@@ -502,7 +514,8 @@ export default {
           match: null,
           response: null,
           uri: null
-        }
+        },
+        notes: ''
       },
       cryptoWallet: {
         email: null,
@@ -599,6 +612,10 @@ export default {
       this.dialogVisible = true
       this.cloneMode = cloneMode
       if (data.id || this.cloneMode) {
+        if (data.type === CipherType.CryptoAccount) {
+          // data.notes = JSON.stringify(data.cryptoAccount)
+          this.cryptoAccount = data.cryptoAccount
+        }
         this.cipher = new Cipher({ ...data }, true)
         this.$refs.inputSelectFolder.value = this.cipher.folderId
         this.writeableCollections = await this.getWritableCollections(this.cipher.organizationId)
@@ -618,15 +635,16 @@ export default {
       try {
         this.loading = true
         this.errors = {}
-        // if (this.cipher.type === CipherType.CryptoAccount) {
-        //   this.cipher.notes = JSON.stringify(this.cryptoAccount)
-        //   this.cipher.type = CipherType.SecureNote
-        // }
+        this.cryptoAccount.notes = this.cipher.notes
+        if (this.cipher.type === CipherType.CryptoAccount) {
+          this.cipher.notes = JSON.stringify(this.cryptoAccount)
+          this.cipher.type = CipherType.SecureNote
+        }
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
-        // if (this.type === 'CryptoAccount') {
-        //   data.type = CipherType.CryptoAccount
-        // }
+        if (this.type === 'CryptoAccount') {
+          data.type = CipherType.CryptoAccount
+        }
         await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
           ...data,
           score: this.passwordStrength.score,
@@ -645,19 +663,30 @@ export default {
     },
     async putCipher (cipher) {
       try {
+        // const cipherEnc = await this.$cipherService.encrypt(cipher)
+        // const data = new CipherRequest(cipherEnc)
+        console.log('cipher: ', cipher)
+        this.cryptoAccount.notes = this.cipher.notes
+        if (this.cipher.type === CipherType.CryptoAccount) {
+          this.cipher.notes = JSON.stringify(this.cryptoAccount)
+          this.cipher.type = CipherType.SecureNote
+        }
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
-        await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, {
-          ...data,
-          score: this.passwordStrength.score,
-          collectionIds: cipher.collectionIds
-          // view_password: cipher.viewPassword
-        })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
-        this.closeDialog()
-        this.$emit('updated-cipher')
+        console.log(data)
+        // if (this.type === 'CryptoAccount') {
+        //   data.type = CipherType.CryptoAccount
+        // }
+        // await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, {
+        //   ...data,
+        //   score: this.passwordStrength.score,
+        //   collectionIds: cipher.collectionIds
+        // })
+        // this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
+        // this.closeDialog()
+        // this.$emit('updated-cipher')
       } catch (e) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
         console.log(e)
       } finally {
         this.loading = false

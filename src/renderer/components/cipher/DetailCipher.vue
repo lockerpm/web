@@ -139,6 +139,37 @@
             <TextHaveCopy :label="$t('data.ciphers.zip')" :text="cipher.identity.postalCode" />
             <TextHaveCopy :label="$t('data.ciphers.country')" :text="cipher.identity.country" />
           </template>
+          <template v-if="cipher.type === CipherType.CryptoAccount">
+            <TextHaveCopy label="Email / Username" :text="cipher.cryptoAccount.username" />
+            <TextHaveCopy
+              :label="$t('data.ciphers.password')"
+              :text="cipher.cryptoAccount.password"
+              :view-password="cipher.viewPassword"
+              should-hide
+            />
+            <div class="grid md:grid-cols-6 cipher-item">
+              <div class="">{{ $t('data.ciphers.password_security') }}</div>
+              <div class="col-span-4 font-semibold">
+                <PasswordStrength :score="passwordStrength.score" />
+              </div>
+            </div>
+            <div
+              v-show="cipher.cryptoAccount.uris"
+              class="grid md:grid-cols-6 cipher-item"
+            >
+              <div class="">{{ $t('data.ciphers.website_address') }}</div>
+              <div class="col-span-4 font-semibold">
+                {{ cipher.cryptoAccount.uris.uri }}
+              </div>
+              <div class="text-right">
+                <button v-if="cipher.cryptoAccount.uris.canLaunch" class="btn btn-icon btn-xs btn-action" :title="$t('common.go_to_website')" @click="openNewTab(cipher.cryptoAccount.uris.uri)">
+                  <i class="fas fa-external-link-square-alt" />
+                </button>
+              </div>
+            </div>
+            <TextHaveCopy :label="$t('data.ciphers.phone')" :text="cipher.cryptoAccount.phone" />
+            <TextHaveCopy :label="$t('data.ciphers.recovery_email')" :text="cipher.cryptoAccount.emailRecovery" />
+          </template>
           <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.notes" />
           <div class="grid md:grid-cols-6 cipher-item">
             <div class="">{{ $t('data.ciphers.owned_by') }}</div>
@@ -190,7 +221,8 @@ import Vnodes from '../../components/Vnodes'
 import ShareCipher from '../../components/cipher/ShareCipher'
 import MoveFolder from '../folder/MoveFolder'
 import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
-
+CipherType.CryptoAccount = 6
+CipherType.CryptoWallet = 7
 export default {
   components: {
     TextHaveCopy,
@@ -233,8 +265,10 @@ export default {
       return find(this.ciphers, e => e.id === this.$route.params.id) || { collectionIds: [] }
     },
     passwordStrength () {
-      if (this.cipher.login) {
+      if (this.cipher.login && this.cipher.type === CipherType.Login) {
         return this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
+      } else if (this.cipher.cryptoAccount) {
+        return this.$passwordGenerationService.passwordStrength(this.cipher.cryptoAccount.password, ['cystack']) || {}
       }
       return {}
     }
@@ -249,7 +283,19 @@ export default {
         const deletedFilter = c => {
           return c.isDeleted === false
         }
-        return await this.$mySearchService.searchCiphers('', [null, deletedFilter], null) || []
+        const result = await this.$mySearchService.searchCiphers('', [null, deletedFilter], null) || []
+        result.map(item => {
+          if (item.type === CipherType.CryptoAccount) {
+            try {
+              item.cryptoAccount = JSON.parse(item.notes)
+              item.notes = item.cryptoAccount ? item.cryptoAccount.notes : ''
+            } catch (error) {
+              console.log(error)
+            }
+          }
+          return item
+        })
+        return result
       },
       watch: ['$store.state.syncedCiphersToggle']
     },
@@ -282,6 +328,7 @@ export default {
   methods: {
     addEdit () {
       this.editMode = true
+      this.$refs.addEditCipherDialog.type = this.cipher.type === 6 ? 'CryptoAccount' : ''
       this.$refs.addEditCipherDialog.openDialog(this.cipher, false, true)
     },
     shareItem (cipher) {
