@@ -15,7 +15,7 @@
             {{ isDeleted ? $t('common.restore') : $t('common.edit') }} {{ $tc(`type.${cipher.type}`, 1) }}
           </span>
           <span v-else>
-            {{ $t('common.add') }} {{ $tc(`type.${type}`, 1) }}
+            {{ $t('common.add') }} {{ $tc(`type.${cipher.type}`, 1) }}
           </span>
         </div>
       </div>
@@ -37,6 +37,18 @@
         <!--            />-->
         <!--          </el-select>-->
         <!--        </div>-->
+        <template v-if="(cipher.type === CipherType.CryptoAccount || cipher.type === CipherType.CryptoWallet) && !cipher.id">
+          <div class="mb-3">
+            <el-radio-group v-model="cipher.type">
+              <el-radio :label="6" border>
+                <span><i class="fas fa-globe-asia" /> Account</span>
+              </el-radio>
+              <el-radio :label="7" border>
+                <span><i class="fas fa-wallet" /> Wallet</span>
+              </el-radio>
+            </el-radio-group>
+          </div>
+        </template>
         <ValidationProvider
           v-slot="{ errors: err }"
           rules="required"
@@ -286,7 +298,7 @@
               class="mt-2"
             />
             <div
-              v-if="!isDeleted && !cipher.id"
+              v-if="!isDeleted"
               class="text-right"
             >
               <el-popover
@@ -306,7 +318,7 @@
               </el-popover>
             </div>
           </template>
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">
+          <div class="my-5 text-black-700 text-head-6 font-semibold">
             {{ $t('data.ciphers.additional_info') }}
           </div>
           <InputText
@@ -322,6 +334,43 @@
             :disabled="isDeleted"
           />
         </template>
+
+        <template v-if="cipher.type === CipherType.CryptoWallet">
+          <!-- <InputText
+            v-model="cryptoWallet.seed"
+            :label="$t('data.ciphers.seed')"
+            class="w-full"
+            :disabled="isDeleted"
+            :is-textarea="true"
+            required=""
+          /> -->
+          <ValidationProvider
+            v-slot="{ errors: err }"
+            rules="required"
+            :name="$t('data.ciphers.seed')"
+          >
+            <InputText
+              v-model="cryptoWallet.seed"
+              :label="$t('data.ciphers.seed')"
+              class="w-full !mb-1"
+              :error-text="err && err.length && err[0]"
+              :disabled="isDeleted"
+              required
+              is-textarea=""
+            />
+          </ValidationProvider>
+          <div class="py-1 px-3 text-xs mb-3" style="background: rgba(242, 232, 135, 0.3);">
+            {{ $t('data.ciphers.seed_phrase_desc') }}
+          </div>
+          <InputText
+            v-model="cryptoWallet.email"
+            label="Email"
+            class="w-full"
+            :disabled="isDeleted"
+            :is-password="false"
+          />
+        </template>
+
         <div
           v-if="cipher.type !== CipherType.SecureNote"
           class="my-5 text-black-700 text-head-6 font-semibold"
@@ -417,7 +466,7 @@
           <button
             v-else
             class="btn btn-primary"
-            :disabled="loading || !cipher.name"
+            :disabled="loading || !cipher.name || (cipher.type===CipherType.CryptoWallet && !cryptoWallet.seed)"
             @click="cipher.id ?putCipher(cipher):postCipher(cipher)"
           >
             {{ cipher.id ? $t('common.update') : $t('common.add') }}
@@ -436,7 +485,7 @@
 import { Dialog } from 'element-ui'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { CipherType, SecureNoteType } from '../../jslib/src/enums'
-import { Cipher } from '../../jslib/src/models/domain'
+import { Cipher, SecureNote } from '../../jslib/src/models/domain'
 // import { CipherRequest } from '../../jslib/src/models/request'
 import { CipherRequest } from '../../models/request/cipherRequest'
 import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView } from '../../jslib/src/models/view'
@@ -477,9 +526,7 @@ export default {
   data () {
     return {
       cipher: {
-        ...new CipherView(),
-        cryptoAccount: {},
-        cryptoWallet: {}
+        ...new CipherView()
       },
       folders: [],
       showPassword: false,
@@ -502,11 +549,13 @@ export default {
           match: null,
           response: null,
           uri: null
-        }
+        },
+        notes: ''
       },
       cryptoWallet: {
         email: null,
-        seed: null
+        seed: null,
+        notes: ''
       }
     }
   },
@@ -566,6 +615,9 @@ export default {
       if (this.cipher.login) {
         return this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
       }
+      if (this.cipher.cryptoAccount) {
+        return this.$passwordGenerationService.passwordStrength(this.cipher.cryptoAccount.password, ['cystack']) || {}
+      }
       return {}
     },
     ownershipOptions () {
@@ -599,6 +651,13 @@ export default {
       this.dialogVisible = true
       this.cloneMode = cloneMode
       if (data.id || this.cloneMode) {
+        if (data.type === CipherType.CryptoAccount) {
+          // data.notes = JSON.stringify(data.cryptoAccount)
+          this.cryptoAccount = data.cryptoAccount
+        }
+        if (data.type === CipherType.CryptoWallet) {
+          this.cryptoWallet = data.cryptoWallet
+        }
         this.cipher = new Cipher({ ...data }, true)
         this.$refs.inputSelectFolder.value = this.cipher.folderId
         this.writeableCollections = await this.getWritableCollections(this.cipher.organizationId)
@@ -618,15 +677,16 @@ export default {
       try {
         this.loading = true
         this.errors = {}
-        // if (this.cipher.type === CipherType.CryptoAccount) {
-        //   this.cipher.notes = JSON.stringify(this.cryptoAccount)
-        //   this.cipher.type = CipherType.SecureNote
-        // }
+        this.cryptoAccount.notes = this.cipher.notes
+        this.cryptoWallet.notes = this.cipher.notes
+        const type_ = this.cipher.type
+        if (this.cipher.type === CipherType.CryptoAccount || this.cipher.type === CipherType.CryptoWallet) {
+          this.cipher.notes = JSON.stringify(this.cipher.type === CipherType.CryptoAccount ? this.cryptoAccount : this.cryptoWallet)
+          this.cipher.type = CipherType.SecureNote
+        }
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
-        // if (this.type === 'CryptoAccount') {
-        //   data.type = CipherType.CryptoAccount
-        // }
+        data.type = type_
         await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
           ...data,
           score: this.passwordStrength.score,
@@ -645,19 +705,36 @@ export default {
     },
     async putCipher (cipher) {
       try {
+        // const cipherEnc = await this.$cipherService.encrypt(cipher)
+        // const data = new CipherRequest(cipherEnc)
+        this.cryptoAccount.notes = this.cipher.notes
+        this.cryptoWallet.notes = this.cipher.notes
+        const type_ = this.cipher.type
+        if (this.cipher.type === CipherType.CryptoAccount || this.cipher.type === CipherType.CryptoWallet) {
+          this.cipher.notes = JSON.stringify(this.cipher.type === CipherType.CryptoAccount ? this.cryptoAccount : this.cryptoWallet)
+          this.cipher.type = CipherType.SecureNote
+          this.cipher.secureNote = new SecureNote(this.cipher.secureNote, true)
+          this.cipher.secureNote.type = 0
+        }
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
+        data.type = type_
         await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, {
           ...data,
           score: this.passwordStrength.score,
           collectionIds: cipher.collectionIds
-          // view_password: cipher.viewPassword
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
+        if (type_ === CipherType.CryptoAccount) {
+          this.cipher.notes = this.cryptoAccount.notes
+        }
+        if (type_ === CipherType.CryptoWallet) {
+          this.cipher.notes = this.cryptoWallet.notes
+        }
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
         this.closeDialog()
         this.$emit('updated-cipher')
       } catch (e) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
         console.log(e)
       } finally {
         this.loading = false
@@ -746,22 +823,6 @@ export default {
       this.cipher.identity = new IdentityView()
       this.cipher.secureNote = new SecureNoteView()
       this.cipher.secureNote.type = SecureNoteType.Generic
-      this.cryptoAccount = {
-        username: null,
-        password: null,
-        phone: null,
-        emailRecovery: null,
-        response: null,
-        uris: {
-          match: null,
-          response: null,
-          uri: null
-        }
-      }
-      this.cryptoWallet = {
-        email: null,
-        seed: null
-      }
       this.cipher.folderId = this.$route.params.folderId || null
       this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
       if (this.cipher.organizationId) {
@@ -787,7 +848,13 @@ export default {
       return allCollections.filter(c => !c.readOnly && c.organizationId === orgId)
     },
     fillPassword (p) {
-      this.cipher.login.password = p
+      if (this.cipher.type === CipherType.Login) {
+        this.cipher.login.password = p
+      }
+      if (this.cipher.type === CipherType.CryptoAccount) {
+        this.cryptoAccount.password = p
+      }
+
       this.notify('Filled password', 'success')
     }
   }

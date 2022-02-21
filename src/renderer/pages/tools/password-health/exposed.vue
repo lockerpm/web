@@ -97,7 +97,7 @@ export default {
   asyncComputed: {
     exposedPasswordCiphers: {
       async get () {
-        const allCiphers = await this.$cipherService.getAllDecrypted()
+        const allCiphers = await this.$myCipherService.getAllDecrypted()
         const exposedPasswordCiphers = []
         const promises = []
         allCiphers.forEach(c => {
