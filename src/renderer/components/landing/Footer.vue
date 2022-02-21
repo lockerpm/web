@@ -7,7 +7,7 @@
         <div class="w-full lg:w-9/12">
           <div class="grid sm:grid-cols-12 gap-8 py-8 md:py-12">
             <div
-              v-for="(parent, i) in menu"
+              v-for="(parent, i) in $t('landing_footer.menu')"
               :key="i"
               class="col-span-6 md:col-span-3"
             >
@@ -93,6 +93,29 @@
                 <!--                </a>-->
               </div>
             </div>
+            <div class="col-span-12">
+              <!-- Language switcher -->
+              <div
+                :class="locale==='vi'?'opacity-06':''"
+                :style="{paddingLeft: locale==='vi'?'22px': '0px'}"
+                class="text-sm text-black-600 font-normal hover:text-green"
+                style="cursor: pointer;"
+                @click="setLocale('en')"
+              >
+                <span v-show="locale!=='vi'" class="mr-2"><i class="fas fa-location-arrow" /></span>English
+              </div>
+              <div
+                :class="locale==='en'?'opacity-06':''"
+                :style="{paddingLeft: locale!=='vi'?'22px': '0px'}"
+                class="text-sm text-black-600 font-normal hover:text-green"
+                style="margin-top: 11px; cursor: pointer;"
+                @click="setLocale('vi')"
+              >
+                <span v-show="locale==='vi'" class="mr-2"><i class="fas fa-location-arrow" /></span>Vietnamese
+              </div>
+
+              <!-- Language switcher end -->
+            </div>
           </div>
         </div>
         <!-- Social end -->
@@ -128,14 +151,14 @@
 
 <script>
 export default {
-
-  data () {
-    return {
-      menu: this.$t('landing_footer.menu')
-    }
-  },
   computed: {
     currentYear () { return new Date().getFullYear() }
+  },
+  methods: {
+    setLocale (locale) {
+      this.changeLang(locale)
+    }
+
   }
 }
 </script>
