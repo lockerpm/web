@@ -398,7 +398,7 @@
                         src="~/assets/images/landing/index/unchecked_icon.svg"
                       >
 
-                      <p>{{ why.browser[index] }}</p>
+                      <p>{{ $t(`landing.why.browser[${index}]`) }}</p>
                     </div>
                   </td>
                   <td class="landing-font-16 px-8 py-4 align-top">
@@ -407,7 +407,7 @@
                         class="mt-[6px] mr-3"
                         src="~/assets/images/landing/index/checked_icon.svg"
                       >
-                      {{ why.locker[index] }}
+                      {{ $t(`landing.why.locker[${index}]`) }}
                     </div>
                   </td>
                 </tr>

@@ -112,7 +112,8 @@ Vue.mixin({
         this.$moment.locale('en')
       }
       this.$store.dispatch('SetLang', value).then(() => {
-        this.$i18n.locale = value
+        this.$i18n.setLocale(value)
+        this.$router.push(this.switchLocalePath(value))
       })
     },
     changeLocale (value) {

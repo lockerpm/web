@@ -39,13 +39,13 @@
             class="nav-item text-black px-4"
             to="/login"
           >
-            Đăng nhập
+            {{ $t('common.login') }}
           </nuxt-link>
           <nuxt-link
             class="nav-item text-black"
             to="/register"
           >
-            Đăng ký
+            {{ $t('common.sign_up') }}
           </nuxt-link>
         </template>
       </div>
@@ -59,7 +59,7 @@
         <!-- Nav items -->
         <ul class="list-reset lg:flex justify-end flex-1 items-center gap-x-[45px]">
           <li
-            v-for="(item, index) in menu"
+            v-for="(item, index) in $t('landing_header.menu')"
             :key="index"
           >
             <nuxt-link
@@ -75,7 +75,7 @@
               class="inline-block nav-item text-black landing-transition"
               to="/login"
             >
-              Đăng nhập
+              {{ $t('common.login') }}
             </nuxt-link>
           </li>
           <li class="sm:hidden">
@@ -83,7 +83,7 @@
               class="inline-block nav-item text-black landing-transition"
               to="/register"
             >
-              Đăng ký
+              {{ $t('common.sign_up') }}
             </nuxt-link>
           </li>
         </ul>
@@ -96,11 +96,6 @@
 
 <script>
 export default {
-  data () {
-    return {
-      menu: this.$t('landing_header.menu')
-    }
-  },
   computed: {
     language () {
       return this.$store.state.user.language
