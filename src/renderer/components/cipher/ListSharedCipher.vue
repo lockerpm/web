@@ -120,7 +120,7 @@
                   <a
                     class="text-black font-semibold truncate flex items-center"
                     :class="{'opacity-80': scope.row.isDeleted}"
-                    @click="routerCipher(scope.row, addEdit)"
+                    @click="scope.row.status === 'invited'?openAcceptDialog(scope.row) : routerCipher(scope.row, addEdit)"
                   >
                     {{ scope.row.name || 'N/A' }}
                     <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
@@ -236,8 +236,9 @@
             </el-table-column>
           </template>
           <el-table-column
-            label=""
             align="right"
+            :label="$t('common.actions')"
+            fixed="right"
           >
             <template slot-scope="scope">
               <div class="col-actions">
@@ -401,6 +402,17 @@
         </div>
       </div>
     </el-dialog>
+    <el-dialog
+      title="Tips"
+      :visible.sync="dialogAcceptVisible"
+      width="40%"
+    >
+      <span>Accept the invitation to view this item</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogAcceptVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="acceptShareInvitation(selectedCipher)">Accept</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -484,7 +496,8 @@ export default {
       dialogConfirmVisible: false,
       selectedCipher: {},
       invitations: [],
-      myShares: []
+      myShares: [],
+      dialogAcceptVisible: false
     }
   },
   computed: {
@@ -873,6 +886,8 @@ export default {
         this.notify(this.$t('data.notifications.accept_invitation_success'), 'success')
       } catch (e) {
         this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')
+      } finally {
+        this.dialogAcceptVisible = false
       }
     },
     async rejectShareInvitation (cipher) {
@@ -983,6 +998,10 @@ export default {
     upgradePlan () {
       this.$refs.shareCipher.closeDialog()
       this.$refs.premiumDialog.openDialog()
+    },
+    openAcceptDialog (item) {
+      this.selectedCipher = item
+      this.dialogAcceptVisible = true
     }
   }
 }

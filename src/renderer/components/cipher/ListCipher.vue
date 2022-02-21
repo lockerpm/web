@@ -152,7 +152,7 @@
       <!-- Overview end -->
 
       <!-- Details -->
-      <div class="flex items-center justify-between mb-5">
+      <div class="flex items-center justify-end content-end mb-5">
         <!-- Folder Navigation -->
         <!-- <div class="flex-grow">
           <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -196,12 +196,12 @@
         </div> -->
         <!-- Folder Navigation end -->
 
-        <!-- <div class="header-actions">
+        <div class="header-actions">
           <div class="flex">
-            <button v-if="!['vault-folders-folderId', 'vault-teams-teamId-tfolders-tfolderId', 'vault', 'shares', 'trash'].includes(getRouteBaseName())" class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold mr-3" @click="handleAddButton">
+            <!-- <button v-if="!['vault-folders-folderId', 'vault-teams-teamId-tfolders-tfolderId', 'vault', 'shares', 'trash'].includes(getRouteBaseName())" class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold mr-3" @click="handleAddButton">
               <i class="el-icon-circle-plus-outline text-lg" />
               <div class="ml-3 break-all">Add new</div>
-            </button>
+            </button> -->
             <el-dropdown trigger="click" class="self-center">
               <div class="text-sm text-black-600 font-semibold">
                 {{ $t('data.ciphers.sort_by') }} <i class="el-icon-caret-bottom el-icon--right" />
@@ -238,7 +238,7 @@
               </el-dropdown-menu>
             </el-dropdown>
           </div>
-        </div> -->
+        </div>
       </div>
 
       <!-- List Folders -->
@@ -879,8 +879,8 @@ export default {
       CipherType,
       multipleSelection: [],
       loading: true,
-      orderField: 'name', // revisionDate
-      orderDirection: 'asc',
+      orderField: 'revisionDate', // revisionDate
+      orderDirection: 'desc',
       selectedFolder: {},
       context: '',
       publicKey: '',
