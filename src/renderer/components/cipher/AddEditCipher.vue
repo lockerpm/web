@@ -378,6 +378,23 @@
           {{ $t('data.ciphers.others') }}
         </div>
         <InputText
+          v-if="cipher.type === CipherType.CryptoAccount"
+          v-model="cryptoAccount.notes"
+          :label="$t('data.ciphers.notes')"
+          class="w-full"
+          :disabled="isDeleted"
+          is-textarea
+        />
+        <InputText
+          v-else-if="cipher.type === CipherType.CryptoWallet"
+          v-model="cryptoWallet.notes"
+          :label="$t('data.ciphers.notes')"
+          class="w-full"
+          :disabled="isDeleted"
+          is-textarea
+        />
+        <InputText
+          v-else
           v-model="cipher.notes"
           :label="$t('data.ciphers.notes')"
           class="w-full"
@@ -677,8 +694,8 @@ export default {
       try {
         this.loading = true
         this.errors = {}
-        this.cryptoAccount.notes = this.cipher.notes
-        this.cryptoWallet.notes = this.cipher.notes
+        // this.cryptoAccount.notes = this.cipher.notes
+        // this.cryptoWallet.notes = this.cipher.notes
         const type_ = this.cipher.type
         if (this.cipher.type === CipherType.CryptoAccount || this.cipher.type === CipherType.CryptoWallet) {
           this.cipher.notes = JSON.stringify(this.cipher.type === CipherType.CryptoAccount ? this.cryptoAccount : this.cryptoWallet)
@@ -707,8 +724,8 @@ export default {
       try {
         // const cipherEnc = await this.$cipherService.encrypt(cipher)
         // const data = new CipherRequest(cipherEnc)
-        this.cryptoAccount.notes = this.cipher.notes
-        this.cryptoWallet.notes = this.cipher.notes
+        // this.cryptoAccount.notes = this.cipher.notes
+        // this.cryptoWallet.notes = this.cipher.notes
         const type_ = this.cipher.type
         if (this.cipher.type === CipherType.CryptoAccount || this.cipher.type === CipherType.CryptoWallet) {
           this.cipher.notes = JSON.stringify(this.cipher.type === CipherType.CryptoAccount ? this.cryptoAccount : this.cryptoWallet)
@@ -724,12 +741,12 @@ export default {
           score: this.passwordStrength.score,
           collectionIds: cipher.collectionIds
         })
-        if (type_ === CipherType.CryptoAccount) {
-          this.cipher.notes = this.cryptoAccount.notes
-        }
-        if (type_ === CipherType.CryptoWallet) {
-          this.cipher.notes = this.cryptoWallet.notes
-        }
+        // if (type_ === CipherType.CryptoAccount) {
+        //   this.cipher.notes = this.cryptoAccount.notes
+        // }
+        // if (type_ === CipherType.CryptoWallet) {
+        //   this.cipher.notes = this.cryptoWallet.notes
+        // }
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
         this.closeDialog()
         this.$emit('updated-cipher')

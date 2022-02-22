@@ -139,7 +139,7 @@
             <TextHaveCopy :label="$t('data.ciphers.zip')" :text="cipher.identity.postalCode" />
             <TextHaveCopy :label="$t('data.ciphers.country')" :text="cipher.identity.country" />
           </template>
-          <template v-if="cipher.type === CipherType.CryptoAccount">
+          <template v-if="cipher.type === CipherType.CryptoAccount && cipher.cryptoAccount">
             <TextHaveCopy label="Email / Username" :text="cipher.cryptoAccount.username" />
             <TextHaveCopy
               :label="$t('data.ciphers.password')"
@@ -154,7 +154,7 @@
               </div>
             </div>
             <div
-              v-show="cipher.cryptoAccount.uris"
+              v-if="cipher.cryptoAccount.uris"
               class="grid md:grid-cols-6 cipher-item"
             >
               <div class="">{{ $t('data.ciphers.website_address') }}</div>
@@ -169,12 +169,14 @@
             </div>
             <TextHaveCopy :label="$t('data.ciphers.phone')" :text="cipher.cryptoAccount.phone" />
             <TextHaveCopy :label="$t('data.ciphers.recovery_email')" :text="cipher.cryptoAccount.emailRecovery" />
+            <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoAccount.notes" />
           </template>
-          <template v-if="cipher.type === CipherType.CryptoWallet">
+          <template v-if="cipher.type === CipherType.CryptoWallet && cipher.cryptoWallet">
             <TextHaveCopy label="Email" :text="cipher.cryptoWallet.email" />
             <TextHaveCopy :label="$t('data.ciphers.seed')" :text="cipher.cryptoWallet.seed" />
+            <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoWallet.notes" />
           </template>
-          <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.notes" />
+          <TextHaveCopy v-if="![CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type)" :label="$t('data.ciphers.notes')" :text="cipher.notes" />
           <div class="grid md:grid-cols-6 cipher-item">
             <div class="">{{ $t('data.ciphers.owned_by') }}</div>
             <div class="col-span-4 font-semibold flex items-center">
@@ -292,7 +294,7 @@ export default {
           if (item.type === CipherType.CryptoAccount) {
             try {
               item.cryptoAccount = JSON.parse(item.notes)
-              item.notes = item.cryptoAccount ? item.cryptoAccount.notes : ''
+              // item.notes = item.cryptoAccount ? item.cryptoAccount.notes : null
             } catch (error) {
               console.log(error)
             }
@@ -300,7 +302,7 @@ export default {
           if (item.type === CipherType.CryptoWallet) {
             try {
               item.cryptoWallet = JSON.parse(item.notes)
-              item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
+              // item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
             } catch (error) {
               console.log(error)
             }

@@ -1139,7 +1139,7 @@ export default {
           if (item.type === CipherType.CryptoAccount) {
             try {
               item.cryptoAccount = JSON.parse(item.notes)
-              item.notes = item.cryptoAccount ? item.cryptoAccount.notes : ''
+              // item.notes = item.cryptoAccount ? item.cryptoAccount.notes : ''
             } catch (error) {
               console.log(error)
             }
@@ -1147,7 +1147,7 @@ export default {
           if (item.type === CipherType.CryptoWallet) {
             try {
               item.cryptoWallet = JSON.parse(item.notes)
-              item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
+              // item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
             } catch (error) {
               console.log(error)
             }
