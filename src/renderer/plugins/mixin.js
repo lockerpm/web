@@ -38,33 +38,7 @@ Vue.mixin({
       return this.$store.state.pendingShares
     },
     blog_categories () {
-      return [
-        {
-          id: '29,4,400,315',
-          label: this.$t('blog.categories')[0],
-          slug: ''
-        },
-        {
-          id: '29',
-          label: this.$t('blog.categories')[1],
-          slug: 'data-security'
-        },
-        {
-          id: '4',
-          label: this.$t('blog.categories')[2],
-          slug: 'cyber-defense'
-        },
-        {
-          id: '14',
-          label: this.$t('blog.categories')[10],
-          slug: 'news-trend'
-        },
-        {
-          id: '315',
-          label: this.$t('blog.categories')[4],
-          slug: 'featured'
-        }
-      ]
+      return this.$t('blog.categories')
     }
   },
   mounted () {

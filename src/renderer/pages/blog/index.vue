@@ -37,7 +37,8 @@
       <div class="w-full pb-0">
         <div class="projects-catalog">
           <div id="imageSlider1" class="catalog-slider flex justify-between">
-            <div class="catalog-cover" style="width: 80%">
+            <span class="landing-font-16 md:hidden" style="padding: 6px 20px 5px 0px; cursor: pointer" @click="showPre()"><i class="fas fa-angle-left" /></span>
+            <div class="catalog-cover" style="width: 70%">
               <ul id="sliderWrapper1" class="catalog-list corporate-projects">
                 <li
                   v-for="(item, index) in blog_categories"
@@ -50,7 +51,7 @@
                 </li>
               </ul>
             </div>
-            <!-- <span style="padding: 10px 20px 5px; cursor: pointer" @click="showNext()"><fa-icon :icon="faAngleRight" class="landing-font-16" /></span> -->
+            <span class="landing-font-16 md:hidden" style="padding: 6px 20px 5px; cursor: pointer" @click="showNext"><i class="fas fa-angle-right" /></span>
             <el-input
               v-model="query"
               :placeholder="`${$t('blog.search')}`"
@@ -96,14 +97,11 @@
     </section>
 
     <!-- CTA -->
-    <section class="md:mt-36 mt-24">
+    <!-- <section class="md:mt-36 mt-24">
       <div
         class="w-full rounded py-[40px] px-[65px] flex justify-between align-middle md:flex-row flex-col"
         style="background-color: #f5f6f7"
       >
-        <!-- <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-28 font-semibold max-w-max text-center mb-6 ">
-          {{ $t('blog.cta.title') }}
-        </p> -->
         <div>
           <h2 class="landing-font-28 font-semibold mb-3 sm:text-left text-center">{{ $t('blog.cta.title') }}</h2>
           <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-14 max-w-max text-center mb-6">
@@ -116,6 +114,24 @@
           style="align-self: center"
         >
           {{ $t('blog.cta.btn.text') }}
+        </nuxt-link>
+      </div>
+    </section> -->
+    <section class="md:mt-36 mt-24">
+      <div
+        class="w-full rounded py-[40px] px-[65px] flex justify-between align-middle md:flex-row flex-col"
+        style="background-color: #f5f6f7"
+      >
+        <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-28 font-semibold max-w-max text-center mb-6 ">
+          {{ $t('landing.cta1.title') }}
+        </p>
+
+        <nuxt-link
+          class="landing-btn"
+          :to="localeRoute({name: $t('landing.cta1.btn.link')})"
+          style="align-self: center"
+        >
+          {{ $t('landing.cta1.btn.text') }}
         </nuxt-link>
       </div>
     </section>
@@ -142,7 +158,7 @@ export default {
     try {
       const result = await axios.get(`${process.env.blogUrl}/tags?slug=${language}`)
       tagId = result.data[0].id
-      const { data } = await axios.get(`${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${tagId}&categories=29,4,400,315`)
+      const { data } = await axios.get(`${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${tagId}&categories=489,490,491,492,493`)
       return {
         posts: data.map(post => {
           let featuredImage = ''
@@ -182,7 +198,7 @@ export default {
         ]
       },
       query: '',
-      category: '29,4,400,315',
+      category: this.$t('blog.categories')[0].id,
       page: 1,
       loadingMore: false,
       loadMoreDisabled: false,
@@ -200,7 +216,7 @@ export default {
       if (category) {
         this.category = category.id
       } else {
-        this.category = '29,4,400,315'
+        this.category = this.$t('blog.categories')[0].id
       }
     },
     category (newValue) {
@@ -216,6 +232,22 @@ export default {
     }
   },
   methods: {
+    showPre () {
+      const slider = document.querySelector('.catalog-list')
+      const scrollLeft = slider.scrollLeft
+      slider.scroll({
+        left: scrollLeft - 150,
+        behavior: 'smooth'
+      })
+    },
+    showNext () {
+      const slider = document.querySelector('.catalog-list')
+      const scrollLeft = slider.scrollLeft
+      slider.scroll({
+        left: scrollLeft + 150,
+        behavior: 'smooth'
+      })
+    },
     async subscribeBlog () {
       if (this.$refs.form) {
         const isValid = await this.$refs.form.validate()

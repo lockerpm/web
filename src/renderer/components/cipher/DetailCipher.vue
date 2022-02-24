@@ -180,7 +180,7 @@
           <div class="grid md:grid-cols-6 cipher-item">
             <div class="">{{ $t('data.ciphers.owned_by') }}</div>
             <div class="col-span-4 font-semibold flex items-center">
-              <span>{{ isOwner(organizations, cipher)? $t('common.name') : getTeam(organizations, cipher.organizationId).name || $t('common.me') }}</span>
+              <span>{{ isOwner(organizations, cipher)? $t('common.me') : getTeam(organizations, cipher.organizationId).name || $t('common.me') }}</span>
             </div>
           </div>
           <div class="grid md:grid-cols-6 cipher-item">

@@ -20,11 +20,11 @@
         <ValidationProvider
           v-slot="{ errors: err }"
           rules="required"
-          :name="$t('common.name')"
+          :name="$t('common.item_name')"
         >
           <InputText
             v-model="cipher.name"
-            :label="$t('common.name')"
+            :label="$t('common.item_name')"
             class="w-full"
             :error-text="err && err.length && err[0]"
             :disabled="true"

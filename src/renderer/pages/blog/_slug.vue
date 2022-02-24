@@ -133,7 +133,7 @@ export default {
   async asyncData ({ isDev, route, store, env, params, query, req, res, redirect, error }) {
     const slug = params.slug
     const language = store.state.i18n.locale
-    const { data } = await axios.get(`${process.env.blogUrl}/posts?slug=${slug}`)
+    const { data } = await axios.get(`${process.env.blogUrl}/posts?slug=${slug}&categories=489,490,491,492,493`)
     if (data.length === 0) {
       error({ statusCode: 404 })
       return
@@ -229,7 +229,7 @@ export default {
   },
   head () {
     return {
-      title: this.post.title.rendered + ' | CyStack Web Security',
+      title: this.post.title.rendered + ' | Locker',
       meta: [
         {
           hid: 'description',
@@ -244,12 +244,12 @@ export default {
         {
           hid: 'og:title',
           property: 'og:title',
-          content: this.post.title.rendered + ' | CyStack Web Security'
+          content: this.post.title.rendered + ' | Locker'
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
-          content: this.post.title.rendered + ' | CyStack Web Security'
+          content: this.post.title.rendered + ' | Locker'
         },
         {
           hid: 'twitter:description',
@@ -433,4 +433,43 @@ div.post-content blockquote{
   font-weight: 700;
   line-height: 12px;
 }
+.post-content .has-white-color {
+  color: #FFF;
+}
+.post-content ol.has-background, .post-content ul.has-background {
+  padding: 1.25em 2.375em;
+  margin-left: 0px;
+}
+.post-content .wptb-table-container {
+  width: 100%;
+  overflow-x: scroll;
+}
+.post-content .wp-block-button .wp-block-button__link {
+    transition: background 150ms ease-in-out;
+    border: none;
+    font-size: 0.88889em;
+    line-height: 1.2;
+    box-sizing: border-box;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0.76rem 1rem;
+    outline: none;
+    border-radius: 5px;
+    color: white !important;
+}
+
+.post-content .wptb-table-container table td {
+  padding: 15px;
+  width: 100px;
+}
+
+.post-content .wptb-ph-element{
+  width: inherit;
+  margin: 0 auto;
+}
+
+.post-content .wptb-table-container p {
+  margin-bottom: 0px;
+}
+
 </style>
