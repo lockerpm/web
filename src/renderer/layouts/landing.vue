@@ -72,17 +72,17 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: this.$t(`${this.mappings}.title`)
+          content: this.$t('landing.title')
         },
         {
           hid: 'og:description',
           property: 'og:description',
-          content: this.$t(`${this.mappings}.title`)
+          content: this.$t('landing.title')
         },
         {
           hid: 'twitter:description',
           name: 'twitter:description',
-          content: this.$t(`${this.mappings}.title`)
+          content: this.$t('landing.title')
         }
       ],
       link: [
@@ -103,6 +103,8 @@ export default {
       if (path === '/download' || path === `/${this.locale}/download`) { return 'download' }
       if (path === '/contact-us' || path === `/${this.locale}/contact-us`) { return 'landing_contact' }
       if (path === '/blog' || path === `/${this.locale}/blog`) { return 'blog' }
+      if (path === '/password-generator' || path === `/${this.locale}/password-generator`) { return 'password_generator' }
+      if (path === '/security' || path === `/${this.locale}/security`) { return 'security' }
       return 'landing'
     }
   },
