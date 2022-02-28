@@ -124,8 +124,8 @@
               {{ $t('data.tools.copy_password') }}
             </button>
 
-            <button class="landing-btn2 w-auto">
-              Lưu với Locker
+            <button class="landing-btn2 w-auto" @click="saveWithLocker">
+              {{ $t('password_generator.save_with_locker') }}
             </button>
           </div>
         </div>
@@ -343,6 +343,9 @@ export default {
     updateLength () {
       this.options.length = parseInt(this.options.length)
       this.regenerate()
+    },
+    saveWithLocker () {
+      this.$router.push(this.localeRoute({ name: 'vault', query: { password: this.password, nextStep: 'save' } }))
     }
   }
 }

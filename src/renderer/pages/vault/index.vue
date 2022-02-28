@@ -1,5 +1,5 @@
 <template>
-  <ListCipher route-name="vault" />
+  <ListCipher ref="listCipher" route-name="vault" />
 </template>
 
 <script>
@@ -8,7 +8,13 @@ export default {
   components: {
     ListCipher
   },
-  mounted () {
+  async mounted () {
+    if (this.$route.query.password && this.$route.query.nextStep === 'save') {
+      await this.$refs.listCipher.$refs.chooseCipherType.confirmDialog('Login')
+      setTimeout(async () => {
+        this.$refs.listCipher.$refs.chooseCipherType.$refs.addEditCipherDialog.cipher.login.password = this.$route.query.password
+      }, 500)
+    }
   },
   methods: {
   }
