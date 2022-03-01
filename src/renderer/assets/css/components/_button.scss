@@ -92,3 +92,16 @@ button.btn:disabled {
 .el-dropdown-menu__item:not(.is-disabled):hover, .el-dropdown-menu__item:focus {
   @apply text-black-700 bg-black-100
 }
+
+.btn-round {
+  @apply text-center text-lg font-semibold;
+  border: 1px solid #E8E8E9;
+  width: 240px;
+  height: 66px;
+  &.btn-left-round {
+    border-radius: 32px 0 0 32px;
+  }
+  &.btn-right-round {
+    border-radius: 0 32px 32px 0;
+  }
+}

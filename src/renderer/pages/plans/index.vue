@@ -6,9 +6,8 @@
           :key="index"
           :class="step===index+1?'!text-black font-semibold border-b-2 border-primary pb-3':''"
           class="text-black-600 mr-8 last:mr-0 cursor-pointer"
-          @click="step=index+1"
+          @click="index===0?step=index+1:()=>{}"
         >
-          <!-- @click="index===0?step=index+1:()=>{}" -->
           {{ $t(`sidebar.${item.label}`) }}
         </div>
       </template>
@@ -40,16 +39,18 @@
           <!-- Banner end -->
 
           <!-- Step title -->
-          <div class="mb-4">
+          <div class="mb-6">
             <template v-if="step===1">
               <div class="text-head-3 font-semibold mb-2">
                 Choose a plan
               </div>
-              <div class="mb-2">Choose a plan that suits your need.</div>
+              <div class="mb-8">Choose a plan that suits your need.</div>
               <div class="flex">
-                <div class="font-semibold mr-3">Monthly</div>
+                <!-- <div class="font-semibold mr-3">Monthly</div>
                 <el-switch v-model="periodSwitch" small @change="calcPrice" />
-                <div class="font-semibold ml-3">Yearly</div>
+                <div class="font-semibold ml-3">Yearly</div> -->
+                <button class="btn-round btn-left-round" :class="periodSwitch?'text-black':'text-primary'" @click="periodSwitch=false">Bill monthly</button>
+                <button class="btn-round btn-right-round" :class="periodSwitch?'text-primary':'text-black'" @click="periodSwitch=true">Bill annually <br> (Save up to 75%)</button>
               </div>
             </template>
             <template v-if="step===2">
@@ -77,18 +78,18 @@
               >
                 <!-- @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''" -->
                 <div class="flex flex-col mb-6">
-                  <div class="2xl:flex items-center text-center">
-                    <span class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
+                  <div class="2xl:flex items-center text-center justify-center">
+                    <!-- <span class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
+                      {{ getPlanName(item.name).name }}
+                    </span> -->
+                    <span class="font-semibold !text-lg">
                       {{ getPlanName(item.name).name }}
                     </span>
                     <span class="text-black-600 ml-2">
                       {{ getPlanName(item.name).tag }}
                     </span>
                   </div>
-                  <div class="text-black-600  mt-2">
-                    {{ $t(`data.plans.descriptions.${item.alias}`) }}
-                  </div>
-                  <div class="mt-2.5 mb-6 text-primary">
+                  <div class="mb-4 mt-2 text-primary">
                     <template v-if="item.alias==='pm_free'">
                       <div class="text-head-3 font-semibold text-center">
                         <span v-if="language==='vi'">đ{{ item.price.vnd | formatNumber }}</span>
@@ -96,20 +97,28 @@
                       </div>
                     </template>
                     <template v-else>
-                      <div v-if="language==='vi'" class="text-head-3 font-semibold text-center">
-                        <span :class="periodSwitch?'line-through':''">đ{{ item.price.vnd | formatNumber }}</span>
-                        <span v-if="periodSwitch">đ{{ (item.yearly_price.vnd / 12) | formatNumber }}</span>
-                      </div>
-                      <div v-if="language==='en'" class="text-head-3 font-semibold text-center">
-                        <span :class="periodSwitch?'line-through':''">${{ item.price.usd | formatNumber }}</span>
-                        <span v-if="periodSwitch">${{ (item.yearly_price.usd / 12) | formatNumber }}</span>
+                      <div class="text-center">
+                        <template v-if="language==='vi'">
+                          <span :class="periodSwitch?'line-through text-sm text-black':'text-head-3 font-semibold'">đ{{ item.price.vnd | formatNumber }}</span>
+                          <span v-if="periodSwitch" class="text-head-3 font-semibold">đ{{ (item.yearly_price.vnd / 12) | formatNumber }}</span>
+                        </template>
+                        <template v-if="language==='en'">
+                          <span :class="periodSwitch?'line-through text-sm text-black':'text-head-3 font-semibold'">${{ item.price.usd | formatNumber }}</span>
+                          <span v-if="periodSwitch" class="text-head-3 font-semibold">${{ (item.yearly_price.usd / 12) | formatNumber }}</span>
+                        </template>
+                        <span>/ mo</span>
+                        <span v-if="item.max_number" class="">/ {{ $tc('data.plans.members',item.max_number ,{count: item.max_number}) }} </span>
+                        <span v-else-if="item.alias === 'pm_business_premium'" class="text-black-600">/ {{ $tc('data.plans.members', 1, {count: 1}) }} </span>
                       </div>
                     </template>
-                    <div class="text-center">
-                      <span class="font-normal">/ mo</span>
-                      <span v-if="item.max_number" class="">/ {{ $tc('data.plans.members',item.max_number ,{count: item.max_number}) }} </span>
-                      <span v-else-if="item.alias === 'pm_business_premium'" class="text-black-600">/ {{ $tc('data.plans.members', 1, {count: 1}) }} </span>
+                    <div v-if="periodSwitch" class="flex items-center justify-between justify-center mt-1">
+                      <div v-if="item.alias != 'pm_free'">
+                        12 months with ${{ item.price.usd * 12 }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">Save {{ discountPercentage(item) }}%</span>
+                      </div>
                     </div>
+                  </div>
+                  <div class="text-black-600 mb-4">
+                    {{ $t(`data.plans.descriptions.${item.alias}`) }}
                   </div>
                   <div class="mb-8 flex-grow">
                     <div
@@ -127,15 +136,15 @@
                         </button>
                       </div> -->
                 </div>
-                <div v-if="currentPlan.alias === item.alias" class="absolute bottom-0 lg:bottom-[-50px] w-full left-0 right-0 text-center">
+                <!-- <div v-if="currentPlan.alias === item.alias" class="absolute bottom-0 lg:bottom-[-50px] w-full left-0 right-0 text-center">
                   <i class="fas fa-sort-up" />
                   <div>
                     {{ $t('data.plans.current_plan') }}
                   </div>
-                </div>
-                <div v-else class="absolute bottom-4 w-full pr-16">
-                  <button class="btn btn-primary text-center w-full" :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family'" @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''">
-                    Choose this plan
+                </div> -->
+                <div class="absolute bottom-4 w-full pr-16">
+                  <button :class="currentPlan.alias === item.alias? 'btn-default' : 'btn-primary'" class="btn text-center w-full" :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family'" @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''">
+                    {{ currentPlan.alias === item.alias? 'Your current plan' : 'Choose this plan' }}
                   </button>
                 </div>
               </div>
@@ -172,8 +181,10 @@
                     Add coupon code
                   </button>
                   <div v-if="havePromoCode" class="flex">
-                    <el-input v-model="promo_code" change="mr-2" />
-                    <el-button type="primary" plain @click="calcPrice">Apply</el-button>
+                    <el-input v-model="promo_code" change="mr-2">
+                      <el-button slot="append" :disabled="!promo_code" @click="calcPrice">Apply</el-button>
+                    </el-input>
+                    <!-- <el-button type="primary" plain @click="calcPrice">Apply</el-button> -->
                   </div>
                   <div v-if="result.error_promo" class="text-danger">
                     {{ result.error_promo.promo_code[0] }}
@@ -198,7 +209,7 @@
                 </div>
               </div>
             </div>
-            <!-- <div v-if="selectedPlan.alias === 'pm_family'" class="setting-wrapper">
+            <div v-if="selectedPlan.alias === 'pm_family'" class="setting-wrapper">
               <div class="setting-section">
                 <div class="setting-section-header">
                   <div class="text-[20px] font-semibold">Invite people to your plan</div>
@@ -211,8 +222,29 @@
                     <div class="setting-description" />
                   </div>
                 </div>
+                <div class="mt-4">
+                  <div class="flex">
+                    <el-input v-model="inputEmail" change="mr-2" @keyup.enter.native="handleInputEmail" @input="emailInput">
+                      <div v-if="family_members.length" slot="prepend">
+                        <el-tag
+                          v-for="(email, index) in family_members"
+                          :key="email"
+                          closable
+                          type="info"
+                          @close="handleClose(index)"
+                        >
+                          {{ email }}
+                        </el-tag>
+                      </div>
+                      <el-button slot="append" :disabled="!inputEmail" @click="handleInputEmail">Invite</el-button>
+                    </el-input>
+                  </div>
+                  <div v-if="errors.family_members" class="text-danger">
+                    {{ errors.family_members[0] }}
+                  </div>
+                </div>
               </div>
-            </div> -->
+            </div>
             <div
               v-if="paymentMethod==='card' && cards.length"
               class="border rounded p-5 border-black-200 cursor-pointer mt-2"
@@ -643,6 +675,7 @@ export default {
       paymentVisible: false,
       dialogEnterMembers: false,
       emails: '',
+      inputEmail: '',
       family_members: [],
       errors: {}
     }
@@ -652,15 +685,6 @@ export default {
       const now = new Date().getTime()
       const nextBill = this.result.next_billing_time ? this.$moment(this.result.next_billing_time * 1000).format('DD MMM YYYY') : this.result.duration === 'yearly' ? this.$moment(now).add(1, 'years').format('DD MMM YYYY') : this.$moment(now).add(1, 'months').format('DD MMM YYYY')
       return nextBill
-    },
-    discountPercentage () {
-      const price_12_month = this.result.currency === 'USD' ? this.result.plan.price.usd * 12 : this.result.plan.price.vnd * 12
-      const discount = price_12_month - this.result.price
-      const discountPercentage = discount * 100 / price_12_month
-      if (!Number.isNaN(discountPercentage)) {
-        return numeral(discountPercentage).format('0,0')
-      }
-      return 0
     },
     currency () {
       return this.language === 'vi' ? 'vnd' : 'usd'
@@ -853,6 +877,34 @@ export default {
     },
     addMember () {
       this.dialogEnterMembers = true
+    },
+    handleInputEmail () {
+      const emailList = this.inputEmail.split(',')
+      emailList.forEach(email => {
+        email = email.trim()
+        if (email && !this.family_members.includes(email)) {
+          this.family_members.push(email)
+        }
+      })
+      this.inputEmail = ''
+    },
+    handleClose (index) {
+      this.family_members.splice(index, 1)
+    },
+    emailInput (value) {
+      const lastChar = value.substr(value.length - 1)
+      if ([',', ' '].includes(lastChar)) {
+        this.handleInputEmail()
+      }
+    },
+    discountPercentage (plan) {
+      const fullPrice = plan.price.usd * 12
+      const discount = fullPrice - plan.yearly_price.usd
+      const discountPercentage = discount * 100 / fullPrice
+      if (!Number.isNaN(discountPercentage)) {
+        return numeral(discountPercentage).format('0,0')
+      }
+      return 0
     }
   }
 }
