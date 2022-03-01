@@ -190,6 +190,16 @@
                     {{ result.error_promo.promo_code[0] }}
                   </div>
                 </div>
+                <div v-if="result.discount !== 0" class="setting-section-header text-primary mt-4">
+                  <div>
+                    <div class="setting-title">Discount</div>
+                  </div>
+                  <div>
+                    <div class="font-semibold">
+                      -{{ result.discount | formatNumber }}  {{ result.currency }}
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="setting-section">
                 <div class="setting-section-header">
@@ -346,12 +356,14 @@
                     </div> -->
                   </div>
                 </div>
-                <div class="setting-section-header mt-4">
+                <div v-if="result.discount !== 0" class="setting-section-header text-primary mt-4">
                   <div>
-                    <div class="setting-title text-primary">Discount</div>
+                    <div class="setting-title">Discount</div>
                   </div>
                   <div>
-                    <div class="font-semibold" />
+                    <div class="font-semibold">
+                      -{{ result.discount | formatNumber }}  {{ result.currency }}
+                    </div>
                   </div>
                 </div>
               </div>
