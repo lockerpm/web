@@ -134,8 +134,6 @@ export default {
       loadingSend: false
     }
   },
-  mounted () {
-  },
   methods: {
     async setMasterPass () {
       this.loading = true

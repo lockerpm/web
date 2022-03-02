@@ -178,6 +178,11 @@ export default {
       }
     }
   },
+  created () {
+    if (this.$route.query.client === 'browser') {
+      this.notify('Locker extension has been logged in. Now you can use Locker extension by clicking the icon from toolbar', 'success')
+    }
+  },
   mounted () {
     this.$broadcasterService.subscribe(BroadcasterSubscriptionId, async message => {
       switch (message.command) {

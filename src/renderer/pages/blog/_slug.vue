@@ -471,5 +471,13 @@ div.post-content blockquote{
 .post-content .wptb-table-container p {
   margin-bottom: 0px;
 }
-
+.post-content .wptb-preview-table {
+  width: 100%;
+  .wptb-text-container, .wptb-list-container {
+    @apply w-full px-2;
+    li {
+      list-style: disc;
+    }
+  }
+}
 </style>

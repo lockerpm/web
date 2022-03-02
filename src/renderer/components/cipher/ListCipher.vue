@@ -645,6 +645,7 @@
                 <div class="mr-4">
                   <el-checkbox
                     :value="item.checked?true:false"
+                    :class="item.checked?'!visible':''"
                     @change="changeSelection(item)"
                   />
                 </div>
@@ -1534,6 +1535,12 @@ export default {
 .vue-recycle-scroller__slot .th:first-child,
 .vue-recycle-scroller__item-view .td:first-child {
   flex: 2;
+}
+.vue-recycle-scroller__item-view .td .items-center .mr-4 .el-checkbox {
+  visibility: hidden;
+}
+.vue-recycle-scroller__item-view:hover .td .items-center .mr-4 .el-checkbox{
+  visibility: visible !important;
 }
 .th:last-child {
   text-align: right;

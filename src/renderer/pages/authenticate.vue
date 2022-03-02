@@ -22,12 +22,11 @@ export default {
       setTimeout(async () => {
         await this.$axios.setToken(this.$route.query.token, 'Bearer')
         await this.$cookies.set('cs_locker_token', this.$route.query.token, { path: '/', ...this.environment === '' ? { secure: true } : { secure: false } })
-        // window.postMessage({ command: 'locker-authResult', token: this.$route.query.token }, 'https://locker.io')
         this.$store.commit('UPDATE_IS_LOGGEDIN', true)
         if (this.$route.query.return_url && isString(this.$route.query.return_url)) {
-          this.$router.replace(this.localePath({ path: this.$route.query.return_url }))
+          this.$router.replace(this.localePath({ path: this.$route.query.return_url, query: { client: this.$route.query.client } }))
         } else {
-          this.$router.replace(this.localePath({ name: 'vault' }))
+          this.$router.replace(this.localePath({ name: 'vault', query: { client: this.$route.query.client } }))
         }
         this.$store.commit('UPDATE_LOADING', false)
       }, 300)
