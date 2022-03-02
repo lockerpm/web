@@ -262,7 +262,8 @@
                 </div>
                 <div class="mt-5 px-4 py-6 bg-[#F6F6F6]">
                   <div class="flex mb-6">
-                    <div class="flex">
+                    <div class="flex items-center">
+                      <el-avatar :size="35" :src="currentUser.avatar" class="mr-2" />
                       <div>
                         <p class="text-black">{{ currentUser.email }} (You)</p>
                       </div>
@@ -270,7 +271,8 @@
                   </div>
                   <template v-for="(email, index) in family_members">
                     <div :key="index" class="flex justify-between mb-6">
-                      <div class="flex">
+                      <div class="flex items-center">
+                        <img src="~/assets/images/icons/Avatar.svg" class="mr-2">
                         <div>
                           <p class="text-black">{{ email }}</p>
                           <p class="text-black-500">Pending</p>

@@ -271,7 +271,7 @@ export default {
   },
   computed: {
     post_categories () {
-      return this.blog_categories.filter(item => this.post.categories.includes(parseInt(item.id)))
+      return this.blog_categories.slice(1).filter(item => this.post.categories.includes(parseInt(item.id)))
     }
   },
   async mounted () {
