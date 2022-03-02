@@ -228,16 +228,20 @@
               <div class="setting-section">
                 <div class="setting-section-header">
                   <div>
-                    <div class="setting-title">Type their email below</div>
-                    <div class="setting-description" />
+                    <div class="setting-title !text-sm">Type their email below</div>
                   </div>
                 </div>
-                <div class="mt-4">
-                  <div class="flex">
-                    <el-input v-model="inputEmail" change="mr-2" @keyup.enter.native="handleInputEmail" @input="emailInput">
-                      <div v-if="family_members.length" slot="prepend">
+                <div class="mt-4 mb-8">
+                  <div class="flex input-tags">
+                    <el-input
+                      v-model="inputEmail"
+                      change="mr-2"
+                      @keyup.enter.native="confirmInputEmail"
+                      @input="emailInput"
+                    >
+                      <div v-if="emails.length" slot="prepend">
                         <el-tag
-                          v-for="(email, index) in family_members"
+                          v-for="(email, index) in emails"
                           :key="email"
                           closable
                           type="info"
@@ -246,12 +250,46 @@
                           {{ email }}
                         </el-tag>
                       </div>
-                      <el-button slot="append" :disabled="!inputEmail" @click="handleInputEmail">Invite</el-button>
+                      <el-button slot="append" :disabled="!emails.length && !inputEmail" @click="confirmInputEmail">Add</el-button>
                     </el-input>
                   </div>
-                  <div v-if="errors.family_members" class="text-danger">
-                    {{ errors.family_members[0] }}
+                </div>
+
+                <div class="setting-section-header">
+                  <div>
+                    <div class="setting-title !text-sm">{{ `List of member you added (${family_members.length + 1}/6)` }}</div>
                   </div>
+                </div>
+                <div class="mt-5 px-4 py-6 bg-[#F6F6F6]">
+                  <div class="flex mb-6">
+                    <div class="flex">
+                      <div>
+                        <p class="text-black">{{ currentUser.email }} (You)</p>
+                      </div>
+                    </div>
+                  </div>
+                  <template v-for="(email, index) in family_members">
+                    <div :key="index" class="flex justify-between mb-6">
+                      <div class="flex">
+                        <div>
+                          <p class="text-black">{{ email }}</p>
+                          <p class="text-black-500">Pending</p>
+                        </div>
+                      </div>
+                      <div>
+                        <button
+                          class="btn btn-default !text-danger mb-4 md:mb-0"
+                          @click="removeMember(index)"
+                        >
+                          {{ $t('common.remove') }}
+                        </button>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+
+                <div v-if="errors.family_members" class="text-danger">
+                  {{ errors.family_members[0] }}
                 </div>
               </div>
             </div>
@@ -686,7 +724,7 @@ export default {
       ],
       paymentVisible: false,
       dialogEnterMembers: false,
-      emails: '',
+      emails: [],
       inputEmail: '',
       family_members: [],
       errors: {}
@@ -768,14 +806,14 @@ export default {
         this.selectedCard = card.id_card
       })
     },
-    async genOrgKey () {
-      const shareKey = await this.$cryptoService.makeShareKey()
-      const orgKey = shareKey[0].encryptedString
-      const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
-      const collectionName = collection.encryptedString
-      console.log('orgKey', orgKey)
-      console.log('collectionName', collectionName)
-    },
+    // async genOrgKey () {
+    //   const shareKey = await this.$cryptoService.makeShareKey()
+    //   const orgKey = shareKey[0].encryptedString
+    //   const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
+    //   const collectionName = collection.encryptedString
+    //   console.log('orgKey', orgKey)
+    //   console.log('collectionName', collectionName)
+    // },
     async getCards () {
       this.cards = await this.$axios.$get('cystack_platform/payments/cards')
     },
@@ -881,12 +919,12 @@ export default {
           this.dialogThank = true
         })
     },
-    toStep2 () {
-      this.step = 2
-      this.dialogEnterMembers = false
-      this.family_members = this.emails.split(',').map(item => item.trim()).filter(item => item.length)
-      this.selectMethod('card')
-    },
+    // toStep2 () {
+    //   this.step = 2
+    //   this.dialogEnterMembers = false
+    //   this.family_members = this.emails.split(',').map(item => item.trim()).filter(item => item.length)
+    //   this.selectMethod('card')
+    // },
     addMember () {
       this.dialogEnterMembers = true
     },
@@ -894,20 +932,39 @@ export default {
       const emailList = this.inputEmail.split(',')
       emailList.forEach(email => {
         email = email.trim()
-        if (email && !this.family_members.includes(email)) {
-          this.family_members.push(email)
+        if (email && this.validateEmail(email) && !this.emails.includes(email)) {
+          this.emails.push(email)
+          this.inputEmail = ''
         }
       })
-      this.inputEmail = ''
     },
     handleClose (index) {
-      this.family_members.splice(index, 1)
+      this.emails.splice(index, 1)
     },
     emailInput (value) {
       const lastChar = value.substr(value.length - 1)
       if ([',', ' '].includes(lastChar)) {
         this.handleInputEmail()
       }
+    },
+    confirmInputEmail () {
+      this.emails.forEach(email => {
+        if (!this.family_members.includes(email)) {
+          this.family_members.push(email)
+        }
+      })
+      const emailList = this.inputEmail.split(',')
+      emailList.forEach(email => {
+        email = email.trim()
+        if (email && this.validateEmail(email) && !this.family_members.includes(email)) {
+          this.family_members.push(email)
+          this.inputEmail = ''
+        }
+      })
+      this.emails = []
+    },
+    removeMember (index) {
+      this.family_members.splice(index, 1)
     },
     discountPercentage (plan) {
       const fullPrice = plan.price.usd * 12
@@ -921,3 +978,15 @@ export default {
   }
 }
 </script>
+<style>
+.input-tags .el-input-group__prepend{
+  @apply p-0 bg-white;
+}
+/* .input-tags .el-input__inner{
+  @apply border-l-0;
+}
+.el-input__inner:focus ~ .el-input-group__prepend {
+  @apply border-primary;
+  background-color: black !important;
+} */
+</style>
