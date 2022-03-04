@@ -214,7 +214,7 @@
                     </div>
                   </div>
                   <div class="font-semibold">
-                    {{ result.total_price | formatNumber }} {{ result.currency }}
+                    {{ result.immediate_payment | formatNumber }} {{ result.currency }}
                   </div>
                 </div>
               </div>
@@ -413,7 +413,7 @@
                     <div class="setting-title">Total</div>
                   </div>
                   <div class="font-semibold">
-                    {{ result.total_price | formatNumber }} {{ result.currency }}
+                    {{ result.immediate_payment | formatNumber }} {{ result.currency }}
                   </div>
                 </div>
               </div>
