@@ -1037,16 +1037,16 @@ export default {
   },
   async mounted () {
     this.context = 'VueContext'
-    window.onscroll = async () => {
-      const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
+    // window.onscroll = async () => {
+    //   const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
 
-      if (bottomOfWindow) {
-        if (this.renderIndex <= this.ciphers.length) {
-          this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.renderIndex, this.renderIndex + 50))
-        }
-        this.renderIndex += 50
-      }
-    }
+    //   if (bottomOfWindow) {
+    //     if (this.renderIndex <= this.ciphers.length) {
+    //       this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.renderIndex, this.renderIndex + 50))
+    //     }
+    //     this.renderIndex += 50
+    //   }
+    // }
   },
   asyncComputed: {
 
@@ -1084,8 +1084,8 @@ export default {
           }
         })
         result = orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
-        this.dataRendered = result.slice(0, 50)
-        this.renderIndex = 50
+        // this.dataRendered = result.slice(0, 50)
+        // this.renderIndex = 50
         return result
       },
       watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
