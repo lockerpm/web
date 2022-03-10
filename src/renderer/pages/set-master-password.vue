@@ -4,9 +4,9 @@
       <img src="~assets/images/logo/logo_black.svg" alt="" class="h-[36px]">
     </div>
     <div class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center">
-      <div class="text-head-4 font-semibold mb-2.5">Tạo Master Password</div>
+      <div class="text-head-4 font-semibold mb-2.5">{{ $t('set_master_password.title') }}</div>
       <div class="text-base text-black-600 mb-4">
-        Master Password là mật khẩu mở khóa Locker của bạn. Đây là mật khẩu duy nhất bạn cần nhớ để truy cập tất cả các mật khẩu khác được lưu trữ trong Locker. Vui lòng không chia sẻ mật khẩu này với bất kỳ ai.
+        {{ $t('set_master_password.subtitle') }}
       </div>
       <div class="inline-block mb-8 select-none">
         <div class="flex items-center">
@@ -20,13 +20,13 @@
             class="btn btn-sm btn-clean btn-primary !px-3 !font-normal"
             @click="logout"
           >
-            Đăng xuất
+            {{ $t('set_master_password.logout') }}
           </button>
         </div>
       </div>
       <div class="text-left">
         <div class="form-group !mb-4">
-          <label for="">Nhập Master Password</label>
+          <label for="">{{ $t('set_master_password.enter_master_password') }}</label>
           <div class="input-group mb-1.5">
             <input
               v-model="masterPassword"
@@ -47,7 +47,7 @@
           <PasswordStrengthBar v-if="masterPassword" :score="passwordStrength.score" />
         </div>
         <div class="form-group !mb-4">
-          <label for="">Xác nhận Master Password</label>
+          <label for="">{{ $t('set_master_password.confirm_master_password') }}</label>
           <div class="input-group" :class="[errors.masterRePassword ? 'is-invalid' :'']">
             <input
               v-model="masterRePassword"
@@ -68,7 +68,7 @@
           <div class="invalid-feedback">{{ $t('errors.confirm_password') }}</div>
         </div>
         <div class="form-group !mb-8">
-          <label for="">Gợi ý mật khẩu (tuỳ chọn)</label>
+          <label for="">{{ $t('set_master_password.master_password_hint') }}</label>
           <input
             v-model="masterPasswordHint"
             class="form-control"
@@ -83,11 +83,11 @@
           :disabled="loading"
           @click="setMasterPass"
         >
-          Tạo mật khẩu
+          {{ $t('set_master_password.create_button') }}
         </button>
       </div>
       <div class="md:w-[320px] text-black-600 mx-auto">
-        Lưu ý: CyStack không thể xem, không thể lưu trữ, cũng như không thể cấp lại Master Password trong trường hợp bạn quên hoặc đánh mất.
+        {{ $t('set_master_password.note') }}
       </div>
     </div>
   </div>
