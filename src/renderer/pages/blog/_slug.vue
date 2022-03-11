@@ -293,6 +293,11 @@ export default {
           hid: 'twitter:image',
           name: 'twitter:image',
           content: this.post.featured_image
+        },
+        {
+          hid: 'twitter:card',
+          name: 'twitter:card',
+          content: 'summary_large_image'
         }
       ]
     }
