@@ -110,7 +110,7 @@
           <h3 class="landing-font-28 text-black font-bold mb-7">
             {{ $t('blog.related_posts') }}
           </h3>
-          <div class="w-full grid grid-cols-2" style="margin-left: 0px; row-gap: 50px;">
+          <div class="w-full grid md:grid-cols-2 grid-cols-1" style="margin-left: 0px; row-gap: 50px;">
             <div v-for="(item, index) in relatedPosts" :key="index" style="padding-left: 0px; padding-right: 30px">
               <Post :post="item" type="blog" />
             </div>
