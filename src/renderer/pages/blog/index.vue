@@ -156,32 +156,57 @@ export default {
     const language = context.store.state.i18n.locale
     let tagId
     try {
+      const posts = []
       const result = await axios.get(`${process.env.blogUrl}/tags?slug=${language}`)
       tagId = result.data[0].id
       const { data } = await axios.get(`${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${tagId}&categories=489,490,491,492,493`)
-      return {
-        posts: data.map(post => {
-          let featuredImage = ''
-          try {
-            featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
-          } catch (error) {
+      data.forEach(async post => {
+        let featuredImage = ''
+        try {
+          featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
+        } catch (error) {
+        }
+        if (!featuredImage) {
+          const $ = cheerio.load(post.content.rendered)
+          const images = $('img').attr('src')
+          if (images) {
+            featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
           }
-          if (!featuredImage) {
-            const $ = cheerio.load(post.content.rendered)
-            const images = $('img').attr('src')
-            if (images) {
-              featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
-            }
-          }
-          const $_ = cheerio.load(post.excerpt.rendered)
-          const desc = $_('p').text()
-          // const categories = this.categories.filter(item => post.categories.includes(item.id))
-          return {
-            ...post,
-            featured_image: featuredImage,
-            desc
-          }
+        }
+        const $_ = cheerio.load(post.excerpt.rendered)
+        const desc = $_('p').text()
+        const authorResult = await axios.get(`${process.env.blogUrl}/users/${post.author}`)
+        posts.push({
+          ...post,
+          featured_image: featuredImage,
+          desc,
+          author: authorResult.data.name
         })
+      })
+      return {
+        // posts: data.map(post => {
+        //   let featuredImage = ''
+        //   try {
+        //     featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
+        //   } catch (error) {
+        //   }
+        //   if (!featuredImage) {
+        //     const $ = cheerio.load(post.content.rendered)
+        //     const images = $('img').attr('src')
+        //     if (images) {
+        //       featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
+        //     }
+        //   }
+        //   const $_ = cheerio.load(post.excerpt.rendered)
+        //   const desc = $_('p').text()
+        //   // const categories = this.categories.filter(item => post.categories.includes(item.id))
+        //   return {
+        //     ...post,
+        //     featured_image: featuredImage,
+        //     desc
+        //   }
+        // })
+        posts
       }
     } catch (error) {
     }
