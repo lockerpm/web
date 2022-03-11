@@ -175,12 +175,12 @@ export default {
         }
         const $_ = cheerio.load(post.excerpt.rendered)
         const desc = $_('p').text()
-        const authorResult = await axios.get(`${process.env.blogUrl}/users/${post.author}`)
+        // const authorResult = await axios.get(`${process.env.blogUrl}/users/${post.author}`)
         posts.push({
           ...post,
           featured_image: featuredImage,
-          desc,
-          author: authorResult.data.name
+          desc
+          // author: authorResult.data.name
         })
       })
       return {
