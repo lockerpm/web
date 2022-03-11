@@ -47,7 +47,7 @@
             <img src="~/assets/images/landing/blog/cystack_editor.svg" style="margin-right: 5px">
             <div>
               <p class="landing-font-14 text-black font-bold mb-0">
-                {{ post.author }}
+                CyStack Editor
               </p>
               <p class="landing-font-14 mb-0" style="color: #686868">
                 {{ dateToFormattedString(post.date) }}
