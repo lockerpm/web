@@ -47,7 +47,7 @@
             <img src="~/assets/images/landing/blog/cystack_editor.svg" style="margin-right: 5px">
             <div>
               <p class="landing-font-14 text-black font-bold mb-0">
-                CyStack Editor
+                {{ post.author }}
               </p>
               <p class="landing-font-14 mb-0" style="color: #686868">
                 {{ dateToFormattedString(post.date) }}
@@ -145,6 +145,32 @@ export default {
     }))
     const languageTag = await axios.get(`${process.env.blogUrl}/tags?slug=${language}`)
     const relateResult = await axios.get(`${process.env.blogUrl}/posts?exclude=${data[0].id}&categories=${categoriesId.toString()}&tags=${languageTag.data[0].id}&per_page=2`)
+    const relatedPosts = []
+    relateResult.data.forEach(async element => {
+      let featuredImage = ''
+      try {
+        featuredImage = element._embedded['wp:featuredmedia']['0'].source_url
+      } catch (error) {
+      }
+      if (!featuredImage) {
+        const $ = cheerio.load(element.content.rendered)
+        const images = $('img').attr('src')
+        if (images) {
+          featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
+        }
+      }
+      const $_ = cheerio.load(element.excerpt.rendered)
+      const desc = $_('p').text()
+
+      const authorResult = await axios.get(`${process.env.blogUrl}/users/${element.author}`)
+      relatedPosts.push({
+        ...element,
+        author: authorResult.data.name,
+        featured_image: featuredImage,
+        desc
+      })
+    })
+    const authorResult = await axios.get(`${process.env.blogUrl}/users/${data[0].author}`)
     return {
       post: data.map(post => {
         const $ = cheerio.load(post.content.rendered)
@@ -185,31 +211,33 @@ export default {
           new_content_rendered: $.html(),
           desc,
           featured_image: featuredImage,
-          table_of_contents: tableOfContents
+          table_of_contents: tableOfContents,
+          author: authorResult.data.name
         }
       })[0],
       categories: categories.map(item => item.name),
-      relatedPosts: relateResult.data.map(post => {
-        let featuredImage = ''
-        try {
-          featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
-        } catch (error) {
-        }
-        if (!featuredImage) {
-          const $ = cheerio.load(post.content.rendered)
-          const images = $('img').attr('src')
-          if (images) {
-            featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
-          }
-        }
-        const $_ = cheerio.load(post.excerpt.rendered)
-        const desc = $_('p').text()
-        return {
-          ...post,
-          featured_image: featuredImage,
-          desc
-        }
-      })
+      relatedPosts
+      // relatedPosts: relateResult.data.map(post => {
+      //   let featuredImage = ''
+      //   try {
+      //     featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
+      //   } catch (error) {
+      //   }
+      //   if (!featuredImage) {
+      //     const $ = cheerio.load(post.content.rendered)
+      //     const images = $('img').attr('src')
+      //     if (images) {
+      //       featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
+      //     }
+      //   }
+      //   const $_ = cheerio.load(post.excerpt.rendered)
+      //   const desc = $_('p').text()
+      //   return {
+      //     ...post,
+      //     featured_image: featuredImage,
+      //     desc
+      //   }
+      // })
     }
   },
   data () {
