@@ -106,7 +106,7 @@
         <!-- <div class="column width-1">
           &nbsp;
         </div> -->
-        <div v-if="relatedPosts.length" class="w-9/12 mx-auto" style="padding-left: 5%;">
+        <div v-if="relatedPosts.length" class="w-full md:w-9/12 mx-auto" style="padding-left: 5%;">
           <h3 class="landing-font-28 text-black font-bold mb-7">
             {{ $t('blog.related_posts') }}
           </h3>
