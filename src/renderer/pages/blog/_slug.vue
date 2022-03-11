@@ -162,15 +162,15 @@ export default {
       const $_ = cheerio.load(element.excerpt.rendered)
       const desc = $_('p').text()
 
-      const authorResult = await axios.get(`${process.env.blogUrl}/users/${element.author}`)
+      // const authorResult = await axios.get(`${process.env.blogUrl}/users/${element.author}`)
       relatedPosts.push({
         ...element,
-        author: authorResult.data.name,
+        // author: authorResult.data.name,
         featured_image: featuredImage,
         desc
       })
     })
-    const authorResult = await axios.get(`${process.env.blogUrl}/users/${data[0].author}`)
+    // const authorResult = await axios.get(`${process.env.blogUrl}/users/${data[0].author}`)
     return {
       post: data.map(post => {
         const $ = cheerio.load(post.content.rendered)
@@ -211,8 +211,8 @@ export default {
           new_content_rendered: $.html(),
           desc,
           featured_image: featuredImage,
-          table_of_contents: tableOfContents,
-          author: authorResult.data.name
+          table_of_contents: tableOfContents
+          // author: authorResult.data.name
         }
       })[0],
       categories: categories.map(item => item.name),
