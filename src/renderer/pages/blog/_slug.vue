@@ -513,4 +513,8 @@ div.post-content blockquote{
     }
   }
 }
+.post-content ol {
+  list-style: auto !important;
+  padding-left: 1rem;
+}
 </style>
