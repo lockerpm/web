@@ -345,9 +345,9 @@
               <!-- <button :disabled="step===2 && !selectedCard || step===1 && !selectedPlan.alias || step ===3" class="btn btn-primary w-full" @click="step===1?selectedPlan.alias==='pm_family'?addMember():toStep2():confirmPlan()">
                 {{ step===1?'Continue': 'Pay & Upgrade' }}
               </button> -->
-              <button :disabled="!selectedCard" class="btn btn-primary w-full" @click="selectedPlan.alias==='pm_family'?addMember():confirmPlan()">
+              <el-button :disabled="!selectedCard" :loading="loading" class="btn btn-primary w-full hover:!text-white" @click="confirmPlan()">
                 Pay & Upgrade
-              </button>
+              </el-button>
             </div>
           </template>
           <template v-if="step===3">
@@ -952,6 +952,10 @@ export default {
     confirmInputEmail () {
       this.emails.forEach(email => {
         if (!this.family_members.includes(email)) {
+          if (this.family_members.length === 5) {
+            this.notify('You can\'t add more than 5 accounts.', 'warning')
+            return
+          }
           this.family_members.push(email)
         }
       })
@@ -959,6 +963,10 @@ export default {
       emailList.forEach(email => {
         email = email.trim()
         if (email && this.validateEmail(email) && !this.family_members.includes(email)) {
+          if (this.family_members.length === 5) {
+            this.notify('You can\'t add more than 5 accounts.', 'warning')
+            return
+          }
           this.family_members.push(email)
           this.inputEmail = ''
         }
