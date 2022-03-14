@@ -1347,7 +1347,12 @@ export default {
 }
 .vue-recycle-scroller__slot .th:first-child,
 .vue-recycle-scroller__item-view .td:first-child {
+  @apply truncate;
   flex: 2;
+}
+.vue-recycle-scroller__slot .th:nth-child(2),
+.vue-recycle-scroller__item-view .td:nth-child(2) {
+  margin-left: 40px;
 }
 .vue-recycle-scroller__item-view .td .items-center .mr-4 .el-checkbox {
   visibility: hidden;

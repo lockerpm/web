@@ -2,7 +2,7 @@
   <div class="flex flex-col flex-grow relative">
     <div class="flex-grow lg:px-28 py-8 px-10 mb-20">
       <div class="flex items-center justify-between">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb class="truncate" separator-class="el-icon-arrow-right">
           <template v-if="getRouteBaseName() === 'vault-folders-folderId-id'">
             <el-breadcrumb-item
               :to="localeRoute({name: 'vault'})"
@@ -78,7 +78,7 @@
           <div class="mb-4 text-[70px]">
             <Vnodes :vnodes="getIconCipher(cipher, 34)" />
           </div>
-          <div class="text-head-4 font-medium">
+          <div class="text-head-4 font-medium truncate">
             {{ cipher.name }}
           </div>
         </div>
