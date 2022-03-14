@@ -204,12 +204,13 @@
       </client-only>
       <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
       <MoveFolder ref="moveFolder" />
-      <AddEditCipher ref="addEditCipherDialog" />
+      <AddEditCipher ref="addEditCipherDialog" @reset-selection="back" />
       <PremiumDialog ref="premiumDialog" />
       <div class="max-w-[585px] mx-auto">
         <AddEditCipher
           ref="addEditCipherDialog"
           @close="editMode=false"
+          @reset-selection="back"
         />
       </div>
     </div>
@@ -404,6 +405,9 @@ export default {
     upgradePlan () {
       this.$refs.shareCipher.closeDialog()
       this.$refs.premiumDialog.openDialog()
+    },
+    back () {
+      this.$router.back()
     }
   }
 }
