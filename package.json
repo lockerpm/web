@@ -61,6 +61,7 @@
     "@microsoft/signalr": "^5.0.5",
     "@microsoft/signalr-protocol-msgpack": "^5.0.5",
     "@nuxtjs/axios": "^5.13.1",
+    "@nuxtjs/feed": "^2.0.0",
     "@nuxtjs/gtm": "^2.4.0",
     "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/recaptcha": "^0.5.3",
