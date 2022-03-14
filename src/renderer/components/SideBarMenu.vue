@@ -216,6 +216,11 @@ export default {
       ]
     }
   },
+  watch: {
+    '$route.path' () {
+      this.hideNavMenu()
+    }
+  },
   methods: {
     hideNavMenu () {
       this.$emit('close')

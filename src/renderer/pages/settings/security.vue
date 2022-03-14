@@ -24,8 +24,8 @@
             <div class="px-3 text-lg">
               <i class="fas fa-lightbulb" />
             </div>
-            <div>
-              <div class="text-head-6 mb-3">
+            <div class="w-full">
+              <div class="text-head-6 mb-3 w-full">
                 {{ $t('data.settings.learn_about_secure_desc') }}
               </div>
               <div>
@@ -163,8 +163,8 @@
             <div class="px-3 text-lg">
               <i class="fas fa-lightbulb" />
             </div>
-            <div>
-              <div class="text-head-6 mb-3">
+            <div class="w-full">
+              <div class="text-head-6 mb-3 w-full">
                 This feature grants other Locker account owner(s) the ability to access to your vault in some emergency situations.
               </div>
               <div>
