@@ -169,6 +169,9 @@ export class MySearchService implements SearchServiceAbstraction {
             if (c.login && c.login.uri != null && c.login.uri.toLowerCase().indexOf(query) > -1) {
                 return true;
             }
+            if (c.notes != null && c.notes.toLowerCase().indexOf(query) > -1) {
+                return true;
+            }
             return false;
         });
     }

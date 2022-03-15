@@ -160,6 +160,8 @@ export default {
       const result = await axios.get(`${process.env.blogUrl}/tags?slug=${language}`)
       tagId = result.data[0].id
       const { data } = await axios.get(`${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${tagId}&categories=489,490,491,492,493`)
+      const users = await axios.get(`${process.env.blogUrl}/users`)
+      const userArray = users.data
       data.forEach(async post => {
         let featuredImage = ''
         try {
@@ -175,12 +177,12 @@ export default {
         }
         const $_ = cheerio.load(post.excerpt.rendered)
         const desc = $_('p').text()
-        // const authorResult = await axios.get(`${process.env.blogUrl}/users/${post.author}`)
+        // const author = await axios.get(`${process.env.blogUrl}/users/${post.author}`)
         posts.push({
           ...post,
           featured_image: featuredImage,
+          user: userArray.find(author => author.id === post.author),
           desc
-          // author: authorResult.data.name
         })
       })
       return {
@@ -206,7 +208,8 @@ export default {
         //     desc
         //   }
         // })
-        posts
+        posts,
+        users: userArray
       }
     } catch (error) {
     }
@@ -354,6 +357,7 @@ export default {
         } else {
           this.loadMoreDisabled = false
         }
+        // console.log(newPosts)
         this.posts = this.posts.concat(newPosts)
       } catch (error) {
         // this.errorMessage()
@@ -382,7 +386,8 @@ export default {
       return {
         ...post,
         featured_image: featuredImage,
-        desc
+        desc,
+        user: this.users.find(user => user.id === post.author)
       }
     },
     searchPosts: debounce(async function () {

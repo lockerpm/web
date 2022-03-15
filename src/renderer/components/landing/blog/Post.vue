@@ -18,10 +18,11 @@
         </div>
         <h3 class="landing-font-22 text-black-800 font-bold post-title line-clamp-2" v-html="post.title.rendered" />
         <div class="flex">
-          <img src="~/assets/images/landing/blog/cystack_editor.svg" style="margin-right: 5px">
+          <img v-if="post.user && post.user.avatar_urls" :src="post.user.avatar_urls[48]" class="rounded-full" style="margin-right: 5px;">
+          <img v-else src="~/assets/images/landing/blog/cystack_editor.svg" style="margin-right: 5px">
           <div>
             <p class="landing-font-14 text-black-800 font-bold  mb-0">
-              CyStack Editor
+              {{ post.user ? post.user.name : 'CyStack Editor' }}
             </p>
             <p class="landing-font-14 mb-0" style="color: #686868">
               {{ dateToFormattedString(post.date) }}
