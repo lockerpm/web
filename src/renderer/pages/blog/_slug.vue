@@ -44,14 +44,20 @@
           </div>
           <h3 v-if="post.title" class="landing-font-38 text-black font-bold mb-4" v-html="post.title.rendered" />
           <div class="flex mb-12">
-            <img src="~/assets/images/landing/blog/cystack_editor.svg" style="margin-right: 5px">
+            <img v-if="post.user && post.user.avatar_urls" :src="post.user.avatar_urls[48]" class="rounded-full" style="margin-right: 5px;">
+            <img v-else src="~/assets/images/landing/blog/cystack_editor.svg" style="margin-right: 5px">
             <div>
               <p class="landing-font-14 text-black font-bold mb-0">
-                CyStack Editor
+                {{ post.user? post.user.name : 'CyStack Editor' }}
               </p>
-              <p class="landing-font-14 mb-0" style="color: #686868">
-                {{ dateToFormattedString(post.date) }}
-              </p>
+              <div class="flex">
+                <div v-if="post.user && post.user.description">
+                  {{ post.user.description }} &nbsp;|&nbsp;
+                </div>
+                <p class="landing-font-14 mb-0" style="color: #686868">
+                  {{ dateToFormattedString(post.date) }}
+                </p>
+              </div>
             </div>
           </div>
           <div v-if="post.content" class="post-content" v-html="post.new_content_rendered" />
@@ -145,6 +151,8 @@ export default {
     }))
     const languageTag = await axios.get(`${process.env.blogUrl}/tags?slug=${language}`)
     const relateResult = await axios.get(`${process.env.blogUrl}/posts?exclude=${data[0].id}&categories=${categoriesId.toString()}&tags=${languageTag.data[0].id}&per_page=2`)
+    const users = await axios.get(`${process.env.blogUrl}/users`)
+    const userArray = users.data
     const relatedPosts = []
     relateResult.data.forEach(async element => {
       let featuredImage = ''
@@ -167,6 +175,7 @@ export default {
         ...element,
         // author: authorResult.data.name,
         featured_image: featuredImage,
+        user: userArray.find(user => user.id === element.author),
         desc
       })
     })
@@ -211,6 +220,7 @@ export default {
           new_content_rendered: $.html(),
           desc,
           featured_image: featuredImage,
+          user: userArray.find(user => user.id === post.author),
           table_of_contents: tableOfContents
           // author: authorResult.data.name
         }
