@@ -42,22 +42,22 @@
           <div class="mb-6">
             <template v-if="step===1">
               <div class="text-head-3 font-semibold mb-2">
-                Choose a plan
+                {{ $t('data.plans.choose_plan') }}
               </div>
-              <div class="mb-8">Choose a plan that suits your need.</div>
+              <div class="mb-8">{{ $t('data.plans.choose_plan_desc') }}</div>
               <div class="flex">
                 <!-- <div class="font-semibold mr-3">Monthly</div>
                 <el-switch v-model="periodSwitch" small @change="calcPrice" />
                 <div class="font-semibold ml-3">Yearly</div> -->
-                <button class="btn-round btn-left-round" :class="periodSwitch?'text-black':'text-primary'" @click="periodSwitch=false">Bill monthly</button>
-                <button class="btn-round btn-right-round" :class="periodSwitch?'text-primary':'text-black'" @click="periodSwitch=true">Bill annually <br> (Save up to 75%)</button>
+                <button class="btn-round btn-left-round" :class="periodSwitch?'text-black':'text-primary'" @click="periodSwitch=false">{{ $t('data.plans.bill_monthly') }}</button>
+                <button class="btn-round btn-right-round" :class="periodSwitch?'text-primary':'text-black'" @click="periodSwitch=true">{{ $t('data.plans.bill_annually') }} <br> {{ $t('data.plans.bill_annually_desc') }}</button>
               </div>
             </template>
             <template v-if="step===2">
               <div class="text-head-3 font-semibold mb-2">
-                Payment
+                {{ $t('data.plans.payment') }}
               </div>
-              <div class="mb-2">Choose your payment method.</div>
+              <div class="mb-2">{{ $t('data.plans.choose_payment_method') }}</div>
             </template>
             <!-- <template v-if="step===3">
               <div class="text-head-3 font-semibold mb-2">
@@ -92,17 +92,17 @@
                   <div class="mb-4 mt-2 text-primary">
                     <template v-if="item.alias==='pm_free'">
                       <div class="text-head-3 font-semibold text-center">
-                        <span v-if="language==='vi'">đ{{ item.price.vnd | formatNumber }}</span>
-                        <span v-if="language==='en'">${{ item.price.usd | formatNumber }}</span>
+                        <!-- <span v-if="language==='vi'">đ{{ item.price.vnd | formatNumber }}</span> -->
+                        <span>${{ item.price.usd | formatNumber }}</span>
                       </div>
                     </template>
                     <template v-else>
                       <div class="text-center">
-                        <template v-if="language==='vi'">
+                        <!-- <template v-if="language==='vi'">
                           <span :class="periodSwitch?'line-through text-sm text-black':'text-head-3 font-semibold'">đ{{ item.price.vnd | formatNumber }}</span>
                           <span v-if="periodSwitch" class="text-head-3 font-semibold">đ{{ (item.yearly_price.vnd / 12) | formatNumber }}</span>
-                        </template>
-                        <template v-if="language==='en'">
+                        </template> -->
+                        <template>
                           <span :class="periodSwitch?'line-through text-sm text-black':'text-head-3 font-semibold'">${{ item.price.usd | formatNumber }}</span>
                           <span v-if="periodSwitch" class="text-head-3 font-semibold">${{ (item.yearly_price.usd / 12) | formatNumber }}</span>
                         </template>
@@ -144,7 +144,7 @@
                 </div> -->
                 <div class="absolute bottom-4 w-full pr-16">
                   <button :class="currentPlan.alias === item.alias? 'btn-default' : 'btn-primary'" class="btn text-center w-full" :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family'" @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''">
-                    {{ currentPlan.alias === item.alias? 'Your current plan' : 'Choose this plan' }}
+                    {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_plan') }}
                   </button>
                 </div>
               </div>
@@ -154,7 +154,7 @@
             <div class="setting-wrapper">
               <div class="setting-section">
                 <div class="setting-section-header">
-                  <div class="text-[20px] font-semibold">Order Summary</div>
+                  <div class="text-[20px] font-semibold">{{ $t('data.plans.order_summary') }}</div>
                 </div>
               </div>
               <div class="setting-section">
@@ -178,7 +178,7 @@
                     class="btn btn-default md:mb-0"
                     @click="havePromoCode=true"
                   >
-                    Add coupon code
+                    {{ $t('data.plans.add_coupon') }}
                   </button>
                   <div v-if="havePromoCode" class="flex">
                     <el-input v-model="promo_code" change="mr-2">
@@ -204,12 +204,12 @@
               <div class="setting-section">
                 <div class="setting-section-header">
                   <div>
-                    <div class="setting-title">Total</div>
+                    <div class="setting-title">{{ $t('data.billing.total') }}</div>
                     <div class="setting-description">
                       <ul class="mb-3">
                         <!-- <li v-html="this.$t('data.billing.plan_details[0]', {total:this.result.total_price || 0, currency:this.result.currency || 'USD'})" /> -->
                         <li v-html="this.$t('data.billing.plan_details[1]', {duration:this.result.duration || 'yearly', price:this.result.price || 0, currency:this.result.currency || 'USD', next_bill:this.nextBill||''})" />
-                        <li>You can cancel any time before this date.</li>
+                        <li>{{ $t('data.billing.plan_details[2]') }}</li>
                       </ul>
                     </div>
                   </div>
@@ -222,13 +222,13 @@
             <div v-if="selectedPlan.alias === 'pm_family'" class="setting-wrapper">
               <div class="setting-section">
                 <div class="setting-section-header">
-                  <div class="text-[20px] font-semibold">Invite people to your plan</div>
+                  <div class="text-[20px] font-semibold">{{ $t('data.plans.invite_people') }}</div>
                 </div>
               </div>
               <div class="setting-section">
                 <div class="setting-section-header">
                   <div>
-                    <div class="setting-title !text-sm">Type their email below</div>
+                    <div class="setting-title !text-sm">{{ $t('data.plans.type_email') }}</div>
                   </div>
                 </div>
                 <div class="mt-4 mb-8">
@@ -250,14 +250,14 @@
                           {{ email }}
                         </el-tag>
                       </div>
-                      <el-button slot="append" :disabled="!emails.length && !inputEmail" @click="confirmInputEmail">Add</el-button>
+                      <el-button slot="append" :disabled="!emails.length && !inputEmail" @click="confirmInputEmail">{{ $t('common.add') }}</el-button>
                     </el-input>
                   </div>
                 </div>
 
                 <div class="setting-section-header">
                   <div>
-                    <div class="setting-title !text-sm">{{ `List of member you added (${family_members.length + 1}/6)` }}</div>
+                    <div class="setting-title !text-sm">{{ `${$t('data.plans.list_member')} (${family_members.length + 1}/6)` }}</div>
                   </div>
                 </div>
                 <div class="mt-5 px-4 py-6 bg-[#F6F6F6]">
@@ -363,22 +363,19 @@
               </div> -->
               <img src="~/assets/images/icons/CheckCircle.svg" class="mx-auto">
               <div class="text-black font-bold text-head-4 mt-1">
-                Payment Successful
+                {{ $t('data.billing.payment_success') }}
               </div>
-              <div class="mt-3">
-                Thank you, now your account have been upgraded. <br>
-                We have sent you an invoice according to the billing address you entered
-              </div>
+              <div class="mt-3" v-html="$t('data.billing.thankyou')" />
               <div class="mt-6">
                 <button class="btn btn-primary" @click="$router.push(localeRoute({name: 'vault'}))">
-                  Back to Home
+                  {{ $t('data.billing.back_to_home') }}
                 </button>
               </div>
             </div>
             <div class="setting-wrapper">
               <div class="setting-section">
                 <div class="setting-section-header">
-                  <div class="text-head-5 font-semibold">Order Summary</div>
+                  <div class="text-head-5 font-semibold">{{ $t('data.plans.order_summary') }}</div>
                 </div>
               </div>
               <div class="setting-section">
@@ -410,7 +407,7 @@
               <div class="setting-section">
                 <div class="setting-section-header">
                   <div>
-                    <div class="setting-title">Total</div>
+                    <div class="setting-title">{{ $t('data.billing.total') }}</div>
                   </div>
                   <div class="font-semibold">
                     {{ result.immediate_payment | formatNumber }} {{ result.currency }}
@@ -419,7 +416,7 @@
               </div>
             </div>
             <div id="import" class="text-[20px] font-semibold mb-4">
-              Billing contact
+              {{ $t('data.billing.billing_contact') }}
             </div>
             <div class="setting-wrapper">
               <div class="setting-section">
@@ -438,7 +435,7 @@
               </div>
             </div>
             <div id="import" class="text-[20px] font-semibold mb-4">
-              Billing address
+              {{ $t('data.billing.billing_address') }}
             </div>
             <div class="setting-wrapper">
               <div class="setting-section">
@@ -820,7 +817,8 @@ export default {
       this.cards = await this.$axios.$get('cystack_platform/payments/cards')
     },
     calcPrice: debounce(function () {
-      const currency = this.paymentMethod === 'card' ? 'USD' : 'VND'
+      // const currency = this.paymentMethod === 'card' ? 'USD' : 'VND'
+      const currency = 'USD'
       this.loadingCalc = true
       const url = 'cystack_platform/pm/payments/calc'
       this.$axios.$post(url, {
