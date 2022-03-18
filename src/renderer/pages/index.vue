@@ -21,24 +21,24 @@
             />
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
-                <nuxt-link
+                <a
                   class="landing-btn w-full sm:w-auto mb-1"
-                  :to="localeRoute({name: $t('landing.section1.btn[0].link')})"
+                  :href="`https://id.cystack.net/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
                 >
                   {{ $t('landing.section1.btn[0].text') }}
-                </nuxt-link>
+                </a>
                 <p class="italic w-full landing-font-14 mt-1">
                   {{ $t('landing.section1.btn[0].note') }}
                 </p>
               </div>
-              <div>
+              <!-- <div>
                 <nuxt-link
                   class="landing-btn2 w-full sm:w-auto sm:ml-4"
                   :to="localeRoute({name: $t('landing.section1.btn[1].link')})"
                 >
                   {{ $t('landing.section1.btn[1].text') }}
                 </nuxt-link>
-              </div>
+              </div> -->
             </div>
           </div>
           <!-- Right -->
@@ -465,14 +465,14 @@
               </p>
 
               <div class="w-full flex">
-                <nuxt-link
+                <a
                   :class="index === 0 ? 'landing-btn' : 'landing-btn2'"
                   class="mx-auto"
-                  :to="localeRoute({name: item.btn.link})"
+                  :href="item.btn.link"
                   style="align-self: center"
                 >
                   {{ item.btn.text }}
-                </nuxt-link>
+                </a>
               </div>
             </div>
           </div>

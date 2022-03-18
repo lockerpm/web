@@ -19,12 +19,12 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <nuxt-link
-          :to="localeRoute({name: $t('features.feature1.btn.link')})"
+        <a
           class="hover:no-underline text-green font-semibold"
+          :href="`https://id.cystack.net/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
         >
           {{ $t('features.feature1.btn.text') }} <i class="el-icon-right" />
-        </nuxt-link>
+        </a>
       </div>
     </section>
     <section class="md:mt-[150px] mt-16">
@@ -43,12 +43,12 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <nuxt-link
-          :to="localeRoute({name: $t('features.feature2.btn.link')})"
+        <a
+          :href="`https://id.cystack.net/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
           class="hover:no-underline text-green font-semibold"
         >
           {{ $t('features.feature2.btn.text') }} <i class="el-icon-right" />
-        </nuxt-link>
+        </a>
       </div>
     </section>
     <section class="md:mt-[150px] mt-16">
@@ -67,16 +67,16 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <nuxt-link
-          :to="localeRoute({name: $t('features.feature3.btn.link')})"
+        <a
+          :href="`https://id.cystack.net/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
           class="hover:no-underline text-green font-semibold"
         >
           {{ $t('features.feature3.btn.text') }} <i class="el-icon-right" />
-        </nuxt-link>
+        </a>
       </div>
     </section>
     <section class="md:mt-[150px] mt-16 mb-[110px]">
-      <h2 class="text-left font-bold text-black landing-font-38 "> {{ $t('features.feature4.title')}} </h2>
+      <h2 class="text-left font-bold text-black landing-font-38 "> {{ $t('features.feature4.title') }} </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
         <div
           v-for="(item, index) in $t('features.feature4.details')"
@@ -252,7 +252,10 @@ export default {
     }
   },
   methods: {
-
+    register () {
+      const environment = process.env.environment
+      window.location.href = `${process.env.idUrl}/register?SERVICE_URL=${this.$store.state.currentPath !== '/' ? encodeURIComponent(`${this.$store.state.currentPath}`) : '/vault'}&SERVICE_SCOPE=pwdmanager&lang=${this.store.state.user.language}${environment ? `&ENVIRONMENT=${environment}` : ''}`
+    }
   }
 }
 </script>

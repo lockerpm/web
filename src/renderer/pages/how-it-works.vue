@@ -205,14 +205,14 @@
               <i class="el-icon-right" />
             </nuxt-link>
           </div>
-          <div class="w-full landing-font-18 mt-3 text-center order-4">
+          <!-- <div class="w-full landing-font-18 mt-3 text-center order-4">
             <nuxt-link
               :to="localeRoute({name: $t('how_it_works.hiw5.btn[1].link')})"
               class="hover:no-underline text-green font-semibold"
             >
               {{ $t('how_it_works.hiw5.btn[1].text') }} <i class="el-icon-right" />
             </nuxt-link>
-          </div>
+          </div> -->
         </div>
       </div>
     </section>
