@@ -576,6 +576,15 @@ export default {
       }
     }
   },
+  asyncComputed: {
+    ciphers: {
+      async get () {
+        const result = await this.$myCipherService.getAllDecrypted()
+        return result
+      },
+      watch: ['$store.state.syncedCiphersToggle']
+    }
+  },
   computed: {
     typeOptions () {
       return [
@@ -701,6 +710,7 @@ export default {
           this.cipher.notes = JSON.stringify(this.cipher.type === CipherType.CryptoAccount ? this.cryptoAccount : this.cryptoWallet)
           this.cipher.type = CipherType.SecureNote
         }
+        this.cipher.name = this.validateCipherName(this.cipher.name, type_)
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
         data.type = type_
@@ -873,6 +883,14 @@ export default {
       }
 
       this.notify('Filled password', 'success')
+    },
+    validateCipherName (cipherName, cipherType, suffix = 1) {
+      const newName = cipherName + (suffix === 1 ? '' : ` (${suffix}) `)
+      if (this.ciphers.some(cipher => cipher.name === newName && cipher.type === cipherType)) {
+        return this.validateCipherName(cipherName, cipherType, suffix + 1)
+      } else {
+        return newName
+      }
     }
   }
 }

@@ -779,6 +779,7 @@ export default {
       //     this.loading = false
       //   })
       this.invitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
+      this.$store.commit('UPDATE_PENDING_SHARES', this.invitations.filter(item => item.status === 'invited').length)
     },
     async acceptShareInvitation (cipher) {
       try {
@@ -797,9 +798,9 @@ export default {
         await this.$axios.$put(`cystack_platform/pm/sharing/invitations/${cipher.id}`, { status: 'reject' })
         // this.getSyncData()
         this.getShareInvitations()
-        this.notify(this.$t('data.notifications.accept_invitation_success'), 'success')
+        this.notify(this.$t('data.notifications.reject_invitation'), 'success')
       } catch (e) {
-        this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')
+        this.notify(this.$t('data.notifications.reject_invitation_failed'), 'warning')
       }
     },
     editShareType (cipher) {
