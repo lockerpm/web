@@ -134,16 +134,16 @@
         </div>
         <div>
           <a
-            href="#"
+            :href="`https://cystack.net${locale === 'vi' ? '/vi' : ''}/terms`"
             class="text-black-600 landing-font-12 mr-4 hover:no-underline hover:text-green"
           >
-            Điều khoản
+            {{ $t('landing_footer.terms') }}
           </a>
           <a
-            href="#"
+            :href="`https://cystack.net${locale === 'vi' ? '/vi' : ''}/privacy`"
             class="text-black-600 landing-font-12 hover:no-underline hover:text-green"
           >
-            Chính sách
+            {{ $t('landing_footer.policy') }}
           </a>
         </div>
       </div>

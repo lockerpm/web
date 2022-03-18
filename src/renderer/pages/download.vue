@@ -16,12 +16,12 @@
               {{ header.desc }}
             </p>
             <div class="max-w-xs mb-4 sm:mb-0">
-              <nuxt-link
+              <a
                 class="landing-btn w-full sm:w-auto mb-1"
-                :to="localeRoute({name: header.btn.link})"
+                :href="`https://id.cystack.net/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
               >
                 {{ header.btn.text }}
-              </nuxt-link>
+              </a>
             </div>
           </div>
           <!-- Right -->

@@ -17,7 +17,7 @@
       <PasswordStrength v-if="password" :score="passwordStrength.score" />
     </div>
     <div class="p-5">
-      <button class="btn btn-outline-primary w-full mb-3" @click="fill">
+      <button v-if="$route.path !== localePath('/tools')" class="btn btn-outline-primary w-full mb-3" @click="fill">
         {{ $t('data.tools.fill_password') }}
       </button>
       <button

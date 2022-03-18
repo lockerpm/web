@@ -49,7 +49,7 @@
         </button>
         <button
           class="btn btn-primary"
-          :disabled="loading || !oldMasterPassword || !masterRePassword || !masterPassword"
+          :disabled="loading || !oldMasterPassword || !masterRePassword || !masterPassword || masterPassword !== masterRePassword"
           @click="changePass"
         >
           {{ $t('master_password.change_btn') }}
@@ -120,9 +120,12 @@ export default {
         } else {
           encKey = await this.$cryptoService.remakeEncKey(key)
         }
-
+        const storageKeyHash = await this.$cryptoService.getKeyHash()
         const masterPasswordHash = await this.$cryptoService.hashPassword(this.oldMasterPassword, null)
-
+        if (storageKeyHash !== masterPasswordHash) {
+          this.notify(this.$t('data.notifications.incorrect_current_master'), 'warning')
+          return
+        }
         await this.$axios.$post('cystack_platform/pm/users/me/password', {
           key: encKey[1].encryptedString,
           new_master_password_hash: newMasterPasswordHash,

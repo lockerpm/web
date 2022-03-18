@@ -60,11 +60,11 @@
         <table class="w-full">
           <thead>
             <tr>
-              <th class="w-3/12 text-left pl-6 pb-5 landing-font-18">Tính năng</th>
+              <th class="w-3/12 text-left pl-6 pb-5 landing-font-18">{{ $t('plan.feature') }}</th>
               <th class="w-1/12 pb-5 landing-font-18">Free</th>
               <th class="w-8/36 pb-5 landing-font-18">Premium</th>
               <th class="w-8/36 pb-5 landing-font-18">Family</th>
-              <th class="w-8/36 pb-5 landing-font-18">Business</th>
+              <!-- <th class="w-8/36 pb-5 landing-font-18">Business</th> -->
             </tr>
           </thead>
           <tbody>
@@ -119,11 +119,11 @@
               </tr>
             </template>
             <tr style="background-color: #FBFAF3;">
-              <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">PRICE</td>
+              <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">{{ $t('plan.price') }}</td>
               <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[0].price') }}</td>
               <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[1].price') }}/{{ $t('plan.plans[1].duration') }}</td>
               <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[2].price') }}/{{ $t('plan.plans[2].duration') }}/<br>{{ $t('plan.plans[2].accounts') }}</td>
-              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[3].price') }}</td>
+              <!-- <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[3].price') }}</td> -->
             </tr>
             <tr>
               <td />
@@ -133,7 +133,16 @@
                 class="pt-5"
               >
                 <div class="text-center">
+                  <a
+                    v-if="button.external_link"
+                    class="landing-btn2 w-full sm:w-auto sm:ml-4"
+                    style="font-weight: 600"
+                    :href="button.external_link"
+                  >
+                    {{ button.text }}
+                  </a>
                   <nuxt-link
+                    v-else
                     class="landing-btn2 w-full sm:w-auto sm:ml-4"
                     style="font-weight: 600"
                     :to="localeRoute({name: button.link})"
