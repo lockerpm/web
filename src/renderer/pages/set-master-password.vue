@@ -80,7 +80,7 @@
       <div class="form-group !mb-4">
         <button
           class="btn btn-primary w-full"
-          :disabled="loading"
+          :disabled="loading || (masterPassword !== masterRePassword)"
           @click="setMasterPass"
         >
           {{ $t('set_master_password.create_button') }}
