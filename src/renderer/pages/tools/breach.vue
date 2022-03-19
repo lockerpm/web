@@ -20,7 +20,7 @@
           <div class="setting-section-header">
             <div>
               <div class="setting-description">
-                A "breach" is an incident where a site's data has been illegally accessed by hackers and then released publicly. Review the types of data that were compromised (email addresses, passwords, credit cards etc.) and take appropriate action, such as changing passwords.
+                {{ $t('data.tools.breach_scanner_desc') }}
               </div>
             </div>
             <div />
@@ -28,7 +28,7 @@
           <div class="setting-section-body">
             <div class="form-group">
               <label for="">
-                Check any usernames or email addresses that you use.
+                {{ $t('data.tools.check_breach_title') }}
               </label>
               <input
                 v-model="email"
@@ -43,7 +43,7 @@
                 :disabled="loading || !email"
                 @click="checkBreaches"
               >
-                Check Breaches
+                {{ $t('data.tools.check_breach_button') }}
               </button>
             </div>
           </div>
@@ -65,15 +65,15 @@
               'text-danger': haveData
             }"
           >
-            <span v-if="noData">GOOD NEWS</span>
-            <span v-if="haveData">BREACHED ACCOUNTS FOUND</span>
+            <span v-if="noData">{{ $t('data.tools.check_breach_button') }}</span>
+            <span v-if="haveData">{{ $t('data.tools.breach_found') }}</span>
           </div>
           <div>
             <span v-if="noData">
-              {{ email }} was not found in any known data breaches.
+              {{ $t('data.tools.breach_not_found_details', {email: email}) }}
             </span>
             <span v-if="haveData">
-              {{ email }} was found in {{ breach.length }} different data breaches online.
+              {{ $t('data.tools.breach_found_details', {email: email, count: breach.length}) }}
             </span>
           </div>
         </div>

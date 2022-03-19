@@ -14,12 +14,12 @@
           'text-danger': haveData
         }"
       >
-        <span v-if="noData">GOOD NEWS</span>
-        <span v-if="haveData">WEAK PASSWORDS FOUND</span>
+        <span v-if="noData">{{ $t('data.tools.good_news') }}</span>
+        <span v-if="haveData">{{ $t('data.tools.weak_passwords_found') }}</span>
       </div>
       <div>
-        <span v-if="noData">All items in your vault with passwords that are strong</span>
-        <span v-if="haveData">We found {{ haveData }} items in your vault with passwords that are not strong. You should update them to use stronger passwords.</span>
+        <span v-if="noData">{{ $t('data.tools.good_news_details') }}</span>
+        <span v-if="haveData">{{ $t('data.tools.weak_passwords_found_details', {data: haveData}) }}</span>
       </div>
     </div>
     <client-only>

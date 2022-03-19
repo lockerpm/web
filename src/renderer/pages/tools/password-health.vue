@@ -58,10 +58,10 @@
                   class="setting-title cursor-pointer"
                   @click="go({name: 'tools-password-health-weak'})"
                 >
-                  Weak Passwords
+                  {{ $t('data.tools.weak_passwords') }}
                 </button>
                 <div class="setting-description">
-                  Easy to guess
+                  {{ $t('data.tools.weak_passwords_desc') }}
                 </div>
               </div>
             </div>
@@ -99,10 +99,10 @@
                   class="setting-title cursor-pointer"
                   @click="go({name: 'tools-password-health-reused'})"
                 >
-                  Reused Passwords
+                  {{ $t('data.tools.reused_passwords') }}
                 </button>
                 <div class="setting-description">
-                  Used for multiple accounts
+                  {{ $t('data.tools.reused_passwords_desc') }}
                 </div>
               </div>
             </div>
@@ -128,10 +128,10 @@
                   class="setting-title cursor-pointer"
                   @click="go({name: 'tools-password-health-exposed'})"
                 >
-                  Exposed Passwords
+                  {{ $t('data.tools.exposed_passwords') }}
                 </button>
                 <div class="setting-description">
-                  Exposed passwords are passwords that have been uncovered in known data breaches that were released publicly or sold on the dark web by hackers.
+                  {{ $t('data.tools.exposed_passwords_desc') }}
                 </div>
               </div>
             </div>

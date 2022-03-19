@@ -4,13 +4,13 @@
       {{ $t('data.settings.options') }}
     </div>
     <div class="text-lg text-black-600 mb-4">
-      Set up your vault options.
+      {{ $t('data.settings.setup_vault_options') }}
     </div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
-            <div class="text-head-5 font-semibold">Your Inventory</div>
+            <div class="text-head-5 font-semibold">{{ $t('data.settings.your_inventory') }}</div>
           </div>
           <div>
             <button

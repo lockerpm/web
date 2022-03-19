@@ -105,7 +105,7 @@
         </div>
         <div>
           <button class="btn btn-default" @click="openDeauthorizeSessions()">
-            Log out of all devices
+            {{ $t('data.settings.logout_all') }}
           </button>
         </div>
       </div>

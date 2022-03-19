@@ -14,12 +14,12 @@
           'text-danger': haveData
         }"
       >
-        <span v-if="noData">GOOD NEWS</span>
-        <span v-if="haveData">REUSED PASSWORDS FOUND</span>
+        <span v-if="noData">{{ $t('data.tools.good_news') }}</span>
+        <span v-if="haveData">{{ $t('data.tools.reused_passwords_found') }}</span>
       </div>
       <div>
-        <span v-if="noData">No passwords that are being reused in your vault.</span>
-        <span v-if="haveData">We found {{ haveData }} passwords that are being reused in your vault. You should change them to a unique value.</span>
+        <span v-if="noData">{{ $t('data.tools.good_news_reused_details') }}</span>
+        <span v-if="haveData">{{ $t('data.tools.reused_passwords_found_details', {data: haveData}) }}</span>
       </div>
     </div>
     <client-only>
@@ -63,7 +63,7 @@
         >
           <template slot-scope="scope">
             <span class="label label-warning-light">
-              Used {{ passwordUseMap.get(scope.row.login.password) }} times
+              {{ $t('data.tools.used') }} {{ passwordUseMap.get(scope.row.login.password) }} {{ $t('data.tools.times') }}
             </span>
           </template>
         </el-table-column>

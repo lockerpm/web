@@ -20,7 +20,7 @@
                   <img src="~/assets/images/icons/flash_white.svg" alt="">
                 </div>
                 <div>
-                  Buy Premium
+                  {{ $t('data.billing.buy_premium') }}
                 </div>
               </div>
             </button>
@@ -149,7 +149,7 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div class="text-head-5 font-semibold">
-            Payment method
+            {{ $t('data.billing.payment_method') }}
           </div>
         </div>
       </div>
@@ -229,7 +229,7 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div class="text-head-5 font-semibold">
-            Billing Documents
+            {{ $t('data.billing.billing_documents') }}
           </div>
         </div>
       </div>

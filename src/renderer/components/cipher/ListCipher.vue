@@ -53,7 +53,7 @@
                 </span>
               </template>
               <template v-else-if="getRouteBaseName() ==='vault'">
-                <span class="font-medium">All items</span>
+                <span class="font-medium">{{ $t('common.all_items') }}</span>
               </template>
               <template v-else-if="getRouteBaseName() ==='shares'">
                 <span class="font-medium">{{ $t('sidebar.shared_with_you') }}</span>
@@ -82,7 +82,7 @@
                 >
                   <button class="btn btn-outline-primary">
                     <i class="el-icon-plus text-lg" />
-                    <span class="ml-3 break-all">Add new</span>
+                    <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
                   </button>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
@@ -102,7 +102,7 @@
                     @click="handleAddButton"
                   >
                     <i class="el-icon-plus text-lg" />
-                    <span class="ml-3 break-all">Add new</span>
+                    <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
                   </button>
                 </template>
               </div>
@@ -118,7 +118,7 @@
               @click="viewFolder=!viewFolder"
             >
               <!-- <i v-if="!viewFolder" class="fas fa-folder-open" @click="viewFolder=true" /> -->
-              View in folder
+              {{ $t('common.view_folder') }}
               <span><i
                 :class="viewFolder?'fas':'far'"
                 class="fa-folder cursor-pointer"
@@ -919,13 +919,15 @@ export default {
       selectedType: 'Login',
       viewFolder: false,
       showLogo: this.$cookies.get('show-logo') || false,
-      headers: ['Updated time', 'Actions'],
       folders: [],
       collections: [],
       checkedAll: false
     }
   },
   computed: {
+    headers () {
+      return [this.$t('data.ciphers.updated_time'), this.$t('common.actions')]
+    },
     options () {
       return [
         {
