@@ -165,7 +165,7 @@
             </div>
             <div class="w-full">
               <div class="text-head-6 mb-3 w-full">
-                This feature grants other Locker account owner(s) the ability to access to your vault in some emergency situations.
+                {{ $t('data.settings.learn_about_emergency_access_desc') }}
               </div>
               <div>
                 <button

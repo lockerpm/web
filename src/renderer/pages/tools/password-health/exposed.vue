@@ -14,15 +14,15 @@
           'text-danger': haveData
         }"
       >
-        <span v-if="noData">GOOD NEWS</span>
-        <span v-if="haveData">EXPOSED PASSWORDS FOUND</span>
+        <span v-if="noData">{{ $t('data.tools.good_news') }}</span>
+        <span v-if="haveData">{{ $t('data.tools.exposed_passwords_found') }}</span>
       </div>
       <div>
         <span v-if="noData">
-          No items in your vault that have passwords that were exposed in known data breaches.
+          {{ $t('data.tools.good_news_exposed_details') }}
         </span>
         <span v-if="haveData">
-          We found {{ haveData }} items in your vault that have passwords that were exposed in known data breaches. You should change them to use a new password.
+          {{ $t('data.tools.exposed_passwords_found_details', {data: haveData}) }}
         </span>
       </div>
     </div>
@@ -67,7 +67,7 @@
         >
           <template slot-scope="scope">
             <span class="label label-warning-light">
-              Exposed {{ exposedPasswordMap.get(scope.row.id) | formatNumber }} times
+              {{ $t('data.tools.exposed') }} {{ exposedPasswordMap.get(scope.row.id) | formatNumber }} {{ $t('data.tools.times') }}
             </span>
           </template>
         </el-table-column>

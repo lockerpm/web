@@ -18,7 +18,7 @@
     <div class="flex">
       <div class="mr-3">
         <button class="btn btn-primary" @click="$router.push(localePath({name: 'plans'}))">
-          Manage Plans
+          {{ $t('common.manage_plans') }}
         </button>
       </div>
       <el-dropdown trigger="click">
