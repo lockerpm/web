@@ -77,16 +77,6 @@ export default {
     async locked () {
       return await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
     }
-    // pendingShares: {
-    //   async get () {
-    //     if (this.locked === false) {
-    //       const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
-    //       return shareInvitations.filter(item => item.status === 'invited').length
-    //     }
-    //     return 0
-    //   },
-    //   watch: ['$store.state.syncedCiphersToggle']
-    // }
   },
   computed: {
     shouldShowSearch () {

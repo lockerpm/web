@@ -167,7 +167,7 @@
           </div>
         </div>
         <InputSelect
-          label="Share type"
+          :label="$t('common.share_type')"
           initial-value="member"
           class="w-full !mb-4"
           :options="roleOptions"
@@ -262,9 +262,9 @@ export default {
     },
     roleOptions () {
       return [
-        { label: 'Only Fill', value: 'member-hide_passwords' },
-        { label: 'View', value: 'member' },
-        { label: 'Edit', value: 'admin' }
+        { label: this.$t('data.ciphers.only_use'), value: 'member-hide_passwords' },
+        { label: this.$t('data.ciphers.viewable'), value: 'member' },
+        { label: this.$t('data.ciphers.editable'), value: 'admin' }
       ]
     }
   },

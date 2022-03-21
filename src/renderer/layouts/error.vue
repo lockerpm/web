@@ -1,5 +1,5 @@
 <template>
-  <div v-if="error.statusCode === 404" class="mt-[205px] mb-28">
+  <div class="mt-[205px] mb-28">
     <img src="~/assets/images/404.svg" class="mx-auto">
     <div class="text-center mx-auto mt-[50px]">
       <p class="landing-font-20 text-black-600 mb-[15px]">
