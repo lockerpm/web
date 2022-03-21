@@ -578,14 +578,14 @@ export default {
     },
     canCreateTeamFolder () {
       return this.teams.some(e => ['owner', 'admin'].includes(e.role))
-    },
-    shareTypeMapping () {
-      return {
-        1: 'Edit',
-        2: 'Only fill',
-        3: 'View'
-      }
     }
+    // shareTypeMapping () {
+    //   return {
+    //     1: 'Edit',
+    //     2: 'Only fill',
+    //     3: 'View'
+    //   }
+    // }
     // pendingShares () {
     //   return this.invitations.filter(item => item.status === 'invited').length
     // }
@@ -659,7 +659,7 @@ export default {
             return {
               ...item,
               subTitle: item.subTitle,
-              share_type: org.type === 1 ? 'Edit' : item.viewPassword ? 'View' : 'Only fill'
+              share_type: org.type === 1 ? this.$t('data.ciphers.editable') : item.viewPassword ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
             }
           })
           result = this.invitations.concat(result)
@@ -773,13 +773,14 @@ export default {
       return ['owner', 'admin'].includes(team.role) && !team.locked
     },
     async getShareInvitations () {
-      // this.loading = true
-      // this.$axios.$get('cystack_platform/pm/sharing/invitations')
-      //   .then(res => {
-      //     this.sharedInvitations = res
-      //     this.loading = false
-      //   })
       this.invitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
+      this.invitations = this.invitations.map(item => {
+        const shareType = item.share_type === 'Edit' ? this.$t('data.ciphers.editable') : item.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
+        return {
+          ...item,
+          share_type: shareType
+        }
+      })
       this.$store.commit('UPDATE_PENDING_SHARES', this.invitations.filter(item => item.status === 'invited').length)
     },
     async acceptShareInvitation (cipher) {

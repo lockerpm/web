@@ -118,7 +118,7 @@
           </template>
         </template>
         <template v-if="cipher.type === CipherType.Card">
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">Chi tiết thẻ</div>
+          <div class="mb-4 text-black-700 text-head-6 font-semibold">{{ $t('data.ciphers.card_details') }}</div>
           <ValidationProvider
             v-slot="{ errors: err }"
             rules="required"
@@ -239,7 +239,7 @@
               :disabled="isDeleted"
             />
           </div>
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">Thông tin liên lạc</div>
+          <div class="mb-4 text-black-700 text-head-6 font-semibold">{{ $t('data.ciphers.contact_info') }}</div>
           <div class="grid grid-cols-2 gap-x-2 mb-4">
             <InputText
               v-model="cipher.identity.address1"

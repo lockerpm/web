@@ -932,27 +932,27 @@ export default {
     options () {
       return [
         {
-          label: 'Password',
+          label: this.$tc('type.Login', 1),
           value: 'Login'
         },
         {
-          label: 'SecureNote',
+          label: this.$tc('type.SecureNote', 1),
           value: 'SecureNote'
         },
         {
-          label: 'Card',
+          label: this.$tc('type.Card', 1),
           value: 'Card'
         },
         {
-          label: 'Identity',
+          label: this.$tc('type.Identity', 1),
           value: 'Identity'
         },
         {
-          label: 'Crypto Asset',
+          label: this.$tc('type.CryptoAsset', 1),
           value: 'CryptoAccount'
         },
         {
-          label: 'Folder',
+          label: this.$tc('type.Folder', 1),
           value: 'Folder'
         }
       ]
