@@ -113,6 +113,8 @@ export default {
         if (this.user.role === 'member-hide_passwords') {
           this.user.role = 'member'
           this.user.hide_passwords = true
+        } else {
+          this.user.hide_passwords = false
         }
         await this.$axios.$put(`cystack_platform/pm/sharing/${this.cipher.organizationId}/members/${this.cipher.user.id}`, {
           role: this.user.role,

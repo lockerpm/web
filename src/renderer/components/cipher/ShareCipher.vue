@@ -323,7 +323,7 @@ export default {
       this.$set(this.cipher, 'organizationId', orgId)
       this.cipher.folderId = null
       if (orgId) {
-        await this.getTeamPolicies(orgId)
+        // await this.getTeamPolicies(orgId)
         this.writeableCollections = await this.getWritableCollections(orgId)
         if (this.writeableCollections.length && !this.isBelongToTeam) {
           this.cipher.collectionIds = [this.writeableCollections[0].id]
@@ -420,6 +420,8 @@ export default {
         if (this.user.role === 'member-hide_passwords') {
           this.user.role = 'member'
           this.user.hide_passwords = true
+        } else {
+          this.user.hide_passwords = false
         }
         const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
         this.members = this.members.concat(emails)

@@ -615,7 +615,7 @@ export default {
         title: 'Mang lại trải nghiệm internet an toàn hơn, tốt hơn cho tất cả mọi người.',
         btn: {
           text: 'Tìm hiểu lợi ích',
-          link: 'how-it-works'
+          link: 'benefits'
         }
       },
       why: {

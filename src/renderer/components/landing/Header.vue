@@ -28,7 +28,7 @@
       <!-- Icon on mobile end -->
 
       <!-- Right actions -->
-      <div class="hidden sm:flex lg:ml-[195px] lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
+      <div class="hidden sm:flex lg:ml-[345px] lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
         <template v-if="isLoggedIn">
           <nuxt-link :to="localeRoute({name: 'vault'})" class="landing-btn">
             My Vault

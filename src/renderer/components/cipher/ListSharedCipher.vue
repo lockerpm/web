@@ -267,7 +267,7 @@
                           {{ $t('common.share') }}
                         </el-dropdown-item>
                       </template>
-                      <template v-if="canViewItem(organizations, scope.row)">
+                      <template>
                         <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.Login">
                           <el-dropdown-item
                             v-clipboard:copy="scope.row.login.username"
@@ -279,6 +279,7 @@
                           <el-dropdown-item
                             v-clipboard:copy="scope.row.login.password"
                             v-clipboard:success="clipboardSuccessHandler"
+                            :disabled="!canViewItem(organizations, scope.row)"
                           >
                             {{ $t('common.copy') }} {{ $t('common.password') }}
                           </el-dropdown-item>

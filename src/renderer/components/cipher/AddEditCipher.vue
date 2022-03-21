@@ -711,6 +711,9 @@ export default {
           this.cipher.type = CipherType.SecureNote
         }
         this.cipher.name = this.validateCipherName(this.cipher.name, type_)
+        if (this.cloneMode) {
+          this.cipher.organizationId = null
+        }
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
         data.type = type_
