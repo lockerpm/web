@@ -705,6 +705,7 @@
                       <el-dropdown-item
                         v-clipboard:copy="item.login.password"
                         v-clipboard:success="clipboardSuccessHandler"
+                        :disabled="!canViewItem(organizations, item)"
                       >
                         {{ $t('common.copy') }} {{ $t('common.password') }}
                       </el-dropdown-item>

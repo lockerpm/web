@@ -453,7 +453,7 @@ Vue.mixin({
     canViewItem (teams, item) {
       const team = this.getTeam(teams, item.organizationId)
       if (team.id) {
-        return [0, 1, 3].includes(team.type)
+        return [0, 1, 3].includes(team.type) || item.viewPassword
       }
       return true
     },
