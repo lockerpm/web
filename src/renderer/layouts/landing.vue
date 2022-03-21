@@ -97,7 +97,7 @@ export default {
     // },
     mappings () {
       const path = this.$route.path
-      if (path === '/how-it-works' || path === `/${this.locale}/how-it-works`) { return 'how_it_works' }
+      if (path === '/benefits' || path === `/${this.locale}/benefits`) { return 'how_it_works' }
       if (path === '/features' || path === `/${this.locale}/features`) { return 'features' }
       if (path === '/plan' || path === `/${this.locale}/plan`) { return 'plan' }
       if (path === '/download' || path === `/${this.locale}/download`) { return 'download' }

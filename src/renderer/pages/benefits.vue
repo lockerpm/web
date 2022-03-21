@@ -301,9 +301,6 @@ export default {
       }
     }
   },
-  fetch ({ redirect }) {
-    redirect(301, 'benefits')
-  },
   mounted () {
     const save1 = document.getElementById('save1')
     const save2 = document.getElementById('save2')
