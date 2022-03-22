@@ -39,23 +39,20 @@
             <div class="mx-6 text-head-4"> | </div>
             <div>
               <button class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold" @click="newShare">
-                <div class="break-normal">New Share</div>
+                <div class="break-normal">{{ $t('data.sharing.new_share') }}</div>
               </button>
             </div>
           </template>
         </div>
-        <div v-if="ciphers && !viewFolder" class="uppercase text-head-6">
+        <div v-if="ciphers" class="uppercase text-head-6">
           <span class="text-primary font-semibold">{{ ciphers.length }}</span> {{ $tc('type.0', ciphers.length) }}
-        </div>
-        <div v-if="folders && viewFolder" class="uppercase text-head-6">
-          <span class="text-primary font-semibold">{{ folders.length }}</span> {{ $tc('type.Folder', folders.length) }}
         </div>
       </div>
       <!-- Overview end -->
 
       <!-- Details -->
       <!-- List Ciphers -->
-      <client-only v-if="!viewFolder">
+      <client-only>
         <el-table
           ref="multipleTable"
           :data="dataRendered || []"
@@ -122,10 +119,10 @@
                     :class="{'opacity-80': scope.row.isDeleted}"
                     @click="scope.row.status === 'invited'?openAcceptDialog(scope.row) : routerCipher(scope.row, addEdit)"
                   >
-                    {{ scope.row.name || 'N/A' }}
+                    {{ scope.row.name || $t('data.sharing.encrypted_content') }}
                     <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
                   </a>
-                  <div>
+                  <div v-if="scope.row.type === CipherType.Login">
                     {{ scope.row.subTitle || 'N/A' }}
                   </div>
                 </div>
@@ -134,7 +131,6 @@
           </el-table-column>
           <el-table-column
             v-if="getRouteBaseName()!=='shares-your-shares'"
-            align="right"
             :label="$t('common.owner')"
             show-overflow-tooltip
           >
@@ -143,7 +139,6 @@
             </template>
           </el-table-column>
           <el-table-column
-            align="right"
             :label="$t('common.type')"
             show-overflow-tooltip
           >
@@ -152,7 +147,6 @@
             </template>
           </el-table-column>
           <el-table-column
-            align="right"
             :label="$t('data.ciphers.updated_time')"
             width="150"
           >
@@ -164,7 +158,6 @@
           </el-table-column>
           <template v-if="getRouteBaseName()==='shares-your-shares'">
             <el-table-column
-              align="right"
               :label="$t('common.user')"
               show-overflow-tooltip
             >
@@ -173,7 +166,6 @@
               </template>
             </el-table-column>
             <el-table-column
-              align="right"
               :label="$t('common.status')"
               min-width="120"
               show-overflow-tooltip
@@ -194,7 +186,6 @@
               </template>
             </el-table-column>
             <el-table-column
-              align="right"
               :label="$t('common.share_type')"
               show-overflow-tooltip
             >
@@ -205,7 +196,6 @@
           </template>
           <template v-if="getRouteBaseName() === 'shares'">
             <el-table-column
-              align="right"
               :label="$t('common.status')"
               min-width="120"
               show-overflow-tooltip
@@ -226,7 +216,6 @@
               </template>
             </el-table-column>
             <el-table-column
-              align="right"
               :label="$t('common.share_type')"
               show-overflow-tooltip
             >
@@ -236,9 +225,9 @@
             </el-table-column>
           </template>
           <el-table-column
-            align="right"
             :label="$t('common.actions')"
             fixed="right"
+            :width="getRouteBaseName()==='shares'?'230':'auto'"
           >
             <template slot-scope="scope">
               <div class="col-actions">
@@ -250,7 +239,17 @@
                   >
                     <i class="fas fa-external-link-square-alt" />
                   </button> -->
-                <el-dropdown trigger="click" :hide-on-click="false">
+                <template v-if="scope.row.status === 'invited' && getRouteBaseName()==='shares'">
+                  <div class="flex">
+                    <div class="btn btn-primary" @click="acceptShareInvitation(scope.row)">
+                      {{ $t('common.accept') }}
+                    </div>
+                    <div class="btn btn-default ml-2" @click="rejectShareInvitation(scope.row)">
+                      {{ $t('common.decline') }}
+                    </div>
+                  </div>
+                </template>
+                <el-dropdown v-else trigger="click" :hide-on-click="false">
                   <button class="btn btn-icon btn-xs hover:bg-black-400">
                     <i class="fas fa-ellipsis-h" />
                   </button>
@@ -308,14 +307,14 @@
                         </el-dropdown-item>
                       </template>
                     </template>
-                    <template v-else-if="scope.row.status === 'invited' && getRouteBaseName()==='shares'">
+                    <!-- <template v-else-if="scope.row.status === 'invited' && getRouteBaseName()==='shares'">
                       <el-dropdown-item @click.native="acceptShareInvitation(scope.row)">
                         {{ $t('common.accept') }}
                       </el-dropdown-item>
                       <el-dropdown-item @click.native="rejectShareInvitation(scope.row)">
                         {{ $t('common.reject') }}
                       </el-dropdown-item>
-                    </template>
+                    </template> -->
                     <template v-else-if="scope.row.status === 'accepted' && getRouteBaseName()==='shares'">
                       <el-dropdown-item divided @click.native="leaveShare(scope.row)">
                         <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
@@ -404,14 +403,14 @@
       </div>
     </el-dialog>
     <el-dialog
-      title="Tips"
+      :title="$t('data.sharing.tips')"
       :visible.sync="dialogAcceptVisible"
       width="40%"
     >
-      <span>Accept the invitation to view this item</span>
+      <span>{{ $t('data.sharing.tips_title') }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogAcceptVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="acceptShareInvitation(selectedCipher)">Accept</el-button>
+        <el-button @click="dialogAcceptVisible = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="acceptShareInvitation(selectedCipher)">{{ $t('common.accept') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -480,14 +479,6 @@ export default {
       lastIndex: 0,
       options: ['Login', 'SecureNote', 'Card', 'Identity'],
       selectedType: 'Login',
-      viewFolder: false,
-      shareInvitationStatus: {
-        invited: 'Pending',
-        accepted: 'Waiting for confirmation',
-        confirmed: 'Shared',
-        shared: 'Shared',
-        waiting: 'Waiting for confirmation'
-      },
       userFingerPrint: '',
       selectedUser: {},
       loadingConfirm: false,
@@ -499,6 +490,9 @@ export default {
     }
   },
   computed: {
+    shareInvitationStatus () {
+      return this.$t('data.sharing')
+    },
     menuShares () {
       return [
         {
@@ -674,7 +668,10 @@ export default {
               resultMapping.push({
                 ...item,
                 subTitle: item.subTitle,
-                user: member
+                user: {
+                  ...member,
+                  share_type: member.share_type === 'Edit' ? this.$t('data.ciphers.editable') : member.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
+                }
               })
             })
           })
