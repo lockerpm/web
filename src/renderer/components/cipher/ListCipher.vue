@@ -946,11 +946,11 @@ export default {
         {
           label: this.$tc('type.Identity', 1),
           value: 'Identity'
-        },
-        {
-          label: this.$tc('type.CryptoAsset', 1),
-          value: 'CryptoAccount'
-        },
+        }
+        // {
+        //   label: this.$tc('type.CryptoAsset', 1),
+        //   value: 'CryptoAccount'
+        // },
         {
           label: this.$tc('type.Folder', 1),
           value: 'Folder'

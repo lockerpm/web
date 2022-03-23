@@ -6,11 +6,11 @@
     >
       <h1 class="max-w-[700px] font-bold landing-font-50 text-center mx-auto">{{ title }}</h1>
       <div class="mt-[100px] pb-[140px] max-w-6xl mx-auto px-6">
-        <div class="w-full flex flex-wrap  gap-x-[30px] gap-y-[30px] justify-center">
+        <div class="w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1  gap-x-[30px] gap-y-[30px]">
           <div
             v-for="(plan, index) in plans"
             :key="index"
-            class="landing-transition px-9 py-14 w-full md:w-[445px] bg-white relative z-10 rounded-xl relative hover:shadow-xl"
+            class="landing-transition px-9 py-14 bg-white relative z-10 rounded-xl hover:shadow-xl"
           >
             <!-- <p
               v-if="index===2"
@@ -51,6 +51,26 @@
             >
               {{ item }}
             </p>
+            <div class="mt-10">
+              <div class="text-center absolute bottom-5 left-6 right-12">
+                <a
+                  v-if="plan.button.external_link"
+                  class="landing-btn !w-full sm:w-auto sm:ml-4"
+                  style="font-weight: 600"
+                  :href="plan.button.external_link"
+                >
+                  {{ plan.button.text }}
+                </a>
+                <nuxt-link
+                  v-else
+                  class="landing-btn2 !w-full sm:w-auto sm:ml-4"
+                  style="font-weight: 600"
+                  :to="localeRoute({name: plan.button.link})"
+                >
+                  {{ plan.button.text }}
+                </nuxt-link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -135,7 +155,7 @@
                 <div class="text-center">
                   <a
                     v-if="button.external_link"
-                    class="landing-btn2 w-full sm:w-auto sm:ml-4"
+                    class="landing-btn !w-full sm:w-auto sm:ml-4"
                     style="font-weight: 600"
                     :href="button.external_link"
                   >
