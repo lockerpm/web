@@ -33,7 +33,7 @@
           </el-breadcrumb-item>
         </el-breadcrumb>
       </div>
-      <div v-if="getRouteBaseName() === 'tools-password-health'" class="setting-wrapper">
+      <div v-if="getRouteBaseName() === 'tools-password-health'" v-loading="loading" class="setting-wrapper">
         <div
           class="setting-section setting-section--hover"
           @click="go({name: 'tools-password-health-weak'})"
@@ -165,7 +165,10 @@ export default {
       passwordStrengthCache: new Map(),
       passwordStrengthMap: new Map(),
       passwordUseMap: new Map(),
-      weakPasswordCiphers: []
+      weakPasswordCiphers: [],
+      reusedPasswordCiphers: [],
+      ciphers: [],
+      loading: false
     }
   },
   watch: {
@@ -179,19 +182,28 @@ export default {
     if (this.currentPlan.alias === 'pm_free') {
       this.$router.push('/vault')
     }
+    // this.loading = true
+    // this.ciphers = await this.$myCipherService.getAllDecrypted()
+    // this.weakPasswordCiphers = await this.getWeakPasswordCiphers()
+    // setTimeout(async () => {
+    //   this.reusedPasswordCiphers = this.getReusedPasswordCiphers()
+    //   this.loading = false
+    // }, 1000)
   },
   asyncComputed: {
-    ciphers: {
-      async get () {
-        const result = await this.$myCipherService.getAllDecrypted()
-        return result
-      },
-      watch: ['$store.state.syncedCiphersToggle']
-    },
+    // ciphers: {
+    //   async get () {
+    //     this.loading = true
+    //     const result = await this.$myCipherService.getAllDecrypted()
+    //     return result
+    //   },
+    //   watch: ['$store.state.syncedCiphersToggle']
+    // },
     weakPasswordCiphers: {
       async get () {
-        // const allCiphers = await this.$cipherService.getAllDecrypted()
-        const allCiphers = this.ciphers
+        this.loading = true
+        const allCiphers = await this.$myCipherService.getAllDecrypted()
+        // const allCiphers = this.ciphers
         const weakPasswordCiphers = []
         const isUserNameNotEmpty = c => {
           return c.login.username != null && c.login.username.trim() !== ''
@@ -236,13 +248,13 @@ export default {
 
         return weakPasswordCiphers
       },
-      // watch: ['$store.state.syncedCiphersToggle']
-      watch: ['ciphers']
+      watch: ['$store.state.syncedCiphersToggle']
+      // watch: ['ciphers']
     },
     reusedPasswordCiphers: {
       async get () {
-        // const allCiphers = await this.$cipherService.getAllDecrypted()
-        const allCiphers = this.ciphers
+        const allCiphers = await this.$myCipherService.getAllDecrypted()
+        // const allCiphers = this.ciphers
         const ciphersWithPasswords = []
         this.passwordUseMap = new Map()
         allCiphers.forEach(c => {
@@ -258,16 +270,81 @@ export default {
         })
         const reusedPasswordCiphers = ciphersWithPasswords.filter(c =>
           this.passwordUseMap.has(c.login.password) && this.passwordUseMap.get(c.login.password) > 1)
-
+        this.loading = false
         return reusedPasswordCiphers
       },
-      // watch: ['$store.state.syncedCiphersToggle']
-      watch: ['ciphers']
+      watch: ['$store.state.syncedCiphersToggle']
+      // watch: ['ciphers']
     }
   },
   methods: {
     go (route) {
       this.$router.push(this.localeRoute(route))
+    },
+    getWeakPasswordCiphers () {
+      const allCiphers = this.ciphers
+      const weakPasswordCiphers = []
+      const isUserNameNotEmpty = c => {
+        return c.login.username != null && c.login.username.trim() !== ''
+      }
+      const getCacheKey = c => {
+        return c.login.password + '_____' + (isUserNameNotEmpty(c) ? c.login.username : '')
+      }
+
+      allCiphers.forEach(c => {
+        if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted) {
+          return
+        }
+        const hasUserName = isUserNameNotEmpty(c)
+        const cacheKey = getCacheKey(c)
+        if (!this.passwordStrengthCache.has(cacheKey)) {
+          let userInput = []
+          if (hasUserName) {
+            const atPosition = c.login.username.indexOf('@')
+            if (atPosition > -1) {
+              userInput = userInput.concat(
+                c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
+                .filter(i => i.length >= 3)
+            } else {
+              userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
+                .filter(i => i.length >= 3)
+            }
+          }
+          const result = this.$passwordGenerationService.passwordStrength(c.login.password,
+            userInput.length > 0 ? userInput : null)
+          this.passwordStrengthCache.set(cacheKey, result.score)
+        }
+        const score = this.passwordStrengthCache.get(cacheKey)
+        if (score != null && score <= 2) {
+          this.passwordStrengthMap.set(c.id, score)
+          weakPasswordCiphers.push(c)
+        }
+      })
+      weakPasswordCiphers.sort((a, b) => {
+        return this.passwordStrengthCache.get(getCacheKey(a)) -
+              this.passwordStrengthCache.get(getCacheKey(b))
+      })
+      return weakPasswordCiphers
+    },
+    getReusedPasswordCiphers () {
+      const allCiphers = this.ciphers
+      const ciphersWithPasswords = []
+      this.passwordUseMap = new Map()
+      allCiphers.forEach(c => {
+        if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted) {
+          return
+        }
+        ciphersWithPasswords.push(c)
+        if (this.passwordUseMap.has(c.login.password)) {
+          this.passwordUseMap.set(c.login.password, this.passwordUseMap.get(c.login.password) + 1)
+        } else {
+          this.passwordUseMap.set(c.login.password, 1)
+        }
+      })
+      const reusedPasswordCiphers = ciphersWithPasswords.filter(c =>
+        this.passwordUseMap.has(c.login.password) && this.passwordUseMap.get(c.login.password) > 1)
+      this.loading = false
+      return reusedPasswordCiphers
     }
   }
 }
