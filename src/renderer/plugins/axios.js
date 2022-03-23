@@ -1,6 +1,6 @@
 import https from 'https'
 
-export default function ({ store, $axios, app, isDev, redirect }) {
+export default function ({ store, $axios, app, isDev, redirect, route }) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.interceptors.request.use(request => {
     // Get token from auth.js store
@@ -19,7 +19,23 @@ export default function ({ store, $axios, app, isDev, redirect }) {
         app.$cookies.remove('cs_locker_token')
         $axios.setToken(false)
         store.commit('UPDATE_IS_LOGGEDIN', false)
-        redirect(302, '/login')
+
+        const WHITELIST_PATH = [
+          '/benefits',
+          '/contact-us',
+          '/download',
+          '/features',
+          '/how-it-works',
+          '/plan',
+          '/security'
+        ]
+        let currentPath = route.path
+        if (currentPath.startsWith('/vi')) {
+          currentPath = currentPath.slice(3)
+        }
+        if (!WHITELIST_PATH.includes(currentPath)) {
+          redirect(302, '/login')
+        }
       }
       if (err.response.status === 403) {
         // app.$cookies.remove('cloud_token')
