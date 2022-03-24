@@ -22,7 +22,7 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
 
         const WHITELIST_PATH = [
           '/benefits',
-          '/contact-us',
+          '/contact',
           '/download',
           '/features',
           '/how-it-works',

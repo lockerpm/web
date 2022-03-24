@@ -142,7 +142,7 @@ export default {
       }
 
       this.isLoading = true
-      const formId = 'locker'
+      const formId = 'locker-contact'
       const trackingQuery = 'form=contact'
 
       try {

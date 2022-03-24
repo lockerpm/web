@@ -480,7 +480,7 @@ Vue.mixin({
       const payload = {
         email,
         subscribed: true,
-        service: 'cystack'
+        service: 'locker-blog-subscribe'
       }
       return this.$axios.put('https://tracking.cystack.net/v2/email/subscription', payload)
     },
