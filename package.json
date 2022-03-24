@@ -90,6 +90,7 @@
     "vue-async-computed": "^3.9.0",
     "vue-clickaway": "^2.2.2",
     "vue-clipboard2": "^0.3.1",
+    "vue-lazy-hydration": "^2.0.0-beta.4",
     "vue-native-websocket": "^2.0.14",
     "vue-virtual-scroller": "^1.0.10",
     "vuex-persistedstate": "2.7.1",
