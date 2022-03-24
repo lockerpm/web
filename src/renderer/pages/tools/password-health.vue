@@ -33,119 +33,121 @@
           </el-breadcrumb-item>
         </el-breadcrumb>
       </div>
-      <div v-if="getRouteBaseName() === 'tools-password-health'" v-loading="loading" class="setting-wrapper">
-        <div
-          class="setting-section setting-section--hover"
-          @click="go({name: 'tools-password-health-weak'})"
-        >
-          <div class="setting-section-header">
-            <div class="flex items-center">
-              <div
-                class="w-[48px] h-[48px] flex items-center justify-center rounded-full text-head-5 text-white mr-3"
-                :class="{
-                  'bg-danger': weakPasswordCiphers && weakPasswordCiphers.length > 1,
-                  'bg-success': weakPasswordCiphers && weakPasswordCiphers.length === 0
-                }"
-              >
-                <span v-if="weakPasswordCiphers && weakPasswordCiphers.length">
-                  <span v-if="weakPasswordCiphers.length > 99">99+</span>
-                  <span v-else>{{ weakPasswordCiphers.length }}</span>
-                </span>
-                <span v-else>0</span>
+      <LazyHydrate when-visible>
+        <div v-if="getRouteBaseName() === 'tools-password-health'" v-loading="loading" class="setting-wrapper">
+          <div
+            class="setting-section setting-section--hover"
+            @click="go({name: 'tools-password-health-weak'})"
+          >
+            <div class="setting-section-header">
+              <div class="flex items-center">
+                <div
+                  class="w-[48px] h-[48px] flex items-center justify-center rounded-full text-head-5 text-white mr-3"
+                  :class="{
+                    'bg-danger': weakPasswordCiphers && weakPasswordCiphers.length >= 1,
+                    'bg-success': weakPasswordCiphers && weakPasswordCiphers.length === 0
+                  }"
+                >
+                  <span v-if="weakPasswordCiphers && weakPasswordCiphers.length">
+                    <span v-if="weakPasswordCiphers.length > 99">99+</span>
+                    <span v-else>{{ weakPasswordCiphers.length }}</span>
+                  </span>
+                  <span v-else>0</span>
+                </div>
+                <div>
+                  <button
+                    class="setting-title cursor-pointer"
+                    @click="go({name: 'tools-password-health-weak'})"
+                  >
+                    {{ $t('data.tools.weak_passwords') }}
+                  </button>
+                  <div class="setting-description">
+                    {{ $t('data.tools.weak_passwords_desc') }}
+                  </div>
+                </div>
               </div>
               <div>
                 <button
-                  class="setting-title cursor-pointer"
+                  class="btn btn-icon !text-black-600"
                   @click="go({name: 'tools-password-health-weak'})"
                 >
-                  {{ $t('data.tools.weak_passwords') }}
+                  <i class="fa fa-chevron-right" />
                 </button>
-                <div class="setting-description">
-                  {{ $t('data.tools.weak_passwords_desc') }}
-                </div>
               </div>
             </div>
-            <div>
-              <button
-                class="btn btn-icon !text-black-600"
-                @click="go({name: 'tools-password-health-weak'})"
-              >
-                <i class="fa fa-chevron-right" />
-              </button>
-            </div>
           </div>
-        </div>
-        <div
-          class="setting-section setting-section--hover"
-          @click="go({name: 'tools-password-health-reused'})"
-        >
-          <div class="setting-section-header">
-            <div class="flex items-center">
-              <div
-                class="w-[48px] h-[48px] flex items-center justify-center rounded-full text-head-5 text-white mr-3"
-                :class="{
-                  'bg-danger': reusedPasswordCiphers && reusedPasswordCiphers.length > 1,
-                  'bg-success': reusedPasswordCiphers && reusedPasswordCiphers.length === 0
-                }"
-              >
-                <span v-if="reusedPasswordCiphers && reusedPasswordCiphers.length">
-                  <span v-if="reusedPasswordCiphers.length > 99">99+</span>
-                  <span v-else>{{ reusedPasswordCiphers.length }}</span>
-                </span>
-                <span v-else>0</span>
+          <div
+            class="setting-section setting-section--hover"
+            @click="go({name: 'tools-password-health-reused'})"
+          >
+            <div class="setting-section-header">
+              <div class="flex items-center">
+                <div
+                  class="w-[48px] h-[48px] flex items-center justify-center rounded-full text-head-5 text-white mr-3"
+                  :class="{
+                    'bg-danger': reusedPasswordCiphers && reusedPasswordCiphers.length >= 1,
+                    'bg-success': reusedPasswordCiphers && reusedPasswordCiphers.length === 0
+                  }"
+                >
+                  <span v-if="reusedPasswordCiphers && reusedPasswordCiphers.length">
+                    <span v-if="reusedPasswordCiphers.length > 99">99+</span>
+                    <span v-else>{{ reusedPasswordCiphers.length }}</span>
+                  </span>
+                  <span v-else>0</span>
+                </div>
+                <div>
+                  <button
+                    class="setting-title cursor-pointer"
+                    @click="go({name: 'tools-password-health-reused'})"
+                  >
+                    {{ $t('data.tools.reused_passwords') }}
+                  </button>
+                  <div class="setting-description">
+                    {{ $t('data.tools.reused_passwords_desc') }}
+                  </div>
+                </div>
               </div>
               <div>
                 <button
-                  class="setting-title cursor-pointer"
+                  class="btn btn-icon !text-black-600"
                   @click="go({name: 'tools-password-health-reused'})"
                 >
-                  {{ $t('data.tools.reused_passwords') }}
+                  <i class="fa fa-chevron-right" />
                 </button>
-                <div class="setting-description">
-                  {{ $t('data.tools.reused_passwords_desc') }}
-                </div>
               </div>
             </div>
-            <div>
-              <button
-                class="btn btn-icon !text-black-600"
-                @click="go({name: 'tools-password-health-reused'})"
-              >
-                <i class="fa fa-chevron-right" />
-              </button>
-            </div>
           </div>
-        </div>
-        <div
-          class="setting-section setting-section--hover"
-          @click="go({name: 'tools-password-health-exposed'})"
-        >
-          <div class="setting-section-header">
-            <div class="flex items-center">
-              <img src="~/assets/images/icons/icon_tools_pw_breach.svg" alt="" class="mr-3">
+          <div
+            class="setting-section setting-section--hover"
+            @click="go({name: 'tools-password-health-exposed'})"
+          >
+            <div class="setting-section-header">
+              <div class="flex items-center">
+                <img src="~/assets/images/icons/icon_tools_pw_breach.svg" alt="" class="mr-3">
+                <div>
+                  <button
+                    class="setting-title cursor-pointer"
+                    @click="go({name: 'tools-password-health-exposed'})"
+                  >
+                    {{ $t('data.tools.exposed_passwords') }}
+                  </button>
+                  <div class="setting-description">
+                    {{ $t('data.tools.exposed_passwords_desc') }}
+                  </div>
+                </div>
+              </div>
               <div>
                 <button
-                  class="setting-title cursor-pointer"
+                  class="btn btn-icon !text-black-600"
                   @click="go({name: 'tools-password-health-exposed'})"
                 >
-                  {{ $t('data.tools.exposed_passwords') }}
+                  <i class="fa fa-chevron-right" />
                 </button>
-                <div class="setting-description">
-                  {{ $t('data.tools.exposed_passwords_desc') }}
-                </div>
               </div>
-            </div>
-            <div>
-              <button
-                class="btn btn-icon !text-black-600"
-                @click="go({name: 'tools-password-health-exposed'})"
-              >
-                <i class="fa fa-chevron-right" />
-              </button>
             </div>
           </div>
         </div>
-      </div>
+      </LazyHydrate>
       <nuxt-child
         :weak-password-ciphers="weakPasswordCiphers"
         :reused-password-ciphers="reusedPasswordCiphers"
@@ -157,9 +159,10 @@
 </template>
 
 <script>
+import LazyHydrate from 'vue-lazy-hydration'
 import { CipherType } from '../../jslib/src/enums'
 export default {
-  components: { },
+  components: { LazyHydrate },
   data () {
     return {
       passwordStrengthCache: new Map(),
