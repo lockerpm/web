@@ -53,185 +53,186 @@
       <!-- Details -->
       <!-- List Ciphers -->
       <client-only>
-        <el-table
-          ref="multipleTable"
-          :data="dataRendered || []"
-          style="width: 100%"
-          row-class-name="hover-table-row"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column
-            type="selection"
-            width="55"
-          />
-          <el-table-column
-            prop="name"
-            label=""
-            min-width="300"
-            show-overflow-tooltip
+        <LazyHydrate when-visible>
+          <el-table
+            ref="multipleTable"
+            :data="dataRendered || []"
+            style="width: 100%"
+            row-class-name="hover-table-row"
+            @selection-change="handleSelectionChange"
           >
-            <template slot="header">
-              <div v-if="multipleSelection.length" class="flex items-center ">
-                <div class="text-black mr-8 whitespace-nowrap">
-                  {{ multipleSelection.length }} {{ $t('data.ciphers.selected_items') }}
-                </div>
-                <div v-if="deleted">
-                  <button
-                    class="btn btn-default btn-xs"
-                    @click="restoreCiphers(multipleSelection.map(e => e.id))"
-                  >
-                    {{ $t('common.restore') }}
-                  </button>
-                  <button
-                    class="btn btn-default btn-xs !text-danger"
-                    @click="deleteCiphers(multipleSelection.map(e => e.id))"
-                  >
-                    {{ $t('common.permanently_delete') }}
-                  </button>
-                </div>
-                <div v-else class="">
-                  <button
-                    class="btn btn-default btn-xs"
-                    @click="moveFolders(multipleSelection.map(e => e.id))"
-                  >
-                    {{ $t('common.move_folder') }}
-                  </button>
-                  <button
-                    class="btn btn-default btn-xs !text-danger"
-                    @click="moveTrashCiphers(multipleSelection.map(e => e.id))"
-                  >
-                    {{ $t('common.delete') }}
-                  </button>
-                </div>
-              </div>
-            </template>
-            <template slot-scope="scope">
-              <div class="flex items-center">
-                <div
-                  class="text-[34px] mr-3 flex-shrink-0"
-                  :class="{'filter grayscale': scope.row.isDeleted}"
-                >
-                  <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
-                </div>
-                <div class="flex flex-col">
-                  <a
-                    class="text-black font-semibold truncate flex items-center"
-                    :class="{'opacity-80': scope.row.isDeleted}"
-                    @click="scope.row.status === 'invited'?openAcceptDialog(scope.row) : routerCipher(scope.row, addEdit)"
-                  >
-                    {{ scope.row.name || $t('data.sharing.encrypted_content') }}
-                    <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
-                  </a>
-                  <div v-if="scope.row.type === CipherType.Login">
-                    {{ scope.row.subTitle || 'N/A' }}
+            <el-table-column
+              type="selection"
+              width="55"
+            />
+            <el-table-column
+              prop="name"
+              label=""
+              min-width="300"
+              show-overflow-tooltip
+            >
+              <template slot="header">
+                <div v-if="multipleSelection.length" class="flex items-center ">
+                  <div class="text-black mr-8 whitespace-nowrap">
+                    {{ multipleSelection.length }} {{ $t('data.ciphers.selected_items') }}
+                  </div>
+                  <div v-if="deleted">
+                    <button
+                      class="btn btn-default btn-xs"
+                      @click="restoreCiphers(multipleSelection.map(e => e.id))"
+                    >
+                      {{ $t('common.restore') }}
+                    </button>
+                    <button
+                      class="btn btn-default btn-xs !text-danger"
+                      @click="deleteCiphers(multipleSelection.map(e => e.id))"
+                    >
+                      {{ $t('common.permanently_delete') }}
+                    </button>
+                  </div>
+                  <div v-else class="">
+                    <button
+                      class="btn btn-default btn-xs"
+                      @click="moveFolders(multipleSelection.map(e => e.id))"
+                    >
+                      {{ $t('common.move_folder') }}
+                    </button>
+                    <button
+                      class="btn btn-default btn-xs !text-danger"
+                      @click="moveTrashCiphers(multipleSelection.map(e => e.id))"
+                    >
+                      {{ $t('common.delete') }}
+                    </button>
                   </div>
                 </div>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            v-if="getRouteBaseName()!=='shares-your-shares'"
-            :label="$t('common.owner')"
-            show-overflow-tooltip
-          >
-            <template slot-scope="scope">
-              <span>{{ scope.row.owner? scope.row.owner.full_name : getTeam(organizations, scope.row.organizationId).name }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="$t('common.type')"
-            show-overflow-tooltip
-          >
-            <template slot-scope="scope">
-              <span>{{ CipherType[scope.row.cipher_type] || CipherType[scope.row.type] }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            :label="$t('data.ciphers.updated_time')"
-            width="150"
-          >
-            <template slot-scope="scope">
-              <span class="break-normal">
-                {{ scope.row.revisionDate? $moment(scope.row.revisionDate).fromNow() : $moment(scope.row.access_time*1000).fromNow() }}
-              </span>
-            </template>
-          </el-table-column>
-          <template v-if="getRouteBaseName()==='shares-your-shares'">
-            <el-table-column
-              :label="$t('common.user')"
-              show-overflow-tooltip
-            >
+              </template>
               <template slot-scope="scope">
-                <span>{{ scope.row.user?scope.row.user.email : 'N/A' }}</span>
+                <div class="flex items-center">
+                  <div
+                    class="text-[34px] mr-3 flex-shrink-0"
+                    :class="{'filter grayscale': scope.row.isDeleted}"
+                  >
+                    <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
+                  </div>
+                  <div class="flex flex-col">
+                    <a
+                      class="text-black font-semibold truncate flex items-center"
+                      :class="{'opacity-80': scope.row.isDeleted}"
+                      @click="scope.row.status === 'invited'?openAcceptDialog(scope.row) : routerCipher(scope.row, addEdit)"
+                    >
+                      {{ scope.row.name || $t('data.sharing.encrypted_content') }}
+                      <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
+                    </a>
+                    <div v-if="scope.row.type === CipherType.Login">
+                      {{ scope.row.subTitle || 'N/A' }}
+                    </div>
+                  </div>
+                </div>
               </template>
             </el-table-column>
             <el-table-column
-              :label="$t('common.status')"
-              min-width="120"
+              v-if="getRouteBaseName()!=='shares-your-shares'"
+              :label="$t('common.owner')"
               show-overflow-tooltip
             >
-              <template v-if="scope.row.user" slot-scope="scope">
-                <!-- <span>{{ scope.row.user.status || 'N/A' }}</span> -->
-                <span
-                  class="label whitespace-normal"
-                  :class="{'label-primary-light': scope.row.user.status === 'confirmed',
-                           'label-info': scope.row.user.status === 'accepted',
-                           'label-warning-light': scope.row.user.status === 'invited',
-                           'label-danger-light': scope.row.user.status === 'expired',
-                           'label-success': !scope.row.user.status
-                  }"
-                >
-                  {{ shareInvitationStatus[`${scope.row.user.status || 'shared'}`] }}
+              <template slot-scope="scope">
+                <span>{{ scope.row.owner? scope.row.owner.full_name : getTeam(organizations, scope.row.organizationId).name }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('common.type')"
+              show-overflow-tooltip
+            >
+              <template slot-scope="scope">
+                <span>{{ CipherType[scope.row.cipher_type] || CipherType[scope.row.type] }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :label="$t('data.ciphers.updated_time')"
+              width="150"
+            >
+              <template slot-scope="scope">
+                <span class="break-normal">
+                  {{ scope.row.revisionDate? $moment(scope.row.revisionDate).fromNow() : $moment(scope.row.access_time*1000).fromNow() }}
                 </span>
               </template>
             </el-table-column>
+            <template v-if="getRouteBaseName()==='shares-your-shares'">
+              <el-table-column
+                :label="$t('common.user')"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.user?scope.row.user.email : 'N/A' }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                :label="$t('common.status')"
+                min-width="120"
+                show-overflow-tooltip
+              >
+                <template v-if="scope.row.user" slot-scope="scope">
+                  <!-- <span>{{ scope.row.user.status || 'N/A' }}</span> -->
+                  <span
+                    class="label whitespace-normal"
+                    :class="{'label-primary-light': scope.row.user.status === 'confirmed',
+                             'label-info': scope.row.user.status === 'accepted',
+                             'label-warning-light': scope.row.user.status === 'invited',
+                             'label-danger-light': scope.row.user.status === 'expired',
+                             'label-success': !scope.row.user.status
+                    }"
+                  >
+                    {{ shareInvitationStatus[`${scope.row.user.status || 'shared'}`] }}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                :label="$t('common.share_type')"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.user? scope.row.user.share_type : 'N/A' }}</span>
+                </template>
+              </el-table-column>
+            </template>
+            <template v-if="getRouteBaseName() === 'shares'">
+              <el-table-column
+                :label="$t('common.status')"
+                min-width="120"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <!-- <span>{{ scope.row.status || 'Shared' }}</span> -->
+                  <span
+                    class="label whitespace-normal"
+                    :class="{'label-primary-light': scope.row.status === 'confirmed',
+                             'label-info': scope.row.status === 'accepted',
+                             'label-warning-light': scope.row.status === 'invited',
+                             'label-danger-light': scope.row.status === 'expired',
+                             'label-success': !scope.row.status
+                    }"
+                  >
+                    {{ shareInvitationStatus[`${scope.row.status || 'shared'}`] }}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                :label="$t('common.share_type')"
+                show-overflow-tooltip
+              >
+                <template slot-scope="scope">
+                  <span>{{ scope.row.share_type || 'N/A' }}</span>
+                </template>
+              </el-table-column>
+            </template>
             <el-table-column
-              :label="$t('common.share_type')"
-              show-overflow-tooltip
+              :label="$t('common.actions')"
+              fixed="right"
+              :width="getRouteBaseName()==='shares'?'230':'auto'"
             >
               <template slot-scope="scope">
-                <span>{{ scope.row.user? scope.row.user.share_type : 'N/A' }}</span>
-              </template>
-            </el-table-column>
-          </template>
-          <template v-if="getRouteBaseName() === 'shares'">
-            <el-table-column
-              :label="$t('common.status')"
-              min-width="120"
-              show-overflow-tooltip
-            >
-              <template slot-scope="scope">
-                <!-- <span>{{ scope.row.status || 'Shared' }}</span> -->
-                <span
-                  class="label whitespace-normal"
-                  :class="{'label-primary-light': scope.row.status === 'confirmed',
-                           'label-info': scope.row.status === 'accepted',
-                           'label-warning-light': scope.row.status === 'invited',
-                           'label-danger-light': scope.row.status === 'expired',
-                           'label-success': !scope.row.status
-                  }"
-                >
-                  {{ shareInvitationStatus[`${scope.row.status || 'shared'}`] }}
-                </span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :label="$t('common.share_type')"
-              show-overflow-tooltip
-            >
-              <template slot-scope="scope">
-                <span>{{ scope.row.share_type || 'N/A' }}</span>
-              </template>
-            </el-table-column>
-          </template>
-          <el-table-column
-            :label="$t('common.actions')"
-            fixed="right"
-            :width="getRouteBaseName()==='shares'?'230':'auto'"
-          >
-            <template slot-scope="scope">
-              <div class="col-actions">
-                <!-- <button
+                <div class="col-actions">
+                  <!-- <button
                     v-if="scope.row.login.canLaunch"
                     class="btn btn-icon btn-xs hover:bg-black-400"
                     :title="$t('common.go_to_website')"
@@ -239,75 +240,75 @@
                   >
                     <i class="fas fa-external-link-square-alt" />
                   </button> -->
-                <template v-if="scope.row.status === 'invited' && getRouteBaseName()==='shares'">
-                  <div class="flex">
-                    <div class="btn btn-primary" @click="acceptShareInvitation(scope.row)">
-                      {{ $t('common.accept') }}
+                  <template v-if="scope.row.status === 'invited' && getRouteBaseName()==='shares'">
+                    <div class="flex">
+                      <div class="btn btn-primary" @click="acceptShareInvitation(scope.row)">
+                        {{ $t('common.accept') }}
+                      </div>
+                      <div class="btn btn-default ml-2" @click="rejectShareInvitation(scope.row)">
+                        {{ $t('common.decline') }}
+                      </div>
                     </div>
-                    <div class="btn btn-default ml-2" @click="rejectShareInvitation(scope.row)">
-                      {{ $t('common.decline') }}
-                    </div>
-                  </div>
-                </template>
-                <el-dropdown v-else trigger="click" :hide-on-click="false">
-                  <button class="btn btn-icon btn-xs hover:bg-black-400">
-                    <i class="fas fa-ellipsis-h" />
-                  </button>
-                  <el-dropdown-menu slot="dropdown">
-                    <template v-if="!['invited', 'accepted'].includes(scope.row.status) && getRouteBaseName() === 'shares'">
-                      <template v-if="canManageItem(organizations, scope.row)">
-                        <el-dropdown-item @click.native="addEdit(scope.row)">
-                          {{ $t('common.edit') }}
-                        </el-dropdown-item>
-                        <el-dropdown-item
-                          v-if="canShareItem(organizations, scope.row)"
-                          @click.native="shareItem(scope.row)"
-                        >
-                          {{ $t('common.share') }}
-                        </el-dropdown-item>
-                      </template>
-                      <template>
-                        <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.Login">
-                          <el-dropdown-item
-                            v-clipboard:copy="scope.row.login.username"
-                            v-clipboard:success="clipboardSuccessHandler"
-                            divided
-                          >
-                            {{ $t('common.copy') }} {{ $t('common.username') }}
+                  </template>
+                  <el-dropdown v-else trigger="click" :hide-on-click="false">
+                    <button class="btn btn-icon btn-xs hover:bg-black-400">
+                      <i class="fas fa-ellipsis-h" />
+                    </button>
+                    <el-dropdown-menu slot="dropdown">
+                      <template v-if="!['invited', 'accepted'].includes(scope.row.status) && getRouteBaseName() === 'shares'">
+                        <template v-if="canManageItem(organizations, scope.row)">
+                          <el-dropdown-item @click.native="addEdit(scope.row)">
+                            {{ $t('common.edit') }}
                           </el-dropdown-item>
                           <el-dropdown-item
-                            v-clipboard:copy="scope.row.login.password"
-                            v-clipboard:success="clipboardSuccessHandler"
-                            :disabled="!canViewItem(organizations, scope.row)"
+                            v-if="canShareItem(organizations, scope.row)"
+                            @click.native="shareItem(scope.row)"
                           >
-                            {{ $t('common.copy') }} {{ $t('common.password') }}
+                            {{ $t('common.share') }}
                           </el-dropdown-item>
                         </template>
-                        <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.SecureNote">
-                          <el-dropdown-item
-                            v-clipboard:copy="scope.row.notes"
-                            v-clipboard:success="clipboardSuccessHandler"
-                            divided
-                          >
-                            {{ $t('common.copy') }} {{ $t('common.note') }}
+                        <template>
+                          <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.Login">
+                            <el-dropdown-item
+                              v-clipboard:copy="scope.row.login.username"
+                              v-clipboard:success="clipboardSuccessHandler"
+                              divided
+                            >
+                              {{ $t('common.copy') }} {{ $t('common.username') }}
+                            </el-dropdown-item>
+                            <el-dropdown-item
+                              v-clipboard:copy="scope.row.login.password"
+                              v-clipboard:success="clipboardSuccessHandler"
+                              :disabled="!canViewItem(organizations, scope.row)"
+                            >
+                              {{ $t('common.copy') }} {{ $t('common.password') }}
+                            </el-dropdown-item>
+                          </template>
+                          <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.SecureNote">
+                            <el-dropdown-item
+                              v-clipboard:copy="scope.row.notes"
+                              v-clipboard:success="clipboardSuccessHandler"
+                              divided
+                            >
+                              {{ $t('common.copy') }} {{ $t('common.note') }}
+                            </el-dropdown-item>
+                          </template>
+                          <el-dropdown-item @click.native="cloneCipher(scope.row)">
+                            {{ $t('common.clone') }}
                           </el-dropdown-item>
                         </template>
-                        <el-dropdown-item @click.native="cloneCipher(scope.row)">
-                          {{ $t('common.clone') }}
-                        </el-dropdown-item>
+                        <template v-if="!scope.row.isDeleted">
+                          <el-dropdown-item divided @click.native="moveFolders([scope.row.id])">
+                            {{ $t('common.move_folder') }}
+                          </el-dropdown-item>
+                        </template>
+                        <template v-if="!scope.row.isDeleted">
+                          <el-dropdown-item divided @click.native="leaveShare(scope.row)">
+                            <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
+                          </el-dropdown-item>
+                        </template>
                       </template>
-                      <template v-if="!scope.row.isDeleted">
-                        <el-dropdown-item divided @click.native="moveFolders([scope.row.id])">
-                          {{ $t('common.move_folder') }}
-                        </el-dropdown-item>
-                      </template>
-                      <template v-if="!scope.row.isDeleted">
-                        <el-dropdown-item divided @click.native="leaveShare(scope.row)">
-                          <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
-                        </el-dropdown-item>
-                      </template>
-                    </template>
-                    <!-- <template v-else-if="scope.row.status === 'invited' && getRouteBaseName()==='shares'">
+                      <!-- <template v-else-if="scope.row.status === 'invited' && getRouteBaseName()==='shares'">
                       <el-dropdown-item @click.native="acceptShareInvitation(scope.row)">
                         {{ $t('common.accept') }}
                       </el-dropdown-item>
@@ -315,38 +316,39 @@
                         {{ $t('common.reject') }}
                       </el-dropdown-item>
                     </template> -->
-                    <template v-else-if="scope.row.status === 'accepted' && getRouteBaseName()==='shares'">
-                      <el-dropdown-item divided @click.native="leaveShare(scope.row)">
-                        <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
-                      </el-dropdown-item>
-                    </template>
-                    <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'invited'">
-                      <el-dropdown-item @click.native="stopSharing(scope.row)">
-                        {{ $t('common.cancel') }}
-                      </el-dropdown-item>
-                    </template>
-                    <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'confirmed'">
-                      <el-dropdown-item @click.native="editShareType(scope.row)">
-                        {{ $t('common.edit') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item @click.native="stopSharing(scope.row)">
-                        {{ $t('data.ciphers.stop_sharing') }}
-                      </el-dropdown-item>
-                    </template>
-                    <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'accepted'">
-                      <el-dropdown-item @click.native="promptConfirmUser(scope.row)">
-                        {{ $t('common.confirm') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item @click.native="stopSharing(scope.row)">
-                        {{ $t('common.cancel') }}
-                      </el-dropdown-item>
-                    </template>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
+                      <template v-else-if="scope.row.status === 'accepted' && getRouteBaseName()==='shares'">
+                        <el-dropdown-item divided @click.native="leaveShare(scope.row)">
+                          <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
+                        </el-dropdown-item>
+                      </template>
+                      <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'invited'">
+                        <el-dropdown-item @click.native="stopSharing(scope.row)">
+                          {{ $t('common.cancel') }}
+                        </el-dropdown-item>
+                      </template>
+                      <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'confirmed'">
+                        <el-dropdown-item @click.native="editShareType(scope.row)">
+                          {{ $t('common.edit') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item @click.native="stopSharing(scope.row)">
+                          {{ $t('data.ciphers.stop_sharing') }}
+                        </el-dropdown-item>
+                      </template>
+                      <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'accepted'">
+                        <el-dropdown-item @click.native="promptConfirmUser(scope.row)">
+                          {{ $t('common.confirm') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item @click.native="stopSharing(scope.row)">
+                          {{ $t('common.cancel') }}
+                        </el-dropdown-item>
+                      </template>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+        </LazyHydrate>
       </client-only>
       <!-- List Ciphers end -->
     </div>
@@ -420,6 +422,7 @@
 import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy'
 import find from 'lodash/find'
+import LazyHydrate from 'vue-lazy-hydration'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import AddEditFolder from '../folder/AddEditFolder'
 import AddEditTeamFolder from '../folder/AddEditTeamFolder'
@@ -445,7 +448,8 @@ export default {
     ShareNoCipher,
     VueContext: () => import('../../plugins/vue-context'),
     Vnodes,
-    PremiumDialog
+    PremiumDialog,
+    LazyHydrate
   },
   props: {
     deleted: {

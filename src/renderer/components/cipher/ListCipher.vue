@@ -4,8 +4,8 @@
     class="flex flex-col flex-column-fluid relative"
   >
     <!-- Navigation Menu -->
-    <div class="navigation-bar">
-      <template v-if="['vault', 'passwords', 'notes', 'identities', 'cards'].includes(getRouteBaseName())">
+    <div v-if="['vault', 'passwords', 'notes', 'identities', 'cards'].includes(getRouteBaseName())" class="navigation-bar">
+      <template>
         <nuxt-link
           v-for="(item, index) in menuVault"
           :key="index"

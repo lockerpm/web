@@ -23,7 +23,7 @@
       </div>
     </div>
     <client-only>
-      <el-table
+      <!-- <el-table
         ref="multipleTable"
         :data="weakPasswordCiphers || []"
         style="width: 100%"
@@ -65,7 +65,48 @@
             <PasswordStrength :score="passwordStrengthMap.get(scope.row.id)" />
           </template>
         </el-table-column>
-      </el-table>
+      </el-table> -->
+      <RecycleScroller
+        ref="list"
+        page-mode
+        :item-size="65"
+        :items="weakPasswordCiphers || []"
+      >
+        <template #default="{item}">
+          <div class="td">
+            <div class="flex items-center">
+              <div
+                class="text-[34px] mr-3 flex-shrink-0"
+                :class="{'filter grayscale': item.isDeleted}"
+              >
+                <Vnodes :vnodes="getIconCipher(item, 34)" />
+              </div>
+              <div class="flex flex-col">
+                <a
+                  class="text-black font-semibold truncate flex items-center"
+                  :class="{'opacity-80': item.isDeleted}"
+                  @click="routerCipher(item, addEdit)"
+                >
+                  {{ item.name }}
+                  <img
+                    v-if="item.organizationId"
+                    src="~/assets/images/icons/shares.svg"
+                    alt="Shared"
+                    :title="$t('common.shared_with_you')"
+                    class="inline-block ml-2"
+                  >
+                </a>
+                <div>
+                  {{ item.subTitle }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="td">
+            <PasswordStrength :score="passwordStrengthMap.get(item.id)" />
+          </div>
+        </template>
+      </RecycleScroller>
     </client-only>
   </div>
 </template>
