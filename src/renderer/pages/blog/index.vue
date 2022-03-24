@@ -135,6 +135,7 @@
         </nuxt-link>
       </div>
     </section>
+    <SubscribeSuccessful ref="subscribeSuccessful" />
     <!-- CTA end -->
   </div>
 </template>
@@ -145,9 +146,11 @@ import moment from 'moment'
 import cheerio from 'cheerio'
 import debounce from 'lodash/debounce'
 import Post from '~/components/landing/blog/Post'
+import SubscribeSuccessful from '~/components/landing/blog/SubscribeSuccessful'
 export default {
   components: {
-    Post
+    Post,
+    SubscribeSuccessful
     // SecurityReport
   },
   layout: 'landing',
@@ -287,10 +290,11 @@ export default {
       }
       try {
         await this.subscribe(this.form.email)
-        this.$message({
-          message: this.$t('landing_contact.messages.request_has_been_sent'),
-          type: 'success'
-        })
+        // this.$message({
+        //   message: this.$t('landing_contact.messages.request_has_been_sent'),
+        //   type: 'success'
+        // })
+        this.$refs.subscribeSuccessful.openDialog()
       } catch (error) {
         this.$message({
           message: this.$t('landing_contact.messages.error_occurred'),

@@ -101,7 +101,7 @@ export default {
       if (path === '/features' || path === `/${this.locale}/features`) { return 'features' }
       if (path === '/plan' || path === `/${this.locale}/plan`) { return 'plan' }
       if (path === '/download' || path === `/${this.locale}/download`) { return 'download' }
-      if (path === '/contact-us' || path === `/${this.locale}/contact-us`) { return 'landing_contact' }
+      if (path === '/contact' || path === `/${this.locale}/contact`) { return 'landing_contact' }
       if (path === '/blog' || path === `/${this.locale}/blog`) { return 'blog' }
       if (path === '/password-generator' || path === `/${this.locale}/password-generator`) { return 'password_generator' }
       if (path === '/security' || path === `/${this.locale}/security`) { return 'security' }
