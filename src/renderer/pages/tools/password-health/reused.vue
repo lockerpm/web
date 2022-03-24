@@ -23,7 +23,7 @@
       </div>
     </div>
     <client-only>
-      <el-table
+      <!-- <el-table
         ref="multipleTable"
         :data="reusedPasswordCiphers || []"
         style="width: 100%"
@@ -67,7 +67,50 @@
             </span>
           </template>
         </el-table-column>
-      </el-table>
+      </el-table> -->
+      <RecycleScroller
+        ref="list"
+        page-mode
+        :item-size="65"
+        :items="reusedPasswordCiphers || []"
+      >
+        <template #default="{item}">
+          <div class="td">
+            <div class="flex items-center">
+              <div
+                class="text-[34px] mr-3 flex-shrink-0"
+                :class="{'filter grayscale': item.isDeleted}"
+              >
+                <Vnodes :vnodes="getIconCipher(item, 34)" />
+              </div>
+              <div class="flex flex-col">
+                <a
+                  class="text-black font-semibold truncate flex items-center"
+                  :class="{'opacity-80': item.isDeleted}"
+                  @click="routerCipher(item, addEdit)"
+                >
+                  {{ item.name }}
+                  <img
+                    v-if="item.organizationId"
+                    src="~/assets/images/icons/shares.svg"
+                    alt="Shared"
+                    :title="$t('common.shared_with_you')"
+                    class="inline-block ml-2"
+                  >
+                </a>
+                <div>
+                  {{ item.subTitle }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="td">
+            <span class="label label-warning-light">
+              {{ $t('data.tools.used') }} {{ passwordUseMap.get(item.login.password) }} {{ $t('data.tools.times') }}
+            </span>
+          </div>
+        </template>
+      </RecycleScroller>
     </client-only>
   </div>
 </template>

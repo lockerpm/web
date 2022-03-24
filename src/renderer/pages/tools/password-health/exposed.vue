@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div
       class="locker-callout mb-8"
       :class="{
@@ -27,7 +27,7 @@
       </div>
     </div>
     <client-only>
-      <el-table
+      <!-- <el-table
         ref="multipleTable"
         :data="exposedPasswordCiphers || []"
         style="width: 100%"
@@ -71,7 +71,50 @@
             </span>
           </template>
         </el-table-column>
-      </el-table>
+      </el-table> -->
+      <RecycleScroller
+        ref="list"
+        page-mode
+        :item-size="65"
+        :items="exposedPasswordCiphers || []"
+      >
+        <template #default="{item}">
+          <div class="td">
+            <div class="flex items-center">
+              <div
+                class="text-[34px] mr-3 flex-shrink-0"
+                :class="{'filter grayscale': item.isDeleted}"
+              >
+                <Vnodes :vnodes="getIconCipher(item, 34)" />
+              </div>
+              <div class="flex flex-col">
+                <a
+                  class="text-black font-semibold truncate flex items-center"
+                  :class="{'opacity-80': item.isDeleted}"
+                  @click="routerCipher(item, addEdit)"
+                >
+                  {{ item.name }}
+                  <img
+                    v-if="item.organizationId"
+                    src="~/assets/images/icons/shares.svg"
+                    alt="Shared"
+                    :title="$t('common.shared_with_you')"
+                    class="inline-block ml-2"
+                  >
+                </a>
+                <div>
+                  {{ item.subTitle }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="td">
+            <span class="label label-warning-light">
+              {{ $t('data.tools.exposed') }} {{ exposedPasswordMap.get(item.id) | formatNumber }} {{ $t('data.tools.times') }}
+            </span>
+          </div>
+        </template>
+      </RecycleScroller>
     </client-only>
   </div>
 </template>
@@ -83,7 +126,8 @@ export default {
   components: { Vnodes },
   data () {
     return {
-      exposedPasswordMap: new Map()
+      exposedPasswordMap: new Map(),
+      loading: false
     }
   },
   computed: {
@@ -97,6 +141,7 @@ export default {
   asyncComputed: {
     exposedPasswordCiphers: {
       async get () {
+        this.loading = true
         const allCiphers = await this.$myCipherService.getAllDecrypted()
         const exposedPasswordCiphers = []
         const promises = []
@@ -113,7 +158,7 @@ export default {
           promises.push(promise)
         })
         await Promise.all(promises)
-
+        this.loading = false
         return exposedPasswordCiphers
       },
       watch: ['$store.state.syncedCiphersToggle']
