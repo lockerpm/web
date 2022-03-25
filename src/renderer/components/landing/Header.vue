@@ -36,13 +36,13 @@
         </template>
         <template v-else>
           <nuxt-link
-            class="nav-item text-black px-4"
+            class="nav-item text-primary font-semibold px-4 self-center"
             to="/login"
           >
             {{ $t('common.login') }}
           </nuxt-link>
           <nuxt-link
-            class="nav-item text-black"
+            class="nav-item btn btn-primary hover:!text-white"
             to="/register"
           >
             {{ $t('common.sign_up') }}
