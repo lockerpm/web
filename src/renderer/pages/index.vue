@@ -262,7 +262,7 @@
       <!--        >-->
       <!--      </div>-->
       <div
-        class="hidden lg:inline-block w-full h-auto text-center mt-20 mb-36 justify-center gap-x-6"
+        class="hidden lg:block w-full h-auto text-center mt-20 mb-36 justify-center gap-x-6"
       >
         <div class="inline w-2/12">
           <img
@@ -289,7 +289,7 @@
           >
         </div>
       </div>
-      <div class="lg:hidden w-full h-[412px] mt-28 mb-16 relative">
+      <!-- <div class="lg:hidden block w-full h-[412px] mt-28 mb-16 relative">
         <img
           src="~/assets/images/landing/index/mobile_rotated.png"
           class="lg:hidden mx-6 my-12 w-[118px] h-[240px] self-end"
@@ -305,7 +305,7 @@
           class="lg:hidden w-[704px] h-[412px]"
           style="position: absolute; bottom: 40px; left: 200px;"
         >
-      </div>
+      </div> -->
     </section>
     <!-- Devices end -->
     <!-- Platforms -->
@@ -318,11 +318,11 @@
           {{ $t('landing.platform.desc') }}
         </p>
       </div>
-      <div class="w-11/12 mx-auto flex flex-wrap md:justify-between justify-center align-start">
+      <div class="w-full mx-auto md:justify-between justify-center align-start grid sm:grid-cols-3 grid-cols-1 sm:pl-0 pl-[25%]">
         <div
           v-for="(item, index) in $t('landing.platform.platforms')"
           :key="index"
-          class="opacity-90 mb-9 max-w-[234px] h-[75px] w-full"
+          class="opacity-90 mb-9"
         >
           <div class="flex flex-flex-nowrap">
             <div class="circle mx-5">
@@ -615,7 +615,7 @@ export default {
         title: 'Mang lại trải nghiệm internet an toàn hơn, tốt hơn cho tất cả mọi người.',
         btn: {
           text: 'Tìm hiểu lợi ích',
-          link: 'benefits'
+          link: 'how-it-works'
         }
       },
       why: {

@@ -42,7 +42,65 @@
         </div>
       </div>
     </section>
-    <section
+    <div class="mt-36 w-full flex flex-wrap bg-[#F5F6F7] rounded-[10px]">
+      <div class="md:w-1/2 w-full">
+        <img src="~/assets/images/landing/download/mobile-app.png" alt="Mobile App">
+      </div>
+      <div class="md:w-1/2 w-full flex flex-col justify-center content-start md:text-left text-center mb-4">
+        <div class="text-head-5 font-semibold">
+          {{ $t('download.download_mobile') }}
+        </div>
+        <div class="max-w-full flex gap-x-4 mt-8 md:justify-start justify-center">
+          <div class="justify-self-center">
+            <a
+              class="w-full sm:w-auto"
+              href="#"
+            >
+              <img src="~/assets/images/landing/download/app_store.svg">
+            </a>
+          </div>
+          <div>
+            <a
+              class="w-full sm:w-auto"
+              href="#"
+            >
+              <img src="~/assets/images/landing/download/gg_play.svg">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 grid-cols-1 gap-8 mt-8 mb-16">
+      <div
+        class="rounded-[10px] bg-[#F5F6F7]"
+      >
+        <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">{{ $t('download.download_extension') }}</h2>
+        <div class="flex">
+          <p class="text-center landing-font-14 w-[400px] mx-auto">{{ $t('download.go_to_chrome_store') }}<span class="text-green"><nuxt-link :to="localeRoute({name: 'vault'})">locker.io/vault</nuxt-link></span></p>
+        </div>
+        <div class="w-full mt-6">
+          <img src="~/assets/images/landing/download/chrome-extension.png" alt="Chrome Extension" class="mx-auto">
+        </div>
+      </div>
+      <div
+        class="rounded-[10px] bg-[#F5F6F7]"
+      >
+        <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">{{ $t('download.web_app') }}</h2>
+        <div class="flex">
+          <p class="text-center landing-font-14 w-[400px] mx-auto">{{ $t('download.go_to_locker') }}<span class="text-green"><nuxt-link :to="localeRoute({name: 'vault'})">locker.io/vault</nuxt-link></span></p>
+        </div>
+        <div class="w-full mt-6 relative">
+          <img src="~/assets/images/landing/download/web-app.png" alt="Web App" class="mx-auto">
+          <nuxt-link
+            class="landing-btn w-full text-center w-[207px] h-[45px] mx-auto absolute bottom-16 left-0 right-0"
+            :to="localeRoute({name: 'vault'})"
+          >
+            locker.io/vault
+          </nuxt-link>
+        </div>
+      </div>
+    </div>
+    <!-- <section
       id="section2"
       class="mt-36 mb-20"
     >
@@ -125,9 +183,6 @@
               </a>
             </div>
           </div>
-          <!--          <div class="w-full">-->
-          <!--            <img src="~/assets/images/landing/download/mobile_app.png">-->
-          <!--          </div>-->
         </div>
         <div
           class="w-[510px] h-auto rounded-xl mb-10 bg-web-app"
@@ -145,7 +200,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- Header end -->
   </div>
 </template>
