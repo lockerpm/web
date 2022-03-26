@@ -27,13 +27,15 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
           '/features',
           '/how-it-works',
           '/plan',
-          '/security'
+          '/security',
+          '/blog',
+          '/'
         ]
         let currentPath = route.path
         if (currentPath.startsWith('/vi')) {
           currentPath = currentPath.slice(3)
         }
-        if (!WHITELIST_PATH.includes(currentPath)) {
+        if (!WHITELIST_PATH.includes(currentPath) && currentPath) {
           redirect(302, '/login')
         }
       }
