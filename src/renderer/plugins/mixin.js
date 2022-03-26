@@ -171,7 +171,7 @@ Vue.mixin({
         this.$store.commit('UPDATE_SYNCING', true)
         this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/vault' : this.$store.state.currentPath }))
       } catch (e) {
-        this.notify('Xác thực thông tin thất bại', 'warning')
+        this.notify(this.$t('data.notifications.authentication_failed'), 'warning')
       }
     },
     async clearKeys () {

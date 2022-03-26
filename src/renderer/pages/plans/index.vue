@@ -49,8 +49,20 @@
                 <!-- <div class="font-semibold mr-3">Monthly</div>
                 <el-switch v-model="periodSwitch" small @change="calcPrice" />
                 <div class="font-semibold ml-3">Yearly</div> -->
-                <button class="btn-round btn-left-round" :class="periodSwitch?'text-black':'text-primary'" @click="periodSwitch=false">{{ $t('data.plans.bill_monthly') }}</button>
-                <button class="btn-round btn-right-round" :class="periodSwitch?'text-primary':'text-black'" @click="periodSwitch=true">{{ $t('data.plans.bill_annually') }} <br> {{ $t('data.plans.bill_annually_desc') }}</button>
+                <button
+                  class="btn-round btn-left-round"
+                  :class="periodSwitch?'text-black':'text-primary'"
+                  @click="periodSwitch=false"
+                >
+                  {{ $t('data.plans.bill_monthly') }}
+                </button>
+                <button
+                  class="btn-round btn-right-round"
+                  :class="periodSwitch?'text-primary':'text-black'"
+                  @click="periodSwitch=true"
+                >
+                  {{ $t('data.plans.bill_annually') }} <br> {{ $t('data.plans.bill_annually_desc') }}
+                </button>
               </div>
             </template>
             <template v-if="step===2">
@@ -104,14 +116,26 @@
                         </template> -->
                         <template>
                           <span :class="periodSwitch?'line-through text-sm text-black':'text-head-3 font-semibold'">${{ item.price.usd | formatNumber }}</span>
-                          <span v-if="periodSwitch" class="text-head-3 font-semibold">${{ (item.yearly_price.usd / 12) | formatNumber }}</span>
+                          <span
+                            v-if="periodSwitch"
+                            class="text-head-3 font-semibold"
+                          >${{ (item.yearly_price.usd / 12) | formatNumber }}</span>
                         </template>
                         <span>/ mo</span>
-                        <span v-if="item.max_number" class="">/ {{ $tc('data.plans.members',item.max_number ,{count: item.max_number}) }} </span>
-                        <span v-else-if="item.alias === 'pm_business_premium'" class="text-black-600">/ {{ $tc('data.plans.members', 1, {count: 1}) }} </span>
+                        <span
+                          v-if="item.max_number"
+                          class=""
+                        >/ {{ $tc('data.plans.members',item.max_number ,{count: item.max_number}) }} </span>
+                        <span
+                          v-else-if="item.alias === 'pm_business_premium'"
+                          class="text-black-600"
+                        >/ {{ $tc('data.plans.members', 1, {count: 1}) }} </span>
                       </div>
                     </template>
-                    <div v-if="periodSwitch" class="flex items-center justify-center mt-1">
+                    <div
+                      v-if="periodSwitch"
+                      class="flex items-center justify-center mt-1"
+                    >
                       <div v-if="item.alias != 'pm_free'">
                         12 months with ${{ item.price.usd * 12 }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">Save {{ discountPercentage(item) }}%</span>
                       </div>
@@ -143,7 +167,12 @@
                   </div>
                 </div> -->
                 <div class="absolute bottom-4 w-full pr-16">
-                  <button :class="currentPlan.alias === item.alias? 'btn-default' : 'btn-primary'" class="btn text-center w-full" :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family'" @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''">
+                  <button
+                    :class="currentPlan.alias === item.alias? 'btn-default' : 'btn-primary'"
+                    class="btn text-center w-full"
+                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' || item.alias==='pm_family'"
+                    @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''"
+                  >
                     {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_plan') }}
                   </button>
                 </div>
@@ -180,23 +209,41 @@
                   >
                     {{ $t('data.plans.add_coupon') }}
                   </button>
-                  <div v-if="havePromoCode" class="flex">
-                    <el-input v-model="promo_code" change="mr-2">
-                      <el-button slot="append" :disabled="!promo_code" @click="calcPrice">Apply</el-button>
+                  <div
+                    v-if="havePromoCode"
+                    class="flex"
+                  >
+                    <el-input
+                      v-model="promo_code"
+                      change="mr-2"
+                    >
+                      <el-button
+                        slot="append"
+                        :disabled="!promo_code"
+                        @click="calcPrice"
+                      >
+                        Apply
+                      </el-button>
                     </el-input>
                     <!-- <el-button type="primary" plain @click="calcPrice">Apply</el-button> -->
                   </div>
-                  <div v-if="result.error_promo" class="text-danger">
+                  <div
+                    v-if="result.error_promo"
+                    class="text-danger"
+                  >
                     {{ result.error_promo.promo_code[0] }}
                   </div>
                 </div>
-                <div v-if="result.discount !== 0" class="setting-section-header text-primary mt-4">
+                <div
+                  v-if="result.discount !== 0"
+                  class="setting-section-header text-primary mt-4"
+                >
                   <div>
                     <div class="setting-title">Discount</div>
                   </div>
                   <div>
                     <div class="font-semibold">
-                      -{{ result.discount | formatNumber }}  {{ result.currency }}
+                      -{{ result.discount | formatNumber }} {{ result.currency }}
                     </div>
                   </div>
                 </div>
@@ -219,7 +266,10 @@
                 </div>
               </div>
             </div>
-            <div v-if="selectedPlan.alias === 'pm_family'" class="setting-wrapper">
+            <div
+              v-if="selectedPlan.alias === 'pm_family'"
+              class="setting-wrapper"
+            >
               <div class="setting-section">
                 <div class="setting-section-header">
                   <div class="text-[20px] font-semibold">{{ $t('data.plans.invite_people') }}</div>
@@ -239,7 +289,10 @@
                       @keyup.enter.native="confirmInputEmail"
                       @input="emailInput"
                     >
-                      <div v-if="emails.length" slot="prepend">
+                      <div
+                        v-if="emails.length"
+                        slot="prepend"
+                      >
                         <el-tag
                           v-for="(email, index) in emails"
                           :key="email"
@@ -250,7 +303,13 @@
                           {{ email }}
                         </el-tag>
                       </div>
-                      <el-button slot="append" :disabled="!emails.length && !inputEmail" @click="confirmInputEmail">{{ $t('common.add') }}</el-button>
+                      <el-button
+                        slot="append"
+                        :disabled="!emails.length && !inputEmail"
+                        @click="confirmInputEmail"
+                      >
+                        {{ $t('common.add') }}
+                      </el-button>
                     </el-input>
                   </div>
                 </div>
@@ -263,16 +322,26 @@
                 <div class="mt-5 px-4 py-6 bg-[#F6F6F6]">
                   <div class="flex mb-6">
                     <div class="flex items-center">
-                      <el-avatar :size="35" :src="currentUser.avatar" class="mr-2" />
+                      <el-avatar
+                        :size="35"
+                        :src="currentUser.avatar"
+                        class="mr-2"
+                      />
                       <div>
                         <p class="text-black">{{ currentUser.email }} (You)</p>
                       </div>
                     </div>
                   </div>
                   <template v-for="(email, index) in family_members">
-                    <div :key="index" class="flex justify-between mb-6">
+                    <div
+                      :key="index"
+                      class="flex justify-between mb-6"
+                    >
                       <div class="flex items-center">
-                        <img src="~/assets/images/icons/Avatar.svg" class="mr-2">
+                        <img
+                          src="~/assets/images/icons/Avatar.svg"
+                          class="mr-2"
+                        >
                         <div>
                           <p class="text-black">{{ email }}</p>
                           <p class="text-black-500">Pending</p>
@@ -290,7 +359,10 @@
                   </template>
                 </div>
 
-                <div v-if="errors.family_members" class="text-danger">
+                <div
+                  v-if="errors.family_members"
+                  class="text-danger"
+                >
                   {{ errors.family_members[0] }}
                 </div>
               </div>
@@ -300,7 +372,10 @@
               class="border rounded p-5 border-black-200 cursor-pointer mt-2"
             >
               <div class="">
-                <el-radio-group v-model="selectedCard" class="w-full">
+                <el-radio-group
+                  v-model="selectedCard"
+                  class="w-full"
+                >
                   <el-radio
                     v-for="item in cards"
                     :key="item.id_card"
@@ -309,12 +384,36 @@
                   >
                     <div class="flex items-center w-[200px]">
                       <div class="bg-[#f5f8fa] w-10 h-10 rounded flex items-center justify-center p-1 mr-4">
-                        <img v-if="item.card_type === 'Visa'" src="~/assets/images/icons/cards/visa.svg" alt="">
-                        <img v-else-if="item.card_type === 'MasterCard'" src="~/assets/images/icons/cards/master.svg" alt="">
-                        <img v-else-if="item.card_type === 'American Express'" src="~/assets/images/icons/cards/amex.svg" alt="">
-                        <img v-else-if="item.card_type === 'Discover'" src="~/assets/images/icons/cards/discover.svg" alt="">
-                        <img v-else-if="item.card_type === 'JCB'" src="~/assets/images/icons/cards/jcb.svg" alt="">
-                        <img v-else src="~/assets/images/icons/cards/card.svg" alt="">
+                        <img
+                          v-if="item.card_type === 'Visa'"
+                          src="~/assets/images/icons/cards/visa.svg"
+                          alt=""
+                        >
+                        <img
+                          v-else-if="item.card_type === 'MasterCard'"
+                          src="~/assets/images/icons/cards/master.svg"
+                          alt=""
+                        >
+                        <img
+                          v-else-if="item.card_type === 'American Express'"
+                          src="~/assets/images/icons/cards/amex.svg"
+                          alt=""
+                        >
+                        <img
+                          v-else-if="item.card_type === 'Discover'"
+                          src="~/assets/images/icons/cards/discover.svg"
+                          alt=""
+                        >
+                        <img
+                          v-else-if="item.card_type === 'JCB'"
+                          src="~/assets/images/icons/cards/jcb.svg"
+                          alt=""
+                        >
+                        <img
+                          v-else
+                          src="~/assets/images/icons/cards/card.svg"
+                          alt=""
+                        >
                       </div>
                       <div class="">
                         <div class="text-black font-bold mb-2">{{ item.card_type }}</div>
@@ -340,12 +439,22 @@
                 </button>
               </div>
             </div>
-            <Payment v-if="paymentVisible || !cards.length" ref="payment" @handle-done="handleDone" @handle-cancel="handleCancel" />
+            <Payment
+              v-if="paymentVisible || !cards.length"
+              ref="payment"
+              @handle-done="handleDone"
+              @handle-cancel="handleCancel"
+            />
             <div class="mt-8">
               <!-- <button :disabled="step===2 && !selectedCard || step===1 && !selectedPlan.alias || step ===3" class="btn btn-primary w-full" @click="step===1?selectedPlan.alias==='pm_family'?addMember():toStep2():confirmPlan()">
                 {{ step===1?'Continue': 'Pay & Upgrade' }}
               </button> -->
-              <el-button :disabled="!selectedCard" :loading="loading" class="btn btn-primary w-full hover:!text-white" @click="confirmPlan()">
+              <el-button
+                :disabled="!selectedCard"
+                :loading="loading"
+                class="btn btn-primary w-full hover:!text-white"
+                @click="confirmPlan()"
+              >
                 Pay & Upgrade
               </el-button>
             </div>
@@ -361,13 +470,22 @@
                   {{ result.total_price }} {{ result.currency }}
                 </div>
               </div> -->
-              <img src="~/assets/images/icons/CheckCircle.svg" class="mx-auto">
+              <img
+                src="~/assets/images/icons/CheckCircle.svg"
+                class="mx-auto"
+              >
               <div class="text-black font-bold text-head-4 mt-1">
                 {{ $t('data.billing.payment_success') }}
               </div>
-              <div class="mt-3" v-html="$t('data.billing.thankyou')" />
+              <div
+                class="mt-3"
+                v-html="$t('data.billing.thankyou')"
+              />
               <div class="mt-6">
-                <button class="btn btn-primary" @click="$router.push(localeRoute({name: 'vault'}))">
+                <button
+                  class="btn btn-primary"
+                  @click="$router.push(localeRoute({name: 'vault'}))"
+                >
                   {{ $t('data.billing.back_to_home') }}
                 </button>
               </div>
@@ -393,13 +511,16 @@
                     </div> -->
                   </div>
                 </div>
-                <div v-if="result.discount !== 0" class="setting-section-header text-primary mt-4">
+                <div
+                  v-if="result.discount !== 0"
+                  class="setting-section-header text-primary mt-4"
+                >
                   <div>
                     <div class="setting-title">Discount</div>
                   </div>
                   <div>
                     <div class="font-semibold">
-                      -{{ result.discount | formatNumber }}  {{ result.currency }}
+                      -{{ result.discount | formatNumber }} {{ result.currency }}
                     </div>
                   </div>
                 </div>
@@ -415,7 +536,10 @@
                 </div>
               </div>
             </div>
-            <div id="import" class="text-[20px] font-semibold mb-4">
+            <div
+              id="import"
+              class="text-[20px] font-semibold mb-4"
+            >
               {{ $t('data.billing.billing_contact') }}
             </div>
             <div class="setting-wrapper">
@@ -424,17 +548,26 @@
                   <div class="setting-title">{{ $t('common.name') }}</div>
                   <div class="setting-description">{{ billing.name }}</div>
                 </div>
-                <div v-if="billing.email" class="mt-4">
+                <div
+                  v-if="billing.email"
+                  class="mt-4"
+                >
                   <div class="setting-title">{{ $t('common.email') }}</div>
                   <div class="setting-description">{{ billing.email }}</div>
                 </div>
-                <div v-if="billing.company" class="mt-4">
+                <div
+                  v-if="billing.company"
+                  class="mt-4"
+                >
                   <div class="setting-title">{{ $t('common.name') }}</div>
                   <div class="setting-description">{{ billing.company }}</div>
                 </div>
               </div>
             </div>
-            <div id="import" class="text-[20px] font-semibold mb-4">
+            <div
+              id="import"
+              class="text-[20px] font-semibold mb-4"
+            >
               {{ $t('data.billing.billing_address') }}
             </div>
             <div class="setting-wrapper">
@@ -443,15 +576,24 @@
                   <div class="setting-title">{{ $t('common.address') }}</div>
                   <div class="setting-description">{{ billing.address }}</div>
                 </div>
-                <div v-if="billing.address_city" class="mt-4">
+                <div
+                  v-if="billing.address_city"
+                  class="mt-4"
+                >
                   <div class="setting-title">{{ $t('common.city') }}</div>
                   <div class="setting-description">{{ billing.address_city }}</div>
                 </div>
-                <div v-if="billing.address_country" class="mt-4">
+                <div
+                  v-if="billing.address_country"
+                  class="mt-4"
+                >
                   <div class="setting-title">{{ $t('common.country') }}</div>
                   <div class="setting-description">{{ billing.address_country }}</div>
                 </div>
-                <div v-if="billing.address_zip" class="mt-4">
+                <div
+                  v-if="billing.address_zip"
+                  class="mt-4"
+                >
                   <div class="setting-title">{{ $t('common.zip') }}</div>
                   <div class="setting-description">{{ billing.address_zip }}</div>
                 </div>
@@ -555,7 +697,10 @@
                 {{ $t(`data.members.invite_member.description`) }}
               </div>
             </div>
-            <div slot="footer" class="dialog-footer flex items-center text-left">
+            <div
+              slot="footer"
+              class="dialog-footer flex items-center text-left"
+            >
               <div class="flex-grow" />
               <div>
                 <button
@@ -596,7 +741,10 @@
             </div>
             <div slot="footer">
               <div class="">
-                <button class="btn btn-default w-full" @click="dialogThank = false">
+                <button
+                  class="btn btn-default w-full"
+                  @click="dialogThank = false"
+                >
                   {{ $t('common.close') }}
                 </button>
               </div>
@@ -987,7 +1135,7 @@ export default {
 }
 </script>
 <style>
-.input-tags .el-input-group__prepend{
+.input-tags .el-input-group__prepend {
   @apply p-0 bg-white;
 }
 /* .input-tags .el-input__inner{
