@@ -9,7 +9,7 @@
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
-          <div class="text-head-5 font-semibold">Security Control</div>
+          <div class="text-head-5 font-semibold">{{ $t('data.settings.security_control') }}</div>
           <div>
             <button
               class="btn btn-default mb-4 md:mb-0"
@@ -155,7 +155,7 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div class="text-head-5 font-semibold">
-            Emergency Access <span><el-badge :value="pendingRequests" class="item" /></span>
+            {{ $t('data.settings.emergency_access') }} <span><el-badge v-if="pendingRequests" :value="pendingRequests" class="item" /></span>
           </div>
         </div>
         <div class="bg-[#F0F0F0] mt-8 py-5 pl-5 pr-10">
@@ -201,7 +201,7 @@
               :data="list_trusted"
               style="width: 100%"
             >
-              <el-table-column label="Users" min-width="200">
+              <el-table-column :label="$t('common.users')" min-width="200">
                 <template slot-scope="scope">
                   <div class="flex items-center">
                     <el-avatar
@@ -216,12 +216,12 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="Status"
+                :label="$t('common.status')"
                 align="right"
                 min-width="120"
               >
                 <template slot="header">
-                  <span>Status</span>
+                  <span>{{ $t('common.status') }}</span>
                 </template>
                 <template slot-scope="scope">
                   <span
@@ -248,12 +248,12 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="Type"
+                :label="$t('data.emergency_access.access_type')"
                 align="right"
                 min-width="100"
               >
                 <template slot="header">
-                  <span>Type <el-tooltip
+                  <span>{{ $t('data.emergency_access.access_type') }} <el-tooltip
                     class="item"
                     effect="dark"
                     placement="top-start"
@@ -340,7 +340,7 @@
               :data="list_granted"
               style="width: 100%"
             >
-              <el-table-column label="Users" min-width="200">
+              <el-table-column :label="$t('common.users')" min-width="200">
                 <template slot-scope="scope">
                   <div class="flex items-center">
                     <el-avatar
@@ -355,7 +355,7 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="Status"
+                :label="$t('common.status')"
                 align="right"
                 min-width="120"
               >
@@ -384,12 +384,12 @@
                 </template>
               </el-table-column>
               <el-table-column
-                label="Type"
+                :label="$t('data.emergency_access.access_type')"
                 align="right"
                 min-width="100"
               >
                 <template slot="header">
-                  <span>Type <el-tooltip
+                  <span>{{ $t('data.emergency_access.access_type') }} <el-tooltip
                     class="item"
                     effect="dark"
                     placement="top-start"
@@ -515,7 +515,7 @@
       <div class="text-left">
         <div class="text-left">
           <div class="form-group !mb-4">
-            <label for="">Nhập Master Password</label>
+            <label for="">{{ $t('master_password.new_password') }}</label>
             <div class="input-group mb-1.5">
               <input
                 v-model="masterPassword"
@@ -544,7 +544,7 @@
             />
           </div>
           <div class="form-group !mb-4">
-            <label for="">Xác nhận Master Password</label>
+            <label for="">{{ $t('master_password.re_password') }}</label>
             <div
               class="input-group"
               :class="[errors.masterRePassword ? 'is-invalid' :'']"
@@ -581,13 +581,13 @@
         <div>
           <button
             class="btn btn-default"
-            @click="dialogConfirmVisible = false"
+            @click="dialogTakeoverVisible = false"
           >
             {{ $t('common.cancel') }}
           </button>
           <button
             class="btn btn-primary"
-            :disabled="loadingSetPassword"
+            :disabled="loadingSetPassword || !masterPassword || masterPassword!=masterRePassword"
             @click="setPasswordForGrantor()"
           >
             {{ $t('common.confirm') }}
@@ -633,14 +633,7 @@ export default {
       showPassword: false,
       showRePassword: false,
       loadingSetPassword: false,
-      emergencyAccessStatus: {
-        invited: 'Invited',
-        accepted: 'Accepted',
-        confirmed: 'Confirmed',
-        expired: 'Expired',
-        recovery_initiated: 'Recovery initiated',
-        recovery_approved: 'Recovery approved'
-      }
+      emergencyAccessStatus: this.$t('data.emergency_access.status')
     }
   },
   computed: {
