@@ -78,10 +78,10 @@
               <div class="flex items-center justify-between">
                 <div class="">
                   <div class="text-lg font-semibold mb-2">
-                    Invitation to become an emergency contact
+                    {{ $t('data.emergency_access.invitation') }}
                   </div>
                   <div class="text-black-600 mb-5">
-                    You’ve been invited to become an emergency contact for {{ invitation.full_name }}.<br>Access type: {{ invitation.type }}
+                    {{ $t('data.emergency_access.invitation_details') }} {{ invitation.full_name }}.<br>{{ $t('data.emergency_access.access_type') }}: {{ invitation.type }}
                   </div>
                   <div>
                     <button
@@ -89,14 +89,14 @@
                       :disabled="loading2"
                       @click="deleteEmergencyAccess(invitation)"
                     >
-                      Từ chối
+                      {{ $t('common.decline') }}
                     </button>
                     <button
                       class="btn btn-primary"
                       :disabled="loading2"
                       @click="acceptEmergencyAccessInvitation(invitation.id)"
                     >
-                      Đồng ý
+                      {{ $t('common.accept') }}
                     </button>
                   </div>
                 </div>
@@ -180,7 +180,7 @@ export default {
   },
   created () {
     if (this.$route.query.client === 'browser') {
-      this.notify('Locker extension has been logged in. Now you can use Locker extension by clicking the icon from toolbar', 'success')
+      this.notify(this.$t('data.notifications.extension_loggedin'), 'success')
     }
   },
   mounted () {
