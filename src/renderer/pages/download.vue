@@ -76,7 +76,7 @@
       >
         <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">{{ $t('download.download_extension') }}</h2>
         <div class="flex">
-          <p class="text-center landing-font-14 w-[400px] mx-auto">{{ $t('download.go_to_chrome_store') }}<span class="text-green"><nuxt-link :to="localeRoute({name: 'vault'})">locker.io/vault</nuxt-link></span></p>
+          <p class="text-center landing-font-14 w-[400px] mx-auto">{{ $t('download.go_to_chrome_store') }}<span class="text-green"><a href="https://chrome.google.com/webstore/detail/locker-free-password-mana/cmajindocfndlkpkjnmjpjoilibjgmgh" target="_blank">Chrome Web Store</a></span></p>
         </div>
         <div class="w-full mt-6">
           <img src="~/assets/images/landing/download/chrome-extension.png" alt="Chrome Extension" class="mx-auto">
