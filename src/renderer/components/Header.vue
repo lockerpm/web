@@ -33,18 +33,24 @@
           <el-dropdown-item
             class="text-warning"
             icon="fa fa-user-circle"
-            @click.native="go('settings')"
+            @click.native="go('settings-account')"
           >
             {{ $t('data.profile_menu.account_settings') }}
           </el-dropdown-item>
           <el-dropdown-item class="text-warning" icon="far fa-life-ring">
-            {{ $t('data.profile_menu.support_center') }}
+            <a class="hover:no-underline text-current hover:text-current" :href="locale==='vi'?'https://support.locker.io/vi':'https://support.locker.io'" target="_blank">
+              {{ $t('data.profile_menu.support_center') }}
+            </a>
           </el-dropdown-item>
           <el-dropdown-item class="text-warning" icon="far fa-flag">
-            {{ $t('data.profile_menu.tour') }}
+            <a class="hover:no-underline text-current hover:text-current" :href="locale==='vi'?'https://support.locker.io/vi':'https://support.locker.io'" target="_blank">
+              {{ $t('data.profile_menu.tour') }}
+            </a>
           </el-dropdown-item>
           <el-dropdown-item class="text-warning" icon="far fa-comment">
-            {{ $t('data.profile_menu.feedback') }}
+            <a class="hover:no-underline text-current hover:text-current" href="https://zo8rr5fc706.typeform.com/to/OotlSyQ7" target="_blank">
+              {{ $t('data.profile_menu.feedback') }}
+            </a>
           </el-dropdown-item>
           <el-dropdown-item icon="fas fa-lock" @click.native="lock">
             {{ $t('data.profile_menu.lock') }}
