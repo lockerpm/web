@@ -64,7 +64,7 @@
           >
             <nuxt-link
               class="inline-block nav-item text-black landing-transition"
-              :to="item.link"
+              :to="localeRoute({name: item.link})"
             >
               {{ item.name }}
             </nuxt-link>

@@ -687,7 +687,7 @@
                   <i class="fas fa-external-link-square-alt" />
                 </button>
                 <el-dropdown
-                  v-if="!item.isDeleted"
+                  v-if="!item.isDeleted && [CipherType.Login, CipherType.SecureNote].includes(item.type)"
                   trigger="click"
                   :hide-on-click="false"
                 >
@@ -714,7 +714,6 @@
                       <el-dropdown-item
                         v-clipboard:copy="item.notes"
                         v-clipboard:success="clipboardSuccessHandler"
-                        divided
                       >
                         {{ $t('common.copy') }} {{ $t('common.note') }}
                       </el-dropdown-item>
