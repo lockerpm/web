@@ -29,12 +29,13 @@
                 {{ $t('data.settings.learn_about_secure_desc') }}
               </div>
               <div>
-                <button
-                  class="btn btn-default mb-4 md:mb-0 !bg-[#CBCBCB]"
-                  @click="changeMasterPassword"
+                <a
+                  class="btn btn-default mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current"
+                  :href="`https://locker.io${locale==='vi'?'/vi':''}/security`"
+                  target="_blank"
                 >
                   <span>{{ $t('data.settings.learn_about_secure') }}</span>
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -168,12 +169,13 @@
                 {{ $t('data.settings.learn_about_emergency_access_desc') }}
               </div>
               <div>
-                <button
-                  class="btn btn-default mb-4 md:mb-0 !bg-[#CBCBCB]"
-                  @click="changeMasterPassword"
+                <a
+                  class="btn btn-default mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current"
+                  href="https://support.locker.io/articles/set-up-and-use-emergency-access"
+                  target="_blank"
                 >
                   <span>{{ $t('data.settings.learn_about_emergency_access') }}</span>
-                </button>
+                </a>
               </div>
             </div>
           </div>

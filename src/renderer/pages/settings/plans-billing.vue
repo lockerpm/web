@@ -59,10 +59,10 @@
               <template v-if="ciphers.passwords">
                 <div class="flex justify-between">
                   <div>
-                    Password
+                    {{ $tc('type.Login', 2) }}
                   </div>
                   <div>
-                    {{ ciphers.passwords.length }}/200
+                    {{ ciphers.passwords.length }}/100
                   </div>
                 </div>
                 <el-progress :show-text="false" :percentage="ciphers.passwords.length*100/200" :status="cipherStatus(ciphers.passwords.length)" />
@@ -70,10 +70,10 @@
               <template v-if="ciphers.notes">
                 <div class="flex justify-between mt-4">
                   <div>
-                    Note
+                    {{ $tc('type.SecureNote', 2) }}
                   </div>
                   <div>
-                    {{ ciphers.notes.length }}/200
+                    {{ ciphers.notes.length }}/50
                   </div>
                 </div>
                 <el-progress :show-text="false" :percentage="ciphers.notes.length*100/200" :status="cipherStatus(ciphers.notes.length)" />
@@ -81,10 +81,10 @@
               <template v-if="ciphers.cards">
                 <div class="flex justify-between mt-4">
                   <div>
-                    Cards
+                    {{ $tc('type.Card', 2) }}
                   </div>
                   <div>
-                    {{ ciphers.cards.length }}/200
+                    {{ ciphers.cards.length }}/5
                   </div>
                 </div>
                 <el-progress :show-text="false" :percentage="ciphers.cards.length*100/200" :status="cipherStatus(ciphers.cards.length)" />
@@ -92,10 +92,10 @@
               <div v-if="ciphers.identities">
                 <div class="flex justify-between mt-4">
                   <div>
-                    Identities
+                    {{ $tc('type.Identity', 2) }}
                   </div>
                   <div>
-                    {{ ciphers.identities.length }}/200
+                    {{ ciphers.identities.length }}/10
                   </div>
                 </div>
                 <el-progress :show-text="false" :percentage="ciphers.identities.length*100/200" :status="cipherStatus(ciphers.identities.length)" />
@@ -103,7 +103,7 @@
             </template>
           </div>
           <div v-else class="text-center font-semibold">
-            Unlimited
+            {{ $t('common.unlimited') }}
           </div>
         </div>
       </div>
@@ -124,12 +124,12 @@
                 {{ $t('data.settings.learn_about_secure_desc') }}
               </div>
               <div>
-                <a href="#">
-                  <button
-                    class="btn btn-default mb-4 md:mb-0 !bg-[#CBCBCB]"
-                  >
-                    <span>{{ $t('data.settings.learn_about_secure') }}</span>
-                  </button>
+                <a
+                  class="btn btn-default mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current"
+                  :href="`https://locker.io${locale==='vi'?'/vi':''}/security`"
+                  target="_blank"
+                >
+                  <span>{{ $t('data.settings.learn_about_secure') }}</span>
                 </a>
               </div>
             </div>
