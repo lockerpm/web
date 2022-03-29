@@ -42,11 +42,11 @@
               {{ $t('data.profile_menu.support_center') }}
             </a>
           </el-dropdown-item>
-          <el-dropdown-item class="text-warning" icon="far fa-flag">
+          <!-- <el-dropdown-item class="text-warning" icon="far fa-flag">
             <a class="hover:no-underline text-current hover:text-current" :href="locale==='vi'?'https://support.locker.io/vi':'https://support.locker.io'" target="_blank">
               {{ $t('data.profile_menu.tour') }}
             </a>
-          </el-dropdown-item>
+          </el-dropdown-item> -->
           <el-dropdown-item class="text-warning" icon="far fa-comment">
             <a class="hover:no-underline text-current hover:text-current" href="https://zo8rr5fc706.typeform.com/to/OotlSyQ7" target="_blank">
               {{ $t('data.profile_menu.feedback') }}

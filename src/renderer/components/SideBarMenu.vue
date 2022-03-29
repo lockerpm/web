@@ -12,7 +12,9 @@
     </button>
     <div>
       <div class="mt-7 px-6">
-        <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
+        <nuxt-link :to="localeRoute({name: 'vault'})">
+          <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
+        </nuxt-link>
       </div>
       <nav class="mt-7">
         <template
@@ -114,6 +116,16 @@
           </div>
           <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
         </nuxt-link>
+        <a
+          href="https://zo8rr5fc706.typeform.com/to/OotlSyQ7"
+          target="_blank"
+          class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+        >
+          <div class="mr-2 w-[22px] h-[22px] flex items-center">
+            <img :src="require('~/assets/images/icons/help.svg')" alt="feedback">
+          </div>
+          <span class="text-sm font-medium">{{ $t('sidebar.feedback') }} </span>
+        </a>
       </nav>
     </div>
   </div>
@@ -202,17 +214,17 @@ export default {
           label: 'settings',
           routeName: 'settings-account',
           icon: 'setting'
-        },
+        }
         // {
         //   label: 'tools',
         //   routeName: 'tools',
         //   icon: 'tools'
         // }
-        {
-          label: 'help',
-          routeName: 'help-feedback',
-          icon: 'help'
-        }
+        // {
+        //   label: 'help',
+        //   routeName: 'help-feedback',
+        //   icon: 'help'
+        // }
       ]
     }
   },
