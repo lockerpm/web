@@ -144,7 +144,7 @@ export default {
   data () {
     return {
       selectedType: 'csv',
-      exportFormats: ['csv', 'json', 'encrypted_json'],
+      exportFormats: ['csv', 'json'],
       format: 'cystackjson',
       file: null,
       fileContents: '',
@@ -273,7 +273,7 @@ export default {
 
       ciphers = await this.$myCipherService.getAllDecrypted()
       // ciphers = ciphers.filter(c => c.organizationId === null)
-      // ciphers = ciphers.filter(c => c.deletedDate === null)
+      ciphers = ciphers.filter(c => c.deletedDate === null)
       // ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
       if (format === 'csv') {
         const foldersMap = new Map()
@@ -339,7 +339,7 @@ export default {
       folders = await this.$folderService.getAll()
       ciphers = await this.$myCipherService.getAll()
       // ciphers = ciphers.filter(c => c.organizationId === null)
-      // ciphers = ciphers.filter(c => c.deletedDate === null)
+      ciphers = ciphers.filter(c => c.deletedDate === null)
       // ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
       const encKeyValidation = await this.$cryptoService.encrypt(Utils.newGuid())
       const jsonDoc = {
