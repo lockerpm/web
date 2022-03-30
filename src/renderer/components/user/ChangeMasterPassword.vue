@@ -106,6 +106,10 @@ export default {
       this.dialogVisible = false
     },
     async changePass () {
+      if (this.masterPassword.length < 8) {
+        this.notify(this.$t('data.notifications.invalid_master_password'), 'error')
+        return
+      }
       try {
         this.loading = true
         const kdf = 0

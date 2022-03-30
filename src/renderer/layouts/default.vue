@@ -168,7 +168,7 @@ export default {
       }
       if (newValue === false) {
         this.$store.dispatch('LoadTeams')
-        console.log('unlocked sync')
+        // console.log('unlocked sync')
         this.getSyncData()
         // this.getInvitations()
         this.getEmergencyAccessInvitations()
@@ -345,7 +345,7 @@ export default {
         const data = JSON.parse(message.data)
         switch (data.event) {
         case 'sync':
-          console.log('socket sync')
+          // console.log('socket sync')
           this.getSyncData()
           this.getShareInvitations()
           break

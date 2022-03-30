@@ -129,9 +129,13 @@ export default {
   },
   methods: {
     async setMasterPass () {
-      this.loading = true
       await this.clearKeys()
+      if (this.masterPassword.length < 8) {
+        this.notify(this.$t('data.notifications.invalid_master_password'), 'error')
+        return
+      }
       try {
+        this.loading = true
         const kdf = 0
         const kdfIterations = 100000
         const referenceData = ''

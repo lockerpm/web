@@ -521,7 +521,7 @@ export default {
     async encryptCipher (cipher, orgKey, sharedCiphers) {
       let _orgKey = orgKey
       if (cipher.organizationId) { // check if the cipher is shared
-        console.log(cipher.organizationId)
+        // console.log(cipher.organizationId)
         _orgKey = await this.$cryptoService.getOrgKey(cipher.organizationId)
       }
       const cipherEnc = await this.$cipherService.encrypt(cipher, _orgKey)

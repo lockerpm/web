@@ -81,7 +81,7 @@ export default {
       const keyHash = await this.$cryptoService.hashPassword(this.password, null)
       const storedKeyHash = await this.$cryptoService.getKeyHash()
       if (storedKeyHash != null && keyHash != null && storedKeyHash === keyHash) {
-        console.log(keyHash)
+        // console.log(keyHash)
         this.$emit('done', keyHash)
         this.closeDialog()
       } else {
