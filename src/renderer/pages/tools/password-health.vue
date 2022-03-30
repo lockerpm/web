@@ -308,6 +308,7 @@ export default {
       }
 
       allCiphers.forEach(c => {
+        // this.passwordStrengthCache = new Map()
         if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted) {
           return
         }

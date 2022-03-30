@@ -841,15 +841,19 @@ export default {
       this.selectedEmergencyAccess = item
     },
     async setPasswordForGrantor () {
+      if (this.masterPassword.length < 8) {
+        this.notify(this.$t('data.notifications.invalid_master_password'), 'error')
+        return
+      }
       try {
         this.loadingSetPassword = true
         const response = await this.$axios.$post(`/cystack_platform/pm/emergency_access/${this.selectedEmergencyAccess.id}/takeover`)
         const oldKeyBuffer = await this.$cryptoService.rsaDecrypt(response.key_encrypted)
-        console.log('oldKeyBuffer: ', oldKeyBuffer)
+        // console.log('oldKeyBuffer: ', oldKeyBuffer)
         const oldEncKey = new SymmetricCryptoKey(oldKeyBuffer)
-        console.log('oldEnKey: ', oldEncKey)
+        // console.log('oldEnKey: ', oldEncKey)
         if (oldEncKey == null) {
-          console.log('oldEncKey')
+          // console.log('oldEncKey')
           this.notify(this.$t('data.notifications.error_occurred'), 'warning')
           return
         }
