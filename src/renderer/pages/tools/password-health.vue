@@ -161,6 +161,9 @@
 <script>
 import LazyHydrate from 'vue-lazy-hydration'
 import { CipherType } from '../../jslib/src/enums'
+// import Worker from '../../plugins/password-health.worker'
+
+// const worker = new Worker()
 export default {
   components: { LazyHydrate },
   data () {
@@ -171,7 +174,9 @@ export default {
       weakPasswordCiphers: [],
       reusedPasswordCiphers: [],
       ciphers: [],
-      loading: false
+      loading: false,
+      loadingWeak: false,
+      loadingReused: false
     }
   },
   watch: {
@@ -179,107 +184,115 @@ export default {
       if (newValue.alias === 'pm_free') {
         this.$router.push('/vault')
       }
+    },
+    '$store.state.syncedCiphersToggle' () {
+      this.$myCipherService.getAllDecrypted().then(result => {
+        this.ciphers = result
+        this.loading = true
+        setTimeout(() => {
+          this.weakPasswordCiphers = this.getWeakPasswordCiphers()
+          this.reusedPasswordCiphers = this.getReusedPasswordCiphers()
+          this.loading = false
+        }, 100)
+      })
     }
   },
-  mounted () {
+  async mounted () {
     if (this.currentPlan.alias === 'pm_free') {
       this.$router.push('/vault')
     }
-    // this.loading = true
-    // this.ciphers = await this.$myCipherService.getAllDecrypted()
-    // this.weakPasswordCiphers = await this.getWeakPasswordCiphers()
-    // setTimeout(async () => {
-    //   this.reusedPasswordCiphers = this.getReusedPasswordCiphers()
-    //   this.loading = false
-    // }, 1000)
+    this.loading = true
+    this.ciphers = await this.$myCipherService.getAllDecrypted()
+    setTimeout(() => {
+      this.weakPasswordCiphers = this.getWeakPasswordCiphers()
+      this.reusedPasswordCiphers = this.getReusedPasswordCiphers()
+      this.loading = false
+    }, 300)
+    // worker.onmessage = ({ data }) => {
+    //   this.reusedPasswordCiphers = data.reused
+    //   this.passwordUseMap = data.use_map
+    // }
   },
-  asyncComputed: {
-    // ciphers: {
-    //   async get () {
-    //     this.loading = true
-    //     const result = await this.$myCipherService.getAllDecrypted()
-    //     return result
-    //   },
-    //   watch: ['$store.state.syncedCiphersToggle']
-    // },
-    weakPasswordCiphers: {
-      async get () {
-        this.loading = true
-        const allCiphers = await this.$myCipherService.getAllDecrypted()
-        // const allCiphers = this.ciphers
-        const weakPasswordCiphers = []
-        const isUserNameNotEmpty = c => {
-          return c.login.username != null && c.login.username.trim() !== ''
-        }
-        const getCacheKey = c => {
-          return c.login.password + '_____' + (isUserNameNotEmpty(c) ? c.login.username : '')
-        }
+  // asyncComputed: {
+  //   weakPasswordCiphers: {
+  //     async get () {
+  //       this.loadingWeak = true
+  //       const startTime = Date.now()
+  //       const allCiphers = await this.$myCipherService.getAllDecrypted()
+  //       const weakPasswordCiphers = []
+  //       const isUserNameNotEmpty = c => {
+  //         return c.login.username != null && c.login.username.trim() !== ''
+  //       }
+  //       const getCacheKey = c => {
+  //         return c.login.password + '_____' + (isUserNameNotEmpty(c) ? c.login.username : '')
+  //       }
 
-        allCiphers.forEach(c => {
-          if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted) {
-            return
-          }
-          const hasUserName = isUserNameNotEmpty(c)
-          const cacheKey = getCacheKey(c)
-          if (!this.passwordStrengthCache.has(cacheKey)) {
-            let userInput = []
-            if (hasUserName) {
-              const atPosition = c.login.username.indexOf('@')
-              if (atPosition > -1) {
-                userInput = userInput.concat(
-                  c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
-                  .filter(i => i.length >= 3)
-              } else {
-                userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
-                  .filter(i => i.length >= 3)
-              }
-            }
-            const result = this.$passwordGenerationService.passwordStrength(c.login.password,
-              userInput.length > 0 ? userInput : null)
-            this.passwordStrengthCache.set(cacheKey, result.score)
-          }
-          const score = this.passwordStrengthCache.get(cacheKey)
-          if (score != null && score <= 2) {
-            this.passwordStrengthMap.set(c.id, score)
-            weakPasswordCiphers.push(c)
-          }
-        })
-        weakPasswordCiphers.sort((a, b) => {
-          return this.passwordStrengthCache.get(getCacheKey(a)) -
-              this.passwordStrengthCache.get(getCacheKey(b))
-        })
-
-        return weakPasswordCiphers
-      },
-      watch: ['$store.state.syncedCiphersToggle']
-      // watch: ['ciphers']
-    },
-    reusedPasswordCiphers: {
-      async get () {
-        const allCiphers = await this.$myCipherService.getAllDecrypted()
-        // const allCiphers = this.ciphers
-        const ciphersWithPasswords = []
-        this.passwordUseMap = new Map()
-        allCiphers.forEach(c => {
-          if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted) {
-            return
-          }
-          ciphersWithPasswords.push(c)
-          if (this.passwordUseMap.has(c.login.password)) {
-            this.passwordUseMap.set(c.login.password, this.passwordUseMap.get(c.login.password) + 1)
-          } else {
-            this.passwordUseMap.set(c.login.password, 1)
-          }
-        })
-        const reusedPasswordCiphers = ciphersWithPasswords.filter(c =>
-          this.passwordUseMap.has(c.login.password) && this.passwordUseMap.get(c.login.password) > 1)
-        this.loading = false
-        return reusedPasswordCiphers
-      },
-      watch: ['$store.state.syncedCiphersToggle']
-      // watch: ['ciphers']
-    }
-  },
+  //       allCiphers.forEach(c => {
+  //         this.passwordStrengthCache = new Map()
+  //         if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted) {
+  //           return
+  //         }
+  //         const hasUserName = isUserNameNotEmpty(c)
+  //         const cacheKey = getCacheKey(c)
+  //         if (!this.passwordStrengthCache.has(cacheKey)) {
+  //           let userInput = []
+  //           if (hasUserName) {
+  //             const atPosition = c.login.username.indexOf('@')
+  //             if (atPosition > -1) {
+  //               userInput = userInput.concat(
+  //                 c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
+  //                 .filter(i => i.length >= 3)
+  //             } else {
+  //               userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
+  //                 .filter(i => i.length >= 3)
+  //             }
+  //           }
+  //           const result = this.$passwordGenerationService.passwordStrength(c.login.password,
+  //             userInput.length > 0 ? userInput : null)
+  //           this.passwordStrengthCache.set(cacheKey, result.score)
+  //         }
+  //         const score = this.passwordStrengthCache.get(cacheKey)
+  //         if (score != null && score <= 2) {
+  //           this.passwordStrengthMap.set(c.id, score)
+  //           weakPasswordCiphers.push(c)
+  //         }
+  //       })
+  //       weakPasswordCiphers.sort((a, b) => {
+  //         return this.passwordStrengthCache.get(getCacheKey(a)) -
+  //             this.passwordStrengthCache.get(getCacheKey(b))
+  //       })
+  //       this.loadingWeak = false
+  //       console.log(Date.now() - startTime)
+  //       return weakPasswordCiphers
+  //     },
+  //     watch: ['$store.state.syncedCiphersToggle']
+  //   },
+  //   reusedPasswordCiphers: {
+  //     async get () {
+  //       this.loadingReused = true
+  //       console.log('reusedpass')
+  //       const allCiphers = await this.$myCipherService.getAllDecrypted()
+  //       const ciphersWithPasswords = []
+  //       this.passwordUseMap = new Map()
+  //       allCiphers.forEach(c => {
+  //         if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted) {
+  //           return
+  //         }
+  //         ciphersWithPasswords.push(c)
+  //         if (this.passwordUseMap.has(c.login.password)) {
+  //           this.passwordUseMap.set(c.login.password, this.passwordUseMap.get(c.login.password) + 1)
+  //         } else {
+  //           this.passwordUseMap.set(c.login.password, 1)
+  //         }
+  //       })
+  //       const reusedPasswordCiphers = ciphersWithPasswords.filter(c =>
+  //         this.passwordUseMap.has(c.login.password) && this.passwordUseMap.get(c.login.password) > 1)
+  //       this.loadingReused = false
+  //       return reusedPasswordCiphers
+  //     },
+  //     watch: ['$store.state.syncedCiphersToggle']
+  //   }
+  // },
   methods: {
     go (route) {
       this.$router.push(this.localeRoute(route))
@@ -298,23 +311,22 @@ export default {
         if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted) {
           return
         }
-        const hasUserName = isUserNameNotEmpty(c)
+        // const hasUserName = isUserNameNotEmpty(c)
         const cacheKey = getCacheKey(c)
         if (!this.passwordStrengthCache.has(cacheKey)) {
-          let userInput = []
-          if (hasUserName) {
-            const atPosition = c.login.username.indexOf('@')
-            if (atPosition > -1) {
-              userInput = userInput.concat(
-                c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
-                .filter(i => i.length >= 3)
-            } else {
-              userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
-                .filter(i => i.length >= 3)
-            }
-          }
-          const result = this.$passwordGenerationService.passwordStrength(c.login.password,
-            userInput.length > 0 ? userInput : null)
+          // let userInput = []
+          // if (hasUserName) {
+          //   const atPosition = c.login.username.indexOf('@')
+          //   if (atPosition > -1) {
+          //     userInput = userInput.concat(
+          //       c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
+          //       .filter(i => i.length >= 3)
+          //   } else {
+          //     userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
+          //       .filter(i => i.length >= 3)
+          //   }
+          // }
+          const result = this.$passwordGenerationService.passwordStrength(c.login.password)
           this.passwordStrengthCache.set(cacheKey, result.score)
         }
         const score = this.passwordStrengthCache.get(cacheKey)
@@ -346,7 +358,6 @@ export default {
       })
       const reusedPasswordCiphers = ciphersWithPasswords.filter(c =>
         this.passwordUseMap.has(c.login.password) && this.passwordUseMap.get(c.login.password) > 1)
-      this.loading = false
       return reusedPasswordCiphers
     }
   }
