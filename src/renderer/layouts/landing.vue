@@ -1,5 +1,6 @@
 <template>
   <div>
+    <TopBanner />
     <Header />
     <div class="max-w-6xl mx-auto">
       <div class="w-full px-6">
@@ -13,6 +14,7 @@
 <script>
 import Header from '../components/landing/Header'
 import Footer from '../components/landing/Footer'
+import TopBanner from '../components/landing/TopBanner'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
@@ -22,7 +24,8 @@ if (process.env.CS_ENV !== 'web') {
 export default {
   components: {
     Header,
-    Footer
+    Footer,
+    TopBanner
   },
   data () {
     return {
