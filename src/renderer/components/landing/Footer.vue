@@ -160,6 +160,15 @@ export default {
   methods: {
     setLocale (locale) {
       this.changeLang(locale)
+      setTimeout(() => {
+        if (this.$route.path.startsWith('/vi/blog') && locale === 'en') {
+          this.$router.push('/blog')
+          return
+        }
+        if (this.$route.path.startsWith('/blog') && locale === 'vi') {
+          this.$router.push('/vi/blog')
+        }
+      }, 200)
     }
 
   }
