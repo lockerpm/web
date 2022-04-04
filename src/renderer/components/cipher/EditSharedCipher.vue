@@ -90,7 +90,7 @@ export default {
   computed: {
     roleOptions () {
       return [
-        { label: this.$t('data.ciphers.only_use'), value: 'member-hide_passwords' },
+        // { label: this.$t('data.ciphers.only_use'), value: 'member-hide_passwords' },
         { label: this.$t('data.ciphers.viewable'), value: 'member' },
         { label: this.$t('data.ciphers.editable'), value: 'admin' }
       ]

@@ -322,6 +322,9 @@
                         </el-dropdown-item>
                       </template>
                       <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'invited'">
+                        <el-dropdown-item @click.native="editShareType(scope.row)">
+                          {{ $t('common.edit') }}
+                        </el-dropdown-item>
                         <el-dropdown-item @click.native="stopSharing(scope.row)">
                           {{ $t('common.cancel') }}
                         </el-dropdown-item>
