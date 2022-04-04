@@ -219,6 +219,7 @@ export default {
   }
   &.is-focus .cs-textarea, &.have-value .cs-textarea {
     padding-top: 8px;
+    margin-top: 8px;
   }
   &.is-disabled {
     cursor: not-allowed;
