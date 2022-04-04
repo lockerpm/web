@@ -169,14 +169,14 @@
             </div>
             <TextHaveCopy :label="$t('data.ciphers.phone')" :text="cipher.cryptoAccount.phone" />
             <TextHaveCopy :label="$t('data.ciphers.recovery_email')" :text="cipher.cryptoAccount.emailRecovery" />
-            <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoAccount.notes" />
+            <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoAccount.notes" :text-area="true" />
           </template>
           <template v-if="cipher.type === CipherType.CryptoWallet && cipher.cryptoWallet">
             <TextHaveCopy label="Email" :text="cipher.cryptoWallet.email" />
             <TextHaveCopy :label="$t('data.ciphers.seed')" :text="cipher.cryptoWallet.seed" />
-            <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoWallet.notes" />
+            <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoWallet.notes" :text-area="true" />
           </template>
-          <TextHaveCopy v-if="![CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type)" :label="$t('data.ciphers.notes')" :text="cipher.notes" />
+          <TextHaveCopy v-if="![CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type)" :label="$t('data.ciphers.notes')" :text="cipher.notes" :text-area="true" />
           <div class="grid md:grid-cols-6 cipher-item">
             <div class="">{{ $t('data.ciphers.owned_by') }}</div>
             <div class="col-span-4 font-semibold flex items-center">
