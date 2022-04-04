@@ -123,7 +123,7 @@
             <TextHaveCopy :label="$t('data.ciphers.cvv')" :text="cipher.card.code" should-hide :view-password="cipher.viewPassword" />
           </template>
           <template v-if="cipher.type === CipherType.Identity">
-            <TextHaveCopy :label="$t('data.ciphers.title')" :text="cipher.identity.title" />
+            <TextHaveCopy :label="$t('data.ciphers.title')" :text="cipher.identity.title?$t(`common.${cipher.identity.title}`):null" />
             <TextHaveCopy :label="$t('data.ciphers.first_name')" :text="cipher.identity.firstName" />
             <TextHaveCopy :label="$t('data.ciphers.last_name')" :text="cipher.identity.lastName" />
             <TextHaveCopy label="Username" :text="cipher.identity.username" />
