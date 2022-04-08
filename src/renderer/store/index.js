@@ -24,7 +24,8 @@ export const state = () => ({
   currentTeam: {},
   currentPlan: {},
   cipherCount: null,
-  pendingShares: 0
+  pendingShares: 0,
+  extensionLoggedIn: false
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -102,6 +103,9 @@ export const mutations = {
   },
   UPDATE_PENDING_SHARES (state, value) {
     state.pendingShares = value
+  },
+  UPDATE_LOGIN_EXTENSION (state, value) {
+    state.extensionLoggedIn = value
   }
 }
 export const actions = {

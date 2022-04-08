@@ -39,6 +39,9 @@ Vue.mixin({
     },
     blog_categories () {
       return this.$t('blog.categories')
+    },
+    extensionLoggedIn () {
+      return this.$store.state.extensionLoggedIn
     }
   },
   mounted () {

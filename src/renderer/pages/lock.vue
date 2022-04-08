@@ -134,6 +134,12 @@ export default {
       loadingSend: false
     }
   },
+  mounted () {
+    if (this.extensionLoggedIn) {
+      this.notify(this.$t('data.notifications.extension_loggedin'), 'success')
+      this.$store.commit('UPDATE_LOGIN_EXTENSION', false)
+    }
+  },
   methods: {
     async setMasterPass () {
       this.loading = true
