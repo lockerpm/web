@@ -62,7 +62,8 @@
           <div>
             <a
               class="w-full sm:w-auto"
-              href="#"
+              href="https://play.google.com/store/apps/details?id=com.cystack.locker"
+              target="_blank"
             >
               <img src="~/assets/images/landing/download/gg_play.svg">
             </a>

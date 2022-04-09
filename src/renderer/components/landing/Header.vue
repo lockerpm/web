@@ -9,7 +9,7 @@
         <nuxt-link to="/">
           <img
             src="~/assets/images/logo/logo_black.svg"
-            alt="CyStack Locker"
+            alt="Locker"
             class="h-[36px]"
           >
         </nuxt-link>
