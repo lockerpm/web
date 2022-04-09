@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     updateLoginExtension (response) {
-      console.log(response)
+      // console.log(response)
       // eslint-disable-next-line no-undef
       if (response && !response.success) { console.log(response) }
       if (response && response.success && this.$route.query.client === 'browser') {
@@ -46,7 +46,7 @@ export default {
               SERVICE_SCOPE: 'pwdmanager',
               CLIENT: 'browser'
             }).then(async result => {
-              console.log(result)
+              // console.log(result)
               const extensionToken = result.data ? result.data.access_token : ''
               // eslint-disable-next-line no-undef
               chrome.runtime.sendMessage(lockerExtensionId, { command: 'cs-authResult', token: extensionToken }, response => this.updateLoginExtension(response))
