@@ -94,7 +94,7 @@
           <div class="text-black-700 font-semibold">{{ cipher.name }}</div>
         </template>
         <template v-else>
-          <div class="text-black-700 font-semibold">New share</div>
+          <div class="text-black-700 font-semibold">{{ $t('data.sharing.new_share') }}</div>
         </template>
       </div>
     </div>
@@ -482,7 +482,7 @@ export default {
         if (!this.members.length) {
           return
         }
-        this.members = await Promise.all(this.members.map(async email => {
+        const membersWithKey = await Promise.all(this.members.map(async email => {
           const publicKey = await this.getPublicKey(email)
           return {
             email,
@@ -494,7 +494,7 @@ export default {
         shareKey = await this.$cryptoService.makeShareKey()
         orgKey = shareKey[1]
         this.ciphers.forEach(cipher => {
-          promises.push(this.encryptCipher(cipher, orgKey, sharedCiphers))
+          promises.push(this.encryptCipher(cipher, orgKey, sharedCiphers, membersWithKey))
         })
         this.user.username = ''
         await Promise.all(promises)
@@ -518,7 +518,7 @@ export default {
         this.loading = false
       }
     },
-    async encryptCipher (cipher, orgKey, sharedCiphers) {
+    async encryptCipher (cipher, orgKey, sharedCiphers, membersWithKey) {
       let _orgKey = orgKey
       if (cipher.organizationId) { // check if the cipher is shared
         // console.log(cipher.organizationId)
@@ -526,7 +526,7 @@ export default {
       }
       const cipherEnc = await this.$cipherService.encrypt(cipher, _orgKey)
       const data = new CipherRequest(cipherEnc)
-      const members = await Promise.all(this.members.map(async user => {
+      const members = await Promise.all(membersWithKey.map(async user => {
         return {
           username: user.email,
           role: this.user.role,
