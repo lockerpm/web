@@ -250,7 +250,7 @@
                       </div>
                     </div>
                   </template>
-                  <el-dropdown v-else trigger="click" :hide-on-click="false">
+                  <el-dropdown v-else trigger="click">
                     <button class="btn btn-icon btn-xs hover:bg-black-400">
                       <i class="fas fa-ellipsis-h" />
                     </button>
@@ -363,8 +363,8 @@
     <AddEditCipher ref="addEditCipherDialog" :type="type" />
     <AddEditFolder ref="addEditFolder" />
     <AddEditTeamFolder ref="addEditTeamFolder" />
-    <ShareCipher ref="shareCipher" :cipher-options="allCiphers" @upgrade-plan="upgradePlan" />
-    <EditSharedCipher ref="editSharedCipher" />
+    <ShareCipher ref="shareCipher" :cipher-options="allCiphers" @upgrade-plan="upgradePlan" @shared-cipher="getMyShares" />
+    <EditSharedCipher ref="editSharedCipher" @updated-cipher="getMyShares" />
     <ShareFolder ref="shareFolder" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
     <PremiumDialog ref="premiumDialog" />
@@ -822,12 +822,13 @@ export default {
         const personalKey = await this.$cryptoService.getEncKey()
         const cipherEnc = await this.$cipherService.encrypt(cipher, personalKey)
         const data = new CipherRequest(cipherEnc)
-        console.log(data)
+        // console.log(data)
         await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, {
           folder: null,
           cipher: { ...data, id: cipher.id }
         })
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'success')
+        await this.getMyShares()
       } catch (error) {
         this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
         console.log(error)

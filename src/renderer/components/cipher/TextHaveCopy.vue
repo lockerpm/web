@@ -2,7 +2,7 @@
   <div class="grid md:grid-cols-6 cipher-item">
     <div class="">{{ label }}</div>
     <div class="col-span-4 font-semibold">
-      <div v-if="text&&textArea" class="whitespace-pre-wrap" v-html="text" />
+      <div v-if="text&&textArea" class="whitespace-pre-wrap">{{ text }}</div>
       <span v-if="text&&!textArea">{{ text | filterPassword(showPassword) }}</span>
     </div>
     <div v-if="text&&viewPassword===true" class="text-right">
