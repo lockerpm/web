@@ -7,10 +7,7 @@
             <span class="new-container">
               NEW
             </span>
-            <b>
-              Locker Beta 1.0
-            </b>
-            {{ $t('landing_banner.desc') }} 🎉
+            <span v-html="$t('landing_banner.desc')"></span> 🎉
             <a
               :href="url"
               target="_blank"
@@ -61,6 +58,7 @@ export default {
   padding-bottom: 13px;
   position: sticky;
   top: 0;
+  z-index: 10000000;
 }
 .new-container {
   background-color: #FFC400;
