@@ -54,7 +54,8 @@
           <div class="justify-self-center">
             <a
               class="w-full sm:w-auto"
-              href="#"
+              href="https://apps.apple.com/us/app/locker-password-manager/id1586927301"
+              target="_blank"
             >
               <img src="~/assets/images/landing/download/app_store.svg">
             </a>
