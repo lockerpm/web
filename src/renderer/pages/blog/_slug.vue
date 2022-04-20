@@ -42,7 +42,7 @@
               </p>
             </nobr>
           </div>
-          <h3 v-if="post.title" class="landing-font-38 text-black font-bold mb-4" v-html="post.title.rendered" />
+          <h1 v-if="post.title" class="landing-font-38 text-black font-bold mb-4" v-html="post.title.rendered" />
           <div class="flex mb-12">
             <img v-if="post.user && post.user.avatar_urls" :src="post.user.avatar_urls[48]" class="rounded-full" style="margin-right: 5px;">
             <img v-else src="~/assets/images/landing/blog/cystack_editor.svg" style="margin-right: 5px">

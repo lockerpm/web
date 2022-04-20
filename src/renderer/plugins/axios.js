@@ -17,6 +17,16 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
     if (err.response) {
       if (err.response.status === 401) {
         app.$cookies.remove('cs_locker_token')
+        app.$cookies.set('intercom-id-hjus3ol6', 0, {
+          maxAge: 0,
+          domain: '.cystack.net',
+          path: '/'
+        })
+        app.$cookies.set('intercom-session-hjus3ol6', 0, {
+          maxAge: 0,
+          domain: '.cystack.net',
+          path: '/'
+        })
         $axios.setToken(false)
         store.commit('UPDATE_IS_LOGGEDIN', false)
 
