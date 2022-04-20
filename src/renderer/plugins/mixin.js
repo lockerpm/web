@@ -104,6 +104,9 @@ Vue.mixin({
       await this.$cookies.remove('cs_locker_token')
       this.$store.commit('UPDATE_IS_LOGGEDIN', false)
       this.$router.push(this.localeRoute({ name: 'login' }))
+      window.Intercom('shutdown')
+      window.intercomSettings = { app_id: 'hjus3ol6', api_base: 'https://hjus3ol6.intercom-messenger.com' }
+      window.Intercom('boot', { app_id: 'hjus3ol6' })
     },
     async lock () {
       await Promise.all([

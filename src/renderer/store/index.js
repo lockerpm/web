@@ -181,7 +181,7 @@ export const actions = {
     })
   },
   LoadCurrentIntercom ({ commit }) {
-    return this.$axios.$get('me/intercom').then(res => {
+    return this.$axios.$get('cystack_platform/pm/users/me/intercom').then(res => {
       window.intercomSettings = res
       commit('UPDATE_USER_INTERCOM', res)
       // eslint-disable-next-line no-undef
