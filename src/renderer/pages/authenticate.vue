@@ -36,8 +36,10 @@ export default {
         if (this.$route.query.client === 'browser') {
           // window.postMessage({ command: 'locker-authResult', token: this.$route.query.token }, 'https://locker.io')
           const extensionToken = this.$route.query.token
-          // eslint-disable-next-line no-undef
-          chrome.runtime.sendMessage(lockerExtensionId, { command: 'cs-authResult', token: extensionToken }, response => this.updateLoginExtension(response))
+          for (const id of lockerExtensionId) {
+            // eslint-disable-next-line no-undef
+            chrome.runtime.sendMessage(id, { command: 'cs-authResult', token: extensionToken }, response => this.updateLoginExtension(response))
+          }
         } else {
           try {
             const url = `${process.env.baseApiUrl}/sso/access_token`
@@ -48,8 +50,10 @@ export default {
             }).then(async result => {
               // console.log(result)
               const extensionToken = result.data ? result.data.access_token : ''
-              // eslint-disable-next-line no-undef
-              chrome.runtime.sendMessage(lockerExtensionId, { command: 'cs-authResult', token: extensionToken }, response => this.updateLoginExtension(response))
+              for (const id of lockerExtensionId) {
+                // eslint-disable-next-line no-undef
+                chrome.runtime.sendMessage(id, { command: 'cs-authResult', token: extensionToken }, response => this.updateLoginExtension(response))
+              }
             })
           } catch (e) {
             console.log(e)
