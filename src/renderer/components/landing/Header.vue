@@ -6,7 +6,7 @@
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-[14px] px-6">
       <!-- Logo -->
       <div class="flex items-center order-1">
-        <nuxt-link to="/">
+        <nuxt-link :to="localePath('/')">
           <img
             src="~/assets/images/logo/logo_black.svg"
             alt="Locker"
