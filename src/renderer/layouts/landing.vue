@@ -86,6 +86,21 @@ export default {
           hid: 'twitter:description',
           name: 'twitter:description',
           content: this.$t('landing.title')
+        },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content: 'https://locker.io/preview.png'
+        },
+        {
+          hid: 'twitter:image',
+          name: 'twitter:image',
+          content: 'https://locker.io/preview.png'
+        },
+        {
+          hid: 'twitter:card',
+          name: 'twitter:card',
+          content: 'summary_large_image'
         }
       ],
       link: [
