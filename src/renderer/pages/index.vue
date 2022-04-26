@@ -23,7 +23,7 @@
               <div class="mb-4 sm:mb-0">
                 <a
                   class="landing-btn w-full sm:w-auto mb-1"
-                  :href="`https://id.cystack.net/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
+                  :href="`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
                 >
                   {{ $t('landing.section1.btn[0].text') }}
                 </a>

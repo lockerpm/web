@@ -21,7 +21,7 @@
       <div class="landing-font-18 align-top mt-[45px]">
         <a
           class="hover:no-underline text-green font-semibold"
-          :href="`https://id.cystack.net/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
+          :href="`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
         >
           {{ $t('features.feature1.btn.text') }} <i class="el-icon-right" />
         </a>
@@ -44,7 +44,7 @@
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
         <a
-          :href="`https://id.cystack.net/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
+          :href="`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
           class="hover:no-underline text-green font-semibold"
         >
           {{ $t('features.feature2.btn.text') }} <i class="el-icon-right" />
@@ -68,7 +68,7 @@
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
         <a
-          :href="`https://id.cystack.net/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
+          :href="`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
           class="hover:no-underline text-green font-semibold"
         >
           {{ $t('features.feature3.btn.text') }} <i class="el-icon-right" />
