@@ -51,14 +51,14 @@
           <div class="font-semibold">{{ currentUser.country }}</div>
         </div>
         <div class="sm:flex">
-          <a href="https://id.cystack.net/" target="_blank" class="mr-4">
+          <a href="https://id.locker.io/" target="_blank" class="mr-4">
             <button
               class="btn btn-default mb-4 md:mb-0"
             >
               <span>{{ $t('data.settings.edit_profile') }} <i class="fas fa-external-link-alt" /></span>
             </button>
           </a>
-          <a href="https://id.cystack.net/security/password" target="_blank">
+          <a href="https://id.locker.io/security/password" target="_blank">
             <button
               class="btn btn-default mb-4 md:mb-0"
             >

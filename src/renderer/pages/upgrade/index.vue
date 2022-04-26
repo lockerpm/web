@@ -179,7 +179,7 @@
                 </div>
                 <div class="text-center">
                   <a
-                    href="https://id.cystack.net/wallet/vnd"
+                    href="https://id.locker.io/wallet/vnd"
                     target="_blank"
                   >
                     <button class="btn rounded-full btn-xs hover:no-underline mt-auto !font-normal">
@@ -419,7 +419,7 @@
               <div class=" flex items-center justify-between">
                 <span class="italic">*This is a payment method only for Vietnamese</span>
                 <a
-                  href="https://id.cystack.net/wallet/vnd"
+                  href="https://id.locker.io/wallet/vnd"
                   target="_blank"
                   class="btn btn-outline-primary rounded-full btn-xs hover:no-underline"
                 >
@@ -552,7 +552,7 @@
             {{ $t('common.cancel') }}
           </button>
           <a
-            href="https://id.cystack.net/wallet/vnd"
+            href="https://id.locker.io/wallet/vnd"
             target="_blank"
             class="btn btn-outline-primary hover:no-underline"
           >
