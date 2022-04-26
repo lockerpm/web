@@ -784,7 +784,11 @@ export default {
           this.closeDialog()
           this.$emit('reset-selection')
         } catch (e) {
-          this.notify(this.$tc('data.notifications.delete_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
+          if (e.response && e.response.data && e.response.code === '5001') {
+            this.notify(this.$t('errors.5001'), 'error')
+          } else {
+            this.notify(this.$tc('data.notifications.delete_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
+          }
           console.log(e)
         } finally {
           this.loading = false
@@ -805,7 +809,11 @@ export default {
           this.notify(this.$tc('data.notifications.trash_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
           this.$emit('trashed-cipher')
         } catch (e) {
-          this.notify(this.$tc('data.notifications.trash_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
+          if (e.response && e.response.data && e.response.code === '5001') {
+            this.notify(this.$t('errors.5001'), 'error')
+          } else {
+            this.notify(this.$tc('data.notifications.trash_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
+          }
           this.$emit('reset-selection')
         } finally {
           this.loading = false

@@ -678,7 +678,12 @@ export default {
         request = new ImportOrganizationCiphersRequest()
         for (let i = 0; i < importResult.ciphers.length; i++) {
           importResult.ciphers[i].organizationId = this.teamId
+          const type_ = importResult.ciphers[i].type
+          if ([5, 6, 7].includes(importResult.ciphers[i].type)) {
+            importResult.ciphers[i].type = 2
+          }
           const c = await this.$cipherService.encrypt(importResult.ciphers[i])
+          c.type = type_
           request.ciphers.push(new CipherRequest(c))
         }
         if (importResult.collections != null) {
@@ -704,7 +709,12 @@ export default {
         }
       } else {
         for (let i = 0; i < importResult.ciphers.length; i++) {
+          const type_ = importResult.ciphers[i].type
+          if ([5, 6, 7].includes(importResult.ciphers[i].type)) {
+            importResult.ciphers[i].type = 2
+          }
           const c = await this.$cipherService.encrypt(importResult.ciphers[i])
+          c.type = type_
           request.ciphers.push(new CipherRequest(c))
         }
         if (importResult.folders != null) {
@@ -718,8 +728,32 @@ export default {
             request.folderRelationships.push(new KvpRequest(r[0], r[1])))
         }
       }
-      const url = this.teamId ? `cystack_platform/pm/teams/${this.teamId}/import` : 'cystack_platform/pm/ciphers/import'
-      await this.$axios.$post(url, request)
+      const folderRelationships = request.folderRelationships
+      let folderImportResults = []
+      const urlFolder = 'cystack_platform/pm/import/folders'
+      let importedFolders = 0
+      while (importedFolders < request.folders.length) {
+        const folders = request.folders.slice(importedFolders, importedFolders + 1000)
+        const importResult = await this.$axios.$post(urlFolder, { folders })
+        folderImportResults = folderImportResults.concat(importResult.ids || [])
+        importedFolders += 1000
+      }
+      request.ciphers = request.ciphers.map((cipher, index) => {
+        const folderRelationship = folderRelationships.find(item => item.key === index)
+        return {
+          ...cipher,
+          folderId: folderRelationship ? folderImportResults[folderRelationship.value] : null
+        }
+      })
+      const urlCipher = 'cystack_platform/pm/import/ciphers'
+      let importedCiphers = 0
+      while (importedCiphers < request.ciphers.length) {
+        const ciphers = request.ciphers.slice(importedCiphers, importedCiphers + 1000)
+        await this.$axios.$post(urlCipher, { ciphers })
+        importedCiphers += 1000
+      }
+      // const url = this.teamId ? `cystack_platform/pm/teams/${this.teamId}/import` : 'cystack_platform/pm/ciphers/import'
+      // await this.$axios.$post(url, request)
       this.notify(this.$t('data.notifications.import_success'), 'success')
       this.$router.push(this.localeRoute({ name: 'vault' }))
     },
