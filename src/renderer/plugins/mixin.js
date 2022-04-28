@@ -358,6 +358,10 @@ Vue.mixin({
         return this.getIconDefaultCipher('Card', size)
       case CipherType.Identity:
         return this.getIconDefaultCipher('Identity', size)
+      case 6:
+        return this.getIconDefaultCipher('CryptoAccount', size)
+      case 7:
+        return this.getIconDefaultCipher('CryptoWallet', size)
       case 'Shares':
         return this.getIconDefaultCipher('Shares', size)
       case 'Trash':
@@ -419,6 +423,12 @@ Vue.mixin({
         break
       case CipherType.Identity:
         name = 'identities'
+        break
+      case 6:
+        name = 'crypto-asset'
+        break
+      case 7:
+        name = 'crypto-asset'
         break
       }
       this.$router.push(this.localeRoute({

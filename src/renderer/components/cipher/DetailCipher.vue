@@ -162,7 +162,7 @@
                 {{ cipher.cryptoAccount.uris.uri }}
               </div>
               <div class="text-right">
-                <button v-if="cipher.cryptoAccount.uris.canLaunch" class="btn btn-icon btn-xs btn-action" :title="$t('common.go_to_website')" @click="openNewTab(cipher.cryptoAccount.uris.uri)">
+                <button class="btn btn-icon btn-xs btn-action" :title="$t('common.go_to_website')" @click="openNewTab(cipher.cryptoAccount.uris.uri)">
                   <i class="fas fa-external-link-square-alt" />
                 </button>
               </div>
@@ -173,6 +173,19 @@
           </template>
           <template v-if="cipher.type === CipherType.CryptoWallet && cipher.cryptoWallet">
             <TextHaveCopy label="Email" :text="cipher.cryptoWallet.email" />
+            <TextHaveCopy
+              :label="$t('data.ciphers.password')"
+              :text="cipher.cryptoWallet.password"
+              :view-password="cipher.viewPassword"
+              should-hide
+            />
+            <div class="grid md:grid-cols-6 cipher-item">
+              <div class="">{{ $t('data.ciphers.password_security') }}</div>
+              <div class="col-span-4 font-semibold">
+                <PasswordStrength :score="passwordStrength.score" />
+              </div>
+            </div>
+            <TextHaveCopy :label="$t('data.ciphers.wallet_address')" :text="cipher.cryptoWallet.address" />
             <TextHaveCopy :label="$t('data.ciphers.seed')" :text="cipher.cryptoWallet.seed" />
             <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoWallet.notes" :text-area="true" />
           </template>
@@ -276,6 +289,8 @@ export default {
         return this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
       } else if (this.cipher.cryptoAccount) {
         return this.$passwordGenerationService.passwordStrength(this.cipher.cryptoAccount.password, ['cystack']) || {}
+      } else if (this.cipher.cryptoWallet) {
+        return this.$passwordGenerationService.passwordStrength(this.cipher.cryptoWallet.password, ['cystack']) || {}
       }
       return {}
     }
