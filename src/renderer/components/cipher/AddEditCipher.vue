@@ -333,6 +333,12 @@
             class="w-full"
             :disabled="isDeleted"
           />
+          <InputText
+            v-model="cryptoAccount.uris.uri"
+            :label="$t('data.ciphers.website_address')"
+            class="w-full"
+            :disabled="isDeleted"
+          />
         </template>
 
         <template v-if="cipher.type === CipherType.CryptoWallet">
@@ -368,6 +374,43 @@
             class="w-full"
             :disabled="isDeleted"
             :is-password="false"
+          />
+          <InputText
+            v-model="cipher.cryptoWallet.password"
+            :label="$t('data.ciphers.password')"
+            class="w-full"
+            :disabled="isDeleted"
+            is-password
+          />
+          <PasswordStrengthBar
+            :score="passwordStrength.score"
+            class="mt-2"
+          />
+          <div
+            v-if="!isDeleted"
+            class="text-right"
+          >
+            <el-popover
+              placement="right"
+              width="280"
+              trigger="click"
+              popper-class="locker-pw-generator"
+            >
+              <PasswordGenerator @fill="fillPassword" />
+
+              <button
+                slot="reference"
+                class="btn btn-clean !text-primary"
+              >
+                {{ $t('data.ciphers.generate_random_password') }}
+              </button>
+            </el-popover>
+          </div>
+          <InputText
+            v-model="cryptoWallet.address"
+            :label="$t('data.ciphers.wallet_address')"
+            class="w-full"
+            :disabled="isDeleted"
           />
         </template>
 
@@ -644,6 +687,9 @@ export default {
       if (this.cipher.cryptoAccount) {
         return this.$passwordGenerationService.passwordStrength(this.cipher.cryptoAccount.password, ['cystack']) || {}
       }
+      if (this.cipher.cryptoWallet) {
+        return this.$passwordGenerationService.passwordStrength(this.cipher.cryptoWallet.password, ['cystack']) || {}
+      }
       return {}
     },
     ownershipOptions () {
@@ -892,7 +938,9 @@ export default {
       if (this.cipher.type === CipherType.CryptoAccount) {
         this.cryptoAccount.password = p
       }
-
+      if (this.cipher.type === CipherType.CryptoWallet) {
+        this.cryptoWallet.password = p
+      }
       this.notify('Filled password', 'success')
     },
     validateCipherName (cipherName, cipherType, suffix = 1) {

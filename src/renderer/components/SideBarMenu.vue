@@ -170,6 +170,10 @@ export default {
             {
               label: 'identities',
               routeName: 'identities'
+            },
+            {
+              label: 'crypto_asset',
+              routeName: 'crypto-asset'
             }
           ]
         },
