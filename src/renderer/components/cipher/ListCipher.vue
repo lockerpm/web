@@ -80,7 +80,7 @@
                   v-if="routeName==='vault'"
                   trigger="click"
                 >
-                  <button class="btn btn-outline-primary">
+                  <button class="btn btn-outline-primary py-[10px]">
                     <i class="el-icon-plus text-lg" />
                     <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
                   </button>
@@ -687,7 +687,7 @@
                   <i class="fas fa-external-link-square-alt" />
                 </button>
                 <el-dropdown
-                  v-if="!item.isDeleted && [CipherType.Login, CipherType.SecureNote].includes(item.type)"
+                  v-if="!item.isDeleted && [CipherType.Login, CipherType.SecureNote, CipherType.CryptoAccount, CipherType.CryptoWallet].includes(item.type)"
                   trigger="click"
                   :hide-on-click="false"
                 >
@@ -716,6 +716,36 @@
                         v-clipboard:success="clipboardSuccessHandler"
                       >
                         {{ $t('common.copy') }} {{ $t('common.note') }}
+                      </el-dropdown-item>
+                    </template>
+                    <template v-if="item.type === CipherType.CryptoAccount">
+                      <el-dropdown-item
+                        v-clipboard:copy="item.cryptoAccount.username"
+                        v-clipboard:success="clipboardSuccessHandler"
+                      >
+                        {{ $t('common.copy') }} {{ $t('common.username') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item
+                        v-clipboard:copy="item.cryptoAccount.password"
+                        v-clipboard:success="clipboardSuccessHandler"
+                        :disabled="!canViewItem(organizations, item)"
+                      >
+                        {{ $t('common.copy') }} {{ $t('common.password') }}
+                      </el-dropdown-item>
+                    </template>
+                    <template v-if="item.type === CipherType.CryptoWallet">
+                      <el-dropdown-item
+                        v-clipboard:copy="item.cryptoWallet.seed"
+                        v-clipboard:success="clipboardSuccessHandler"
+                      >
+                        {{ $t('common.copy') }} {{ $t('data.ciphers.seed') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item
+                        v-clipboard:copy="item.cryptoWallet.address"
+                        v-clipboard:success="clipboardSuccessHandler"
+                        :disabled="!canViewItem(organizations, item)"
+                      >
+                        {{ $t('common.copy') }} {{ $t('data.ciphers.wallet_address') }}
                       </el-dropdown-item>
                     </template>
                   </el-dropdown-menu>
