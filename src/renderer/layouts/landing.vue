@@ -235,6 +235,10 @@ export default {
   font-size: 14px;
   line-height: 24px;
 }
+.landing-font-14-2 {
+  font-size: 14px;
+  line-height: 16px;
+}
 .landing-font-12 {
   font-size: 12px;
   line-height: 26px;
