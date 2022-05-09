@@ -162,7 +162,7 @@ export default {
       const posts = []
       const result = await axios.get(`${process.env.blogUrl}/tags?slug=${language}`)
       tagId = result.data[0].id
-      const { data } = await axios.get(`${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${tagId}&categories=489,490,491,492,493`)
+      const { data } = await axios.get(`${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${tagId}&categories=8,13,18,54,25`)
       const users = await axios.get(`${process.env.blogUrl}/users`)
       const userArray = users.data
       data.forEach(async post => {

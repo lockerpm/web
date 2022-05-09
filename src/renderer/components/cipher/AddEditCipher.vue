@@ -329,7 +329,7 @@
           />
           <InputText
             v-model="cryptoAccount.emailRecovery"
-            label="Recovery Email"
+            :label="$t('data.ciphers.recovery_email')"
             class="w-full"
             :disabled="isDeleted"
           />
