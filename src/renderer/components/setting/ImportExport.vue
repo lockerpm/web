@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div id="import" class="text-head-5 font-semibold mb-4">
       {{ $t('data.importFile.import') }}
     </div>
@@ -119,6 +119,7 @@
 </template>
 
 <script>
+import { setTimeout } from 'timers'
 import * as papa from 'papaparse'
 import orderBy from 'lodash/orderBy'
 import Instructions from '../../components/import/Instructions'
@@ -149,7 +150,8 @@ export default {
       format: 'cystackjson',
       file: null,
       fileContents: '',
-      filter: null
+      filter: null,
+      loading: false
     }
   },
   asyncComputed: {
@@ -612,14 +614,12 @@ export default {
       this.loading = true
       const format = this.cystackOptions.map(e => e.id).includes(this.format) ? this.format.replace('cystack', 'bitwarden') : this.format
       let importer = null
-      console.log(format)
       if (format === 'bitwardencsv') {
         importer = new BitwardenCsvImporter()
         importer.organizationId = this.teamId
       } else {
         importer = this.$importService.getImporter(format, this.teamId)
       }
-      console.log(importer)
       let fileContents = this.fileContents
       if (this.file) {
         try {
@@ -676,7 +676,8 @@ export default {
             })
           }
           try {
-            await this.postImport(finalImportResult)
+            const importResult = await this.postImport(finalImportResult)
+            this.notify(this.$t('data.notifications.import_success', { foldersCount: importResult.foldersCount, ciphersCount: importResult.ciphersCount }), 'success')
           } catch (error) {
             if (error.response && error.response.data) {
               const errorResponse = new ErrorResponse(error.response.data, 400)
@@ -787,9 +788,6 @@ export default {
         const folders = request.folders.slice(importedFolders, importedFolders + 1000)
         const importResult = await this.$axios.$post(urlFolder, { folders })
         folderImportResults = folderImportResults.concat(importResult.ids || [])
-        // setTimeout(() => {
-        //   console.log(folders)
-        // }, 1000)
         importedFolders += 1000
       }
       request.ciphers = request.ciphers.map((cipher, index) => {
@@ -804,15 +802,18 @@ export default {
       while (importedCiphers < request.ciphers.length) {
         const ciphers = request.ciphers.slice(importedCiphers, importedCiphers + 1000)
         await this.$axios.$post(urlCipher, { ciphers })
-        // setTimeout(() => {
-        //   console.log(ciphers)
-        // }, 1000)
         importedCiphers += 1000
       }
+      return {
+        ciphersCount: request.ciphers.length,
+        foldersCount: request.folders.length
+      }
+      // this.notify(this.$t('data.notifications.import_success'), 'success')
+      // this.loading = false
+
       // const url = this.teamId ? `cystack_platform/pm/teams/${this.teamId}/import` : 'cystack_platform/pm/ciphers/import'
       // await this.$axios.$post(url, request)
-      this.notify(this.$t('data.notifications.import_success'), 'success')
-      this.$router.push(this.localeRoute({ name: 'vault' }))
+      // this.$router.push(this.localeRoute({ name: 'vault' }))
     },
     handleServerError (errorResponse, importResult) {
       if (errorResponse.validationErrors == null) {
