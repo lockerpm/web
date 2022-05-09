@@ -136,6 +136,7 @@ import { CipherWithIds as CipherExport } from '../../jslib/src/models/export/cip
 import { FolderWithId as FolderExport } from '../../jslib/src/models/export/folderWithId'
 import { Collection } from '../../jslib/src/models/domain/collection'
 import { Cipher } from '../../jslib/src/models/domain'
+import { BitwardenCsvImporter } from '../../services/bitwardenCsvImporter'
 export default {
   components: {
     Instructions,
@@ -505,6 +506,48 @@ export default {
       case CipherType.SecureNote:
         cipher.type = 'note'
         break
+      case 7:
+        cipher.type = 'crypto-wallet'
+        break
+      case 5:
+        cipher.type = 'totp'
+        break
+      case 3:
+        cipher.type = 'card'
+        // eslint-disable-next-line no-case-declarations
+        const cardPayload = {
+          notes: c.notes
+        }
+        Object.getOwnPropertyNames(c.card).forEach(key => {
+          if (key.startsWith('_')) {
+            if (key !== '_subTitle') {
+              cardPayload[key.slice(1)] = c.card[key]
+            }
+          } else {
+            cardPayload[key] = c.card[key]
+          }
+        })
+        console.log(cardPayload)
+        cipher.notes = JSON.stringify(cardPayload)
+        break
+      case 4:
+        cipher.type = 'identity'
+        // eslint-disable-next-line no-case-declarations
+        const identityPayload = {
+          notes: c.notes
+        }
+        Object.getOwnPropertyNames(c.identity).forEach(key => {
+          if (key.startsWith('_')) {
+            if (key !== '_subTitle') {
+              identityPayload[key.slice(1)] = c.identity[key]
+            }
+          } else {
+            identityPayload[key] = c.identity[key]
+          }
+        })
+        console.log(identityPayload)
+        cipher.notes = JSON.stringify(identityPayload)
+        break
       default:
         return
       }
@@ -568,7 +611,15 @@ export default {
     async importData () {
       this.loading = true
       const format = this.cystackOptions.map(e => e.id).includes(this.format) ? this.format.replace('cystack', 'bitwarden') : this.format
-      const importer = this.$importService.getImporter(format, this.teamId)
+      let importer = null
+      console.log(format)
+      if (format === 'bitwardencsv') {
+        importer = new BitwardenCsvImporter()
+        importer.organizationId = this.teamId
+      } else {
+        importer = this.$importService.getImporter(format, this.teamId)
+      }
+      console.log(importer)
       let fileContents = this.fileContents
       if (this.file) {
         try {
@@ -736,6 +787,9 @@ export default {
         const folders = request.folders.slice(importedFolders, importedFolders + 1000)
         const importResult = await this.$axios.$post(urlFolder, { folders })
         folderImportResults = folderImportResults.concat(importResult.ids || [])
+        // setTimeout(() => {
+        //   console.log(folders)
+        // }, 1000)
         importedFolders += 1000
       }
       request.ciphers = request.ciphers.map((cipher, index) => {
@@ -750,6 +804,9 @@ export default {
       while (importedCiphers < request.ciphers.length) {
         const ciphers = request.ciphers.slice(importedCiphers, importedCiphers + 1000)
         await this.$axios.$post(urlCipher, { ciphers })
+        // setTimeout(() => {
+        //   console.log(ciphers)
+        // }, 1000)
         importedCiphers += 1000
       }
       // const url = this.teamId ? `cystack_platform/pm/teams/${this.teamId}/import` : 'cystack_platform/pm/ciphers/import'
