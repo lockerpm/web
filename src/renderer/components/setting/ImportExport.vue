@@ -119,7 +119,6 @@
 </template>
 
 <script>
-import { setTimeout } from 'timers'
 import * as papa from 'papaparse'
 import orderBy from 'lodash/orderBy'
 import Instructions from '../../components/import/Instructions'
