@@ -173,7 +173,7 @@
                 v-for="(item, index) in $t('password_health_checker.process_strong_password.process')"
                 :key="index"
                 :name="(index+1).toString()"
-                class="mb-8"
+                :class="index != 8 ? 'mb-8': '' "
               >
                 <template slot="title">
                   <div class="flex">
