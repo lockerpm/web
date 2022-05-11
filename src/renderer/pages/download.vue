@@ -91,7 +91,7 @@
               <img class="p-[5px] bg-white rounded-full mr-3" src="~/assets/images/landing/download/chrome.png">
               <div>Chrome Store</div>
             </div> -->
-            Add Extension
+            {{ $t('download.add_extension') }}
           </a>
         </div>
       </div>
