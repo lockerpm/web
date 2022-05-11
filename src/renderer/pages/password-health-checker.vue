@@ -60,7 +60,7 @@
             </div>
             <div class="py-[42px]">
               <span class="landing-font-20 font-bold text-black">It would take hackers about</span>
-              <span class="mx-[31px] landing-font-32 font-bold text-center" style="color: #008800">{{ passwordStrength.crack_times_display.offline_fast_hashing_1e10_per_second }}</span>
+              <span class="mx-[31px] landing-font-32 font-bold text-center" style="color: #008800">{{ passwordStrength.crack_times_display.offline_slow_hashing_1e4_per_second }}</span>
               <span class="landing-font-20 font-bold text-black">to crack your password.</span>
             </div>
             <div class="landing-font-14 font-normal italic pb-[28px]">
@@ -223,6 +223,7 @@ export default {
   computed: {
     passwordStrength () {
       if (this.yourPassword) {
+        console.log(this.$passwordGenerationService.passwordStrength(this.yourPassword, ['cystack']))
         return this.$passwordGenerationService.passwordStrength(this.yourPassword, ['cystack']) || {}
       }
       return {}
