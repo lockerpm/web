@@ -81,6 +81,15 @@
               </div>
             </div>
           </div>
+          <div >
+            <nuxt-link
+              class="landing-btn text-center"
+              style="padding: 28px 48px !important; font-size: 20px !important;line-height: 23px !important;"
+              :to="localeRoute($t('password_health_checker.header.btn_protect_password.link'))"
+            >
+              {{ $t('password_health_checker.header.btn_protect_password.title') }}
+            </nuxt-link>
+          </div>
         </div>
       </div>
       <div class="mt-[42px] landing-font-14-2 italic text-center">
