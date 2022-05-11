@@ -184,6 +184,10 @@ export default {
 .landing-transition {
   @apply transition duration-200 ease-in-out;
 }
+.landing-font-72{
+  font-size: 72px;
+  line-height: 66px;
+}
 .landing-font-56 {
   font-size: 56px;
   line-height: 64px;
@@ -191,6 +195,10 @@ export default {
 .landing-font-50 {
   font-size: 50px;
   line-height: 66px;
+}
+.landing-font-48 {
+  font-size: 48px;
+  line-height: 54px;
 }
 .landing-font-44 {
   font-size: 44px;
@@ -211,6 +219,10 @@ export default {
 .landing-font-28 {
   font-size: 28px;
   line-height: 32px;
+}
+.landing-font-24{
+  font-size: 24px;
+  line-height: 29px;
 }
 .landing-font-22 {
   font-size: 22px;

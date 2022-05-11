@@ -1,3 +1,4 @@
+
 const ICONS_DIR = 'build/icons/'
 
 const windowsOS = {

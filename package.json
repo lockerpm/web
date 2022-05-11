@@ -66,6 +66,7 @@
     "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/recaptcha": "^0.5.3",
     "@tailwindcss/forms": "^0.3.2",
+    "autoprefixer": "10.4.5",
     "big-integer": "^1.6.48",
     "browser-hrtime": "^1.1.8",
     "cheerio": "^1.0.0-rc.10",
