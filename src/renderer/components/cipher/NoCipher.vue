@@ -35,6 +35,7 @@
 <script>
 import { CipherType } from '../../jslib/src/enums/cipherType.ts'
 import Vnodes from '../../components/Vnodes'
+CipherType.CryptoAsset = 7
 export default {
   components: { Vnodes },
   props: {

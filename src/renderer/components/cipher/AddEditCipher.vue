@@ -376,7 +376,7 @@
             :is-password="false"
           />
           <InputText
-            v-model="cipher.cryptoWallet.password"
+            v-model="cryptoWallet.password"
             :label="$t('data.ciphers.password')"
             class="w-full"
             :disabled="isDeleted"

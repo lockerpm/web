@@ -4,7 +4,7 @@
     class="flex flex-col flex-column-fluid relative"
   >
     <!-- Navigation Menu -->
-    <div v-if="['vault', 'passwords', 'notes', 'identities', 'cards', 'crypto-asset'].includes(getRouteBaseName())" class="navigation-bar">
+    <div v-if="['vault', 'passwords', 'notes', 'identities', 'cards', 'crypto-assets'].includes(getRouteBaseName())" class="navigation-bar">
       <template>
         <nuxt-link
           v-for="(item, index) in menuVault"
@@ -929,8 +929,8 @@ export default {
           icon: 'identities'
         },
         {
-          label: 'crypto_asset',
-          routeName: 'crypto-asset',
+          label: 'crypto_assets',
+          routeName: 'crypto-assets',
           icon: 'passwords'
         }
       ],
@@ -1019,7 +1019,7 @@ export default {
         return 'Card'
       case 'identities':
         return 'Identity'
-      case 'crypto-asset':
+      case 'crypto-assets':
         return 'CryptoAsset'
       case 'vault':
         return 'Vault'
