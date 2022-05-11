@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <section class="py-[120px] full-width h-auto" style="background: #fbfaf3">
+    <section class="pt-[184px] pb-[120px] full-width h-auto" style="background: #F5F6F7">
       <div class="font-bold landing-font-72 text-center" style="color:#195723">
         {{ $t('password_health_checker.header.title') }}
       </div>
@@ -68,9 +68,16 @@
             </div>
           </div>
           <div class="mt-9 mb-12">
-            <div class="grid grid-cols-4 py-[37px] px-16 card-exposed-time items-center" :style="times > 0 ? 'background: #FEE9EC; border: 2px solid #F54F64; ' : 'background: #E4F0E6; border: 2px solid #008800;' ">
-              <div class="landing-font-20 font-bold col-span-3 text-left" :style="times > 0 ? 'color: #F54F64;': 'color: #008800;'">Your password has been exposed in data breaches:</div>
-              <div v-if="times > 0" class="landing-font-20 font-bold" style="color: #F54F64;">{{ times }} times</div>
+            <div class="grid grid-cols-3 py-[37px] px-16 card-exposed-time items-center" :style="times > 0 ? 'background: #FEE9EC; border: 2px solid #F54F64; ' : 'background: #E4F0E6; border: 2px solid #008800;' ">
+              <div class="landing-font-20 font-bold col-span-2 text-left" :style="times > 0 ? 'color: #F54F64;': 'color: #008800;'">Your password has been exposed in data breaches:</div>
+              <div v-if="times > 0" class="flex items-center ml-9">
+                <div>
+                  <img src="~/assets/images/landing/password-health-checker/icon-warning.png">
+                </div>
+                <div class="landing-font-20 font-bold" style="color: #F54F64;">
+                  {{ times }} times
+                </div>
+              </div>
               <div v-else class="flex items-center ml-9">
                 <div>
                   <img src="~/assets/images/landing/password-health-checker/ShieldCheck.png">
@@ -96,7 +103,7 @@
         {{ $t('password_health_checker.header.subtitle_second') }}
       </div>
     </section>
-    <section class="py-[120px] full-width h-auto" style="background: #F5F6F7;">
+    <section class="py-[120px] full-width h-auto" >
       <div class="landing-font-38 font-bold text-center">
         {{ $t('password_health_checker.security_password.title') }}
       </div>
@@ -287,7 +294,7 @@ export default {
 </script>
 <style>
 .check-input-password .el-input{
-  width: 70%;
+  width: 60%;
 }
 .check-input-password input{
   font-style: normal;
@@ -320,7 +327,7 @@ export default {
 }
 
 .check-input-password .description-password{
-  width: 70%;
+  width: 60%;
   margin: 0 auto;
   background: #FFFFFF;
   border: 1px solid #DFDFDF;
@@ -349,7 +356,7 @@ export default {
 }
 .card-exposed-time{
   border-radius: 4px;
-  width: 70%;
+  width: 60%;
   margin: 0 auto;
 }
 .process-strong-password .index-step{
