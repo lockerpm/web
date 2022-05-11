@@ -88,7 +88,7 @@
               </div>
             </div>
           </div>
-          <div >
+          <div>
             <nuxt-link
               class="landing-btn text-center"
               style="padding: 28px 48px !important; font-size: 20px !important;line-height: 23px !important;"
@@ -103,7 +103,7 @@
         {{ $t('password_health_checker.header.subtitle_second') }}
       </div>
     </section>
-    <section class="py-[120px] full-width h-auto" >
+    <section class="py-[120px] full-width h-auto">
       <div class="landing-font-38 font-bold text-center">
         {{ $t('password_health_checker.security_password.title') }}
       </div>
@@ -239,7 +239,7 @@ export default {
   computed: {
     passwordStrength () {
       if (this.yourPassword) {
-        console.log(this.$passwordGenerationService.passwordStrength(this.yourPassword, ['cystack']))
+        // console.log(this.$passwordGenerationService.passwordStrength(this.yourPassword, ['cystack']))
         return this.$passwordGenerationService.passwordStrength(this.yourPassword, ['cystack']) || {}
       }
       return {}
