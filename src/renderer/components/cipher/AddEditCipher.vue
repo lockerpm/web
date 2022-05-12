@@ -37,7 +37,7 @@
         <!--            />-->
         <!--          </el-select>-->
         <!--        </div>-->
-        <template v-if="(cipher.type === CipherType.CryptoAccount || cipher.type === CipherType.CryptoWallet) && !cipher.id">
+        <!-- <template v-if="(cipher.type === CipherType.CryptoAccount || cipher.type === CipherType.CryptoWallet) && !cipher.id">
           <div class="mb-3">
             <el-radio-group v-model="cipher.type">
               <el-radio :label="6" border>
@@ -48,7 +48,7 @@
               </el-radio>
             </el-radio-group>
           </div>
-        </template>
+        </template> -->
         <ValidationProvider
           v-slot="{ errors: err }"
           rules="required"
@@ -350,39 +350,21 @@
             :is-textarea="true"
             required=""
           /> -->
-          <ValidationProvider
-            v-slot="{ errors: err }"
-            rules="required"
-            :name="$t('data.ciphers.seed')"
-          >
-            <InputText
-              v-model="cryptoWallet.seed"
-              :label="$t('data.ciphers.seed')"
-              class="w-full !mb-1"
-              :error-text="err && err.length && err[0]"
-              :disabled="isDeleted"
-              required
-              is-textarea=""
-            />
-          </ValidationProvider>
-          <div class="py-1 px-3 text-xs mb-3" style="background: rgba(242, 232, 135, 0.3);">
-            {{ $t('data.ciphers.seed_phrase_desc') }}
-          </div>
           <InputText
-            v-model="cryptoWallet.email"
-            label="Email"
+            v-model="cryptoWallet.username"
+            :label="$t('data.ciphers.username')"
             class="w-full"
             :disabled="isDeleted"
             :is-password="false"
           />
           <InputText
             v-model="cryptoWallet.password"
-            :label="$t('data.ciphers.password')"
+            :label="$t('data.ciphers.password_pin')"
             class="w-full"
             :disabled="isDeleted"
             is-password
           />
-          <PasswordStrengthBar
+          <!-- <PasswordStrengthBar
             :score="passwordStrength.score"
             class="mt-2"
           />
@@ -405,13 +387,31 @@
                 {{ $t('data.ciphers.generate_random_password') }}
               </button>
             </el-popover>
-          </div>
+          </div> -->
           <InputText
             v-model="cryptoWallet.address"
             :label="$t('data.ciphers.wallet_address')"
             class="w-full"
             :disabled="isDeleted"
           />
+          <InputText
+            v-model="cryptoWallet.privateKey"
+            :label="$t('data.ciphers.private_key')"
+            class="w-full"
+            :disabled="isDeleted"
+            is-password
+          />
+          <InputText
+            v-model="cryptoWallet.seed"
+            :label="$t('data.ciphers.seed')"
+            class="w-full !mb-1"
+            :error-text="err && err.length && err[0]"
+            :disabled="isDeleted"
+            is-textarea=""
+          />
+          <div class="py-1 px-3 text-xs mb-3" style="background: rgba(242, 232, 135, 0.3);">
+            {{ $t('data.ciphers.seed_phrase_desc') }}
+          </div>
         </template>
 
         <div
@@ -558,7 +558,7 @@ import InputSelectFolder from '../input/InputSelectFolder'
 import InputSelectOrg from '../input/InputSelectOrg'
 import InlineEditCipher from './InlineEditCipher'
 CipherType.CryptoAccount = 6
-CipherType.CryptoWallet = 7
+CipherType.CryptoWallet = CipherType.CryptoAsset = 7
 export default {
   components: {
     AddEditFolder,

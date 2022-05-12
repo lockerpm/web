@@ -166,7 +166,7 @@
         {{ $t('password_health_checker.process_strong_password.title') }}
       </div>
       <div class="mt-[80px]">
-        <div class="grid grid-cols-2 gap-[80px]">
+        <div class="grid grid-cols-2 gap-[80px] items-center">
           <div>
             <el-collapse v-model="activeIndex" accordion>
               <el-collapse-item
@@ -189,7 +189,13 @@
               </el-collapse-item>
             </el-collapse>
           </div>
-          <div>
+          <div class="hidden md:block ">
+            <img
+              src="~/assets/images/landing/index/img_1.png"
+              alt=""
+            >
+          </div>
+          <div class="w-full md:hidden">
             <img src="~/assets/images/landing/password-health-checker/image-process-strong-password.png">
           </div>
         </div>
