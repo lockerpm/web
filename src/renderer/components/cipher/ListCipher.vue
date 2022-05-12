@@ -743,9 +743,20 @@
                       <el-dropdown-item
                         v-clipboard:copy="item.cryptoWallet.address"
                         v-clipboard:success="clipboardSuccessHandler"
-                        :disabled="!canViewItem(organizations, item)"
                       >
                         {{ $t('common.copy') }} {{ $t('data.ciphers.wallet_address') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item
+                        v-clipboard:copy="item.cryptoWallet.privateKey"
+                        v-clipboard:success="clipboardSuccessHandler"
+                      >
+                        {{ $t('common.copy') }} {{ $t('data.ciphers.private_key') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item
+                        v-clipboard:copy="item.cryptoWallet.password_pin"
+                        v-clipboard:success="clipboardSuccessHandler"
+                      >
+                        {{ $t('common.copy') }} {{ $t('data.ciphers.password_pin') }}
                       </el-dropdown-item>
                     </template>
                   </el-dropdown-menu>
@@ -981,10 +992,10 @@ export default {
           label: this.$tc('type.Identity', 1),
           value: 'Identity'
         },
-        // {
-        //   label: this.$tc('type.CryptoAsset', 1),
-        //   value: 'CryptoAccount'
-        // },
+        {
+          label: this.$tc('type.CryptoAsset', 1),
+          value: 'CryptoAsset'
+        },
         {
           label: this.$tc('type.Folder', 1),
           value: 'Folder'

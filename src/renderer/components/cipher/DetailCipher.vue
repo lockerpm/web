@@ -172,20 +172,27 @@
             <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoAccount.notes" :text-area="true" />
           </template>
           <template v-if="cipher.type === CipherType.CryptoWallet && cipher.cryptoWallet">
-            <TextHaveCopy label="Email" :text="cipher.cryptoWallet.email" />
+            <TextHaveCopy :label="$t('data.ciphers.username')" :text="cipher.cryptoWallet.username" />
             <TextHaveCopy
-              :label="$t('data.ciphers.password')"
+              :label="$t('data.ciphers.password_pin')"
               :text="cipher.cryptoWallet.password"
               :view-password="cipher.viewPassword"
               should-hide
             />
-            <div class="grid md:grid-cols-6 cipher-item">
+
+            <!-- <div class="grid md:grid-cols-6 cipher-item">
               <div class="">{{ $t('data.ciphers.password_security') }}</div>
               <div class="col-span-4 font-semibold">
                 <PasswordStrength :score="passwordStrength.score" />
               </div>
-            </div>
+            </div> -->
             <TextHaveCopy :label="$t('data.ciphers.wallet_address')" :text="cipher.cryptoWallet.address" />
+            <TextHaveCopy
+              :label="$t('data.ciphers.private_key')"
+              :text="cipher.cryptoWallet.privateKey"
+              :view-password="cipher.viewPassword"
+              should-hide
+            />
             <TextHaveCopy :label="$t('data.ciphers.seed')" :text="cipher.cryptoWallet.seed" />
             <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoWallet.notes" :text-area="true" />
           </template>
