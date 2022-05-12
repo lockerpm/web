@@ -54,6 +54,7 @@
     "node-sass": "^6.0.1",
     "postcss": "^8.2.10",
     "sass-loader": "^10.1.1",
+    "vue-notion": "^1.4.3",
     "webpack": "4.44.2",
     "webpack-node-externals": "2.5.2"
   },
@@ -83,6 +84,7 @@
     "nuxt-client-init-module": "^0.3.0",
     "nuxt-i18n": "^6.26.0",
     "papaparse": "^5.3.1",
+    "prismjs": "^1.28.0",
     "read-excel-file": "^5.2.25",
     "sweetalert2": "^10.16.7",
     "tldjs": "^2.3.1",
