@@ -133,18 +133,18 @@
           </p>
         </div>
         <div>
-          <a
-            :href="`https://cystack.net${locale === 'vi' ? '/vi' : ''}/terms`"
+          <nuxt-link
+            :to="localePath(`/terms`)"
             class="text-black-600 landing-font-12 mr-4 hover:no-underline hover:text-green"
           >
             {{ $t('landing_footer.terms') }}
-          </a>
-          <a
-            :href="`https://cystack.net${locale === 'vi' ? '/vi' : ''}/privacy`"
+          </nuxt-link>
+          <nuxt-link
+            :to="localePath(`/privacy`)"
             class="text-black-600 landing-font-12 hover:no-underline hover:text-green"
           >
             {{ $t('landing_footer.policy') }}
-          </a>
+          </nuxt-link>
         </div>
       </div>
       <!-- Bottom -->
