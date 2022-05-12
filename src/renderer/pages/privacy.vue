@@ -12,7 +12,6 @@
 import NotionContent from '~/components/landing/terms/NotionContent'
 
 export default {
-
   components: {
     NotionContent
   },
@@ -35,6 +34,12 @@ export default {
         vi: null,
         en: null
       }
+    }
+  },
+
+  head () {
+    return {
+      title: 'Privacy Policy | Locker'
     }
   }
 }

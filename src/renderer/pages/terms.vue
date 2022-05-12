@@ -36,6 +36,12 @@ export default {
         en: null
       }
     }
+  },
+
+  head () {
+    return {
+      title: 'Terms | Locker'
+    }
   }
 }
 </script>
