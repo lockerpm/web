@@ -371,16 +371,16 @@ input:-webkit-autofill:active
 
 .notion-h2 {
   @apply font-bold text-black;
-  font-size: 38px;
-  line-height: 45px;
-  margin-top: 25px;
-  margin-bottom: 25px;
+  font-size: 22px;
+  line-height: 26px;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
 }
 
 .notion-h3 {
   @apply text-black font-bold;
-  font-size: 22px;
-  line-height: 26px;
+  font-size: 18px;
+  line-height: 24px;
   margin-top: 21px;
   margin-bottom: 21px;
 }
@@ -391,13 +391,13 @@ input:-webkit-autofill:active
 
 .notion-text {
   @apply text-black;
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 1rem;
 }
 
 .notion-list li {
   @apply text-black;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 24px;
   margin-bottom: 1rem;
   display: list-item;
@@ -406,7 +406,7 @@ input:-webkit-autofill:active
 }
 
 .notion-page-link {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 24px;
   font-weight: bold;
   color: #0266F9;
@@ -415,7 +415,7 @@ input:-webkit-autofill:active
 }
 
 .notion-toggle {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 24px;
   margin-bottom: 10px;
 }
