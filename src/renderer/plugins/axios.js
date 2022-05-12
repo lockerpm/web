@@ -39,6 +39,8 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
           '/plan',
           '/security',
           '/blog',
+          '/terms',
+          '/privacy',
           '/'
         ]
         let currentPath = route.path

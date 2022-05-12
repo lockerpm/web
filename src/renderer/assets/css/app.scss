@@ -364,3 +364,66 @@ input:-webkit-autofill:active
     display: none;
   }
 }
+
+.notion-title {
+  display: none;
+}
+
+.notion-h2 {
+  @apply font-bold text-black;
+  font-size: 38px;
+  line-height: 45px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.notion-h3 {
+  @apply text-black font-bold;
+  font-size: 22px;
+  line-height: 26px;
+  margin-top: 21px;
+  margin-bottom: 21px;
+}
+
+.notion-h2 b, .notion-h3 b {
+  font-weight: bold;
+}
+
+.notion-text {
+  @apply text-black;
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+
+.notion-list li {
+  @apply text-black;
+  font-size: 14px;
+  line-height: 24px;
+  margin-bottom: 1rem;
+  display: list-item;
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+.notion-page-link {
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: bold;
+  color: #0266F9;
+  margin-bottom: 2rem;
+  display: inline-block;
+}
+
+.notion-toggle {
+  font-size: 14px;
+  line-height: 24px;
+  margin-bottom: 10px;
+}
+
+.notion-toggle summary {
+  margin-bottom: 10px;
+}
+
+.notion-toggle > div {
+  margin-left: 20px;
+}
