@@ -342,14 +342,14 @@
         </template>
 
         <template v-if="cipher.type === CipherType.CryptoWallet">
-          <!-- <InputText
-            v-model="cryptoWallet.seed"
-            :label="$t('data.ciphers.seed')"
-            class="w-full"
+          <InputSelectCryptoWallet
+            ref="inputSelectCryptoWallet"
+            :label="$t('data.ciphers.wallet_app')"
             :disabled="isDeleted"
-            :is-textarea="true"
-            required=""
-          /> -->
+            class="w-full"
+            :initial-value="cryptoWallet.walletApp ? cryptoWallet.walletApp.alias : null"
+            @change="handleChangeCryptoWallet"
+          />
           <InputText
             v-model="cryptoWallet.username"
             :label="$t('data.ciphers.username')"
@@ -409,9 +409,20 @@
             :disabled="isDeleted"
             is-textarea=""
           />
+          <!-- <InputSeedPhrase
+            v-model="cryptoWallet.seed"
+          /> -->
           <div class="py-1 px-3 text-xs mb-3" style="background: rgba(242, 232, 135, 0.3);">
             {{ $t('data.ciphers.seed_phrase_desc') }}
           </div>
+          <InputSelectCryptoNetworks
+            ref="inputSelectCryptoWallet"
+            :label="$t('data.ciphers.networks')"
+            :disabled="isDeleted"
+            class="w-full !pt-6"
+            :initial-value="cryptoWallet.networks ? cryptoWallet.networks.map(n => n.alias) : []"
+            @change="handleChangeCryptoNetworks"
+          />
         </template>
 
         <div
@@ -526,7 +537,7 @@
           <button
             v-else
             class="btn btn-primary"
-            :disabled="loading || !cipher.name || (cipher.type===CipherType.CryptoWallet && !cryptoWallet.seed)"
+            :disabled="loading || !cipher.name"
             @click="cipher.id ?putCipher(cipher):postCipher(cipher)"
           >
             {{ cipher.id ? $t('common.update') : $t('common.add') }}
@@ -556,6 +567,11 @@ import InputText from '../input/InputText'
 import InputSelect from '../input/InputSelect'
 import InputSelectFolder from '../input/InputSelectFolder'
 import InputSelectOrg from '../input/InputSelectOrg'
+import InputSelectCryptoWallet from '../input/InputSelectCryptoWallet'
+import InputSelectCryptoNetworks from '../input/InputSelectCryptoNetworks'
+import InputSeedPhrase from '../input/InputSeedPhrase'
+import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
+import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 import InlineEditCipher from './InlineEditCipher'
 CipherType.CryptoAccount = 6
 CipherType.CryptoWallet = CipherType.CryptoAsset = 7
@@ -571,7 +587,10 @@ export default {
     InputText,
     InputSelect,
     InputSelectFolder,
-    InputSelectOrg
+    InputSelectOrg,
+    InputSelectCryptoWallet,
+    InputSelectCryptoNetworks,
+    InputSeedPhrase
   },
   props: {
     type: {
@@ -613,8 +632,16 @@ export default {
         notes: ''
       },
       cryptoWallet: {
-        email: null,
-        seed: null,
+        walletApp: {
+          name: '',
+          alias: ''
+        },
+        username: '',
+        password: '',
+        address: '',
+        privateKey: '',
+        seed: '',
+        networks: [],
         notes: ''
       }
     }
@@ -950,6 +977,22 @@ export default {
       } else {
         return newName
       }
+    },
+    handleChangeCryptoWallet (v) {
+      const selectedApp = WALLET_APP_LIST.find(a => a.alias === v)
+      this.cryptoWallet.walletApp = {
+        name: selectedApp.name,
+        alias: selectedApp.alias
+      }
+    },
+    handleChangeCryptoNetworks (v) {
+      const selectedNetworks = v.map(alias => CHAIN_LIST.find(n => n.alias === alias))
+      this.cryptoWallet.networks = selectedNetworks.map(selectedNetwork => {
+        return {
+          name: selectedNetwork.name,
+          alias: selectedNetwork.alias
+        }
+      })
     }
   }
 }

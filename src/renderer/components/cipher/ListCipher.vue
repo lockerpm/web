@@ -718,7 +718,7 @@
                         {{ $t('common.copy') }} {{ $t('common.note') }}
                       </el-dropdown-item>
                     </template>
-                    <template v-if="item.type === CipherType.CryptoAccount">
+                    <!-- <template v-if="item.type === CipherType.CryptoAccount">
                       <el-dropdown-item
                         v-clipboard:copy="item.cryptoAccount.username"
                         v-clipboard:success="clipboardSuccessHandler"
@@ -732,8 +732,8 @@
                       >
                         {{ $t('common.copy') }} {{ $t('common.password') }}
                       </el-dropdown-item>
-                    </template>
-                    <template v-if="item.type === CipherType.CryptoWallet">
+                    </template> -->
+                    <template v-if="item.type === CipherType.CryptoWallet && item.cryptoWallet">
                       <el-dropdown-item
                         v-clipboard:copy="item.cryptoWallet.seed"
                         v-clipboard:success="clipboardSuccessHandler"
@@ -753,7 +753,7 @@
                         {{ $t('common.copy') }} {{ $t('data.ciphers.private_key') }}
                       </el-dropdown-item>
                       <el-dropdown-item
-                        v-clipboard:copy="item.cryptoWallet.password_pin"
+                        v-clipboard:copy="item.cryptoWallet.password"
                         v-clipboard:success="clipboardSuccessHandler"
                       >
                         {{ $t('common.copy') }} {{ $t('data.ciphers.password_pin') }}

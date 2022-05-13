@@ -2,19 +2,16 @@
   <div
     class="cs-field"
     :class="{'is-focus': focusing,
-             'have-value': value === null || value !== '',
+             'have-value': true,
              'is-hover': hovering,
              'is-error': errorText,
              'is-disabled': disabled,
     }"
   >
-    <label>{{ label }}<span v-if="required" class="text-danger">*</span></label>
+    <label>{{ label }} <span v-if="required" class="text-danger">*</span></label>
     <el-select
       v-model="value"
-      :multiple="multiple"
-      :collapse-tags="collapseTags"
       :placeholder="placeholder"
-      :filterable="filterable"
       class="cs-select w-full"
       :disabled="disabled"
       @focus="handleFocus"
@@ -22,13 +19,17 @@
       @change="handleChange"
     >
       <el-option
-        v-for="(item, index) in options"
-        :key="index"
-        :label="item[keyLabel]"
-        :value="item[keyValue]"
-      />
+        v-for="item in options"
+        :key="item.alias"
+        :label="item.name || $t('data.folders.no_folder')"
+        :value="item.alias"
+      >
+        <div class="flex items-center">
+          <div class="text-black">{{ item.name || $t('data.folders.no_folder') }}</div>
+        </div>
+      </el-option>
     </el-select>
-    <button v-if="focusing || (value === null || value !== '')" class="btn btn-icon btn-select !py-0">
+    <button v-if="focusing || initialValue" class="btn btn-icon btn-select !py-0">
       <svg
         width="8px"
         height="13px"
@@ -54,6 +55,7 @@
 </template>
 
 <script>
+import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
 export default {
   props: {
     label: {
@@ -77,38 +79,8 @@ export default {
       default: false
     },
     initialValue: {
-      type: [String, Number, Object, Array],
+      type: [String, Number, Object],
       default: ''
-    },
-    options: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
-    keyKey: {
-      type: String,
-      default: 'id'
-    },
-    keyValue: {
-      type: String,
-      default: 'value'
-    },
-    keyLabel: {
-      type: String,
-      default: 'label'
-    },
-    multiple: {
-      type: Boolean,
-      default: false
-    },
-    collapseTags: {
-      type: Boolean,
-      default: false
-    },
-    filterable: {
-      type: Boolean,
-      default: false
     }
   },
   data () {
@@ -116,7 +88,8 @@ export default {
       focusing: false,
       hovering: false,
       type: 'text',
-      value: ''
+      value: '',
+      options: WALLET_APP_LIST
     }
   },
   computed: {

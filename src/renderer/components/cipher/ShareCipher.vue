@@ -414,9 +414,14 @@ export default {
           shareKey = await this.$cryptoService.makeShareKey()
           orgKey = shareKey[1]
         }
-
+        const type_ = cipher.type
+        if (type_ === 7) {
+          cipher.type = CipherType.SecureNote
+          cipher.secureNote.type = 0
+        }
         const cipherEnc = await this.$cipherService.encrypt(cipher, orgKey)
         const data = new CipherRequest(cipherEnc)
+        data.type = type_
         if (this.user.role === 'member-hide_passwords') {
           this.user.role = 'member'
           this.user.hide_passwords = true
@@ -524,8 +529,15 @@ export default {
         // console.log(cipher.organizationId)
         _orgKey = await this.$cryptoService.getOrgKey(cipher.organizationId)
       }
+      const type_ = cipher.type
+      if (type_ === 7) {
+        cipher.type = CipherType.SecureNote
+        cipher.secureNote.type = 0
+      }
       const cipherEnc = await this.$cipherService.encrypt(cipher, _orgKey)
       const data = new CipherRequest(cipherEnc)
+      data.type = type_
+      cipher.type = type_
       const members = await Promise.all(membersWithKey.map(async user => {
         return {
           username: user.email,
