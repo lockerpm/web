@@ -449,10 +449,10 @@ Vue.mixin({
         name = 'identities'
         break
       case 6:
-        name = 'crypto-assets'
+        name = 'crypto-backups'
         break
       case 7:
-        name = 'crypto-assets'
+        name = 'crypto-backups'
         break
       }
       this.$router.push(this.localeRoute({

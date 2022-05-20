@@ -206,7 +206,7 @@
               <div class="">{{ $t('data.ciphers.networks') }}</div>
               <div class="col-span-4">
                 <div v-if="cipher.cryptoWallet.networks && cipher.cryptoWallet.networks.length" class="grid md:grid-cols-3 gap-2">
-                  <div v-for="network in cipher.cryptoWallet.networks" :key="network.alias" class="font-semibold flex items-center">
+                  <div v-for="network in cipher.cryptoWallet.networks" :key="network.alias" class="font-semibold flex items-center break-normal">
                     <img :src="network.logo" alt="" class="mr-3 h-[34px] w-[34px] rounded-full"> {{ network.name }}
                   </div>
                 </div>

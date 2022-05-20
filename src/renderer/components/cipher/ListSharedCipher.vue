@@ -133,6 +133,7 @@
               v-if="getRouteBaseName()!=='shares-your-shares'"
               :label="$t('common.owner')"
               show-overflow-tooltip
+              width="150"
             >
               <template slot-scope="scope">
                 <span>{{ scope.row.owner? scope.row.owner.full_name : getTeam(organizations, scope.row.organizationId).name }}</span>
@@ -188,6 +189,7 @@
               <el-table-column
                 :label="$t('common.share_type')"
                 show-overflow-tooltip
+                min-width="120"
               >
                 <template slot-scope="scope">
                   <span>{{ scope.row.user? scope.row.user.share_type : 'N/A' }}</span>
@@ -218,6 +220,7 @@
               <el-table-column
                 :label="$t('common.share_type')"
                 show-overflow-tooltip
+                width="120"
               >
                 <template slot-scope="scope">
                   <span>{{ scope.row.share_type || 'N/A' }}</span>
@@ -271,7 +274,7 @@
                             <el-dropdown-item
                               v-clipboard:copy="scope.row.login.username"
                               v-clipboard:success="clipboardSuccessHandler"
-                              divided
+                              :divided="canManageItem(organizations, scope.row)"
                             >
                               {{ $t('common.copy') }} {{ $t('common.username') }}
                             </el-dropdown-item>
@@ -464,8 +467,8 @@ import Vnodes from '../../components/Vnodes'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { Utils } from '../../jslib/src/misc/utils.ts'
 import PremiumDialog from '../../components/upgrade/PremiumDialog'
-CipherType.CryptoAsset = 7
-CipherType[7] = 'Crypto Asset'
+CipherType.CryptoBackup = 7
+CipherType[7] = 'Crypto Backup'
 export default {
   components: {
     AddEditCipher,
