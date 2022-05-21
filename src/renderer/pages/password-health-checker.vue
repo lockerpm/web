@@ -10,7 +10,7 @@
       <div class="mt-16 text-center check-input-password">
         <el-input
           v-model="yourPassword"
-          placeholder="Test your password"
+          :placeholder="$t('password_health_checker.header.input_placeholder')"
           show-password
         />
         <div v-if="yourPassword != ''">
@@ -20,7 +20,7 @@
           <div class="description-password pt-16 md:pl-12 pl-6">
             <div class="flex pb-[42px] items-center border-common">
               <div class="landing-font-20 font-bold">
-                Strength:
+                {{ $t('password_health_checker.header.toggle_check_password.strength') }}
               </div>
               <div class="md:ml-9 ml-5">
                 <PasswordStrength
@@ -35,19 +35,19 @@
             </div>
             <div class="flex items-center py-[42px] border-common">
               <div class="landing-font-20 font-bold">
-                Password length:
+                {{ $t('password_health_checker.header.toggle_check_password.password_length.title') }}
               </div>
               <div class="landing-font-20 font-normal md:ml-9 ml-3 ">
-                {{ passwordStrength.password.length }} characters
+                {{ passwordStrength.password.length }} {{ $t('password_health_checker.header.toggle_check_password.password_length.character') }}
               </div>
             </div>
             <div class="border-common py-[42px]">
               <div class="landing-font-20 font-bold text-left mb-[21px]">
-                Character Variety:
+                {{ $t('password_health_checker.header.toggle_check_password.character_variety') }}
               </div>
               <div>
                 <ul>
-                  <li v-for="(item, index) in $t('password_health_checker.header.list_character')" :key="index" class="flex items-center">
+                  <li v-for="(item, index) in $t('password_health_checker.header.toggle_check_password.list_character')" :key="index" class="flex items-center">
                     <div style="width: 40px;">
                       <img v-if="Object.values(options)[index] === (index + 1)" src="~assets/images/landing/password-health-checker/icon-check.png" class="w-100">
                     </div>
@@ -58,27 +58,35 @@
                 </ul>
               </div>
             </div>
-            <div class="py-[42px]">
-              <span class="landing-font-20 font-bold text-black">It would take hackers about</span>
-              <span class=" md:block hidden md:mx-[31px] mx-0 landing-font-32 font-bold text-center" style="color: #008800">{{ passwordStrength.crack_times_display.offline_slow_hashing_1e4_per_second }}</span>
-              <div class=" md:hidden landing-font-32 font-bold text-center" style="color: #008800">
-                {{ passwordStrength.crack_times_display.offline_slow_hashing_1e4_per_second }}
+            <div class="py-[42px] m-auto">
+              <div class="md:flex block md:flex-wrap place-content-center">
+                <div class="landing-font-20 font-bold text-black">
+                  {{ $t('password_health_checker.header.toggle_check_password.hacker.content_one') }}
+                </div>
+                <div class="md:block hidden md:mx-[31px] mx-0 landing-font-32 font-bold text-center" style="color: #008800">{{ passwordStrength.crack_times_display.offline_slow_hashing_1e4_per_second }}</div>
+                <div class="md:hidden block landing-font-32 font-bold text-center" style="color: #008800">
+                  {{ passwordStrength.crack_times_display.offline_slow_hashing_1e4_per_second }}
+                </div>
+                <div class="landing-font-20 font-bold text-black">
+                  {{ $t('password_health_checker.header.toggle_check_password.hacker.content_two') }}
+                </div>
               </div>
-              <span class="landing-font-20 font-bold text-black">to crack your password.</span>
             </div>
             <div class="landing-font-14 font-normal italic pb-[28px]">
-              Powered by haveibeenpawned.com
+              {{ $t('password_health_checker.header.toggle_check_password.end_title') }}
             </div>
           </div>
           <div class="mt-9 mb-12">
             <div class="grid md:grid-cols-3 grid-cols-1 py-[37px] px-16 card-exposed-time items-center" :style="times > 0 ? 'background: #FEE9EC; border: 2px solid #F54F64; ' : 'background: #E4F0E6; border: 2px solid #008800;' ">
-              <div class="landing-font-20 font-bold col-span-2 text-left" :style="times > 0 ? 'color: #F54F64;': 'color: #008800;'">Your password has been exposed in data breaches:</div>
+              <div class="landing-font-20 font-bold col-span-2 text-left" :style="times > 0 ? 'color: #F54F64;': 'color: #008800;'">
+                {{ $t('password_health_checker.header.toggle_check_password.cta_btn.title') }}
+              </div>
               <div v-if="times > 0" class="flex items-center ml-9">
                 <div>
                   <img src="~/assets/images/landing/password-health-checker/icon-warning.png">
                 </div>
                 <div class="landing-font-20 font-bold" style="color: #F54F64;">
-                  {{ times }} times
+                  {{ times }} {{ $t('password_health_checker.header.toggle_check_password.cta_btn.times') }}
                 </div>
               </div>
               <div v-else class="flex items-center md:ml-9 ml-0">
@@ -86,7 +94,7 @@
                   <img src="~/assets/images/landing/password-health-checker/ShieldCheck.png">
                 </div>
                 <div class="landing-font-20 font-bold">
-                  No leaks found
+                  {{ $t('password_health_checker.header.toggle_check_password.cta_btn.leak') }}
                 </div>
               </div>
             </div>
@@ -95,9 +103,9 @@
             <nuxt-link
               class="landing-btn text-center"
               style="padding: 28px 48px !important; font-size: 20px !important;line-height: 23px !important;"
-              :to="localeRoute($t('password_health_checker.header.btn_protect_password.link'))"
+              :to="localeRoute($t('password_health_checker.header.toggle_check_password.btn_protect_password.link'))"
             >
-              {{ $t('password_health_checker.header.btn_protect_password.title') }}
+              {{ $t('password_health_checker.header.toggle_check_password.btn_protect_password.title') }}
             </nuxt-link>
           </div>
         </div>
@@ -256,7 +264,7 @@ export default {
   },
   asyncComputed: {
     getTimesExposed () {
-      if (this.yourPassword) {
+      if (this.yourPassword && this.yourPassword !== '') {
         this.$auditService.passwordLeaked(this.yourPassword).then(res => {
           if (res > 0) {
             this.times = res
@@ -271,7 +279,7 @@ export default {
   },
   watch: {
     yourPassword (yourPassword) {
-      if (yourPassword) {
+      if (yourPassword && yourPassword !== '') {
         const characterSpecial = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/
         const characterLowercase = /[a-z]/
         const characterUppercase = /[A-Z]/
