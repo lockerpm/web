@@ -248,7 +248,7 @@ export default {
   computed: {
     passwordStrength () {
       if (this.yourPassword) {
-        console.log(this.$passwordGenerationService.passwordStrength(this.yourPassword, ['cystack']))
+        // console.log(this.$passwordGenerationService.passwordStrength(this.yourPassword, ['cystack']))
         return this.$passwordGenerationService.passwordStrength(this.yourPassword, ['cystack']) || {}
       }
       return {}

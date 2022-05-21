@@ -59,12 +59,11 @@
             :data="dataRendered || []"
             style="width: 100%"
             row-class-name="hover-table-row"
-            @selection-change="handleSelectionChange"
           >
-            <el-table-column
+            <!-- <el-table-column
               type="selection"
               width="55"
-            />
+            /> -->
             <el-table-column
               prop="name"
               label=""
@@ -72,7 +71,7 @@
               show-overflow-tooltip
             >
               <template slot="header">
-                <div v-if="multipleSelection.length" class="flex items-center ">
+                <!-- <div v-if="multipleSelection.length" class="flex items-center ">
                   <div class="text-black mr-8 whitespace-nowrap">
                     {{ multipleSelection.length }} {{ $t('data.ciphers.selected_items') }}
                   </div>
@@ -104,7 +103,7 @@
                       {{ $t('common.delete') }}
                     </button>
                   </div>
-                </div>
+                </div> -->
               </template>
               <template slot-scope="scope">
                 <div class="flex items-center">
@@ -134,6 +133,7 @@
               v-if="getRouteBaseName()!=='shares-your-shares'"
               :label="$t('common.owner')"
               show-overflow-tooltip
+              width="150"
             >
               <template slot-scope="scope">
                 <span>{{ scope.row.owner? scope.row.owner.full_name : getTeam(organizations, scope.row.organizationId).name }}</span>
@@ -189,6 +189,7 @@
               <el-table-column
                 :label="$t('common.share_type')"
                 show-overflow-tooltip
+                min-width="120"
               >
                 <template slot-scope="scope">
                   <span>{{ scope.row.user? scope.row.user.share_type : 'N/A' }}</span>
@@ -219,6 +220,7 @@
               <el-table-column
                 :label="$t('common.share_type')"
                 show-overflow-tooltip
+                width="120"
               >
                 <template slot-scope="scope">
                   <span>{{ scope.row.share_type || 'N/A' }}</span>
@@ -272,7 +274,7 @@
                             <el-dropdown-item
                               v-clipboard:copy="scope.row.login.username"
                               v-clipboard:success="clipboardSuccessHandler"
-                              divided
+                              :divided="canManageItem(organizations, scope.row)"
                             >
                               {{ $t('common.copy') }} {{ $t('common.username') }}
                             </el-dropdown-item>
@@ -291,6 +293,32 @@
                               divided
                             >
                               {{ $t('common.copy') }} {{ $t('common.note') }}
+                            </el-dropdown-item>
+                          </template>
+                          <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.CryptoWallet">
+                            <el-dropdown-item
+                              v-clipboard:copy="scope.row.cryptoWallet.seed"
+                              v-clipboard:success="clipboardSuccessHandler"
+                            >
+                              {{ $t('common.copy') }} {{ $t('data.ciphers.seed') }}
+                            </el-dropdown-item>
+                            <el-dropdown-item
+                              v-clipboard:copy="scope.row.cryptoWallet.address"
+                              v-clipboard:success="clipboardSuccessHandler"
+                            >
+                              {{ $t('common.copy') }} {{ $t('data.ciphers.wallet_address') }}
+                            </el-dropdown-item>
+                            <el-dropdown-item
+                              v-clipboard:copy="scope.row.cryptoWallet.privateKey"
+                              v-clipboard:success="clipboardSuccessHandler"
+                            >
+                              {{ $t('common.copy') }} {{ $t('data.ciphers.private_key') }}
+                            </el-dropdown-item>
+                            <el-dropdown-item
+                              v-clipboard:copy="scope.row.cryptoWallet.password"
+                              v-clipboard:success="clipboardSuccessHandler"
+                            >
+                              {{ $t('common.copy') }} {{ $t('data.ciphers.password_pin') }}
                             </el-dropdown-item>
                           </template>
                           <el-dropdown-item @click.native="cloneCipher(scope.row)">
@@ -439,6 +467,8 @@ import Vnodes from '../../components/Vnodes'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { Utils } from '../../jslib/src/misc/utils.ts'
 import PremiumDialog from '../../components/upgrade/PremiumDialog'
+CipherType.CryptoBackup = 7
+CipherType[7] = 'Crypto Backup'
 export default {
   components: {
     AddEditCipher,
@@ -656,6 +686,14 @@ export default {
         if (this.getRouteBaseName() === 'shares') {
           result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)
           result = result.map(item => {
+            if (item.type === 7) {
+              try {
+                item.cryptoWallet = JSON.parse(item.notes)
+              // item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
+              } catch (error) {
+                console.log(error)
+              }
+            }
             const org = this.getTeam(this.organizations, item.organizationId)
             return {
               ...item,
@@ -819,10 +857,17 @@ export default {
           memberId = cipher.user.id
           delete cipher.user
         }
+        const type_ = cipher.type
+        if (type_ === 7) {
+          cipher.type = CipherType.SecureNote
+          cipher.secureNote.type = 0
+        }
         const personalKey = await this.$cryptoService.getEncKey()
         const cipherEnc = await this.$cipherService.encrypt(cipher, personalKey)
         const data = new CipherRequest(cipherEnc)
         // console.log(data)
+        data.type = type_
+        cipher.type = type_
         await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, {
           folder: null,
           cipher: { ...data, id: cipher.id }

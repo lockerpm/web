@@ -37,7 +37,7 @@
         <!--            />-->
         <!--          </el-select>-->
         <!--        </div>-->
-        <template v-if="(cipher.type === CipherType.CryptoAccount || cipher.type === CipherType.CryptoWallet) && !cipher.id">
+        <!-- <template v-if="(cipher.type === CipherType.CryptoAccount || cipher.type === CipherType.CryptoWallet) && !cipher.id">
           <div class="mb-3">
             <el-radio-group v-model="cipher.type">
               <el-radio :label="6" border>
@@ -48,7 +48,7 @@
               </el-radio>
             </el-radio-group>
           </div>
-        </template>
+        </template> -->
         <ValidationProvider
           v-slot="{ errors: err }"
           rules="required"
@@ -329,7 +329,7 @@
           />
           <InputText
             v-model="cryptoAccount.emailRecovery"
-            label="Recovery Email"
+            :label="$t('data.ciphers.recovery_email')"
             class="w-full"
             :disabled="isDeleted"
           />
@@ -342,75 +342,70 @@
         </template>
 
         <template v-if="cipher.type === CipherType.CryptoWallet">
-          <!-- <InputText
-            v-model="cryptoWallet.seed"
-            :label="$t('data.ciphers.seed')"
-            class="w-full"
+          <InputSelectCryptoWallet
+            ref="inputSelectCryptoWallet"
+            :label="$t('data.ciphers.wallet_app')"
             :disabled="isDeleted"
-            :is-textarea="true"
-            required=""
-          /> -->
-          <ValidationProvider
-            v-slot="{ errors: err }"
-            rules="required"
-            :name="$t('data.ciphers.seed')"
-          >
-            <InputText
-              v-model="cryptoWallet.seed"
-              :label="$t('data.ciphers.seed')"
-              class="w-full !mb-1"
-              :error-text="err && err.length && err[0]"
-              :disabled="isDeleted"
-              required
-              is-textarea=""
-            />
-          </ValidationProvider>
-          <div class="py-1 px-3 text-xs mb-3" style="background: rgba(242, 232, 135, 0.3);">
-            {{ $t('data.ciphers.seed_phrase_desc') }}
-          </div>
+            class="w-full"
+            :initial-value="cryptoWallet.walletApp ? cryptoWallet.walletApp.alias : null"
+            @change="handleChangeCryptoWallet"
+          />
           <InputText
-            v-model="cryptoWallet.email"
-            label="Email"
+            v-model="cryptoWallet.username"
+            :label="$t('data.ciphers.username')"
             class="w-full"
             :disabled="isDeleted"
             :is-password="false"
           />
           <InputText
-            v-model="cipher.cryptoWallet.password"
-            :label="$t('data.ciphers.password')"
+            v-model="cryptoWallet.password"
+            :label="$t('data.ciphers.password_pin')"
             class="w-full"
             :disabled="isDeleted"
             is-password
           />
-          <PasswordStrengthBar
-            :score="passwordStrength.score"
-            class="mt-2"
-          />
-          <div
-            v-if="!isDeleted"
-            class="text-right"
-          >
-            <el-popover
-              placement="right"
-              width="280"
-              trigger="click"
-              popper-class="locker-pw-generator"
-            >
-              <PasswordGenerator @fill="fillPassword" />
-
-              <button
-                slot="reference"
-                class="btn btn-clean !text-primary"
-              >
-                {{ $t('data.ciphers.generate_random_password') }}
-              </button>
-            </el-popover>
-          </div>
           <InputText
             v-model="cryptoWallet.address"
             :label="$t('data.ciphers.wallet_address')"
             class="w-full"
             :disabled="isDeleted"
+          />
+          <InputText
+            v-model="cryptoWallet.privateKey"
+            :label="$t('data.ciphers.private_key')"
+            class="w-full"
+            :disabled="isDeleted"
+            is-password
+          />
+          <!-- <InputText
+            v-model="cryptoWallet.seed"
+            :label="$t('data.ciphers.seed')"
+            class="w-full !mb-1"
+            :error-text="err && err.length && err[0]"
+            :disabled="isDeleted"
+            is-textarea=""
+          /> -->
+          <div class="cs-field w-full">
+            <label>
+              {{ $t('data.ciphers.seed') }}
+            </label>
+          </div>
+          <InputSeedPhrase
+            v-model="cryptoWallet.seed"
+            :edit-mode="cipher.id ? true : false"
+            class="w-full !mb-3"
+            @set-seed="setSeed"
+          />
+          <!-- <div class="py-1 px-3 text-xs mb-3" style="background: rgba(242, 232, 135, 0.3);">
+            {{ $t('data.ciphers.seed_phrase_desc') }}
+          </div> -->
+          <InputSelectCryptoNetworks
+            ref="inputSelectCryptoWallet"
+            :label="$t('data.ciphers.networks')"
+            :disabled="isDeleted"
+            class="w-full !pt-6"
+            :initial-value="cryptoWallet.networks ? cryptoWallet.networks.map(n => n.alias) : []"
+            @change="handleChangeCryptoNetworks"
           />
         </template>
 
@@ -526,7 +521,7 @@
           <button
             v-else
             class="btn btn-primary"
-            :disabled="loading || !cipher.name || (cipher.type===CipherType.CryptoWallet && !cryptoWallet.seed)"
+            :disabled="loading || !cipher.name"
             @click="cipher.id ?putCipher(cipher):postCipher(cipher)"
           >
             {{ cipher.id ? $t('common.update') : $t('common.add') }}
@@ -556,9 +551,14 @@ import InputText from '../input/InputText'
 import InputSelect from '../input/InputSelect'
 import InputSelectFolder from '../input/InputSelectFolder'
 import InputSelectOrg from '../input/InputSelectOrg'
+import InputSelectCryptoWallet from '../input/InputSelectCryptoWallet'
+import InputSelectCryptoNetworks from '../input/InputSelectCryptoNetworks'
+import InputSeedPhrase from '../input/InputSeedPhrase'
+import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
+import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 import InlineEditCipher from './InlineEditCipher'
 CipherType.CryptoAccount = 6
-CipherType.CryptoWallet = 7
+CipherType.CryptoWallet = CipherType.CryptoBackup = 7
 export default {
   components: {
     AddEditFolder,
@@ -571,7 +571,10 @@ export default {
     InputText,
     InputSelect,
     InputSelectFolder,
-    InputSelectOrg
+    InputSelectOrg,
+    InputSelectCryptoWallet,
+    InputSelectCryptoNetworks,
+    InputSeedPhrase
   },
   props: {
     type: {
@@ -613,8 +616,16 @@ export default {
         notes: ''
       },
       cryptoWallet: {
-        email: null,
-        seed: null,
+        walletApp: {
+          name: '',
+          alias: ''
+        },
+        username: '',
+        password: '',
+        address: '',
+        privateKey: '',
+        seed: '',
+        networks: [],
         notes: ''
       }
     }
@@ -763,6 +774,7 @@ export default {
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
         data.type = type_
+        this.cipher.type = type_
         await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
           ...data,
           score: this.passwordStrength.score,
@@ -772,9 +784,12 @@ export default {
         this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
         this.closeDialog()
       } catch (e) {
-        this.notify(this.$tc('data.notifications.create_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
-        this.errors = (e.response && e.response.data && e.response.data.details) || {}
-        console.log(e)
+        if (e.response && e.response.data && e.response.data.code === '5002') {
+          this.notify(this.$t('errors.5002', { type: this.$tc(`type.${this.type}`, 1) }), 'error')
+        } else {
+          this.notify(this.$tc('data.notifications.create_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
+        }
+        // this.errors = (e.response && e.response.data && e.response.data.details) || {}
       } finally {
         this.loading = false
       }
@@ -847,6 +862,7 @@ export default {
       this.$confirm(this.$tc('data.notifications.trash_selected_desc', ids.length, { count: ids.length }), this.$t('common.warning'), {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
+        dangerouslyUseHTMLString: true,
         type: 'warning'
       }).then(async () => {
         try {
@@ -950,6 +966,25 @@ export default {
       } else {
         return newName
       }
+    },
+    handleChangeCryptoWallet (v) {
+      const selectedApp = WALLET_APP_LIST.find(a => a.alias === v)
+      this.cryptoWallet.walletApp = {
+        name: selectedApp.name,
+        alias: selectedApp.alias
+      }
+    },
+    handleChangeCryptoNetworks (v) {
+      const selectedNetworks = v.map(alias => CHAIN_LIST.find(n => n.alias === alias))
+      this.cryptoWallet.networks = selectedNetworks.map(selectedNetwork => {
+        return {
+          name: selectedNetwork.name,
+          alias: selectedNetwork.alias
+        }
+      })
+    },
+    setSeed (v) {
+      this.cryptoWallet.seed = v
     }
   }
 }

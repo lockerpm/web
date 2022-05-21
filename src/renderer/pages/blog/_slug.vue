@@ -139,7 +139,7 @@ export default {
   async asyncData ({ isDev, route, store, env, params, query, req, res, redirect, error }) {
     const slug = params.slug
     const language = store.state.i18n.locale
-    const { data } = await axios.get(`${process.env.blogUrl}/posts?slug=${slug}&categories=489,490,491,492,493`)
+    const { data } = await axios.get(`${process.env.blogUrl}/posts?slug=${slug}&categories=8,13,18,54,25`)
     if (data.length === 0) {
       error({ statusCode: 404 })
       return

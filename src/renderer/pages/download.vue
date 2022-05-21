@@ -80,8 +80,19 @@
         <div class="flex">
           <p class="text-center landing-font-14 w-[400px] mx-auto">{{ $t('download.go_to_chrome_store') }}<span class="text-green"><a href="https://chrome.google.com/webstore/detail/locker-free-password-mana/cmajindocfndlkpkjnmjpjoilibjgmgh" target="_blank">Chrome Web Store</a></span></p>
         </div>
-        <div class="w-full mt-6">
+        <div class="w-full mt-6 relative">
           <img src="~/assets/images/landing/download/chrome-extension.png" alt="Chrome Extension" class="mx-auto">
+          <a
+            class="landing-btn w-full text-center w-[207px] h-[45px] mx-auto absolute bottom-16 left-0 right-0"
+            href="https://chrome.google.com/webstore/detail/locker-free-password-mana/cmajindocfndlkpkjnmjpjoilibjgmgh"
+            target="_blank"
+          >
+            <!-- <div class="w-full flex items-center justify-center">
+              <img class="p-[5px] bg-white rounded-full mr-3" src="~/assets/images/landing/download/chrome.png">
+              <div>Chrome Store</div>
+            </div> -->
+            {{ $t('download.add_extension') }}
+          </a>
         </div>
       </div>
       <div

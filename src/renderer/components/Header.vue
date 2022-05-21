@@ -86,7 +86,7 @@ export default {
   },
   computed: {
     shouldShowSearch () {
-      return ['vault', 'passwords', 'notes', 'cards', 'identities', 'shares', 'trash', 'vault-tfolders-tfolderId', 'vault-folders-folderId', 'shares-your-shares'].includes(this.getRouteBaseName())
+      return ['vault', 'passwords', 'notes', 'cards', 'identities', 'crypto-backups', 'shares', 'trash', 'vault-tfolders-tfolderId', 'vault-folders-folderId', 'shares-your-shares'].includes(this.getRouteBaseName())
     },
     currentPlan () {
       return this.$store.state.currentPlan

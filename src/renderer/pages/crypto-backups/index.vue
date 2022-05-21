@@ -1,5 +1,5 @@
 <template>
-  <ListCipher route-name="crypto-asset" :filter="c => c.type === 6 || c.type === 7" />
+  <ListCipher route-name="crypto-backups" :filter="c => c.type === 6 || c.type === 7" />
 </template>
 
 <script>

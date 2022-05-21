@@ -77,7 +77,7 @@ export default {
       default: false
     },
     initialValue: {
-      type: [String, Number, Object],
+      type: [String, Number, Object, Array],
       default: ''
     },
     options: {
