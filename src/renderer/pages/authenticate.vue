@@ -42,7 +42,7 @@ export default {
           }
         } else {
           try {
-            const url = `${process.env.baseApiUrl}/sso/access_token`
+            const url = 'https://api.locker.io/v3/sso/access_token'
             this.$axios.post(url, {
               SERVICE_URL: '/sso',
               SERVICE_SCOPE: 'pwdmanager',
