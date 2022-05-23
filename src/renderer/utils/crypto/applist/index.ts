@@ -50,7 +50,7 @@ export const WALLET_APP_LIST = [
   {
     name: 'RICE Wallet',
     alias: 'rice',
-    logo: require('./img/rice.webp'),
+    logo: require('./img/rice.png'),
     passcode: false,
     password: false,
     pin: true
