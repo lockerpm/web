@@ -10,44 +10,44 @@
       <div class="mt-16 text-center check-input-password">
         <el-input
           v-model="yourPassword"
-          placeholder="Test your password"
+          :placeholder="$t('password_health_checker.header.input_placeholder')"
           show-password
         />
         <div v-if="yourPassword != ''">
           <div class="my-8">
             <div class="line" />
           </div>
-          <div class="description-password pt-16">
+          <div class="description-password pt-16 md:pl-12 pl-6">
             <div class="flex pb-[42px] items-center border-common">
               <div class="landing-font-20 font-bold">
-                Strength:
+                {{ $t('password_health_checker.header.toggle_check_password.strength') }}
               </div>
-              <div class="ml-9">
+              <div class="md:ml-9 ml-5">
                 <PasswordStrength
                   v-if="yourPassword"
                   :score="passwordStrength.score"
                 />
               </div>
               <div
-                class="border-status-password ml-5 "
+                class="border-status-password md:ml-5 ml-2"
                 :class="passwordStrength.score <= 1 ? 'border-line-weak' : (passwordStrength.score == 2) ? 'border-line-medium' : 'border-line-strong' "
               />
             </div>
             <div class="flex items-center py-[42px] border-common">
               <div class="landing-font-20 font-bold">
-                Password length:
+                {{ $t('password_health_checker.header.toggle_check_password.password_length.title') }}
               </div>
-              <div class="landing-font-20 font-normal ml-9">
-                {{ passwordStrength.password.length }} characters
+              <div class="landing-font-20 font-normal md:ml-9 ml-3 ">
+                {{ passwordStrength.password.length }} {{ $t('password_health_checker.header.toggle_check_password.password_length.character') }}
               </div>
             </div>
             <div class="border-common py-[42px]">
               <div class="landing-font-20 font-bold text-left mb-[21px]">
-                Character Variety:
+                {{ $t('password_health_checker.header.toggle_check_password.character_variety') }}
               </div>
               <div>
                 <ul>
-                  <li v-for="(item, index) in $t('password_health_checker.header.list_character')" :key="index" class="flex items-center">
+                  <li v-for="(item, index) in $t('password_health_checker.header.toggle_check_password.list_character')" :key="index" class="flex items-center">
                     <div style="width: 40px;">
                       <img v-if="Object.values(options)[index] === (index + 1)" src="~assets/images/landing/password-health-checker/icon-check.png" class="w-100">
                     </div>
@@ -58,32 +58,43 @@
                 </ul>
               </div>
             </div>
-            <div class="py-[42px]">
-              <span class="landing-font-20 font-bold text-black">It would take hackers about</span>
-              <span class="mx-[31px] landing-font-32 font-bold text-center" style="color: #008800">{{ passwordStrength.crack_times_display.offline_slow_hashing_1e4_per_second }}</span>
-              <span class="landing-font-20 font-bold text-black">to crack your password.</span>
+            <div class="py-[42px] m-auto">
+              <div class="md:flex block md:flex-wrap place-content-center">
+                <div class="landing-font-20 font-bold text-black">
+                  {{ $t('password_health_checker.header.toggle_check_password.hacker.content_one') }}
+                </div>
+                <div class="md:block hidden md:mx-[31px] mx-0 landing-font-32 font-bold text-center" style="color: #008800">{{ passwordStrength.crack_times_display.offline_slow_hashing_1e4_per_second }}</div>
+                <div class="md:hidden block landing-font-32 font-bold text-center" style="color: #008800">
+                  {{ passwordStrength.crack_times_display.offline_slow_hashing_1e4_per_second }}
+                </div>
+                <div class="landing-font-20 font-bold text-black">
+                  {{ $t('password_health_checker.header.toggle_check_password.hacker.content_two') }}
+                </div>
+              </div>
             </div>
             <div class="landing-font-14 font-normal italic pb-[28px]">
-              Powered by haveibeenpawned.com
+              {{ $t('password_health_checker.header.toggle_check_password.end_title') }}
             </div>
           </div>
           <div class="mt-9 mb-12">
-            <div class="grid grid-cols-3 py-[37px] px-16 card-exposed-time items-center" :style="times > 0 ? 'background: #FEE9EC; border: 2px solid #F54F64; ' : 'background: #E4F0E6; border: 2px solid #008800;' ">
-              <div class="landing-font-20 font-bold col-span-2 text-left" :style="times > 0 ? 'color: #F54F64;': 'color: #008800;'">Your password has been exposed in data breaches:</div>
+            <div class="grid md:grid-cols-3 grid-cols-1 py-[37px] px-16 card-exposed-time items-center" :style="times > 0 ? 'background: #FEE9EC; border: 2px solid #F54F64; ' : 'background: #E4F0E6; border: 2px solid #008800;' ">
+              <div class="landing-font-20 font-bold col-span-2 text-left" :style="times > 0 ? 'color: #F54F64;': 'color: #008800;'">
+                {{ $t('password_health_checker.header.toggle_check_password.cta_btn.title') }}
+              </div>
               <div v-if="times > 0" class="flex items-center ml-9">
                 <div>
                   <img src="~/assets/images/landing/password-health-checker/icon-warning.png">
                 </div>
                 <div class="landing-font-20 font-bold" style="color: #F54F64;">
-                  {{ times }} times
+                  {{ times }} {{ $t('password_health_checker.header.toggle_check_password.cta_btn.times') }}
                 </div>
               </div>
-              <div v-else class="flex items-center ml-9">
+              <div v-else class="flex items-center md:ml-9 ml-0">
                 <div>
                   <img src="~/assets/images/landing/password-health-checker/ShieldCheck.png">
                 </div>
                 <div class="landing-font-20 font-bold">
-                  No leaks found
+                  {{ $t('password_health_checker.header.toggle_check_password.cta_btn.leak') }}
                 </div>
               </div>
             </div>
@@ -92,9 +103,9 @@
             <nuxt-link
               class="landing-btn text-center"
               style="padding: 28px 48px !important; font-size: 20px !important;line-height: 23px !important;"
-              :to="localeRoute($t('password_health_checker.header.btn_protect_password.link'))"
+              :to="localeRoute($t('password_health_checker.header.toggle_check_password.btn_protect_password.link'))"
             >
-              {{ $t('password_health_checker.header.btn_protect_password.title') }}
+              {{ $t('password_health_checker.header.toggle_check_password.btn_protect_password.title') }}
             </nuxt-link>
           </div>
         </div>
@@ -111,7 +122,7 @@
         <img src="~assets/images/landing/password-health-checker/image-line.png" class="m-auto">
       </div>
       <div class="max-w-6xl mx-auto px-6">
-        <div class="grid grid-cols-2 gap-x-[80px]">
+        <div class="grid md:grid-cols-2 grid-cols-1 md:gap-x-[80px]">
           <div v-for="(item, index) in $t('password_health_checker.security_password.tips')" :key="index" class="p-[42px] bg-white rounded-[10px]">
             <div>
               <img :src="require(`assets/images/landing/password-health-checker/${item.image}`)" class="w-100">
@@ -127,7 +138,7 @@
       </div>
     </section>
     <section class="py-[120px]">
-      <div class="grid grid-cols-2 items-center gap-x-[94px]">
+      <div class="grid md:grid-cols-2 grid-cols-1 items-center md:gap-x-[94px]">
         <div>
           <div class="font-bold landing-font-38">
             {{ $t('password_health_checker.why.title') }}
@@ -143,7 +154,7 @@
     </section>
     <section class="py-[120px] full-width h-auto">
       <div class="max-w-6xl mx-auto rounded-[10px]" style="background: #F5F6F7;">
-        <div class="py-16 px-[166px]">
+        <div class="py-16 md:px-[166px] px-[20px]">
           <div class="landing-font-38 font-bold text-center">
             {{ $t('password_health_checker.cta.title') }}
           </div>
@@ -166,14 +177,14 @@
         {{ $t('password_health_checker.process_strong_password.title') }}
       </div>
       <div class="mt-[80px]">
-        <div class="grid grid-cols-2 gap-[80px] items-center">
+        <div class="grid md:grid-cols-2 grid-cols-1 gap-[80px] items-center">
           <div>
             <el-collapse v-model="activeIndex" accordion>
               <el-collapse-item
                 v-for="(item, index) in $t('password_health_checker.process_strong_password.process')"
                 :key="index"
                 :name="(index+1).toString()"
-                :class="index != 8 ? 'mb-8': '' "
+                :class="index != 3 ? 'lg:mb-8 mb-16': '' "
               >
                 <template slot="title">
                   <div class="flex">
@@ -253,7 +264,7 @@ export default {
   },
   asyncComputed: {
     getTimesExposed () {
-      if (this.yourPassword) {
+      if (this.yourPassword && this.yourPassword !== '') {
         this.$auditService.passwordLeaked(this.yourPassword).then(res => {
           if (res > 0) {
             this.times = res
@@ -268,7 +279,7 @@ export default {
   },
   watch: {
     yourPassword (yourPassword) {
-      if (yourPassword) {
+      if (yourPassword && yourPassword !== '') {
         const characterSpecial = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/
         const characterLowercase = /[a-z]/
         const characterUppercase = /[A-Z]/
@@ -338,7 +349,6 @@ export default {
   background: #FFFFFF;
   border: 1px solid #DFDFDF;
   border-radius: 44px;
-  padding-left: 48px;
 }
 .check-input-password .description-password .border-common{
   border-bottom: 1px solid #DFDFDF;
@@ -390,5 +400,28 @@ export default {
 }
 .questions .el-collapse-item__content{
   border: 1px solid #DFDFDF;
+}
+@media only screen and (max-width: 600px) {
+  .check-input-password .el-input{
+    width: 90%;
+  }
+  .check-input-password .description-password{
+    width: 90%;
+  }
+  .card-exposed-time{
+    width: 90%;
+  }
+  .check-input-password .description-password .border-line-weak{
+    background: linear-gradient(89.95deg, rgba(245, 79, 100, 0.8) 0%, #F54F64 100%);
+    width: 50px;
+  }
+  .check-input-password .description-password .border-line-medium{
+    width: 90px;
+    background: linear-gradient(89.89deg, rgba(255, 191, 96, 0.8) 0%, #FFBF60 100%);
+  }
+  .check-input-password .description-password .border-line-strong{
+    width: 150px;
+    background: linear-gradient(89.95deg, rgba(58, 179, 74, 0.8) 0%, #3AB34A 100%, #3AB34A 100%);
+  }
 }
 </style>
