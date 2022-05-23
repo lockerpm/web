@@ -662,7 +662,7 @@ export default {
         }
         let result = []
 
-        result = await this.$searchService.searchCiphers('', [null, deletedFilter], null) || []
+        result = await this.$mySearchService.searchCiphers('', [null, deletedFilter], null) || []
         return result
       },
       watch: ['$store.state.syncedCiphersToggle']
@@ -681,7 +681,7 @@ export default {
         }
         let result = []
 
-        result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+        result = await this.$mySearchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
 
         if (this.getRouteBaseName() === 'shares') {
           result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)

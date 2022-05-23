@@ -121,7 +121,6 @@ Vue.mixin({
       this.$myCipherService.clearCache()
       this.$collectionService.clearCache()
       this.$mySearchService.clearIndex()
-      this.$searchService.clearIndex()
       this.$router.push(this.localeRoute({ name: 'lock' }))
     },
     randomString () {
