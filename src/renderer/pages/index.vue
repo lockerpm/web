@@ -49,7 +49,7 @@
               style="max-width: 120%; margin-left: 75px; max-height: 485px;"
             >
           </div>
-          <div class="w-full md:hidden order-2">
+          <div class="w-full md:hidden order-2 mt-16">
             <img
               src="~/assets/images/landing/index/img_1.png"
               alt=""

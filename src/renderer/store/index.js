@@ -177,6 +177,9 @@ export const actions = {
   LoadCurrentUserPw ({ commit }) {
     return this.$axios.$get('/cystack_platform/pm/users/me').then(res => {
       commit('UPDATE_USER_PW', res)
+      if (this.$vaultTimeoutService) {
+        this.$vaultTimeoutService.setVaultTimeoutOptions(res.timeout, res.timeout_action)
+      }
       return res
     })
   },

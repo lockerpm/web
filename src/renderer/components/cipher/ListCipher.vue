@@ -23,7 +23,7 @@
     <!-- List Ciphers, Folders, ... -->
     <div
       v-if="!shouldRenderNoCipher"
-      class="flex-column-fluid lg:px-28 py-10 px-10 mb-20"
+      class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4 mb-20"
     >
       <!-- Overview -->
       <div class="mb-10">
