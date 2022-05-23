@@ -136,11 +136,12 @@
               </div>
               <div>
                 <a
-                  class="btn btn-default mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current"
                   :href="`https://locker.io${locale==='vi'?'/vi':''}/security`"
                   target="_blank"
                 >
-                  <span>{{ $t('data.settings.learn_about_secure') }}</span>
+                  <button class="btn btn-default !whitespace-normal text-left mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current">
+                    {{ $t('data.settings.learn_about_secure') }}
+                  </button>
                 </a>
               </div>
             </div>
@@ -170,8 +171,8 @@
           :key="item.id_card"
           class="!flex mb-4 items-center"
         >
-          <div class="flex items-center w-[400px]">
-            <div class="bg-[#f5f8fa] w-10 h-10 rounded flex items-center justify-center p-1 mr-4">
+          <div class="flex items-center md:w-[400px] w-[250px]">
+            <div class="md:flex hidden bg-[#f5f8fa] w-10 h-10 rounded items-center justify-center p-1 mr-4">
               <img v-if="item.card_type === 'Visa'" src="~/assets/images/icons/cards/visa.svg" alt="">
               <img v-else-if="item.card_type === 'MasterCard'" src="~/assets/images/icons/cards/master.svg" alt="">
               <img v-else-if="item.card_type === 'American Express'" src="~/assets/images/icons/cards/amex.svg" alt="">
@@ -298,8 +299,9 @@
             </el-table-column>
           </el-table>
           <el-pagination
-            v-if="invoices.count > 10"
+            v-if="invoices.count > 5"
             id="_main_pag"
+            :pager-count="5"
             class="text-right mt-3"
             layout="prev, pager, next"
             :total="invoices.count"
