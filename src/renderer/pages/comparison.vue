@@ -4,15 +4,16 @@
       {{ $t('comparison.title') }}
     </div>
     <div class="table-fixed">
-      <table class="border-collapse border border-slate-200 table-auto">
+      <table class="border-collapse border table-auto" style="border-color:#DFDFDF">
         <thead>
           <tr>
             <th style="width: 200px" />
             <th
               v-for="(item, index) in $t('comparison.list_company')"
               :key="index"
-              class="font-bold landing-font-18 px-[21px] py-[24px] border border-slate-200"
+              class="font-bold landing-font-18 px-[21px] py-[24px] border "
               :style="index != 0 ? 'color: #161922;': 'color: #268334; background: #E7F5E8;'"
+              style="border-color:#DFDFDF"
             >
               {{ item }}
             </th>
@@ -24,12 +25,12 @@
               <td class="py-[17px] px-5 font-landing-16 font-bold" style="color: #268334; line-height: 22px !important;" colspan="8">{{ item.status }}</td>
             </tr>
             <tr v-for="(service, idx) in item.list_services" :key="service + idx">
-              <td class="py-[28px] px-[19px] border border-slate-200" style="line-height: 22px !important; border-left-width: 0.5px;border-right-width: 0.5px;">{{ service }}</td>
+              <td class="py-[28px] px-[19px] border" style="line-height: 22px !important; border-left-width: 0.5px;border-right-width: 0.5px; border-color:#DFDFDF !important">{{ service }}</td>
               <td
                 v-for="(detail, id) in item.details_services"
                 :key="id"
-                class="font-normal text-center py-7 px-5 font-landing-16 border border-slate-200"
-                style="line-height: 22px !important; border-left-width: 0.5px;border-right-width: 0.5px;"
+                class="font-normal text-center py-7 px-5 font-landing-16 border"
+                style="line-height: 22px !important; border-left-width: 0.5px;border-right-width: 0.5px; border-color:#DFDFDF"
                 :style="id == 0 ? 'background: #E7F5E8;' : ''"
               >
                 <span v-if="detail[idx] === 'Yes' || detail[idx] === 'Khả dụng'">
@@ -37,6 +38,10 @@
                 </span>
                 <span v-else-if="detail[idx] === 'No' || detail[idx] === 'Không khả dụng'">
                   <img src="~/assets/images/landing/comparison/icon-no.svg" class="m-auto">
+                </span>
+                <span v-else-if="detail[idx] === '>=5'">
+                  <img src="~/assets/images/landing/comparison/icon-bigger.svg" class="m-auto inline-block">
+                  <span>5</span>
                 </span>
                 <span v-else>
                   {{ detail[idx] }}
@@ -55,7 +60,7 @@
         <div class="w-full flex flex-wrap">
           <div class="w-full md:mb-0 md:pt-[115px] pt-20 text-center order-1">
             <h2 class="w-full font-bold landing-font-38 text-black mb-[45px] max-w-[790px] mx-auto">
-              {{ $t('comparison.start.title') }}
+              {{ $t('landing.start.title') }}
             </h2>
           </div>
           <div class="w-full md:w-10/12 mx-auto flex flex-wrap order-2 gap-x-[30px] gap-y-[45px] justify-center">

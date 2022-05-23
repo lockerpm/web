@@ -6,6 +6,11 @@
     >
       <h1 class="max-w-[700px] font-bold landing-font-50 text-center mx-auto">{{ title }}</h1>
       <div class="mt-[100px] pb-[140px] max-w-6xl mx-auto px-6">
+        <div v-if="$t('plan.money_vi') != null" class="relative h-6">
+          <div class="absolute top-0 right-1 italic">
+            {{ $t('plan.money_vi') }}
+          </div>
+        </div>
         <div class="w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1  gap-x-[30px] gap-y-[30px]">
           <div
             v-for="(plan, index) in plans"
