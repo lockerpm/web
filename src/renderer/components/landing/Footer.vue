@@ -126,7 +126,7 @@
       <!-- Menu end -->
 
       <!-- Bottom -->
-      <div class="md:flex md:items-center md:justify-between py-3 border-t border-black-200 landing-font-12 text-black-600">
+      <div class="md:flex md:items-center py-3 border-t border-black-200 landing-font-12 text-black-600">
         <div class="flex items-center">
           <div v-if="locale==='vi'">
             Một sản phẩm của
@@ -135,11 +135,11 @@
             A product of
           </div>
           <img class="h-4 ml-2 mr-3" src="~/assets/images/logo/CyStack.png" alt="CyStack">
-          <p class="">
-            Copyright © {{ currentYear }} Locker.io ·  All rights reserved.
-          </p>
         </div>
-        <div>
+        <div class="">
+          Copyright © {{ currentYear }} Locker.io ·  All rights reserved.
+        </div>
+        <div class="flex-grow md:text-right">
           <nuxt-link
             :to="localePath(`/terms`)"
             class="mr-4 text-black-600 hover:no-underline hover:text-green"
