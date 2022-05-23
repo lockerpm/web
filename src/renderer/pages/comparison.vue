@@ -3,8 +3,8 @@
     <div class="mb-[72px] font-bold landing-font-48 text-black text-center">
       {{ $t('comparison.title') }}
     </div>
-    <div class="table-fixed">
-      <table class="border-collapse border table-auto" style="border-color:#DFDFDF">
+    <div class="table-fixed overflow-auto">
+      <table class="w-full border-collapse border table-auto" style="border-color:#DFDFDF">
         <thead>
           <tr>
             <th style="width: 200px" />
