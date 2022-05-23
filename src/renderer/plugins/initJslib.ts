@@ -109,7 +109,7 @@ const myCipherService = new MyCipherService(
 const folderService = new FolderService(cryptoService, userService, apiService, storageService,
     i18nService, cipherService);
 const collectionService = new CollectionService(cryptoService, userService, storageService, i18nService);
-searchService = new SearchService(cipherService, consoleLogService, i18nService);
+searchService = new SearchService(myCipherService, consoleLogService, i18nService);
 mySearchService = new MySearchService(myCipherService, consoleLogService, i18nService);
 const policyService = new PolicyService(userService, storageService);
 const sendService = new SendService(cryptoService, userService, apiService, fileUploadService, storageService,
