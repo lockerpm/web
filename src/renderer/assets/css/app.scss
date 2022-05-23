@@ -320,7 +320,7 @@ input:-webkit-autofill:active
   }
 }
 .navigation-bar {
-  @apply flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10;
+  @apply flex mb-5 border-b border-black-400 pt-3 lg:px-28 md:px-10 px-4;
   .navigation-item {
     @apply text-black-600 mr-8 last:mr-0 hover:no-underline
   }

@@ -1,5 +1,5 @@
 <template>
-  <div id="header-default" class="lg:px-28 px-10 h-[60px] flex items-center border-0 border-b border-black-200 relative">
+  <div id="header-default" class="lg:px-28 md:px-10 px-4 h-[60px] flex items-center border-0 border-b border-black-200 relative">
     <div id="nav-content" class="sidebar" style="z-index: 1000">
       <SideBarMenu :closable="true" @close="hideNavMenu" />
     </div>

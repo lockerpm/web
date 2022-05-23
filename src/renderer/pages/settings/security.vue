@@ -30,11 +30,12 @@
               </div>
               <div>
                 <a
-                  class="btn btn-default mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current"
                   :href="`https://locker.io${locale==='vi'?'/vi':''}/security`"
                   target="_blank"
                 >
-                  <span>{{ $t('data.settings.learn_about_secure') }}</span>
+                  <button class="btn btn-default !whitespace-normal text-left mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current">
+                    {{ $t('data.settings.learn_about_secure') }}
+                  </button>
                 </a>
               </div>
             </div>
@@ -170,11 +171,12 @@
               </div>
               <div>
                 <a
-                  class="btn btn-default mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current"
                   href="https://support.locker.io/articles/set-up-and-use-emergency-access"
                   target="_blank"
                 >
-                  <span>{{ $t('data.settings.learn_about_emergency_access') }}</span>
+                  <button class="btn btn-default !whitespace-normal text-left mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current">
+                    {{ $t('data.settings.learn_about_emergency_access') }}
+                  </button>
                 </a>
               </div>
             </div>
@@ -602,11 +604,11 @@
 </template>
 
 <script>
-import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
 import ChangeMasterPassword from '../../components/user/ChangeMasterPassword'
 import EmergencyContact from '../../components/setting/EmergencyContact.vue'
 import { Utils } from '../../jslib/src/misc/utils.ts'
 import PasswordStrengthBar from '../../components/password/PasswordStrengthBar'
+import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
 export default {
   components: {
     ChangeMasterPassword,
