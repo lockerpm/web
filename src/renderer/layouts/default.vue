@@ -174,6 +174,7 @@ export default {
         this.getEmergencyAccessInvitations()
         this.reconnectSocket()
         this.getShareInvitations()
+        this.getMyShares()
         this.$store.dispatch('LoadCurrentPlan')
       }
     }
@@ -238,6 +239,9 @@ export default {
       const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
       this.$store.commit('UPDATE_PENDING_SHARES', shareInvitations.filter(item => item.status === 'invited').length)
       // this.pendingShares = shareInvitations.filter(item => item.status === 'invited').length
+    },
+    async getMyShares () {
+      this.$store.dispatch('LoadMyShares')
     },
     async getEmergencyAccessInvitations () {
       this.emergencyAccessInvitations = await this.$axios.$get('cystack_platform/pm/emergency_access/granted')
@@ -348,6 +352,7 @@ export default {
           // console.log('socket sync')
           this.getSyncData()
           this.getShareInvitations()
+          this.getMyShares()
           break
         // case 'members':
         //   this.getInvitations()
