@@ -172,6 +172,14 @@
             <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoAccount.notes" :text-area="true" />
           </template>
           <template v-if="cipher.type === CipherType.CryptoWallet && cipher.cryptoWallet">
+            <div class="grid md:grid-cols-6 cipher-item">
+              <div class="">{{ $t('data.ciphers.wallet_app') }}</div>
+              <div class="col-span-4">
+                <div v-if="cipher.cryptoWallet.walletApp" class="font-semibold flex items-center">
+                  <img :src="cipher.cryptoWallet.walletApp.logo" alt="" class="mr-3 h-[34px] w-[34px] rounded-full"> {{ cipher.cryptoWallet.walletApp.name }}
+                </div>
+              </div>
+            </div>
             <TextHaveCopy :label="$t('data.ciphers.username')" :text="cipher.cryptoWallet.username" />
             <TextHaveCopy
               :label="$t('data.ciphers.password_pin')"
@@ -194,6 +202,16 @@
               should-hide
             />
             <TextHaveCopy :label="$t('data.ciphers.seed')" :text="cipher.cryptoWallet.seed" />
+            <div class="grid md:grid-cols-6 cipher-item">
+              <div class="">{{ $t('data.ciphers.networks') }}</div>
+              <div class="col-span-4">
+                <div v-if="cipher.cryptoWallet.networks && cipher.cryptoWallet.networks.length" class="grid md:grid-cols-3 gap-2">
+                  <div v-for="network in cipher.cryptoWallet.networks" :key="network.alias" class="font-semibold flex items-center break-normal">
+                    <img :src="network.logo" alt="" class="mr-3 h-[34px] w-[34px] rounded-full"> {{ network.name }}
+                  </div>
+                </div>
+              </div>
+            </div>
             <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoWallet.notes" :text-area="true" />
           </template>
           <TextHaveCopy v-if="![CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type)" :label="$t('data.ciphers.notes')" :text="cipher.notes" :text-area="true" />
@@ -248,6 +266,8 @@ import Vnodes from '../../components/Vnodes'
 import ShareCipher from '../../components/cipher/ShareCipher'
 import MoveFolder from '../folder/MoveFolder'
 import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
+import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
+import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 CipherType.CryptoAccount = 6
 CipherType.CryptoWallet = 7
 export default {
@@ -325,6 +345,10 @@ export default {
           if (item.type === CipherType.CryptoWallet) {
             try {
               item.cryptoWallet = JSON.parse(item.notes)
+              if (item.cryptoWallet) {
+                item.cryptoWallet.walletApp = item.cryptoWallet.walletApp ? this.findWalletApp(WALLET_APP_LIST, item.cryptoWallet.walletApp.alias) : {}
+                item.cryptoWallet.networks = item.cryptoWallet.networks ? item.cryptoWallet.networks.map(n => CHAIN_LIST.find(c => c.alias === n.alias)) : []
+              }
               // item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
             } catch (error) {
               console.log(error)
@@ -403,6 +427,9 @@ export default {
     },
     findFolder (folders, id) {
       return find(folders, e => e.id === id) || { name: this.$t('data.folders.no_folder'), id: 'unassigned' }
+    },
+    findWalletApp (walletList, alias) {
+      return find(walletList, a => a.alias === alias)
     },
     async leaveShare (cipher) {
       this.$confirm(this.$tc('data.notifications.leave_share', 1), this.$t('common.warning'), {

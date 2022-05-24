@@ -172,8 +172,8 @@ export default {
               routeName: 'identities'
             },
             {
-              label: 'crypto_assets',
-              routeName: 'crypto-assets'
+              label: 'crypto_backups',
+              routeName: 'crypto-backups'
             }
           ]
         },

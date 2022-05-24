@@ -6,6 +6,7 @@ import numeral from 'numeral'
 import { Avatar } from 'element-ui'
 import { CipherType } from '../jslib/src/enums'
 import { SyncResponse } from '../jslib/src/models/response'
+import { WALLET_APP_LIST } from '../utils/crypto/applist/index'
 // Vue.use(Image)
 Vue.mixin({
   data () {
@@ -361,6 +362,29 @@ Vue.mixin({
       case 6:
         return this.getIconDefaultCipher('CryptoAccount', size)
       case 7:
+        if (!defaultIcon) {
+          if (cipher.cryptoWallet && cipher.cryptoWallet.walletApp) {
+            try {
+              const selectedApp = WALLET_APP_LIST.find(a => a.alias === cipher.cryptoWallet.walletApp.alias)
+              return (this.$createElement(Avatar, {
+                props: {
+                  src: selectedApp.logo,
+                  size,
+                  alt: selectedApp.name,
+                  shape: 'square'
+                }
+              }, [
+                this.$createElement('img', {
+                  attrs: {
+                    src: require('~/assets/images/icons/icon_CryptoWallet.svg')
+                  }
+                })
+              ]))
+            } catch (e) {
+              return this.getIconDefaultCipher('CryptoWallet', size)
+            }
+          }
+        }
         return this.getIconDefaultCipher('CryptoWallet', size)
       case 'Shares':
         return this.getIconDefaultCipher('Shares', size)
@@ -425,10 +449,10 @@ Vue.mixin({
         name = 'identities'
         break
       case 6:
-        name = 'crypto-assets'
+        name = 'crypto-backups'
         break
       case 7:
-        name = 'crypto-assets'
+        name = 'crypto-backups'
         break
       }
       this.$router.push(this.localeRoute({

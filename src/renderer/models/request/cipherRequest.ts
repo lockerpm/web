@@ -1,3 +1,6 @@
+import { Cipher } from '../domain/cipher'
+import { CipherType } from '../../enums/cipherType'
+import { CryptoAccountApi } from '../api/cryptoAccountApi'
 import { CipherRepromptType } from '@/jslib/src/enums/cipherRepromptType'
 
 import { CardApi } from '@/jslib/src/models/api/cardApi'
@@ -9,9 +12,6 @@ import { SecureNoteApi } from '@/jslib/src/models/api/secureNoteApi'
 
 import { AttachmentRequest } from '@/jslib/src/models/request/attachmentRequest'
 import { PasswordHistoryRequest } from '@/jslib/src/models/request/passwordHistoryRequest'
-import { Cipher } from '../domain/cipher'
-import { CipherType } from '../../enums/cipherType'
-import { CryptoAccountApi } from '../api/cryptoAccountApi'
 
 export class CipherRequest {
   type: CipherType;

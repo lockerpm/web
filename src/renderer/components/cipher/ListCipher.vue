@@ -4,7 +4,7 @@
     class="flex flex-col flex-column-fluid relative"
   >
     <!-- Navigation Menu -->
-    <div v-if="['vault', 'passwords', 'notes', 'identities', 'cards', 'crypto-assets'].includes(getRouteBaseName())" class="navigation-bar">
+    <div v-if="['vault', 'passwords', 'notes', 'identities', 'cards', 'crypto-backups'].includes(getRouteBaseName())" class="navigation-bar">
       <template>
         <nuxt-link
           v-for="(item, index) in menuVault"
@@ -23,7 +23,7 @@
     <!-- List Ciphers, Folders, ... -->
     <div
       v-if="!shouldRenderNoCipher"
-      class="flex-column-fluid lg:px-28 py-10 px-10 mb-20"
+      class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4 mb-20"
     >
       <!-- Overview -->
       <div class="mb-10">
@@ -276,12 +276,12 @@
                 >
                   {{ $t('common.rename') }}
                 </li>
-                <li
+                <!-- <li
                   class="el-dropdown-menu__item w-[200px]"
                   @click.prevent="shareFolder(selectedFolder)"
                 >
                   {{ $t('common.share') }}
-                </li>
+                </li> -->
                 <li
                   class="el-dropdown-menu__item"
                   @click.prevent="deleteFolder(selectedFolder)"
@@ -652,13 +652,13 @@
                 >
                   <Vnodes :vnodes="getIconCipher(item, 34)" />
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col overflow-hidden">
                   <a
                     class="text-black font-semibold truncate flex items-center"
                     :class="{'opacity-80': item.isDeleted}"
                     @click="routerCipher(item, addEdit)"
                   >
-                    {{ item.name }}
+                    <span class="overflow-hidden overflow-ellipsis">{{ item.name }}</span>
                     <img
                       v-if="item.organizationId"
                       src="~/assets/images/icons/shares.svg"
@@ -667,7 +667,7 @@
                       class="inline-block ml-2"
                     >
                   </a>
-                  <div>
+                  <div class="overflow-hidden overflow-ellipsis">
                     {{ item.subTitle }}
                   </div>
                 </div>
@@ -718,7 +718,7 @@
                         {{ $t('common.copy') }} {{ $t('common.note') }}
                       </el-dropdown-item>
                     </template>
-                    <template v-if="item.type === CipherType.CryptoAccount">
+                    <!-- <template v-if="item.type === CipherType.CryptoAccount">
                       <el-dropdown-item
                         v-clipboard:copy="item.cryptoAccount.username"
                         v-clipboard:success="clipboardSuccessHandler"
@@ -732,8 +732,8 @@
                       >
                         {{ $t('common.copy') }} {{ $t('common.password') }}
                       </el-dropdown-item>
-                    </template>
-                    <template v-if="item.type === CipherType.CryptoWallet">
+                    </template> -->
+                    <template v-if="item.type === CipherType.CryptoWallet && item.cryptoWallet">
                       <el-dropdown-item
                         v-clipboard:copy="item.cryptoWallet.seed"
                         v-clipboard:success="clipboardSuccessHandler"
@@ -753,7 +753,7 @@
                         {{ $t('common.copy') }} {{ $t('data.ciphers.private_key') }}
                       </el-dropdown-item>
                       <el-dropdown-item
-                        v-clipboard:copy="item.cryptoWallet.password_pin"
+                        v-clipboard:copy="item.cryptoWallet.password"
                         v-clipboard:success="clipboardSuccessHandler"
                       >
                         {{ $t('common.copy') }} {{ $t('data.ciphers.password_pin') }}
@@ -940,8 +940,8 @@ export default {
           icon: 'identities'
         },
         {
-          label: 'crypto_assets',
-          routeName: 'crypto-assets',
+          label: 'crypto_backups',
+          routeName: 'crypto-backups',
           icon: 'passwords'
         }
       ],
@@ -993,8 +993,8 @@ export default {
           value: 'Identity'
         },
         {
-          label: this.$tc('type.CryptoAsset', 1),
-          value: 'CryptoAsset'
+          label: this.$tc('type.CryptoBackup', 1),
+          value: 'CryptoBackup'
         },
         {
           label: this.$tc('type.Folder', 1),
@@ -1030,8 +1030,8 @@ export default {
         return 'Card'
       case 'identities':
         return 'Identity'
-      case 'crypto-assets':
-        return 'CryptoAsset'
+      case 'crypto-backups':
+        return 'CryptoBackup'
       case 'vault':
         return 'Vault'
       case 'shares':
