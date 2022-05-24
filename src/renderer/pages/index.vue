@@ -329,7 +329,7 @@
               <img
                 :src="require(`~/assets/images/landing/index/${item.img}`)"
                 :alt="item.name"
-                class="max-h-full mx-auto"
+                class="mx-auto"
                 style="align-self: center; max-width: 55%; max-height: 55%;"
               >
             </div>
