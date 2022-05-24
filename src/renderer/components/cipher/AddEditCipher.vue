@@ -741,6 +741,12 @@ export default {
         if (data.type === CipherType.CryptoWallet) {
           this.cryptoWallet = data.cryptoWallet
         }
+        if (data.type === CipherType.Login && data.login && this.cipher.login.uris == null) {
+          data.login.uris = [{
+            match: null,
+            uri: null
+          }]
+        }
         this.cipher = new Cipher({ ...data }, true)
         this.$refs.inputSelectFolder.value = this.cipher.folderId
         this.writeableCollections = await this.getWritableCollections(this.cipher.organizationId)

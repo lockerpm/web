@@ -25,7 +25,9 @@ export const state = () => ({
   currentPlan: {},
   cipherCount: null,
   pendingShares: 0,
-  extensionLoggedIn: false
+  extensionLoggedIn: false,
+  myShares: [],
+  shareInvitations: []
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -106,6 +108,12 @@ export const mutations = {
   },
   UPDATE_LOGIN_EXTENSION (state, value) {
     state.extensionLoggedIn = value
+  },
+  UPDATE_MY_SHARES (state, value) {
+    state.myShares = value
+  },
+  UPDATE_SHARE_INVITATIONS (state, value) {
+    state.shareInvitations = value
   }
 }
 export const actions = {
@@ -206,6 +214,18 @@ export const actions = {
   LoadCurrentPlan ({ commit }) {
     return this.$axios.$get('cystack_platform/pm/payments/plan').then(res => {
       commit('UPDATE_CURRENT_PLAN', res)
+      return res
+    })
+  },
+  LoadMyShares ({ commit }) {
+    return this.$axios.$get('cystack_platform/pm/sharing/my_share').then(res => {
+      commit('UPDATE_MY_SHARES', res)
+      return res
+    })
+  },
+  LoadShareInvitations ({ commit }) {
+    return this.$axios.$get('cystack_platform/pm/sharing/invitations').then(res => {
+      commit('UPDATE_SHARE_INVITATIONS', res)
       return res
     })
   }

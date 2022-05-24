@@ -295,7 +295,7 @@
                               {{ $t('common.copy') }} {{ $t('common.note') }}
                             </el-dropdown-item>
                           </template>
-                          <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.CryptoWallet">
+                          <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.CryptoWallet && scope.row.cryptoWallet">
                             <el-dropdown-item
                               v-clipboard:copy="scope.row.cryptoWallet.seed"
                               v-clipboard:success="clipboardSuccessHandler"
@@ -522,7 +522,7 @@ export default {
       dialogConfirmVisible: false,
       selectedCipher: {},
       invitations: [],
-      myShares: [],
+      // myShares: [],
       dialogAcceptVisible: false
     }
   },
@@ -647,8 +647,7 @@ export default {
         this.getShareInvitations()
       }
       if (this.getRouteBaseName() === 'shares-your-shares') {
-        // this.myShares = await this.$axios.$get('cystack_platform/pm/sharing/my_share') || []
-        this.getMyShares()
+        // this.getMyShares()
       }
     }
   },
@@ -948,7 +947,8 @@ export default {
       this.pendingShares = invitations.filter(item => item.status === 'invited').length
     },
     async getMyShares () {
-      this.myShares = await this.$axios.$get('cystack_platform/pm/sharing/my_share') || []
+      // this.myShares = await this.$axios.$get('cystack_platform/pm/sharing/my_share') || []
+      this.$store.dispatch('LoadMyShares')
     },
     upgradePlan () {
       this.$refs.shareCipher.closeDialog()
