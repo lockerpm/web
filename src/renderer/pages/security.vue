@@ -81,6 +81,15 @@
               {{ security4.title }}
             </h2>
             <p class="landing-font-18">{{ security4.desc }}</p>
+            <div class="max-w-xs mt-4">
+              <a
+                class="landing-btn w-full sm:w-auto mb-1"
+                href="https://whitehub.net/programs/locker/"
+                target="_blank"
+              >
+                {{ $t('security.report_vuln') }}
+              </a>
+            </div>
           </div>
           <!-- Left end -->
           <!-- Right -->
