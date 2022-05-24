@@ -276,12 +276,12 @@
                 >
                   {{ $t('common.rename') }}
                 </li>
-                <li
+                <!-- <li
                   class="el-dropdown-menu__item w-[200px]"
                   @click.prevent="shareFolder(selectedFolder)"
                 >
                   {{ $t('common.share') }}
-                </li>
+                </li> -->
                 <li
                   class="el-dropdown-menu__item"
                   @click.prevent="deleteFolder(selectedFolder)"

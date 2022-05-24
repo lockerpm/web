@@ -43,6 +43,12 @@ Vue.mixin({
     },
     extensionLoggedIn () {
       return this.$store.state.extensionLoggedIn
+    },
+    myShares () {
+      return this.$store.state.myShares
+    },
+    shareInvitations () {
+      return this.$store.state.shareInvitations
     }
   },
   mounted () {
