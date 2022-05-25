@@ -6,7 +6,12 @@
     >
       <h1 class="max-w-[700px] font-bold landing-font-50 text-center mx-auto">{{ title }}</h1>
       <div class="mt-[100px] pb-[140px] max-w-6xl mx-auto px-6">
-        <div class="w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1  gap-x-[30px] gap-y-[30px]">
+        <div v-if="$t('plan.money_vi') != null" class="relative h-6">
+          <div class="absolute top-0 right-1 italic landing-font-14 font-normal" style="color: #5A6176">
+            {{ $t('plan.money_vi') }}
+          </div>
+        </div>
+        <div class="w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-[30px] gap-y-[30px]">
           <div
             v-for="(plan, index) in plans"
             :key="index"
@@ -77,103 +82,105 @@
     </section>
     <section class="mt-[140px] mb-[150px]">
       <div class="max-w-6xl mx-auto">
-        <table class="w-full">
-          <thead>
-            <tr>
-              <th class="w-3/12 text-left pl-6 pb-5 landing-font-18">{{ $t('plan.feature') }}</th>
-              <th class="w-1/12 pb-5 landing-font-18">Free</th>
-              <th class="w-8/36 pb-5 landing-font-18">Premium</th>
-              <th class="w-8/36 pb-5 landing-font-18">Family</th>
-              <!-- <th class="w-8/36 pb-5 landing-font-18">Business</th> -->
-            </tr>
-          </thead>
-          <tbody>
-            <template v-for="(feature, index) in feature_plan">
-              <tr
-                :key="index"
-                style="background-color: #FBFAF3;"
-              >
-                <td
-                  colspan="100%"
-                  class="py-[18px] pl-6 text-green font-semibold landing-font-16"
-                >
-                  {{ feature.title }}
-                </td>
+        <div class="w-full overflow-auto">
+          <table class="w-full">
+            <thead>
+              <tr>
+                <th class="w-3/12 text-left pl-6 pb-5 landing-font-18">{{ $t('plan.feature') }}</th>
+                <th class="w-1/12 pb-5 landing-font-18">Free</th>
+                <th class="w-8/36 pb-5 landing-font-18">Premium</th>
+                <th class="w-8/36 pb-5 landing-font-18">Family</th>
+                <!-- <th class="w-8/36 pb-5 landing-font-18">Business</th> -->
               </tr>
-              <tr :key="index">
-                <td
-                  colspan="100%"
-                  class="pb-5"
-                />
-              </tr>
-              <tr
-                v-for="(item, idx) in feature.features"
-                :key="idx"
-              >
-                <td
-                  class="pl-6 landing-font-16 pb-5"
-                  style="color: #5A6176"
+            </thead>
+            <tbody>
+              <template v-for="(feature, index) in feature_plan">
+                <tr
+                  :key="index"
+                  style="background-color: #FBFAF3;"
                 >
-                  {{ item.label }}
-                </td>
-                <td
-                  v-for="(plan, ind) in item.plans"
-                  :key="ind"
-                  class="text-center pb-5"
-                >
-                  <img
-                    v-if="plan===true"
-                    class="mx-auto"
-                    src="~/assets/images/landing/plan/true.svg"
+                  <td
+                    colspan="100%"
+                    class="py-[18px] pl-6 text-green font-semibold landing-font-16"
                   >
-                  <img
-                    v-else-if="plan===false"
-                    class="mx-auto"
-                    src="~/assets/images/landing/plan/false.svg"
-                  >
-                  <p
-                    v-else
-                    v-html="plan"
+                    {{ feature.title }}
+                  </td>
+                </tr>
+                <tr :key="index">
+                  <td
+                    colspan="100%"
+                    class="pb-5"
                   />
+                </tr>
+                <tr
+                  v-for="(item, idx) in feature.features"
+                  :key="idx"
+                >
+                  <td
+                    class="pl-6 landing-font-16 pb-5"
+                    style="color: #5A6176"
+                  >
+                    {{ item.label }}
+                  </td>
+                  <td
+                    v-for="(plan, ind) in item.plans"
+                    :key="ind"
+                    class="text-center pb-5"
+                  >
+                    <img
+                      v-if="plan===true"
+                      class="mx-auto"
+                      src="~/assets/images/landing/plan/true.svg"
+                    >
+                    <img
+                      v-else-if="plan===false"
+                      class="mx-auto"
+                      src="~/assets/images/landing/plan/false.svg"
+                    >
+                    <p
+                      v-else
+                      v-html="plan"
+                    />
+                  </td>
+                </tr>
+              </template>
+              <tr style="background-color: #FBFAF3;">
+                <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">{{ $t('plan.price') }}</td>
+                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[0].price') }}</td>
+                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[1].price') }}/{{ $t('plan.plans[1].duration') }}</td>
+                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[2].price') }}/{{ $t('plan.plans[2].duration') }}/<br>{{ $t('plan.plans[2].accounts') }}</td>
+                <!-- <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[3].price') }}</td> -->
+              </tr>
+              <tr>
+                <td />
+                <td
+                  v-for="(button, index) in subscription_button"
+                  :key="index"
+                  class="pt-5"
+                >
+                  <div class="text-center" style="margin: 0 5px;">
+                    <a
+                      v-if="button.external_link"
+                      class="landing-btn !w-full sm:w-auto sm:ml-4"
+                      style="font-weight: 600"
+                      :href="button.external_link"
+                    >
+                      {{ button.text }}
+                    </a>
+                    <nuxt-link
+                      v-else
+                      class="landing-btn2 w-full sm:w-auto sm:ml-4"
+                      style="font-weight: 600"
+                      :to="localeRoute({name: button.link})"
+                    >
+                      {{ button.text }}
+                    </nuxt-link>
+                  </div>
                 </td>
               </tr>
-            </template>
-            <tr style="background-color: #FBFAF3;">
-              <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">{{ $t('plan.price') }}</td>
-              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[0].price') }}</td>
-              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[1].price') }}/{{ $t('plan.plans[1].duration') }}</td>
-              <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[2].price') }}/{{ $t('plan.plans[2].duration') }}/<br>{{ $t('plan.plans[2].accounts') }}</td>
-              <!-- <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[3].price') }}</td> -->
-            </tr>
-            <tr>
-              <td />
-              <td
-                v-for="(button, index) in subscription_button"
-                :key="index"
-                class="pt-5"
-              >
-                <div class="text-center">
-                  <a
-                    v-if="button.external_link"
-                    class="landing-btn !w-full sm:w-auto sm:ml-4"
-                    style="font-weight: 600"
-                    :href="button.external_link"
-                  >
-                    {{ button.text }}
-                  </a>
-                  <nuxt-link
-                    v-else
-                    class="landing-btn2 w-full sm:w-auto sm:ml-4"
-                    style="font-weight: 600"
-                    :to="localeRoute({name: button.link})"
-                  >
-                    {{ button.text }}
-                  </nuxt-link>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
