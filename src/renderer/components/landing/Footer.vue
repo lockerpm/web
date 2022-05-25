@@ -5,7 +5,7 @@
       <div class="w-full lg:flex md:pt-12 md:pb-24">
         <!-- Menu items -->
         <div class="w-full lg:w-9/12">
-          <div class="grid sm:grid-cols-12 gap-8 py-8 md:py-12">
+          <div class="grid grid-cols-12 gap-8 py-8 md:py-12">
             <div
               v-for="(parent, i) in $t('landing_footer.menu')"
               :key="i"
