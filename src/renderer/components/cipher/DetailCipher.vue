@@ -215,6 +215,9 @@
             <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoWallet.notes" :text-area="true" />
           </template>
           <TextHaveCopy v-if="![CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type)" :label="$t('data.ciphers.notes')" :text="cipher.notes" :text-area="true" />
+          <template v-for="(field, index) in cipher.fields">
+            <TextHaveCopy v-if="field.name || field.value!=null" :key="index" :label="field.name" :text="field.value" :should-hide="field.type === FieldType.Hidden" />
+          </template>
           <div class="grid md:grid-cols-6 cipher-item">
             <div class="">{{ $t('data.ciphers.owned_by') }}</div>
             <div class="col-span-4 font-semibold flex items-center">
@@ -281,6 +284,7 @@ import MoveFolder from '../folder/MoveFolder'
 import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
 import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
 import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
+import { FieldType } from '../../jslib/src/enums/fieldType'
 CipherType.CryptoAccount = 6
 CipherType.CryptoWallet = 7
 export default {
@@ -309,7 +313,8 @@ export default {
       showPassword: false,
       CipherType,
       editMode: false,
-      showMember: false
+      showMember: false,
+      FieldType
     }
   },
   computed: {

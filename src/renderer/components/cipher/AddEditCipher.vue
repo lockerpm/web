@@ -64,6 +64,7 @@
           />
         </ValidationProvider>
 
+        <!-- LOGIN FIELDS -->
         <template v-if="cipher.type === CipherType.Login">
           <div class="mb-4 text-black-700 text-head-6 font-semibold">
             {{ $t('data.ciphers.login') }}
@@ -117,6 +118,8 @@
             />
           </template>
         </template>
+
+        <!-- CARD FIELDS -->
         <template v-if="cipher.type === CipherType.Card">
           <div class="mb-4 text-black-700 text-head-6 font-semibold">{{ $t('data.ciphers.card_details') }}</div>
           <ValidationProvider
@@ -171,6 +174,8 @@
             :disabled="isDeleted"
           />
         </template>
+
+        <!-- IDENTITY FIELDS -->
         <template v-if="cipher.type === CipherType.Identity">
           <div class="mb-4 text-black-700 text-head-6 font-semibold">
             {{ $t('data.ciphers.personal') }}
@@ -279,6 +284,8 @@
             />
           </div>
         </template>
+
+        <!-- CRYPTO ACCOUNT (DEPRECATED) -->
         <template v-if="cipher.type === CipherType.CryptoAccount">
           <InputText
             v-model="cryptoAccount.username"
@@ -341,6 +348,7 @@
           />
         </template>
 
+        <!-- CRYPTO BACKUP FIELDS -->
         <template v-if="cipher.type === CipherType.CryptoWallet">
           <InputSelectCryptoWallet
             ref="inputSelectCryptoWallet"
@@ -409,6 +417,7 @@
           />
         </template>
 
+        <!-- NOTES -->
         <div
           v-if="cipher.type !== CipherType.SecureNote"
           class="my-5 text-black-700 text-head-6 font-semibold"
@@ -439,6 +448,21 @@
           :disabled="isDeleted"
           is-textarea
         />
+
+        <!-- CUSTOM FIELDS -->
+        <div
+          class="my-5 text-black-700 text-head-6 font-semibold"
+        >
+          {{ $t('data.ciphers.custom_fields') }}
+        </div>
+        <InputCustomFields
+          v-model="cipher.fields"
+          :edit-mode="cipher.id ? true : false"
+          class="w-full !mb-3"
+          @set-fields="setFields"
+        />
+
+        <!-- FOLDER -->
         <InputSelectFolder
           ref="inputSelectFolder"
           :label="$t('data.folders.select_folder')"
@@ -539,11 +563,11 @@
 <script>
 import { Dialog } from 'element-ui'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { CipherType, SecureNoteType } from '../../jslib/src/enums'
+import { CipherType, FieldType, SecureNoteType } from '../../jslib/src/enums'
 import { Cipher, SecureNote } from '../../jslib/src/models/domain'
 // import { CipherRequest } from '../../jslib/src/models/request'
 import { CipherRequest } from '../../models/request/cipherRequest'
-import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView } from '../../jslib/src/models/view'
+import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView, FieldView } from '../../jslib/src/models/view'
 import AddEditFolder from '../folder/AddEditFolder'
 import PasswordGenerator from '../password/PasswordGenerator'
 import PasswordStrengthBar from '../password/PasswordStrengthBar'
@@ -554,6 +578,7 @@ import InputSelectOrg from '../input/InputSelectOrg'
 import InputSelectCryptoWallet from '../input/InputSelectCryptoWallet'
 import InputSelectCryptoNetworks from '../input/InputSelectCryptoNetworks'
 import InputSeedPhrase from '../input/InputSeedPhrase'
+import InputCustomFields from '../input/InputCustomFields.vue'
 import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
 import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 import InlineEditCipher from './InlineEditCipher'
@@ -574,7 +599,8 @@ export default {
     InputSelectOrg,
     InputSelectCryptoWallet,
     InputSelectCryptoNetworks,
-    InputSeedPhrase
+    InputSeedPhrase,
+    InputCustomFields
   },
   props: {
     type: {
@@ -746,6 +772,10 @@ export default {
             match: null,
             uri: null
           }]
+        }
+        if (data.fields == null) {
+          data.fields = [new FieldView()]
+          data.fields[0].type = FieldType.Text
         }
         this.cipher = new Cipher({ ...data }, true)
         this.$refs.inputSelectFolder.value = this.cipher.folderId
@@ -929,6 +959,8 @@ export default {
       this.cipher.identity = new IdentityView()
       this.cipher.secureNote = new SecureNoteView()
       this.cipher.secureNote.type = SecureNoteType.Generic
+      this.cipher.fields = [new FieldView()]
+      this.cipher.fields[0].type = FieldType.Text
       this.cipher.folderId = this.$route.params.folderId || null
       this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
       if (this.cipher.organizationId) {
@@ -991,6 +1023,17 @@ export default {
     },
     setSeed (v) {
       this.cryptoWallet.seed = v
+    },
+    setFields (v) {
+      if (v.remove) {
+        this.cipher.fields.splice(v.index, 1)
+      } else if (v.index != null) {
+        this.cipher.fields[v.index].value = v.value.value
+        this.cipher.fields[v.index].name = v.value.name
+        this.cipher.fields[v.index].type = v.value.type != null ? v.value.type : this.cipher.fields[v.index].type
+      } else {
+        this.cipher.fields.push(v.value)
+      }
     }
   }
 }
