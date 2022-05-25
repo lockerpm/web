@@ -82,6 +82,10 @@ export default {
           label: 'plans_billing',
           routeName: 'settings-plans-billing'
         },
+        {
+          label: 'referral',
+          routeName: 'settings-referral'
+        },
         ...this.currentPlan.alias === 'pm_family_discount'
           ? [{
             label: 'family_members',
