@@ -422,6 +422,7 @@ export default {
         const cipherEnc = await this.$cipherService.encrypt(cipher, orgKey)
         const data = new CipherRequest(cipherEnc)
         data.type = type_
+        this.cipher.type = type_
         if (this.user.role === 'member-hide_passwords') {
           this.user.role = 'member'
           this.user.hide_passwords = true
@@ -449,7 +450,7 @@ export default {
           cipher: { id: cipher.id, ...data },
           members
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'success')
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'success')
         this.closeDialog()
         this.$emit('shared-cipher')
       } catch (e) {
@@ -457,7 +458,7 @@ export default {
           this.notify(e.response.data.message, 'warning')
           this.$emit('upgrade-plan')
         }
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'warning')
         console.log(e)
       } finally {
         this.loading = false
