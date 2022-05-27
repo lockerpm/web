@@ -318,6 +318,9 @@ input:-webkit-autofill:active
     background-color: transparent;
     border-color: transparent;
   }
+  .el-date-editor .el-input__inner {
+    padding-left: 35px;
+  }
 }
 .navigation-bar {
   @apply flex mb-5 border-b border-black-400 pt-3 lg:px-28 md:px-10 px-4;

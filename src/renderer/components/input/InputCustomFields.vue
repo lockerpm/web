@@ -1,13 +1,7 @@
 <template>
   <div>
     <div class="mb-4">
-      <!-- <InputSelect
-        :initial-value="0"
-        class="w-full"
-        :options="fieldTypeOptions"
-        @change="(v) => addNewField(v)"
-      /> -->
-      <el-select
+      <!-- <el-select
         v-model="type"
         class="w-full"
         @change="(v) => addNewField(v)"
@@ -18,45 +12,33 @@
           :label="option.label"
           :value="option.value"
         />
-      </el-select>
+      </el-select> -->
     </div>
     <div v-for="(field, index) in value" :key="index">
       <div class="flex">
-        <InputText
-          v-model="field.name"
-          :label="$t('common.name')"
-          class="w-1/2"
-          @input="(v) => updateField(index, {name: v, value: field.value})"
-        />
-        <div class="self-center ml-4">
+        <div class="self-center mr-3">
           <i class="el-icon-remove-outline cursor-pointer text-danger-600 text-head-5 " @click="deleteField(index)" />
         </div>
+        <InputField
+          v-model="field.value"
+          :label="field.name"
+          class="w-full"
+          :is-date="field.type === 7"
+          :placeholder="field.type === 8 ? 'mm/yyyy' : $t('data.ciphers.value')"
+          :is-password="field.type === FieldType.Hidden"
+          @input-label="(l) => updateField(index, {name: l, value: field.value})"
+          @input="(v) => updateField(index, {name: field.name, value: v})"
+        />
       </div>
-      <InputText
+      <!-- <InputText
         v-if="field.type !== FieldType.Boolean"
         v-model="field.value"
         :label="$t('common.value')"
         class="w-full"
         :is-password="field.type === FieldType.Hidden"
         @input="(v) => updateField(index, {name: field.name, value: v})"
-      />
-      <!-- <el-select
-        v-else
-        :value="field.value"
-        @change="(v) => updateField(index, {name: field.name, value: v})"
-      >
-        <el-option
-          key="false"
-          label="False"
-          value="false"
-        />
-        <el-option
-          key="true"
-          label="True"
-          value="true"
-        />
-      </el-select> -->
-      <InputSelect
+      /> -->
+      <!-- <InputSelect
         v-else
         :label="$t('common.value')"
         :initial-value="'false'"
@@ -72,16 +54,33 @@
           }
         ]"
         @change="(v) => updateField(index, {name: field.name, value: v})"
-      />
+      /> -->
     </div>
+
+    <!-- Add new custom field -->
     <div>
-      <a
+      <!-- <a
         href="#"
         class="text-primary cursor-pointer"
         @click.prevent="addNewField(type, true)"
       >
         <i class="el-icon-circle-plus-outline mr-2" />{{ $t('data.ciphers.new_custom_field') }}
-      </a>
+      </a> -->
+      <el-dropdown trigger="click">
+        <span class="el-dropdown-link text-primary">
+          <i class="el-icon-circle-plus-outline mr-2" />{{ $t('data.ciphers.new_custom_field') }}
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item
+            v-for="option in fieldTypeOptions"
+            :key="option.value"
+            :value="option.value"
+            @click.native="addNewField(option.value)"
+          >
+            {{ option.label }}
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -89,12 +88,11 @@
 <script>
 import { FieldView } from '../../jslib/src/models/view'
 import { FieldType } from '../../jslib/src/enums/fieldType'
-import InputText from '../input/InputText'
-import InputSelect from '../input/InputSelect'
+import InputField from '../input/InputField.vue'
+// import InputSelect from '../input/InputSelect'
 export default {
   components: {
-    InputText,
-    InputSelect
+    InputField
   },
   props: {
     value: {
@@ -110,16 +108,40 @@ export default {
     return {
       fieldTypeOptions: [
         {
-          label: 'Text',
+          label: this.$t('data.ciphers.text'),
           value: FieldType.Text
         },
         {
-          label: 'Hidden',
+          label: this.$t('data.ciphers.hidden'),
           value: FieldType.Hidden
         },
+        // {
+        //   label: 'Boolean',
+        //   value: FieldType.Boolean
+        // }
         {
-          label: 'Boolean',
-          value: FieldType.Boolean
+          label: 'URL',
+          value: 4
+        },
+        {
+          label: 'Email',
+          value: 5
+        },
+        {
+          label: this.$t('data.ciphers.address'),
+          value: 6
+        },
+        {
+          label: this.$t('data.ciphers.date'),
+          value: 7
+        },
+        {
+          label: this.$t('data.ciphers.monthYear'),
+          value: 8
+        },
+        {
+          label: this.$t('data.ciphers.phone'),
+          value: 9
         }
       ],
       FieldType,
@@ -127,14 +149,10 @@ export default {
     }
   },
   methods: {
-    addNewField (type, forceAdd = false) {
-      if (this.value.length && !this.value[this.value.length - 1].value && !this.value[this.value.length - 1].name && !forceAdd) {
-        this.$emit('set-fields', { index: this.value.length - 1, value: { type } })
-      } else {
-        const newField = new FieldView()
-        newField.type = type
-        this.$emit('set-fields', { value: newField })
-      }
+    addNewField (type) {
+      const newField = new FieldView()
+      newField.type = type
+      this.$emit('set-fields', { value: newField })
     },
     updateField (index, value) {
       this.$emit('set-fields', { index, value })

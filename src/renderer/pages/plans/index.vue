@@ -4,7 +4,7 @@
       <template v-for="(item, index) in planMenu">
         <div
           :key="index"
-          :class="step===index+1?'!text-black font-semibold border-b-2 border-primary pb-3':''"
+          :class="[step===index+1?'!text-black font-semibold border-b-2 border-primary pb-3':'', index+1>step ? 'opacity-60 cursor-not-allowed' : '']"
           class="text-black-600 mr-8 last:mr-0 cursor-pointer"
           @click="index===0?step=index+1:()=>{}"
         >
@@ -80,6 +80,7 @@
           </div>
           <!-- Step title end-->
 
+          <!-- Choose a plan -->
           <template v-if="step===1">
             <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-3">
               <div
@@ -154,18 +155,7 @@
                       <div class="ml-2">{{ $t(`data.plans.features.${feature}`) }}</div>
                     </div>
                   </div>
-                  <!-- <div v-if="currentPlan.alias === item.alias">
-                        <button class="btn btn-primary w-full">
-                          Hiện tại
-                        </button>
-                      </div> -->
                 </div>
-                <!-- <div v-if="currentPlan.alias === item.alias" class="absolute bottom-0 lg:bottom-[-50px] w-full left-0 right-0 text-center">
-                  <i class="fas fa-sort-up" />
-                  <div>
-                    {{ $t('data.plans.current_plan') }}
-                  </div>
-                </div> -->
                 <div class="absolute bottom-4 w-full pr-16">
                   <button
                     :class="currentPlan.alias === item.alias? 'btn-default' : 'btn-primary'"
@@ -179,6 +169,8 @@
               </div>
             </div>
           </template>
+
+          <!-- Payment -->
           <template v-if="step===2">
             <div class="setting-wrapper">
               <div class="setting-section">
@@ -255,7 +247,7 @@
                     <div class="setting-description">
                       <ul class="mb-3">
                         <!-- <li v-html="this.$t('data.billing.plan_details[0]', {total:this.result.total_price || 0, currency:this.result.currency || 'USD'})" /> -->
-                        <li v-html="this.$t('data.billing.plan_details[1]', {duration:this.result.duration || 'yearly', price:this.result.price || 0, currency:this.result.currency || 'USD', next_bill:this.nextBill||''})" />
+                        <li v-html="$t('data.billing.plan_details[1]', {duration:result.duration || 'yearly', price:result.price || 0, currency:result.currency || 'USD', next_bill:nextBill||''})" />
                         <li>{{ $t('data.billing.plan_details[2]') }}</li>
                       </ul>
                     </div>
@@ -266,6 +258,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- FAMILY: Add member -->
             <div
               v-if="selectedPlan.alias === 'pm_family'"
               class="setting-wrapper"
@@ -367,6 +361,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Select card -->
             <div
               v-if="paymentMethod==='card' && cards.length"
               class="border rounded p-5 border-black-200 cursor-pointer mt-2"
@@ -439,12 +435,15 @@
                 </button>
               </div>
             </div>
+
+            <!-- Add card Component -->
             <Payment
               v-if="paymentVisible || !cards.length"
               ref="payment"
               @handle-done="handleDone"
               @handle-cancel="handleCancel"
             />
+
             <div class="mt-8">
               <!-- <button :disabled="step===2 && !selectedCard || step===1 && !selectedPlan.alias || step ===3" class="btn btn-primary w-full" @click="step===1?selectedPlan.alias==='pm_family'?addMember():toStep2():confirmPlan()">
                 {{ step===1?'Continue': 'Pay & Upgrade' }}
@@ -459,6 +458,8 @@
               </el-button>
             </div>
           </template>
+
+          <!-- Confirmation -->
           <template v-if="step===3">
             <div class="setting-wrapper p-8 !mb-8 text-center">
               <!-- <div class="text-black font-bold mb-2">Order details</div>
