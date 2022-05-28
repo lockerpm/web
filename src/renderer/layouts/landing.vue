@@ -188,6 +188,10 @@ export default {
   font-size: 72px;
   line-height: 66px;
 }
+.landing-font-60{
+  font-size: 60px;
+  line-height: 72px;
+}
 .landing-font-56 {
   font-size: 56px;
   line-height: 64px;

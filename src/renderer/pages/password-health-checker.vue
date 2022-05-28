@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div >
     <section class="pt-[184px] pb-[120px] full-width h-auto" style="background: #F5F6F7">
       <div class="font-bold landing-font-72 text-center" style="color:#195723">
         {{ $t('password_health_checker.header.title') }}
