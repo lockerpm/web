@@ -871,10 +871,10 @@ export default {
           folder: null,
           cipher: { ...data, id: cipher.id }
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'success')
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'success')
         await this.getMyShares()
       } catch (error) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'warning')
         console.log(error)
       }
     },
@@ -887,9 +887,9 @@ export default {
         try {
           await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/leave`)
           await this.$myCipherService.delete([cipher.id])
-          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'success')
+          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'success')
         } catch (error) {
-          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[cipher.type]}`, 1) }), 'warning')
+          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'warning')
           console.log(error)
         }
       })
@@ -931,6 +931,7 @@ export default {
           key
         })
         this.closeDialogConfirm()
+        await this.getMyShares()
         this.notify(this.$t('data.notifications.confirm_member_success'), 'success')
       } catch (e) {
         console.log(e)
