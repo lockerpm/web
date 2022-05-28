@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-[56px]">
+  <div class="mt-[70px]">
     <section class="bg-welcome full-width py-[92px] h-auto" :style="{backgroundImage: `url(${require(`~/assets/images/landing/refer-friend/bg-welcome.png`)})`}" style="background-size: 100% 100%; background-repeat: no-repeat">
       <div class="max-w-6xl mx-auto px-6">
         <div class="md:landing-font-60 landing-font-48 text-white font-bold md:w-2/3" v-html="$t('refer_friend.welcome.title')" />
@@ -7,7 +7,7 @@
         <div class="mt-12">
           <nuxt-link
             class="landing-btn landing-font-20"
-            :to="localeRoute({name: $t('refer_friend.welcome.btn_refer.link')})"
+            :to="localeRoute($t('refer_friend.welcome.btn_refer.link'))"
             style="align-self: center"
           >
             {{ $t('refer_friend.welcome.btn_refer.text') }}
