@@ -1,6 +1,6 @@
 <template>
   <div class="mt-[56px]">
-    <section class="bg-welcome full-width py-[92px] h-auto" :style="{backgroundImage: `url(${require(`~/assets/images/landing/refer-friend/bg-welcome.png`)})`}">
+    <section class="bg-welcome full-width py-[92px] h-auto" :style="{backgroundImage: `url(${require(`~/assets/images/landing/refer-friend/bg-welcome.png`)})`}" style="background-size: 100% 100%; background-repeat: no-repeat">
       <div class="max-w-6xl mx-auto px-6">
         <div class="md:landing-font-60 landing-font-48 text-white font-bold md:w-2/3" v-html="$t('refer_friend.welcome.title')" />
         <div class="landing-font-20 text-white font-normal mt-12 md:w-2/3" v-html=" $t('refer_friend.welcome.subtitle')" />
@@ -134,6 +134,9 @@ export default {
 }
 
 @media screen and (max-width: 640px){
+  .bg-welcome{
+    background-size: cover !important;
+  }
   .questions .question{
     font-size: 16px;
   }
