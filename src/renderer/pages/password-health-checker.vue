@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <section class="pt-[184px] pb-[120px] full-width h-auto" style="background: #F5F6F7">
       <div class="font-bold landing-font-72 text-center" style="color:#195723">
         {{ $t('password_health_checker.header.title') }}
@@ -400,6 +400,14 @@ export default {
 }
 .questions .el-collapse-item__content{
   border: 1px solid #DFDFDF;
+  border-top: 0 !important;
+  border-right: 0 !important;
+  border-left: 0 !important;
+}
+.questions .el-collapse-item__header i.el-collapse-item__arrow{
+  display: block !important;
+  color: black !important;
+  font-weight: bold;
 }
 @media only screen and (max-width: 600px) {
   .check-input-password .el-input{

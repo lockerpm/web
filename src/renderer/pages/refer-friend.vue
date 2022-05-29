@@ -1,13 +1,13 @@
 <template>
-  <div class="mt-[56px]">
-    <section class="bg-welcome full-width py-[92px] h-auto" :style="{backgroundImage: `url(${require(`~/assets/images/landing/refer-friend/bg-welcome.png`)})`}">
+  <div class="mt-[70px]">
+    <section class="bg-welcome full-width py-[92px] h-auto" :style="{backgroundImage: `url(${require(`~/assets/images/landing/refer-friend/bg-welcome.png`)})`}" style="background-size: 100% 100%; background-repeat: no-repeat">
       <div class="max-w-6xl mx-auto px-6">
         <div class="md:landing-font-60 landing-font-48 text-white font-bold md:w-2/3" v-html="$t('refer_friend.welcome.title')" />
         <div class="landing-font-20 text-white font-normal mt-12 md:w-2/3" v-html=" $t('refer_friend.welcome.subtitle')" />
         <div class="mt-12">
           <nuxt-link
             class="landing-btn landing-font-20"
-            :to="localeRoute({name: $t('refer_friend.welcome.btn_refer.link')})"
+            :to="localeRoute($t('refer_friend.welcome.btn_refer.link'))"
             style="align-self: center"
           >
             {{ $t('refer_friend.welcome.btn_refer.text') }}
@@ -34,7 +34,8 @@
                     <div class="landing-font-24 font-bold text-black">
                       {{ item.title }}
                     </div>
-                    <div class="landing-font-16 font-normal mt-6 text-black">
+                    <div v-if="index === 0" class="landing-font-16 font-normal mt-6 text-black" v-html="item.desc"/>
+                    <div v-else class="landing-font-16 font-normal mt-6 text-black">
                       {{ item.desc }}
                     </div>
                   </div>
@@ -80,11 +81,11 @@
         <el-collapse v-model="activeName" accordion>
           <el-collapse-item v-for="(item, index) in $t('refer_friend.frequently_question.list_questions')" :key="index" :name="(index+1).toString()">
             <template slot="title">
-              <div class="font-bold md:landing-font-22 landing-font-16 text-black">
+              <div class="font-bold landing-font-22 text-black question">
                 {{ item.question }}
               </div>
             </template>
-            <div class="font-normal md:landing-font-18 landing-font-12 pl-[58px] md:pr-[80px] pr-[50px] md:py-[38px] py-[15px]">
+            <div class="answer font-normal landing-font-18 pl-[58px] md:pr-[80px] pr-[50px] md:py-[38px] py-[15px]">
               {{ item.answer }}
             </div>
           </el-collapse-item>
@@ -131,5 +132,22 @@ export default {
   border-top: 0 !important;
   border-right: 0 !important;
   border-left: 0 !important;
+}
+.questions .el-collapse-item__header i.el-collapse-item__arrow{
+  display: block !important;
+  color: black !important;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 640px){
+  .bg-welcome{
+    background-size: cover !important;
+  }
+  .questions .question{
+    font-size: 16px;
+  }
+  .questions .answer{
+    font-size: 14px;
+  }
 }
 </style>
