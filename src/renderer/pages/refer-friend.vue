@@ -34,7 +34,8 @@
                     <div class="landing-font-24 font-bold text-black">
                       {{ item.title }}
                     </div>
-                    <div class="landing-font-16 font-normal mt-6 text-black">
+                    <div v-if="index === 0" class="landing-font-16 font-normal mt-6 text-black" v-html="item.desc"/>
+                    <div v-else class="landing-font-16 font-normal mt-6 text-black">
                       {{ item.desc }}
                     </div>
                   </div>
