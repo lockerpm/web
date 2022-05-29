@@ -133,6 +133,11 @@ export default {
   border-right: 0 !important;
   border-left: 0 !important;
 }
+.questions .el-collapse-item__header i.el-collapse-item__arrow{
+  display: block !important;
+  color: black !important;
+  font-weight: bold;
+}
 
 @media screen and (max-width: 640px){
   .bg-welcome{
