@@ -47,11 +47,28 @@
             </div>
           </div>
         </div>
-        <!-- <div v-if="currentPlan.is_family" class="setting-section-header">
-          <div v-for="(member, index) in familyMembers" :key="index">
-            {{ member.email }}
+        <div v-if="currentPlan.is_family" class="">
+          <div class="flex justify-between">
+            <div>
+              Member on Your plan {{ familyMembers.length }} / 6
+            </div>
+            <div v-if="familyMembers.length<6" class="text-info cursor-pointer" @click="inviteMember">
+              Invite
+            </div>
           </div>
-        </div> -->
+          <div v-for="(member, index) in familyMembers" :key="index">
+            <div class="flex items-center">
+              <el-avatar :size="35" :src="member.avatar || require('~/assets/images/icons/Avatar.svg')" class="mr-2" />
+              <div>
+                <div class="text-sm font-semibold"><nobr>{{ member.full_name }}</nobr></div>
+                <div class="text-xs text-black-600">{{ member.email }}</div>
+              </div>
+              <div v-if="member.id != null">
+                <button class="btn btn-default !text-danger" @click="removeFamilyMember(member)">Remove</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="setting-section">
         <div class="grid grid-cols-2">
@@ -323,6 +340,7 @@
       </div>
     </div>
     <EditPaymentDialog ref="editPaymentDialog" @handle-done="handleEditDone" />
+    <AddMemberToFamilyPlan ref="addMemberDialog" /></addmembertofamilyplan>
   </div>
 </template>
 
@@ -330,10 +348,11 @@
 import find from 'lodash/find'
 import EditPaymentDialog from '../../components/upgrade/EditPaymentDetail.vue'
 import { CipherType } from '../../jslib/src/enums'
-import { Cipher } from '../../jslib/src/models/domain'
+import AddMemberToFamilyPlan from '../../components/setting/AddMemberToFamilyPlan.vue'
 export default {
   components: {
-    EditPaymentDialog
+    EditPaymentDialog,
+    AddMemberToFamilyPlan
   },
   data () {
     return {
@@ -348,7 +367,8 @@ export default {
         identities: 10,
         crypto_backups: 5
       },
-      familyMembers: []
+      familyMembers: [],
+      inviteDialogVisible: false
     }
   },
   asyncComputed: {
@@ -490,6 +510,31 @@ export default {
         this.familyMembers = await this.$axios.$get('/cystack_platform/pm/family/members') || []
       } catch (e) {
       }
+    },
+    removeFamilyMember (member) {
+      // try {
+      //   const res = await this.$axios.$delete('/cystack_platform/pm/family/members/' + memberId)
+      // } catch (error) {
+      //   this.notify(this.$t('data.notifications.delete_member_failed'), 'warning')
+      // }
+      this.$confirm(this.$t('data.family_member.confirm_delete_member_all'), this.$t('data.family_member.confirm_delete_member'), {
+        confirmButtonText: 'OK',
+        cancelButtonText: this.$t('common.cancel'),
+        type: 'warning'
+      }).then(() => {
+        this.$axios.$delete(`/cystack_platform/pm/family/members/${member.id}`)
+          .then(() => {
+            this.notify(this.$t('data.family_member.delete_member_success'), 'success')
+            this.getFamilyMember()
+          })
+          .catch(() => {
+            this.notify(this.$t('data.family_member.delete_member_failed'), 'warning')
+          })
+      }).catch(() => {
+      })
+    },
+    inviteMember () {
+      this.$refs.addMemberDialog.openDialog()
     }
   }
 }

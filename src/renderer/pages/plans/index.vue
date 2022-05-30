@@ -160,7 +160,7 @@
                   <button
                     :class="currentPlan.alias === item.alias? 'btn-default' : 'btn-primary'"
                     class="btn text-center w-full"
-                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' || item.alias==='pm_family'"
+                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family'"
                     @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''"
                   >
                     {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_plan') }}
