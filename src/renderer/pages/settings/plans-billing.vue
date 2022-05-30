@@ -6,6 +6,8 @@
     <div class="text-lg text-black-600 mb-4">
       {{ $t('data.settings.plans_billing_desc') }}
     </div>
+
+    <!-- SECTION 1: USER's PLAN -->
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
@@ -45,6 +47,11 @@
             </div>
           </div>
         </div>
+        <!-- <div v-if="currentPlan.is_family" class="setting-section-header">
+          <div v-for="(member, index) in familyMembers" :key="index">
+            {{ member.email }}
+          </div>
+        </div> -->
       </div>
       <div class="setting-section">
         <div class="grid grid-cols-2">
@@ -157,6 +164,8 @@
         </div>
       </div>
     </div>
+
+    <!-- SECTION 2: PAYMENT METHODS -->
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
@@ -237,6 +246,8 @@
         </button>
       </div>
     </div> -->
+
+    <!-- SECTION 3: INVOICES -->
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
@@ -336,7 +347,8 @@ export default {
         cards: 5,
         identities: 10,
         crypto_backups: 5
-      }
+      },
+      familyMembers: []
     }
   },
   asyncComputed: {
@@ -370,6 +382,7 @@ export default {
     this.getInvoices()
     this.getPlans()
     this.$store.dispatch('LoadCurrentPlan')
+    this.getFamilyMember()
   },
   methods: {
     async getCards () {
@@ -471,6 +484,12 @@ export default {
         return 'warning'
       }
       return 'success'
+    },
+    async getFamilyMember () {
+      try {
+        this.familyMembers = await this.$axios.$get('/cystack_platform/pm/family/members') || []
+      } catch (e) {
+      }
     }
   }
 }
