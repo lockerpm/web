@@ -34,7 +34,8 @@
                     <div class="landing-font-24 font-bold text-black">
                       {{ item.title }}
                     </div>
-                    <div class="landing-font-16 font-normal mt-6 text-black">
+                    <div v-if="index === 0" class="landing-font-16 font-normal mt-6 text-black" v-html="item.desc"/>
+                    <div v-else class="landing-font-16 font-normal mt-6 text-black">
                       {{ item.desc }}
                     </div>
                   </div>
@@ -131,6 +132,11 @@ export default {
   border-top: 0 !important;
   border-right: 0 !important;
   border-left: 0 !important;
+}
+.questions .el-collapse-item__header i.el-collapse-item__arrow{
+  display: block !important;
+  color: black !important;
+  font-weight: bold;
 }
 
 @media screen and (max-width: 640px){
