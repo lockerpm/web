@@ -138,7 +138,7 @@
                       class="flex items-center justify-center mt-1"
                     >
                       <div v-if="item.alias != 'pm_free'">
-                        12 months with ${{ item.price.usd * 12 }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">Save {{ discountPercentage(item) }}%</span>
+                        {{ $t('data.plans.price_12months') }} ${{ item.price.usd * 12 }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">{{ $t('data.plans.save') }} {{ discountPercentage(item) }}%</span>
                       </div>
                     </div>
                   </div>
@@ -160,7 +160,7 @@
                   <button
                     :class="currentPlan.alias === item.alias? 'btn-default' : 'btn-primary'"
                     class="btn text-center w-full"
-                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family'"
+                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' || currentPlan.alias==='pm_premium' && item.alias==='pm_family'"
                     @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''"
                   >
                     {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_plan') }}
@@ -1002,15 +1002,16 @@ export default {
       this.selectedPlan = plan
       if (this.currentPlan.alias !== 'pm_free') {
         this.dialogChange = true
-        this.selectPeriod(find(this.periods, e => e.duration === this.currentPlan.duration))
+        // this.selectPeriod(find(this.periods, e => e.duration === this.currentPlan.duration))
         if (this.currentPlan.alias === 'pm_family') {
           this.number_members = 6
         }
       } else {
         this.number_members = 1
         // this.step = 2
-        this.selectPeriod(this.selectPeriod)
+        // this.selectPeriod(this.selectPeriod)
       }
+      this.selectMethod('card')
       this.calcPrice()
       this.step = 2
     },
@@ -1109,13 +1110,17 @@ export default {
       const emailList = this.inputEmail.split(',')
       emailList.forEach(email => {
         email = email.trim()
-        if (email && this.validateEmail(email) && !this.family_members.includes(email)) {
+        if (email && this.validateEmail(email)) {
           if (this.family_members.length === 5) {
             this.notify('You can\'t add more than 5 accounts.', 'warning')
             return
           }
-          this.family_members.push(email)
+          if (!this.family_members.includes(email)) {
+            this.family_members.push(email)
+          }
           this.inputEmail = ''
+        } else if (email && !this.validateEmail(email)) {
+          this.notify('Invalid email', 'warning')
         }
       })
       this.emails = []

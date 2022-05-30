@@ -774,8 +774,8 @@ export default {
           }]
         }
         if (data.fields == null) {
-          data.fields = [new FieldView()]
-          data.fields[0].type = FieldType.Text
+          data.fields = []
+          // data.fields[0].type = FieldType.Text
         }
         this.cipher = new Cipher({ ...data }, true)
         this.$refs.inputSelectFolder.value = this.cipher.folderId
@@ -959,8 +959,8 @@ export default {
       this.cipher.identity = new IdentityView()
       this.cipher.secureNote = new SecureNoteView()
       this.cipher.secureNote.type = SecureNoteType.Generic
-      this.cipher.fields = [new FieldView()]
-      this.cipher.fields[0].type = FieldType.Text
+      this.cipher.fields = []
+      // this.cipher.fields[0].type = FieldType.Text
       this.cipher.folderId = this.$route.params.folderId || null
       this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
       if (this.cipher.organizationId) {

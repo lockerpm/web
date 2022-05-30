@@ -142,12 +142,12 @@ export default {
       this.$axios.$post('/cystack_platform/pm/family/members', {
         family_members: this.family_members
       }).then(res => {
-        this.notify(this.$t('data.family_member.add_member_success'), 'success')
+        this.notify(this.$t('data.notifications.add_member_success'), 'success')
         this.$emit('handle-done', res)
         this.closeDialog()
       })
         .catch(() => {
-          this.notify(this.$t('data.family_member.add_member_failed'), 'warning')
+          this.notify(this.$t('data.notifications.add_member_failed'), 'warning')
         })
         .then(() => {
           this.loading = false

@@ -47,24 +47,24 @@
             </div>
           </div>
         </div>
-        <div v-if="currentPlan.is_family" class="">
+        <div v-if="currentPlan.is_family" class="mt-4">
           <div class="flex justify-between">
-            <div>
-              Member on Your plan {{ familyMembers.length }} / 6
+            <div class="text-head-6 font-semibold">
+              {{ $t('data.family_member.number_member') }} {{ familyMembers.length }} / 6
             </div>
-            <div v-if="familyMembers.length<6" class="text-info cursor-pointer" @click="inviteMember">
-              Invite
+            <div v-if="familyMembers.length<6 && currentPlan.alias === 'pm_family'" class="text-info cursor-pointer" @click="inviteMember">
+              {{ $t('data.family_member.action') }}
             </div>
           </div>
-          <div v-for="(member, index) in familyMembers" :key="index">
+          <div v-for="(member, index) in familyMembers" :key="index" class="py-4 border-b-[1px] border-[#eaeaf5]">
             <div class="flex items-center">
               <el-avatar :size="35" :src="member.avatar || require('~/assets/images/icons/Avatar.svg')" class="mr-2" />
               <div>
-                <div class="text-sm font-semibold"><nobr>{{ member.full_name }}</nobr></div>
+                <div class="text-sm font-semibold" :class="member.id?'':'text-primary'"><nobr>{{ member.full_name }}</nobr></div>
                 <div class="text-xs text-black-600">{{ member.email }}</div>
               </div>
-              <div v-if="member.id != null">
-                <button class="btn btn-default !text-danger" @click="removeFamilyMember(member)">Remove</button>
+              <div v-if="member.id != null && currentPlan.alias === 'pm_family'" class="flex-grow">
+                <button class="btn btn-default !text-danger float-right" @click="removeFamilyMember(member)">{{ $t('common.remove') }}</button>
               </div>
             </div>
           </div>
@@ -517,18 +517,18 @@ export default {
       // } catch (error) {
       //   this.notify(this.$t('data.notifications.delete_member_failed'), 'warning')
       // }
-      this.$confirm(this.$t('data.family_member.confirm_delete_member_all'), this.$t('data.family_member.confirm_delete_member'), {
+      this.$confirm(this.$t('data.family_member.confirm_delete_member_all', { email: member.email }), this.$t('data.family_member.confirm_delete_member'), {
         confirmButtonText: 'OK',
         cancelButtonText: this.$t('common.cancel'),
         type: 'warning'
       }).then(() => {
         this.$axios.$delete(`/cystack_platform/pm/family/members/${member.id}`)
           .then(() => {
-            this.notify(this.$t('data.family_member.delete_member_success'), 'success')
+            this.notify(this.$t('data.notifications.delete_member_success'), 'success')
             this.getFamilyMember()
           })
           .catch(() => {
-            this.notify(this.$t('data.family_member.delete_member_failed'), 'warning')
+            this.notify(this.$t('data.notifications.delete_member_failed'), 'warning')
           })
       }).catch(() => {
       })
