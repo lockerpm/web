@@ -8,7 +8,7 @@
           <nuxt-link :to="localeRoute($t('refer_friend.welcome.btn_refer.link'))" class="md:!inline-block !hidden landing-btn landing-font-20" style="align-self: center">
             {{ $t('refer_friend.welcome.btn_refer.text') }}
           </nuxt-link>
-          <div class="md:!hidden block landing-btn landing-font-20" @click="checkIphone">{{ $t('refer_friend.welcome.btn_refer.text') }}</div>
+          <div class="md:!hidden block landing-btn landing-font-20" @click="checkMobile">{{ $t('refer_friend.welcome.btn_refer.text') }}</div>
         </div>
       </div>
     </section>
@@ -101,7 +101,7 @@
           <nuxt-link :to="localeRoute($t('refer_friend.welcome.btn_refer.link'))" class="md:!inline-block !hidden landing-btn landing-font-20" style="align-self: center">
             {{ $t('refer_friend.welcome.btn_refer.text') }}
           </nuxt-link>
-          <div class="md:!hidden block landing-btn landing-font-20" @click="checkIphone">{{ $t('refer_friend.welcome.btn_refer.text') }}</div>
+          <div class="md:!hidden block landing-btn landing-font-20" @click="checkMobile">{{ $t('refer_friend.welcome.btn_refer.text') }}</div>
         </div>
       </div>
     </section>
@@ -116,14 +116,19 @@ export default {
     }
   },
   methods: {
-    checkIphone () {
+    checkMobile () {
       if (navigator.userAgent.toLowerCase().includes('android')) {
-        window.location.href =
-          'https://play.google.com/store/apps/details?id=com.cystack.locker'
+        window.location.replace('com.cystack.locker://')
+
+        setTimeout(() => {
+          window.location.replace('https://play.google.com/store/apps/details?id=com.cystack.locker')
+        }, 1000)
       }
       if (navigator.userAgent.toLowerCase().includes('iphone')) {
-        window.location.href =
-          'https://apps.apple.com/us/app/locker-password-manager/id1586927301'
+        window.location.replace('com.cystack.locker://')
+        setTimeout(() => {
+          window.location.replace('https://apps.apple.com/us/app/locker-password-manager/id1586927301')
+        }, 1000)
       }
     }
   }
