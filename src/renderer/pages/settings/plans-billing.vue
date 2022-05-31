@@ -47,7 +47,7 @@
             </div>
           </div>
         </div>
-        <div v-if="currentPlan.is_family" class="mt-4">
+        <!-- <div v-if="currentPlan.is_family" class="mt-4">
           <div class="flex justify-between">
             <div class="text-head-6 font-semibold">
               {{ $t('data.family_member.number_member') }} {{ familyMembers.length }} / 6
@@ -68,7 +68,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="setting-section">
         <div class="grid grid-cols-2">
@@ -402,7 +402,6 @@ export default {
     this.getInvoices()
     this.getPlans()
     this.$store.dispatch('LoadCurrentPlan')
-    this.getFamilyMember()
   },
   methods: {
     async getCards () {
@@ -504,37 +503,6 @@ export default {
         return 'warning'
       }
       return 'success'
-    },
-    async getFamilyMember () {
-      try {
-        this.familyMembers = await this.$axios.$get('/cystack_platform/pm/family/members') || []
-      } catch (e) {
-      }
-    },
-    removeFamilyMember (member) {
-      // try {
-      //   const res = await this.$axios.$delete('/cystack_platform/pm/family/members/' + memberId)
-      // } catch (error) {
-      //   this.notify(this.$t('data.notifications.delete_member_failed'), 'warning')
-      // }
-      this.$confirm(this.$t('data.family_member.confirm_delete_member_all', { email: member.email }), this.$t('data.family_member.confirm_delete_member'), {
-        confirmButtonText: 'OK',
-        cancelButtonText: this.$t('common.cancel'),
-        type: 'warning'
-      }).then(() => {
-        this.$axios.$delete(`/cystack_platform/pm/family/members/${member.id}`)
-          .then(() => {
-            this.notify(this.$t('data.notifications.delete_member_success'), 'success')
-            this.getFamilyMember()
-          })
-          .catch(() => {
-            this.notify(this.$t('data.notifications.delete_member_failed'), 'warning')
-          })
-      }).catch(() => {
-      })
-    },
-    inviteMember () {
-      this.$refs.addMemberDialog.openDialog()
     }
   }
 }
