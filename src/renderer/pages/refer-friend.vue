@@ -97,7 +97,12 @@
         <div class="mt-9 landing-font-16 text-black font-normal text-center">
           {{ $t('refer_friend.cta.subtitle') }}
         </div>
-        <div class="mt-12 text-center" />
+        <div class="mt-12 text-center">
+          <nuxt-link :to="localeRoute($t('refer_friend.welcome.btn_refer.link'))" class="md:!inline-block !hidden landing-btn landing-font-20" style="align-self: center">
+            {{ $t('refer_friend.welcome.btn_refer.text') }}
+          </nuxt-link>
+          <div class="md:!hidden block landing-btn landing-font-20" @click="checkIphone">{{ $t('refer_friend.welcome.btn_refer.text') }}</div>
+        </div>
       </div>
     </section>
   </div>
