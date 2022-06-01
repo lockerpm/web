@@ -118,8 +118,8 @@ export default {
   methods: {
     checkMobile () {
       if (navigator.userAgent.toLowerCase().includes('android') > -1) {
-        window.location.replace('com.cystack.locker://')
-        setTimeout(() => { window.location.href = 'https://play.google.com/store/apps/details?id=com.cystack.locker' }, 2000)
+        // window.location.replace('com.cystack.locker://')
+        setTimeout(() => { window.location.href = 'https://play.google.com/store/apps/details?id=com.cystack.locker' }, 25)
       }
       if (navigator.userAgent.toLowerCase().includes('iphone') > -1) {
         window.location.replace('com.cystack.locker://')
