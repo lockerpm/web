@@ -166,7 +166,7 @@
                     {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_plan') }}
                   </button>
                   <div :class="['pm_family', 'pm_premium'].includes(currentPlan.alias) && ['pm_family', 'pm_premium'].includes(item.alias) && currentPlan.alias !== item.alias ? 'opacity-1':'opacity-0'" class="text-xs text-black-500 text-center">
-                    Cancel current subscription to choose this plan
+                    {{ $t('data.plans.choose_plan_note') }}
                   </div>
                 </div>
               </div>
