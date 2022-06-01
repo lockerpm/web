@@ -87,7 +87,7 @@
                 v-for="item in plans"
                 :key="item.id"
                 :class="selectedPlan.alias===item.alias?'!border-primary':''"
-                class="p-8 border border-black-200 rounded cursor-pointer hover:border-primary relative"
+                class="p-8 border border-black-200 rounded cursor-pointer hover:border-primary flex flex-col justify-between"
               >
                 <!-- @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''" -->
                 <div class="flex flex-col mb-6">
@@ -156,15 +156,18 @@
                     </div>
                   </div>
                 </div>
-                <div class="absolute bottom-4 w-full pr-16">
+                <div class=" w-full">
                   <button
                     :class="currentPlan.alias === item.alias? 'btn-default' : 'btn-primary'"
                     class="btn text-center w-full"
-                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' "
+                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' || currentPlan.alias==='pm_premium' && item.alias==='pm_family'"
                     @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''"
                   >
                     {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_plan') }}
                   </button>
+                  <div :class="['pm_family', 'pm_premium'].includes(currentPlan.alias) && ['pm_family', 'pm_premium'].includes(item.alias) && currentPlan.alias !== item.alias ? 'opacity-1':'opacity-0'" class="text-xs text-black-500 text-center">
+                    Cancel current subscription to choose this plan
+                  </div>
                 </div>
               </div>
             </div>
