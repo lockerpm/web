@@ -117,13 +117,15 @@ export default {
   },
   methods: {
     checkMobile () {
-      if (navigator.userAgent.toLowerCase().includes('android')) {
-        setTimeout(function () { window.location = 'https://play.google.com/store/apps/details?id=com.cystack.locker' }, 25)
-        window.location = 'com.cystack.locker://'
+      if (navigator.userAgent.toLowerCase().includes('android') > -1) {
+        window.location.replace('com.cystack.locker://')
+        setTimeout(() => { window.location.href = 'https://play.google.com/store/apps/details?id=com.cystack.locker' }, 2000)
       }
-      if (navigator.userAgent.toLowerCase().includes('iphone')) {
-        setTimeout(function () { window.location = 'https://apps.apple.com/us/app/locker-password-manager/id1586927301' }, 25)
-        window.location = 'com.cystack.locker://'
+      if (navigator.userAgent.toLowerCase().includes('iphone') > -1) {
+        window.location.replace('com.cystack.locker://')
+        setTimeout(() => {
+          window.location.href = 'https://apps.apple.com/us/app/locker-password-manager/id1586927301'
+        }, 2000)
       }
     }
   }
