@@ -1,5 +1,5 @@
 <template>
-  <div class="md:w-2/3 mx-auto">
+  <div class="lg:w-2/3 mx-auto">
     <div class="text-head-5 font-semibold mb-2">
       {{ $t('data.settings.plans_billing') }}
     </div>
@@ -237,8 +237,15 @@
             </div>
           </div>
         </div>
+        <button
+          class="btn btn-default btn-xs"
+          @click="editBilling"
+        >
+          {{ $t('data.billing.add_btn') }}
+        </button>
       </div>
     </div>
+    <CardDrawer ref="drawer" @handle-done="handleDone" />
     <!-- <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
@@ -349,10 +356,12 @@ import find from 'lodash/find'
 import EditPaymentDialog from '../../components/upgrade/EditPaymentDetail.vue'
 import { CipherType } from '../../jslib/src/enums'
 import AddMemberToFamilyPlan from '../../components/setting/AddMemberToFamilyPlan.vue'
+import CardDrawer from '../../components/upgrade/CardDrawer'
 export default {
   components: {
     EditPaymentDialog,
-    AddMemberToFamilyPlan
+    AddMemberToFamilyPlan,
+    CardDrawer
   },
   data () {
     return {
@@ -503,6 +512,15 @@ export default {
         return 'warning'
       }
       return 'success'
+    },
+    handleDone (card) {
+      this.getCards()
+    },
+    editBilling () {
+      this.$refs.drawer.openDrawer({
+        country: 'VN',
+        metadata: {}
+      })
     }
   }
 }

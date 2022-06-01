@@ -1,5 +1,42 @@
 <template>
-  <div>
+  <div class="lg:w-2/3 mx-auto">
+    <div class="grid grid-cols-5 gap-x-6">
+      <div class="setting-wrapper md:col-span-3 col-span-5">
+        <div class="setting-section">
+          <div class="setting-section-header">
+            <div class="setting-description mb-6 mr-3 self-start pt-3">Family</div>
+            <div>
+              <div v-if="locale === 'vi'"><span v-if="currentPlan && currentPlan.yearly_price" class="text-head-3 font-semibold">${{ (currentPlan.yearly_price.usd / 12) | formatNumber }}</span>/tháng/6 người*</div>
+              <div v-else><span v-if="currentPlan && currentPlan.yearly_price" class="text-head-3 font-semibold">${{ (currentPlan.yearly_price.usd / 12) | formatNumber }}</span>/mo/6 users*</div>
+              <div v-if="currentPlan && currentPlan.price" class="setting-description">{{ $t('data.family_member.bill_annually_desc', {monthlyPrice: '$' + currentPlan.price.usd}) }}</div>
+            </div>
+          </div>
+          <div>
+            <div class="font-semibold mb-3">{{ $t('data.family_member.number_member_detail', {currentNumber: familyMembers.length, planMember: 6}) }}</div>
+            <el-progress :show-text="false" :percentage="familyMembers.length*100/6" />
+          </div>
+        </div>
+      </div>
+      <div class="setting-wrapper md:col-span-2 col-span-5">
+        <div class="setting-section">
+          <div class="">
+            <div class="setting-description mb-1">{{ $t('data.billing.next_billing') }}</div>
+            <div class="font-semibold mb-4">
+              {{ currentPlan.next_billing_time ? $moment(currentPlan.next_billing_time * 1000).format('LLL') : 'N/A' }}
+            </div>
+            <div class="w-full">
+              <button
+                class="btn btn-default"
+                @click="$router.push(localeRoute({name: 'settings-plans-billing'}))"
+              >
+                {{ $t('data.billing.manage_payments') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="setting-wrapper hidden" />
+    </div>
     <div
       class="setting-wrapper"
     >
@@ -15,36 +52,6 @@
           </div>
         </div>
         <div class="mt-4 mb-3">
-          <!-- <div class="flex input-tags">
-            <el-input
-              v-model="inputEmail"
-              change="mr-2"
-              @keyup.enter.native="handleInputEmail"
-              @input="emailInput"
-            >
-              <div
-                v-if="emails.length"
-                slot="prepend"
-              >
-                <el-tag
-                  v-for="(email, index) in emails"
-                  :key="email"
-                  closable
-                  type="info"
-                  @close="handleClose(index)"
-                >
-                  {{ email }}
-                </el-tag>
-              </div>
-              <el-button
-                slot="append"
-                :disabled="!emails.length && !inputEmail"
-                @click="save"
-              >
-                {{ $t('common.add') }}
-              </el-button>
-            </el-input>
-          </div> -->
           <div
             class="cs-field w-full"
           >
@@ -69,7 +76,7 @@
                 @keyup.enter="handleInputEmail"
               >
             </div>
-            <div v-if="familyMembers.length<6 && currentPlan.alias === 'pm_family'" class="text-info cursor-pointer self-end pb-2 font-semibold px-3" @click="save">
+            <div v-if="currentPlan.alias === 'pm_family'" class="text-info cursor-pointer self-end pb-2 font-semibold px-3" @click="save">
               {{ $t('data.family_member.action') }}
             </div>
           </div>
@@ -81,11 +88,11 @@
             <div class="setting-title !text-sm">{{ `${$t('data.plans.list_member')} (${familyMembers.length}/6)` }}</div>
           </div>
         </div>
-        <div class="mt-5 px-4 py-6 bg-[#F6F6F6]">
+        <div class="mt-5 px-4 py-6 bg-[#F6F6F6] flex flex-col gap-y-6">
           <template v-for="(member, index) in familyMembers">
             <div
               :key="index"
-              class="flex justify-between mb-6"
+              class="flex justify-between flex-wrap"
             >
               <div class="flex items-center">
                 <el-avatar :size="35" :src="member.avatar || require('~/assets/images/icons/Avatar.svg')" class="mr-2" />
@@ -102,7 +109,6 @@
                           <span class="text-info font-semibold">{{ $t('data.family_member.learn_more') }}</span>
                         </div>
                         <svg
-                          title="aslgknlsnglk"
                           width="20"
                           height="20"
                           viewBox="0 0 20 20"
@@ -130,13 +136,6 @@
             </div>
           </template>
         </div>
-
-        <div
-          v-if="errors.family_members"
-          class="text-danger"
-        >
-          {{ errors.family_members[0] }}
-        </div>
       </div>
     </div>
   </div>
@@ -150,8 +149,13 @@ export default {
       loading: false,
       inputEmail: '',
       family_members: [],
-      errors: {},
       emails: []
+    }
+  },
+  async fetch ({ redirect, store, isDev }) {
+    await store.dispatch('LoadCurrentPlan')
+    if (store.state.currentPlan && store.state.currentPlan.alias !== 'pm_family') {
+      redirect(302, '/plans')
     }
   },
   computed: {
@@ -160,7 +164,6 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('LoadCurrentPlan')
     this.getFamilyMember()
   },
   methods: {
@@ -197,8 +200,12 @@ export default {
         this.notify(this.$t('data.notifications.add_member_success'), 'success')
         this.getFamilyMember()
       })
-        .catch(() => {
-          this.notify(this.$t('data.notifications.add_member_failed'), 'warning')
+        .catch(e => {
+          if (e.response && e.response.data && e.response.data.code === '7012') {
+            this.notify(this.$t('errors.7012'), 'warning')
+          } else {
+            this.notify(this.$t('data.notifications.add_member_failed'), 'warning')
+          }
         })
         .then(() => {
           this.loading = false

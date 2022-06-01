@@ -160,7 +160,7 @@
                   <button
                     :class="currentPlan.alias === item.alias? 'btn-default' : 'btn-primary'"
                     class="btn text-center w-full"
-                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' || currentPlan.alias==='pm_premium' && item.alias==='pm_family'"
+                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' "
                     @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''"
                   >
                     {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_plan') }}
@@ -276,7 +276,7 @@
                   </div>
                 </div>
                 <div class="mt-4 mb-8">
-                  <div class="flex input-tags">
+                  <!-- <div class="flex input-tags">
                     <el-input
                       v-model="inputEmail"
                       change="mr-2"
@@ -305,6 +305,34 @@
                         {{ $t('common.add') }}
                       </el-button>
                     </el-input>
+                  </div> -->
+                  <div
+                    class="cs-field w-full"
+                  >
+                    <div class="input-tags">
+                      <el-tag
+                        v-for="(email, index) in emails"
+                        :key="email"
+                        closable
+                        type="info"
+                        class="my-auto"
+                        @close="handleClose(index)"
+                      >
+                        {{ email }}
+                      </el-tag>
+
+                      <input
+                        ref="inputEmail"
+                        class="cs-input"
+                        :value="inputEmail"
+                        type="text"
+                        @input="emailInput($event.target.value)"
+                        @keyup.enter="confirmInputEmail"
+                      >
+                    </div>
+                    <div class="text-info cursor-pointer self-end pb-2 font-semibold px-3" @click="confirmInputEmail">
+                      {{ $t('common.add') }}
+                    </div>
                   </div>
                 </div>
 
@@ -981,7 +1009,7 @@ export default {
       })
         .catch(error => {
           if (error.response && error.response.data && error.response.code === '7009') {
-            this.notify(this.$t('data.error_code.7009'))
+            this.notify(this.$t('data.notifications.error_occurred'), 'warning')
           }
         })
         .then(() => {
@@ -1054,10 +1082,10 @@ export default {
           this.order = data
           this.dialogTransfer = true
         } else {
-          this.notify('Nâng cấp thành công', 'success')
+          this.notify(this.$t('data.notifications.upgrade_success'), 'success')
         }
       } catch {
-        this.notify('Có lỗi xảy ra. Vui lòng thử lại', 'warning')
+        this.notify(this.$t('data.notifications.error_occurred'), 'warning')
       } finally {
         this.loading = false
       }
@@ -1091,7 +1119,14 @@ export default {
     handleClose (index) {
       this.emails.splice(index, 1)
     },
+    // emailInput (value) {
+    //   const lastChar = value.substr(value.length - 1)
+    //   if ([',', ' '].includes(lastChar)) {
+    //     this.handleInputEmail()
+    //   }
+    // },
     emailInput (value) {
+      this.inputEmail = value
       const lastChar = value.substr(value.length - 1)
       if ([',', ' '].includes(lastChar)) {
         this.handleInputEmail()
@@ -1101,7 +1136,7 @@ export default {
       this.emails.forEach(email => {
         if (!this.family_members.includes(email)) {
           if (this.family_members.length === 5) {
-            this.notify('You can\'t add more than 5 accounts.', 'warning')
+            this.notify(this.$t('errors.7012'), 'warning')
             return
           }
           this.family_members.push(email)
@@ -1112,7 +1147,7 @@ export default {
         email = email.trim()
         if (email && this.validateEmail(email)) {
           if (this.family_members.length === 5) {
-            this.notify('You can\'t add more than 5 accounts.', 'warning')
+            this.notify(this.$t('errors.7012'), 'warning')
             return
           }
           if (!this.family_members.includes(email)) {
@@ -1140,7 +1175,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss" scoped>
 .input-tags .el-input-group__prepend {
   @apply p-0 bg-white;
 }
@@ -1151,4 +1186,75 @@ export default {
   @apply border-primary;
   background-color: black !important;
 } */
+.cs-field {
+  //width: 100%;
+  min-height: 40px;
+  display: flex;
+  padding-left: 12px;
+  position: relative;
+  border-radius: 2px;
+  border: solid 1px #e6e8f4;
+  &.is-hover, &.is-focus {
+    @apply border-primary bg-white;
+    label {
+      @apply text-primary
+    }
+  }
+  &.is-error {
+    @apply border-danger mb-8 last:mb-8 #{!important};
+    label, .cs-helper-text {
+      @apply text-danger
+    }
+  }
+  &.is-password.is-focus, &.is-password.have-value {
+    button.btn {
+      @apply absolute p-0.5;
+      top: 19px;
+      right: 13px;
+    }
+    .cs-input {
+      padding-right: 48px;
+    }
+  }
+  &.is-focus label, &.have-value label {
+    font-size: 12px;
+    line-height: 19px;
+    top: 5px;
+    left: 11px;
+  }
+  &.is-focus .cs-textarea, &.have-value .cs-textarea {
+    padding-top: 8px;
+    margin-top: 8px;
+  }
+  &.is-disabled {
+    cursor: not-allowed;
+    input, button, input:hover, button:hover {
+      cursor: not-allowed!important;
+      user-select: none;
+    }
+  }
+  .cs-input, .cs-textarea {
+    align-self: center;
+    padding-left: 2px !important;
+    width: 100%;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    font-size: 14px;
+    line-height: 19px;
+    border: none;
+    flex: 1;
+    color: #161922;
+    height: 32px;
+    background-color: inherit;
+    min-width: 150px;
+  }
+  .input-tags {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-self: center;
+    gap: 2px;
+    padding: 2px 0px;
+  }
+}
 </style>

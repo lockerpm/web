@@ -1,5 +1,5 @@
 <template>
-  <div class="md:w-2/3 mx-auto">
+  <div class="lg:w-2/3 mx-auto">
     <div class="text-head-4 font-semibold mb-4">
       {{ $t('data.settings.referral') }}
     </div>
