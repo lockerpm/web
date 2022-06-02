@@ -5,13 +5,10 @@
         <div class="md:landing-font-60 landing-font-48 text-white font-bold md:w-2/3" v-html="$t('refer_friend.welcome.title')" />
         <div class="landing-font-20 text-white font-normal mt-12 md:w-2/3" v-html=" $t('refer_friend.welcome.subtitle')" />
         <div class="mt-12">
-          <nuxt-link
-            class="landing-btn landing-font-20"
-            :to="localeRoute($t('refer_friend.welcome.btn_refer.link'))"
-            style="align-self: center"
-          >
+          <nuxt-link :to="localeRoute($t('refer_friend.welcome.btn_refer.link'))" class="md:!inline-block !hidden landing-btn landing-font-20" style="align-self: center">
             {{ $t('refer_friend.welcome.btn_refer.text') }}
           </nuxt-link>
+          <div class="md:!hidden block landing-btn landing-font-20" @click="checkMobile">{{ $t('refer_friend.welcome.btn_refer.text') }}</div>
         </div>
       </div>
     </section>
@@ -34,7 +31,7 @@
                     <div class="landing-font-24 font-bold text-black">
                       {{ item.title }}
                     </div>
-                    <div v-if="index === 0" class="landing-font-16 font-normal mt-6 text-black" v-html="item.desc"/>
+                    <div v-if="index === 0" class="landing-font-16 font-normal mt-6 text-black" v-html="item.desc" />
                     <div v-else class="landing-font-16 font-normal mt-6 text-black">
                       {{ item.desc }}
                     </div>
@@ -92,6 +89,22 @@
         </el-collapse>
       </div>
     </section>
+    <section class="py-[120px]">
+      <div class="bg-[#f5f6f7] md:px-[166px] px-[42px] py-16">
+        <div class="font-bold landing-font-38 text-black text-center">
+          {{ $t('refer_friend.cta.title') }}
+        </div>
+        <div class="mt-3 landing-font-18 text-black font-normal text-center">
+          {{ $t('refer_friend.cta.subtitle') }}
+        </div>
+        <div class="mt-[42px] text-center">
+          <nuxt-link :to="localeRoute($t('refer_friend.welcome.btn_refer.link'))" class="md:!inline-block !hidden landing-btn landing-font-16" style="align-self: center">
+            {{ $t('refer_friend.welcome.btn_refer.text') }}
+          </nuxt-link>
+          <div class="md:!hidden block landing-btn landing-font-16" @click="checkMobile">{{ $t('refer_friend.welcome.btn_refer.text') }}</div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 <script>
@@ -100,6 +113,24 @@ export default {
   data () {
     return {
       activeName: '1'
+    }
+  },
+  methods: {
+    checkMobile () {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera
+      window.location.replace('com.cystack.locker://')
+      const androidTimer = setTimeout(() => {
+        window.location.href = 'https://play.google.com/store/apps/details?id=com.cystack.locker'
+      }, 2000)
+      const iosTimer = setTimeout(() => {
+        window.location.href = 'https://apps.apple.com/us/app/locker-password-manager/id1586927301'
+      }, 4200)
+      if (/android/i.test(userAgent)) {
+        clearTimeout(iosTimer)
+      }
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        clearTimeout(androidTimer)
+      }
     }
   }
 }
