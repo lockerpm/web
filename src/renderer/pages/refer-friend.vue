@@ -89,8 +89,8 @@
         </el-collapse>
       </div>
     </section>
-    <section class="py-[120px] full-width h-auto bg-[#f5f6f7]">
-      <div class="max-w-6xl mx-auto">
+    <section class="py-[120px]">
+      <div class="bg-[#f5f6f7] md:px-[166px] px-[42px] py-16">
         <div class="font-bold landing-font-38 text-black text-center">
           {{ $t('refer_friend.cta.title') }}
         </div>
