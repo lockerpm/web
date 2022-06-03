@@ -137,7 +137,7 @@
                       class="flex items-center justify-center mt-1"
                     >
                       <div v-if="item.alias != 'pm_free'">
-                        12 months with ${{ item.price.usd * 12 }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">Save {{ discountPercentage(item) }}%</span>
+                        12 months with ${{ item.yearly_price.usd }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">Save {{ discountPercentage(item) }}%</span>
                       </div>
                     </div>
                   </div>
