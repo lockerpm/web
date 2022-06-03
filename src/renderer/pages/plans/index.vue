@@ -138,7 +138,7 @@
                       class="flex items-center justify-center mt-1"
                     >
                       <div v-if="item.alias != 'pm_free'">
-                        {{ $t('data.plans.price_12months') }} ${{ item.price.usd * 12 }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">{{ $t('data.plans.save') }} {{ discountPercentage(item) }}%</span>
+                        {{ $t('data.plans.price_12months') }} ${{ item.yearly_price.usd }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">{{ $t('data.plans.save') }} {{ discountPercentage(item) }}%</span>
                       </div>
                     </div>
                   </div>
