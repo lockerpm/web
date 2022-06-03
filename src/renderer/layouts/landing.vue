@@ -123,6 +123,9 @@ export default {
       if (path === '/blog' || path === `/${this.locale}/blog`) { return 'blog' }
       if (path === '/password-generator' || path === `/${this.locale}/password-generator`) { return 'password_generator' }
       if (path === '/security' || path === `/${this.locale}/security`) { return 'security' }
+      if (path === '/password-health-checker' || path === `/${this.locale}/password-health-checker`) { return 'password_health_checker' }
+      if (path === '/comparison' || path === `/${this.locale}/comparison`) { return 'comparison' }
+      if (path === '/refer-friend' || path === `/${this.locale}/refer-friend`) { return 'refer_friend' }
       return 'landing'
     }
   },
