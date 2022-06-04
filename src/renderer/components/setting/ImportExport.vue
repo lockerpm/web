@@ -655,22 +655,22 @@ export default {
           const finalImportResult = importResult
           finalImportResult.ciphers = importResult.ciphers.map(cipher => {
             return {
-              ...cipher,
-              name: this.getCipherImportName(cipher.name, cipher.type)
+              ...cipher
+              // name: this.getCipherImportName(cipher.name, cipher.type)
             }
           })
           if (this.teamId) {
             finalImportResult.collections = importResult.collections.map(collection => {
               return {
-                ...collection,
-                name: this.getCollectionImportName(collection.name)
+                ...collection
+                // name: this.getCollectionImportName(collection.name)
               }
             })
           } else {
             finalImportResult.folders = importResult.folders.map(folder => {
               return {
-                ...folder,
-                name: this.getFolderImportName(folder.name)
+                ...folder
+                // name: this.getFolderImportName(folder.name)
               }
             })
           }

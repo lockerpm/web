@@ -133,7 +133,6 @@
               class="w-full !mb-2"
               :error-text="err && err.length && err[0]"
               :disabled="isDeleted"
-              required
             />
           </ValidationProvider>
           <InputSelect
@@ -803,7 +802,7 @@ export default {
           this.cipher.notes = JSON.stringify(this.cipher.type === CipherType.CryptoAccount ? this.cryptoAccount : this.cryptoWallet)
           this.cipher.type = CipherType.SecureNote
         }
-        this.cipher.name = this.validateCipherName(this.cipher.name, type_)
+        // this.cipher.name = this.validateCipherName(this.cipher.name, type_)
         if (this.cloneMode) {
           this.cipher.organizationId = null
         }
