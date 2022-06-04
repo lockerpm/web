@@ -62,6 +62,9 @@
     "./jslib/src/services/consoleLog.service.ts",
     "./jslib/src/misc/nodeUtils.ts",
     "./jslib/src/angular",
-    "./services"
+    "./services",
+    "./core/services",
+    "./core/importers",
+    "./core/abstractions"
   ]
 }

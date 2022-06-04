@@ -136,7 +136,7 @@ import { CipherWithIds as CipherExport } from '../../jslib/src/models/export/cip
 import { FolderWithId as FolderExport } from '../../jslib/src/models/export/folderWithId'
 import { Collection } from '../../jslib/src/models/domain/collection'
 import { Cipher } from '../../jslib/src/models/domain'
-import { BitwardenCsvImporter } from '../../services/bitwardenCsvImporter'
+import { BitwardenCsvImporter } from '../../core/importers/bitwardenCsvImporter'
 export default {
   components: {
     Instructions,
