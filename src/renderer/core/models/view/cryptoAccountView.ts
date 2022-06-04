@@ -1,7 +1,6 @@
 
-import { View, LoginUriView } from '@/jslib/src/models/view'
-
 import { CryptoAccount } from '../domain/cryptoAccount'
+import { View, LoginUriView } from '@/jslib/src/models/view'
 
 export class CryptoAccountView implements View {
   username: string = null;

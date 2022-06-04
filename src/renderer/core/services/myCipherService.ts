@@ -51,7 +51,6 @@ import { StorageService } from '../../jslib/src/abstractions/storage.service'
 import { UserService } from '../../jslib/src/abstractions/user.service'
 
 import { ConstantsService } from '../../jslib/src/services/constants.service'
-import { CipherService } from '../../jslib/src/services/cipher.service'
 
 import { sequentialize } from '../../jslib/src/misc/sequentialize'
 import { Utils } from '../../jslib/src/misc/utils'
@@ -314,7 +313,7 @@ export class MyCipherService implements CipherServiceAbstraction {
 
       const promises: any[] = []
       const ciphers = await this.getAll()
-      console.log('all ciphers: ', ciphers.length)
+      // console.log('all ciphers: ', ciphers.length)
       ciphers.forEach(cipher => {
         promises.push(cipher.decrypt().then(c => decCiphers.push(c)))
       })
