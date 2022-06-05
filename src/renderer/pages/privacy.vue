@@ -39,7 +39,7 @@ export default {
 
   head () {
     return {
-      title: 'Privacy Policy | Locker'
+      title: 'Privacy Policy | Locker Password Manager'
     }
   }
 }
