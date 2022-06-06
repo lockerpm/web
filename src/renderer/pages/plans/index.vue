@@ -4,7 +4,7 @@
       <template v-for="(item, index) in planMenu">
         <div
           :key="index"
-          :class="step===index+1?'!text-black font-semibold border-b-2 border-primary pb-3':''"
+          :class="[step===index+1?'!text-black font-semibold border-b-2 border-primary pb-3':'', index+1>step ? 'opacity-60 cursor-not-allowed' : '']"
           class="text-black-600 mr-8 last:mr-0 cursor-pointer"
           @click="index===0?step=index+1:()=>{}"
         >
@@ -80,13 +80,14 @@
           </div>
           <!-- Step title end-->
 
+          <!-- Choose a plan -->
           <template v-if="step===1">
             <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-3">
               <div
                 v-for="item in plans"
                 :key="item.id"
                 :class="selectedPlan.alias===item.alias?'!border-primary':''"
-                class="p-8 border border-black-200 rounded cursor-pointer hover:border-primary relative"
+                class="p-8 border border-black-200 rounded cursor-pointer hover:border-primary flex flex-col justify-between"
               >
                 <!-- @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''" -->
                 <div class="flex flex-col mb-6">
@@ -137,7 +138,7 @@
                       class="flex items-center justify-center mt-1"
                     >
                       <div v-if="item.alias != 'pm_free'">
-                        12 months with ${{ item.yearly_price.usd }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">Save {{ discountPercentage(item) }}%</span>
+                        {{ $t('data.plans.price_12months') }} ${{ item.yearly_price.usd }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">{{ $t('data.plans.save') }} {{ discountPercentage(item) }}%</span>
                       </div>
                     </div>
                   </div>
@@ -154,31 +155,25 @@
                       <div class="ml-2">{{ $t(`data.plans.features.${feature}`) }}</div>
                     </div>
                   </div>
-                  <!-- <div v-if="currentPlan.alias === item.alias">
-                        <button class="btn btn-primary w-full">
-                          Hiện tại
-                        </button>
-                      </div> -->
                 </div>
-                <!-- <div v-if="currentPlan.alias === item.alias" class="absolute bottom-0 lg:bottom-[-50px] w-full left-0 right-0 text-center">
-                  <i class="fas fa-sort-up" />
-                  <div>
-                    {{ $t('data.plans.current_plan') }}
-                  </div>
-                </div> -->
-                <div class="absolute bottom-4 w-full pr-16">
+                <div class=" w-full">
                   <button
                     :class="currentPlan.alias === item.alias? 'btn-default' : 'btn-primary'"
                     class="btn text-center w-full"
-                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' || item.alias==='pm_family'"
+                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' || currentPlan.alias==='pm_premium' && item.alias==='pm_family'"
                     @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''"
                   >
                     {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_plan') }}
                   </button>
+                  <div :class="['pm_family', 'pm_premium'].includes(currentPlan.alias) && ['pm_family', 'pm_premium'].includes(item.alias) && currentPlan.alias !== item.alias ? 'opacity-1':'opacity-0'" class="text-xs text-black-500 text-center">
+                    {{ $t('data.plans.choose_plan_note') }}
+                  </div>
                 </div>
               </div>
             </div>
           </template>
+
+          <!-- Payment -->
           <template v-if="step===2">
             <div class="setting-wrapper">
               <div class="setting-section">
@@ -255,7 +250,7 @@
                     <div class="setting-description">
                       <ul class="mb-3">
                         <!-- <li v-html="this.$t('data.billing.plan_details[0]', {total:this.result.total_price || 0, currency:this.result.currency || 'USD'})" /> -->
-                        <li v-html="this.$t('data.billing.plan_details[1]', {duration:this.result.duration || 'yearly', price:this.result.price || 0, currency:this.result.currency || 'USD', next_bill:this.nextBill||''})" />
+                        <li v-html="$t('data.billing.plan_details[1]', {duration:result.duration || 'yearly', price:result.price || 0, currency:result.currency || 'USD', next_bill:nextBill||''})" />
                         <li>{{ $t('data.billing.plan_details[2]') }}</li>
                       </ul>
                     </div>
@@ -266,6 +261,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- FAMILY: Add member -->
             <div
               v-if="selectedPlan.alias === 'pm_family'"
               class="setting-wrapper"
@@ -282,7 +279,7 @@
                   </div>
                 </div>
                 <div class="mt-4 mb-8">
-                  <div class="flex input-tags">
+                  <!-- <div class="flex input-tags">
                     <el-input
                       v-model="inputEmail"
                       change="mr-2"
@@ -311,6 +308,34 @@
                         {{ $t('common.add') }}
                       </el-button>
                     </el-input>
+                  </div> -->
+                  <div
+                    class="cs-field w-full"
+                  >
+                    <div class="input-tags">
+                      <el-tag
+                        v-for="(email, index) in emails"
+                        :key="email"
+                        closable
+                        type="info"
+                        class="my-auto"
+                        @close="handleClose(index)"
+                      >
+                        {{ email }}
+                      </el-tag>
+
+                      <input
+                        ref="inputEmail"
+                        class="cs-input"
+                        :value="inputEmail"
+                        type="text"
+                        @input="emailInput($event.target.value)"
+                        @keyup.enter="confirmInputEmail"
+                      >
+                    </div>
+                    <div class="text-info cursor-pointer self-end pb-2 font-semibold px-3" @click="confirmInputEmail">
+                      {{ $t('common.add') }}
+                    </div>
                   </div>
                 </div>
 
@@ -367,6 +392,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Select card -->
             <div
               v-if="paymentMethod==='card' && cards.length"
               class="border rounded p-5 border-black-200 cursor-pointer mt-2"
@@ -439,12 +466,15 @@
                 </button>
               </div>
             </div>
+
+            <!-- Add card Component -->
             <Payment
               v-if="paymentVisible || !cards.length"
               ref="payment"
               @handle-done="handleDone"
               @handle-cancel="handleCancel"
             />
+
             <div class="mt-8">
               <!-- <button :disabled="step===2 && !selectedCard || step===1 && !selectedPlan.alias || step ===3" class="btn btn-primary w-full" @click="step===1?selectedPlan.alias==='pm_family'?addMember():toStep2():confirmPlan()">
                 {{ step===1?'Continue': 'Pay & Upgrade' }}
@@ -459,6 +489,8 @@
               </el-button>
             </div>
           </template>
+
+          <!-- Confirmation -->
           <template v-if="step===3">
             <div class="setting-wrapper p-8 !mb-8 text-center">
               <!-- <div class="text-black font-bold mb-2">Order details</div>
@@ -980,7 +1012,7 @@ export default {
       })
         .catch(error => {
           if (error.response && error.response.data && error.response.code === '7009') {
-            this.notify(this.$t('data.error_code.7009'))
+            this.notify(this.$t('data.notifications.error_occurred'), 'warning')
           }
         })
         .then(() => {
@@ -1001,15 +1033,16 @@ export default {
       this.selectedPlan = plan
       if (this.currentPlan.alias !== 'pm_free') {
         this.dialogChange = true
-        this.selectPeriod(find(this.periods, e => e.duration === this.currentPlan.duration))
+        // this.selectPeriod(find(this.periods, e => e.duration === this.currentPlan.duration))
         if (this.currentPlan.alias === 'pm_family') {
           this.number_members = 6
         }
       } else {
         this.number_members = 1
         // this.step = 2
-        this.selectPeriod(this.selectPeriod)
+        // this.selectPeriod(this.selectPeriod)
       }
+      this.selectMethod('card')
       this.calcPrice()
       this.step = 2
     },
@@ -1052,10 +1085,10 @@ export default {
           this.order = data
           this.dialogTransfer = true
         } else {
-          this.notify('Nâng cấp thành công', 'success')
+          this.notify(this.$t('data.notifications.upgrade_success'), 'success')
         }
       } catch {
-        this.notify('Có lỗi xảy ra. Vui lòng thử lại', 'warning')
+        this.notify(this.$t('data.notifications.error_occurred'), 'warning')
       } finally {
         this.loading = false
       }
@@ -1089,7 +1122,14 @@ export default {
     handleClose (index) {
       this.emails.splice(index, 1)
     },
+    // emailInput (value) {
+    //   const lastChar = value.substr(value.length - 1)
+    //   if ([',', ' '].includes(lastChar)) {
+    //     this.handleInputEmail()
+    //   }
+    // },
     emailInput (value) {
+      this.inputEmail = value
       const lastChar = value.substr(value.length - 1)
       if ([',', ' '].includes(lastChar)) {
         this.handleInputEmail()
@@ -1099,7 +1139,7 @@ export default {
       this.emails.forEach(email => {
         if (!this.family_members.includes(email)) {
           if (this.family_members.length === 5) {
-            this.notify('You can\'t add more than 5 accounts.', 'warning')
+            this.notify(this.$t('errors.7012'), 'warning')
             return
           }
           this.family_members.push(email)
@@ -1108,13 +1148,17 @@ export default {
       const emailList = this.inputEmail.split(',')
       emailList.forEach(email => {
         email = email.trim()
-        if (email && this.validateEmail(email) && !this.family_members.includes(email)) {
+        if (email && this.validateEmail(email)) {
           if (this.family_members.length === 5) {
-            this.notify('You can\'t add more than 5 accounts.', 'warning')
+            this.notify(this.$t('errors.7012'), 'warning')
             return
           }
-          this.family_members.push(email)
+          if (!this.family_members.includes(email)) {
+            this.family_members.push(email)
+          }
           this.inputEmail = ''
+        } else if (email && !this.validateEmail(email)) {
+          this.notify('Invalid email', 'warning')
         }
       })
       this.emails = []
@@ -1134,7 +1178,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss" scoped>
 .input-tags .el-input-group__prepend {
   @apply p-0 bg-white;
 }
@@ -1145,4 +1189,75 @@ export default {
   @apply border-primary;
   background-color: black !important;
 } */
+.cs-field {
+  //width: 100%;
+  min-height: 40px;
+  display: flex;
+  padding-left: 12px;
+  position: relative;
+  border-radius: 2px;
+  border: solid 1px #e6e8f4;
+  &.is-hover, &.is-focus {
+    @apply border-primary bg-white;
+    label {
+      @apply text-primary
+    }
+  }
+  &.is-error {
+    @apply border-danger mb-8 last:mb-8 #{!important};
+    label, .cs-helper-text {
+      @apply text-danger
+    }
+  }
+  &.is-password.is-focus, &.is-password.have-value {
+    button.btn {
+      @apply absolute p-0.5;
+      top: 19px;
+      right: 13px;
+    }
+    .cs-input {
+      padding-right: 48px;
+    }
+  }
+  &.is-focus label, &.have-value label {
+    font-size: 12px;
+    line-height: 19px;
+    top: 5px;
+    left: 11px;
+  }
+  &.is-focus .cs-textarea, &.have-value .cs-textarea {
+    padding-top: 8px;
+    margin-top: 8px;
+  }
+  &.is-disabled {
+    cursor: not-allowed;
+    input, button, input:hover, button:hover {
+      cursor: not-allowed!important;
+      user-select: none;
+    }
+  }
+  .cs-input, .cs-textarea {
+    align-self: center;
+    padding-left: 2px !important;
+    width: 100%;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    font-size: 14px;
+    line-height: 19px;
+    border: none;
+    flex: 1;
+    color: #161922;
+    height: 32px;
+    background-color: inherit;
+    min-width: 150px;
+  }
+  .input-tags {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-self: center;
+    gap: 2px;
+    padding: 2px 0px;
+  }
+}
 </style>

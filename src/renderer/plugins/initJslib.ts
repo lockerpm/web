@@ -25,12 +25,12 @@ import { ImportService } from '../jslib/src/services/import.service';
 import { PasswordGenerationService } from '../jslib/src/services/passwordGeneration.service';
 import { PolicyService } from '../jslib/src/services/policy.service';
 import { SearchService } from '../jslib/src/services/search.service';
-import { MySearchService } from "../services/search.service"
+import { MySearchService } from "../core/services/search.service"
 import { SendService } from '../jslib/src/services/send.service';
 import { SettingsService } from '../jslib/src/services/settings.service';
 import { StateService } from '../jslib/src/services/state.service';
 import { SyncService } from '../jslib/src/services/sync.service';
-import { MySyncService } from "../services/sync.service";
+import { MySyncService } from "../core/services/sync.service";
 import { TokenService } from '../jslib/src/services/token.service';
 // import { TotpService } from '../jslib/src/services/totp.service';
 import { UserService } from '../jslib/src/services/user.service';
@@ -69,7 +69,7 @@ import { SyncService as SyncServiceAbstraction } from '../jslib/src/abstractions
 // import { TotpService as TotpServiceAbstraction } from '../jslib/src/abstractions/totp.service';
 // import { UserService as UserServiceAbstraction } from '../jslib/src/abstractions/user.service';
 import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from '../jslib/src/abstractions/vaultTimeout.service';
-import { MyCipherService } from '../services/myCipherService';
+import { MyCipherService } from '../core/services/myCipherService';
 // import { PasswordRepromptService } from '../jslib/src/services/passwordReprompt.service';
 
 const i18nService = new I18nService(window.navigator.language, 'locales');

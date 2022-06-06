@@ -16,7 +16,12 @@
       </div>
     </div>
     <div class="flex">
-      <div class="mr-3">
+      <div class="mr-3 md:block hidden">
+        <button class="btn btn-outline-primary" @click="$router.push(localePath({name: 'settings-referral'}))">
+          {{ $t('sidebar.referral') }}
+        </button>
+      </div>
+      <div class="mr-3 md:block hidden">
         <button class="btn btn-primary" @click="$router.push(localePath({name: 'plans'}))">
           {{ $t('common.manage_plans') }}
         </button>
@@ -30,6 +35,20 @@
           </div>
         </div>
         <el-dropdown-menu slot="dropdown" class="min-w-[200px]">
+          <el-dropdown-item
+            class="text-warning md:hidden"
+            icon="fa fa-tasks"
+            @click.native="go('plans')"
+          >
+            {{ $t('common.manage_plans') }}
+          </el-dropdown-item>
+          <el-dropdown-item
+            class="text-warning md:hidden"
+            icon="fa fa-user-friends"
+            @click.native="go('settings-referral')"
+          >
+            {{ $t('data.settings.referral') }}
+          </el-dropdown-item>
           <el-dropdown-item
             class="text-warning"
             icon="fa fa-user-circle"

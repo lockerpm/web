@@ -11,6 +11,10 @@
       padding: 0.2rem;
       @apply rounded-xs w-[1.75rem] h-[1.75rem]
     }
+    &.btn-share {
+      width: 42px;
+      height: 42px;
+    }
   }
   &.btn-lg {
     @apply py-3.5;

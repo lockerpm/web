@@ -1,10 +1,10 @@
 
+import { CryptoAccountData } from '../data/cryptoAccountData'
+import { CryptoAccountView } from '../view/cryptoAccountView'
 import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
 import Domain from '@/jslib/src/models/domain/domainBase'
 import { EncString } from '@/jslib/src/models/domain/encString'
 import { LoginUri } from '@/jslib/src/models/domain/loginUri'
-import { CryptoAccountData } from '../data/cryptoAccountData'
-import { CryptoAccountView } from '../view/cryptoAccountView'
 
 export class CryptoAccount extends Domain {
   username: EncString;

@@ -668,7 +668,7 @@
                     >
                   </a>
                   <div class="overflow-hidden overflow-ellipsis">
-                    {{ item.subTitle }}
+                    {{ item.type === CipherType.CryptoWallet && item.cryptoWallet ? item.cryptoWallet.username : item.subTitle }}
                   </div>
                 </div>
               </div>

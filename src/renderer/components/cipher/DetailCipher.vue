@@ -215,6 +215,9 @@
             <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoWallet.notes" :text-area="true" />
           </template>
           <TextHaveCopy v-if="![CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type)" :label="$t('data.ciphers.notes')" :text="cipher.notes" :text-area="true" />
+          <template v-for="(field, index) in cipher.fields">
+            <TextHaveCopy v-if="field.name || field.value!=null" :key="index" :label="field.name" :text="field.value" :should-hide="field.type === FieldType.Hidden" />
+          </template>
           <div class="grid md:grid-cols-6 cipher-item">
             <div class="">{{ $t('data.ciphers.owned_by') }}</div>
             <div class="col-span-4 font-semibold flex items-center">
@@ -236,6 +239,19 @@
               <div v-if="cipher.folderId" class="font-semibold flex items-center">
                 <img src="~/assets/images/icons/folderSolid.svg" alt="" class="mr-3"> {{ findFolder(folders, cipher.folderId).name }}
               </div>
+            </div>
+          </div>
+          <div v-if="shareMember.length > 0" class="grid md:grid-cols-6 cipher-item">
+            <div class="">{{ $t('data.ciphers.shared_with') }}</div>
+            <div :class="showMember?'': 'flex'" class="col-span-4 gap-3">
+              <div v-for="member in showMember? shareMember : shareMember.slice(0,5)" :key="member.id" class="mt-3 flex">
+                <img :title="member.email" class="h-10 w-10 rounded-full" :src="member.avatar">
+                <div v-if="showMember" class="self-center ml-2">{{ member.email }}</div>
+              </div>
+              <div v-if="!showMember && shareMember.length>5" class="bg-[#C4C4C4] h-10 w-10 rounded-full mt-3 text-[20px] text-black font-semibold text-center py-2">
+                {{ shareMember.length >= 105 ? '99+' : `+${shareMember.length - 5}` }}
+              </div>
+              <div class="cursor-pointer text-primary self-center mt-3" @click="showMember=!showMember">{{ showMember ? $t('common.collapse') : $t('common.see_all') }}</div>
             </div>
           </div>
         </div>
@@ -268,6 +284,7 @@ import MoveFolder from '../folder/MoveFolder'
 import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
 import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
 import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
+import { FieldType } from '../../jslib/src/enums/fieldType'
 CipherType.CryptoAccount = 6
 CipherType.CryptoWallet = 7
 export default {
@@ -295,7 +312,9 @@ export default {
       // cipher: {},
       showPassword: false,
       CipherType,
-      editMode: false
+      editMode: false,
+      showMember: false,
+      FieldType
     }
   },
   computed: {
@@ -320,6 +339,10 @@ export default {
         return this.$passwordGenerationService.passwordStrength(this.cipher.cryptoWallet.password, ['cystack']) || {}
       }
       return {}
+    },
+    shareMember () {
+      const share = this.myShares.find(s => s.id === this.cipher.organizationId) || {}
+      return share.members || []
     }
   },
   created () {

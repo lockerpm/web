@@ -1,5 +1,5 @@
 <template>
-  <div class="md:w-2/3 mx-auto">
+  <div class="lg:w-2/3 mx-auto">
     <div class="text-head-5 font-semibold mb-2">
       {{ $t('data.settings.security') }}
     </div>
