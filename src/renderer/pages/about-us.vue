@@ -23,9 +23,7 @@
               </nuxt-link>
             </div>
           </div>
-          <div class="landing-font-20 font-normal text-black mt-6">
-            {{ $t('about_us.about_locker.content') }}
-          </div>
+          <div class="landing-font-20 font-normal text-black mt-6" v-html="$t('about_us.about_locker.content')"/>
         </div>
       </div>
     </section>
@@ -41,9 +39,7 @@
           <div class="mb-[28px] font-bold landing-font-48 text-black">
             {{ $t('about_us.vision_mission.title') }}
           </div>
-          <div class="text-black font-normal landing-font-20">
-            {{ $t('about_us.vision_mission.subtitle') }}
-          </div>
+          <div class="text-black font-normal landing-font-20" v-html=" $t('about_us.vision_mission.subtitle') "/>
         </div>
       </div>
     </section>
