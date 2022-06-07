@@ -1,7 +1,7 @@
 <template>
   <div class="md:pt-[180px] pt-36 pb-20">
     <h1 class="text-left font-bold text-black landing-font-50 max-w-[890px] mb-20">
-      Privacy Policy
+      {{ $t('common.privacy_policy') }}
     </h1>
 
     <NotionContent :block-map="blockMap" />
@@ -21,7 +21,7 @@ export default {
 
   async asyncData ({ $notion }) {
     const [vi, en] = await Promise.all([
-      $notion.getPageBlocks('bfc002b3ca1449499936ade0dd7913f4'),
+      $notion.getPageBlocks('93dc34fc5704460482a41694775e25eb'),
       $notion.getPageBlocks('bfc002b3ca1449499936ade0dd7913f4')
     ])
     return { blockMap: { vi, en } }
