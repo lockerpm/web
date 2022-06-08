@@ -171,7 +171,7 @@
               </div>
               <div>
                 <a
-                  href="https://support.locker.io/articles/set-up-and-use-emergency-access"
+                  :href="locale==='vi'?'https://support.locker.io/vi/articles/Thiet-lap-tinh-nang-Truy-cap-khan-cap-b54c0b4b560a466f92331b940bbc9244':'https://support.locker.io/articles/Set-up-and-use-Emergency-Access-0e169439bb83453298ea430b22262214'"
                   target="_blank"
                 >
                   <button class="btn btn-default !whitespace-normal text-left mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current">
