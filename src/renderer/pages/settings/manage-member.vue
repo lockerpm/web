@@ -106,7 +106,11 @@
                       <el-tooltip placement="right" effect="light">
                         <div slot="content" class="max-w-[250px]">
                           {{ $t('data.family_member.unknown_tooltip') }}
-                          <span class="text-info font-semibold">{{ $t('data.family_member.learn_more') }}</span>
+                          <span class="text-info font-semibold">
+                            <a :href="locale === 'vi'? 'https://support.locker.io/vi/articles/Goi-Family-d570fc79895e4011bf3ba07ca8de3f9a': 'https://support.locker.io/articles/Upgrading-to-Family-Plan-f832b3db0cca4cd0b1a4819e177bb849'" target="_blank">
+                              {{ $t('data.family_member.learn_more') }}
+                            </a>
+                          </span>
                         </div>
                         <svg
                           width="20"

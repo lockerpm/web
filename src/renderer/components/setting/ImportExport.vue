@@ -115,6 +115,19 @@
         <ReConfirmMasterPassword ref="reConfirmMasterPassword" @done="exportData(selectedType)" />
       </div>
     </div>
+    <el-dialog
+      :visible.sync="dialogVisible"
+      class=""
+      center
+      :title="$t('data.importFile.upgrade_dialog_title')"
+    >
+      <span>
+        {{ $t('data.importFile.upgrade_dialog_message', {importedCount: importResult.ciphersCount, total: importResult.totalCipherImport}) }}
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="$router.push(localeRoute({name: 'plans'}))">{{ $t('common.upgrade') }}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -135,7 +148,6 @@ import { CollectionWithId as CollectionExport } from '../../jslib/src/models/exp
 import { CipherWithIds as CipherExport } from '../../jslib/src/models/export/cipherWithIds'
 import { FolderWithId as FolderExport } from '../../jslib/src/models/export/folderWithId'
 import { Collection } from '../../jslib/src/models/domain/collection'
-import { Cipher } from '../../jslib/src/models/domain'
 import { BitwardenCsvImporter } from '../../core/importers/bitwardenCsvImporter'
 export default {
   components: {
@@ -150,7 +162,9 @@ export default {
       file: null,
       fileContents: '',
       filter: null,
-      loading: false
+      loading: false,
+      dialogVisible: false,
+      importResult: {}
     }
   },
   asyncComputed: {
@@ -200,8 +214,8 @@ export default {
     },
     cystackOptions () {
       return [
-        { name: 'CyStack (json)', id: 'cystackjson' },
-        { name: 'CyStack (csv)', id: 'cystackcsv' }
+        { name: 'Locker (json)', id: 'cystackjson' },
+        { name: 'Locker (csv)', id: 'cystackcsv' }
       ]
     },
     featuredImportOptions () {
@@ -562,7 +576,7 @@ export default {
           this.padNumber(now.getHours(), 2) + '' + this.padNumber(now.getMinutes(), 2) +
           this.padNumber(now.getSeconds(), 2)
 
-      return 'cystack' + (prefix ? ('_' + prefix) : '') + '_export_' + dateString + '.' + extension
+      return 'locker' + (prefix ? ('_' + prefix) : '') + '_export_' + dateString + '.' + extension
     },
     createFileName (prefix) {
       let extension = this.selectedType
@@ -676,7 +690,11 @@ export default {
           }
           try {
             const importResult = await this.postImport(finalImportResult)
-            this.notify(this.$t('data.notifications.import_success', { foldersCount: importResult.foldersCount, ciphersCount: importResult.ciphersCount }), 'success')
+            this.importResult = importResult
+            this.notify(this.$t('data.notifications.import_success', { foldersCount: importResult.foldersCount, ciphersCount: importResult.ciphersCount, total: importResult.totalCipherImport }), 'success')
+            if (this.currentPlan.alias === 'pm_free' && importResult.ciphersCount < importResult.totalCipherImport) {
+              this.dialogVisible = true
+            }
           } catch (error) {
             if (error.response && error.response.data) {
               const errorResponse = new ErrorResponse(error.response.data, 400)
@@ -815,15 +833,16 @@ export default {
         const importedIdentityCount = request.ciphers.filter(c => c.type === CipherType.Identity).length
         const currentCryptoCount = this.ciphers.filter(c => c.type === 7 && c.organizationId === null).length
         const importedCryptoCount = request.ciphers.filter(c => c.type === 7).length
-        importedCipherCount = Math.min(importedPasswordCount, (100 - currentPasswordCount)) +
-        Math.min((50 - currentNoteCount), importedNoteCount) +
-        Math.min((5 - currentCardCount), importedCardCount) +
-        Math.min((10 - currentIdentityCount), importedIdentityCount) +
-        Math.min((5 - currentCryptoCount), importedCryptoCount)
+        importedCipherCount = Math.min(importedPasswordCount, Math.max(100 - currentPasswordCount, 0)) +
+        Math.min(Math.max(50 - currentNoteCount, 0), importedNoteCount) +
+        Math.min(Math.max(5 - currentCardCount, 0), importedCardCount) +
+        Math.min(Math.max(10 - currentIdentityCount, 0), importedIdentityCount) +
+        Math.min(Math.max(5 - currentCryptoCount, 0), importedCryptoCount)
       }
       return {
         ciphersCount: importedCipherCount,
-        foldersCount: request.folders.length
+        foldersCount: request.folders.length,
+        totalCipherImport: request.ciphers.length
       }
       // this.notify(this.$t('data.notifications.import_success'), 'success')
       // this.loading = false
