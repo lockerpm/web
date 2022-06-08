@@ -1,13 +1,13 @@
 <template>
   <div>
-    <TopBanner />
-    <Header />
+    <TopBanner v-if="$route.path != '/whitepaper'"/>
+    <Header v-if="$route.path != '/whitepaper'"/>
     <div class="max-w-6xl mx-auto">
       <div class="w-full px-6">
         <nuxt />
       </div>
     </div>
-    <Footer />
+    <Footer v-if="$route.path != '/whitepaper'"/>
   </div>
 </template>
 

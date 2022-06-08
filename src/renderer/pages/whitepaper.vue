@@ -1,8 +1,10 @@
 <template>
-  <div>Minh thu</div>
+  <div>
+
+  </div>
 </template>
 <script>
 export default {
-  landing: 'authenticate'
+  layout: 'landing'
 }
 </script>
