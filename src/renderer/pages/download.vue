@@ -54,8 +54,7 @@
           <div class="justify-self-center">
             <a
               class="w-full sm:w-auto"
-              href="https://apps.apple.com/us/app/locker-password-manager/id1586927301"
-              target="_blank"
+              @click="goToInstall('ios')"
             >
               <img src="~/assets/images/landing/download/app_store.svg">
             </a>
@@ -63,8 +62,7 @@
           <div>
             <a
               class="w-full sm:w-auto"
-              href="https://play.google.com/store/apps/details?id=com.cystack.locker"
-              target="_blank"
+              @click.prevent="goToInstall('android')"
             >
               <img src="~/assets/images/landing/download/gg_play.svg">
             </a>
@@ -78,14 +76,13 @@
       >
         <h2 class="text-center pt-[45px] pb-[30px] font-bold landing-font-22">{{ $t('download.download_extension') }}</h2>
         <div class="flex">
-          <p class="text-center landing-font-14 w-[400px] mx-auto">{{ $t('download.go_to_chrome_store') }}<span class="text-green"><a href="https://chrome.google.com/webstore/detail/locker-free-password-mana/cmajindocfndlkpkjnmjpjoilibjgmgh" target="_blank">Chrome Web Store</a></span></p>
+          <p class="text-center landing-font-14 w-[400px] mx-auto">{{ $t('download.go_to_chrome_store') }}<span class="text-green"><a @click.prevent="goToInstall('extension')">Chrome Web Store</a></span></p>
         </div>
         <div class="w-full mt-6 relative">
           <img src="~/assets/images/landing/download/chrome-extension.png" alt="Chrome Extension" class="mx-auto">
           <a
             class="landing-btn w-full text-center w-[207px] h-[45px] mx-auto absolute bottom-16 left-0 right-0"
-            href="https://chrome.google.com/webstore/detail/locker-free-password-mana/cmajindocfndlkpkjnmjpjoilibjgmgh"
-            target="_blank"
+            @click.prevent="goToInstall('extension')"
           >
             <!-- <div class="w-full flex items-center justify-center">
               <img class="p-[5px] bg-white rounded-full mr-3" src="~/assets/images/landing/download/chrome.png">

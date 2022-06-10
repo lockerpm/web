@@ -51,12 +51,11 @@
 
         <!-- Social -->
         <div class="w-full lg:w-3/12">
-          <div class="grid sm:grid-cols-12 gap-8 py-8 md:py-12">
-            <div class="col-span-12">
+          <div class="py-8 md:py-12">
+            <div class="w-full mb-8">
               <h6 class="font-bold landing-font-16 mb-[20px]">
                 Follow us
               </h6>
-
               <div class="flex">
                 <a
                   class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
@@ -82,21 +81,16 @@
                 >
                   <i class="fab fa-linkedin-in mt-2" />
                 </a>
-                <!--                <a-->
-                <!--                  class="text-black-600 landing-font-32 landing-transition mr-6"-->
-                <!--                  href="#"-->
-                <!--                >-->
-                <!--                  <i class="fab fa-twitter" />-->
-                <!--                </a>-->
-                <!--                <a-->
-                <!--                  class="text-black-600 landing-font-32 landing-transition"-->
-                <!--                  href="#"-->
-                <!--                >-->
-                <!--                  <i class="fab fa-linkedin" />-->
-                <!--                </a>-->
               </div>
+              <address class="not-italic mt-5">
+                <p class="landing-font-14 text-black-600">
+                  {{ $t('common.cystack_address') }}<br>
+                  Email: contact@locker.io<br>
+                  Phone: (+84) 247 109 9656
+                </p>
+              </address>
             </div>
-            <div class="col-span-12">
+            <div class="w-full">
               <!-- Language switcher -->
               <div
                 :class="locale==='vi'?'opacity-06':''"
@@ -134,7 +128,9 @@
           <div v-else>
             A product of
           </div>
-          <img class="h-4 ml-2 mr-3" src="~/assets/images/logo/CyStack.png" alt="CyStack">
+          <a :href="locale==='vi'?'https://cystack.net':'https://cystack.net/vi'">
+            <img class="h-4 ml-2 mr-3" src="~/assets/images/logo/CyStack.png" alt="CyStack">
+          </a>
         </div>
         <div class="">
           Copyright © {{ currentYear }} Locker.io ·  All rights reserved.
