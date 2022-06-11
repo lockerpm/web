@@ -535,6 +535,21 @@ Vue.mixin({
         return true
       }
       return false
+    },
+    goToInstall (app) {
+      switch (app) {
+      case 'extension':
+        window.open(process.env.extensionLink, '_blank')
+        break
+      case 'android':
+        window.open(process.env.androidLink, '_blank')
+        break
+      case 'ios':
+        window.open(process.env.iosLink, '_blank')
+        break
+      default:
+        this.$router.push(this.localeRoute({ name: 'download' }))
+      }
     }
   }
 })

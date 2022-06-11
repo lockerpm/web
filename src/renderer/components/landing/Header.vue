@@ -70,22 +70,31 @@
             </nuxt-link>
           </li>
           <hr class="sm:hidden my-5 opacity-20">
-          <li class="sm:hidden">
-            <nuxt-link
-              class="inline-block nav-item text-black landing-transition"
-              to="/login"
-            >
-              {{ $t('common.login') }}
-            </nuxt-link>
-          </li>
-          <li class="sm:hidden">
-            <nuxt-link
-              class="inline-block nav-item text-black landing-transition"
-              to="/register"
-            >
-              {{ $t('common.sign_up') }}
-            </nuxt-link>
-          </li>
+          <template v-if="isLoggedIn">
+            <li class="sm:hidden">
+              <nuxt-link :to="localeRoute({name: 'vault'})" class="inline-block nav-item text-black landing-transition">
+                My Vault
+              </nuxt-link>
+            </li>
+          </template>
+          <template v-else>
+            <li class="sm:hidden">
+              <nuxt-link
+                class="inline-block nav-item text-black landing-transition"
+                to="/login"
+              >
+                {{ $t('common.login') }}
+              </nuxt-link>
+            </li>
+            <li class="sm:hidden">
+              <nuxt-link
+                class="inline-block nav-item text-black landing-transition"
+                to="/register"
+              >
+                {{ $t('common.sign_up') }}
+              </nuxt-link>
+            </li>
+          </template>
         </ul>
         <!-- Nav items end -->
       </div>

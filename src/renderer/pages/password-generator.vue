@@ -228,7 +228,7 @@
             <p class="landing-font-18">{{ use_locker.desc }}</p>
             <div class="landing-font-18 align-top mt-[45px]">
               <nuxt-link
-                :to="localeRoute({name: ''})"
+                :to="localeRoute({name: 'features'})"
                 class="hover:no-underline text-green font-semibold"
               >
                 {{ use_locker.link }} <i class="el-icon-right" />
@@ -261,12 +261,16 @@
             <div class="px-[50px] pt-[60px] text-center">
               <h2 class="landing-font-22 font-bold">{{ item.title }}</h2>
               <p class="landing-font-14 mt-3 mb-[30px]">{{ item.desc }}</p>
-              <div class="landing-font-18 align-top">
+              <div
+                v-for="link in item.link"
+                :key="link.app"
+                class="landing-font-18 align-top"
+              >
                 <a
-                  href=""
                   class="hover:no-underline text-green font-semibold"
+                  @click.prevent="goToInstall(link.app)"
                 >
-                  {{ item.link }} <i class="el-icon-right" />
+                  {{ link.title }} <i class="el-icon-right" />
                 </a>
               </div>
             </div>
@@ -283,13 +287,13 @@
           <p class=" md:max-w-[530px] md:text-left md:mb-0 landing-font-28 font-semibold max-w-max text-center mb-6">
             {{ cta2.title }}
           </p>
-          <a
+          <nuxt-link
             class="landing-btn"
-            :href="cta2.btn.link"
+            :to="localePath(cta2.btn.link)"
             style="align-self: center"
           >
             {{ cta2.btn.text }}
-          </a>
+          </nuxt-link>
         </div>
       </div>
     </section>
