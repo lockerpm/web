@@ -128,7 +128,7 @@
           <div v-else>
             A product of
           </div>
-          <a :href="locale==='vi'?'https://cystack.net':'https://cystack.net/vi'">
+          <a :href="locale==='vi'?'https://cystack.net/vi':'https://cystack.net'" target="_blank">
             <img class="h-4 ml-2 mr-3" src="~/assets/images/logo/CyStack.png" alt="CyStack">
           </a>
         </div>
