@@ -61,7 +61,7 @@
                   class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
                   style="border-radius: 50%"
                   target="_blank"
-                  href="https://www.facebook.com/locker.io"
+                  href="https://www.facebook.com/lockerpm"
                 >
                   <i class="fab fa-facebook-f mt-2" />
                 </a>
