@@ -64,7 +64,7 @@
             >
 
             <label>{{ $t('data.importFile.or_copy') }}</label>
-            <el-input type="textarea" :rows="5" />
+            <el-input v-model="fileContents" type="textarea" :rows="5" />
           </div>
           <div class="form-group">
             <button
