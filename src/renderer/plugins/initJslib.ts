@@ -20,7 +20,7 @@ import { CryptoService } from '../jslib/src/services/crypto.service';
 import { ExportService } from '../jslib/src/services/export.service';
 import { FileUploadService } from '../jslib/src/services/fileUpload.service';
 import { FolderService } from '../jslib/src/services/folder.service';
-import { ImportService } from '../jslib/src/services/import.service';
+import { ImportService } from '../core/services/import.service';
 // import { NotificationsService } from '../jslib/src/services/notifications.service';
 import { PasswordGenerationService } from '../jslib/src/services/passwordGeneration.service';
 import { PolicyService } from '../jslib/src/services/policy.service';

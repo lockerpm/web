@@ -63,8 +63,6 @@
     "./jslib/src/misc/nodeUtils.ts",
     "./jslib/src/angular",
     "./services",
-    "./core/services",
-    "./core/importers",
-    "./core/abstractions"
+    "./core"
   ]
 }
