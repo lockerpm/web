@@ -64,7 +64,7 @@ const Keys = {
 const DomainMatchBlacklist = new Map<string, Set<string>>([
   ['google.com', new Set(['script.google.com'])]
 ])
-export class MyCipherService implements CipherServiceAbstraction {
+export class CipherService implements CipherServiceAbstraction {
     // tslint:disable-next-line
     _decryptedCipherCache: CipherView[];
 

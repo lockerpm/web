@@ -142,7 +142,7 @@ export default {
     exposedPasswordCiphers: {
       async get () {
         this.loading = true
-        const allCiphers = await this.$myCipherService.getAllDecrypted()
+        const allCiphers = await this.$cipherService.getAllDecrypted()
         const exposedPasswordCiphers = []
         const promises = []
         allCiphers.forEach(c => {

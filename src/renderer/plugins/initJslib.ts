@@ -9,7 +9,7 @@ import { ApiService } from '../jslib/src/services/api.service';
 import { AppIdService } from '../jslib/src/services/appId.service';
 import { AuditService } from '../jslib/src/services/audit.service';
 // import { AuthService } from '../jslib/src/services/auth.service';
-import { CipherService } from '../jslib/src/services/cipher.service';
+// import { CipherService } from '../jslib/src/services/cipher.service';
 import { CollectionService } from '../jslib/src/services/collection.service';
 import { ConsoleLogService } from '../jslib/src/services/consoleLog.service';
 // import { ConstantsService } from '../jslib/src/services/constants.service';
@@ -24,13 +24,12 @@ import { ImportService } from '../jslib/src/services/import.service';
 // import { NotificationsService } from '../jslib/src/services/notifications.service';
 import { PasswordGenerationService } from '../jslib/src/services/passwordGeneration.service';
 import { PolicyService } from '../jslib/src/services/policy.service';
-import { SearchService } from '../jslib/src/services/search.service';
-import { MySearchService } from "../core/services/search.service"
+// import { SearchService } from '../jslib/src/services/search.service';
+import { SearchService } from "../core/services/search.service"
 import { SendService } from '../jslib/src/services/send.service';
 import { SettingsService } from '../jslib/src/services/settings.service';
 import { StateService } from '../jslib/src/services/state.service';
-import { SyncService } from '../jslib/src/services/sync.service';
-import { MySyncService } from "../core/services/sync.service";
+import { SyncService } from "../core/services/sync.service";
 import { TokenService } from '../jslib/src/services/token.service';
 // import { TotpService } from '../jslib/src/services/totp.service';
 import { UserService } from '../jslib/src/services/user.service';
@@ -69,7 +68,7 @@ import { SyncService as SyncServiceAbstraction } from '../jslib/src/abstractions
 // import { TotpService as TotpServiceAbstraction } from '../jslib/src/abstractions/totp.service';
 // import { UserService as UserServiceAbstraction } from '../jslib/src/abstractions/user.service';
 import { VaultTimeoutService as VaultTimeoutServiceAbstraction } from '../jslib/src/abstractions/vaultTimeout.service';
-import { MyCipherService } from '../core/services/myCipherService';
+import { CipherService } from '../core/services/cipher.service';
 // import { PasswordRepromptService } from '../jslib/src/services/passwordReprompt.service';
 
 const i18nService = new I18nService(window.navigator.language, 'locales');
@@ -93,10 +92,9 @@ const apiService = new ApiService(tokenService, platformUtilsService,
 const userService = new UserService(tokenService, storageService);
 const settingsService = new SettingsService(userService, storageService);
 export let searchService: SearchService = null;
-export let mySearchService: MySearchService = null;
 const fileUploadService = new FileUploadService(consoleLogService, apiService);
-const cipherService = new CipherService(cryptoService, userService, settingsService, apiService, fileUploadService, storageService, i18nService, () => searchService);
-const myCipherService = new MyCipherService(
+// const cipherService = new CipherService(cryptoService, userService, settingsService, apiService, fileUploadService, storageService, i18nService, () => searchService);
+const cipherService = new CipherService(
   cryptoService,
   userService,
   settingsService,
@@ -104,25 +102,21 @@ const myCipherService = new MyCipherService(
   fileUploadService,
   storageService,
   i18nService,
-  () => mySearchService
+  () => searchService
 );
 const folderService = new FolderService(cryptoService, userService, apiService, storageService,
     i18nService, cipherService);
 const collectionService = new CollectionService(cryptoService, userService, storageService, i18nService);
 searchService = new SearchService(cipherService, consoleLogService, i18nService);
-mySearchService = new MySearchService(myCipherService, consoleLogService, i18nService);
 const policyService = new PolicyService(userService, storageService);
 const sendService = new SendService(cryptoService, userService, apiService, fileUploadService, storageService,
     i18nService, cryptoFunctionService);
-const vaultTimeoutService = new VaultTimeoutService(myCipherService, folderService, collectionService,
-    cryptoService, platformUtilsService, storageService, messagingService, mySearchService, userService, tokenService,
+const vaultTimeoutService = new VaultTimeoutService(cipherService, folderService, collectionService,
+    cryptoService, platformUtilsService, storageService, messagingService, searchService, userService, tokenService,
     null, async () => messagingService.send('logout', { expired: false }));
 const syncService = new SyncService(userService, apiService, settingsService, folderService,
     cipherService, cryptoService, collectionService, storageService, messagingService, policyService,
   sendService, async (expired: boolean) => messagingService.send('logout-11111', { expired: expired }));
-const mySyncService = new MySyncService(userService, apiService, settingsService, folderService,
-    myCipherService, cryptoService, collectionService, storageService, messagingService, policyService,
-    sendService, async (expired: boolean) => messagingService.send('logout-11111', { expired: expired }));
 const passwordGenerationService = new PasswordGenerationService(cryptoService, storageService, policyService);
 // const totpService = new TotpService(storageService, cryptoFunctionService);
 const containerService = new ContainerService(cryptoService);
@@ -149,10 +143,8 @@ export default async ({ app, store }, inject) => {
     inject('cipherService', cipherService)
     inject('userService', userService)
     inject('syncService', syncService)
-    inject("mySyncService", mySyncService);
     inject('tokenService', tokenService)
     inject('searchService', searchService)
-    inject("mySearchService", mySearchService);
     inject('containerService', containerService)
     inject('platformUtilsService', platformUtilsService)
     inject('vaultTimeoutService', vaultTimeoutService)
@@ -165,6 +157,6 @@ export default async ({ app, store }, inject) => {
     inject('exportService', exportService)
     inject('importService', importService)
     inject('auditService', auditService)
-    inject('myCipherService', myCipherService)
+    // inject('cipherService', cipherService)
 
 }

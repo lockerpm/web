@@ -12,7 +12,7 @@ import { FieldType } from '../../jslib/src/enums/fieldType'
 import { UriMatchType } from '../../jslib/src/enums/uriMatchType'
 import { SendView } from '../../jslib/src/models/view/sendView'
 
-export class MySearchService implements SearchServiceAbstraction {
+export class SearchService implements SearchServiceAbstraction {
     indexedEntityId?: string = null;
     private indexing = false;
     private index: lunr.Index = null;
