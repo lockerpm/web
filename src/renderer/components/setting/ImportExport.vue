@@ -148,7 +148,6 @@ import { CollectionWithId as CollectionExport } from '../../jslib/src/models/exp
 import { CipherWithIds as CipherExport } from '../../jslib/src/models/export/cipherWithIds'
 import { FolderWithId as FolderExport } from '../../jslib/src/models/export/folderWithId'
 import { Collection } from '../../jslib/src/models/domain/collection'
-import { BitwardenCsvImporter } from '../../core/importers/bitwardenCsvImporter'
 export default {
   components: {
     Instructions,
@@ -626,13 +625,7 @@ export default {
     async importData () {
       this.loading = true
       const format = this.cystackOptions.map(e => e.id).includes(this.format) ? this.format.replace('cystack', 'bitwarden') : this.format
-      let importer = null
-      if (format === 'bitwardencsv') {
-        importer = new BitwardenCsvImporter()
-        importer.organizationId = this.teamId
-      } else {
-        importer = this.$importService.getImporter(format, this.teamId)
-      }
+      const importer = this.$importService.getImporter(format, this.teamId)
       let fileContents = this.fileContents
       if (this.file) {
         try {

@@ -44,7 +44,8 @@
       "@types/node"
     ],
     "experimentalDecorators": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "../../node_modules",
