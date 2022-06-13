@@ -384,7 +384,7 @@ export default {
     allCiphers: {
       async get () {
         this.loading = true
-        let result = await this.$myCipherService.getAllDecrypted()
+        let result = await this.$cipherService.getAllDecrypted()
         result = result.filter(cipher => cipher.organizationId === null)
         return result
       },

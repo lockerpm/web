@@ -655,13 +655,13 @@ export default {
     allCiphers: {
       async get () {
         // this.loading = true
-        // const result = await this.$myCipherService.getAllDecrypted()
+        // const result = await this.$cipherService.getAllDecrypted()
         const deletedFilter = c => {
           return c.isDeleted === this.deleted
         }
         let result = []
 
-        result = await this.$mySearchService.searchCiphers('', [null, deletedFilter], null) || []
+        result = await this.$searchService.searchCiphers('', [null, deletedFilter], null) || []
         return result
       },
       watch: ['$store.state.syncedCiphersToggle']
@@ -680,7 +680,7 @@ export default {
         }
         let result = []
 
-        result = await this.$mySearchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+        result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
 
         if (this.getRouteBaseName() === 'shares') {
           result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)
@@ -886,7 +886,7 @@ export default {
       }).then(async () => {
         try {
           await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/leave`)
-          await this.$myCipherService.delete([cipher.id])
+          await this.$cipherService.delete([cipher.id])
           this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'success')
         } catch (error) {
           this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'warning')

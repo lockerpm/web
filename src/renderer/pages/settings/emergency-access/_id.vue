@@ -109,13 +109,13 @@
 </template>
 
 <script>
-import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
-import { CipherData } from '@/jslib/src/models/data/cipherData'
-import { Cipher } from '@/jslib/src/models/domain/cipher'
 import cloneDeep from 'lodash/cloneDeep'
 import { CipherType } from '../../../jslib/src/enums'
 import Vnodes from '../../../components/Vnodes'
 import ViewGrantorCipher from '../../../components/setting/ViewGrantorCipher'
+import { Cipher } from '@/jslib/src/models/domain/cipher'
+import { CipherData } from '@/jslib/src/models/data/cipherData'
+import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
 export default {
   components: {
     Vnodes,
@@ -158,7 +158,7 @@ export default {
       })
 
       await Promise.all(promises)
-      decCiphers.sort(this.$myCipherService.getLocaleSortingFunction())
+      decCiphers.sort(this.$cipherService.getLocaleSortingFunction())
 
       return decCiphers
     },
