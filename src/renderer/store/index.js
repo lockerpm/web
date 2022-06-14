@@ -2,7 +2,7 @@ export const state = () => ({
   isLoggedIn: false,
   user: {
     email: null,
-    language: 'vi'
+    language: 'en'
   },
   notifications: {
     results: [],
