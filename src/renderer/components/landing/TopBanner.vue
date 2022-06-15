@@ -36,9 +36,9 @@ export default {
   computed: {
     url () {
       if (this.$store.state.user.language === 'vi') {
-        return 'https://locker.io/vi/blog/ra-mat-phien-ban-dung-thu-locker-password-manager-beta-1-0'
+        return 'https://locker.io/vi/blog/chinh-thuc-ra-mat-trinh-quan-ly-mat-khau-locker'
       } else {
-        return 'https://locker.io/blog/locker-beta-release-announcement'
+        return 'https://locker.io/blog/locker-password-manager-has-just-arrived-download-for-free'
       }
     }
   },
