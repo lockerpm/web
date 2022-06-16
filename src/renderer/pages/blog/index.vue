@@ -429,11 +429,11 @@ export default {
 
 <style>
 .blog-btn {
-  @apply hover:no-underline transition duration-200 ease-in-out text-white hover:text-white hover:bg-primary-HOVER;
+  @apply hover:no-underline transition duration-200 ease-in-out text-white hover:text-white hover:bg-primary-HOVER whitespace-nowrap;
   display: inline-block;
   padding: 9px 24px;
   text-align: center;
-  height: 41px;
+  height: 40px;
   font-weight: 600;
   font-size: 14px !important;
   line-height: 22px;

@@ -318,14 +318,14 @@
           {{ $t('landing.platform.desc') }}
         </p>
       </div>
-      <div class="w-full mx-auto md:justify-between justify-center align-start grid sm:grid-cols-3 grid-cols-1 sm:pl-0 pl-[25%]">
+      <div class="w-full mx-auto md:justify-between justify-center align-start grid sm:grid-cols-3 grid-cols-2">
         <div
           v-for="(item, index) in $t('landing.platform.platforms')"
           :key="index"
           class="opacity-90 mb-9"
         >
-          <a :href="item.href || '#'" :target="item.href? '_blank' : '_self'" class="flex flex-flex-nowrap">
-            <div class="circle mx-5">
+          <a :href="item.href || '#'" :target="item.href? '_blank' : '_self'" class="sm:flex flex-flex-nowrap text-center">
+            <div class="circle sm:mx-5 mx-auto">
               <img
                 :src="require(`~/assets/images/landing/index/${item.img}`)"
                 :alt="item.name"
@@ -334,7 +334,7 @@
               >
             </div>
 
-            <p class="landing-font-16 font-semibold text-black self-center">
+            <p class="landing-font-16 font-semibold text-black self-center sm:mt-0 mt-2">
               {{ item.name }}
             </p>
           </a>
