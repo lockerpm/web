@@ -75,7 +75,7 @@
         </a>
       </div>
     </section>
-    <section class="md:mt-[150px] mt-16 mb-[110px]">
+    <section id="locker-business" class="md:mt-[150px] mt-16 mb-[110px]">
       <h2 class="text-left font-bold text-black landing-font-38 "> {{ $t('features.feature4.title') }} </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[95px] gap-y-[45px] mt-[46px]">
         <div
@@ -91,12 +91,15 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <nuxt-link
-          :to="localeRoute({name: $t('features.feature4.btn.link')})"
+        <!-- <nuxt-link
+          :to="localePath($t('features.feature4.btn.link'))"
           class="hover:no-underline text-green font-semibold"
         >
           {{ $t('features.feature4.btn.text') }} <i class="el-icon-right" />
-        </nuxt-link>
+        </nuxt-link> -->
+        <a href="#locker-business" class="hover:no-underline text-green font-semibold">
+          {{ $t('features.feature4.btn.text') }} <i class="el-icon-right" />
+        </a>
       </div>
     </section>
   </div>
