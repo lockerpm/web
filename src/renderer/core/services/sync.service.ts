@@ -35,7 +35,7 @@ const Keys = {
   lastSyncPrefix: 'lastSync_'
 }
 
-export class MySyncService implements SyncServiceAbstraction {
+export class SyncService implements SyncServiceAbstraction {
   syncInProgress: boolean = false;
 
   // eslint-disable-next-line no-useless-constructor

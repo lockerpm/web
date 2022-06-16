@@ -355,7 +355,7 @@ export default {
         const deletedFilter = c => {
           return c.isDeleted === false
         }
-        const result = await this.$mySearchService.searchCiphers('', [null, deletedFilter], null) || []
+        const result = await this.$searchService.searchCiphers('', [null, deletedFilter], null) || []
         result.map(item => {
           if (item.type === CipherType.CryptoAccount) {
             try {

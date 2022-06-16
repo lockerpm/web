@@ -186,7 +186,7 @@ export default {
       }
     },
     '$store.state.syncedCiphersToggle' () {
-      this.$myCipherService.getAllDecrypted().then(result => {
+      this.$cipherService.getAllDecrypted().then(result => {
         this.ciphers = result
         this.loading = true
         setTimeout(() => {
@@ -202,7 +202,7 @@ export default {
       this.$router.push('/vault')
     }
     this.loading = true
-    this.ciphers = await this.$myCipherService.getAllDecrypted()
+    this.ciphers = await this.$cipherService.getAllDecrypted()
     setTimeout(() => {
       this.weakPasswordCiphers = this.getWeakPasswordCiphers()
       this.reusedPasswordCiphers = this.getReusedPasswordCiphers()
@@ -218,7 +218,7 @@ export default {
   //     async get () {
   //       this.loadingWeak = true
   //       const startTime = Date.now()
-  //       const allCiphers = await this.$myCipherService.getAllDecrypted()
+  //       const allCiphers = await this.$cipherService.getAllDecrypted()
   //       const weakPasswordCiphers = []
   //       const isUserNameNotEmpty = c => {
   //         return c.login.username != null && c.login.username.trim() !== ''
@@ -271,7 +271,7 @@ export default {
   //     async get () {
   //       this.loadingReused = true
   //       console.log('reusedpass')
-  //       const allCiphers = await this.$myCipherService.getAllDecrypted()
+  //       const allCiphers = await this.$cipherService.getAllDecrypted()
   //       const ciphersWithPasswords = []
   //       this.passwordUseMap = new Map()
   //       allCiphers.forEach(c => {

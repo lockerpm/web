@@ -124,9 +124,9 @@ Vue.mixin({
       ])
 
       this.$folderService.clearCache()
-      this.$myCipherService.clearCache()
+      this.$cipherService.clearCache()
       this.$collectionService.clearCache()
-      this.$mySearchService.clearIndex()
+      this.$searchService.clearIndex()
       this.$router.push(this.localeRoute({ name: 'lock' }))
     },
     randomString () {
@@ -205,14 +205,14 @@ Vue.mixin({
           }
           res = new SyncResponse(res)
           allCiphers = allCiphers.concat(res.ciphers)
-          await this.$mySyncService.syncProfile(res.profile)
-          await this.$mySyncService.syncFolders(userId, res.folders)
-          await this.$mySyncService.syncCollections(res.collections)
-          await this.$mySyncService.syncSomeCiphers(userId, res.ciphers)
-          await this.$mySyncService.syncSends(userId, res.sends)
-          await this.$mySyncService.syncSettings(userId, res.domains)
-          await this.$mySyncService.syncPolicies(res.policies)
-          await this.$mySyncService.setLastSync(new Date())
+          await this.$syncService.syncProfile(res.profile)
+          await this.$syncService.syncFolders(userId, res.folders)
+          await this.$syncService.syncCollections(res.collections)
+          await this.$syncService.syncSomeCiphers(userId, res.ciphers)
+          await this.$syncService.syncSends(userId, res.sends)
+          await this.$syncService.syncSettings(userId, res.domains)
+          await this.$syncService.syncPolicies(res.policies)
+          await this.$syncService.setLastSync(new Date())
           this.$store.commit('UPDATE_SYNCED_CIPHERS')
           if (page * pageSize >= this.cipherCount) {
             break
@@ -220,14 +220,14 @@ Vue.mixin({
           page += 1
         }
         // delete cached cipher if it is not in sync data
-        const decryptedCipherCache = this.$myCipherService.decryptedCipherCache
+        const decryptedCipherCache = this.$cipherService.decryptedCipherCache
         decryptedCipherCache.forEach(function (cipher, i) {
           const syncIndex = allCiphers.findIndex(c => c.id === cipher.id)
           if (syncIndex < 0) {
             decryptedCipherCache.splice(i, 1)
           }
         })
-        // this.$myCipherService.decryptedCipherCache(decryptedCipherCache)
+        // this.$cipherService.decryptedCipherCache(decryptedCipherCache)
         this.$messagingService.send('syncCompleted', { successfully: true })
         console.log('sync completed')
       } catch (e) {

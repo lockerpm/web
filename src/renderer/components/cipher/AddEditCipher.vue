@@ -658,7 +658,7 @@ export default {
   asyncComputed: {
     ciphers: {
       async get () {
-        const result = await this.$myCipherService.getAllDecrypted()
+        const result = await this.$cipherService.getAllDecrypted()
         return result
       },
       watch: ['$store.state.syncedCiphersToggle']
@@ -875,7 +875,7 @@ export default {
         try {
           this.loading = true
           await this.$axios.$put('cystack_platform/pm/ciphers/permanent_delete', { ids })
-          await this.$myCipherService.delete(ids)
+          await this.$cipherService.delete(ids)
           this.notify(this.$tc('data.notifications.delete_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
           this.closeDialog()
           this.$emit('reset-selection')
