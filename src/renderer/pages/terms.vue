@@ -12,7 +12,6 @@
 import NotionContent from '~/components/landing/terms/NotionContent'
 
 export default {
-
   components: {
     NotionContent
   },

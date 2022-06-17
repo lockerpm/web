@@ -1,10 +1,8 @@
 <template>
-  <div>
-
-  </div>
+  <div>WhitePaper</div>
 </template>
 <script>
 export default {
-  layout: 'landing'
+  layout: 'whitepaper'
 }
 </script>
