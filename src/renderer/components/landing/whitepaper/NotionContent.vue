@@ -1,0 +1,46 @@
+<template>
+  <div class="ml-[57px]">
+    <div class="landing-font-42 font-semibold text-[#161922] mt-8 mb-4">{{ titleArticle }}</div>
+    <hr class="line">
+    <div class="mt-6">
+      <NotionRenderer :block-map="blockMap" full-page />
+    </div>
+    <div class="mt-16 mb-8">
+      <ButtonPreNext :index="index" :title-previous="titlePrevious" :title-next="titleNext" :id-pre-title="idPreTitle" :id-next-title="idNextTitle" />
+    </div>
+    <hr class="line">
+    <div class="mt-6 mb-[73px] text-[#A2A3A7] landing-font-14 font-normal">
+      {{ $t('whitepaper.content.last_edited_time') }} {{ $moment(lastEditedTime).format('ll') }}
+    </div>
+  </div>
+</template>
+<script>
+import ButtonPreNext from '~/components/landing/whitepaper/ButtonPreNext'
+export default {
+  components: { ButtonPreNext },
+  props: {
+    blockMap: {
+      type: Object,
+      default: () => ({})
+    },
+    titleArticle: {
+      type: String,
+      default: ''
+    },
+    lastEditedTime: null,
+    index: {
+      type: Number,
+      default: 0
+    },
+    titlePrevious: String,
+    titleNext: String,
+    idPreTitle: String,
+    idNextTitle: String
+  }
+}
+</script>
+<style>
+.line{
+  border: 1px solid #E8E8E9;
+}
+</style>
