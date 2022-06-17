@@ -431,5 +431,5 @@ input:-webkit-autofill:active
   margin-left: 20px;
 }
 .wp-block-embed__wrapper iframe {
-  width: 100% !important;
+  max-width: 100% !important;
 }
