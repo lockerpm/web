@@ -17,7 +17,7 @@
                     v-for="iItem in item.articles"
                     :id="iItem.id"
                     :key="iItem.id"
-                    :to="localePath(`/whitepaper/articles/${iItem.slug + '-'+ iItem.id.split('-').join('')}`)"
+                    :to="localePath(`/whitepaper/${iItem.slug + '-'+ iItem.id.split('-').join('')}`)"
                   >
                     <div class="text-[#A2A3A7] font-normal landing-font-14 p-3 " :class="currentArticleId === iItem.id ? 'category-active': ''"> {{ iItem.child }}</div>
                   </nuxt-link>
@@ -28,7 +28,7 @@
           <div v-else class="p-4">
             <nuxt-link
               class="text-[#A2A3A7] font-normal landing-font-14"
-              :to="localePath(`/whitepaper/articles/${item.slug + '-'+ item.id.split('-').join('')}`)"
+              :to="localePath(`/whitepaper/${item.slug + '-'+ item.id.split('-').join('')}`)"
             >
               <div class="text-[#161922] font-normal landing-font-14">  {{ item.titleCategory }}</div>
             </nuxt-link>
