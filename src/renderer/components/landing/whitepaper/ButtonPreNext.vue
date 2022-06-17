@@ -4,7 +4,7 @@
       <nuxt-link
         class="flex flex-wrap items-center p-4 hover-btn"
         style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
-        :to="localePath(`/whitepaper/articles/${convertNextTitle + '-'+ idNextTitle.split('-').join('')}`)"
+        :to="localePath(`/whitepaper/${convertNextTitle + '-'+ idNextTitle.split('-').join('')}`)"
       >
         <div class="w-5/6">
           <div class="text-[#A2A3A7] font-normal landing-font-16">
@@ -24,7 +24,7 @@
         <nuxt-link
           class="flex flex-wrap items-center p-4 hover-btn"
           style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
-          :to="localePath(`/whitepaper/articles/${convertPreTitle + '-'+ idPreTitle.split('-').join('')}`)"
+          :to="localePath(`/whitepaper/${convertPreTitle + '-'+ idPreTitle.split('-').join('')}`)"
         >
           <div class="w-1/6">
             <img src="~/assets/images/landing/whitepaper/arrow-left.svg">
@@ -43,7 +43,7 @@
         <nuxt-link
           class="flex flex-wrap items-center p-4 hover-btn"
           style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
-          :to="localePath(`/whitepaper/articles/${convertNextTitle + '-'+ idNextTitle.split('-').join('')}`)"
+          :to="localePath(`/whitepaper/${convertNextTitle + '-'+ idNextTitle.split('-').join('')}`)"
         >
           <div class="w-5/6">
             <div class="text-[#A2A3A7] font-normal landing-font-16">
@@ -63,7 +63,7 @@
       <nuxt-link
         class="flex flex-wrap items-center p-4 hover-btn"
         style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
-        :to="localePath(`/whitepaper/articles/${convertPreTitle + '-'+ idPreTitle.split('-').join('')}`)"
+        :to="localePath(`/whitepaper/${convertPreTitle + '-'+ idPreTitle.split('-').join('')}`)"
       >
         <div class="w-1/6">
           <img src="~/assets/images/landing/whitepaper/arrow-right.svg">
