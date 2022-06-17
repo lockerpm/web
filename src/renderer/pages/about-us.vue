@@ -18,12 +18,12 @@
               {{ $t('about_us.about_locker.title') }}
             </div>
             <div class="mt-[42px]">
-              <nuxt-link :to="localeRoute($t('about_us.about_locker.btn.link'))" class="landing-btn landing-font-16" style="align-self: center">
+              <a href="https://s.locker.io/assets/Locker_Portfolio.pdf" target="_blank" class="landing-btn landing-font-16" style="align-self: center">
                 {{ $t('about_us.about_locker.btn.title') }}
-              </nuxt-link>
+              </a>
             </div>
           </div>
-          <div class="landing-font-20 font-normal text-black mt-6" v-html="$t('about_us.about_locker.content')"/>
+          <div class="landing-font-20 font-normal text-black mt-6" v-html="$t('about_us.about_locker.content')" />
         </div>
       </div>
     </section>
@@ -39,7 +39,7 @@
           <div class="mb-[28px] font-bold landing-font-48 text-black">
             {{ $t('about_us.vision_mission.title') }}
           </div>
-          <div class="text-black font-normal landing-font-20" v-html=" $t('about_us.vision_mission.subtitle') "/>
+          <div class="text-black font-normal landing-font-20" v-html=" $t('about_us.vision_mission.subtitle') " />
         </div>
       </div>
     </section>

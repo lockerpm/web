@@ -430,3 +430,6 @@ input:-webkit-autofill:active
 .notion-toggle > div {
   margin-left: 20px;
 }
+.wp-block-embed__wrapper iframe {
+  max-width: 100% !important;
+}
