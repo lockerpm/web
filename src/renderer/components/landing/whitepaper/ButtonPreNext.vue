@@ -123,7 +123,8 @@ a:hover{
   text-decoration: none !important;
 }
 a{
-  color: transparent;
+  border-color: transparent;
+  height: 120px;
 }
 
 </style>

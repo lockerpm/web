@@ -39,6 +39,7 @@
   </div>
 </template>
 <script>
+import slugify from 'slugify'
 import NotionContent from '~/components/landing/whitepaper/NotionContent'
 export default {
   components: { NotionContent },
@@ -95,6 +96,7 @@ export default {
         this.selectArticles()
         this.getSections()
         this.$parent.$emit('articles-id', this.articleId)
+        setTimeout(this.replaceLinkLocal, 300)
       }
     }
   },
@@ -102,6 +104,7 @@ export default {
     this.selectArticles()
     this.getSections()
     this.$parent.$emit('articles-id', this.articleId)
+    setTimeout(this.replaceLinkLocal, 300)
   },
   methods: {
     selectArticles () {
@@ -235,6 +238,25 @@ export default {
         message: 'Copy Link success',
         showClose: false
       })
+    },
+    replaceLinkLocal () {
+      if (process.client) {
+        const links = document.querySelectorAll('.notion-page a')
+        if (links) {
+          for (const link of links) {
+            if (link.href.split('://')[1].startsWith(window.location.host)) {
+              const id = slugify(link.textContent.trim()) + '-' + link.href.split('/').pop()
+              let path = `whitepaper/${id}`
+              path = this.locale === 'vi' ? `/${this.locale}/${path}` : `/${path}`
+              link.href = path
+              link.onclick = (e) => {
+                e.preventDefault()
+                this.$router.push(path)
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
