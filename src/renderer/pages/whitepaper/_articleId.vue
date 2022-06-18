@@ -13,9 +13,6 @@
       />
     </div>
     <div class="w-1/5">
-      <!-- <button class="text-[#161922] landing-font-14 font-normal ml-2" @click="copyUrl">
-          {{ $t('whitepaper.content.link') }}
-        </button> -->
       <el-button
         plain
         @click="copyUrl"

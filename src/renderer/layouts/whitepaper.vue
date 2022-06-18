@@ -48,8 +48,9 @@
 <script>
 import slugify from 'slugify'
 import Header from '../components/landing/Header'
+import Footer from '../components/landing/Footer'
 export default {
-  components: { Header },
+  components: { Header, Footer },
   props: {
     active: {
       type: String,
@@ -93,9 +94,6 @@ export default {
       }
     }
   },
-  // computed () {
-  //   this.storage()
-  // },
   methods: {
     actionHandler (e) {
       this.currentArticleId = e
