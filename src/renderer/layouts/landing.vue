@@ -1,13 +1,13 @@
 <template>
   <div>
-    <TopBanner v-if="$route.path != '/whitepaper'"/>
-    <Header v-if="$route.path != '/whitepaper'"/>
+    <TopBanner />
+    <Header />
     <div class="max-w-6xl mx-auto">
       <div class="w-full px-6">
         <nuxt />
       </div>
     </div>
-    <Footer v-if="$route.path != '/whitepaper'"/>
+    <Footer v-if="$route.path != '/whitepaper'" />
   </div>
 </template>
 
@@ -211,6 +211,10 @@ export default {
 .landing-font-44 {
   font-size: 44px;
   line-height: 53px;
+}
+.landing-font-42 {
+  font-size: 42px;
+  line-height: 56px;
 }
 .landing-font-38 {
   font-size: 38px;

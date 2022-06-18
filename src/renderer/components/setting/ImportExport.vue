@@ -541,7 +541,6 @@ export default {
             cardPayload[key] = c.card[key]
           }
         })
-        console.log(cardPayload)
         cipher.notes = JSON.stringify(cardPayload)
         break
       case 4:
@@ -559,7 +558,6 @@ export default {
             identityPayload[key] = c.identity[key]
           }
         })
-        console.log(identityPayload)
         cipher.notes = JSON.stringify(identityPayload)
         break
       default:
