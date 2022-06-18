@@ -7,7 +7,7 @@
         <nuxt />
       </div>
     </div>
-    <Footer v-if="$route.path != '/whitepaper'" />
+    <Footer />
   </div>
 </template>
 

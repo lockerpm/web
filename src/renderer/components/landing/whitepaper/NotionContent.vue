@@ -1,6 +1,6 @@
 <template>
   <div class="ml-[57px]">
-    <div class="landing-font-42 font-semibold text-[#161922] mt-8 mb-4">{{ titleArticle }}</div>
+    <div class="landing-font-42 font-semibold text-[#161922] mt-[83px] mb-4">{{ titleArticle }}</div>
     <hr class="line">
     <div class="mt-6">
       <NotionRenderer :block-map="blockMap" full-page />

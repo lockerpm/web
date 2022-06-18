@@ -13,19 +13,21 @@
       />
     </div>
     <div class="w-1/5">
-      <div class="flex flex-wrap mt-[88px] mb-[26px] ml-6">
-        <img src="~/assets/images/landing/whitepaper/Link.svg">
-        <!-- <button class="text-[#161922] landing-font-14 font-normal ml-2" @click="copyUrl">
+      <!-- <button class="text-[#161922] landing-font-14 font-normal ml-2" @click="copyUrl">
           {{ $t('whitepaper.content.link') }}
         </button> -->
-        <el-button
-          plain
-          class="text-[#161922] landing-font-14 font-normal ml-2"
-          @click="copyUrl"
-        >
-          {{ $t('whitepaper.content.link') }}
-        </el-button>
-      </div>
+      <el-button
+        plain
+        @click="copyUrl"
+      >
+        <div class="flex flex-wrap mt-[88px] mb-[94px] ml-6">
+          <img src="~/assets/images/landing/whitepaper/Link.svg">
+          <div class="text-[#161922] landing-font-14 font-normal ml-2">
+            {{ $t('whitepaper.content.link') }}
+          </div>
+        </div>
+      </el-button>
+
       <div v-if="sections.length > 0">
         <div class="flex flext-wrap mb-[14px] ml-6">
           <img src="~/assets/images/landing/whitepaper/textLeft.svg">
@@ -249,7 +251,7 @@ export default {
               let path = `whitepaper/${id}`
               path = this.locale === 'vi' ? `/${this.locale}/${path}` : `/${path}`
               link.href = path
-              link.onclick = (e) => {
+              link.onclick = e => {
                 e.preventDefault()
                 this.$router.push(path)
               }

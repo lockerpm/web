@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="btn-pre-next">
     <div v-if="index === 0" class="bg-[#FFFFFF]">
       <nuxt-link
         class="flex flex-wrap items-center p-4 hover-btn"
@@ -122,9 +122,9 @@ export default {
 a:hover{
   text-decoration: none !important;
 }
-a{
+.btn-pre-next a{
   border-color: transparent;
-  height: 120px;
+  height: 107px;
 }
 
 </style>
