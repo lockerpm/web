@@ -119,4 +119,11 @@ export default {
 .hover-btn:hover .title{
   color: #268334 !important;
 }
+a:hover{
+  text-decoration: none !important;
+}
+a{
+  color: transparent;
+}
+
 </style>

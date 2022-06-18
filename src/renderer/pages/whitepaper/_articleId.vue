@@ -15,9 +15,16 @@
     <div class="w-1/5">
       <div class="flex flex-wrap mt-[88px] mb-[26px] ml-6">
         <img src="~/assets/images/landing/whitepaper/Link.svg">
-        <button class="text-[#161922] landing-font-14 font-normal ml-2" @click="copyUrl">
+        <!-- <button class="text-[#161922] landing-font-14 font-normal ml-2" @click="copyUrl">
           {{ $t('whitepaper.content.link') }}
-        </button>
+        </button> -->
+        <el-button
+          plain
+          class="text-[#161922] landing-font-14 font-normal ml-2"
+          @click="copyUrl"
+        >
+          {{ $t('whitepaper.content.link') }}
+        </el-button>
       </div>
       <div v-if="sections.length > 0">
         <div class="flex flext-wrap mb-[14px] ml-6">
@@ -223,7 +230,17 @@ export default {
         document.getSelection().removeAllRanges()
         document.getSelection().addRange(selected)
       }
+      this.$notify.success({
+        title: 'Copy link',
+        message: 'Copy Link success',
+        showClose: false
+      })
     }
   }
 }
 </script>
+<style>
+.el-button{
+  border: none;
+}
+</style>
