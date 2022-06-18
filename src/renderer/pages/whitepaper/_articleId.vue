@@ -13,19 +13,18 @@
       />
     </div>
     <div class="w-1/5">
-      <div class="flex flex-wrap mt-[88px] mb-[26px] ml-6">
-        <img src="~/assets/images/landing/whitepaper/Link.svg">
-        <!-- <button class="text-[#161922] landing-font-14 font-normal ml-2" @click="copyUrl">
-          {{ $t('whitepaper.content.link') }}
-        </button> -->
-        <el-button
-          plain
-          class="text-[#161922] landing-font-14 font-normal ml-2"
-          @click="copyUrl"
-        >
-          {{ $t('whitepaper.content.link') }}
-        </el-button>
-      </div>
+      <el-button
+        plain
+        @click="copyUrl"
+      >
+        <div class="flex flex-wrap mt-[88px] mb-[94px] ml-6">
+          <img src="~/assets/images/landing/whitepaper/Link.svg">
+          <div class="text-[#161922] landing-font-14 font-normal ml-2">
+            {{ $t('whitepaper.content.link') }}
+          </div>
+        </div>
+      </el-button>
+
       <div v-if="sections.length > 0">
         <div class="flex flext-wrap mb-[14px] ml-6">
           <img src="~/assets/images/landing/whitepaper/textLeft.svg">
@@ -39,6 +38,7 @@
   </div>
 </template>
 <script>
+import slugify from 'slugify'
 import NotionContent from '~/components/landing/whitepaper/NotionContent'
 export default {
   components: { NotionContent },
@@ -95,6 +95,7 @@ export default {
         this.selectArticles()
         this.getSections()
         this.$parent.$emit('articles-id', this.articleId)
+        setTimeout(this.replaceLinkLocal, 300)
       }
     }
   },
@@ -102,6 +103,7 @@ export default {
     this.selectArticles()
     this.getSections()
     this.$parent.$emit('articles-id', this.articleId)
+    setTimeout(this.replaceLinkLocal, 300)
   },
   methods: {
     selectArticles () {
@@ -235,6 +237,25 @@ export default {
         message: 'Copy Link success',
         showClose: false
       })
+    },
+    replaceLinkLocal () {
+      if (process.client) {
+        const links = document.querySelectorAll('.notion-page a')
+        if (links) {
+          for (const link of links) {
+            if (link.href.split('://')[1].startsWith(window.location.host)) {
+              const id = slugify(link.textContent.trim()) + '-' + link.href.split('/').pop()
+              let path = `whitepaper/${id}`
+              path = this.locale === 'vi' ? `/${this.locale}/${path}` : `/${path}`
+              link.href = path
+              link.onclick = e => {
+                e.preventDefault()
+                this.$router.push(path)
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
