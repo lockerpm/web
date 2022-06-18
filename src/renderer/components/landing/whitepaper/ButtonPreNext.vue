@@ -1,8 +1,8 @@
 <template>
   <div class="btn-pre-next">
-    <div v-if="index === 0" class="bg-[#FFFFFF]">
+    <div v-if="index === 0" class="bg-[#FFFFFF] hover-btn md:mr-0 mr-5">
       <nuxt-link
-        class="flex flex-wrap items-center p-4 hover-btn"
+        class="flex flex-wrap items-center p-4"
         style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
         :to="localePath(`/whitepaper/${convertNextTitle + '-'+ idNextTitle.split('-').join('')}`)"
       >
@@ -21,47 +21,51 @@
     </div>
     <div v-if="index === 1">
       <div class="grid grid-cols-2 items-center p-4 gap-x-[22px]">
-        <nuxt-link
-          class="flex flex-wrap items-center p-4 hover-btn"
-          style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
-          :to="localePath(`/whitepaper/${convertPreTitle + '-'+ idPreTitle.split('-').join('')}`)"
-        >
-          <div class="w-1/6">
-            <img src="~/assets/images/landing/whitepaper/arrow-left.svg">
-          </div>
-          <div class="w-5/6">
-            <div class="float-right">
+        <div class="hover-btn">
+          <nuxt-link
+            class="flex flex-wrap items-center p-4 "
+            style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
+            :to="localePath(`/whitepaper/${convertPreTitle + '-'+ idPreTitle.split('-').join('')}`)"
+          >
+            <div class="w-1/6">
+              <img src="~/assets/images/landing/whitepaper/arrow-left.svg">
+            </div>
+            <div class="w-5/6">
+              <div class="float-right">
+                <div class="text-[#A2A3A7] font-normal landing-font-16">
+                  Previous
+                </div>
+                <div class="text-[#161922] font-normal landing-font-16 mt-2 title">
+                  {{ titlePrevious }}
+                </div>
+              </div>
+            </div>
+          </nuxt-link>
+        </div>
+        <div class="hover-btn">
+          <nuxt-link
+            class="flex flex-wrap items-center p-4"
+            style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
+            :to="localePath(`/whitepaper/${convertNextTitle + '-'+ idNextTitle.split('-').join('')}`)"
+          >
+            <div class="w-5/6">
               <div class="text-[#A2A3A7] font-normal landing-font-16">
-                Previous
+                Next
               </div>
               <div class="text-[#161922] font-normal landing-font-16 mt-2 title">
-                {{ titlePrevious }}
+                {{ titleNext }}
               </div>
             </div>
-          </div>
-        </nuxt-link>
-        <nuxt-link
-          class="flex flex-wrap items-center p-4 hover-btn"
-          style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
-          :to="localePath(`/whitepaper/${convertNextTitle + '-'+ idNextTitle.split('-').join('')}`)"
-        >
-          <div class="w-5/6">
-            <div class="text-[#A2A3A7] font-normal landing-font-16">
-              Next
+            <div class="relative w-1/6">
+              <img class="absolute top-[-8px] right-0" src="~/assets/images/landing/whitepaper/arrow-right-color.svg">
             </div>
-            <div class="text-[#161922] font-normal landing-font-16 mt-2 title">
-              {{ titleNext }}
-            </div>
-          </div>
-          <div class="relative w-1/6">
-            <img class="absolute top-[-8px] right-0" src="~/assets/images/landing/whitepaper/arrow-right-color.svg">
-          </div>
-        </nuxt-link>
+          </nuxt-link>
+        </div>
       </div>
     </div>
-    <div v-if="index === 2" class="bg-[#FFFFFF]">
+    <div v-if="index === 2" class="bg-[#FFFFFF] hover-btn md:mr-0 mr-5">
       <nuxt-link
-        class="flex flex-wrap items-center p-4 hover-btn"
+        class="flex flex-wrap items-center p-4"
         style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
         :to="localePath(`/whitepaper/${convertPreTitle + '-'+ idPreTitle.split('-').join('')}`)"
       >
@@ -112,19 +116,19 @@ export default {
 }
 </script>
 <style>
-.hover-btn:hover{
+.hover-btn a:hover{
   border: 1px solid #268334;
   border-radius: 4px;
 }
-.hover-btn:hover .title{
+.hover-btn a:hover .title{
   color: #268334 !important;
 }
-a:hover{
+a{
   text-decoration: none !important;
 }
 .btn-pre-next a{
   border-color: transparent;
-  height: 107px;
+  /*height: 107px;*/
 }
 
 </style>
