@@ -766,11 +766,8 @@ export default {
         if (data.type === CipherType.CryptoWallet) {
           this.cryptoWallet = data.cryptoWallet
         }
-        if (data.type === CipherType.Login && data.login && this.cipher.login.uris == null) {
-          data.login.uris = [{
-            match: null,
-            uri: null
-          }]
+        if (data.type === CipherType.Login && data.login && data.login.uris == null) {
+          data.login.uris = [new LoginUriView()]
         }
         if (data.fields == null) {
           data.fields = []
