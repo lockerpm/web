@@ -3,14 +3,14 @@
     <div v-if="index === 0" class="bg-[#FFFFFF] hover-btn md:mr-0 mr-5">
       <nuxt-link
         class="flex flex-wrap items-center p-4"
-        style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
+        style="border-radius: 4px"
         :to="localePath(`/whitepaper/${convertNextTitle + '-'+ idNextTitle.split('-').join('')}`)"
       >
         <div class="w-5/6">
           <div class="text-[#A2A3A7] font-normal landing-font-16">
             Next
           </div>
-          <div class="text-[#161922] font-normal landing-font-16 mt-2 title">
+          <div class="text-[#161922] font-normal landing-font-16 mt-2 title max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
             {{ titleNext }}
           </div>
         </div>
@@ -20,39 +20,37 @@
       </nuxt-link>
     </div>
     <div v-if="index === 1">
-      <div class="grid grid-cols-2 items-center p-4 gap-x-[22px]">
+      <div class="grid md:grid-cols-2 grid-cols-1 items-center p-4 gap-x-[22px]">
         <div class="hover-btn">
           <nuxt-link
-            class="flex flex-wrap items-center p-4 "
-            style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
+            class="flex flex-wrap items-center p-4"
+            style="border-radius: 4px"
             :to="localePath(`/whitepaper/${convertPreTitle + '-'+ idPreTitle.split('-').join('')}`)"
           >
             <div class="w-1/6">
               <img src="~/assets/images/landing/whitepaper/arrow-left.svg">
             </div>
-            <div class="w-5/6">
-              <div class="float-right">
-                <div class="text-[#A2A3A7] font-normal landing-font-16">
-                  Previous
-                </div>
-                <div class="text-[#161922] font-normal landing-font-16 mt-2 title">
-                  {{ titlePrevious }}
-                </div>
+            <div class="w-5/6 float-right">
+              <div class="text-[#A2A3A7] font-normal landing-font-16">
+                Previous
+              </div>
+              <div class="text-[#161922] font-normal landing-font-16 mt-2 title max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
+                {{ titlePrevious }}
               </div>
             </div>
           </nuxt-link>
         </div>
-        <div class="hover-btn">
+        <div class="hover-btn mt-4 md:mt-0">
           <nuxt-link
             class="flex flex-wrap items-center p-4"
-            style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
+            style="border-radius: 4px"
             :to="localePath(`/whitepaper/${convertNextTitle + '-'+ idNextTitle.split('-').join('')}`)"
           >
             <div class="w-5/6">
               <div class="text-[#A2A3A7] font-normal landing-font-16">
                 Next
               </div>
-              <div class="text-[#161922] font-normal landing-font-16 mt-2 title">
+              <div class="text-[#161922] font-normal landing-font-16 mt-2 title max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
                 {{ titleNext }}
               </div>
             </div>
@@ -127,7 +125,7 @@ a{
   text-decoration: none !important;
 }
 .btn-pre-next a{
-  border-color: transparent;
+  @apply  border-[1px] border-solid border-[#A2A3A7];
   /*height: 107px;*/
 }
 

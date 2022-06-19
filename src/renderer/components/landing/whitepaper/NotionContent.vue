@@ -1,7 +1,22 @@
 <template>
-  <div class="lg:ml-[57px] md:ml-[25px] ml-[20px] ml-8">
-    <div class="landing-font-42 font-semibold text-[#161922] mb-4">{{ titleArticle }}</div>
+  <div class="lg:ml-20 ml-6">
+    <div class="landing-font-42 font-semibold text-[#161922] mb-4 flex items-center">
+      <div class="flex-grow">
+        {{ titleArticle }}
+      </div>
+      <div class="p-0 md:hidden block">
+        <button
+          v-clipboard:copy="linkCopy"
+          v-clipboard:success="clipboardSuccessHandler"
+        >
+          <img src="~/assets/images/landing/whitepaper/Link.svg" class="mx-3">
+        </button>
+      </div>
+    </div>
     <hr class="line">
+    <div class="mt-3 text-[#A2A3A7] landing-font-14 font-normal">
+      {{ $t('whitepaper.content.last_edited_time') }} {{ $moment(lastEditedTime).format('ll') }}
+    </div>
     <div class="mt-6">
       <NotionRenderer :block-map="blockMap" full-page />
     </div>
@@ -9,9 +24,6 @@
       <ButtonPreNext :index="index" :title-previous="titlePrevious" :title-next="titleNext" :id-pre-title="idPreTitle" :id-next-title="idNextTitle" />
     </div>
     <hr class="line">
-    <div class="mt-6 text-[#A2A3A7] landing-font-14 font-normal">
-      {{ $t('whitepaper.content.last_edited_time') }} {{ $moment(lastEditedTime).format('ll') }}
-    </div>
   </div>
 </template>
 <script>
@@ -36,6 +48,11 @@ export default {
     titleNext: String,
     idPreTitle: String,
     idNextTitle: String
+  },
+  computed: {
+    linkCopy () {
+      return process.env.baseUrl + this.$route.path
+    }
   }
 }
 </script>

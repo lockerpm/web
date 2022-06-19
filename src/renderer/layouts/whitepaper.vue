@@ -1,46 +1,35 @@
 <template>
   <div class="relative">
-    <Header />
-    <div class="pt-8">
-      <div class="flex flex-wrap mt-[48px] pl-8 mb-8">
-        <!-- Icon on mobile -->
-        <div class="md:hidden block mr-3">
-          <a
-            id="nav-whitepaper"
-            class="landing-font-28 text-black"
-          >
-            <i class="fa fa-bars" @click="toggle = !toggle" />
-          </a>
-        </div>
-        <!-- Icon on mobile end -->
-        <div class="landing-font-24 font-semibold text-[#161922]">
-          Whitepaper
-        </div>
-      </div>
-    </div>
     <div class="w-full flex flex-wrap">
-      <div id="nav-menu-whitepaper" class="md:block hidden lg:w-1/5 md:w-1/4 w-full pl-8 z-50 ">
-        <div class="bg-[#F5F7F9] md:relative absolute top-0 left-0 w-full md:h-auto h-full">
-          <div class="flex flex-wrap mt-10 pl-5 mb-4 md:hidden block">
-            <div class="w-2/3 landing-font-24 font-semibold text-[#161922]">
-              Whitepaper
-            </div>
+      <div class="bg-[#F5F7F9] pl-3 lg:w-1/5 md:w-1/4 w-full md:min-h-screen min-h-[64px] z-50 ">
+        <div class="w-full md:h-screen overflow-y-scroll">
+          <!-- Header -->
+          <div class="flex flex-wrap pl-4 h-16 items-center">
             <!-- Icon on mobile -->
-            <div class="w-1/3 md:hidden block">
+            <div class="md:hidden block mr-3">
               <a
-                class="landing-font-28 text-black float-right mr-5"
+                id="nav-whitepaper"
+                class="landing-font-28 text-black mx-2"
               >
-                <i class="fa fa-times" @click="openCloseToggle()" />
+                <i class="fa fa-bars" @click="toggle = !toggle" />
               </a>
             </div>
             <!-- Icon on mobile end -->
+            <nuxt-link :to="localePath('/whitepaper')" class="flex items-center">
+              <div class="landing-font-24 font-semibold text-[#161922]">
+                Whitepaper
+              </div>
+            </nuxt-link>
           </div>
-          <div v-for="(item, index) in categories" :key="index">
+          <!-- End header -->
+          <hr class="line">
+          <!-- Whitepaper Menu -->
+          <div v-for="(item, index) in categories" :key="index" class="md:block hidden">
             <div v-if="item.articles.length > 0">
               <el-collapse v-model="activeName">
                 <el-collapse-item :key="index" :name="(index+1).toString()">
                   <template slot="title">
-                    <div :id="item.id" class="text-[#161922] landing-font-14 font-normal">{{ item.titleCategory }}</div>
+                    <div :id="item.id" class="text-[#161922] landing-font-14 font-medium">{{ item.titleCategory }}</div>
                   </template>
                   <div class="ml-5" style="border-left: 1px solid #C5C5C8;">
                     <nuxt-link
@@ -57,28 +46,73 @@
             </div>
             <div v-else class="p-4">
               <nuxt-link
-                class="text-[#A2A3A7] font-normal landing-font-14"
+                class="text-[#A2A3A7]"
                 :to="localePath(`/whitepaper/${item.slug + '-'+ item.id.split('-').join('')}`)"
               >
-                <div class="text-[#161922] font-normal landing-font-14">  {{ item.titleCategory }}</div>
+                <div class="text-[#161922] font-medium landing-font-14">  {{ item.titleCategory }}</div>
               </nuxt-link>
             </div>
           </div>
+          <!-- Whitepaper Menu End -->
         </div>
       </div>
       <div class="md:w-3/4 w-full">
         <nuxt :nuxt-child-key="JSON.stringify(categories)" @articles-id="actionHandler" />
       </div>
     </div>
-    <Footer />
+    <div id="nav-menu-whitepaper" class="hidden fixed overflow-y-scroll top-0 left-0 w-full h-screen bg-[#F5F7F9] z-50">
+      <!-- OverlayNavMenu header -->
+      <div class="flex flex-wrap mt-10 pl-5 mb-4">
+        <div class="w-2/3 landing-font-24 font-semibold text-[#161922]">
+          Whitepaperr
+        </div>
+        <div class="w-1/3">
+          <a
+            class="landing-font-28 text-black float-right mr-5"
+          >
+            <i class="fa fa-times" @click="openCloseToggle()" />
+          </a>
+        </div>
+      </div>
+      <!-- End OverlayNavMenu header -->
+
+      <!-- Whitepaper Menu -->
+      <div v-for="(item, index) in categories" :key="index">
+        <div v-if="item.articles.length > 0">
+          <el-collapse v-model="activeName">
+            <el-collapse-item :key="index" :name="(index+1).toString()">
+              <template slot="title">
+                <div :id="item.id" class="text-[#161922] landing-font-14 font-normal">{{ item.titleCategory }}</div>
+              </template>
+              <div class="ml-5" style="border-left: 1px solid #C5C5C8;">
+                <nuxt-link
+                  v-for="iItem in item.articles"
+                  :id="iItem.id"
+                  :key="iItem.id"
+                  :to="localePath(`/whitepaper/${iItem.slug + '-'+ iItem.id.split('-').join('')}`)"
+                >
+                  <div class="text-[#A2A3A7] font-normal landing-font-14 p-3 " :class="currentArticleId === iItem.id ? 'category-active': ''"> {{ iItem.child }}</div>
+                </nuxt-link>
+              </div>
+            </el-collapse-item>
+          </el-collapse>
+        </div>
+        <div v-else class="p-4">
+          <nuxt-link
+            class="text-[#A2A3A7] font-normal landing-font-14"
+            :to="localePath(`/whitepaper/${item.slug + '-'+ item.id.split('-').join('')}`)"
+          >
+            <div class="text-[#161922] font-normal landing-font-14">  {{ item.titleCategory }}</div>
+          </nuxt-link>
+        </div>
+      </div>
+      <!-- Whitepaper Menu End -->
+    </div>
   </div>
 </template>
 <script>
 import slugify from 'slugify'
-import Header from '../components/landing/Header'
-import Footer from '../components/landing/Footer'
 export default {
-  components: { Header, Footer },
   props: {
     active: {
       type: String,

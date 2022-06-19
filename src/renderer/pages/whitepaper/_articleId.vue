@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-wrap w-full">
-    <div class="lg:w-4/5 md:w-3/4 w-full">
+  <div class="flex flex-wrap w-full mt-6">
+    <div class="lg:w-4/5 md:w-3/4 w-full md:pr-20 pr-4">
       <NotionContent
         :block-map="blockMap"
         :last-edited-time="last_updated"
@@ -12,20 +12,20 @@
         :id-next-title="idNextTitle"
       />
     </div>
-    <div class="lg:w-1/5 md:w-1/4 w-full md:order-last order-first">
+    <div class="lg:w-1/5 md:w-1/4 w-full md:order-last order-first pt-6 md:block hidden">
       <el-button
         plain
+        class="p-0 mb-8"
         @click="copyUrl"
-        class="p-0"
       >
-        <div class="md:flex inline-block flex-wrap md:mb-[94px] mb-2 md:ml-[21px] ml-0 mt-2" style="border-left: 1px solid #C5C5C8;">
+        <div class="md:flex inline-block flex-wrap md:ml-[21px] ml-0 mt-2" style="border-left: 1px solid #C5C5C8;">
           <img src="~/assets/images/landing/whitepaper/Link.svg" class="md:block inline-block ml-6">
           <div class="text-[#161922] landing-font-14 font-normal ml-2 md:block inline-block">
             {{ $t('whitepaper.content.link') }}
           </div>
         </div>
       </el-button>
-      <div v-if="sections.length > 0" class="md:block hidden mt-8 ml-[21px]" style="border-left: 1px solid #C5C5C8;">
+      <div v-if="sections.length > 0" class="mt-8 ml-[21px]" style="border-left: 1px solid #C5C5C8;">
         <div class="flex flext-wrap mb-[14px] ml-6">
           <img src="~/assets/images/landing/whitepaper/textLeft.svg">
           <div class="text-[#A2A3A7] landing-font-14 font-normal">{{ $t('whitepaper.content.title') }}</div>
