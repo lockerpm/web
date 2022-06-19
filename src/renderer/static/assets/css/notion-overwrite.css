@@ -399,13 +399,13 @@ img.notion-page-icon {
 
 .notion-list {
   margin: 0;
-  margin-block-start: 0.6em;
-  margin-block-end: 0.6em;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 .notion-list-disc {
   list-style-type: disc;
-  padding-inline-start: 1.6em;
+  padding-inline-start: 0px;
   margin-top: 0px;
   margin-bottom: 0px;
 }
