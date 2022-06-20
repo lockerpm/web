@@ -14,7 +14,7 @@
       </div>
     </div>
     <hr class="line">
-    <div class="mt-3 text-[#A2A3A7] landing-font-14 font-normal">
+    <div class="mt-3 italic text-[#A2A3A7] landing-font-14 font-normal">
       {{ $t('whitepaper.content.last_edited_time') }} {{ $moment(lastEditedTime).format('ll') }}
     </div>
     <div class="mt-6">
@@ -23,7 +23,6 @@
     <div class="mt-16 mb-8">
       <ButtonPreNext :index="index" :title-previous="titlePrevious" :title-next="titleNext" :id-pre-title="idPreTitle" :id-next-title="idNextTitle" />
     </div>
-    <hr class="line">
   </div>
 </template>
 <script>

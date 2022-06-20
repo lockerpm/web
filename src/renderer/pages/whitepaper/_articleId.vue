@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap w-full mt-6">
+  <div v-loading="loading" class="flex flex-wrap w-full mt-6 relative">
     <div class="lg:w-4/5 md:w-3/4 w-full md:pr-20 pr-4">
       <NotionContent
         :block-map="blockMap"
@@ -12,7 +12,7 @@
         :id-next-title="idNextTitle"
       />
     </div>
-    <div class="lg:w-1/5 md:w-1/4 w-full md:order-last order-first pt-6 md:block hidden">
+    <div class="lg:w-1/5 md:w-1/4 w-full h-full md:order-last order-first pt-6 md:block hidden sticky top-0">
       <el-button
         plain
         class="p-0 mb-8"
@@ -26,12 +26,14 @@
         </div>
       </el-button>
       <div v-if="sections.length > 0" class="mt-8 ml-[21px]" style="border-left: 1px solid #C5C5C8;">
-        <div class="flex flext-wrap mb-[14px] ml-6">
+        <div class="flex flex-nowrap mb-[14px] ml-6">
           <img src="~/assets/images/landing/whitepaper/textLeft.svg">
           <div class="text-[#A2A3A7] landing-font-14 font-normal">{{ $t('whitepaper.content.title') }}</div>
         </div>
-        <div v-for="(item, index) in sections" :key="index" class="landing-font-14 text-black mt-3 font-normal ml-6">
-          {{ item }}
+        <div v-for="(item, index) in sections" :key="index" class="mt-3 ml-6">
+          <nuxt-link :to="`#${item.id}`" class="landing-font-14 text-black">
+            {{ item.text }}
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -86,7 +88,8 @@ export default {
       tree: JSON.parse(this.nuxtChildKey),
       index: 0,
       type: 0,
-      sections: []
+      sections: [],
+      loading: false
     }
   },
   watch: {
@@ -208,14 +211,25 @@ export default {
       }
     },
     getSections () {
-      if (this.blockMap) {
-        // console.log(this.blockMap)
-        Object.values(this.blockMap).forEach(item => {
-          if (item.value.type === 'sub_header') {
-            this.sections.push(item.value.properties.title[0][0])
-          }
+      // if (this.blockMap) {
+      //   Object.values(this.blockMap).forEach(item => {
+      //     if (item.value.type === 'sub_header') {
+      //       this.sections.push(item.value.properties.title[0][0])
+      //     }
+      //   })
+      // }
+      setTimeout(() => {
+        const subHeaders = document.querySelectorAll('h2')
+        subHeaders.forEach(e => {
+          const text = e.innerText
+          const id = slugify(text, { lower: true, locale: 'vi' })
+          this.sections.push({
+            text,
+            id
+          })
+          e.id = id
         })
-      }
+      }, 300)
     },
     copyUrl () {
       const el = document.createElement('textarea')
@@ -234,8 +248,8 @@ export default {
       }
       this.$notify.success({
         title: 'Copy link',
-        message: 'Copy Link success',
-        showClose: false
+        message: 'Copied successfully',
+        showClose: true
       })
     },
     replaceLinkLocal () {

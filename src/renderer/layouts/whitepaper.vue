@@ -2,7 +2,7 @@
   <div class="relative">
     <div class="w-full flex flex-wrap">
       <div class="bg-[#F5F7F9] pl-3 lg:w-1/5 md:w-1/4 w-full md:min-h-screen min-h-[64px] z-50 ">
-        <div class="w-full md:h-screen overflow-y-scroll">
+        <div class="w-full md:h-screen overflow-y-scroll sticky top-0">
           <!-- Header -->
           <div class="flex flex-wrap pl-4 h-16 items-center">
             <!-- Icon on mobile -->
