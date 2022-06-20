@@ -146,9 +146,6 @@ export default {
   computed: {
     language () {
       return this.$store.state.user.language
-    },
-    menu () {
-      return this.$t('landing_header.menu').unshift({ name: 'Home', link: 'index' })
     }
   },
   mounted () {
