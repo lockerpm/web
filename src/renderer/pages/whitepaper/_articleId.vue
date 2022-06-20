@@ -1,6 +1,6 @@
 <template>
-  <div v-loading="loading" class="flex flex-wrap w-full mt-6 relative">
-    <div class="lg:w-4/5 md:w-3/4 w-full md:pr-20 pr-4">
+  <div v-loading="loading" class="flex flex-wrap w-full relative">
+    <div class="lg:w-4/5 md:w-3/4 w-full md:pr-20 pr-4 pt-6">
       <NotionContent
         :block-map="blockMap"
         :last-edited-time="last_updated"
@@ -12,7 +12,7 @@
         :id-next-title="idNextTitle"
       />
     </div>
-    <div class="lg:w-1/5 md:w-1/4 w-full h-full md:order-last order-first pt-6 md:block hidden sticky top-0">
+    <div class="lg:w-1/5 md:w-1/4 w-full h-full md:order-last order-first pt-6 mt-6 md:block hidden sticky top-[88px]">
       <el-button
         plain
         class="p-0 mb-8"
@@ -31,9 +31,9 @@
           <div class="text-[#A2A3A7] landing-font-14 font-normal">{{ $t('whitepaper.content.title') }}</div>
         </div>
         <div v-for="(item, index) in sections" :key="index" class="mt-3 ml-6">
-          <nuxt-link :to="`#${item.id}`" class="landing-font-14 text-black">
+          <a class="landing-font-14 text-black" @click="goto(item.id)">
             {{ item.text }}
-          </nuxt-link>
+          </a>
         </div>
       </div>
     </div>
@@ -270,6 +270,14 @@ export default {
           }
         }
       }
+    },
+    goto (el) {
+      const $ = document.getElementById(el)
+      window.scroll({
+        top: $.offsetTop - 40,
+        left: 0,
+        behavior: 'smooth'
+      })
     }
   }
 }

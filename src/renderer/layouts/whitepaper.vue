@@ -1,8 +1,9 @@
 <template>
   <div class="relative">
-    <div class="w-full flex flex-wrap">
+    <Header />
+    <div class="w-full flex flex-wrap mt-16">
       <div class="bg-[#F5F7F9] pl-3 lg:w-1/5 md:w-1/4 w-full md:min-h-screen min-h-[64px] z-50 ">
-        <div class="w-full md:h-screen overflow-y-scroll sticky top-0">
+        <div class="w-full md:h-screen overflow-y-scroll sticky top-16">
           <!-- Header -->
           <div class="flex flex-wrap pl-4 h-16 items-center">
             <!-- Icon on mobile -->
@@ -60,11 +61,11 @@
         <nuxt :nuxt-child-key="JSON.stringify(categories)" @articles-id="actionHandler" />
       </div>
     </div>
-    <div id="nav-menu-whitepaper" class="hidden fixed overflow-y-scroll top-0 left-0 w-full h-screen bg-[#F5F7F9] z-50">
+    <div id="nav-menu-whitepaper" class="hidden fixed overflow-y-scroll top-0 left-0 w-full h-screen bg-[#F5F7F9] z-[100]">
       <!-- OverlayNavMenu header -->
       <div class="flex flex-wrap mt-10 pl-5 mb-4">
         <div class="w-2/3 landing-font-24 font-semibold text-[#161922]">
-          Whitepaperr
+          Whitepaper
         </div>
         <div class="w-1/3">
           <a
@@ -112,7 +113,11 @@
 </template>
 <script>
 import slugify from 'slugify'
+import Header from '../components/landing/whitepaper/Header'
 export default {
+  components: {
+    Header
+  },
   props: {
     active: {
       type: String,
