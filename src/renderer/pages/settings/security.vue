@@ -832,7 +832,6 @@ export default {
       }
     },
     viewGrantorVault (item) {
-      console.log(item.id)
       this.$router.push(this.localeRoute({
         name: 'settings-emergency-access-id',
         params: { id: item.id }
