@@ -8,8 +8,8 @@
       <div class="flex items-center order-1">
         <nuxt-link :to="localePath('/')">
           <img
-            src="~/assets/images/logo/logo_black.svg"
-            alt="Locker"
+            src="/logo-whitepaper.svg"
+            alt="Locker Whitepaper"
             class="h-[36px]"
           >
         </nuxt-link>
@@ -69,12 +69,13 @@
         <!-- Nav items -->
         <ul class="list-reset lg:flex justify-end flex-1 items-center gap-x-[45px]">
           <li
-            v-for="(item, index) in $t('landing_header.menu')"
+            v-for="(item, index) in menu"
             :key="index"
           >
             <nuxt-link
               class="inline-block nav-item text-black landing-transition"
               :to="localeRoute({name: item.link})"
+              active-class=""
             >
               {{ item.name }}
             </nuxt-link>
@@ -138,12 +139,16 @@ export default {
           label: 'Vietnamese',
           value: 'vi'
         }
-      ]
+      ],
+      menu: [{ name: 'Home', link: 'index' }].concat(this.$t('landing_header.menu'))
     }
   },
   computed: {
     language () {
       return this.$store.state.user.language
+    },
+    menu () {
+      return this.$t('landing_header.menu').unshift({ name: 'Home', link: 'index' })
     }
   },
   mounted () {
@@ -218,7 +223,7 @@ export default {
   @apply hover:no-underline hover:text-green;
   font-size: 14px;
 }
-#header ul li a.nuxt-link-active {
+#header ul li a.nuxt-link-exact-active {
   font-weight: 600;
   color: green !important;
 }

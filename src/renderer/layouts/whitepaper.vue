@@ -1,13 +1,13 @@
 <template>
   <div class="relative">
     <Header />
-    <div class="w-full flex flex-wrap mt-16">
-      <div class="bg-[#F5F7F9] pl-3 lg:w-1/5 md:w-1/4 w-full md:min-h-screen min-h-[64px] z-50 ">
-        <div class="w-full md:h-screen overflow-y-scroll sticky top-16">
+    <div class="w-full flex flex-wrap md:mt-0 mt-16">
+      <div class="bg-[#F5F7F9] pl-3 lg:w-1/5 md:w-1/4 w-full md:h-screen h-16 overflow-y-scroll z-50 sticky top-0">
+        <div class="w-full">
           <!-- Header -->
-          <div class="flex flex-wrap pl-4 h-16 items-center">
+          <div class="flex flex-wrap pl-4 h-16 items-center md:hidden">
             <!-- Icon on mobile -->
-            <div class="md:hidden block mr-3">
+            <div class="mr-3">
               <a
                 id="nav-whitepaper"
                 class="landing-font-28 text-black mx-2"
@@ -23,35 +23,36 @@
             </nuxt-link>
           </div>
           <!-- End header -->
-          <hr class="line">
           <!-- Whitepaper Menu -->
-          <div v-for="(item, index) in categories" :key="index" class="md:block hidden">
-            <div v-if="item.articles.length > 0">
-              <el-collapse v-model="activeName">
-                <el-collapse-item :key="index" :name="(index+1).toString()">
-                  <template slot="title">
-                    <div :id="item.id" class="text-[#161922] landing-font-14 font-medium">{{ item.titleCategory }}</div>
-                  </template>
-                  <div class="ml-5" style="border-left: 1px solid #C5C5C8;">
-                    <nuxt-link
-                      v-for="iItem in item.articles"
-                      :id="iItem.id"
-                      :key="iItem.id"
-                      :to="localePath(`/whitepaper/${iItem.slug + '-'+ iItem.id.split('-').join('')}`)"
-                    >
-                      <div class="text-[#A2A3A7] font-normal landing-font-14 p-3 " :class="currentArticleId === iItem.id ? 'category-active': ''"> {{ iItem.child }}</div>
-                    </nuxt-link>
-                  </div>
-                </el-collapse-item>
-              </el-collapse>
-            </div>
-            <div v-else class="p-4">
-              <nuxt-link
-                class="text-[#A2A3A7]"
-                :to="localePath(`/whitepaper/${item.slug + '-'+ item.id.split('-').join('')}`)"
-              >
-                <div class="text-[#161922] font-medium landing-font-14">  {{ item.titleCategory }}</div>
-              </nuxt-link>
+          <div class="mt-[88px]">
+            <div v-for="(item, index) in categories" :key="index" class="md:block hidden">
+              <div v-if="item.articles.length > 0">
+                <el-collapse v-model="activeName">
+                  <el-collapse-item :key="index" :name="(index+1).toString()">
+                    <template slot="title">
+                      <div :id="item.id" class="text-[#161922] landing-font-14 font-medium">{{ item.titleCategory }}</div>
+                    </template>
+                    <div class="ml-5" style="border-left: 1px solid #C5C5C8;">
+                      <nuxt-link
+                        v-for="iItem in item.articles"
+                        :id="iItem.id"
+                        :key="iItem.id"
+                        :to="localePath(`/whitepaper/${iItem.slug + '-'+ iItem.id.split('-').join('')}`)"
+                      >
+                        <div class="text-[#A2A3A7] font-normal landing-font-14 p-3 " :class="currentArticleId === iItem.id ? 'category-active': ''"> {{ iItem.child }}</div>
+                      </nuxt-link>
+                    </div>
+                  </el-collapse-item>
+                </el-collapse>
+              </div>
+              <div v-else class="p-4">
+                <nuxt-link
+                  class="text-[#A2A3A7]"
+                  :to="localePath(`/whitepaper/${item.slug + '-'+ item.id.split('-').join('')}`)"
+                >
+                  <div class="text-[#161922] font-medium landing-font-14">  {{ item.titleCategory }}</div>
+                </nuxt-link>
+              </div>
             </div>
           </div>
           <!-- Whitepaper Menu End -->

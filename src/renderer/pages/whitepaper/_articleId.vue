@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" class="flex flex-wrap w-full relative">
+  <div v-loading="loading" class="flex flex-wrap w-full relative md:mt-16 mt-4">
     <div class="lg:w-4/5 md:w-3/4 w-full md:pr-20 pr-4 pt-6">
       <NotionContent
         :block-map="blockMap"
