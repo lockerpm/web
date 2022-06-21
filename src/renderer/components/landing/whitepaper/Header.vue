@@ -1,7 +1,7 @@
 <template>
   <nav
     id="header"
-    class="fixed w-full z-[90] transition duration-300 ease-in-out bg-white"
+    class="fixed w-full z-[90] transition duration-300 ease-in-out bg-white shadow-md"
   >
     <div class="flex flex-wrap items-center justify-between mt-0 py-[14px] px-7">
       <!-- Logo -->
@@ -29,16 +29,6 @@
 
       <!-- Right actions -->
       <div class="hidden sm:flex lg:ml-16 lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
-        <el-select :value="language" placeholder="Select Language" @change="setLocale">
-          <el-option
-            :label=" $t('data.settings.vietnamese')"
-            value="vi"
-          />
-          <el-option
-            :label=" $t('data.settings.english')"
-            value="en"
-          />
-        </el-select>
         <template v-if="isLoggedIn">
           <nuxt-link :to="localeRoute({name: 'vault'})" class="landing-btn">
             My Vault
@@ -130,16 +120,6 @@
 export default {
   data () {
     return {
-      languageOptions: [
-        {
-          label: 'English',
-          value: 'en'
-        },
-        {
-          label: 'Vietnamese',
-          value: 'vi'
-        }
-      ],
       menu: [{ name: 'Home', link: 'index' }].concat(this.$t('landing_header.menu'))
     }
   },
@@ -150,19 +130,19 @@ export default {
   },
   mounted () {
     // Set scroll event
-    const header = document.getElementById('header')
-    document.addEventListener('scroll', function () {
-      const scrollPos = window.scrollY
-      if (scrollPos > 10) {
-        header.classList.add('shadow-lg')
-        // header.classList.remove('bg-transparent')
-        // header.classList.add('bg-white')
-      } else {
-        header.classList.remove('shadow-lg')
-        // header.classList.add('bg-transparent')
-        // header.classList.remove('bg-white')
-      }
-    })
+    // const header = document.getElementById('header')
+    // document.addEventListener('scroll', function () {
+    //   const scrollPos = window.scrollY
+    //   if (scrollPos > 10) {
+    //     header.classList.add('shadow-lg')
+    //     header.classList.remove('bg-transparent')
+    //     header.classList.add('bg-white')
+    //   } else {
+    //     header.classList.remove('shadow-lg')
+    //     header.classList.add('bg-transparent')
+    //     header.classList.remove('bg-white')
+    //   }
+    // })
 
     // Set click event
     const navMenuDiv = document.getElementById('nav-content')

@@ -1,39 +1,69 @@
 <template>
-  <div v-loading="loading" class="flex flex-wrap w-full relative md:mt-16 mt-4">
-    <div class="lg:w-4/5 md:w-3/4 w-full md:pr-20 pr-4 pt-6">
-      <NotionContent
-        :block-map="blockMap"
-        :last-edited-time="last_updated"
-        :title-article="title"
-        :title-previous="preTitle"
-        :title-next="nextTitle"
-        :index="index"
-        :id-pre-title="idPreTitle"
-        :id-next-title="idNextTitle"
-      />
+  <div class="md:mt-16 mt-4">
+    <div class="flex lg:ml-20 ml-6 pt-10">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item>
+          <nuxt-link
+            :to="localePath('/whitepaper')"
+            class="landing-font-14 !text-blue hover:no-underline"
+          >
+            Whitepaper
+          </nuxt-link>
+        </el-breadcrumb-item>
+        <el-breadcrumb-item v-if="parent.id">
+          <nuxt-link
+            :to="localePath(`/whitepaper/${parent.link}`)"
+            class="landing-font-14 !text-blue hover:no-underline"
+          >
+            {{ parent.title }}
+          </nuxt-link>
+        </el-breadcrumb-item>
+        <el-breadcrumb-item>
+          <nuxt-link
+            :to="localePath($route.path)"
+            class="landing-font-14 !text-blue hover:no-underline"
+          >
+            {{ title }}
+          </nuxt-link>
+        </el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
-    <div class="lg:w-1/5 md:w-1/4 w-full h-full md:order-last order-first pt-6 mt-6 md:block hidden sticky top-[88px]">
-      <el-button
-        plain
-        class="p-0 mb-8"
-        @click="copyUrl"
-      >
-        <div class="md:flex inline-block flex-wrap md:ml-[21px] ml-0 mt-2" style="border-left: 1px solid #C5C5C8;">
-          <img src="~/assets/images/landing/whitepaper/Link.svg" class="md:block inline-block ml-6">
-          <div class="text-[#161922] landing-font-14 font-normal ml-2 md:block inline-block">
-            {{ $t('whitepaper.content.link') }}
+    <div class="flex flex-wrap w-full relative">
+      <div class="lg:w-4/5 md:w-3/4 w-full md:pr-20 pr-4 pt-6">
+        <NotionContent
+          :block-map="blockMap"
+          :last-edited-time="last_updated"
+          :title-article="title"
+          :title-previous="preTitle"
+          :title-next="nextTitle"
+          :index="index"
+          :id-pre-title="idPreTitle"
+          :id-next-title="idNextTitle"
+        />
+      </div>
+      <div class="lg:w-1/5 md:w-1/4 w-full h-full md:order-last order-first pt-6 mt-6 md:block hidden sticky top-[88px]">
+        <el-button
+          plain
+          class="p-0 mb-8"
+          @click="copyUrl"
+        >
+          <div class="md:flex inline-block flex-wrap md:ml-[21px] ml-0 mt-2" style="border-left: 1px solid #C5C5C8;">
+            <img src="~/assets/images/landing/whitepaper/Link.svg" class="md:block inline-block ml-6">
+            <div class="text-[#161922] landing-font-14 font-normal ml-2 md:block inline-block">
+              {{ $t('whitepaper.content.link') }}
+            </div>
           </div>
-        </div>
-      </el-button>
-      <div v-if="sections.length > 0" class="mt-8 ml-[21px]" style="border-left: 1px solid #C5C5C8;">
-        <div class="flex flex-nowrap mb-[14px] ml-6">
-          <img src="~/assets/images/landing/whitepaper/textLeft.svg">
-          <div class="text-[#A2A3A7] landing-font-14 font-normal">{{ $t('whitepaper.content.title') }}</div>
-        </div>
-        <div v-for="(item, index) in sections" :key="index" class="mt-3 ml-6">
-          <a class="landing-font-14 text-black" @click="goto(item.id)">
-            {{ item.text }}
-          </a>
+        </el-button>
+        <div v-if="sections.length > 0" class="mt-8 ml-[21px]" style="border-left: 1px solid #C5C5C8;">
+          <div class="flex flex-nowrap mb-[14px] ml-6">
+            <img src="~/assets/images/landing/whitepaper/textLeft.svg">
+            <div class="text-[#A2A3A7] landing-font-14 font-normal">{{ $t('whitepaper.content.title') }}</div>
+          </div>
+          <div v-for="(item, index) in sections" :key="index" class="mt-3 ml-6">
+            <a class="landing-font-14 text-black" @click="goto(item.id)">
+              {{ item.text }}
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -56,6 +86,10 @@ export default {
         $axios.$get(`${process.env.baseUrl}/api/content/${id}`),
         $axios.$get(`${process.env.baseUrl}/api/articles/${id}`)
       ])
+      // let parent = null
+      // if (!['a1a608a7-6565-44de-9307-2f227be8f0f9', '6bc9281b-2a03-4878-9cab-d6e4d698547e'].includes(dataArticle.parent)) {
+      //   parent = await $axios.$get(`${process.env.baseUrl}/api/articles/${dataArticle.parent}`)
+      // }
       contentBlock = contentBlock.data
       dataArticle = dataArticle.title
       return {
@@ -89,7 +123,8 @@ export default {
       index: 0,
       type: 0,
       sections: [],
-      loading: false
+      loading: false,
+      parent: {}
     }
   },
   watch: {
@@ -111,6 +146,14 @@ export default {
   methods: {
     selectArticles () {
       let indexParent = this.tree.findIndex(item => item.articles.find(iItem => iItem.id === this.articleId))
+      const parentObj = this.tree[indexParent]
+      if (parentObj) {
+        this.parent = {
+          title: parentObj.titleCategory,
+          id: parentObj.id,
+          link: slugify(parentObj.titleCategory || '') + '-' + parentObj.id.split('-').join('')
+        }
+      }
       if (indexParent === -1) {
         indexParent = this.tree.findIndex(item => item.id === this.articleId)
       }

@@ -2,20 +2,21 @@
   <div class="btn-pre-next">
     <div v-if="index === 0" class="bg-[#FFFFFF] hover-btn md:mr-0 mr-5">
       <nuxt-link
-        class="flex flex-wrap items-center p-4"
+        class="flex flex-wrap items-center p-4 landing-font-16"
         style="border-radius: 4px"
         :to="localePath(`/whitepaper/${convertNextTitle + '-'+ idNextTitle.split('-').join('')}`)"
       >
         <div class="w-5/6">
-          <div class="text-[#A2A3A7] font-normal landing-font-16">
+          <div class="text-[#A2A3A7] font-normal">
             Next
           </div>
-          <div class="text-[#161922] font-normal landing-font-16 mt-2 title max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
+          <div class="text-[#161922] font-normal mt-2 title max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
             {{ titleNext }}
           </div>
         </div>
         <div class="relative w-1/6">
-          <img class="absolute top-[-8px] right-0" src="~/assets/images/landing/whitepaper/arrow-right.svg">
+          <!-- <img class="absolute top-[-8px] right-0" src="~/assets/images/landing/whitepaper/arrow-right.svg"> -->
+          <i class="el-icon-right absolute top-[-8px] right-0 text-head-5 text-[#A2A3A7]" />
         </div>
       </nuxt-link>
     </div>
@@ -28,7 +29,8 @@
             :to="localePath(`/whitepaper/${convertPreTitle + '-'+ idPreTitle.split('-').join('')}`)"
           >
             <div class="w-1/6">
-              <img src="~/assets/images/landing/whitepaper/arrow-left.svg">
+              <!-- <img src="~/assets/images/landing/whitepaper/arrow-left.svg"> -->
+              <i class="el-icon-back text-head-5 text-[#A2A3A7]" />
             </div>
             <div class="w-5/6 float-right">
               <div class="text-[#A2A3A7] font-normal landing-font-16">
@@ -55,7 +57,8 @@
               </div>
             </div>
             <div class="relative w-1/6">
-              <img class="absolute top-[-8px] right-0" src="~/assets/images/landing/whitepaper/arrow-right-color.svg">
+              <!-- <img class="absolute top-[-8px] right-0" src="~/assets/images/landing/whitepaper/arrow-right.svg"> -->
+              <i class="el-icon-right absolute top-[-8px] right-0 text-head-5 text-[#A2A3A7]" />
             </div>
           </nuxt-link>
         </div>
@@ -64,11 +67,12 @@
     <div v-if="index === 2" class="bg-[#FFFFFF] hover-btn md:mr-0 mr-5">
       <nuxt-link
         class="flex flex-wrap items-center p-4"
-        style="box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgba(0, 0, 0, 0.25); border-radius: 4px"
+        style="border-radius: 4px"
         :to="localePath(`/whitepaper/${convertPreTitle + '-'+ idPreTitle.split('-').join('')}`)"
       >
         <div class="w-1/6">
-          <img src="~/assets/images/landing/whitepaper/arrow-right.svg">
+          <!-- <img src="~/assets/images/landing/whitepaper/arrow-left.svg"> -->
+          <i class="el-icon-back text-head-5 text-[#A2A3A7]" />
         </div>
         <div class="w-5/6">
           <div class="float-right">
@@ -113,13 +117,18 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss">
 .hover-btn a:hover{
   border: 1px solid #268334;
   border-radius: 4px;
 }
-.hover-btn a:hover .title{
-  color: #268334 !important;
+.hover-btn a:hover {
+  .title{
+    color: #268334 !important;
+  }
+  i {
+    color: #268334 !important;
+  }
 }
 a{
   text-decoration: none !important;
