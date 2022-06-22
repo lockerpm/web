@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col flex-column-fluid relative">
+  <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
     <div class="flex-column-fluid py-10 mb-20">
       <client-only>
         <!-- <div
@@ -10,12 +10,12 @@
         <div class="mb-5">
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item
-              :to="localeRoute({name: 'settings-emergency-access'})"
+              :to="localeRoute({name: 'settings-security'})"
             >
               {{ $t('data.emergency_access.emergency_access') }}
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-              Vault
+              {{ $t('common.view') }}
             </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
@@ -46,7 +46,7 @@
                     <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
                   </a>
                   <div>
-                    {{ scope.row.subTitle }}
+                    {{ scope.row.type === 7 && scope.row.cryptoWallet ? scope.row.cryptoWallet.username : scope.row.subTitle }}
                   </div>
                 </div>
               </div>
@@ -96,6 +96,32 @@
                         {{ $t('common.copy') }} {{ $t('common.note') }}
                       </el-dropdown-item>
                     </template>
+                    <template v-if="scope.row.type === 7 && scope.row.cryptoWallet">
+                      <el-dropdown-item
+                        v-clipboard:copy="scope.row.cryptoWallet.seed"
+                        v-clipboard:success="clipboardSuccessHandler"
+                      >
+                        {{ $t('common.copy') }} {{ $t('data.ciphers.seed') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item
+                        v-clipboard:copy="scope.row.cryptoWallet.address"
+                        v-clipboard:success="clipboardSuccessHandler"
+                      >
+                        {{ $t('common.copy') }} {{ $t('data.ciphers.wallet_address') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item
+                        v-clipboard:copy="scope.row.cryptoWallet.privateKey"
+                        v-clipboard:success="clipboardSuccessHandler"
+                      >
+                        {{ $t('common.copy') }} {{ $t('data.ciphers.private_key') }}
+                      </el-dropdown-item>
+                      <el-dropdown-item
+                        v-clipboard:copy="scope.row.cryptoWallet.password"
+                        v-clipboard:success="clipboardSuccessHandler"
+                      >
+                        {{ $t('common.copy') }} {{ $t('data.ciphers.password_pin') }}
+                      </el-dropdown-item>
+                    </template>
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
@@ -110,9 +136,9 @@
 
 <script>
 import cloneDeep from 'lodash/cloneDeep'
-import { CipherType } from '../../../jslib/src/enums'
-import Vnodes from '../../../components/Vnodes'
-import ViewGrantorCipher from '../../../components/setting/ViewGrantorCipher'
+import { CipherType } from '@/jslib/src/enums'
+import Vnodes from '@/components/Vnodes'
+import ViewGrantorCipher from '@/components/setting/ViewGrantorCipher'
 import { Cipher } from '@/jslib/src/models/domain/cipher'
 import { CipherData } from '@/jslib/src/models/data/cipherData'
 import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
@@ -125,12 +151,13 @@ export default {
     return {
       id: null,
       ciphers: [],
-      CipherType
+      CipherType,
+      loading: false
     }
   },
   mounted () {
     if (this.$route.params.id === null) {
-      return this.$router.push(this.localePath('settings/emergency-access'))
+      return this.$router.push(this.localePath('settings/security/emergency-access'))
     }
     this.id = this.$route.params.id
     this.load()
@@ -138,14 +165,18 @@ export default {
   methods: {
     async load () {
       try {
+        this.loading = true
         const data = await this.$axios.$post(`/cystack_platform/pm/emergency_access/${this.id}/view`)
         this.ciphers = await this.getAllCiphers(data)
       } catch (error) {
 
+      } finally {
+        this.loading = false
       }
     },
     async getAllCiphers (response) {
-      const ciphers = response.ciphers
+      let ciphers = response.ciphers
+      ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity, 7].includes(cipher.type))
       const decCiphers = []
       const oldKeyBuffer = await this.$cryptoService.rsaDecrypt(response.key_encrypted)
       const oldEncKey = new SymmetricCryptoKey(oldKeyBuffer)
@@ -158,11 +189,25 @@ export default {
       })
 
       await Promise.all(promises)
+      decCiphers.map(item => {
+        if (item.type === 7) {
+          try {
+            item.cryptoWallet = JSON.parse(item.notes)
+            // item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
+          } catch (error) {
+            console.log(error)
+          }
+        }
+        return {
+          ...item
+        }
+      })
       decCiphers.sort(this.$cipherService.getLocaleSortingFunction())
 
       return decCiphers
     },
     addEdit (cipher) {
+      console.log(cipher)
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     }
   }

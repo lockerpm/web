@@ -448,9 +448,9 @@
 
 <script>
 import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
-import EmergencyContact from '../../../components/setting/EmergencyContact.vue'
-import { Utils } from '../../../jslib/src/misc/utils.ts'
-import PasswordStrengthBar from '../../../components/password/PasswordStrengthBar'
+import EmergencyContact from '@/components/setting/EmergencyContact.vue'
+import { Utils } from '@/jslib/src/misc/utils.ts'
+import PasswordStrengthBar from '@/components/password/PasswordStrengthBar'
 export default {
   components: {
     EmergencyContact,
@@ -660,7 +660,7 @@ export default {
     viewGrantorVault (item) {
       console.log(item.id)
       this.$router.push(this.localeRoute({
-        name: 'settings-emergency-access-id',
+        name: 'settings-security-emergency-access-id',
         params: { id: item.id }
       }))
     },
