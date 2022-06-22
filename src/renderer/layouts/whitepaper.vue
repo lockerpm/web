@@ -2,8 +2,8 @@
   <div class="relative">
     <Header />
     <div class="w-full flex flex-wrap md:mt-0 mt-16">
-      <div class="bg-[#F5F7F9] pl-3 lg:w-1/5 md:w-1/4 w-full md:h-screen h-16 overflow-y-scroll z-50 sticky top-0">
-        <div class="w-full">
+      <div class="bg-[#F5F7F9] lg:w-1/5 md:w-1/4 w-full md:h-screen h-16 z-50 sticky top-0 flex flex-col justify-between">
+        <div class="w-full pl-3 flex-grow overflow-y-scroll">
           <!-- Header -->
           <div class="flex flex-wrap pl-4 h-16 items-center md:hidden">
             <!-- Icon on mobile -->
@@ -39,29 +39,54 @@
                         :key="iItem.id"
                         :to="localePath(`/whitepaper/${iItem.slug + '-'+ iItem.id.split('-').join('')}`)"
                       >
-                        <div class="text-[#A2A3A7] font-normal landing-font-14 p-3 " :class="currentArticleId === iItem.id ? 'category-active': ''"> {{ iItem.child }}</div>
+                        <div class="text-[#A2A3A7] font-normal landing-font-14 p-3 hover:bg-[#eceff1]" :class="currentArticleId === iItem.id ? 'category-active': ''"> {{ iItem.child }}</div>
                       </nuxt-link>
                     </div>
                   </el-collapse-item>
                 </el-collapse>
               </div>
-              <div v-else class="p-4">
+              <div v-else class="hover:bg-[#eceff1]">
                 <nuxt-link
                   class="text-[#A2A3A7]"
                   :to="localePath(`/whitepaper/${item.slug + '-'+ item.id.split('-').join('')}`)"
                 >
-                  <div class="text-[#161922] font-medium landing-font-14">  {{ item.titleCategory }}</div>
+                  <div class="text-[#161922] font-medium landing-font-14 p-5">  {{ item.titleCategory }}</div>
                 </nuxt-link>
               </div>
             </div>
           </div>
           <!-- Whitepaper Menu End -->
         </div>
+        <div class="hidden md:block sticky bottom-0 px-5 py-3 mr-[1px] border-t-[1px] border-r-[1px] border-solid border-[#C5C5C8]">
+          <!-- Language switcher -->
+          <div
+            :class="locale==='vi'?'opacity-06':''"
+            :style="{paddingLeft: locale==='vi'?'34px': '12px'}"
+            class="text-sm text-black-600 font-normal hover:text-green"
+            style="cursor: pointer;"
+            @click="setLocale('en')"
+          >
+            <span v-show="locale!=='vi'" class="mr-2"><i class="fas fa-location-arrow" /></span>English
+          </div>
+          <div
+            :class="locale==='en'?'opacity-06':''"
+            :style="{paddingLeft: locale!=='vi'?'34px': '12px'}"
+            class="text-sm text-black-600 font-normal hover:text-green"
+            style="margin-top: 11px; cursor: pointer;"
+            @click="setLocale('vi')"
+          >
+            <span v-show="locale==='vi'" class="mr-2"><i class="fas fa-location-arrow" /></span>Vietnamese
+          </div>
+
+          <!-- Language switcher end -->
+        </div>
       </div>
       <div class="md:w-3/4 w-full">
         <nuxt :nuxt-child-key="JSON.stringify(categories)" @articles-id="actionHandler" />
       </div>
     </div>
+
+    <!-- OverlayNavMenu -->
     <div id="nav-menu-whitepaper" class="hidden fixed overflow-y-scroll top-0 left-0 w-full h-screen bg-[#F5F7F9] z-[100]">
       <!-- OverlayNavMenu header -->
       <div class="flex flex-wrap mt-10 pl-5 mb-4">
@@ -99,7 +124,7 @@
             </el-collapse-item>
           </el-collapse>
         </div>
-        <div v-else class="p-4">
+        <div v-else class="p-5">
           <nuxt-link
             class="text-[#A2A3A7] font-normal landing-font-14"
             :to="localePath(`/whitepaper/${item.slug + '-'+ item.id.split('-').join('')}`)"
@@ -110,6 +135,7 @@
       </div>
       <!-- Whitepaper Menu End -->
     </div>
+    <!-- OverlayNavMenu End -->
   </div>
 </template>
 <script>
@@ -151,6 +177,7 @@ export default {
           })
         }
         this.categories.push({
+          id: data[index].id,
           titleCategory: data[index].child_page.title,
           articles: articleChild
         })
@@ -162,6 +189,70 @@ export default {
           articles: []
         })
       }
+    }
+  },
+  head () {
+    return {
+      htmlAttrs: {
+        lang: this.locale
+        // lang: this.currentUser.language
+      },
+      title: 'Whitepaper - Locker Password Manager',
+      meta: [
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: 'Whitepaper - Locker Password Manager'
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `${process.env.baseUrl}${this.$route.fullPath}`
+        },
+        {
+          hid: 'og:locale',
+          property: 'og:locale',
+          content: this.locale === 'vi' ? 'vi' : 'en'
+        },
+        {
+          hid: 'og:locale:alternate',
+          property: 'og:locale:alternate',
+          content: this.locale === 'vi' ? 'en' : 'vi'
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: 'Whitepaper - Locker Password Manager'
+        },
+        {
+          hid: 'twitter:url',
+          name: 'twitter:url',
+          content: `${process.env.baseUrl}${this.$route.fullPath}`
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.$t('landing.title')
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: this.$t('landing.title')
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: this.$t('landing.title')
+        }
+      ],
+      link: [
+        { rel: 'alternate', hreflang: this.locale, href: this.getAlternatePath(this.locale) }
+      ]
+    }
+  },
+  computed: {
+    language () {
+      return this.$store.state.user.language
     }
   },
   watch: {
@@ -183,6 +274,34 @@ export default {
       } else {
         navMenuWhitepaper.classList.add('hidden')
       }
+    },
+    setLocale (locale) {
+      this.changeLang(locale)
+      setTimeout(() => {
+        if (locale === 'en') {
+          window.location.replace('/whitepaper')
+          return
+        }
+        if (locale === 'vi') {
+          window.location.replace('/vi/whitepaper')
+        }
+      }, 200)
+    },
+    getAlternatePath (lang) {
+      let path = ''
+      if (lang === 'en') {
+        if (this.locale === 'en') {
+          path = `${process.env.baseUrl}${this.$route.path}`
+        } else {
+          path = `${process.env.baseUrl}${this.$route.path.slice(3)}`
+        }
+      } else if (this.locale === 'en') {
+        path = `${process.env.baseUrl}/${lang}${this.$route.path}`
+      } else {
+        path = `${process.env.baseUrl}${this.$route.path}`
+      }
+
+      return path.endsWith('/') ? path.slice(0, -1) : path
     }
     // storage () {
     //   if (process.client) {

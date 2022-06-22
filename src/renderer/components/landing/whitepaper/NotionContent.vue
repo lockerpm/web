@@ -20,7 +20,7 @@
     <div class="mt-6">
       <NotionRenderer :block-map="blockMap" full-page />
     </div>
-    <div class="mt-16 mb-8">
+    <div v-if="idNextTitle || idPreTitle" class="mt-16 mb-8">
       <ButtonPreNext :index="index" :title-previous="titlePrevious" :title-next="titleNext" :id-pre-title="idPreTitle" :id-next-title="idNextTitle" />
     </div>
   </div>
