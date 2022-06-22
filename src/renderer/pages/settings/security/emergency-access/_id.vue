@@ -207,7 +207,6 @@ export default {
       return decCiphers
     },
     addEdit (cipher) {
-      console.log(cipher)
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     }
   }
