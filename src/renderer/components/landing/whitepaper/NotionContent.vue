@@ -18,7 +18,7 @@
       {{ $t('whitepaper.content.last_edited_time') }} {{ $moment(lastEditedTime).format('ll') }}
     </div>
     <div class="mt-6">
-      <NotionRenderer :block-map="blockMap" full-page />
+      <NotionRenderer :block-map="blockMap" full-page katex />
     </div>
     <div v-if="idNextTitle || idPreTitle" class="mt-16 mb-8">
       <ButtonPreNext :index="index" :title-previous="titlePrevious" :title-next="titleNext" :id-pre-title="idPreTitle" :id-next-title="idNextTitle" />
