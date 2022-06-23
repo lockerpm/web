@@ -433,3 +433,17 @@ input:-webkit-autofill:active
 .wp-block-embed__wrapper iframe {
   max-width: 100% !important;
 }
+.wp-block-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.wp-block-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.wp-block-table td,
+.wp-block-table th {
+  padding: 0.5em;
+  border: 1px solid;
+  word-break: normal;
+}
