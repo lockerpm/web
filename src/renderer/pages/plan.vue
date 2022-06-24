@@ -6,6 +6,22 @@
     >
       <h1 class="max-w-[700px] font-bold landing-font-50 text-center mx-auto">{{ title }}</h1>
       <div class="mt-[100px] pb-[140px] max-w-6xl mx-auto px-6">
+        <div class="flex">
+          <button
+            class="btn-round btn-left-round"
+            :class="periodSwitch?'text-black':'text-primary'"
+            @click="periodSwitch=false"
+          >
+            {{ monthly }}
+          </button>
+          <button
+            class="btn-round btn-right-round"
+            :class="periodSwitch?'text-primary':'text-black'"
+            @click="periodSwitch=true"
+          >
+            {{ annually }}
+          </button>
+        </div>
         <div v-if="$t('plan.money_vi') != null" class="relative h-6">
           <div class="absolute top-0 right-1 italic landing-font-14 font-normal" style="color: #5A6176">
             {{ $t('plan.money_vi') }}
@@ -25,7 +41,11 @@
             </p> -->
             <p class="landing-font-20 text-green">{{ plan.title }}</p>
             <p class="mt-4">
-              <span class="font-bold landing-font-50">{{ plan.price }}</span>
+              <span
+                v-if="periodSwitch && plan.yearly_price"
+                class="font-bold landing-font-50"
+              >${{ (plan.yearly_price.usd / 12) | formatNumber }}</span>
+              <span v-else-if="plan.price" class="font-bold landing-font-50">${{ plan.price.usd }}</span>
               <span v-if="plan.duration" class="landing-font-18">/{{ plan.duration }}</span><span v-if="plan.accounts" class="landing-font-18">/{{ plan.accounts }}</span>
             </p>
             <ul class="ml-3 my-[30px]">
@@ -37,7 +57,7 @@
               >
                 {{ detail }}
                 <span
-                  v-if="detail==='Thiết lập Liên hệ Khẩn cấp'"
+                  v-if="['Thiết lập Liên hệ Khẩn cấp', 'Emergency access'].includes(detail)"
                   class="info"
                 >
                   <i class="fa fa-info-circle" />
@@ -48,14 +68,16 @@
                 </span>
               </li>
             </ul>
-            <p
-              v-for="(item, ind) in plan.note"
-              :key="ind"
-              class="landing-font-12"
-              style="color: #5A6176"
-            >
-              {{ item }}
-            </p>
+            <!-- <template v-if="periodSwitch">
+              <p
+                v-for="(item, ind) in plan.note"
+                :key="ind"
+                class="landing-font-12"
+                style="color: #5A6176"
+              >
+                {{ item }}
+              </p>
+            </template> -->
             <div class="mt-10">
               <div class="text-center absolute bottom-5 left-6 right-12">
                 <a
@@ -281,8 +303,21 @@ export default {
   layout: 'landing',
   data () {
     return {
-      ...this.$t('plan')
+      ...this.$t('plan'),
+      periodSwitch: true,
+      lockerPlans: []
     }
+  },
+  async mounted () {
+    this.lockerPlans = await this.$axios.$get('resources/cystack_platform/pm/plans') || []
+    this.plans = this.plans.map(item => {
+      const plan = this.lockerPlans.find(el => el.alias === item.alias)
+      return {
+        ...item,
+        price: plan?.price,
+        yearly_price: plan?.yearly_price
+      }
+    })
   }
 }
 </script>

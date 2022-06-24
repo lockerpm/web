@@ -27,6 +27,8 @@
 </template>
 <script>
 import ButtonPreNext from '~/components/landing/whitepaper/ButtonPreNext'
+import 'prismjs'
+import 'prismjs/themes/prism.css'
 export default {
   components: { ButtonPreNext },
   props: {

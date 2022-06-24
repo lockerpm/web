@@ -1,6 +1,6 @@
 <template>
-  <div class="mt-[70px]">
-    <section class="bg-welcome full-width h-auto py-[244px]" :style="{backgroundImage: `url(${require(`~/assets/images/landing/about-us/bg-welcome.png`)})`}" style="background-size: 100% 100%; background-repeat: no-repeat">
+  <div class="mt-[78px]">
+    <section class="bg-welcome full-width h-auto py-[244px] bg-center bg-cover bg-no-repeat" :style="{backgroundImage: `url(${require(`~/assets/images/landing/about-us/bg-welcome.png`)})`}">
       <div class="max-w-6xl mx-auto px-6">
         <div class="landing-font-72 font-bold text-white text-center" style="text-shadow: 0px 3.5px 5.5px rgba(0, 0, 0, 0.2);">
           {{ $t('about_us.welcome') }}

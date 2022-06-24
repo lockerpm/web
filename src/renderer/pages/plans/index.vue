@@ -163,7 +163,7 @@
                     :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' || currentPlan.alias==='pm_premium' && item.alias==='pm_family'"
                     @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''"
                   >
-                    {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_plan') }}
+                    {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_this_plan') }}
                   </button>
                   <div :class="['pm_family', 'pm_premium'].includes(currentPlan.alias) && ['pm_family', 'pm_premium'].includes(item.alias) && currentPlan.alias !== item.alias ? 'opacity-1':'opacity-0'" class="text-xs text-black-500 text-center">
                     {{ $t('data.plans.choose_plan_note') }}
@@ -804,18 +804,23 @@ export default {
       features: {
         pm_free: [
           'secure_data',
+          'sync_devices',
           'auto_fill',
-          'password_generator',
-          'sync_devices'
+          'biometric_login',
+          'password_generator'
         ],
         pm_premium: [
+          'free_features',
           'unlimited_storage',
+          'password_health',
           'data_breach',
           'emergency_access',
           'share_passwords'
         ],
         pm_family: [
+          'free_features',
           'unlimited_storage',
+          'password_health',
           'data_breach',
           'emergency_access',
           'share_passwords'
