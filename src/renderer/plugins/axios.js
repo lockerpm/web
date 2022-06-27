@@ -36,7 +36,7 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
           '/download',
           '/features',
           '/how-it-works',
-          '/plan',
+          '/plans',
           '/security',
           '/blog',
           '/terms',

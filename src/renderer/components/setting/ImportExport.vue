@@ -125,7 +125,7 @@
         {{ $t('data.importFile.upgrade_dialog_message', {importedCount: importResult.ciphersCount, total: importResult.totalCipherImport}) }}
       </span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="$router.push(localeRoute({name: 'plans'}))">{{ $t('common.upgrade') }}</el-button>
+        <el-button type="primary" @click="$router.push(localeRoute({name: 'manage-plans'}))">{{ $t('common.upgrade') }}</el-button>
       </span>
     </el-dialog>
   </div>

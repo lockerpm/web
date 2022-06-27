@@ -102,7 +102,7 @@ export default {
       const path = this.$route.path
       if (path === '/benefits' || path === `/${this.locale}/benefits`) { return 'how_it_works' }
       if (path === '/features' || path === `/${this.locale}/features`) { return 'features' }
-      if (path === '/plan' || path === `/${this.locale}/plan`) { return 'plan' }
+      if (path === '/plans' || path === `/${this.locale}/plans`) { return 'plan' }
       if (path === '/download' || path === `/${this.locale}/download`) { return 'download' }
       if (path === '/contact' || path === `/${this.locale}/contact`) { return 'landing_contact' }
       if (path === '/blog' || path === `/${this.locale}/blog`) { return 'blog' }

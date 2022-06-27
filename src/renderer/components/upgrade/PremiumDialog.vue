@@ -8,7 +8,7 @@
       <div
         slot="title"
       >
-        <nuxt-link :to="localeRoute({name: 'plans'})">
+        <nuxt-link :to="localeRoute({name: 'manage-plans'})">
           <img width="100%" src="~/assets/images/upgrade_premium.png">
         </nuxt-link>
       </div>
