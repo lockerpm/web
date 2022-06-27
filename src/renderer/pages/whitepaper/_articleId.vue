@@ -42,18 +42,17 @@
         />
       </div>
       <div class="lg:w-1/5 md:w-1/4 w-full h-full md:order-last order-first pt-6 mt-6 md:block hidden sticky top-[88px]">
-        <el-button
-          plain
-          class="p-0 mb-8"
+        <div
+          class="p-0 mb-8 cursor-pointer"
           @click="copyUrl"
         >
-          <div class="md:flex inline-block flex-wrap md:ml-[21px] ml-0 mt-2" style="border-left: 1px solid #C5C5C8;">
+          <div class="md:flex inline-block flex-wrap md:ml-[21px] ml-0" style="border-left: 1px solid #C5C5C8;">
             <img src="~/assets/images/landing/whitepaper/Link.svg" class="md:block inline-block ml-6">
             <div class="text-[#161922] landing-font-14 font-normal ml-2 md:block inline-block">
               {{ $t('whitepaper.content.link') }}
             </div>
           </div>
-        </el-button>
+        </div>
         <div v-if="sections.length > 0" class="mt-8 ml-[21px]" style="border-left: 1px solid #C5C5C8;">
           <div class="flex flex-nowrap mb-[14px] ml-6">
             <img src="~/assets/images/landing/whitepaper/textLeft.svg">
