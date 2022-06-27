@@ -791,7 +791,6 @@
 <script>
 import debounce from 'lodash/debounce'
 import find from 'lodash/find'
-import numeral from 'numeral'
 import Payment from '../../components/upgrade/Payment'
 import Check from '../../components/icons/check'
 import InputText from '../../components/input/InputText'
@@ -1176,7 +1175,7 @@ export default {
       const discount = fullPrice - plan.yearly_price.usd
       const discountPercentage = discount * 100 / fullPrice
       if (!Number.isNaN(discountPercentage)) {
-        return numeral(discountPercentage).format('0,0')
+        return Math.ceil(discountPercentage)
       }
       return 0
     }

@@ -307,7 +307,6 @@
 </template>
 
 <script>
-import numeral from 'numeral'
 export default {
   layout: 'landing',
   data () {
@@ -334,7 +333,7 @@ export default {
       const discount = fullPrice - plan.yearly_price.usd
       const discountPercentage = discount * 100 / fullPrice
       if (!Number.isNaN(discountPercentage)) {
-        return numeral(discountPercentage).format('0,0')
+        return Math.ceil(discountPercentage)
       }
       return 0
     }
