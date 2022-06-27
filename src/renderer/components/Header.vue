@@ -22,7 +22,7 @@
         </button>
       </div>
       <div class="mr-3 md:block hidden">
-        <button class="btn btn-primary" @click="$router.push(localePath({name: 'plans'}))">
+        <button class="btn btn-primary" @click="$router.push(localePath({name: 'manage-plans'}))">
           {{ $t('common.manage_plans') }}
         </button>
       </div>
@@ -38,7 +38,7 @@
           <el-dropdown-item
             class="text-warning md:hidden"
             icon="fa fa-tasks"
-            @click.native="go('plans')"
+            @click.native="go('manage-plans')"
           >
             {{ $t('common.manage_plans') }}
           </el-dropdown-item>

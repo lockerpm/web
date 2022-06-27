@@ -44,7 +44,8 @@
     </section>
     <div class="mt-36 w-full flex flex-wrap bg-[#F5F6F7] rounded-[10px]">
       <div class="md:w-1/2 w-full">
-        <img src="~/assets/images/landing/download/mobile-app.png" alt="Mobile App">
+        <img v-if="locale === 'vi'" src="~/assets/images/landing/download/mobile-app_vi.png" alt="Mobile App">
+        <img v-else src="~/assets/images/landing/download/mobile-app.png" alt="Mobile App">
       </div>
       <div class="md:w-1/2 w-full flex flex-col justify-center content-start md:text-left text-center mb-4">
         <div class="text-head-5 font-semibold">
