@@ -8,18 +8,18 @@
       <div class="mt-[100px] pb-[140px] max-w-6xl mx-auto px-6">
         <div class="flex">
           <button
-            class="btn-round btn-left-round"
+            class="btn-round btn-left-round !border-[#d8d8d9]"
             :class="periodSwitch?'text-black':'text-primary'"
             @click="periodSwitch=false"
           >
             {{ monthly }}
           </button>
           <button
-            class="btn-round btn-right-round"
+            class="btn-round btn-right-round !border-[#d8d8d9]"
             :class="periodSwitch?'text-primary':'text-black'"
             @click="periodSwitch=true"
           >
-            {{ annually }}
+            {{ annually }} <br> {{ $t('data.plans.bill_annually_desc') }}
           </button>
         </div>
         <div v-if="$t('plan.money_vi') != null" class="relative h-6">
@@ -41,13 +41,21 @@
             </p> -->
             <p class="landing-font-20 text-green">{{ plan.title }}</p>
             <p class="mt-4">
+              <span v-if="!(plan.alias==='pm_free'&&periodSwitch)" :class="periodSwitch?'line-through landing-font-16 text-black':'font-bold landing-font-50'">${{ plan.price.usd }}</span>
               <span
                 v-if="periodSwitch && plan.yearly_price"
                 class="font-bold landing-font-50"
               >${{ (plan.yearly_price.usd / 12) | formatNumber }}</span>
-              <span v-else-if="plan.price" class="font-bold landing-font-50">${{ plan.price.usd }}</span>
-              <span v-if="plan.duration" class="landing-font-18">/{{ plan.duration }}</span><span v-if="plan.accounts" class="landing-font-18">/{{ plan.accounts }}</span>
+              <span v-if="plan.duration" class="landing-font-16">/{{ plan.duration }}</span><span v-if="plan.accounts" class="landing-font-16">/{{ plan.accounts }}</span>
             </p>
+            <div
+              v-if="periodSwitch"
+              class="flex items-center mt-1"
+            >
+              <div v-if="plan.alias != 'pm_free'">
+                {{ $t('data.plans.price_12months') }} ${{ plan.yearly_price.usd }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">{{ $t('data.plans.save') }} {{ discountPercentage(plan) }}%</span>
+              </div>
+            </div>
             <ul class="ml-3 my-[30px]">
               <li
                 v-for="(detail, ind) in plan.desc"
@@ -168,9 +176,9 @@
               </template>
               <tr style="background-color: #FBFAF3;">
                 <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">{{ $t('plan.price') }}</td>
-                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[0].price') }}</td>
-                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[1].price') }}/{{ $t('plan.plans[1].duration') }}</td>
-                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[2].price') }}/{{ $t('plan.plans[2].duration') }}/<br>{{ $t('plan.plans[2].accounts') }}</td>
+                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">${{ plans[0].yearly_price.usd/12 | formatNumber }}</td>
+                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">${{ plans[1].yearly_price.usd/12 | formatNumber }}/{{ $t('plan.plans[1].duration') }}</td>
+                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">${{ plans[2].yearly_price.usd/12 | formatNumber }}/{{ $t('plan.plans[2].duration') }}/<br>{{ $t('plan.plans[2].accounts') }}</td>
                 <!-- <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[3].price') }}</td> -->
               </tr>
               <tr>
@@ -299,6 +307,7 @@
 </template>
 
 <script>
+import numeral from 'numeral'
 export default {
   layout: 'landing',
   data () {
@@ -318,6 +327,17 @@ export default {
         yearly_price: plan?.yearly_price
       }
     })
+  },
+  methods: {
+    discountPercentage (plan) {
+      const fullPrice = plan.price.usd * 12
+      const discount = fullPrice - plan.yearly_price.usd
+      const discountPercentage = discount * 100 / fullPrice
+      if (!Number.isNaN(discountPercentage)) {
+        return numeral(discountPercentage).format('0,0')
+      }
+      return 0
+    }
   }
 }
 </script>
