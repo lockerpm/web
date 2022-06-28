@@ -109,3 +109,10 @@ button.btn:disabled {
     border-radius: 0 32px 32px 0;
   }
 }
+.btn-period {
+  @apply py-3 px-[52px] bg-transparent rounded-[32px] text-lg font-semibold transition-all min-h-[72px];
+  color: #A2A3A7;
+  &:hover, &.selected-period {
+    @apply bg-white text-primary;
+  }
+}

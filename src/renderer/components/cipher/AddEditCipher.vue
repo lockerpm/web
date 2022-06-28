@@ -857,8 +857,11 @@ export default {
         this.closeDialog()
         this.$emit('updated-cipher')
       } catch (e) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
-        console.log(e)
+        if (e.response && e.response.data && e.response.data.code === '3003') {
+          this.notify(this.$t('errors.3003'), 'error')
+        } else {
+          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
+        }
       } finally {
         this.loading = false
       }

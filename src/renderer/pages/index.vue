@@ -230,7 +230,7 @@
           <img
             id="mobile"
             :src="require(`~/assets/images/landing/index/${$t('landing.devices.mobile.image')}`)"
-            class="inline self-end transition duration-150 ease-in-out;"
+            class="inline self-end transition-all"
             style="width: 8%; transform: translate3d(-120px, 30px, 0px) rotateZ(28deg);"
           >
         </div>
@@ -238,7 +238,7 @@
           <img
             id="tablet"
             :src="require(`~/assets/images/landing/index/${$t('landing.devices.tablet.image')}`)"
-            class="inline self-end transition duration-150 ease-in-out;"
+            class="inline self-end transition-all"
             style="width: 14%; transform: translate3d(180px, 50px, 0px) rotateZ(10deg);"
           >
         </div>
@@ -246,7 +246,7 @@
           <img
             id="mac"
             :src="require(`~/assets/images/landing/index/${$t('landing.devices.laptop.image')}`)"
-            class="inline transition duration-150 ease-in-out;"
+            class="inline transition-all"
             style="width: 50%; transform: translate3d(500px, -50px, 0px) rotateZ(-25deg);"
           >
         </div>

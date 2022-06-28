@@ -6,21 +6,23 @@
     >
       <h1 class="max-w-[700px] font-bold landing-font-50 text-center mx-auto">{{ title }}</h1>
       <div class="mt-[100px] pb-[140px] max-w-6xl mx-auto px-6">
-        <div class="flex">
-          <button
-            class="btn-round btn-left-round !border-[#d8d8d9]"
-            :class="periodSwitch?'text-black':'text-primary'"
-            @click="periodSwitch=false"
-          >
-            {{ monthly }}
-          </button>
-          <button
-            class="btn-round btn-right-round !border-[#d8d8d9]"
-            :class="periodSwitch?'text-primary':'text-black'"
-            @click="periodSwitch=true"
-          >
-            {{ annually }} <br> {{ $t('data.plans.bill_annually_desc') }}
-          </button>
+        <div class="flex justify-center">
+          <div class="flex items-center p-2 bg-[#E4F0E6] rounded-[50px] gap-x-3">
+            <button
+              class="btn-period"
+              :class="periodSwitch?'':'selected-period'"
+              @click="periodSwitch=false"
+            >
+              {{ monthly }}
+            </button>
+            <button
+              class="btn-period"
+              :class="periodSwitch?'selected-period':''"
+              @click="periodSwitch=true"
+            >
+              {{ annually }} <br> {{ $t('data.plans.bill_annually_desc') }}
+            </button>
+          </div>
         </div>
         <div v-if="$t('plan.money_vi') != null" class="relative h-6">
           <div class="absolute top-0 right-1 italic landing-font-14 font-normal" style="color: #5A6176">
@@ -341,7 +343,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 ul {
   list-style-image: url('~/assets/images/landing/plan/list_bullet.svg');
 }
