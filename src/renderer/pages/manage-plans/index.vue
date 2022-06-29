@@ -250,7 +250,7 @@
                     <div class="setting-description" />
                   </div>
                   <div class="font-semibold">
-                    <span v-if="currentPlan.personal_trial_applied===false" class="text-head-7 text-black-500 line-through">{{ result.price | formatNumber }} {{ result.currency }}</span>
+                    <span v-if="currentPlan.personal_trial_applied===false" class="text-head-7 text-black-500 line-through">{{ result.next_billing_payment ? result.next_billing_payment : result.price | formatNumber }} {{ result.currency }}</span>
                     {{ result.immediate_payment | formatNumber }} {{ result.currency }}<span v-if="currentPlan.personal_trial_applied===false">*</span>
                   </div>
                 </div>
@@ -259,12 +259,12 @@
             <div class="px-8 text-black-500 mb-6">
               <ul v-if="currentPlan.personal_trial_applied===false">
                 <!-- <li v-html="this.$t('data.billing.plan_details[0]', {total:this.result.total_price || 0, currency:this.result.currency || 'USD'})" /> -->
-                <li v-html="$t('data.billing.trial_summary[0]', {duration:result.duration || 'yearly', price:result.price || 0, currency:result.currency || 'USD', next_bill:nextBill||''})" />
+                <li v-html="$t('data.billing.trial_summary[0]', {duration:result.duration || 'yearly', price:result.next_billing_payment ? result.next_billing_payment : result.price || 0, currency:result.currency || 'USD', next_bill:nextBill||''})" />
                 <li>{{ $t('data.billing.trial_summary[1]') }}</li>
               </ul>
               <ul v-else>
                 <!-- <li v-html="this.$t('data.billing.plan_details[0]', {total:this.result.total_price || 0, currency:this.result.currency || 'USD'})" /> -->
-                <li v-html="$t('data.billing.plan_details[1]', {duration:result.duration || 'yearly', price:result.price || 0, currency:result.currency || 'USD', next_bill:nextBill||''})" />
+                <li v-html="$t('data.billing.plan_details[1]', {duration:result.duration || 'yearly', price:result.next_billing_payment ? result.next_billing_payment : result.price || 0, currency:result.currency || 'USD', next_bill:nextBill||''})" />
                 <li>{{ $t('data.billing.plan_details[2]') }}</li>
               </ul>
             </div>
