@@ -4,6 +4,7 @@
       v-for="(w, index) in words.filter((w, index) => !!w.trim() || index < wordCount)"
       :key="index"
       class="cs-field"
+      :class="{'is-disabled': disabled}"
     >
       <div style="align-self:center">
         {{ `${index + 1}.` }}
@@ -13,6 +14,7 @@
         class="cs-input"
         :value="w"
         type="text"
+        :disabled="disabled"
         @input="handleChange($event.target.value, index)"
         @keyup.enter="handleEnter($event, index)"
       >
@@ -24,7 +26,7 @@
       /> -->
     </div>
     <div v-if="wordCount<24">
-      <button class="btn btn-default h-full w-full" @click="() => {if(wordCount < 24) {wordCount = wordCount + 1}}">
+      <button class="btn btn-default h-full w-full" :disabled="disabled" @click="() => {if(wordCount < 24) {wordCount = wordCount + 1}}">
         <div>
           <i class="el-icon-circle-plus-outline" /> {{ $t('common.add') }}
         </div>
@@ -43,6 +45,10 @@ export default {
       default: ''
     },
     editMode: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }
