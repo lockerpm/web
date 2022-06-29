@@ -202,7 +202,7 @@
           </div>
           <div class="hidden md:block ">
             <img
-              src="~/assets/images/landing/index/img_1.png"
+              :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
               alt=""
             >
           </div>

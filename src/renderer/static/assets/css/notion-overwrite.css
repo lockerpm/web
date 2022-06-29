@@ -336,7 +336,7 @@ img.notion-page-icon-offset {
 .notion-link {
   color: inherit;
   word-break: break-word;
-  text-decoration: underline;
+  text-decoration: underline !important;
   text-decoration-color: inherit;
 }
 .notion-blank {

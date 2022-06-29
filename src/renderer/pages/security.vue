@@ -5,13 +5,12 @@
         {{ header.title }}
       </h1>
       <div class="w-full text-center mt-[45px]">
-        <a
+        <nuxt-link
           class="mx-auto landing-btn w-auto"
-          :href="header.btn.link"
-          target="_blank"
+          :to="localePath('/whitepaper')"
         >
           {{ header.btn.text }}
-        </a>
+        </nuxt-link>
       </div>
     </section>
     <section class="mb-36">

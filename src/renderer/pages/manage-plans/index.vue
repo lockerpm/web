@@ -163,7 +163,7 @@
                     :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' || currentPlan.alias==='pm_premium' && item.alias==='pm_family'"
                     @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''"
                   >
-                    {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_plan') }}
+                    {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_this_plan') }}
                   </button>
                   <div :class="['pm_family', 'pm_premium'].includes(currentPlan.alias) && ['pm_family', 'pm_premium'].includes(item.alias) && currentPlan.alias !== item.alias ? 'opacity-1':'opacity-0'" class="text-xs text-black-500 text-center">
                     {{ $t('data.plans.choose_plan_note') }}
@@ -175,7 +175,7 @@
 
           <!-- Payment -->
           <template v-if="step===2">
-            <div class="setting-wrapper">
+            <div class="setting-wrapper !mb-3">
               <div class="setting-section">
                 <div class="setting-section-header">
                   <div class="text-[20px] font-semibold">{{ $t('data.plans.order_summary') }}</div>
@@ -184,7 +184,7 @@
               <div class="setting-section">
                 <div class="setting-section-header">
                   <div>
-                    <div class="setting-title">{{ getPlanName(selectedPlan.name).name }}</div>
+                    <div class="setting-title">{{ getPlanName(selectedPlan.name).name }} <span v-if="currentPlan.personal_trial_applied === false">({{ $t('data.plans.trial_included') }})</span></div>
                     <div class="setting-description">{{ $t(`data.plans.price.${selectedPeriod.label}`) }}</div>
                   </div>
                   <div>
@@ -243,25 +243,31 @@
                   </div>
                 </div>
               </div>
-              <div class="setting-section">
+              <div class="setting-section text-head-5">
                 <div class="setting-section-header">
                   <div>
                     <div class="setting-title">{{ $t('data.billing.total') }}</div>
-                    <div class="setting-description">
-                      <ul class="mb-3">
-                        <!-- <li v-html="this.$t('data.billing.plan_details[0]', {total:this.result.total_price || 0, currency:this.result.currency || 'USD'})" /> -->
-                        <li v-html="$t('data.billing.plan_details[1]', {duration:result.duration || 'yearly', price:result.price || 0, currency:result.currency || 'USD', next_bill:nextBill||''})" />
-                        <li>{{ $t('data.billing.plan_details[2]') }}</li>
-                      </ul>
-                    </div>
+                    <div class="setting-description" />
                   </div>
                   <div class="font-semibold">
-                    {{ result.immediate_payment | formatNumber }} {{ result.currency }}
+                    <span v-if="currentPlan.personal_trial_applied===false" class="text-head-7 text-black-500 line-through">{{ result.price | formatNumber }} {{ result.currency }}</span>
+                    {{ result.immediate_payment | formatNumber }} {{ result.currency }}<span v-if="currentPlan.personal_trial_applied===false">*</span>
                   </div>
                 </div>
               </div>
             </div>
-
+            <div class="px-8 text-black-500 mb-6">
+              <ul v-if="currentPlan.personal_trial_applied===false">
+                <!-- <li v-html="this.$t('data.billing.plan_details[0]', {total:this.result.total_price || 0, currency:this.result.currency || 'USD'})" /> -->
+                <li v-html="$t('data.billing.trial_summary[0]', {duration:result.duration || 'yearly', price:result.price || 0, currency:result.currency || 'USD', next_bill:nextBill||''})" />
+                <li>{{ $t('data.billing.trial_summary[1]') }}</li>
+              </ul>
+              <ul v-else>
+                <!-- <li v-html="this.$t('data.billing.plan_details[0]', {total:this.result.total_price || 0, currency:this.result.currency || 'USD'})" /> -->
+                <li v-html="$t('data.billing.plan_details[1]', {duration:result.duration || 'yearly', price:result.price || 0, currency:result.currency || 'USD', next_bill:nextBill||''})" />
+                <li>{{ $t('data.billing.plan_details[2]') }}</li>
+              </ul>
+            </div>
             <!-- FAMILY: Add member -->
             <div
               v-if="selectedPlan.alias === 'pm_family'"
@@ -531,7 +537,7 @@
               <div class="setting-section">
                 <div class="setting-section-header">
                   <div>
-                    <div class="setting-title">{{ getPlanName(selectedPlan.name).name }}</div>
+                    <div class="setting-title">{{ getPlanName(selectedPlan.name).name }} <span v-if="currentPlan.personal_trial_applied === false">({{ $t('data.plans.trial_included') }})</span></div>
                     <div class="setting-description">{{ $t(`data.plans.price.${selectedPeriod.label}`) }}</div>
                   </div>
                   <div>
@@ -791,7 +797,6 @@
 <script>
 import debounce from 'lodash/debounce'
 import find from 'lodash/find'
-import numeral from 'numeral'
 import Payment from '../../components/upgrade/Payment'
 import Check from '../../components/icons/check'
 import InputText from '../../components/input/InputText'
@@ -804,18 +809,23 @@ export default {
       features: {
         pm_free: [
           'secure_data',
+          'sync_devices',
           'auto_fill',
-          'password_generator',
-          'sync_devices'
+          'biometric_login',
+          'password_generator'
         ],
         pm_premium: [
+          'free_features',
           'unlimited_storage',
+          'password_health',
           'data_breach',
           'emergency_access',
           'share_passwords'
         ],
         pm_family: [
+          'free_features',
           'unlimited_storage',
+          'password_health',
           'data_breach',
           'emergency_access',
           'share_passwords'
@@ -1171,7 +1181,7 @@ export default {
       const discount = fullPrice - plan.yearly_price.usd
       const discountPercentage = discount * 100 / fullPrice
       if (!Number.isNaN(discountPercentage)) {
-        return numeral(discountPercentage).format('0,0')
+        return Math.ceil(discountPercentage)
       }
       return 0
     }
