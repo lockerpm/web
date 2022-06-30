@@ -41,6 +41,10 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
           '/blog',
           '/terms',
           '/privacy',
+          '/whitepaper',
+          '/about-us',
+          '/master-password',
+          '/refer-friend',
           '/'
         ]
         let currentPath = route.path
