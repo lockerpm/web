@@ -22,14 +22,14 @@
           <!-- Right -->
           <div class="hidden md:block md:w-[48%] order-2 justify-self-end top-[173px] pr-0">
             <img
-              src="~/assets/images/landing/master-password/cover-img.png"
+              :src="require(`~/assets/images/landing/master-password/cover-img_${locale}.png`)"
               alt=""
               style="max-width: 120%; margin-left: 24px; max-height: 500px;"
             >
           </div>
           <div class="w-full md:hidden order-2 mt-4">
             <img
-              src="~/assets/images/landing/master-password/cover-img.png"
+              :src="require(`~/assets/images/landing/master-password/cover-img_${locale}.png`)"
               alt=""
             >
           </div>
@@ -109,14 +109,14 @@
           <!-- Right -->
           <div class="hidden md:block md:w-1/2 order-2 justify-self-end top-[173px] pr-0">
             <img
-              src="~/assets/images/landing/index/bg-img.png"
+              :src="require(`~/assets/images/landing/index/bg-img_${locale}.png`)"
               alt=""
               style="max-width: 120%; margin-left: 24px; max-height: 500px;"
             >
           </div>
           <div class="w-full md:hidden order-2 mt-4">
             <img
-              src="~/assets/images/landing/index/bg-img.png"
+              :src="require(`~/assets/images/landing/index/bg-img_${locale}.png`)"
               alt=""
             >
           </div>
