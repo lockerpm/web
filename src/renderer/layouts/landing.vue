@@ -112,6 +112,8 @@ export default {
       if (path === '/comparison' || path === `/${this.locale}/comparison`) { return 'comparison' }
       if (path === '/refer-friend' || path === `/${this.locale}/refer-friend`) { return 'refer_friend' }
       if (path === '/about-us' || path === `/${this.locale}/about-us`) { return 'about_us' }
+      if (path === '/master-password' || path === `/${this.locale}/master-password`) { return 'landing_master_password' }
+      if (path === '/affiliate' || path === `/${this.locale}/affiliate`) { return 'landing_affiliate' }
       return 'landing'
     }
   },
