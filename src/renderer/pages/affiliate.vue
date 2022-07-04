@@ -18,9 +18,9 @@
               v-html="$t('landing_affiliate.banner.desc')"
             />
             <div class="mt-9">
-              <nuxt-link :to="localePath($t('landing_affiliate.banner.link'))" class="landing-btn">
+              <div class="landing-btn cursor-pointer" @click="dialogFormVisible=true">
                 {{ $t('landing_affiliate.banner.button.text') }}
-              </nuxt-link>
+              </div>
             </div>
           </div>
           <!-- Right -->
@@ -114,9 +114,9 @@
           {{ $t('landing_affiliate.cta.desc') }}
         </div>
         <div class="mt-8 text-center">
-          <nuxt-link :to="localePath($t('landing_affiliate.cta.button.link'))" class="landing-btn landing-font-16" style="align-self: center">
+          <div class="landing-btn cursor-pointer" style="align-self: center" @click="dialogFormVisible=true">
             {{ $t('landing_affiliate.cta.button.text') }}
-          </nuxt-link>
+          </div>
         </div>
       </div>
     </section>
@@ -150,6 +150,66 @@
         </div>
       </div>
     </div>
+    <el-dialog :title="$t('landing_affiliate.banner.button.text')" :visible.sync="dialogFormVisible" width="600px">
+      <el-form
+        ref="inputForm"
+        :model="form"
+        :rules="rules"
+        label-position="top"
+        label-width="120px"
+        class="demo-form"
+      >
+        <el-form-item :label="$t('landing_contact.full_name')" prop="fullName">
+          <el-input v-model="form.fullName" />
+        </el-form-item>
+        <div class="w-full flex flex-nowrap">
+          <div class="w-1/2">
+            <el-form-item :label="$t('landing_contact.email')" prop="email">
+              <el-input v-model="form.email" />
+            </el-form-item>
+          </div>
+          <div class="w-1/2 ml-[10px]">
+            <el-form-item :label="$t('landing_contact.phone')" prop="phone">
+              <el-input v-model="form.phone" />
+            </el-form-item>
+          </div>
+        </div>
+        <div class="w-full flex flex-nowrap">
+          <div class="w-1/2">
+            <el-form-item :label="$t('common.company')" prop="company">
+              <el-input v-model="form.company" />
+            </el-form-item>
+          </div>
+          <div class="w-1/2 ml-[10px]">
+            <el-form-item :label="$t('common.country')" prop="country">
+              <el-select
+                v-model="form.country"
+                placeholder=""
+                filterable
+                class="w-full"
+                auto-complete="off"
+              >
+                <el-option
+                  v-for="country in countries"
+                  :key="country.country_code"
+                  :value="country.country_code"
+                  :label="country.country_name"
+                >
+                  <span>
+                    <span :class="`flag flag-${country.country_code.toLowerCase()}`" class="" />
+                    {{ country.country_name }}
+                  </span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+        </div>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" :loading="isLoading" @click.prevent="submit">Submit</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -157,8 +217,64 @@
 export default {
   layout: 'landing',
   data () {
+    const phoneNotRequiredValidator = (rule, value, callback) => {
+      for (const i in value) {
+        if (isNaN(value[i])) {
+          return callback(new Error('Please input digits'))
+        }
+      }
+
+      return callback()
+    }
     return {
-      activeName: '1'
+      activeName: '1',
+      dialogFormVisible: false,
+      form: {
+        full_name: '',
+        company: '',
+        email: '',
+        phone: '',
+        country: 'VN'
+      },
+      countries: [],
+      isLoading: false,
+      rules: {
+        phone: [
+          { validator: phoneNotRequiredValidator, trigger: ['blur', 'change'] },
+          { required: true, message: 'Please input Phone', trigger: 'blur' }
+        ],
+        fullName: [
+          { required: true, message: 'Please input Full name', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: 'Please input Email', trigger: 'blur' },
+          { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+        ]
+      }
+    }
+  },
+  created () {
+    this.getCountries()
+  },
+  methods: {
+    getCountries () {
+      this.$axios.$get('resources/countries')
+        .then(res => {
+          this.countries = res
+        })
+    },
+    async submit () {
+      if (this.$refs.inputForm) {
+        const isValid = await this.$refs.inputForm.validate()
+        if (!isValid) {
+          return
+        }
+      } else {
+        return
+      }
+      this.isLoading = true
+      console.log(this.form)
+      this.isLoading = false
     }
   }
 }
