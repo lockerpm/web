@@ -143,7 +143,7 @@ export default {
 
       this.isLoading = true
       const formId = 'locker-contact'
-      const trackingQuery = 'form=contact'
+      // const trackingQuery = 'form=contact'
 
       try {
         const payload = {
@@ -152,7 +152,7 @@ export default {
           urgency: this.getLabelFromOptions('urgency', this.form.urgency),
           recaptcha_token: await this.$recaptcha.execute('homepage')
         }
-        const data = await this.submitForm(formId, payload)
+        await this.submitForm(formId, payload)
 
         // Successfully submitted
         this.$message({
@@ -161,21 +161,21 @@ export default {
         })
 
         // Redirect to thankyou page
-        if (data.data && data.data.status) {
-          switch (data.data.status) {
-          case 0:
-            this.$message({
-              message: this.$t('landing_contact.messages.error_occurred'),
-              type: 'error'
-            })
-            break
-          case 2:
-            this.$router.push(`/${this.locale}/thankyou?${trackingQuery}&status=successful`)
-            break
-          default:
-            this.$router.push(`/${this.locale}/thankyou?${trackingQuery}`)
-          }
-        }
+        // if (data.data && data.data.status) {
+        //   switch (data.data.status) {
+        //   case 0:
+        //     this.$message({
+        //       message: this.$t('landing_contact.messages.error_occurred'),
+        //       type: 'error'
+        //     })
+        //     break
+        //   case 2:
+        //     this.$router.push(`/${this.locale}/thankyou?${trackingQuery}&status=successful`)
+        //     break
+        //   default:
+        //     this.$router.push(`/${this.locale}/thankyou?${trackingQuery}`)
+        //   }
+        // }
       } catch (e) {
         this.$message({
           message: this.$t('landing_contact.messages.error_occurred'),
