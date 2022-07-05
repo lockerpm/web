@@ -63,7 +63,7 @@
         <!-- Right end -->
       </div>
     </section>
-    <section class="full-width w-full bg-how-it-works1 h-auto">
+    <section class="full-width w-full !overflow-x-visible bg-how-it-works1 h-auto">
       <div class="hidden md:block mt-[111px] max-w-6xl mx-auto px-6 md:pt-[100px] md:pb-20 pt-12 pb-12">
         <div class="w-full flex flex-wrap relative">
           <div class="w-full md:mb-0 md:w-1/3 pr-0 self-start order-1 sticky top-24">
