@@ -95,11 +95,11 @@
                 {{ item.desc }}
               </div>
             </div>
-            <div v-if="index!==2" :key="`arrow-${index}`" class="md:col-span-1 md:block hidden self-center">
+            <div v-if="index!==2" :key="`arrow-r-${index}`" class="md:col-span-1 md:block hidden self-center">
               <img src="~/assets/images/landing/affiliate/arrow.svg" class="mx-auto">
             </div>
             <div v-if="index!==2" :key="`arrow-${index}`" class="w-full h-6 md:hidden block mt-4">
-              <img class="rotate-90 mx-auto" src="~/assets/images/landing/affiliate/arrow.svg"></img>
+              <img class="rotate-90 mx-auto" src="~/assets/images/landing/affiliate/arrow.svg">
             </div>
           </template>
         </div>
@@ -151,64 +151,79 @@
       </div>
     </div>
     <el-dialog :title="$t('landing_affiliate.banner.button.text')" :visible.sync="dialogFormVisible" width="600px">
-      <el-form
-        ref="inputForm"
-        :model="form"
-        :rules="rules"
-        label-position="top"
-        label-width="120px"
-        class="demo-form"
-      >
-        <el-form-item :label="$t('landing_contact.full_name')" prop="fullName">
-          <el-input v-model="form.fullName" />
-        </el-form-item>
-        <div class="w-full flex flex-nowrap">
-          <div class="w-1/2">
-            <el-form-item :label="$t('landing_contact.email')" prop="email">
-              <el-input v-model="form.email" />
-            </el-form-item>
+      <template v-if="dialogStep===1">
+        <el-form
+          ref="inputForm"
+          :model="form"
+          :rules="rules"
+          label-position="top"
+          label-width="120px"
+          class="demo-form"
+        >
+          <el-form-item :label="$t('landing_contact.full_name')" prop="full_name">
+            <el-input v-model="form.full_name" />
+          </el-form-item>
+          <div class="w-full flex flex-nowrap">
+            <div class="w-1/2">
+              <el-form-item :label="$t('landing_contact.email')" prop="email">
+                <el-input v-model="form.email" />
+              </el-form-item>
+            </div>
+            <div class="w-1/2 ml-[10px]">
+              <el-form-item :label="$t('landing_contact.phone')" prop="phone">
+                <el-input v-model="form.phone" />
+              </el-form-item>
+            </div>
           </div>
-          <div class="w-1/2 ml-[10px]">
-            <el-form-item :label="$t('landing_contact.phone')" prop="phone">
-              <el-input v-model="form.phone" />
-            </el-form-item>
-          </div>
-        </div>
-        <div class="w-full flex flex-nowrap">
-          <div class="w-1/2">
-            <el-form-item :label="$t('common.company')" prop="company">
-              <el-input v-model="form.company" />
-            </el-form-item>
-          </div>
-          <div class="w-1/2 ml-[10px]">
-            <el-form-item :label="$t('common.country')" prop="country">
-              <el-select
-                v-model="form.country"
-                placeholder=""
-                filterable
-                class="w-full"
-                auto-complete="off"
-              >
-                <el-option
-                  v-for="country in countries"
-                  :key="country.country_code"
-                  :value="country.country_code"
-                  :label="country.country_name"
+          <div class="w-full flex flex-nowrap">
+            <div class="w-1/2">
+              <el-form-item :label="$t('common.company')" prop="company">
+                <el-input v-model="form.company" />
+              </el-form-item>
+            </div>
+            <div class="w-1/2 ml-[10px]">
+              <el-form-item :label="$t('common.country')" prop="country">
+                <el-select
+                  v-model="form.country"
+                  placeholder=""
+                  filterable
+                  class="w-full"
+                  auto-complete="off"
                 >
-                  <span>
-                    <span :class="`flag flag-${country.country_code.toLowerCase()}`" class="" />
-                    {{ country.country_name }}
-                  </span>
-                </el-option>
-              </el-select>
-            </el-form-item>
+                  <el-option
+                    v-for="country in countries"
+                    :key="country.country_code"
+                    :value="country.country_name"
+                    :label="country.country_name"
+                  >
+                    <span>
+                      <span :class="`flag flag-${country.country_code.toLowerCase()}`" class="" />
+                      {{ country.country_name }}
+                    </span>
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </div>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">Cancel</el-button>
+          <el-button type="primary" :loading="isLoading" @click.prevent="submit">Submit</el-button>
+        </span>
+      </template>
+      <template v-else>
+        <div class="text-center py-10">
+          <div class="mt-2 text-head-6">{{ $t('landing_affiliate.thankyou') }}</div>
+          <div class="mt-[30px]">
+            <button
+              class="btn btn-primary w-[320px]"
+              @click="dialogFormVisible=false"
+            >
+              {{ $t('blog.great') }}
+            </button>
           </div>
         </div>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" :loading="isLoading" @click.prevent="submit">Submit</el-button>
-      </span>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -234,8 +249,9 @@ export default {
         company: '',
         email: '',
         phone: '',
-        country: 'VN'
+        country: 'Vietnam'
       },
+      dialogStep: 1,
       countries: [],
       isLoading: false,
       rules: {
@@ -243,7 +259,7 @@ export default {
           { validator: phoneNotRequiredValidator, trigger: ['blur', 'change'] },
           { required: true, message: 'Please input Phone', trigger: 'blur' }
         ],
-        fullName: [
+        full_name: [
           { required: true, message: 'Please input Full name', trigger: 'blur' }
         ],
         email: [
@@ -273,7 +289,21 @@ export default {
         return
       }
       this.isLoading = true
-      console.log(this.form)
+      const payload = {
+        ...this.form,
+        request_code: await this.$recaptcha.execute('homepage')
+      }
+      try {
+        await this.$axios.$post('/cystack_platform/pm/affiliate_submissions', payload)
+        // Successfully submitted
+        this.notify(
+          this.$t('landing_contact.messages.request_has_been_sent'),
+          'success'
+        )
+        this.dialogStep = 2
+      } catch (error) {
+        this.notify(this.$t('landing_contact.messages.error_occurred'), 'error')
+      }
       this.isLoading = false
     }
   }
