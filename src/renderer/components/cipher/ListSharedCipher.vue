@@ -56,7 +56,7 @@
         <LazyHydrate when-visible>
           <el-table
             ref="multipleTable"
-            :data="dataRendered || []"
+            :data="(collections || []).concat(dataRendered)"
             style="width: 100%"
             row-class-name="hover-table-row"
           >
@@ -70,48 +70,17 @@
               min-width="300"
               show-overflow-tooltip
             >
-              <template slot="header">
-                <!-- <div v-if="multipleSelection.length" class="flex items-center ">
-                  <div class="text-black mr-8 whitespace-nowrap">
-                    {{ multipleSelection.length }} {{ $t('data.ciphers.selected_items') }}
-                  </div>
-                  <div v-if="deleted">
-                    <button
-                      class="btn btn-default btn-xs"
-                      @click="restoreCiphers(multipleSelection.map(e => e.id))"
-                    >
-                      {{ $t('common.restore') }}
-                    </button>
-                    <button
-                      class="btn btn-default btn-xs !text-danger"
-                      @click="deleteCiphers(multipleSelection.map(e => e.id))"
-                    >
-                      {{ $t('common.permanently_delete') }}
-                    </button>
-                  </div>
-                  <div v-else class="">
-                    <button
-                      class="btn btn-default btn-xs"
-                      @click="moveFolders(multipleSelection.map(e => e.id))"
-                    >
-                      {{ $t('common.move_folder') }}
-                    </button>
-                    <button
-                      class="btn btn-default btn-xs !text-danger"
-                      @click="moveTrashCiphers(multipleSelection.map(e => e.id))"
-                    >
-                      {{ $t('common.delete') }}
-                    </button>
-                  </div>
-                </div> -->
-              </template>
               <template slot-scope="scope">
                 <div class="flex items-center">
                   <div
+                    v-if="scope.row.type"
                     class="text-[34px] mr-3 flex-shrink-0"
                     :class="{'filter grayscale': scope.row.isDeleted}"
                   >
                     <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
+                  </div>
+                  <div v-else>
+                    <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
                   </div>
                   <div class="flex flex-col">
                     <a
@@ -144,7 +113,7 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <span>{{ CipherType[scope.row.cipher_type] || CipherType[scope.row.type] }}</span>
+                <span>{{ CipherType[scope.row.cipher_type] || CipherType[scope.row.type] || 'Folder' }}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -585,7 +554,7 @@ export default {
       return this.ciphers || []
     },
     shouldRenderNoCipher () {
-      const haveCipher = this.filteredCiphers.length
+      const haveCipher = this.filteredCiphers.length + this.collections?.length
       if (this.getRouteBaseName() === 'vault') {
         return this.folders && !this.folders.length && !haveCipher
       }
@@ -681,7 +650,7 @@ export default {
         let result = []
 
         result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-
+        result = result.filter(item => !item.collectionIds.length)
         if (this.getRouteBaseName() === 'shares') {
           result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)
           result = result.map(item => {
@@ -729,6 +698,53 @@ export default {
         return result
       },
       watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection', 'invitations', 'myShares']
+    },
+    collections: {
+      async get () {
+        if (this.$store.state.syncing) {
+          return
+        }
+        let collections = await this.$collectionService.getAllDecrypted() || []
+        collections = collections.filter(f => f.id)
+        if (this.getRouteBaseName() === 'shares') {
+          collections = collections.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)
+          collections = collections.map(item => {
+            const org = this.getTeam(this.organizations, item.organizationId)
+            return {
+              ...item,
+              share_type: org.type === 1 ? this.$t('data.ciphers.editable') : item.viewPassword ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
+            }
+          })
+        } else if (this.getRouteBaseName() === 'shares-your-shares') {
+          collections = collections.filter(item => this.getTeam(this.organizations, item.organizationId).type === 0)
+          const resultMapping = []
+          collections.forEach(item => {
+            const org = find(this.myShares, e => e.organization_id === item.organizationId) || {}
+            const members = org.members || []
+            members.forEach(member => {
+              resultMapping.push({
+                ...item,
+                subTitle: item.subTitle,
+                user: {
+                  ...member,
+                  share_type: member.share_type === 'Edit' ? this.$t('data.ciphers.editable') : member.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
+                }
+              })
+            })
+          })
+          collections = resultMapping
+        }
+        // collections.forEach(f => {
+        //   const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
+        //   f.ciphersCount = ciphers && ciphers.length
+        //   f.ciphers = ciphers
+        // })
+        if (!this.$store.state.syncing) {
+          this.loading = false
+        }
+        return collections
+      },
+      watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
     }
   },
   methods: {

@@ -233,7 +233,7 @@
 
       <!-- List Folders -->
       <div
-        v-if="getRouteBaseName() === 'vault' && folders && viewFolder"
+        v-if="getRouteBaseName() === 'vault' && (folders || collections) && viewFolder"
         class="mb-10"
       >
         <client-only>
@@ -259,6 +259,23 @@
                 </div>
               </div>
             </template>
+            <template v-for="item in collections">
+              <div
+                v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
+                :key="item.id"
+                class="px-4 py-4 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+                :class="{'border-primary': selectedFolder.id === item.id}"
+                :title="item.name"
+                @click="routerFolder(item)"
+                @contextmenu.prevent="$refs.menu.open($event, item)"
+              >
+                <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
+                <div class="font-semibold truncate select-none line-clamp-1">
+                  {{ item.name }}
+                  <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
+                </div>
+              </div>
+            </template>
             <!-- <div class="px-4 py-4 flex items-center cursor-pointer rounded border border-dashed border-[#E6E6E8] hover:border-primary justify-center font-semibold" @click="addEditFolder">
               <i class="el-icon-circle-plus-outline text-lg" />
               <div class="ml-3 break-all">New Folder</div>
@@ -276,12 +293,12 @@
                 >
                   {{ $t('common.rename') }}
                 </li>
-                <!-- <li
+                <li
                   class="el-dropdown-menu__item w-[200px]"
                   @click.prevent="shareFolder(selectedFolder)"
                 >
                   {{ $t('common.share') }}
-                </li> -->
+                </li>
                 <li
                   class="el-dropdown-menu__item"
                   @click.prevent="deleteFolder(selectedFolder)"
@@ -1157,6 +1174,7 @@ export default {
         folders.forEach(f => {
           const ciphers = this.ciphers && (this.ciphers.filter(c => c.folderId === f.id) || [])
           f.ciphersCount = ciphers && ciphers.length
+          f.ciphers = ciphers
         })
         // const userId = await this.$userService.getUserId()
         // const ciphers = window.localStorage.getItem('ciphers_' + userId)
@@ -1166,7 +1184,7 @@ export default {
         return folders
       },
       watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
-    }
+    },
     // weakPasswordScores: {
     //   async get () {
     //     const weakPasswordScores = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
@@ -1206,26 +1224,25 @@ export default {
     //   // watch: ['allCiphers']
     //   watch: ['$store.state.syncedCiphersToggle']
     // }
-    // collections: {
-    //   async get () {
-    //     if (this.$store.state.syncing) {
-    //       console.log('get collection return')
-    //       return
-    //     }
-    //     console.log('get collections')
-    //     let collections = await this.$collectionService.getAllDecrypted() || []
-    //     collections = collections.filter(f => f.id)
-    //     collections.forEach(f => {
-    //       const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
-    //       f.ciphersCount = ciphers && ciphers.length
-    //     })
-    //     if (!this.$store.state.syncing) {
-    //       this.loading = false
-    //     }
-    //     return collections
-    //   },
-    //   watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
-    // }
+    collections: {
+      async get () {
+        if (this.$store.state.syncing) {
+          return
+        }
+        let collections = await this.$collectionService.getAllDecrypted() || []
+        collections = collections.filter(f => f.id)
+        collections.forEach(f => {
+          const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
+          f.ciphersCount = ciphers && ciphers.length
+          f.ciphers = ciphers
+        })
+        if (!this.$store.state.syncing) {
+          this.loading = false
+        }
+        return collections
+      },
+      watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
+    }
   },
   methods: {
     addEdit (cipher) {
