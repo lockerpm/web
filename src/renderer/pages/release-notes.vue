@@ -36,7 +36,7 @@ export default {
 
   head () {
     return {
-      title: 'Terms | Locker Password Manager'
+      title: 'Release Notes'
     }
   }
 }
