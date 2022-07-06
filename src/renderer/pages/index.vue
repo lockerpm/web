@@ -224,7 +224,7 @@
       style="background: #ffffff"
     >
       <div
-        class="hidden lg:block w-full h-auto text-center mt-20 mb-36 justify-center gap-x-6"
+        class="hidden lg:block w-full h-auto text-center pt-32 mb-36 justify-center gap-x-6 overflow-hidden"
       >
         <div class="inline w-2/12">
           <img
