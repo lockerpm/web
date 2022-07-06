@@ -58,7 +58,7 @@ export default {
   padding-bottom: 13px;
   position: sticky;
   top: 0;
-  z-index: 10000000;
+  z-index: 2000;
 }
 .new-container {
   background-color: #FFC400;
