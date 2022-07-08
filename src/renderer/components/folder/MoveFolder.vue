@@ -22,7 +22,7 @@
             v-if="dialogVisible"
             ref="inputSelectFolder"
             :initial-value="folderId"
-            :options="folders"
+            :options="collections.concat(folders)"
             :label="$t('data.folders.select_folder')"
             class="w-full !mb-0 mt-4"
             @change="(v) => folderId = v"
@@ -54,6 +54,9 @@
 </template>
 
 <script>
+import { CipherType } from '../../jslib/src/enums'
+import { CipherRequest } from '../../jslib/src/models/request'
+import { CipherView } from '../../jslib/src/models/view'
 import InputSelectFolder from '../input/InputSelectFolder'
 import AddEditFolder from './AddEditFolder'
 export default {
@@ -75,7 +78,8 @@ export default {
       loading: false,
       errors: {},
       ids: [],
-      folderId: ''
+      folderId: '',
+      collections: []
     }
   },
   computed: {
@@ -85,6 +89,7 @@ export default {
   methods: {
     async openDialog (data) {
       this.folders = await this.getFolders()
+      this.collections = await this.getCollections()
       this.dialogVisible = true
       this.ids = data
     },
@@ -94,16 +99,35 @@ export default {
     async putCiphersFolder () {
       try {
         this.loading = true
-        await this.$axios.$put('cystack_platform/pm/ciphers/move', {
-          ids: this.ids,
-          folderId: this.folderId
-        })
+        const collection = this.collections.find(c => c.id === this.folderId)
+        if (collection) {
+          const orgKey = await this.$cryptoService.getOrgKey(collection.organizationId)
+          const encCipher = await this.$cipherService.get(this.ids[0])
+          const cipher = await encCipher.decrypt()
+          const type_ = cipher.type
+          if (type_ === 7) {
+            cipher.type = CipherType.SecureNote
+            cipher.secureNote.type = 0
+          }
+          const cipherEnc = await this.$cipherService.encrypt(cipher, orgKey)
+          const data = new CipherRequest(cipherEnc)
+          data.type = type_
+          await this.$axios.$post(`cystack_platform/pm/sharing/${collection.organizationId}/folders/${collection.id}/items`, { cipher: { ...data, id: this.ids[0] } })
+        } else {
+          await this.$axios.$put('cystack_platform/pm/ciphers/move', {
+            ids: this.ids,
+            folderId: this.folderId
+          })
+        }
         this.notify(this.$tc('data.notifications.move_success', this.ids.length), 'success')
         this.closeDialog()
         this.$emit('reset-selection')
       } catch (e) {
-        this.notify(this.$tc('data.notifications.move_failed', this.ids.length), 'warning')
-        console.log(e)
+        if (e.response && e.response.data && e.response.data.code === '5000') {
+          this.notify(this.$t('errors.5000'), 'error')
+        } else {
+          this.notify(this.$tc('data.notifications.move_failed', this.ids.length), 'warning')
+        }
       } finally {
         this.loading = false
       }

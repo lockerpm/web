@@ -270,5 +270,6 @@ export default {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
+  overflow-x: hidden;
 }
 </style>
