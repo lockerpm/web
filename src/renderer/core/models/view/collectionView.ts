@@ -25,6 +25,6 @@ export class CollectionView implements View, ITreeNodeObject {
       this.readOnly = c.readOnly
       this.hidePasswords = c.hidePasswords
     }
-    this.revisionDate = c.revisionDate
+    this.revisionDate = typeof (c.revisionDate) === 'string' ? new Date(c.revisionDate) : c.revisionDate
   }
 }
