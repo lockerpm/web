@@ -7,7 +7,7 @@
             <span class="new-container">
               NEW
             </span>
-            <span v-html="$t('landing_banner.desc')"></span> 🎉
+            <span v-html="$t('landing_banner.desc')" /> 🎉
             <a
               :href="url"
               target="_blank"

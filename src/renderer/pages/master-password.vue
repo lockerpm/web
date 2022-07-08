@@ -152,7 +152,7 @@
         </div>
       </div>
     </section>
-    <div class="my-[90px] py-6 px-8 bg-[#E8E8E9] flex gap-x-6 rounded">
+    <!-- <div class="my-[90px] py-6 px-8 bg-[#E8E8E9] flex gap-x-6 rounded">
       <img src="~/assets/images/landing/master-password/help.svg">
       <div class="font-semibold max-w-4/5 overflow-hidden overflow-ellipsis">
         <div class="landing-font-20">
@@ -162,7 +162,7 @@
           {{ $t('landing_master_password.help_box.detail') }} <span><a :href="$t('landing_master_password.help_box.link')" target="_blank">{{ $t('landing_master_password.help_box.link') }}</a></span>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
