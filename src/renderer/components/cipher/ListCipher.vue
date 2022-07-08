@@ -38,7 +38,7 @@
                   {{ $t('sidebar.vault') }}
                 </nuxt-link>
                 <span class="font-medium">
-                  &nbsp; / &nbsp; {{ folder.name }}
+                  &nbsp; / &nbsp; {{ folder.name || collection.name }}
                 </span>
               </template>
               <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId'">
@@ -238,6 +238,23 @@
       >
         <client-only>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
+            <template v-for="item in collections">
+              <div
+                v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
+                :key="item.id"
+                class="px-4 py-4 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
+                :class="{'border-primary': selectedFolder.id === item.id}"
+                :title="item.name"
+                @click="routerFolder(item)"
+                @contextmenu.prevent="$refs.menu.open($event, item)"
+              >
+                <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
+                <div class="font-semibold truncate select-none line-clamp-1">
+                  {{ item.name }}
+                  <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
+                </div>
+              </div>
+            </template>
             <template v-for="item in folders">
               <div
                 v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
@@ -253,23 +270,6 @@
                   alt=""
                   class="select-none mr-2"
                 >
-                <div class="font-semibold truncate select-none line-clamp-1">
-                  {{ item.name }}
-                  <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
-                </div>
-              </div>
-            </template>
-            <template v-for="item in collections">
-              <div
-                v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
-                :key="item.id"
-                class="px-4 py-4 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                :class="{'border-primary': selectedFolder.id === item.id}"
-                :title="item.name"
-                @click="routerFolder(item)"
-                @contextmenu.prevent="$refs.menu.open($event, item)"
-              >
-                <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
                 <div class="font-semibold truncate select-none line-clamp-1">
                   {{ item.name }}
                   <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
@@ -779,7 +779,7 @@
                   </el-dropdown-menu>
                 </el-dropdown>
                 <button
-                  v-if="!item.isDeleted && canShareItem(organizations, item)"
+                  v-if="!item.isDeleted && canShareItem(organizations, item) && !item.collectionIds.length"
                   class="btn btn-icon btn-xs hover:bg-black-400"
                   :title="$t('common.share')"
                   @click="shareItem(item)"
@@ -1027,7 +1027,7 @@ export default {
     },
     collection () {
       if (this.collections) {
-        return find(this.collections, e => e.id === this.$route.params.tfolderId) || { name: 'Unassigned Folder' }
+        return find(this.collections, e => e.id === this.$route.params.folderId) || { name: 'Unassigned Folder' }
       }
       return {}
     },
@@ -1176,11 +1176,6 @@ export default {
           f.ciphersCount = ciphers && ciphers.length
           f.ciphers = ciphers
         })
-        // const userId = await this.$userService.getUserId()
-        // const ciphers = window.localStorage.getItem('ciphers_' + userId)
-        // if (ciphers) {
-        //   this.loading = false
-        // }
         return folders
       },
       watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']

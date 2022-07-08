@@ -72,21 +72,23 @@
             >
               <template slot-scope="scope">
                 <div class="flex items-center">
-                  <div
-                    v-if="scope.row.type"
-                    class="text-[34px] mr-3 flex-shrink-0"
-                    :class="{'filter grayscale': scope.row.isDeleted}"
-                  >
-                    <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
-                  </div>
-                  <div v-else>
-                    <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
-                  </div>
+                  <template v-if="!['invited', 'accepted'].includes(scope.row.status)">
+                    <div
+                      v-if="scope.row.type"
+                      class="text-[34px] mr-3 flex-shrink-0"
+                      :class="{'filter grayscale': scope.row.isDeleted}"
+                    >
+                      <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
+                    </div>
+                    <div v-else>
+                      <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
+                    </div>
+                  </template>
                   <div class="flex flex-col">
                     <a
                       class="text-black font-semibold truncate flex items-center"
                       :class="{'opacity-80': scope.row.isDeleted}"
-                      @click="scope.row.status === 'invited'?openAcceptDialog(scope.row) : routerCipher(scope.row, addEdit)"
+                      @click="scope.row.status === 'invited'?openAcceptDialog(scope.row) : scope.row.type?routerCipher(scope.row, addEdit):routerFolder(scope.row)"
                     >
                       {{ scope.row.name || $t('data.sharing.encrypted_content') }}
                       <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
@@ -228,7 +230,7 @@
                     <el-dropdown-menu slot="dropdown">
                       <template v-if="!['invited', 'accepted'].includes(scope.row.status) && getRouteBaseName() === 'shares'">
                         <template v-if="canManageItem(organizations, scope.row)">
-                          <el-dropdown-item @click.native="addEdit(scope.row)">
+                          <el-dropdown-item @click.native="scope.row.ciphers?addEditFolder(scope.row):addEdit(scope.row)">
                             {{ $t('common.edit') }}
                           </el-dropdown-item>
                           <el-dropdown-item
@@ -238,8 +240,8 @@
                             {{ $t('common.share') }}
                           </el-dropdown-item>
                         </template>
-                        <template>
-                          <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.Login">
+                        <template v-if="scope.row.type && !scope.row.isDeleted">
+                          <template v-if="scope.row.type === CipherType.Login">
                             <el-dropdown-item
                               v-clipboard:copy="scope.row.login.username"
                               v-clipboard:success="clipboardSuccessHandler"
@@ -255,7 +257,7 @@
                               {{ $t('common.copy') }} {{ $t('common.password') }}
                             </el-dropdown-item>
                           </template>
-                          <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.SecureNote">
+                          <template v-if="scope.row.type === CipherType.SecureNote">
                             <el-dropdown-item
                               v-clipboard:copy="scope.row.notes"
                               v-clipboard:success="clipboardSuccessHandler"
@@ -264,7 +266,7 @@
                               {{ $t('common.copy') }} {{ $t('common.note') }}
                             </el-dropdown-item>
                           </template>
-                          <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.CryptoWallet && scope.row.cryptoWallet">
+                          <template v-if="scope.row.type === CipherType.CryptoWallet && scope.row.cryptoWallet">
                             <el-dropdown-item
                               v-clipboard:copy="scope.row.cryptoWallet.seed"
                               v-clipboard:success="clipboardSuccessHandler"
@@ -293,14 +295,12 @@
                           <el-dropdown-item @click.native="cloneCipher(scope.row)">
                             {{ $t('common.clone') }}
                           </el-dropdown-item>
-                        </template>
-                        <template v-if="!scope.row.isDeleted">
                           <el-dropdown-item divided @click.native="moveFolders([scope.row.id])">
                             {{ $t('common.move_folder') }}
                           </el-dropdown-item>
                         </template>
                         <template v-if="!scope.row.isDeleted">
-                          <el-dropdown-item divided @click.native="leaveShare(scope.row)">
+                          <el-dropdown-item :divided="scope.row.type" @click.native="leaveShare(scope.row)">
                             <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
                           </el-dropdown-item>
                         </template>
@@ -705,6 +705,7 @@ export default {
           return
         }
         let collections = await this.$collectionService.getAllDecrypted() || []
+        console.log(collections)
         collections = collections.filter(f => f.id)
         if (this.getRouteBaseName() === 'shares') {
           collections = collections.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)
@@ -712,7 +713,7 @@ export default {
             const org = this.getTeam(this.organizations, item.organizationId)
             return {
               ...item,
-              share_type: org.type === 1 ? this.$t('data.ciphers.editable') : item.viewPassword ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
+              share_type: org.type === 1 ? this.$t('data.ciphers.editable') : !item.hidePasswords ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
             }
           })
         } else if (this.getRouteBaseName() === 'shares-your-shares') {
@@ -734,11 +735,11 @@ export default {
           })
           collections = resultMapping
         }
-        // collections.forEach(f => {
-        //   const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
-        //   f.ciphersCount = ciphers && ciphers.length
-        //   f.ciphers = ciphers
-        // })
+        collections.forEach(f => {
+          const ciphers = this.allCiphers && (this.allCiphers.filter(c => c.collectionIds.includes(f.id)) || [])
+          f.ciphersCount = ciphers && ciphers.length
+          f.ciphers = ciphers
+        })
         if (!this.$store.state.syncing) {
           this.loading = false
         }
@@ -867,30 +868,62 @@ export default {
     },
     async stopSharing (cipher) {
       try {
-        let memberId = null
-        if (cipher.user) {
-          memberId = cipher.user.id
-          delete cipher.user
+        if (cipher.ciphers) {
+          let memberId = null
+          if (cipher.user) {
+            memberId = cipher.user.id
+            delete cipher.user
+          }
+          let folderNameEnc = await this.$cryptoService.encrypt(cipher.name)
+          folderNameEnc = folderNameEnc.encryptedString
+          const ciphers = await Promise.all(cipher.ciphers.map(async cipher => {
+            const type_ = cipher.type
+            if (type_ === 7) {
+              cipher.type = CipherType.SecureNote
+              cipher.secureNote.type = 0
+            }
+            const cipherEnc = await this.$cipherService.encrypt(cipher, this.$cryptoService.getEncKey())
+            const data = new CipherRequest(cipherEnc)
+            data.type = type_
+            return {
+              id: cipher.id,
+              ...data
+            }
+          }))
+          const payload = {
+            folder: {
+              id: cipher.id,
+              name: folderNameEnc,
+              ciphers
+            }
+          }
+          await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, payload)
+        } else {
+          let memberId = null
+          if (cipher.user) {
+            memberId = cipher.user.id
+            delete cipher.user
+          }
+          const type_ = cipher.type
+          if (type_ === 7) {
+            cipher.type = CipherType.SecureNote
+            cipher.secureNote.type = 0
+          }
+          const personalKey = await this.$cryptoService.getEncKey()
+          const cipherEnc = await this.$cipherService.encrypt(cipher, personalKey)
+          const data = new CipherRequest(cipherEnc)
+          // console.log(data)
+          data.type = type_
+          cipher.type = type_
+          await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, {
+            folder: null,
+            cipher: { ...data, id: cipher.id }
+          })
         }
-        const type_ = cipher.type
-        if (type_ === 7) {
-          cipher.type = CipherType.SecureNote
-          cipher.secureNote.type = 0
-        }
-        const personalKey = await this.$cryptoService.getEncKey()
-        const cipherEnc = await this.$cipherService.encrypt(cipher, personalKey)
-        const data = new CipherRequest(cipherEnc)
-        // console.log(data)
-        data.type = type_
-        cipher.type = type_
-        await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, {
-          folder: null,
-          cipher: { ...data, id: cipher.id }
-        })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'success')
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type || 'Folder'}`, 1) }), 'success')
         await this.getMyShares()
       } catch (error) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type || 'Folder'}`, 1) }), 'warning')
         console.log(error)
       }
     },
@@ -902,10 +935,15 @@ export default {
       }).then(async () => {
         try {
           await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/leave`)
-          await this.$cipherService.delete([cipher.id])
-          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'success')
+          if (cipher.ciphers) {
+            const deletedIds = cipher.ciphers.map(c => c.id)
+            await this.$cipherService.delete(deletedIds)
+          } else {
+            await this.$cipherService.delete([cipher.id])
+          }
+          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type || 'Folder'}`, 1) }), 'success')
         } catch (error) {
-          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'warning')
+          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type || 'Folder'}`, 1) }), 'warning')
           console.log(error)
         }
       })
@@ -974,6 +1012,9 @@ export default {
     openAcceptDialog (item) {
       this.selectedCipher = item
       this.dialogAcceptVisible = true
+    },
+    addEditFolder (folder, shouldRedirect = false) {
+      this.$refs.addEditFolder.openDialog(folder, shouldRedirect)
     }
   }
 }

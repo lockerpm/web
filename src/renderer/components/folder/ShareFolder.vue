@@ -37,7 +37,7 @@
     </div>
     <div>
       <el-table
-        :data="members"
+        :data="newMembers.concat(members)"
         style="width: 100%"
       >
         <el-table-column
@@ -55,7 +55,7 @@
           <template slot-scope="scope">
             <el-checkbox
               :value="scope.row.role === 'member'"
-              @change="(v) => { if (v===true) {scope.row.role = 'member'}}"
+              @change="(v) => { if (v === true) {updatePermission(scope.row, 'member')}}"
             />
           </template>
         </el-table-column>
@@ -66,7 +66,7 @@
           <template slot-scope="scope">
             <el-checkbox
               :value="scope.row.role === 'admin'"
-              @change="(v) => { if (v===true) {scope.row.role = 'admin'}}"
+              @change="(v) => { if (v === true) {updatePermission(scope.row, 'admin')}}"
             />
           </template>
         </el-table-column>
@@ -115,7 +115,7 @@
           :disabled="loading"
           @click="shareFolder()"
         >
-          {{ $t('common.share') }}
+          {{ $t('common.save') }}
         </button>
       </div>
     </div>
@@ -150,7 +150,7 @@ export default {
         username: '',
         role: 'member'
       },
-      members: [],
+      newMembers: [],
       orgKey: null,
       sharingKey: null
     }
@@ -170,6 +170,18 @@ export default {
     },
     shareInvitationStatus () {
       return this.$t('data.sharing')
+    },
+    members () {
+      const share = this.myShares.find(s => s.id === this.folder.organizationId) || { members: [] }
+      return share.members.map(member => {
+        return {
+          username: member.email,
+          status: member.status,
+          role: member.role,
+          id: member.id,
+          key: null
+        }
+      }) || []
     }
   },
   methods: {
@@ -178,16 +190,6 @@ export default {
       this.folder = { organizationId: '', ...folder }
       if (this.folder.organizationId) {
         this.orgKey = await this.$cryptoService.getOrgKey(this.folder.organizationId)
-        const share = this.myShares.find(s => s.id === this.folder.organizationId) || {}
-        this.members = share.members.map(member => {
-          return {
-            username: member.email,
-            status: member.status,
-            role: member.role,
-            id: member.id,
-            key: null
-          }
-        }) || []
       } else {
         const shareKey = await this.$cryptoService.makeShareKey()
         this.sharingKey = shareKey ? shareKey[0].encryptedString : null
@@ -241,24 +243,34 @@ export default {
           folder: { id: folder.id, name: collectionName },
           members
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.folder', 1) }), 'success')
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
         this.closeDialog()
         this.$emit('updated-cipher')
       } catch (e) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.folder', 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.Folder', 1) }), 'warning')
         console.log(e)
       } finally {
         this.loading = false
       }
     },
     async shareFolder () {
+      if (!this.newMembers.length) {
+        this.closeDialog()
+        return
+      }
       try {
         this.loading = true
         const collection = await this.$cryptoService.encrypt(this.folder.name, this.orgKey)
         const collectionName = collection.encryptedString
         const ciphers = await Promise.all(this.folder.ciphers.map(async cipher => {
+          const type_ = cipher.type
+          if (type_ === 7) {
+            cipher.type = CipherType.SecureNote
+            cipher.secureNote.type = 0
+          }
           const cipherEnc = await this.$cipherService.encrypt(cipher, this.orgKey)
           const data = new CipherRequest(cipherEnc)
+          data.type = type_
           return {
             id: cipher.id,
             ...data
@@ -271,33 +283,55 @@ export default {
             name: collectionName,
             ciphers
           },
-          members: this.members
+          members: this.newMembers
         }
-        const url = 'cystack_platform/pm/sharing'
-        await this.$axios.$put(url, payload)
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.folder', 1) }), 'success')
+        if (this.folder.organizationId) {
+          const url = `cystack_platform/pm/sharing/${this.folder.organizationId}/members`
+          await this.$axios.$post(url, payload)
+        } else {
+          const url = 'cystack_platform/pm/sharing'
+          await this.$axios.$put(url, payload)
+        }
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
         this.closeDialog()
+        this.newMembers = []
         this.$emit('updated-cipher')
       } catch (e) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.folder', 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.Folder', 1) }), 'warning')
         console.log(e)
       } finally {
         this.loading = false
       }
     },
     async addMember () {
-      const publicKey = await this.getPublicKey(this.user.username)
-      const key = publicKey ? await this.generateMemberKey(publicKey, this.orgKey) : null
-      this.members.push({
-        ...this.user,
-        key,
-        status: 'pending'
-      })
+      const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
+      if (!emails.length) {
+        return
+      }
+      const members = await Promise.all(emails.map(async email => {
+        const publicKey = await this.getPublicKey(email)
+        const key = publicKey ? await this.generateMemberKey(publicKey, this.orgKey) : null
+        return {
+          id: null,
+          username: email,
+          key,
+          status: 'pending',
+          role: 'member'
+        }
+      }))
+      this.newMembers = this.newMembers.concat(members)
+      // const publicKey = await this.getPublicKey(this.user.username)
+      // const key = publicKey ? await this.generateMemberKey(publicKey, this.orgKey) : null
+      // this.newMembers.push({
+      //   ...this.user,
+      //   key,
+      //   status: 'pending'
+      // })
+      this.user.username = ''
     },
     async stopSharing (row) {
-      console.log(row)
       if (row.status === 'pending') {
-        this.members = this.members.filter(member => member !== row)
+        this.newMembers = this.newMembers.filter(member => member !== row)
         return
       }
       try {
@@ -305,8 +339,14 @@ export default {
         const folderEnc = await this.$folderService.encrypt(this.folder, personalKey)
         const data = new FolderRequest(folderEnc)
         const ciphers = await Promise.all(this.folder.ciphers.map(async cipher => {
+          const type_ = cipher.type
+          if (type_ === 7) {
+            cipher.type = CipherType.SecureNote
+            cipher.secureNote.type = 0
+          }
           const cipherEnc = await this.$cipherService.encrypt(cipher, personalKey)
           const data = new CipherRequest(cipherEnc)
+          data.type = type_
           return {
             id: cipher.id,
             ...data
@@ -315,10 +355,37 @@ export default {
         await this.$axios.$post(`cystack_platform/pm/sharing/${this.folder.organizationId}/members/${row.id}/stop`, {
           folder: { ...data, id: this.folder.id, ciphers }
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.folder', 1) }), 'success')
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
+        await this.getMyShares()
       } catch (error) {
         console.log(error)
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.folder', 1) }), 'warning')
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.Folder', 1) }), 'warning')
+      }
+    },
+    async getMyShares () {
+      this.$store.dispatch('LoadMyShares')
+    },
+    async updatePermission (row, role) {
+      if (row.id) {
+        try {
+          if (this.user.role === 'member-hide_passwords') {
+            this.user.role = 'member'
+            this.user.hide_passwords = true
+          } else {
+            this.user.hide_passwords = false
+          }
+          await this.$axios.$put(`cystack_platform/pm/sharing/${this.folder.organizationId}/members/${row.id}`, {
+            role
+          })
+          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
+          await this.getMyShares()
+          this.$emit('updated-cipher')
+        } catch (error) {
+          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.Folder', 1) }), 'warning')
+          console.log(error)
+        }
+      } else {
+        row.role = role
       }
     }
   }
