@@ -131,6 +131,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import cheerio from 'cheerio'
+import slugify from 'slugify'
 import Post from '~/components/landing/blog/Post'
 export default {
   components: { Post },
@@ -199,19 +200,23 @@ export default {
         const desc = $_('p').text()
         const tableOfContents = []
         $('h2').each(function (i, e) {
+          const title = $(e).text()
+          const slug = slugify(title, { locale: 'vi', lower: true })
           tableOfContents[i] = {
             text: $(e).text(),
-            link: 'content' + i
+            link: slug
           }
-          $(this).attr('id', 'content' + i)
+          $(this).attr('id', slug)
         })
         if (!tableOfContents.length) {
           $('h1').each(function (i, e) {
+            const title = $(e).text()
+            const slug = slugify(title, { locale: 'vi', lower: true })
             tableOfContents[i] = {
-              text: $(e).text(),
-              link: 'content' + i
+              text: title,
+              link: slug
             }
-            $(this).attr('id', 'content' + i)
+            $(this).attr('id', slug)
           })
         }
 

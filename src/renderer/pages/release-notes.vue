@@ -1,14 +1,13 @@
 <template>
   <div class="md:pt-[180px] pt-36 pb-20">
     <h1 class="text-left font-bold text-black landing-font-50 max-w-[890px] mb-20">
-      {{ $t('common.terms') }}
+      {{ $t('common.release_notes') }}
     </h1>
     <NotionContent :block-map="blockMap" />
   </div>
 </template>
-`
 <script>
-import NotionContent from '~/components/landing/terms/NotionContent'
+import NotionContent from '~/components/landing/release-notes/NotionContent'
 
 export default {
   components: {
@@ -20,15 +19,14 @@ export default {
 
   async asyncData ({ $notion }) {
     const [vi, en] = await Promise.all([
-      $notion.getPageBlocks('c62b914fc39b4faeae86281e363a3325'),
-      $notion.getPageBlocks('d3ac76becef0490d943f8bb7d27a9cae')
+      $notion.getPageBlocks('65b0656c-2496-4e35-ae16-ae5bd0fd4993'),
+      $notion.getPageBlocks('c33126d163e34dd0b90e28d0b74e0a3d')
     ])
     return { blockMap: { vi, en } }
   },
 
   data () {
     return {
-      docPrefix: 'landing.code_of_conduct',
       blockMap: {
         vi: null,
         en: null
@@ -38,7 +36,7 @@ export default {
 
   head () {
     return {
-      title: 'Terms | Locker Password Manager'
+      title: 'Release Notes'
     }
   }
 }
