@@ -300,6 +300,7 @@
                   {{ $t('common.share') }}
                 </li>
                 <li
+                  v-if="canManageItem(organizations, selectedFolder)"
                   class="el-dropdown-menu__item"
                   @click.prevent="deleteFolder(selectedFolder)"
                 >
