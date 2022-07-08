@@ -22,6 +22,7 @@ const NestingDelimiter = '/'
 export class CollectionService implements CollectionServiceAbstraction {
     decryptedCollectionCache: CollectionView[];
 
+    // eslint-disable-next-line no-useless-constructor
     constructor (private cryptoService: CryptoService, private userService: UserService,
         private storageService: StorageService, private i18nService: I18nService) {
     }

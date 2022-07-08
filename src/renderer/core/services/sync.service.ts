@@ -1,6 +1,6 @@
 import { ApiService } from '../../jslib/src/abstractions/api.service'
 import { CipherService } from '../abstractions/cipher.service'
-import { CollectionService } from '../abstractions/collection.service'
+import { CollectionService } from '../../jslib/src/abstractions/collection.service'
 import { CryptoService } from '../../jslib/src/abstractions/crypto.service'
 import { FolderService } from '../../jslib/src/abstractions/folder.service'
 import { MessagingService } from '../../jslib/src/abstractions/messaging.service'
@@ -12,7 +12,7 @@ import { SyncService as SyncServiceAbstraction } from '../../jslib/src/abstracti
 import { UserService } from '../../jslib/src/abstractions/user.service'
 
 import { CipherData } from '../../jslib/src/models/data/cipherData'
-import { CollectionData } from '../models/data/collectionData'
+import { CollectionData } from '../../jslib/src/models/data/collectionData'
 import { FolderData } from '../../jslib/src/models/data/folderData'
 import { OrganizationData } from '../../jslib/src/models/data/organizationData'
 import { PolicyData } from '../../jslib/src/models/data/policyData'
