@@ -204,7 +204,6 @@ Vue.mixin({
             this.$store.commit('UPDATE_CIPHER_COUNT', res.count.ciphers)
           }
           res = new SyncResponse(res)
-          console.log(res)
           allCiphers = allCiphers.concat(res.ciphers)
           await this.$syncService.syncProfile(res.profile)
           await this.$syncService.syncFolders(userId, res.folders)

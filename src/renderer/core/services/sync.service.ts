@@ -369,7 +369,6 @@ export class SyncService implements SyncServiceAbstraction {
   private async syncCollections (response: CollectionDetailsResponse[]) {
     const collections: { [id: string]: CollectionData } = {}
     response.forEach(c => {
-      console.log(c)
       collections[c.id] = new CollectionData(c)
     })
     return await this.collectionService.replace(collections)

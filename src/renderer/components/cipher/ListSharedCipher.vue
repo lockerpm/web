@@ -705,7 +705,6 @@ export default {
           return
         }
         let collections = await this.$collectionService.getAllDecrypted() || []
-        console.log(collections)
         collections = collections.filter(f => f.id)
         if (this.getRouteBaseName() === 'shares') {
           collections = collections.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)
