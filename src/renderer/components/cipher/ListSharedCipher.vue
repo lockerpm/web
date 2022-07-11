@@ -234,7 +234,7 @@
                             {{ $t('common.edit') }}
                           </el-dropdown-item>
                           <el-dropdown-item
-                            v-if="canShareItem(organizations, scope.row)"
+                            v-if="isOwner(organizations, scope.row)"
                             @click.native="shareItem(scope.row)"
                           >
                             {{ $t('common.share') }}
