@@ -330,6 +330,9 @@ Vue.mixin({
     async getCollections () {
       return await this.$collectionService.getAllDecrypted()
     },
+    async getOrganizations () {
+      return await this.$userService.getAllOrganizations()
+    },
     clipboardSuccessHandler () {
       this.notify(this.$t('common.copied'), 'success')
     },
@@ -482,13 +485,13 @@ Vue.mixin({
     getTeam (teams, orgId) {
       return find(teams, e => e.id === orgId) || {}
     },
-    canShareItem (teams, item) {
-      const team = this.getTeam(teams, item.organizationId)
-      if (team.id) {
-        return team.type === 0
-      }
-      return true
-    },
+    // isOwner (teams, item) {
+    //   const team = this.getTeam(teams, item.organizationId)
+    //   if (team.id) {
+    //     return team.type === 0
+    //   }
+    //   return true
+    // },
     canManageItem (teams, item) {
       const team = this.getTeam(teams, item.organizationId)
       // if (team.organization_id) {

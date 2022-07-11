@@ -549,7 +549,7 @@
                   </el-dropdown-menu>
                 </el-dropdown>
                 <button
-                  v-if="!scope.row.isDeleted && canShareItem(organizations, scope.row)"
+                  v-if="!scope.row.isDeleted && isOwner(organizations, scope.row)"
                   class="btn btn-icon btn-xs hover:bg-black-400"
                   :title="$t('common.share')"
                   @click="shareItem(scope.row)"
@@ -780,7 +780,7 @@
                   </el-dropdown-menu>
                 </el-dropdown>
                 <button
-                  v-if="!item.isDeleted && canShareItem(organizations, item) && !item.collectionIds.length"
+                  v-if="!item.isDeleted && isOwner(organizations, item) && !item.collectionIds.length"
                   class="btn btn-icon btn-xs hover:bg-black-400"
                   :title="$t('common.share')"
                   @click="shareItem(item)"
@@ -795,8 +795,8 @@
                     <i class="fas fa-ellipsis-h" />
                   </button>
                   <el-dropdown-menu slot="dropdown">
-                    <template v-if="!item.isDeleted && canManageItem(organizations, item)">
-                      <el-dropdown-item @click.native="addEdit(item)">
+                    <template v-if="!item.isDeleted">
+                      <el-dropdown-item v-if="canManageItem(organizations, item)" @click.native="addEdit(item)">
                         {{ $t('common.edit') }}
                       </el-dropdown-item>
                       <el-dropdown-item
@@ -805,19 +805,18 @@
                       >
                         {{ $t('common.clone') }}
                       </el-dropdown-item>
-                    </template>
-                    <template v-if="!item.isDeleted">
-                      <el-dropdown-item @click.native="moveFolders([item.id])">
+                      <el-dropdown-item v-if="isOwner(organizations, item)" @click.native="moveFolders([item.id])">
                         {{ $t('common.move_folder') }}
                       </el-dropdown-item>
                       <el-dropdown-item
+                        v-if="canManageItem(organizations, item)"
                         divided
                         @click.native="moveTrashCiphers([item.id])"
                       >
                         <span class="text-danger">{{ $t('common.delete') }}</span>
                       </el-dropdown-item>
                     </template>
-                    <template v-else>
+                    <template v-else-if="canManageItem(organizations, item)">
                       <el-dropdown-item
                         divided
                         @click.native="restoreCiphers([item.id])"
@@ -1276,7 +1275,7 @@ export default {
     },
     moveFolders (ids) {
       const cipher = this.ciphers.find(c => c.id === ids[0])
-      this.$refs.moveFolder.folderId = cipher ? cipher.folderId : null
+      this.$refs.moveFolder.folderId = cipher ? cipher.collectionIds && cipher.collectionIds.length ? cipher.collectionIds[0] : cipher.folderId : null
       this.$refs.moveFolder.openDialog(ids)
     },
     deleteCiphers (ids) {

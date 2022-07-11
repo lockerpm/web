@@ -49,7 +49,7 @@
             <i class="fa fa-pen" />
           </button>
           <button
-            v-if="canShareItem(organizations, cipher)"
+            v-if="isOwner(organizations, cipher)"
             class="btn btn-icon btn-xs btn-action"
             @click="shareItem(cipher)"
           >
