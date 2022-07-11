@@ -5,7 +5,7 @@ import find from 'lodash/find'
 import numeral from 'numeral'
 import { Avatar } from 'element-ui'
 import { CipherType } from '../jslib/src/enums'
-import { SyncResponse } from '../jslib/src/models/response'
+import { SyncResponse } from '../core/models/response/syncResponse'
 import { WALLET_APP_LIST } from '../utils/crypto/applist/index'
 // Vue.use(Image)
 Vue.mixin({
@@ -204,6 +204,7 @@ Vue.mixin({
             this.$store.commit('UPDATE_CIPHER_COUNT', res.count.ciphers)
           }
           res = new SyncResponse(res)
+          console.log(res)
           allCiphers = allCiphers.concat(res.ciphers)
           await this.$syncService.syncProfile(res.profile)
           await this.$syncService.syncFolders(userId, res.folders)

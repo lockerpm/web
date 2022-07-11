@@ -1,6 +1,6 @@
-import { ApiService } from '../../jslib/src/abstractions/api.service'
+import { ApiService } from '../../core/abstractions/api.service'
 import { CipherService } from '../abstractions/cipher.service'
-import { CollectionService } from '../../jslib/src/abstractions/collection.service'
+import { CollectionService } from '../../core/abstractions/collection.service'
 import { CryptoService } from '../../jslib/src/abstractions/crypto.service'
 import { FolderService } from '../../jslib/src/abstractions/folder.service'
 import { MessagingService } from '../../jslib/src/abstractions/messaging.service'
@@ -12,14 +12,14 @@ import { SyncService as SyncServiceAbstraction } from '../../jslib/src/abstracti
 import { UserService } from '../../jslib/src/abstractions/user.service'
 
 import { CipherData } from '../../jslib/src/models/data/cipherData'
-import { CollectionData } from '../../jslib/src/models/data/collectionData'
+import { CollectionData } from '../../core/models/data/collectionData'
 import { FolderData } from '../../jslib/src/models/data/folderData'
 import { OrganizationData } from '../../jslib/src/models/data/organizationData'
 import { PolicyData } from '../../jslib/src/models/data/policyData'
 import { SendData } from '../../jslib/src/models/data/sendData'
 
 import { CipherResponse } from '../../jslib/src/models/response/cipherResponse'
-import { CollectionDetailsResponse } from '../../jslib/src/models/response/collectionResponse'
+import { CollectionDetailsResponse } from '../../core/models/response/collectionResponse'
 import { DomainsResponse } from '../../jslib/src/models/response/domainsResponse'
 import { FolderResponse } from '../../jslib/src/models/response/folderResponse'
 import {
@@ -369,6 +369,7 @@ export class SyncService implements SyncServiceAbstraction {
   private async syncCollections (response: CollectionDetailsResponse[]) {
     const collections: { [id: string]: CollectionData } = {}
     response.forEach(c => {
+      console.log(c)
       collections[c.id] = new CollectionData(c)
     })
     return await this.collectionService.replace(collections)
