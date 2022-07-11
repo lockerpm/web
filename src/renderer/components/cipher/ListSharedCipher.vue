@@ -56,7 +56,7 @@
         <LazyHydrate when-visible>
           <el-table
             ref="multipleTable"
-            :data="(collections || []).concat(dataRendered)"
+            :data="(collections || []).concat(ciphers)"
             style="width: 100%"
             row-class-name="hover-table-row"
           >
@@ -687,6 +687,9 @@ export default {
                 }
               })
             })
+            // if (members.length) {
+            //   resultMapping.push(item)
+            // }
           })
           result = resultMapping
         }
@@ -731,6 +734,9 @@ export default {
                 }
               })
             })
+            // if (members.length) {
+            //   resultMapping.push(item)
+            // }
           })
           collections = resultMapping
         }
@@ -896,7 +902,7 @@ export default {
               ciphers
             }
           }
-          await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, payload)
+          memberId ? await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, payload) : await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/folders/${cipher.id}/stop`, payload)
         } else {
           let memberId = null
           if (cipher.user) {
@@ -914,10 +920,15 @@ export default {
           // console.log(data)
           data.type = type_
           cipher.type = type_
-          await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, {
-            folder: null,
-            cipher: { ...data, id: cipher.id }
-          })
+          memberId
+            ? await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, {
+              folder: null,
+              cipher: { ...data, id: cipher.id }
+            })
+            : await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/ciphers/${cipher.id}/stop`, {
+              folder: null,
+              cipher: { ...data, id: cipher.id }
+            })
         }
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type || 'Folder'}`, 1) }), 'success')
         await this.getMyShares()

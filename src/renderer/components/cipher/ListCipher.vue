@@ -5,18 +5,16 @@
   >
     <!-- Navigation Menu -->
     <div v-if="['vault', 'passwords', 'notes', 'identities', 'cards', 'crypto-backups'].includes(getRouteBaseName())" class="navigation-bar">
-      <template>
-        <nuxt-link
-          v-for="(item, index) in menuVault"
-          :key="index"
-          :to="localeRoute({name: item.routeName})"
-          active-class="navigation-item__active"
-          class="navigation-item"
-          exact
-        >
-          {{ $t(`sidebar.${item.label}`) }}
-        </nuxt-link>
-      </template>
+      <nuxt-link
+        v-for="(item, index) in menuVault"
+        :key="index"
+        :to="localeRoute({name: item.routeName})"
+        active-class="navigation-item__active"
+        class="navigation-item"
+        exact
+      >
+        {{ $t(`sidebar.${item.label}`) }}
+      </nuxt-link>
     </div>
     <!-- Navigation Menu end -->
 
@@ -73,6 +71,8 @@
                 </span>
               </template>
             </div>
+
+            <!-- Add new button -->
             <template v-if="!['shares', 'trash'].includes(routeName)">
               <div class="mx-6 text-head-4"> | </div>
               <div class="self-center">
@@ -107,7 +107,10 @@
                 </template>
               </div>
             </template>
+            <!-- Add new button end -->
           </div>
+
+          <!-- view folder button -->
           <div
             v-if="getRouteBaseName()==='vault'"
             class="self-center"
@@ -125,7 +128,10 @@
               /></span>
             </button>
           </div>
+          <!-- view folder button -->
         </div>
+
+        <!-- number of items -->
         <div
           v-if="ciphers && !viewFolder"
           class="uppercase text-head-6"
@@ -138,12 +144,12 @@
         >
           <span class="text-primary font-semibold">{{ folders.length }}</span> {{ $tc('type.Folder', folders.length) }}
         </div>
+        <!-- number of items end -->
       </div>
       <!-- Overview end -->
 
-      <!-- Details -->
       <div class="flex items-center justify-end content-end mb-5">
-        <!-- Folder Navigation -->
+        <!-- Folder breadcrumb -->
         <!-- <div class="flex-grow">
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <template v-if="getRouteBaseName() === 'vault-folders-folderId'">
@@ -153,7 +159,7 @@
                 {{ $t('sidebar.vault') }}
               </el-breadcrumb-item>
               <el-breadcrumb-item class="flex items-center">
-                {{ folder.name }}
+                {{ folder.name || collection.name }}
               </el-breadcrumb-item>
             </template>
             <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId'">
@@ -166,32 +172,13 @@
                 {{ getTeam(teams, $route.params.teamId).name }} - {{ collection.name }}
               </el-breadcrumb-item>
             </template>
-            <template v-else-if="getRouteBaseName() ==='vault'">
-              <span class="font-medium">Folders</span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='shares'">
-              <span class="font-medium">Shares</span>
-            </template>
-            <template v-else-if="getRouteBaseName() ==='trash'">
-              <span class="font-medium">Trash</span>
-            </template>
-            <template v-else>
-              <el-breadcrumb-item
-                :to="localeRoute({name: routeName})"
-              >
-                {{ $tc(`type.${type}`, 2) }}
-              </el-breadcrumb-item>
-            </template>
           </el-breadcrumb>
         </div> -->
-        <!-- Folder Navigation end -->
+        <!-- Folder breadcrumb end -->
 
-        <div class="header-actions">
+        <!-- Sort menu -->
+        <div v-if="!viewFolder" class="header-actions">
           <div class="flex">
-            <!-- <button v-if="!['vault-folders-folderId', 'vault-teams-teamId-tfolders-tfolderId', 'vault', 'shares', 'trash'].includes(getRouteBaseName())" class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold mr-3" @click="handleAddButton">
-              <i class="el-icon-circle-plus-outline text-lg" />
-              <div class="ml-3 break-all">Add new</div>
-            </button> -->
             <el-dropdown trigger="click" class="self-center">
               <div class="text-sm text-black-600 font-semibold">
                 {{ $t('data.ciphers.sort_by') }} <i class="el-icon-caret-bottom el-icon--right" />
@@ -276,10 +263,6 @@
                 </div>
               </div>
             </template>
-            <!-- <div class="px-4 py-4 flex items-center cursor-pointer rounded border border-dashed border-[#E6E6E8] hover:border-primary justify-center font-semibold" @click="addEditFolder">
-              <i class="el-icon-circle-plus-outline text-lg" />
-              <div class="ml-3 break-all">New Folder</div>
-            </div> -->
             <component
               :is="context"
               ref="menu"
@@ -404,17 +387,6 @@
 
       <!-- List Ciphers -->
       <client-only v-if="!viewFolder">
-        <!-- <div v-if="getRouteBaseName() === 'vault'" class="flex justify-between">
-          <div
-            class="mb font-medium"
-          >
-            {{ $t('data.ciphers.all_items') }}
-          </div>
-          <button class="px-4 py-2 flex items-center cursor-pointer btn-default rounded justify-center font-semibold" @click="chooseCipherType">
-            <i class="el-icon-circle-plus-outline text-lg" />
-            <div class="ml-3 break-all">Add new</div>
-          </button>
-        </div> -->
         <!-- <el-table
           ref="multipleTable"
           :data="dataRendered || []"
@@ -736,21 +708,6 @@
                         {{ $t('common.copy') }} {{ $t('common.note') }}
                       </el-dropdown-item>
                     </template>
-                    <!-- <template v-if="item.type === CipherType.CryptoAccount">
-                      <el-dropdown-item
-                        v-clipboard:copy="item.cryptoAccount.username"
-                        v-clipboard:success="clipboardSuccessHandler"
-                      >
-                        {{ $t('common.copy') }} {{ $t('common.username') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item
-                        v-clipboard:copy="item.cryptoAccount.password"
-                        v-clipboard:success="clipboardSuccessHandler"
-                        :disabled="!canViewItem(organizations, item)"
-                      >
-                        {{ $t('common.copy') }} {{ $t('common.password') }}
-                      </el-dropdown-item>
-                    </template> -->
                     <template v-if="item.type === CipherType.CryptoWallet && item.cryptoWallet">
                       <el-dropdown-item
                         v-clipboard:copy="item.cryptoWallet.seed"
