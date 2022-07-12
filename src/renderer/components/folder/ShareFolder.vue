@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="dialogVisible"
-    width="600px"
+    width="650px"
     destroy-on-close
     top="5vh"
     custom-class="locker-dialog"
@@ -53,10 +53,13 @@
           width="100"
         >
           <template slot-scope="scope">
-            <el-checkbox
-              :value="scope.row.role === 'member'"
-              @change="(v) => { if (v === true) {updatePermission(scope.row, 'member')}}"
-            />
+            <el-radio
+              label="member"
+              :value="scope.row.role"
+              @change="(v) => { if (v === 'admin') {updatePermission(scope.row, 'member')}}"
+            >
+              <span />
+            </el-radio>
           </template>
         </el-table-column>
         <el-table-column
@@ -64,10 +67,13 @@
           width="100"
         >
           <template slot-scope="scope">
-            <el-checkbox
-              :value="scope.row.role === 'admin'"
-              @change="(v) => { if (v === true) {updatePermission(scope.row, 'admin')}}"
-            />
+            <el-radio
+              label="admin"
+              :value="scope.row.role"
+              @change="(v) => { if (v === 'member') {updatePermission(scope.row, 'admin')}}"
+            >
+              <span />
+            </el-radio>
           </template>
         </el-table-column>
         <el-table-column :label="$t('common.status')">
@@ -208,51 +214,6 @@ export default {
       const key = await this.$cryptoService.rsaEncrypt(orgKey.key, pk.buffer)
       return key.encryptedString
     },
-    async shareItem (folder) {
-      const shareKey = await this.$cryptoService.makeShareKey()
-      try {
-        this.loading = true
-        // const publicKey = await this.getPublicKey(this.user.username)
-        const collection = await this.$cryptoService.encrypt(folder.name, shareKey[1])
-        const collectionName = collection.encryptedString
-        const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
-        // const promises = []
-        // const members = []
-        // emails.forEach(email => {
-        //   const promise = this.getPublicKey(email).then(publicKey => {
-        //     this.generateMemberKey(publicKey, shareKey[1]).then(key => {
-        //       members.push({ username: email, key, role: this.user.role })
-        //       return {}
-        //     })
-        //   })
-        //   promises.push(promise)
-        // })
-        // await Promise.all(promises)
-        const members = await Promise.all(emails.map(async email => {
-          const publicKey = await this.getPublicKey(email)
-          const key = await this.generateMemberKey(publicKey, shareKey[1])
-          return {
-            username: email,
-            role: this.user.role,
-            key
-          }
-        }))
-        const url = 'cystack_platform/pm/sharing'
-        await this.$axios.$put(url, {
-          sharing_key: shareKey[0].encryptedString,
-          folder: { id: folder.id, name: collectionName },
-          members
-        })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
-        this.closeDialog()
-        this.$emit('updated-cipher')
-      } catch (e) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.Folder', 1) }), 'warning')
-        console.log(e)
-      } finally {
-        this.loading = false
-      }
-    },
     async shareFolder () {
       if (!this.newMembers.length) {
         this.closeDialog()
@@ -324,13 +285,6 @@ export default {
         }
       }))
       this.newMembers = this.newMembers.concat(members)
-      // const publicKey = await this.getPublicKey(this.user.username)
-      // const key = publicKey ? await this.generateMemberKey(publicKey, this.orgKey) : null
-      // this.newMembers.push({
-      //   ...this.user,
-      //   key,
-      //   status: 'pending'
-      // })
       this.user.username = ''
     },
     async stopSharing (row) {
@@ -362,7 +316,6 @@ export default {
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
         await this.getMyShares()
       } catch (error) {
-        console.log(error)
         this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.Folder', 1) }), 'warning')
       }
     },

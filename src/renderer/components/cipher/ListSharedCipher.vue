@@ -128,7 +128,7 @@
                 </span>
               </template>
             </el-table-column>
-            <template v-if="getRouteBaseName()==='shares-your-shares'">
+            <!-- <template v-if="getRouteBaseName()==='shares-your-shares'">
               <el-table-column
                 :label="$t('common.user')"
                 show-overflow-tooltip
@@ -143,7 +143,6 @@
                 show-overflow-tooltip
               >
                 <template v-if="scope.row.user" slot-scope="scope">
-                  <!-- <span>{{ scope.row.user.status || 'N/A' }}</span> -->
                   <span
                     class="label whitespace-normal"
                     :class="{'label-primary-light': scope.row.user.status === 'confirmed',
@@ -166,7 +165,7 @@
                   <span>{{ scope.row.user? scope.row.user.share_type : 'N/A' }}</span>
                 </template>
               </el-table-column>
-            </template>
+            </template> -->
             <template v-if="getRouteBaseName() === 'shares'">
               <el-table-column
                 :label="$t('common.status')"
@@ -318,7 +317,15 @@
                           <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
                         </el-dropdown-item>
                       </template>
-                      <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'invited'">
+                      <template v-else-if="getRouteBaseName()==='shares-your-shares'">
+                        <el-dropdown-item @click.native="scope.row.type?shareItem(scope.row):shareFolder(scope.row)">
+                          {{ $t('common.edit') }}
+                        </el-dropdown-item>
+                        <el-dropdown-item @click.native="stopSharing(scope.row)">
+                          {{ $t('data.ciphers.stop_sharing') }}
+                        </el-dropdown-item>
+                      </template>
+                      <!-- <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'invited'">
                         <el-dropdown-item @click.native="editShareType(scope.row)">
                           {{ $t('common.edit') }}
                         </el-dropdown-item>
@@ -341,7 +348,7 @@
                         <el-dropdown-item @click.native="stopSharing(scope.row)">
                           {{ $t('common.cancel') }}
                         </el-dropdown-item>
-                      </template>
+                      </template> -->
                     </el-dropdown-menu>
                   </el-dropdown>
                 </div>
@@ -677,19 +684,19 @@ export default {
           result.forEach(item => {
             const org = find(this.myShares, e => e.organization_id === item.organizationId) || {}
             const members = org.members || []
-            members.forEach(member => {
-              resultMapping.push({
-                ...item,
-                subTitle: item.subTitle,
-                user: {
-                  ...member,
-                  share_type: member.share_type === 'Edit' ? this.$t('data.ciphers.editable') : member.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
-                }
-              })
-            })
-            // if (members.length) {
-            //   resultMapping.push(item)
-            // }
+            // members.forEach(member => {
+            //   resultMapping.push({
+            //     ...item,
+            //     subTitle: item.subTitle,
+            //     user: {
+            //       ...member,
+            //       share_type: member.share_type === 'Edit' ? this.$t('data.ciphers.editable') : member.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
+            //     }
+            //   })
+            // })
+            if (members.length) {
+              resultMapping.push(item)
+            }
           })
           result = resultMapping
         }
@@ -724,19 +731,19 @@ export default {
           collections.forEach(item => {
             const org = find(this.myShares, e => e.organization_id === item.organizationId) || {}
             const members = org.members || []
-            members.forEach(member => {
-              resultMapping.push({
-                ...item,
-                subTitle: item.subTitle,
-                user: {
-                  ...member,
-                  share_type: member.share_type === 'Edit' ? this.$t('data.ciphers.editable') : member.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
-                }
-              })
-            })
-            // if (members.length) {
-            //   resultMapping.push(item)
-            // }
+            // members.forEach(member => {
+            //   resultMapping.push({
+            //     ...item,
+            //     subTitle: item.subTitle,
+            //     user: {
+            //       ...member,
+            //       share_type: member.share_type === 'Edit' ? this.$t('data.ciphers.editable') : member.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
+            //     }
+            //   })
+            // })
+            if (members.length) {
+              resultMapping.push(item)
+            }
           })
           collections = resultMapping
         }
@@ -902,7 +909,7 @@ export default {
               ciphers
             }
           }
-          memberId ? await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, payload) : await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/folders/${cipher.id}/stop`, payload)
+          memberId ? await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, payload) : await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/stop`, payload)
         } else {
           let memberId = null
           if (cipher.user) {
@@ -925,7 +932,7 @@ export default {
               folder: null,
               cipher: { ...data, id: cipher.id }
             })
-            : await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/ciphers/${cipher.id}/stop`, {
+            : await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/stop`, {
               folder: null,
               cipher: { ...data, id: cipher.id }
             })
