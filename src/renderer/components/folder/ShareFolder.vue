@@ -298,7 +298,7 @@ export default {
         this.$emit('updated-cipher')
       } catch (e) {
         if (e.response && e.response.data && e.response.data.code === '5000') {
-          this.notify(this.$t('errors.5000'), 'error')
+          this.notify(this.$tc('errors.5000', 2), 'error')
         } else {
           this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.Folder', 1) }), 'warning')
         }
