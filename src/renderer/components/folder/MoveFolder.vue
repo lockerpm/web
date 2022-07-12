@@ -152,7 +152,7 @@ export default {
         this.$emit('reset-selection')
       } catch (e) {
         if (e.response && e.response.data && e.response.data.code === '5000') {
-          this.notify(this.$t('errors.5000'), 'error')
+          this.notify(this.$tc('errors.5000', 1), 'error')
         } else {
           this.notify(this.$tc('data.notifications.move_failed', this.ids.length), 'warning')
         }
