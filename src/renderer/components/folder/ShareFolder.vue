@@ -17,11 +17,11 @@
       </div>
     </div>
     <div class="text-left">
-      <div class="grid grid-cols-3 gap-x-2 mb-4">
+      <div class="grid grid-cols-4 gap-x-2 mb-4">
         <InputText
           v-model="user.username"
           label="Email"
-          class="w-full col-span-2"
+          class="w-full col-span-3"
         />
         <!-- <InputSelect
           label="Role"

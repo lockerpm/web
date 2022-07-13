@@ -56,7 +56,7 @@
         <LazyHydrate when-visible>
           <el-table
             ref="multipleTable"
-            :data="(collections || []).concat(ciphers)"
+            :data="tableData"
             style="width: 100%"
             row-class-name="hover-table-row"
           >
@@ -480,7 +480,7 @@ export default {
       data: {},
       CipherType,
       multipleSelection: [],
-      loading: true,
+      loading: false,
       orderField: 'name', // revisionDate
       orderDirection: 'desc',
       selectedFolder: {},
@@ -585,21 +585,16 @@ export default {
     },
     canCreateTeamFolder () {
       return this.teams.some(e => ['owner', 'admin'].includes(e.role))
+    },
+    tableData () {
+      return this.invitations.concat(this.collections, this.ciphers)
     }
-    // shareTypeMapping () {
-    //   return {
-    //     1: 'Edit',
-    //     2: 'Only fill',
-    //     3: 'View'
-    //   }
-    // }
-    // pendingShares () {
-    //   return this.invitations.filter(item => item.status === 'invited').length
-    // }
   },
   watch: {
-    ciphers () {
-      if (this.ciphers) {
+    '$store.state.syncing' () {
+      if (this.$store.state.syncing) {
+        this.loading = true
+      } else {
         this.loading = false
       }
     }
@@ -630,8 +625,6 @@ export default {
   asyncComputed: {
     allCiphers: {
       async get () {
-        // this.loading = true
-        // const result = await this.$cipherService.getAllDecrypted()
         const deletedFilter = c => {
           return c.isDeleted === this.deleted
         }
@@ -676,7 +669,7 @@ export default {
               share_type: org.type === 1 ? this.$t('data.ciphers.editable') : item.viewPassword ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
             }
           })
-          result = this.invitations.concat(result)
+          // result = this.invitations.concat(result)
         } else if (this.getRouteBaseName() === 'shares-your-shares') {
           // const myShare = await this.$axios.$get('cystack_platform/pm/sharing/my_share') || []
           result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type === 0)
@@ -702,9 +695,6 @@ export default {
         }
         result = orderBy(result, ['user.status'], [this.orderDirection]) || []
         this.dataRendered = result.slice(0, 50)
-        // if (!this.$store.state.syncing) {
-        //   this.loading = false
-        // }
         return result
       },
       watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection', 'invitations', 'myShares']
@@ -752,9 +742,6 @@ export default {
           f.ciphersCount = ciphers && ciphers.length
           f.ciphers = ciphers
         })
-        if (!this.$store.state.syncing) {
-          this.loading = false
-        }
         return collections
       },
       watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
