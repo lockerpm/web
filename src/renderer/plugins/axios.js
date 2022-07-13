@@ -2,7 +2,7 @@ import https from 'https'
 
 export default function ({ store, $axios, app, isDev, redirect, route, env }) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
-  if (env.environment !== 'staging') {
+  if (env.environment === 'staging') {
     $axios.setHeader('CF-Access-Client-Id', env.accessClientId || '')
     $axios.setHeader('CF-Access-Client-Secret', env.accessClientSecret || '')
   }
