@@ -1,11 +1,7 @@
 import https from 'https'
 
-export default function ({ store, $axios, app, isDev, redirect, route, env }) {
+export default function ({ store, $axios, app, isDev, redirect, route }) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
-  if (env.environment === 'staging') {
-    $axios.setHeader('CF-Access-Client-Id', env.accessClientId || '')
-    $axios.setHeader('CF-Access-Client-Secret', env.accessClientSecret || '')
-  }
   $axios.interceptors.request.use(request => {
     // Get token from auth.js store
     // const token = store.state.auth.accessToken
@@ -14,6 +10,10 @@ export default function ({ store, $axios, app, isDev, redirect, route, env }) {
     // Update token axios header
     if (token) {
       request.headers.common.Authorization = 'Bearer ' + token
+    }
+    if (process.env.environment === 'staging') {
+      request.headers['CF-Access-Client-Id'] = process.env.accessClientId || ''
+      request.headers['CF-Access-Client-Secret'] = process.env.accessClientSecret || ''
     }
     return request
   })
