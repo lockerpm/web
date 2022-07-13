@@ -1,6 +1,4 @@
 import https from 'https'
-const clientId = process.env.ACCESS_CLIENT_ID
-const clientSecret = process.env.ACCESS_CLIENT_SECRET
 export default function ({ store, $axios, app, isDev, redirect, route }) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.interceptors.request.use(request => {
@@ -13,9 +11,9 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
       request.headers.common.Authorization = 'Bearer ' + token
     }
     if (process.env.environment === 'staging') {
-      console.log(process.env.baseApiUrl, process.env.accessClientId)
-      request.headers['CF-Access-Client-Id'] = clientId || process.env.accessClientId || process.env.ACCESS_CLIENT_ID || ''
-      request.headers['CF-Access-Client-Secret'] = clientSecret || process.env.accessClientSecret || process.env.ACCESS_CLIENT_SECRET || ''
+      console.log(process.env.accessClientId, process.env.accessClientSecret)
+      request.headers['CF-Access-Client-Id'] = process.env.accessClientId || ''
+      request.headers['CF-Access-Client-Secret'] = process.env.accessClientSecret || ''
     }
     return request
   })
