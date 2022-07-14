@@ -45,7 +45,7 @@
           {{ $t('common.manage_plans') }}
         </button>
       </div>
-      <!-- <div class="mr-3 self-center">
+      <div class="mr-3 self-center">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
             <i class="fas fa-bell text-head-5 hover:text-primary" />
@@ -69,20 +69,40 @@
           >
             <div class="flex justify-between p-4 text-head-6 font-semibold">
               <div>
-                Notifications
+                {{ $t('sidebar.notifications') }}
               </div>
-              <div class="text-[#005AE4]">
-                Mark all as Read
+              <div class="text-[#005AE4] cursor-pointer" @click="setReadAll">
+                {{ $t('data.notifications.mark_all_as_read') }}
               </div>
             </div>
-            <el-dropdown-item icon="el-icon-plus">Action 1</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-plus">Action 2</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-plus-outline">Action 3</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-check">Action 4</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-check">Action 5</el-dropdown-item>
+            <template v-if="notifications.count > 0">
+              <el-dropdown-item
+                v-for="(item, index) in notifications.results"
+                :key="index"
+                class="mt-2"
+              >
+                <div
+                  class="flex gap-4"
+                  @click="routeNotification(item)"
+                >
+                  <div>
+                    <img v-if="item.type === 'item_sharing'" class="mt-2" src="~/assets/images/icons/noti_sharing.svg">
+                    <img v-else-if="item.type === 'emergency_access'" class="mt-2" src="~/assets/images/icons/noti_emergencyAccess.svg">
+                    <img v-else-if="item.type === 'data_breach'" class="mt-2" src="~/assets/images/icons/noti_dataBreach.svg">
+                    <img v-else-if="item.type === 'password_tip_trick'" class="mt-2" src="~/assets/images/icons/noti_tipTrick.svg">
+                    <img v-else class="mt-2" src="~/assets/images/icons/noti_marketing.svg">
+                  </div>
+                  <div>
+                    <div v-if="locale==='vi'" class="font-semibold">{{ item.title.vi }}</div>
+                    <div v-if="locale==='en'" class="font-semibold">{{ item.title.en }}</div>
+                    <div class="">{{ $moment(item.publish_time*1000).fromNow(true) }}</div>
+                  </div>
+                </div>
+              </el-dropdown-item>
+            </template>
           </el-dropdown-menu>
         </el-dropdown>
-      </div> -->
+      </div>
       <el-dropdown trigger="click">
         <div class="flex items-center">
           <el-avatar
@@ -261,6 +281,38 @@ export default {
       if (headerDiv.classList.contains('sidebar-open')) {
         headerDiv.classList.remove('sidebar-open')
       }
+    },
+    setReadAll () {
+      this.$axios.$get('/notifications/read_all?scope=pwdmanager')
+        .then(response => {
+          this.$store.dispatch('LoadNotification')
+        }).catch(() => {})
+    },
+    routeNotification (item) {
+      this.setRead(item.id)
+      switch (item.type) {
+      case 'item_sharing': {
+        this.$router.push(this.localeRoute({ name: 'shares' }))
+        break
+      }
+      case 'emergency_access': {
+        this.$router.push(this.localeRoute({ name: 'settings-security' }))
+        break
+      }
+      default:
+        this.$router.push({
+          name: 'vault'
+        })
+        break
+      }
+    },
+    setRead (id) {
+      this.$axios.$put(`/notifications/${id}`, { read: true }).then(
+        response => {
+          this.$store.dispatch('LoadNotification')
+        }).catch(() => {
+        // error callback
+      })
     }
   }
 }
