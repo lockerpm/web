@@ -167,6 +167,7 @@ export default {
         this.disconnectSocket()
       }
       if (newValue === false) {
+        this.$store.dispatch('LoadNotification')
         this.$store.dispatch('LoadTeams')
         // console.log('unlocked sync')
         this.getSyncData()
@@ -176,6 +177,9 @@ export default {
         this.getShareInvitations()
         this.getMyShares()
         this.$store.dispatch('LoadCurrentPlan')
+        this.intervalGet = setInterval(() => {
+          this.$store.dispatch('LoadNotification')
+        }, 1000 * 30)
       }
     }
   },

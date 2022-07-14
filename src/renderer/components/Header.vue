@@ -1,10 +1,23 @@
 <template>
-  <div id="header-default" class="lg:px-28 md:px-10 px-4 h-[60px] flex items-center border-0 border-b border-black-200 relative">
-    <div id="nav-content" class="sidebar" style="z-index: 1000">
-      <SideBarMenu :closable="true" @close="hideNavMenu" />
+  <div
+    id="header-default"
+    class="lg:px-28 md:px-10 px-4 h-[60px] flex items-center border-0 border-b border-black-200 relative"
+  >
+    <div
+      id="nav-content"
+      class="sidebar"
+      style="z-index: 1000"
+    >
+      <SideBarMenu
+        :closable="true"
+        @close="hideNavMenu"
+      />
     </div>
     <div class="flex-grow">
-      <div v-if="shouldShowSearch" class="text-black-600 py-3">
+      <div
+        v-if="shouldShowSearch"
+        class="text-black-600 py-3"
+      >
         <i class="!hidden sm:!inline-block fa fa-search mr-4 rounded-full shadow-md p-2" />
         <input
           type="text"
@@ -17,24 +30,77 @@
     </div>
     <div class="flex">
       <div class="mr-3 md:block hidden">
-        <button class="btn btn-outline-primary" @click="$router.push(localePath({name: 'settings-referral'}))">
+        <button
+          class="btn btn-outline-primary"
+          @click="$router.push(localePath({name: 'settings-referral'}))"
+        >
           {{ $t('sidebar.referral') }}
         </button>
       </div>
       <div class="mr-3 md:block hidden">
-        <button class="btn btn-primary" @click="$router.push(localePath({name: 'manage-plans'}))">
+        <button
+          class="btn btn-primary"
+          @click="$router.push(localePath({name: 'manage-plans'}))"
+        >
           {{ $t('common.manage_plans') }}
         </button>
       </div>
+      <!-- <div class="mr-3 self-center">
+        <el-dropdown trigger="click">
+          <span class="el-dropdown-link">
+            <i class="fas fa-bell text-head-5 hover:text-primary" />
+            <span
+              v-if="notifications.unread_count > 0"
+              class="count-noti-container"
+            >
+              <span
+                v-if="notifications.unread_count<=99"
+                class="count-noti"
+              >{{ notifications.unread_count }}</span>
+              <span
+                v-else
+                class="count-noti"
+              >99+</span>
+            </span>
+          </span>
+          <el-dropdown-menu
+            slot="dropdown"
+            class="w-[400px]"
+          >
+            <div class="flex justify-between p-4 text-head-6 font-semibold">
+              <div>
+                Notifications
+              </div>
+              <div class="text-[#005AE4]">
+                Mark all as Read
+              </div>
+            </div>
+            <el-dropdown-item icon="el-icon-plus">Action 1</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-circle-plus">Action 2</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-circle-plus-outline">Action 3</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-check">Action 4</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-circle-check">Action 5</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div> -->
       <el-dropdown trigger="click">
         <div class="flex items-center">
-          <el-avatar :size="35" :src="currentUser.avatar" class="mr-2" />
+          <el-avatar
+            :size="35"
+            :src="currentUser.avatar"
+            class="mr-2"
+          />
           <div>
-            <div class="text-sm font-semibold"><nobr>{{ currentUser.full_name }} <i class="el-icon-caret-bottom el-icon--right" /></nobr></div>
+            <div class="text-sm font-semibold">
+              <nobr>{{ currentUser.full_name }} <i class="el-icon-caret-bottom el-icon--right" /></nobr>
+            </div>
             <div class="text-xs text-black-600">{{ currentPlan.name }}</div>
           </div>
         </div>
-        <el-dropdown-menu slot="dropdown" class="min-w-[200px]">
+        <el-dropdown-menu
+          slot="dropdown"
+          class="min-w-[200px]"
+        >
           <el-dropdown-item
             class="text-warning md:hidden"
             icon="fa fa-tasks"
@@ -56,8 +122,15 @@
           >
             {{ $t('data.profile_menu.account_settings') }}
           </el-dropdown-item>
-          <el-dropdown-item class="text-warning" icon="far fa-life-ring">
-            <a class="hover:no-underline text-current hover:text-current" :href="locale==='vi'?'https://support.locker.io/vi':'https://support.locker.io'" target="_blank">
+          <el-dropdown-item
+            class="text-warning"
+            icon="far fa-life-ring"
+          >
+            <a
+              class="hover:no-underline text-current hover:text-current"
+              :href="locale==='vi'?'https://support.locker.io/vi':'https://support.locker.io'"
+              target="_blank"
+            >
               {{ $t('data.profile_menu.support_center') }}
             </a>
           </el-dropdown-item>
@@ -66,15 +139,28 @@
               {{ $t('data.profile_menu.tour') }}
             </a>
           </el-dropdown-item> -->
-          <el-dropdown-item class="text-warning" icon="far fa-comment">
-            <a class="hover:no-underline text-current hover:text-current" href="https://zo8rr5fc706.typeform.com/to/OotlSyQ7" target="_blank">
+          <el-dropdown-item
+            class="text-warning"
+            icon="far fa-comment"
+          >
+            <a
+              class="hover:no-underline text-current hover:text-current"
+              href="https://zo8rr5fc706.typeform.com/to/OotlSyQ7"
+              target="_blank"
+            >
               {{ $t('data.profile_menu.feedback') }}
             </a>
           </el-dropdown-item>
-          <el-dropdown-item icon="fas fa-lock" @click.native="lock">
+          <el-dropdown-item
+            icon="fas fa-lock"
+            @click.native="lock"
+          >
             {{ $t('data.profile_menu.lock') }}
           </el-dropdown-item>
-          <el-dropdown-item icon="fas fa-sign-out-alt" @click.native="logout">
+          <el-dropdown-item
+            icon="fas fa-sign-out-alt"
+            @click.native="logout"
+          >
             {{ $t('data.profile_menu.logout') }}
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -112,7 +198,8 @@ export default {
     },
     manageableTeams () {
       return this.teams.filter(e => ['owner', 'admin'].includes(e.role) && e.is_business)
-    }
+    },
+    notifications () { return this.$store.state.notifications }
   },
   mounted () {
     // Set click event
@@ -182,10 +269,10 @@ export default {
 /* Enter and leave animations can use different */
 /* durations and timing functions.              */
 .slide-fade-enter-active {
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 }
 .slide-fade-leave-active {
-  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
