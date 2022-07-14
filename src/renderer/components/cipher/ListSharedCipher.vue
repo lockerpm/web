@@ -561,7 +561,7 @@ export default {
       return this.ciphers || []
     },
     shouldRenderNoCipher () {
-      const haveCipher = this.filteredCiphers.length + this.collections?.length
+      const haveCipher = this.filteredCiphers.length + this.collections?.length + this.invitations.length
       if (this.getRouteBaseName() === 'vault') {
         return this.folders && !this.folders.length && !haveCipher
       }
