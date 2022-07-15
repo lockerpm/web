@@ -90,22 +90,14 @@
             </template> -->
             <div class="mt-10">
               <div class="text-center absolute bottom-5 left-6 right-12">
-                <a
+                <div
                   v-if="plan.button.external_link"
-                  class="landing-btn !w-full sm:w-auto sm:ml-4"
+                  class="landing-btn !w-full sm:w-auto sm:ml-4 cursor-pointer"
                   style="font-weight: 600"
-                  :href="plan.button.external_link"
+                  @click="choosePlan(plan.alias)"
                 >
                   {{ plan.button.text }}
-                </a>
-                <nuxt-link
-                  v-else
-                  class="landing-btn2 !w-full sm:w-auto sm:ml-4"
-                  style="font-weight: 600"
-                  :to="localeRoute({name: plan.button.link})"
-                >
-                  {{ plan.button.text }}
-                </nuxt-link>
+                </div>
               </div>
             </div>
           </div>
@@ -193,20 +185,12 @@
                   <div class="text-center" style="margin: 0 5px;">
                     <a
                       v-if="button.external_link"
-                      class="landing-btn !w-full sm:w-auto sm:ml-4"
+                      class="landing-btn w-full sm:w-auto sm:ml-4 cursor-pointer"
                       style="font-weight: 600"
-                      :href="button.external_link"
+                      @click="choosePlan(button.alias)"
                     >
-                      {{ button.text }}
+                      <span class="whitespace-nowrap">{{ button.text }}</span>
                     </a>
-                    <nuxt-link
-                      v-else
-                      class="landing-btn2 w-full sm:w-auto sm:ml-4"
-                      style="font-weight: 600"
-                      :to="localeRoute({name: button.link})"
-                    >
-                      {{ button.text }}
-                    </nuxt-link>
                   </div>
                 </td>
               </tr>
@@ -338,6 +322,10 @@ export default {
         return Math.ceil(discountPercentage)
       }
       return 0
+    },
+    choosePlan (alias) {
+      this.$cookies.set('trial_plan', alias)
+      window.open(`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${this.locale}&ENVIRONMENT=production`, '_blank')
     }
   }
 }
