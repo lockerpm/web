@@ -65,9 +65,9 @@
           </span>
           <el-dropdown-menu
             slot="dropdown"
-            class="w-[400px]"
+            class="w-[400px] notification"
           >
-            <div class="flex justify-between p-4 text-head-6 font-semibold">
+            <div class="flex justify-between px-4 pt-4 text-head-6 font-semibold">
               <div>
                 {{ $t('sidebar.notifications') }}
               </div>
@@ -79,25 +79,31 @@
               <el-dropdown-item
                 v-for="(item, index) in notifications.results"
                 :key="index"
-                class="mt-2"
               >
                 <div
-                  class="flex gap-4"
+                  class="flex px-3 py-2 mt-2 justify-between"
+                  :class="item.read?'':'bg-[#F6F6F6] hover:bg-transparent'"
                   @click="routeNotification(item)"
                 >
-                  <div>
-                    <img v-if="item.type === 'item_sharing'" class="mt-2" src="~/assets/images/icons/noti_sharing.svg">
-                    <img v-else-if="item.type === 'emergency_access'" class="mt-2" src="~/assets/images/icons/noti_emergencyAccess.svg">
-                    <img v-else-if="item.type === 'data_breach'" class="mt-2" src="~/assets/images/icons/noti_dataBreach.svg">
-                    <img v-else-if="item.type === 'password_tip_trick'" class="mt-2" src="~/assets/images/icons/noti_tipTrick.svg">
-                    <img v-else class="mt-2" src="~/assets/images/icons/noti_marketing.svg">
+                  <div class="min-w-[40px]">
+                    <img v-if="item.type === 'item_sharing'" src="~/assets/images/icons/noti_sharing.svg">
+                    <img v-else-if="item.type === 'emergency_access'" src="~/assets/images/icons/noti_emergencyAccess.svg">
+                    <img v-else-if="item.type === 'data_breach'" src="~/assets/images/icons/noti_dataBreach.svg">
+                    <img v-else-if="item.type === 'password_tip_trick'" src="~/assets/images/icons/noti_tipTrick.svg">
+                    <img v-else src="~/assets/images/icons/noti_marketing.svg">
                   </div>
-                  <div>
+                  <div class="landing-font-14 px-4 flex-1">
                     <div v-if="locale==='vi'" class="font-semibold">{{ item.title.vi }}</div>
                     <div v-if="locale==='en'" class="font-semibold">{{ item.title.en }}</div>
-                    <div class="">{{ $moment(item.publish_time*1000).fromNow(true) }}</div>
+                    <div class="">{{ $moment(item.publish_time*1000).fromNow() }}</div>
                   </div>
+                  <div v-if="!item.read" class="min-w-3 w-3 h-3 rounded-full bg-primary self-center" />
                 </div>
+              </el-dropdown-item>
+            </template>
+            <template v-else>
+              <el-dropdown-item>
+                {{ $t('data.notifications.no_notifications') }}
               </el-dropdown-item>
             </template>
           </el-dropdown-menu>
@@ -330,5 +336,9 @@ export default {
 /* .slide-fade-leave-active below version 2.1.8 */ {
   transform: translateX(10px);
   opacity: 0;
+}
+.el-dropdown-menu.notification {
+  @apply max-h-[90vh];
+  overflow-y: scroll;
 }
 </style>

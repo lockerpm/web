@@ -93,6 +93,7 @@
             >
               {{ shareInvitationStatus[`${scope.row.status || 'shared'}`] }}
             </span>
+            <span v-if="scope.row.status === 'accepted'"><button class="btn btn-outline-primary mt-2" @click="$emit('confirm-user', { user: scope.row })">{{ $t('common.confirm') }}</button></span>
           </template>
         </el-table-column>
         <el-table-column width="50">
@@ -256,8 +257,12 @@ export default {
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
         this.closeDialog()
         this.newMembers = []
-        this.$emit('updated-cipher')
+        this.$emit('shared-folder')
       } catch (e) {
+        if (e.response && e.response.data && e.response.data.code === '7002') {
+          this.notify(e.response.data.message, 'warning')
+          this.$emit('upgrade-plan')
+        }
         if (e.response && e.response.data && e.response.data.code === '5000') {
           this.notify(this.$tc('errors.5000', 2), 'error')
         } else {

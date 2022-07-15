@@ -367,9 +367,9 @@
     <AddEditCipher ref="addEditCipherDialog" :type="type" />
     <AddEditFolder ref="addEditFolder" />
     <AddEditTeamFolder ref="addEditTeamFolder" />
-    <ShareCipher ref="shareCipher" :cipher-options="allCiphers" @upgrade-plan="upgradePlan" @shared-cipher="getMyShares" />
+    <ShareCipher ref="shareCipher" :cipher-options="allCiphers" @upgrade-plan="upgradePlan" @shared-cipher="getMyShares" @confirm-user="promptConfirmUser" />
     <EditSharedCipher ref="editSharedCipher" @updated-cipher="getMyShares" />
-    <ShareFolder ref="shareFolder" />
+    <ShareFolder ref="shareFolder" @upgrade-plan="upgradePlan" @shared-folder="getMyShares" @confirm-user="promptConfirmUser" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
     <PremiumDialog ref="premiumDialog" />
     <el-dialog
@@ -673,25 +673,25 @@ export default {
         } else if (this.getRouteBaseName() === 'shares-your-shares') {
           // const myShare = await this.$axios.$get('cystack_platform/pm/sharing/my_share') || []
           result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type === 0)
-          const resultMapping = []
-          result.forEach(item => {
-            const org = find(this.myShares, e => e.organization_id === item.organizationId) || {}
-            const members = org.members || []
-            // members.forEach(member => {
-            //   resultMapping.push({
-            //     ...item,
-            //     subTitle: item.subTitle,
-            //     user: {
-            //       ...member,
-            //       share_type: member.share_type === 'Edit' ? this.$t('data.ciphers.editable') : member.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
-            //     }
-            //   })
-            // })
-            if (members.length) {
-              resultMapping.push(item)
-            }
-          })
-          result = resultMapping
+          // const resultMapping = []
+          // result.forEach(item => {
+          //   const org = find(this.myShares, e => e.organization_id === item.organizationId) || {}
+          //   const members = org.members || []
+          //   members.forEach(member => {
+          //     resultMapping.push({
+          //       ...item,
+          //       subTitle: item.subTitle,
+          //       user: {
+          //         ...member,
+          //         share_type: member.share_type === 'Edit' ? this.$t('data.ciphers.editable') : member.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
+          //       }
+          //     })
+          //   })
+          //   if (members.length) {
+          //     resultMapping.push(item)
+          //   }
+          // })
+          // result = resultMapping
         }
         result = orderBy(result, ['user.status'], [this.orderDirection]) || []
         this.dataRendered = result.slice(0, 50)
@@ -717,25 +717,25 @@ export default {
           })
         } else if (this.getRouteBaseName() === 'shares-your-shares') {
           collections = collections.filter(item => this.getTeam(this.organizations, item.organizationId).type === 0)
-          const resultMapping = []
-          collections.forEach(item => {
-            const org = find(this.myShares, e => e.organization_id === item.organizationId) || {}
-            const members = org.members || []
-            // members.forEach(member => {
-            //   resultMapping.push({
-            //     ...item,
-            //     subTitle: item.subTitle,
-            //     user: {
-            //       ...member,
-            //       share_type: member.share_type === 'Edit' ? this.$t('data.ciphers.editable') : member.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
-            //     }
-            //   })
-            // })
-            if (members.length) {
-              resultMapping.push(item)
-            }
-          })
-          collections = resultMapping
+          // const resultMapping = []
+          // collections.forEach(item => {
+          //   const org = find(this.myShares, e => e.organization_id === item.organizationId) || {}
+          //   const members = org.members || []
+          //   members.forEach(member => {
+          //     resultMapping.push({
+          //       ...item,
+          //       subTitle: item.subTitle,
+          //       user: {
+          //         ...member,
+          //         share_type: member.share_type === 'Edit' ? this.$t('data.ciphers.editable') : member.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
+          //       }
+          //     })
+          //   })
+          //   if (members.length) {
+          //     resultMapping.push(item)
+          //   }
+          // })
+          // collections = resultMapping
         }
         collections.forEach(f => {
           const ciphers = this.allCiphers && (this.allCiphers.filter(c => c.collectionIds.includes(f.id)) || [])
@@ -814,9 +814,11 @@ export default {
       this.$refs.addEditTeamFolder.deleteFolder(folder)
     },
     shareItem (cipher) {
+      this.selectedCipher = cipher
       this.$refs.shareCipher.openDialog(cipher)
     },
     shareFolder (folder) {
+      this.selectedCipher = folder
       this.$refs.shareFolder.openDialog(folder)
     },
     countUnassignedItems (ciphers = [], organizationId) {
@@ -963,12 +965,12 @@ export default {
       const { public_key: publicKey } = await this.$axios.$post('cystack_platform/pm/sharing/public_key', { email })
       return publicKey
     },
-    async promptConfirmUser (cipher) {
-      this.selectedCipher = cipher
-      const user = cipher.user || {}
-      this.publicKey = await this.getPublicKey(user.email)
+    async promptConfirmUser (user) {
+      this.selectedCipher.user = user.user || {}
+      const selectedUser = user.user || {}
+      this.publicKey = await this.getPublicKey(selectedUser.email || selectedUser.username)
       const publicKey = Utils.fromB64ToArray(this.publicKey)
-      const fingerprint = await this.$cryptoService.getFingerprint(user.pwd_user_id, publicKey.buffer)
+      const fingerprint = await this.$cryptoService.getFingerprint(selectedUser.pwd_user_id, publicKey.buffer)
       if (fingerprint) {
         this.userFingerPrint = fingerprint.join('-')
       }
@@ -1016,9 +1018,6 @@ export default {
     openAcceptDialog (item) {
       this.selectedCipher = item
       this.dialogAcceptVisible = true
-    },
-    addEditFolder (folder, shouldRedirect = false) {
-      this.$refs.addEditFolder.openDialog(folder, shouldRedirect)
     }
   }
 }

@@ -244,6 +244,7 @@
             >
               {{ shareInvitationStatus[`${scope.row.status || 'shared'}`] }}
             </span>
+            <span v-if="scope.row.status === 'accepted'"><button class="btn btn-outline-primary mt-2" @click="$emit('confirm-user', { user: scope.row })">{{ $t('common.confirm') }}</button></span>
           </template>
         </el-table-column>
         <el-table-column width="50">
@@ -357,6 +358,7 @@ export default {
       const share = this.myShares.find(s => s.id === this.cipher.organizationId) || { members: [] }
       return share.members.map(member => {
         return {
+          ...member,
           username: member.email,
           status: member.status,
           role: member.role,
@@ -550,7 +552,7 @@ export default {
           this.$emit('upgrade-plan')
         }
         this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'warning')
-        console.log(e)
+        // console.log(e)
       } finally {
         this.loading = false
       }
