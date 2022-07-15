@@ -18,7 +18,7 @@
               {{ $t('about_us.about_locker.title') }}
             </div>
             <div class="mt-[42px]">
-              <a href="https://s.locker.io/assets/Locker_Portfolio.pdf" target="_blank" class="landing-btn landing-font-16" style="align-self: center">
+              <a :href="locale==='vi'?'https://s.locker.io/assets/Locker_VN.pdf':'https://s.locker.io/assets/Locker_Portfolio.pdf'" target="_blank" class="landing-btn landing-font-16" style="align-self: center">
                 {{ $t('about_us.about_locker.btn.title') }}
               </a>
             </div>
