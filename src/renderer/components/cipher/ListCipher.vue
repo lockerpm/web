@@ -793,15 +793,15 @@
                         {{ $t('common.move_folder') }}
                       </el-dropdown-item>
                       <el-dropdown-item
+                        v-if="canShareItem(organizations, item)"
                         divided
                         @click.native="moveTrashCiphers([item.id])"
                       >
                         <span class="text-danger">{{ $t('common.delete') }}</span>
                       </el-dropdown-item>
                     </template>
-                    <template v-else>
+                    <template v-else-if="canShareItem(organizations, item)">
                       <el-dropdown-item
-                        divided
                         @click.native="restoreCiphers([item.id])"
                       >
                         {{ $t('common.restore') }}

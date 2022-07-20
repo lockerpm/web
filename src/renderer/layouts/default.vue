@@ -18,6 +18,8 @@
                     {{ $t('data.welcome.text1') }}
                     <br>
                     {{ $t('data.welcome.text2') }}
+                    <br>
+                    <span v-html="$t('data.welcome.text3')" />
                   </div>
                 </div>
                 <div>
