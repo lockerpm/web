@@ -71,12 +71,6 @@
               </div>
               <div class="mb-2">{{ $t('data.plans.choose_payment_method') }}</div>
             </template>
-            <!-- <template v-if="step===3">
-              <div class="text-head-3 font-semibold mb-2">
-                Confirmation
-              </div>
-              <div class="mb-2">Your order has been confirmed!</div>
-            </template> -->
           </div>
           <!-- Step title end-->
 
@@ -89,12 +83,8 @@
                 :class="selectedPlan.alias===item.alias?'!border-primary':''"
                 class="p-8 border border-black-200 rounded cursor-pointer hover:border-primary flex flex-col justify-between"
               >
-                <!-- @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''" -->
                 <div class="flex flex-col mb-6">
                   <div class="2xl:flex items-center text-center justify-center">
-                    <!-- <span class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
-                      {{ getPlanName(item.name).name }}
-                    </span> -->
                     <span class="font-semibold !text-lg">
                       {{ getPlanName(item.name).name }}
                     </span>
@@ -160,14 +150,14 @@
                   <button
                     :class="currentPlan.alias === item.alias? 'btn-default' : 'btn-primary'"
                     class="btn text-center w-full"
-                    :disabled="item.alias==='pm_free' || currentPlan.alias==='pm_family' || currentPlan.alias==='pm_premium' && item.alias==='pm_family'"
-                    @click="item.alias !=='pm_free' && currentPlan.alias !== 'pm_family' && currentPlan.alias!==item.alias?selectPlan(item):''"
+                    :disabled="item.alias === 'pm_free'"
+                    @click="currentPlan.personal_trial_applied === false ? startTrial(item) : item.alias !=='pm_free' && currentPlan.alias!==item.alias?selectPlan(item): ''"
                   >
-                    {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : $t('data.plans.choose_this_plan') }}
+                    {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : currentPlan.personal_trial_applied === false ? $t('data.plans.start_trial') : $t('data.plans.choose_this_plan') }}
                   </button>
-                  <div :class="['pm_family', 'pm_premium'].includes(currentPlan.alias) && ['pm_family', 'pm_premium'].includes(item.alias) && currentPlan.alias !== item.alias ? 'opacity-1':'opacity-0'" class="text-xs text-black-500 text-center">
+                  <!-- <div :class="currentPlan.alias === item.alias ? 'opacity-1':'opacity-0'" class="text-xs text-black-500 text-center">
                     {{ $t('data.plans.choose_plan_note') }}
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -285,36 +275,6 @@
                   </div>
                 </div>
                 <div class="mt-4 mb-8">
-                  <!-- <div class="flex input-tags">
-                    <el-input
-                      v-model="inputEmail"
-                      change="mr-2"
-                      @keyup.enter.native="confirmInputEmail"
-                      @input="emailInput"
-                    >
-                      <div
-                        v-if="emails.length"
-                        slot="prepend"
-                      >
-                        <el-tag
-                          v-for="(email, index) in emails"
-                          :key="email"
-                          closable
-                          type="info"
-                          @close="handleClose(index)"
-                        >
-                          {{ email }}
-                        </el-tag>
-                      </div>
-                      <el-button
-                        slot="append"
-                        :disabled="!emails.length && !inputEmail"
-                        @click="confirmInputEmail"
-                      >
-                        {{ $t('common.add') }}
-                      </el-button>
-                    </el-input>
-                  </div> -->
                   <div
                     class="cs-field w-full"
                   >
@@ -482,9 +442,7 @@
             />
 
             <div class="mt-8">
-              <!-- <button :disabled="step===2 && !selectedCard || step===1 && !selectedPlan.alias || step ===3" class="btn btn-primary w-full" @click="step===1?selectedPlan.alias==='pm_family'?addMember():toStep2():confirmPlan()">
-                {{ step===1?'Continue': 'Pay & Upgrade' }}
-              </button> -->
+              ``
               <el-button
                 :disabled="!selectedCard"
                 :loading="loading"
@@ -499,15 +457,6 @@
           <!-- Confirmation -->
           <template v-if="step===3">
             <div class="setting-wrapper p-8 !mb-8 text-center">
-              <!-- <div class="text-black font-bold mb-2">Order details</div>
-              <div class="flex justify-between text-head-6 font-semibold">
-                <div>
-                  {{ selectedPlan.name }} ( {{ result.duration==='yearly'?'12 months':'1 month' }})
-                </div>
-                <div>
-                  {{ result.total_price }} {{ result.currency }}
-                </div>
-              </div> -->
               <img
                 src="~/assets/images/icons/CheckCircle.svg"
                 class="mx-auto"
@@ -1040,21 +989,24 @@ export default {
       this.calcPrice()
     },
     selectPlan (plan) {
-      this.selectedPlan = plan
-      if (this.currentPlan.alias !== 'pm_free') {
-        this.dialogChange = true
-        // this.selectPeriod(find(this.periods, e => e.duration === this.currentPlan.duration))
-        if (this.currentPlan.alias === 'pm_family') {
-          this.number_members = 6
+      this.$confirm(this.$t('data.notifications.switch_plan', { currentPlan: this.currentPlan.name, chosenPlan: plan.name }), this.$t('common.warning'), {
+        confirmButtonText: this.$t('common.proceed'),
+        cancelButtonText: this.$t('common.cancel'),
+        type: 'warning'
+      }).then(() => {
+        this.selectedPlan = plan
+        if (this.currentPlan.alias !== 'pm_free') {
+          this.dialogChange = true
+          if (this.currentPlan.alias === 'pm_family') {
+            this.number_members = 6
+          }
+        } else {
+          this.number_members = 1
         }
-      } else {
-        this.number_members = 1
-        // this.step = 2
-        // this.selectPeriod(this.selectPeriod)
-      }
-      this.selectMethod('card')
-      this.calcPrice()
-      this.step = 2
+        this.selectMethod('card')
+        this.calcPrice()
+        this.step = 2
+      })
     },
     selectMethod (method) {
       this.paymentMethod = method
@@ -1184,6 +1136,15 @@ export default {
         return Math.ceil(discountPercentage)
       }
       return 0
+    },
+    async startTrial (plan) {
+      try {
+        await this.$axios.$post('cystack_platform/pm/payments/trial', { trial_plan: plan.alias })
+        this.$store.dispatch('LoadCurrentPlan')
+        this.notify(this.$t('data.notifications.upgrade_success'), 'success')
+      } catch (error) {
+        this.notify(this.$t('data.notifications.error_occurred'), 'warning')
+      }
     }
   }
 }
