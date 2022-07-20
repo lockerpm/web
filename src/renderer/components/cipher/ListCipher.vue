@@ -778,16 +778,15 @@
                         {{ $t('data.ciphers.stop_sharing') }}
                       </el-dropdown-item>
                       <el-dropdown-item
-                        v-if="canManageItem(organizations, item)"
+                        v-if="canShareItem(organizations, item)"
                         divided
                         @click.native="moveTrashCiphers([item.id])"
                       >
                         <span class="text-danger">{{ $t('common.delete') }}</span>
                       </el-dropdown-item>
                     </template>
-                    <template v-else-if="canManageItem(organizations, item)">
+                    <template v-else-if="canShareItem(organizations, item)">
                       <el-dropdown-item
-                        divided
                         @click.native="restoreCiphers([item.id])"
                       >
                         {{ $t('common.restore') }}
