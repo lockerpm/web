@@ -81,7 +81,7 @@
                 v-for="item in plans"
                 :key="item.id"
                 :class="selectedPlan.alias===item.alias?'!border-primary':''"
-                class="p-8 border border-black-200 rounded cursor-pointer hover:border-primary flex flex-col justify-between"
+                class="p-8 border border-black-200 rounded hover:border-primary flex flex-col justify-between"
               >
                 <div class="flex flex-col mb-6">
                   <div class="2xl:flex items-center text-center justify-center">
@@ -155,9 +155,9 @@
                   >
                     {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : currentPlan.personal_trial_applied === false ? $t('data.plans.start_trial') : $t('data.plans.choose_this_plan') }}
                   </button>
-                  <!-- <div :class="currentPlan.alias === item.alias ? 'opacity-1':'opacity-0'" class="text-xs text-black-500 text-center">
-                    {{ $t('data.plans.choose_plan_note') }}
-                  </div> -->
+                  <div v-if="currentPlan.is_trailing && currentPlan.alias !== 'pm_free'" :class="currentPlan.alias === item.alias ? 'opacity-1':'opacity-0'" class="text-sm text-black-500 text-center cursor-pointer" @click="selectPlan(item)">
+                    {{ $t('data.plans.trial_left', {trialLeft}) }}. <span class="text-primary font-semibold">{{ $t('data.plans.purchase_now') }}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -903,6 +903,10 @@ export default {
     },
     billing () {
       return this.cards.find(item => item.id_card === this.selectedCard)
+    },
+    trialLeft () {
+      const now = this.$moment()
+      return this.$moment(this.currentPlan.next_billing_time * 1000).diff(now, 'days')
     }
   },
   beforeDestroy () {
