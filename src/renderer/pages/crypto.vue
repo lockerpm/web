@@ -23,8 +23,8 @@
               </nuxt-link>
             </div>
           </div>
-          <div class="w-[75%]">
-            <img src="~/assets/images/landing/crypto/bg_welcome.png">
+          <div class="mt-[105px] w-full">
+            <img class="" src="~/assets/images/landing/crypto/bg_welcome.png">
           </div>
         </div>
       </div>
