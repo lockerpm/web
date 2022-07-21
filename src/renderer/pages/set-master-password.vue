@@ -166,8 +166,10 @@ export default {
             public_key: keys[0],
             encrypted_private_key: keys[1].encryptedString
           },
-          score: this.passwordStrength.score
+          score: this.passwordStrength.score,
+          trial_plan: this.$cookies.get('trial_plan')
         })
+        this.$cookies.remove('trial_plan')
         this.notify(this.$t('master_password.create_success'), 'success')
         this.$store.commit('UPDATE_USER_PW', { ...this.$store.state.userPw, is_pwd_manager: true })
         await this.login()

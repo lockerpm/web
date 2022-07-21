@@ -2,6 +2,29 @@
   <div>
     <TopBanner />
     <Header />
+    <div v-if="showCookie != 'false'" id="cookie-bar" class="cookie-bar">
+      <div class="cookie-bar__wrap">
+        <div class="cookie-bar__msg-wrap">
+          <div class="cookie-bar__msg">
+            <p class="landing-font-18 font-bold mb-3">
+              {{ $t('cookie.title') }}
+            </p>
+            <p class="landing-font-14 mb-4" v-html="$t('cookie.desc')" />
+            <nuxt-link :to="localePath('/privacy')" class="landing-font-14 text-primary">
+              {{ $t('cookie.learn_more') }}
+            </nuxt-link>
+          </div>
+          <div class="cookie-bar__manage">
+            <button class="cookie-bar__btn" @click="offCookie">
+              {{ $t('cookie.accept') }}
+            </button>
+          </div>
+        </div>
+        <div class="cookie-bar__close" @click="offCookie">
+          <i class="el-icon-close" />
+        </div>
+      </div>
+    </div>
     <div class="max-w-6xl mx-auto">
       <div class="w-full px-6">
         <nuxt />
@@ -29,7 +52,8 @@ export default {
   },
   data () {
     return {
-      externalContent: ''
+      externalContent: '',
+      showCookie: 'false'
     }
   },
   head () {
@@ -120,8 +144,18 @@ export default {
   mounted () {
     // this.$store.dispatch('LoadCurrentUser')
     // this.$store.dispatch('LoadCurrentUserPw')
+    this.showCookie = this.checkCookie()
   },
   methods: {
+    checkCookie () {
+      const deviceId = this.$cookies.get('locker_device_id')
+      return localStorage.getItem(`${deviceId}_cookie`)
+    },
+    offCookie () {
+      const deviceId = this.$cookies.get('locker_device_id')
+      localStorage.setItem(`${deviceId}_cookie`, 'false')
+      this.showCookie = 'false'
+    },
     openURL (url) {
       if (remote) {
         remote.shell.openExternal(url)
@@ -275,5 +309,60 @@ export default {
   margin-left: -50vw;
   margin-right: -50vw;
   overflow-x: hidden;
+}
+#cookie-bar{
+  position: fixed;
+  width: 100%;
+  bottom: 0px;
+  opacity: 1;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 90;
+  -webkit-transition: bottom 0.7s, opacity 0.8s;
+  transition: bottom 0.7s, opacity 0.8s;
+
+}
+#cookie-bar .cookie-bar__wrap{
+    @apply max-w-6xl;
+    position: relative;
+    margin: 0 auto;
+}
+#cookie-bar .cookie-bar__msg-wrap{
+  flex-direction: column;
+    display: block;
+    height: auto;
+    padding: 20px;
+    justify-content: space-between;
+}
+#cookie-bar .cookie-bar__msg{
+  padding-bottom: 24px;
+}
+#cookie-bar .cookie-bar__manage{
+  width: 100%;
+  padding: 0;
+  display: block;
+  text-align: right;
+}
+
+#cookie-bar .cookie-bar__btn{
+  @apply bg-primary;
+    padding: 8.425px 56.96px;
+    border-radius: 20px !important;
+    font-size: 14px !important;
+    line-height: 19px !important;
+    color: #fff !important;
+    text-shadow: 0 0 3px rgba(0,0,0, 0.7) !important;
+    margin: 0px !important;
+}
+#cookie-bar .cookie-bar__close{
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    padding: 8px;
+    font-size: 18px;
+    cursor: pointer;
 }
 </style>

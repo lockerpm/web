@@ -18,6 +18,8 @@
                     {{ $t('data.welcome.text1') }}
                     <br>
                     {{ $t('data.welcome.text2') }}
+                    <br>
+                    <span v-html="$t('data.welcome.text3')" />
                   </div>
                 </div>
                 <div>
@@ -386,11 +388,11 @@ export default {
       window.onkeypress = () => this.noop()
     },
     checkWelcome () {
-      const deviceId = this.$cookies.get('device_id')
+      const deviceId = this.$cookies.get('locker_device_id')
       return localStorage.getItem(`${deviceId}_welcome`)
     },
     offWelcome () {
-      const deviceId = this.$cookies.get('device_id')
+      const deviceId = this.$cookies.get('locker_device_id')
       localStorage.setItem(`${deviceId}_welcome`, 'false')
       this.shouldWelcome = 'false'
     }
