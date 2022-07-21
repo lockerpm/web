@@ -16,12 +16,12 @@
               {{ header.desc }}
             </p>
             <div class="max-w-xs mb-4 sm:mb-0">
-              <a
+              <nuxt-link
                 class="landing-btn w-full sm:w-auto mb-1"
-                :href="`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
+                :to="localePath('/register')"
               >
                 {{ header.btn.text }}
-              </a>
+              </nuxt-link>
             </div>
           </div>
           <!-- Right -->

@@ -21,12 +21,12 @@
             />
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
-                <a
+                <nuxt-link
                   class="landing-btn w-full sm:w-auto mb-1"
-                  :href="`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
+                  :to="localePath('/register')"
                 >
                   {{ $t('landing.section1.btn[0].text') }}
-                </a>
+                </nuxt-link>
                 <p class="italic w-full landing-font-14 mt-1">
                   {{ $t('landing.section1.btn[0].note') }}
                 </p>
@@ -409,14 +409,14 @@
               </p>
 
               <div class="w-full flex">
-                <a
+                <nuxt-link
                   :class="index === 0 ? 'landing-btn' : 'landing-btn2'"
                   class="mx-auto"
-                  :href="item.btn.link"
+                  :to="localePath(item.btn.link)"
                   style="align-self: center"
                 >
                   {{ item.btn.text }}
-                </a>
+                </nuxt-link>
               </div>
             </div>
           </div>
