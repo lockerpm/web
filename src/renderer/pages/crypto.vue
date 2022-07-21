@@ -23,8 +23,8 @@
               </nuxt-link>
             </div>
           </div>
-          <div class="w-[75%]">
-            <img src="~/assets/images/landing/crypto/bg_welcome.png">
+          <div class="mt-[105px] w-full">
+            <img class="" src="~/assets/images/landing/crypto/bg_welcome.png">
           </div>
         </div>
       </div>
@@ -147,7 +147,7 @@
                 <div>
                   <div v-if="currentPosition === tabPosition" class="flex">
                     <div :class="( idx.toString() === indexImage) ? 'text-[#FFFFFF]' : 'text-[#979797]'" @click="displayImage(idx)">
-                      <span class="index-image bg-[#DFDFDF] landing-font-16 py-2 px-[15px] h-[42px]" style="border-radius: 50%" :class="( idx.toString() === indexImage) ? 'bg-[#268334]' : 'bg-[#DFDFDF]'">
+                      <span class="index-image bg-[#DFDFDF] landing-font-16 py-2 px-[15px] h-[42px]" style="border-radius: 50%" :style="( idx.toString() === indexImage) ? ' background-image: radial-gradient(#268334 55%, #D9EADC 45%);' : 'background:#DFDFDF'" >
                         {{ idx + 1 }}
                       </span>
                       <div v-if="(idx + 1) < $t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process.length " :class="item.detail != '' ? 'button-index-detail': 'button-index'" :style="( idx.toString() === indexImage) ? 'border-left-color:#268334' : 'border-left-color: #DFDFDF'" />
@@ -166,7 +166,7 @@
                   </div>
                   <div v-else class="flex" @change="indexImage = '0'">
                     <div :class="( idx === 0) ? 'text-[#FFFFFF]' : 'text-[#979797]'" @click="displayImage(idx)">
-                      <span class="index-image landing-font-16 py-2 px-[15px] h-[42px]" style="border-radius: 50%" :class="( idx === 0) ? 'bg-[#268334]' : 'bg-[#DFDFDF]'">
+                      <span class="index-image landing-font-16 py-2 px-[15px] h-[42px]" style="border-radius: 50%" :style="( idx === 0) ? ' background-image: radial-gradient(#268334 55%, #D9EADC 45%);' : 'background:#DFDFDF'">
                         {{ idx + 1 }}
                       </span>
                       <div v-if="(idx + 1) < $t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process.length " :class="item.detail != '' ? 'button-index-detail': 'button-index'" :style="( idx === 0) ? 'border-left-color:#268334' : 'border-left-color: #DFDFDF'" />
