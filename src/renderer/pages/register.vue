@@ -12,7 +12,7 @@ export default {
     if ($ua.isFromIos() || $ua.isFromAndroidOs()) {
       const utmSource = $cookies.get('utm_source')
       const deeplink = utmSource ? `${url}&utm_source=${utmSource}` : url
-      const dynamicLink = `https://lockerio.page.link/?link=${encodeURIComponent(deeplink)}&apn=com.cystack.locker&afl=${encodeURIComponent(url)}&isi=1586927301&ibi=com.cystack.lockerapp&ifl=${encodeURIComponent(url)}${utmSource ? '&utm_source=' + utmSource : ''}`
+      const dynamicLink = `https://lockerio.page.link/?link=${encodeURIComponent(deeplink)}&apn=com.cystack.locker&afl=${encodeURIComponent(url)}&isi=1586927301&ibi=com.cystack.lockerapp&ifl=${encodeURIComponent(url)}${utmSource ? '&utm_source=' + utmSource : ''}&efr=1`
       redirect(302, dynamicLink)
     } else {
       redirect(302, url)
