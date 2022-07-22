@@ -169,7 +169,7 @@
                 <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">{{ $t('plan.price') }}</td>
                 <td class="py-[18px] pl-6 text-green landing-font-16 text-center">${{ plans[0].yearly_price.usd/12 | formatNumber }}</td>
                 <td class="py-[18px] pl-6 text-green landing-font-16 text-center">${{ plans[1].yearly_price.usd/12 | formatNumber }}/{{ $t('plan.plans[1].duration') }}</td>
-                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">${{ plans[2].yearly_price.usd/12 | formatNumber }}/{{ $t('plan.plans[2].duration') }}/<br>{{ $t('plan.plans[2].accounts') }}</td>
+                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">$0/{{ $t('plan.plans[2].duration') }}/<br>{{ $t('plan.plans[2].accounts') }}</td>
               <!-- <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[3].price') }}</td> -->
               </tr>
               <tr>
@@ -182,6 +182,7 @@
                   <div class="text-center" style="margin: 0 5px;">
                     <div
                       class="landing-btn w-full sm:w-auto sm:ml-4 cursor-pointer"
+                      :class="button.alias === 'pm_family' ? '!bg-danger-500': ''"
                       style="font-weight: 600"
                       @click="choosePlan(button.alias)"
                     >
