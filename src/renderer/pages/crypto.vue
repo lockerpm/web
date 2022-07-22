@@ -23,7 +23,7 @@
               </nuxt-link>
             </div>
           </div>
-          <div class="mt-[162px] w-full">
+          <div class="md:mt-[162px] mt-0 w-full">
             <img class="" src="~/assets/images/landing/crypto/bg_welcome.png">
           </div>
         </div>
@@ -136,18 +136,18 @@
             </el-radio-group>
           </div>
           <div v-show="tabPosition" class="grid md:grid-cols-2 grid-cols-1 md:gap-x-[130px] gap-y-[60px]">
-            <div v-if="tabPosition === currentPosition">
-              <img :src="require(`~/assets/images/landing/crypto/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[Number(indexImage)].img}`)">
+            <div v-if="tabPosition === currentPosition" class="w-4/5 m-auto">
+              <img :src="require(`~/assets/images/landing/crypto/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[Number(indexImage)].img}`)" class="w-[70%] m-auto">
             </div>
-            <div v-else @change="indexImage = '0'">
-              <img :src="require(`~/assets/images/landing/crypto/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[0].img}`)">
+            <div v-else class="w-4/5 m-auto" @change="indexImage = '0'">
+              <img :src="require(`~/assets/images/landing/crypto/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[0].img}`)" class="w-[70%] m-auto">
             </div>
             <div>
               <div v-for="(item, idx) in $t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process" :key="idx" class="">
                 <div>
                   <div v-if="currentPosition === tabPosition" class="flex">
                     <div :class="( idx.toString() === indexImage) ? 'text-[#FFFFFF]' : 'text-[#979797]'" @click="displayImage(idx)">
-                      <span class="index-image bg-[#DFDFDF] landing-font-16 py-2 px-[15px] h-[42px]" style="border-radius: 50%" :style="( idx.toString() === indexImage) ? ' background-image: radial-gradient(#268334 55%, #D9EADC 45%);' : 'background:#DFDFDF'" >
+                      <span class="index-image bg-[#DFDFDF] landing-font-16 py-2 px-[15px] h-[42px]" style="border-radius: 50%" :style="( idx.toString() === indexImage) ? ' background-image: radial-gradient(#268334 55%, #D9EADC 45%);' : 'background:#DFDFDF'">
                         {{ idx + 1 }}
                       </span>
                       <div v-if="(idx + 1) < $t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process.length " :class="item.detail != '' ? 'button-index-detail': 'button-index'" :style="( idx.toString() === indexImage) ? 'border-left-color:#268334' : 'border-left-color: #DFDFDF'" />
@@ -232,6 +232,9 @@ export default {
   background: rgba(0, 0, 0, 0.04);
   border-radius: 50px;
 }
+.locker-start .process-tab .menu-tab-menu .el-radio-button{
+  cursor: pointer;
+}
 .locker-start .process-tab .menu-tab-menu .el-radio-button__inner{
   background: rgba(0, 0, 0, 0.04);
   padding: 20px;
@@ -294,30 +297,36 @@ export default {
 .index-image:hover{
   cursor: pointer;
 }
-@media screen and (max-width: 767px){
+@media screen and (max-width: 768px){
   .locker-start .process-tab .menu-tab-menu .el-radio-group{
     background:#F8F9FA ;
   }
   .locker-start .process-tab .menu-tab-menu .el-radio-button{
     margin-bottom: 30px;
+    margin-left: 10px;
   }
   .locker-start .process-tab .menu-tab-menu .el-radio-button__inner{
     padding: 10px;
+    border-radius: 50px;
   }
   .locker-start .process-tab .menu-tab-menu  .el-radio-button__inner>div{
     font-size: 14px;
   }
   .border-span-0 span{
-   border-radius: 0px;
+    border-radius: 50px !important;
   }
   .border-span-2 span{
-    border-radius: 0px;
+    border-radius: 50px !important;
   }
   .locker-start .process-tab .is-active.border-span-0{
-    border-radius: 0px;
+    border-radius: 50px !important;
   }
   .locker-start .process-tab .is-active.border-span-2{
-    border-radius: 0px;
+    border-radius: 50px !important;
+  }
+  .locker-start .process-tab .menu-tab-menu .is-active{
+    background: #FFFFFF;
+    border-radius: 50px;
   }
 }
 </style>
