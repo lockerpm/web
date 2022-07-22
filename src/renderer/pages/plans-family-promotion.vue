@@ -65,7 +65,7 @@
             <ul class="ml-3 my-[30px]">
               <li
                 v-for="(detail, ind) in plan.desc"
-                :key="ind.toString()+detail"
+                :key="ind"
                 class="landing-font-14 mb-[10px] relative"
                 style="color: #5A6176"
               >
@@ -85,7 +85,6 @@
             <div class="mt-10">
               <div class="text-center absolute bottom-3 left-6 right-12">
                 <div
-                  v-if="plan.button.external_link"
                   class="landing-btn !w-full sm:w-auto sm:ml-4 cursor-pointer"
                   style="font-weight: 600"
                   @click="choosePlan(plan.alias)"
@@ -117,7 +116,7 @@
             <tbody>
               <template v-for="(feature, index) in feature_plan">
                 <tr
-                  :key="index.toString()+feature.title"
+                  :key="index"
                   style="background-color: #FBFAF3;"
                 >
                   <td
@@ -135,7 +134,7 @@
                 </tr>
                 <tr
                   v-for="(item, idx) in feature.features"
-                  :key="idx.toString() + item.label"
+                  :key="idx"
                 >
                   <td
                     class="pl-6 landing-font-16 pb-5"
@@ -170,6 +169,7 @@
                 <td class="py-[18px] pl-6 text-green landing-font-16 text-center">${{ plans[0].yearly_price.usd/12 | formatNumber }}</td>
                 <td class="py-[18px] pl-6 text-green landing-font-16 text-center">${{ plans[1].yearly_price.usd/12 | formatNumber }}/{{ $t('plan.plans[1].duration') }}</td>
                 <td class="py-[18px] pl-6 text-green landing-font-16 text-center">${{ plans[2].yearly_price.usd/12 | formatNumber }}/{{ $t('plan.plans[2].duration') }}/<br>{{ $t('plan.plans[2].accounts') }}</td>
+              <!-- <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[3].price') }}</td> -->
               </tr>
               <tr>
                 <td />
@@ -179,14 +179,13 @@
                   class="pt-5"
                 >
                   <div class="text-center" style="margin: 0 5px;">
-                    <a
-                      v-if="button.external_link"
+                    <div
                       class="landing-btn w-full sm:w-auto sm:ml-4 cursor-pointer"
                       style="font-weight: 600"
                       @click="choosePlan(button.alias)"
                     >
                       <span class="whitespace-nowrap">{{ button.text }}</span>
-                    </a>
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -238,7 +237,7 @@
           >
             <div
               v-for="(item, index) in features.details"
-              :key="index.toString()+item.title"
+              :key="index"
               class="landing-transition px-[30px] pt-11 bg-white rounded-lg hover:shadow-xl"
             >
               <img
@@ -322,7 +321,7 @@ export default {
     choosePlan (alias) {
       this.$cookies.set('trial_plan', alias)
       this.$cookies.set('is_trial_promotion', true)
-      window.open(`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${this.locale}&ENVIRONMENT=production`, '_blank')
+      this.$router.replace(this.localePath('/register'))
     }
   }
 }
