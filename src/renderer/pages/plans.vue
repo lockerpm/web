@@ -91,7 +91,6 @@
             <div class="mt-10">
               <div class="text-center absolute bottom-5 left-6 right-12">
                 <div
-                  v-if="plan.button.external_link"
                   class="landing-btn !w-full sm:w-auto sm:ml-4 cursor-pointer"
                   style="font-weight: 600"
                   @click="choosePlan(plan.alias)"
@@ -183,14 +182,13 @@
                   class="pt-5"
                 >
                   <div class="text-center" style="margin: 0 5px;">
-                    <a
-                      v-if="button.external_link"
+                    <div
                       class="landing-btn w-full sm:w-auto sm:ml-4 cursor-pointer"
                       style="font-weight: 600"
                       @click="choosePlan(button.alias)"
                     >
                       <span class="whitespace-nowrap">{{ button.text }}</span>
-                    </a>
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -325,7 +323,7 @@ export default {
     },
     choosePlan (alias) {
       this.$cookies.set('trial_plan', alias)
-      window.open(`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${this.locale}&ENVIRONMENT=production`, '_blank')
+      this.$router.replace(this.localePath('/register'))
     }
   }
 }
