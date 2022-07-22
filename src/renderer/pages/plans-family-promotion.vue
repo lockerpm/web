@@ -1,12 +1,12 @@
 <template>
   <div>
     <section
-      class="full-width h-auto pt-40"
+      class="full-width h-auto pt-20"
       style="background-color: #f5f6f7"
     >
-      <h1 class="max-w-[700px] font-bold landing-font-50 text-center mx-auto">{{ title }}</h1>
+      <h1 class="font-bold landing-font-50 text-center mx-auto">Get your free password manager</h1>
       <div class="mt-[100px] pb-[140px] max-w-6xl mx-auto px-6">
-        <div class="flex justify-center">
+        <!-- <div class="flex justify-center">
           <div class="flex items-center p-2 bg-[#E4F0E6] rounded-[50px] gap-x-3">
             <button
               class="btn-period"
@@ -23,7 +23,7 @@
               {{ annually }} <br> {{ $t('data.plans.bill_annually_desc') }}
             </button>
           </div>
-        </div>
+        </div> -->
         <div v-if="$t('plan.money_vi') != null" class="relative h-[70px]">
           <div class="absolute top-0 right-1 italic landing-font-14 font-normal" style="color: #5A6176">
             {{ $t('plan.money_vi') }}
@@ -46,8 +46,8 @@
               <span v-if="!(plan.alias==='pm_free'&&periodSwitch)" :class="periodSwitch?'line-through landing-font-16 text-black':'font-bold landing-font-50'">${{ plan.price.usd }}</span>
               <span
                 v-if="periodSwitch && plan.yearly_price && plan.alias==='pm_family'"
-                class="font-bold landing-font-50 line-through"
-              >${{ (plan.yearly_price.usd / 12) | formatNumber }}</span>
+                class="font-bold landing-font-50"
+              >$0</span>
               <span
                 v-if="periodSwitch && plan.yearly_price && plan.alias!=='pm_family'"
                 class="font-bold landing-font-50"
@@ -58,7 +58,7 @@
               v-if="periodSwitch"
               class="flex items-center mt-1"
             >
-              <div v-if="plan.alias != 'pm_free'">
+              <div v-if="plan.alias === 'pm_premium'">
                 {{ $t('data.plans.price_12months') }} ${{ plan.yearly_price.usd }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">{{ $t('data.plans.save') }} {{ discountPercentage(plan) }}%</span>
               </div>
             </div>
@@ -85,14 +85,15 @@
             <div class="mt-10">
               <div class="text-center absolute bottom-3 left-6 right-12">
                 <div
-                  class="landing-btn !w-full sm:w-auto sm:ml-4 cursor-pointer"
+                  class="landing-btn !w-full sm:w-auto sm:ml-4 cursor-pointer bg-dang"
+                  :class="plan.alias === 'pm_family' ? '!bg-danger-500': ''"
                   style="font-weight: 600"
                   @click="choosePlan(plan.alias)"
                 >
                   {{ plan.button.text }}
                 </div>
                 <div class="mt-2 text-center left-6 right-12">
-                  <div class="font-medium landing-font-16 text-center ml-[30px]">No credit card required</div>
+                  <div class="italic landing-font-16 text-center ml-[30px]">No credit card required</div>
                 </div>
               </div>
             </div>
@@ -319,7 +320,7 @@ export default {
       return 0
     },
     choosePlan (alias) {
-      this.$cookies.set('trial_plan', alias)
+      this.$cookies.set('trial_plan', alias === 'pm_free' ? 'pm_family' : alias)
       this.$cookies.set('is_trial_promotion', true)
       this.$router.replace(this.localePath('/register'))
     }
