@@ -2,7 +2,7 @@
   <div>
     <section class="bg-welcome full-width h-auto pt-[76px] bg-center bg-cover bg-no-repeat" :style="{backgroundImage: `url(${require(`~/assets/images/landing/crypto/bg-frame.png`)})`}">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="flex items-center">
+        <div class="grid md:grid-cols-2 grid-cols-1 items-center gap-x-0">
           <div>
             <div class="landing-font-52 font-bold text-[#161922]">
               {{ $t('crypto.bg_welcome.title') }}
@@ -23,7 +23,7 @@
               </nuxt-link>
             </div>
           </div>
-          <div class="mt-[105px] w-full">
+          <div class="mt-[162px] w-full">
             <img class="" src="~/assets/images/landing/crypto/bg_welcome.png">
           </div>
         </div>
@@ -290,6 +290,9 @@ export default {
   width: 6px;
   border-radius: 50%;
   margin-top: 10px;
+}
+.index-image:hover{
+  cursor: pointer;
 }
 @media screen and (max-width: 767px){
   .locker-start .process-tab .menu-tab-menu .el-radio-group{
