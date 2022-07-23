@@ -243,8 +243,8 @@
           </div>
           <div v-if="shareMember.length > 0" class="grid md:grid-cols-6 cipher-item">
             <div class="">{{ $t('data.ciphers.shared_with') }}</div>
-            <div :class="showMember?'': 'flex flex-wrap'" class="col-span-4">
-              <div v-for="member in showMember? shareMember : shareMember.slice(0,3)" :key="member.id" :class="showMember?'': shareMember.length<=3 ? 'md:w-1/3 pr-3 w-full':'pr-3 md:w-1/4 w-full'" class="mt-3 flex">
+            <div :class="showMember?'gap-y-3 py-3': ''" class="col-span-4 flex flex-wrap">
+              <div v-for="member in showMember? shareMember : shareMember.slice(0,3)" :key="member.id" :class="shareMember.length<=3 ? 'md:w-1/3 pr-3 w-full':'pr-3 md:w-1/4 w-full'" class="flex">
                 <img :title="member.email" class="h-10 w-10 rounded-full" :src="member.avatar">
                 <span class="ml-1 self-center whitespace-nowrap overflow-hidden overflow-ellipsis">{{ member.full_name }}</span>
                 <!-- <div v-if="showMember" class="self-center ml-2">{{ member.email }}</div> -->
@@ -252,7 +252,7 @@
               <div v-if="!showMember && shareMember.length>3" class="bg-[#C4C4C4] h-10 w-10 rounded-full mt-3 text-[20px] text-black font-semibold text-center py-2" @click="showMember=true">
                 {{ shareMember.length >= 103 ? '99+' : `+${shareMember.length - 3}` }}
               </div>
-              <div v-if="showMember" class="cursor-pointer text-primary self-center mt-3" @click="showMember=false">{{ $t('common.collapse') }}</div>
+              <div v-if="showMember" class="cursor-pointer text-primary self-center" @click="showMember=false">{{ $t('common.collapse') }}</div>
             </div>
           </div>
         </div>
