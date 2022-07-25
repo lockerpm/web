@@ -124,7 +124,7 @@
           @change="(v) => ciphers = v"
         />
       </div>
-      <div class="grid grid-cols-2 gap-x-2 mb-4">
+      <!-- <div class="grid grid-cols-2 gap-x-2 mb-4">
         <div class="w-full">
           <div class="text-black-700 text-head-6 font-semibold">
             {{ $t('data.ciphers.add_recipient_emails') }}
@@ -173,7 +173,88 @@
           :options="roleOptions"
           @change="(v) => user.role = v"
         />
+      </div> -->
+      <div class="grid grid-cols-4 gap-x-2 mb-4">
+        <InputText
+          v-model="user.username"
+          label="Email"
+          class="w-full col-span-3"
+          @keyupEnter="addMember"
+        />
+        <button class="btn btn-outline-primary mb-[10px]" @click="addMember">
+          {{ $t('data.folders.add_member') }}
+        </button>
       </div>
+    </div>
+    <div>
+      <el-table
+        :data="newMembers.concat(members)"
+        style="width: 100%"
+      >
+        <el-table-column
+          :label="$t('data.sharing.member')"
+          width="200"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.email || scope.row.username }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('common.view')"
+          width="100"
+        >
+          <template slot-scope="scope">
+            <el-radio
+              label="member"
+              :value="scope.row.role"
+              @change="(v) => { if (v === 'admin') {updatePermission(scope.row, 'member')}}"
+            >
+              <span />
+            </el-radio>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('common.edit')"
+          width="100"
+        >
+          <template slot-scope="scope">
+            <el-radio
+              label="admin"
+              :value="scope.row.role"
+              @change="(v) => { if (v === 'member') {updatePermission(scope.row, 'admin')}}"
+            >
+              <span />
+            </el-radio>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('common.status')">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status === 'pending'" class="italic">
+              {{ shareInvitationStatus.pending }}
+            </span>
+            <span
+              v-else
+              class="label whitespace-normal"
+              :class="{'label-primary-light': scope.row.status === 'confirmed',
+                       'label-info': scope.row.status === 'accepted',
+                       'label-warning-light': scope.row.status === 'invited',
+                       'label-danger-light': scope.row.status === 'expired',
+                       'label-success': !scope.row.status
+              }"
+            >
+              {{ shareInvitationStatus[`${scope.row.status || 'shared'}`] }}
+            </span>
+            <span v-if="scope.row.status === 'accepted'"><button class="btn btn-outline-primary mt-2" @click="$emit('confirm-user', { user: scope.row })">{{ $t('common.confirm') }}</button></span>
+          </template>
+        </el-table-column>
+        <el-table-column width="50">
+          <template slot-scope="scope">
+            <span class="cursor-pointer" @click="stopSharing(scope.row)">
+              <i class="el-icon-delete" />
+            </span>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
     <div
       slot="footer"
@@ -239,12 +320,15 @@ export default {
         failed_login_block_time: 0
       },
       user: {
+        id: null,
         username: '',
         role: 'member',
         hide_passwords: false
       },
-      members: [],
-      ciphers: []
+      newMembers: [],
+      ciphers: [],
+      orgKey: null,
+      sharingKey: null
     }
   },
   computed: {
@@ -266,27 +350,61 @@ export default {
         { label: this.$t('data.ciphers.viewable'), value: 'member' },
         { label: this.$t('data.ciphers.editable'), value: 'admin' }
       ]
+    },
+    shareInvitationStatus () {
+      return this.$t('data.sharing')
+    },
+    members () {
+      const share = this.myShares.find(s => s.id === this.cipher.organizationId) || { members: [] }
+      return share.members.map(member => {
+        return {
+          ...member,
+          username: member.email,
+          status: member.status,
+          role: member.role,
+          id: member.id,
+          key: null
+        }
+      }) || []
     }
   },
   methods: {
     addEmail () {
       const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
-      this.members = this.members.concat(emails)
+      const members = emails.map(email => {
+        return {
+          id: null,
+          username: email,
+          role: 'member',
+          status: 'pending'
+        }
+      })
+      this.newMembers = this.newMembers.concat(members)
       this.user.username = ''
     },
     handleClose (index) {
-      console.log(index)
-      this.members.splice(index, 1)
+      this.newMembers.splice(index, 1)
+    },
+    beforeDestroy () {
+      this.orgKey = null
+      this.sharingKey = null
     },
     async openDialog (cipher = {}) {
       this.dialogVisible = true
-      this.members = []
+      this.newMembers = []
       this.originCipher = { organizationId: '', ...cipher }
       this.cipher = { organizationId: '', ...cipher }
-      await this.handleChangeOrg(this.cipher.organizationId)
+      if (this.cipher.organizationId) {
+        this.orgKey = await this.$cryptoService.getOrgKey(this.cipher.organizationId)
+      } else {
+        const shareKey = await this.$cryptoService.makeShareKey()
+        this.sharingKey = shareKey ? shareKey[0].encryptedString : null
+        this.orgKey = shareKey[1]
+      }
+      // await this.handleChangeOrg(this.cipher.organizationId)
     },
     closeDialog () {
-      this.members = []
+      this.newMembers = []
       this.dialogVisible = false
     },
     async shareCipher (cipher) {
@@ -404,51 +522,26 @@ export default {
       return key.encryptedString
     },
     async shareItem (cipher) {
+      if (!this.newMembers.length) {
+        this.closeDialog()
+        return
+      }
       try {
         this.loading = true
-        let orgKey = null
-        let shareKey = null
-        if (cipher.organizationId) { // check if the cipher is shared
-          orgKey = await this.$cryptoService.getOrgKey(cipher.organizationId)
-        } else {
-          shareKey = await this.$cryptoService.makeShareKey()
-          orgKey = shareKey[1]
-        }
         const type_ = cipher.type
         if (type_ === 7) {
           cipher.type = CipherType.SecureNote
           cipher.secureNote.type = 0
         }
-        const cipherEnc = await this.$cipherService.encrypt(cipher, orgKey)
+        const cipherEnc = await this.$cipherService.encrypt(cipher, this.orgKey)
         const data = new CipherRequest(cipherEnc)
         data.type = type_
         this.cipher.type = type_
-        if (this.user.role === 'member-hide_passwords') {
-          this.user.role = 'member'
-          this.user.hide_passwords = true
-        } else {
-          this.user.hide_passwords = false
-        }
-        const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
-        this.members = this.members.concat(emails)
-        if (!this.members.length) {
-          return
-        }
-        this.user.username = ''
-        const members = await Promise.all(this.members.map(async email => {
-          const publicKey = await this.getPublicKey(email)
-          return {
-            username: email,
-            role: this.user.role,
-            hide_passwords: this.user.hide_passwords,
-            key: publicKey ? await this.generateMemberKey(publicKey, orgKey) : null
-          }
-        }))
         const url = 'cystack_platform/pm/sharing'
         await this.$axios.$put(url, {
-          sharing_key: shareKey ? shareKey[0].encryptedString : null,
+          sharing_key: this.sharingKey,
           cipher: { id: cipher.id, ...data },
-          members
+          members: this.newMembers
         })
         this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'success')
         this.closeDialog()
@@ -459,7 +552,7 @@ export default {
           this.$emit('upgrade-plan')
         }
         this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'warning')
-        console.log(e)
+        // console.log(e)
       } finally {
         this.loading = false
       }
@@ -472,41 +565,32 @@ export default {
       }
       this.ciphers = this.ciphers.map(cipherId => this.cipherOptions.find(cipher => cipher.id === cipherId))
       const sharedCiphers = []
-      // console.log(this.ciphers)
-      // this.ciphers.forEach(cipher => {
-      //   promises.push(this.shareItem(cipher))
-      // })
-      // await Promise.all(promises)
       try {
         this.loading = true
-        if (this.user.role === 'member-hide_passwords') {
-          this.user.role = 'member'
-          this.user.hide_passwords = true
-        }
-        const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
-        this.members = this.members.concat(emails)
-        if (!this.members.length) {
-          return
-        }
-        const membersWithKey = await Promise.all(this.members.map(async email => {
-          const publicKey = await this.getPublicKey(email)
-          return {
-            email,
-            publicKey
-          }
-        }))
-        let orgKey = null
-        let shareKey = null
-        shareKey = await this.$cryptoService.makeShareKey()
-        orgKey = shareKey[1]
+        // if (this.user.role === 'member-hide_passwords') {
+        //   this.user.role = 'member'
+        //   this.user.hide_passwords = true
+        // }
+        // const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
+        // this.newMembers = this.newMembers.concat(emails)
+        // if (!this.newMembers.length) {
+        //   return
+        // }
+        // const membersWithKey = await Promise.all(this.newMembers.map(async email => {
+        //   const publicKey = await this.getPublicKey(email)
+        //   return {
+        //     email,
+        //     publicKey
+        //   }
+        // }))
         this.ciphers.forEach(cipher => {
-          promises.push(this.encryptCipher(cipher, orgKey, sharedCiphers, membersWithKey))
+          promises.push(this.encryptCipher(cipher, sharedCiphers))
         })
         this.user.username = ''
         await Promise.all(promises)
         const url = 'cystack_platform/pm/sharing/multiple'
         await this.$axios.$put(url, {
-          sharing_key: shareKey ? shareKey[0].encryptedString : null,
+          sharing_key: this.sharingKey,
           ciphers: sharedCiphers
         })
         this.notify(this.$tc('data.notifications.share_success', this.ciphers.length), 'success')
@@ -524,8 +608,8 @@ export default {
         this.loading = false
       }
     },
-    async encryptCipher (cipher, orgKey, sharedCiphers, membersWithKey) {
-      let _orgKey = orgKey
+    async encryptCipher (cipher, sharedCiphers) {
+      let _orgKey = this.orgKey
       if (cipher.organizationId) { // check if the cipher is shared
         // console.log(cipher.organizationId)
         _orgKey = await this.$cryptoService.getOrgKey(cipher.organizationId)
@@ -539,16 +623,79 @@ export default {
       const data = new CipherRequest(cipherEnc)
       data.type = type_
       cipher.type = type_
-      const members = await Promise.all(membersWithKey.map(async user => {
+      sharedCiphers.push({ cipher: { id: cipher.id, ...data }, members: this.newMembers })
+      return sharedCiphers
+    },
+    async addMember () {
+      const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
+      if (!emails.length) {
+        return
+      }
+      const members = await Promise.all(emails.map(async email => {
+        const publicKey = await this.getPublicKey(email)
+        const key = publicKey ? await this.generateMemberKey(publicKey, this.orgKey) : null
         return {
-          username: user.email,
-          role: this.user.role,
-          hide_passwords: this.user.hide_passwords,
-          key: user.publicKey ? await this.generateMemberKey(user.publicKey, _orgKey) : null
+          id: null,
+          username: email,
+          key,
+          status: 'pending',
+          role: 'member'
         }
       }))
-      sharedCiphers.push({ cipher: { id: cipher.id, ...data }, members })
-      return sharedCiphers
+      this.newMembers = this.newMembers.concat(members)
+      this.user.username = ''
+    },
+    async stopSharing (row) {
+      if (row.status === 'pending') {
+        this.newMembers = this.newMembers.filter(member => member !== row)
+        return
+      }
+      try {
+        const type_ = this.cipher.type
+        if (type_ === 7) {
+          this.cipher.type = CipherType.SecureNote
+          this.cipher.secureNote.type = 0
+        }
+        const personalKey = await this.$cryptoService.getEncKey()
+        const cipherEnc = await this.$cipherService.encrypt(this.cipher, personalKey)
+        const data = new CipherRequest(cipherEnc)
+        data.type = type_
+        this.cipher.type = type_
+        await this.$axios.$post(`cystack_platform/pm/sharing/${this.cipher.organizationId}/members/${row.id}/stop`, {
+          folder: null,
+          cipher: { ...data, id: this.cipher.id }
+        })
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${this.cipher.type}`, 1) }), 'success')
+        await this.getMyShares()
+      } catch (error) {
+        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.cipher.type}`, 1) }), 'warning')
+      }
+    },
+    async getMyShares () {
+      this.$store.dispatch('LoadMyShares')
+    },
+    async updatePermission (row, role) {
+      if (row.id) {
+        try {
+          if (this.user.role === 'member-hide_passwords') {
+            this.user.role = 'member'
+            this.user.hide_passwords = true
+          } else {
+            this.user.hide_passwords = false
+          }
+          await this.$axios.$put(`cystack_platform/pm/sharing/${this.cipher.organizationId}/members/${row.id}`, {
+            role
+          })
+          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${this.cipher.type}`, 1) }), 'success')
+          await this.getMyShares()
+          this.$emit('updated-cipher')
+        } catch (error) {
+          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.cipher.type}`, 1) }), 'warning')
+          console.log(error)
+        }
+      } else {
+        row.role = role
+      }
     }
   }
 }

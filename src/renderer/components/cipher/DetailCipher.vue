@@ -13,7 +13,7 @@
               class="flex items-center"
               :to="localeRoute({name: 'vault-folders-folderId', params: $route.params})"
             >
-              {{ folder.name }}
+              {{ folder.name || collection.name }}
             </el-breadcrumb-item>
           </template>
           <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId-id'">
@@ -49,7 +49,7 @@
             <i class="fa fa-pen" />
           </button>
           <button
-            v-if="canShareItem(organizations, cipher)"
+            v-if="isOwner(organizations, cipher)"
             class="btn btn-icon btn-xs btn-action"
             @click="shareItem(cipher)"
           >
@@ -324,7 +324,7 @@ export default {
     },
     collection () {
       if (this.collections) {
-        return find(this.collections, e => e.id === this.$route.params.tfolderId) || { name: 'Unassigned Folder', id: 'unassigned' }
+        return find(this.collections, e => e.id === this.$route.params.folderId) || { name: 'Unassigned Folder', id: 'unassigned' }
       }
       return {}
     },

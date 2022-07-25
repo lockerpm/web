@@ -25,7 +25,8 @@
         :value="item.id"
       >
         <div class="flex items-center">
-          <img src="~/assets/images/icons/folder.svg" alt="" class="mr-2.5">
+          <img v-if="item.organizationId" src="~/assets/images/icons/folderShare.png" alt="" class="w-[18px] mr-2.5">
+          <img v-else src="~/assets/images/icons/folder.svg" alt="" class="mr-2.5">
           <div class="text-black">{{ item.name || $t('data.folders.no_folder') }}</div>
         </div>
       </el-option>

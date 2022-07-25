@@ -54,14 +54,14 @@
                       :disabled="loading"
                       @click="putInvitation(invitation.id, 'reject')"
                     >
-                      Từ chối
+                      {{ $t('common.reject') }}
                     </button>
                     <button
                       class="btn btn-primary"
                       :disabled="loading"
                       @click="putInvitation(invitation.id, 'accept')"
                     >
-                      Đồng ý
+                      {{ $t('common.accept') }}
                     </button>
                   </div>
                 </div>
@@ -165,11 +165,13 @@ export default {
     },
     'locked' (newValue) {
       if (newValue === true) {
+        clearInterval(this.intervalGet)
         this.$router.push(this.localeRoute({ name: 'lock' }))
         this.disconnectSocket()
       }
       if (newValue === false) {
-        this.$store.dispatch('LoadTeams')
+        this.$store.dispatch('LoadNotification')
+        // this.$store.dispatch('LoadTeams')
         // console.log('unlocked sync')
         this.getSyncData()
         // this.getInvitations()
@@ -178,6 +180,9 @@ export default {
         this.getShareInvitations()
         this.getMyShares()
         this.$store.dispatch('LoadCurrentPlan')
+        this.intervalGet = setInterval(() => {
+          this.$store.dispatch('LoadNotification')
+        }, 1000 * 30)
       }
     }
   },
@@ -196,11 +201,13 @@ export default {
         break
       case 'authBlocked':
       case 'logout':
+        clearInterval(this.intervalGet)
         this.logout()
         break
       case 'lockVault':
         break
       case 'locked':
+        clearInterval(this.intervalGet)
         this.lock()
         break
       case 'lockedUrl':
@@ -227,6 +234,7 @@ export default {
     this.$broadcasterService.unsubscribe(BroadcasterSubscriptionId)
     this.removeEvent()
     this.disconnectSocket()
+    clearInterval(this.intervalGet)
   },
   methods: {
     openURL (url) {

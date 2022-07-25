@@ -5,7 +5,7 @@ import find from 'lodash/find'
 import numeral from 'numeral'
 import { Avatar } from 'element-ui'
 import { CipherType } from '../jslib/src/enums'
-import { SyncResponse } from '../jslib/src/models/response'
+import { SyncResponse } from '../core/models/response/syncResponse'
 import { WALLET_APP_LIST } from '../utils/crypto/applist/index'
 // Vue.use(Image)
 Vue.mixin({
@@ -327,6 +327,12 @@ Vue.mixin({
     async getFolders () {
       return await this.$folderService.getAllDecrypted()
     },
+    async getCollections () {
+      return await this.$collectionService.getAllDecrypted()
+    },
+    async getOrganizations () {
+      return await this.$userService.getAllOrganizations()
+    },
     clipboardSuccessHandler () {
       this.notify(this.$t('common.copied'), 'success')
     },
@@ -479,13 +485,13 @@ Vue.mixin({
     getTeam (teams, orgId) {
       return find(teams, e => e.id === orgId) || {}
     },
-    canShareItem (teams, item) {
-      const team = this.getTeam(teams, item.organizationId)
-      if (team.id) {
-        return team.type === 0
-      }
-      return true
-    },
+    // isOwner (teams, item) {
+    //   const team = this.getTeam(teams, item.organizationId)
+    //   if (team.id) {
+    //     return team.type === 0
+    //   }
+    //   return true
+    // },
     canManageItem (teams, item) {
       const team = this.getTeam(teams, item.organizationId)
       // if (team.organization_id) {

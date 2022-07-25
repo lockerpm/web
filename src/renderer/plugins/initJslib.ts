@@ -5,12 +5,12 @@ import { MemoryStorageService } from '../services/memoryStorage.service';
 import { WebPlatformUtilsService } from '../services/webPlatformUtils.service';
 
 import { BroadcasterService } from '../jslib/src/services/broadcaster.service';
-import { ApiService } from '../jslib/src/services/api.service';
+import { ApiService } from '../core/services/api.service';
 import { AppIdService } from '../jslib/src/services/appId.service';
 import { AuditService } from '../jslib/src/services/audit.service';
 // import { AuthService } from '../jslib/src/services/auth.service';
 // import { CipherService } from '../jslib/src/services/cipher.service';
-import { CollectionService } from '../jslib/src/services/collection.service';
+import { CollectionService } from '../core/services/collection.service';
 import { ConsoleLogService } from '../jslib/src/services/consoleLog.service';
 // import { ConstantsService } from '../jslib/src/services/constants.service';
 import { ContainerService } from '../jslib/src/services/container.service';
@@ -40,7 +40,7 @@ import { WebCryptoFunctionService } from '../jslib/src/services/webCryptoFunctio
 import { AuditService as AuditServiceAbstraction } from '../jslib/src/abstractions/audit.service';
 // import { AuthService as AuthServiceAbstraction } from '../jslib/src/abstractions/auth.service';
 import { CipherService as CipherServiceAbstraction } from '../jslib/src/abstractions/cipher.service';
-import { CollectionService as CollectionServiceAbstraction } from '../jslib/src/abstractions/collection.service';
+import { CollectionService as CollectionServiceAbstraction } from '../core/abstractions/collection.service';
 import { CryptoService as CryptoServiceAbstraction } from '../jslib/src/abstractions/crypto.service';
 import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from '../jslib/src/abstractions/cryptoFunction.service';
 // import { EnvironmentService as EnvironmentServiceAbstraction } from '../jslib/src/abstractions/environment.service';
