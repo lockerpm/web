@@ -954,6 +954,7 @@ export default {
       this.cipher.type = CipherType[type]
       this.cipher.login = new LoginView()
       this.cipher.login.uris = [new LoginUriView()]
+      this.cipher.login.uris[0].uri = 'https://'
       this.cipher.card = new CardView()
       this.cipher.identity = new IdentityView()
       this.cipher.secureNote = new SecureNoteView()
