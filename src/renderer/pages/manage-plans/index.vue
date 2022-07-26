@@ -155,8 +155,8 @@
                   >
                     {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : currentPlan.personal_trial_applied === false ? $t('data.plans.start_trial') : $t('data.plans.choose_this_plan') }}
                   </button>
-                  <div v-if="currentPlan.is_trailing && currentPlan.alias !== 'pm_free'" :class="currentPlan.alias === item.alias ? 'opacity-1':'opacity-0'" class="text-sm text-black-500 text-center cursor-pointer" @click="selectPlan(item)">
-                    {{ $t('data.plans.trial_left', {trialLeft}) }}. <span class="text-primary font-semibold">{{ $t('data.plans.purchase_now') }}</span>
+                  <div v-if="currentPlan.is_trailing && currentPlan.alias !== 'pm_free'" :class="currentPlan.alias === item.alias ? 'opacity-1':'opacity-0'" class="text-sm text-black-500 text-center cursor-pointer" @click="selectPlan(item, true)">
+                    {{ $t('data.plans.trial_left', {trialLeft}) }} <span class="text-primary font-semibold">{{ $t('data.plans.purchase_now') }}</span>
                   </div>
                 </div>
               </div>
@@ -992,8 +992,8 @@ export default {
       }
       this.calcPrice()
     },
-    selectPlan (plan) {
-      this.$confirm(this.$t('data.notifications.switch_plan', { currentPlan: this.currentPlan.name, chosenPlan: plan.name }), this.$t('common.warning'), {
+    selectPlan (plan, purchase = false) {
+      this.$confirm(purchase ? this.$t('data.notifications.purchase_plan', { duration: this.periodSwitch ? `1 ${this.$t('common.year')}` : `1 ${this.$t('common.month')}` }) : this.$t('data.notifications.switch_plan', { currentPlan: this.currentPlan.name, chosenPlan: plan.name }), this.$t('common.warning'), {
         confirmButtonText: this.$t('common.proceed'),
         cancelButtonText: this.$t('common.cancel'),
         type: 'warning'
