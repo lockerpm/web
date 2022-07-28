@@ -145,7 +145,6 @@ export default {
     // this.$store.dispatch('LoadCurrentUser')
     // this.$store.dispatch('LoadCurrentUserPw')
     this.showCookie = this.checkCookie()
-    console.log(this.showCookie)
   },
   methods: {
     checkCookie () {
