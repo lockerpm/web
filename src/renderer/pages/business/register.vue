@@ -279,6 +279,7 @@ export default {
       })
         .then(async response => {
           this.submitted = true
+          this.$cookies.set('trial_plan', 'pm_enterprise')
         })
         .catch(err => {
           if (err.response) {
