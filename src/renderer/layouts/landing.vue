@@ -181,7 +181,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .landing-btn {
   @apply hover:no-underline transition duration-200 ease-in-out text-white hover:text-white hover:bg-green-hover;
   display: inline-block;
@@ -192,6 +192,12 @@ export default {
   font-size: 16px;
   border-radius: 5px;
   background-color: #268334;
+  &:disabled {
+    background-color: #268334;
+    &:hover {
+      background-color: #268334;
+    }
+  }
 }
 
 .landing-btn2 {
