@@ -35,11 +35,11 @@
             :key="index.toString()+plan.title"
             class="landing-transition h-[630px] px-9 py-14 bg-white relative z-10 rounded-xl hover:shadow-xl"
           >
-            <div v-if="plan.alias != 'pm_premium' && periodSwitch " class="triangle-isosceles landing-font-14 font-medium" style="position: absolute; top: -40px; right: 40px">
-              +6 MONTHS FREE FAMILY ACCOUNT
+            <div v-if="plan.alias != 'pm_premium' && periodSwitch " class="triangle-isosceles landing-font-14 font-medium" style="position: absolute; top: -40px;" :style="$t('plans_family_promotion.text_free_account.status_language') === 'true' ? 'right: 40px' : 'right: 15px'">
+              {{ $t('plans_family_promotion.text_free_account.text') }}
             </div>
             <div v-if="plan.alias != 'pm_premium' && periodSwitch " class="italic landing-font-14 font-medium">
-              Limited-time offer only
+              {{ $t('plans_family_promotion.text_limited') }}
             </div>
             <p class="landing-font-20 text-green">{{ plan.title }}</p>
             <p class="mt-4">
@@ -93,7 +93,9 @@
                   {{ plan.button.text }}
                 </div>
                 <div class="mt-2 text-center left-6 right-12">
-                  <div class="italic landing-font-16 text-center ml-[30px]">No credit card required</div>
+                  <div class="italic landing-font-16 text-center ml-[30px]">
+                    {{ $t('plans_family_promotion.text_credit') }}
+                  </div>
                 </div>
               </div>
             </div>
