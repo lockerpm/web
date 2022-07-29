@@ -17,7 +17,7 @@
           </div>
         </div>
       </div>
-      <div v-else class="flex">
+      <div v-else class="flex flex-wrap">
         <div class="md:w-1/2 w-full">
           <h1
             class="landing-font-42 font-semibold"
@@ -44,139 +44,141 @@
             >{{ locale==='vi'?'Liên hệ':'Contact us' }}</a></span>
           </div>
         </div>
-        <div class="w-full md:w-1/2 shadow-custom rounded-lg h-auto bg-white py-[30px] px-[75px]">
-          <el-form
-            id="business-form"
-            ref="inputForm"
-            :model="newuser"
-            :rules="rules"
-            label-position="top"
-            label-width="120px"
-            class="business-form"
-          >
-            <h4 class="w-full text-center mb-5 landing-font-24 font-semibold">
-              {{ $t('business.register.form_title') }}
-            </h4>
-            <div class="w-full grid grid-cols-2 gap-x-4">
-              <div class="col-span-1">
-                <el-form-item
-                  :label="$t('common.first_name')"
-                  prop="firstName"
-                >
-                  <el-input
-                    v-model="newuser.firstName"
-                    :placeholder="$t('common.first_name_placeholder')"
-                  />
-                  <div v-if="bugs.full_name" class="form-control-feedback">
-                    {{ bugs.full_name[0] }}
-                  </div>
-                </el-form-item>
-              </div>
-              <div class="col-span-1">
-                <el-form-item
-                  :label="$t('common.last_name')"
-                  prop="lastName"
-                >
-                  <el-input
-                    v-model="newuser.lastName"
-                    :placeholder="$t('common.last_name_placeholder')"
-                  />
-                  <div v-if="bugs.full_name" class="form-control-feedback">
-                    {{ bugs.full_name[0] }}
-                  </div>
-                </el-form-item>
-              </div>
-            </div>
-            <el-form-item
-              :label="$t('common.work_email')"
-              prop="email"
+        <div class="w-full md:w-1/2 md:pl-5 pl-0 md:mt-0 mt-8">
+          <div class="shadow-custom rounded-lg h-auto bg-white py-[30px] px-[72px]">
+            <el-form
+              id="business-form"
+              ref="inputForm"
+              :model="newuser"
+              :rules="rules"
+              label-position="top"
+              label-width="120px"
+              class="business-form"
             >
-              <el-input
-                v-model="newuser.email"
-                :placeholder="$t('common.work_email_placeholder')"
-              />
-              <div v-if="bugs.email" class="form-control-feedback">
-                {{ bugs.email[0] }}
+              <h4 class="w-full text-center mb-5 landing-font-24 font-semibold">
+                {{ $t('business.register.form_title') }}
+              </h4>
+              <div class="w-full grid grid-cols-2 gap-x-4">
+                <div class="col-span-1">
+                  <el-form-item
+                    :label="$t('common.first_name')"
+                    prop="firstName"
+                  >
+                    <el-input
+                      v-model="newuser.firstName"
+                      :placeholder="$t('common.first_name_placeholder')"
+                    />
+                    <div v-if="bugs.full_name" class="form-control-feedback">
+                      {{ bugs.full_name[0] }}
+                    </div>
+                  </el-form-item>
+                </div>
+                <div class="col-span-1">
+                  <el-form-item
+                    :label="$t('common.last_name')"
+                    prop="lastName"
+                  >
+                    <el-input
+                      v-model="newuser.lastName"
+                      :placeholder="$t('common.last_name_placeholder')"
+                    />
+                    <div v-if="bugs.full_name" class="form-control-feedback">
+                      {{ bugs.full_name[0] }}
+                    </div>
+                  </el-form-item>
+                </div>
               </div>
-            </el-form-item>
-            <el-form-item
-              :label="$t('common.new_password')"
-              prop="password"
-            >
-              <el-input
-                v-model="newuser.password"
-                :placeholder="$t('common.new_password_placeholder')"
-                type="password"
-                show-password
-              />
-              <div v-if="bugs.password" class="form-control-feedback">
-                {{ bugs.password[0] }}
-              </div>
-            </el-form-item>
-            <el-form-item
-              :label="$t('common.confirm_password')"
-              prop="confirm_password"
-            >
-              <el-input
-                v-model="newuser.confirm_password"
-                :placeholder="$t('common.confirm_password_placeholder')"
-                type="password"
-                show-password
-              />
-              <div v-if="bugs.confirm_password" class="form-control-feedback">
-                {{ bugs.confirm_password[0] }}
-              </div>
-            </el-form-item>
-            <el-form-item
-              :label="$t('common.phone')"
-              prop="phone"
-            >
-              <el-input
-                v-model="newuser.phone"
-                :placeholder="$t('common.phone_placeholder')"
-              />
-              <div v-if="bugs.phone" class="form-control-feedback">
-                {{ bugs.phone[0] }}
-              </div>
-            </el-form-item>
-            <el-form-item
-              :label="$t('common.company')"
-              prop="organization"
-            >
-              <el-input
-                v-model="newuser.organization"
-                :placeholder="$t('common.company_placeholder')"
-              />
-              <div v-if="bugs.organization" class="form-control-feedback">
-                {{ bugs.organization[0] }}
-              </div>
-            </el-form-item>
-            <el-form-item
-              :label="$t('common.job_title')"
-              prop="title"
-            >
-              <el-input
-                v-model="newuser.title"
-                :placeholder="$t('common.job_title_placeholder')"
-              />
-            </el-form-item>
-            <el-form-item>
-              <el-checkbox v-model="agree">
-                {{ $t('business.register.receive_email') }}
-              </el-checkbox>
-            </el-form-item>
-            <el-form-item>
-              <el-button
-                class="landing-btn w-full"
-                :loading="loading"
-                :disabled="loading || !agree "
-                @click.prevent="register"
+              <el-form-item
+                :label="$t('common.work_email')"
+                prop="email"
               >
-                {{ $t('landing_contact.send') }}
-              </el-button>
-            </el-form-item>
-            <div class="w-1/2 mx-auto text-center text-xs text-black-500" v-html="$t('business.register.agree_policy')" />
-          </el-form>
+                <el-input
+                  v-model="newuser.email"
+                  :placeholder="$t('common.work_email_placeholder')"
+                />
+                <div v-if="bugs.email" class="form-control-feedback">
+                  {{ bugs.email[0] }}
+                </div>
+              </el-form-item>
+              <el-form-item
+                :label="$t('common.new_password')"
+                prop="password"
+              >
+                <el-input
+                  v-model="newuser.password"
+                  :placeholder="$t('common.new_password_placeholder')"
+                  type="password"
+                  show-password
+                />
+                <div v-if="bugs.password" class="form-control-feedback">
+                  {{ bugs.password[0] }}
+                </div>
+              </el-form-item>
+              <el-form-item
+                :label="$t('common.confirm_password')"
+                prop="confirm_password"
+              >
+                <el-input
+                  v-model="newuser.confirm_password"
+                  :placeholder="$t('common.confirm_password_placeholder')"
+                  type="password"
+                  show-password
+                />
+                <div v-if="bugs.confirm_password" class="form-control-feedback">
+                  {{ bugs.confirm_password[0] }}
+                </div>
+              </el-form-item>
+              <el-form-item
+                :label="$t('common.phone')"
+                prop="phone"
+              >
+                <el-input
+                  v-model="newuser.phone"
+                  :placeholder="$t('common.phone_placeholder')"
+                />
+                <div v-if="bugs.phone" class="form-control-feedback">
+                  {{ bugs.phone[0] }}
+                </div>
+              </el-form-item>
+              <el-form-item
+                :label="$t('common.company')"
+                prop="organization"
+              >
+                <el-input
+                  v-model="newuser.organization"
+                  :placeholder="$t('common.company_placeholder')"
+                />
+                <div v-if="bugs.organization" class="form-control-feedback">
+                  {{ bugs.organization[0] }}
+                </div>
+              </el-form-item>
+              <el-form-item
+                :label="$t('common.job_title')"
+                prop="title"
+              >
+                <el-input
+                  v-model="newuser.title"
+                  :placeholder="$t('common.job_title_placeholder')"
+                />
+              </el-form-item>
+              <el-form-item>
+                <el-checkbox v-model="agree">
+                  {{ $t('business.register.receive_email') }}
+                </el-checkbox>
+              </el-form-item>
+              <el-form-item>
+                <el-button
+                  class="landing-btn w-full"
+                  :loading="loading"
+                  :disabled="loading || !agree "
+                  @click.prevent="register"
+                >
+                  {{ $t('landing_contact.send') }}
+                </el-button>
+              </el-form-item>
+              <div class="w-1/2 mx-auto text-center text-xs text-black-500" v-html="$t('business.register.agree_policy')" />
+            </el-form>
+          </div>
         </div>
       </div>
     </div>
@@ -185,7 +187,7 @@
 
 <script>
 export default {
-  layout: 'landing',
+  layout: 'register',
   data () {
     const phoneNotRequiredValidator = (rule, value, callback) => {
       for (const i in value) {
