@@ -128,18 +128,47 @@
                   {{ bugs.confirm_password[0] }}
                 </div>
               </el-form-item>
-              <el-form-item
-                :label="$t('common.phone')"
-                prop="phone"
-              >
-                <el-input
-                  v-model="newuser.phone"
-                  :placeholder="$t('common.phone_placeholder')"
-                />
-                <div v-if="bugs.phone" class="form-control-feedback">
-                  {{ bugs.phone[0] }}
+              <div class="w-full grid grid-cols-2 gap-x-4">
+                <div class="col-span-1">
+                  <el-form-item
+                    :label="$t('common.phone')"
+                    prop="phone"
+                  >
+                    <el-input
+                      v-model="newuser.phone"
+                      :placeholder="$t('common.phone_placeholder')"
+                    />
+                    <div v-if="bugs.phone" class="form-control-feedback">
+                      {{ bugs.phone[0] }}
+                    </div>
+                  </el-form-item>
                 </div>
-              </el-form-item>
+                <div class="col-span-1">
+                  <el-form-item :label="$t('common.country')" prop="country">
+                    <el-select
+                      v-model="newuser.country"
+                      placeholder=""
+                      filterable
+                      class="w-full"
+                      auto-complete="off"
+                      @change="changeDialCode"
+                    >
+                      <el-option
+                        v-for="country in countries"
+                        :key="country.country_code"
+                        :value="country.country_code"
+                        :label="country.country_name"
+                      >
+                        <span>
+                          <span :class="`flag flag-${country.country_code.toLowerCase()}`" class="" />
+                          {{ country.country_name }}
+                        </span>
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </div>
+
               <el-form-item
                 :label="$t('common.company')"
                 prop="organization"
@@ -219,7 +248,8 @@ export default {
         password: '',
         confirm_password: '',
         organization: '',
-        title: ''
+        title: '',
+        country: 'VN'
       },
       bugs: {},
       rules: {
@@ -240,6 +270,9 @@ export default {
         password: [
           { required: true }
         ],
+        country: [
+          { required: true }
+        ],
         confirm_password: [
           { required: true },
           { validator: validatePass }
@@ -247,10 +280,13 @@ export default {
         organization: [
           { required: true }
         ]
-      }
+      },
+      countries: [],
+      selectedCountryCode: '+84'
     }
   },
   mounted () {
+    this.getCountries()
     this.$recaptcha.init()
   },
   methods: {
@@ -268,6 +304,7 @@ export default {
       }
       const fullName = this.newuser.firstName + ' ' + this.newuser.lastName
       this.newuser.language = this.locale
+      const phone = `${this.selectedCountryCode} ${this.newuser.phone}`
       const SERVICE_SCOPE = 'pwdmanager'
       if (SERVICE_SCOPE) {
         this.newuser.scope = SERVICE_SCOPE
@@ -276,6 +313,7 @@ export default {
       const token = await this.$recaptcha.execute('login')
       this.$axios.$post('https://api.locker.io/v2/sso/users', {
         ...this.newuser,
+        phone,
         full_name: fullName,
         request_code: token
       })
@@ -291,6 +329,20 @@ export default {
         .then(() => {
           this.loading = false
         })
+    },
+    getCountries () {
+      this.$axios.$get('resources/countries')
+        .then(res => {
+          this.countries = res
+        })
+    },
+    changeDialCode (countryCode) {
+      for (let i = 0; i < this.countries.length; i++) {
+        if (this.countries[i].country_code.toUpperCase() === countryCode) {
+          this.selectedCountryCode = this.countries[i].country_phone_code
+          break
+        }
+      }
     }
   }
 }
