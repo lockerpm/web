@@ -323,7 +323,11 @@ export default {
     choosePlan (alias) {
       this.$cookies.set('trial_plan', alias === 'pm_free' ? 'pm_family' : alias)
       this.$cookies.set('is_trial_promotion', true)
-      this.$router.replace(this.localePath('/register?utm_source=plans-family-promotion'))
+      if (this.$store.state.isLoggedIn) {
+        this.$router.replace(this.localePath('/manage-plans'))
+      } else {
+        this.$router.replace(this.localePath('/register?utm_source=plans-family-promotion'))
+      }
     }
   }
 }
