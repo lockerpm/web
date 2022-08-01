@@ -5,15 +5,15 @@
     </div>
     <div class="bg-welcome full-width h-auto pt-[76px] pb-[50px] bg-center bg-cover bg-no-repeat" :style="{backgroundImage: `url(${require(`~/assets/images/landing/promotion/bg_welcome.png`)})`}">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="grid md:grid-cols-2 grid-cols-1 items-center gap-x-[10px]">
+        <div class="grid md:grid-cols-2 grid-cols-1 items-center gap-x-[10px] md:gap-y-0 gap-y-[40px]">
           <div>
             <div class="text-[#161922] font-bold landing-font-48 mb-[14px]">
               {{ $t('promotion.welcome.title') }}
             </div>
             <div class="absolute left-0">
               <div class="relative">
-                <img class="h-[62px]" src="~/assets/images/landing/promotion/img_limited.png">
-                <div class="landing-font-22 text-[#FFFFFF] font-bold absolute top-[8px] right-[72px]">
+                <img class="lg:h-[62px] md:h-[50px] h-[62px]" src="~/assets/images/landing/promotion/img_limited.png">
+                <div class="landing-font-22 text-[#FFFFFF] font-bold absolute lg:top-[8px] md:top-[5px] top-[8px] right-[72px]">
                   {{ $t('promotion.welcome.text_limit') }}
                 </div>
               </div>
@@ -49,13 +49,13 @@
         <div class="text-center">
           <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
         </div>
-        <div class="mt-16 grid md:grid-cols-2 grid-cols-1 items-center gap-x-[118px]">
+        <div class="mt-16 grid md:grid-cols-2 grid-cols-1 items-center md:gap-x-[118px] gap-x-0 md:gap-y-0 gap-y-[60px]">
           <div>
-            <div v-for="(item, index) in $t('promotion.introduce_locker.fail.content_fail')" :key="index" class="flex mb-5">
+            <div v-for="(item, index) in $t('promotion.introduce_locker.fail.content_fail')" :key="index" class="flex flex-wrap mb-5">
               <div>
-                <img src="~/assets/images/landing/promotion/icon-fail.svg" class="mt-[10px]" :class="index!=2 ? 'w-[24px] h-[24px]': 'w-[36px]'">
+                <img src="~/assets/images/landing/promotion/icon-fail.svg" class="mt-[10px] w-[24px] h-[24px]" >
               </div>
-              <div class="landing-font-20 text-[#000000] font-normal ml-[14px]">
+              <div class="landing-font-20 text-[#000000] font-normal ml-[14px] w-4/5">
                 {{ item }}
               </div>
             </div>
@@ -80,16 +80,16 @@
         <div class="text-center">
           <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
         </div>
-        <div class="mt-16 grid md:grid-cols-2 grid-cols-1 items-center gap-x-[118px]">
+        <div class="mt-16 grid md:grid-cols-2 grid-cols-1 items-center md:gap-x-[118px] gap-x-0 md:gap-y-0 gap-y-[60px]">
           <div>
             <img src="~/assets/images/landing/promotion/img_goods.png">
           </div>
           <div>
-            <div v-for="(item, index) in $t('promotion.introduce_locker.goods.content_goods')" :key="index" class="flex mb-5">
+            <div v-for="(item, index) in $t('promotion.introduce_locker.goods.content_goods')" :key="index" class="flex mb-5 flex-wrap">
               <div>
-                <img src="~/assets/images/landing/promotion/icon-success.png" class="mt-[10px]" :class="index!=3 ? 'w-[24px] h-[24px]': 'w-[32px]'">
+                <img src="~/assets/images/landing/promotion/icon-success.png" class="mt-[10px] w-[24px] h-[24px]">
               </div>
-              <div class="landing-font-20 text-[#000000] font-normal ml-[14px]">
+              <div class="landing-font-20 text-[#000000] font-normal ml-[14px] w-4/5">
                 {{ item }}
               </div>
             </div>
@@ -103,12 +103,12 @@
           <div class="landing-font-48 font-bold text-center text-[#000000] mb-[48px]">
             {{ $t('promotion.locker_super.title') }}
           </div>
-          <div class="grid grid-cols-2 gap-x-[80px]">
-            <div v-for="(item, index) in $t('promotion.locker_super.content')" :key="index" class="mb-6 flex">
+          <div class="grid md:grid-cols-2 grid-cols-1 md:gap-x-[80px] gap-x-0 md:gap-y-[24px] gap-y-[40px]">
+            <div v-for="(item, index) in $t('promotion.locker_super.content')" :key="index" class="flex flex-wrap">
               <div>
                 <img src="~/assets/images/landing/promotion/icon-success.png" class="w-[24px] h-[24px] mt-[5px]">
               </div>
-              <div class="ml-[14px] text-[#000000] landing-font-20 font-normal">
+              <div class="ml-[14px] text-[#000000] landing-font-20 font-normal w-4/5">
                 {{ item }}
               </div>
             </div>
@@ -118,7 +118,7 @@
       <div class="text-center">
         <nuxt-link
           :to="localePath($t('promotion.btn_signup.link'))"
-          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup text-center absolute bottom-[-30px] ml-[-100px]"
+          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup text-center absolute bottom-[-30px] md:ml-[-100px] ml-[-125px]"
         >
           {{ $t('promotion.btn_signup.text') }}
         </nuxt-link>
@@ -131,8 +131,8 @@
       <div class="text-center">
         <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
       </div>
-      <div class="grid grid-cols-3 gap-x-[200px] mt-5">
-        <div v-for="(item, index) in $t('promotion.support_devices.list_devices')" :key="index" class="flex items-center" :class="index < 3 ? 'mb-[72px]' : ''">
+      <div class="grid md:grid-cols-3 grid-cols-2 lg:gap-x-[200px] md:gap-x-[120px] gap-x-[80px] mt-5 md:gap-y-[72px] gap-y-[40px]">
+        <div v-for="(item, index) in $t('promotion.support_devices.list_devices')" :key="index" class="flex items-center">
           <div>
             <img :src="require(`~/assets/images/landing/promotion/${item.img}`)" class="h-[80px] w-[80px]">
           </div>
@@ -190,11 +190,11 @@
       </div>
       <div class="grid md:grid-cols-2 grid-cols-1 gap-x-[29px] items-center">
         <div>
-          <div v-for="(item, index) in $t('promotion.locker_absolutely.items')" class="flex mb-6" :key="index">
+          <div v-for="(item, index) in $t('promotion.locker_absolutely.items')" class="flex mb-6 flex-wrap" :key="index">
             <div>
               <img src="~/assets/images/landing/promotion/icon-success.png" class="mt-[5px] w-[24px] h-[24px]" >
             </div>
-            <div class="ml-[14px] text-[#000000] landing-font-20 font-normal">
+            <div class="ml-[14px] text-[#000000] landing-font-20 font-normal w-4/5">
               {{ item }}
             </div>
           </div>
@@ -205,7 +205,7 @@
       </div>
     </div>
     <div class="cta py-[120px]">
-      <div class="bg-[#F5F6F7] px-[166px] py-16">
+      <div class="bg-[#F5F6F7] md:px-[166px] px-[20px] py-16">
         <div class="text-[#161922] landing-font-38 font-bold text-center">
           {{$t('promotion.cta.title')}}
         </div>
