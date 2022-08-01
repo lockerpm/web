@@ -167,7 +167,7 @@
       <div class="mt-5 mb-6">
         <img src="~/assets/images/landing/promotion/line-customer.png" class="w-1/2">
       </div>
-      <el-carousel indicator-position="outside" :autoplay="false" height="250px">
+      <el-carousel indicator-position="outside" :autoplay="false">
         <el-carousel-item v-for="(item, index) in $t('promotion.customer_said.comments')" :key="index.toString()">
           <div class="text-[#161922] landing-font-20 font-normal mb-3">{{ item.desc }}</div>
           <div>
@@ -259,14 +259,24 @@ export default {
     height: 6px;
     margin:0px 20px;
   }
+  .el-carousel__item{
+    height: 250px;
+  }
   .el-carousel__indicator.is-active button{
     background: #008800;
   }
 }
-.line_customer{
-  //background: #008800;
-  border-radius: 4px;
-  width: 77px;
-  height: 6px;
+@media screen and (max-width: 768px) {
+  .customer-said{
+    .el-carousel__container{
+      height: 500px;
+    }
+    .el-carousel__button{
+      margin: 0 10px;
+    }
+    .el-carousel__item{
+      height: 450px;
+    }
+  }
 }
 </style>
