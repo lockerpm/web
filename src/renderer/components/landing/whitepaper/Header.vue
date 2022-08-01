@@ -62,7 +62,11 @@
             v-for="(item, index) in menu"
             :key="index"
           >
+            <a v-if="item.external" :href="item.link" target="_blank" class="inline-block nav-item text-black landing-transition">
+              {{ item.name }}
+            </a>
             <nuxt-link
+              v-else
               class="inline-block nav-item text-black landing-transition"
               :to="localeRoute({name: item.link})"
               active-class=""
