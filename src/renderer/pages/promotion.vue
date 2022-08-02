@@ -307,7 +307,7 @@ export default {
       margin: 0 10px;
     }
     .el-carousel__item{
-      height: 450px;
+      height: 500px;
     }
   }
   .landing-btn-signup{
