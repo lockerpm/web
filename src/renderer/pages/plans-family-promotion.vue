@@ -86,7 +86,7 @@
               <div class="text-center absolute bottom-3 left-6 right-12">
                 <div
                   class="landing-btn !w-full sm:w-auto sm:ml-4 cursor-pointer bg-dang"
-                  :class="plan.alias === 'pm_family' ? '!bg-danger-500': ''"
+                  :style="plan.alias === 'pm_family' ? 'background-color: #56C9CD !important': ''"
                   style="font-weight: 600"
                   @click="choosePlan(plan.alias)"
                 >
@@ -184,7 +184,7 @@
                   <div class="text-center" style="margin: 0 5px;">
                     <div
                       class="landing-btn w-full sm:w-auto sm:ml-4 cursor-pointer"
-                      :class="button.alias === 'pm_family' ? '!bg-danger-500': ''"
+                      :style="button.alias === 'pm_family' ? 'background-color: #56C9CD !important': ''"
                       style="font-weight: 600"
                       @click="choosePlan(button.alias)"
                     >
