@@ -32,11 +32,11 @@ export default {
   },
   methods: {
     async getNotificationSettings () {
-      this.notificationSettings = await this.$axios.$get('cystack_platform/pm/notifcation/settings?type=mail') || []
+      this.notificationSettings = await this.$axios.$get('cystack_platform/pm/notification/settings?type=mail') || []
     },
     async updateSetting (v, id) {
       try {
-        await this.$axios.$put(`cystack_platform/pm/notifcation/settings/${id}`, { mail: v })
+        await this.$axios.$put(`cystack_platform/pm/notification/settings/${id}`, { mail: v })
         this.notify(this.$t('data.notifications.update_settings_success'), 'success')
         await this.getNotificationSettings()
       } catch (error) {
