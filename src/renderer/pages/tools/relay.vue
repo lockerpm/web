@@ -24,7 +24,7 @@
           <!-- Root Email -->
           <div class="setting-section-header">
             <div>
-              Your root email: <strong>{{ currentUser.email }}</strong>
+              {{ $t('data.tools.relay_your_root_email') }} <strong>{{ currentUser.email }}</strong>
             </div>
             <div />
           </div>
@@ -33,13 +33,13 @@
           <div class="setting-section-body">
             <ul class="list-disc ml-5">
               <li>
-                All emails to your alias addresses will be forwarded to your root email.
+                {{ $t('data.tools.relay_desc_1') }}
               </li>
               <li>
-                You can create up to 5 alias addresses for your use.
+                {{ $t('data.tools.relay_desc_2') }}
               </li>
               <li>
-                You have one customizable alias
+                {{ $t('data.tools.relay_desc_3') }}
               </li>
             </ul>
           </div>
@@ -50,14 +50,14 @@
       <!-- Count + add -->
       <div class="flex justify-between items-center mb-5">
         <p>
-          Your alias addresses ({{ addresses.length }}/{{ limit }})
+          {{ $t('data.tools.relay_your_alias_addresses') }} ({{ addresses.length }}/{{ limit }})
         </p>
         <button
           :disabled="loading || addresses.length >= limit"
           class="btn btn-primary"
           @click="addAddress"
         >
-          New alias
+          {{ $t('data.tools.relay_new_alias') }}
         </button>
       </div>
       <!-- Count + add end -->
@@ -84,7 +84,7 @@
                     autofocus
                     type="text"
                     maxlength="64"
-                    min-length="6"
+                    minlength="6"
                     show-word-limit
                   />
                   <p class="font-medium ml-2 mr-3">
@@ -132,7 +132,7 @@
                     class="text-black hover:text-black"
                     @click="startEditing(item.address)"
                   >
-                    <i class="far fa-edit" /> Edit
+                    <i class="far fa-edit" /> {{ $t('common.edit') }}
                   </a>
                 </template>
               </div>
@@ -144,7 +144,7 @@
               <div class="flex flex-row items-center justify-between mt-2">
                 <div>
                   <p class="text-xs">
-                    Created
+                    {{ $t('common.created_date') }}
                   </p>
                   <p class="font-medium">
                     {{ $moment(item.created_time * 1000).format('MMM DD, YYYY') }}
@@ -152,7 +152,7 @@
                 </div>
 
                 <a class="text-danger hover:text-danger" @click.prevent="deleteAddress(item.id)">
-                  Delete
+                  {{ $t('common.delete') }}
                 </a>
               </div>
             </div>
@@ -200,6 +200,7 @@ export default {
         const addresses = [...this.addresses]
         addresses.push(res)
         this.addresses = [...addresses]
+        this.notify(this.$t('common.success'), 'success')
       } catch {
 
       } finally {
@@ -211,7 +212,6 @@ export default {
       this.address = address
     },
     async editAddress (id) {
-      this.isEditing = false
       this.loading = true
       try {
         await this.$axios.$put(`cystack_platform/relay/addresses/${id}`, {
@@ -223,8 +223,16 @@ export default {
         item.address = this.address
         item.full_address = this.address + '@' + item.domain
         this.addresses = [...addresses]
-      } catch {
-
+        this.isEditing = false
+      } catch (e) {
+        let message = e.message
+        if (e.response.data) {
+          message = e.response.data.message
+          if (e.response.data.details.address) {
+            message = e.response.data.details.address[0]
+          }
+        }
+        this.notify(message, 'error')
       } finally {
         this.loading = false
       }
