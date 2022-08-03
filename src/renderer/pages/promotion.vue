@@ -117,7 +117,7 @@
       </div>
       <div class="text-center">
         <div
-          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup text-center absolute bottom-[-30px] md:ml-[-100px] ml-[-125px]"
+          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup text-center absolute bottom-[-30px] md:ml-[-160px] ml-[-125px]"
           @click="choosePlan('pm_family')"
         >
           {{ $t('promotion.btn_signup.text') }}
@@ -169,7 +169,8 @@
       </div>
       <el-carousel indicator-position="outside" :autoplay="false">
         <el-carousel-item v-for="(item, index) in $t('promotion.customer_said.comments')" :key="index.toString()">
-          <div class="text-[#161922] landing-font-20 font-normal mb-3">{{ item.desc }}</div>
+          <div v-if="index === 2" class="text-[#161922] landing-font-20 font-normal mb-3 desc-customer-said" v-html="item.desc" />
+          <div v-else class="text-[#161922] landing-font-20 font-normal mb-3">{{ item.desc }}</div>
           <div>
             <div class="landing-font-20 text-[#161922] font-bold">
               {{ item.author }}
@@ -279,6 +280,10 @@ export default {
   }
 }
 .customer-said{
+  .desc-customer-said span{
+    color: red;
+    font-weight: bold;
+  }
   .el-carousel__arrow--right,.el-carousel__arrow--left{
     display: none;
   }
