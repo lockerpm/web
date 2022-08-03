@@ -117,121 +117,121 @@
       </div>
       <div class="text-center">
         <div
-          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup"
+          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup text-center absolute bottom-[-30px] md:ml-[-100px] ml-[-125px]"
           @click="choosePlan('pm_family')"
         >
           {{ $t('promotion.btn_signup.text') }}
         </div>
       </div>
-      <div class="py-[120px] support-devices">
-        <div class="landing-font-48 font-bold text-[#000000] mb-[71px] text-center">
-          {{ $t('promotion.support_devices.title') }}
-        </div>
-        <div class="text-center">
-          <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
-        </div>
-        <div class="grid md:grid-cols-3 grid-cols-2 lg:gap-x-[200px] md:gap-x-[120px] gap-x-[80px] mt-5 md:gap-y-[72px] gap-y-[40px]">
-          <div v-for="(item, index) in $t('promotion.support_devices.list_devices')" :key="index" class="flex items-center">
-            <div>
-              <img :src="require(`~/assets/images/landing/promotion/${item.img}`)" class="h-[80px] w-[80px]">
-            </div>
-            <div class="text-[#000000] landing-font-20 font-semibold ml-5">
-              {{ item.device }}
-            </div>
-          </div>
-        </div>
+    </div>
+    <div class="py-[120px] support-devices">
+      <div class="landing-font-48 font-bold text-[#000000] mb-[71px] text-center">
+        {{ $t('promotion.support_devices.title') }}
       </div>
-      <div class="py-[120px]">
-        <div class="landing-font-48 font-bold text-[#000000] mb-6 text-center">
-          {{ $t('promotion.goods_security.title') }}
-        </div>
-        <div class="text-center mb-[56px]">
-          <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
-        </div>
-        <div class="grid md:grid-cols-3 grid-cols-1 lg:gap-x-[100px] md:gap-x-[50px] gap-x-0 md:gap-y-0 gap-y-[50px]">
-          <div v-for="(item, index) in $t('promotion.goods_security.items')" :key="index">
-            <div>
-              <img :src="require(`~/assets/images/landing/promotion/${item.icon}`)">
-            </div>
-            <div class="landing-font-20 text-[#000000] mt-[28px]">
-              {{ item.desc }}
-            </div>
-          </div>
-        </div>
+      <div class="text-center">
+        <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
       </div>
-      <div class="customer-said py-[120px]">
-        <div class="text-[#161922] landing-font-45 font-bold">
-          {{ $t('promotion.customer_said.title') }}
-        </div>
-        <div class="mt-5 mb-6">
-          <img src="~/assets/images/landing/promotion/line-customer.png" class="w-1/2">
-        </div>
-        <el-carousel indicator-position="outside" :autoplay="false">
-          <el-carousel-item v-for="(item, index) in $t('promotion.customer_said.comments')" :key="index.toString()">
-            <div class="text-[#161922] landing-font-20 font-normal mb-3">{{ item.desc }}</div>
-            <div>
-              <div class="landing-font-20 text-[#161922] font-bold">
-                {{ item.author }}
-              </div>
-              <div class="landing-font-20 text-[#161922] font-bold">
-                {{ item.date_comment }}
-              </div>
-            </div>
-          </el-carousel-item>
-        </el-carousel>
-      </div>
-      <div class="locker-absolutely py-[120px]">
-        <div class="text-[#000000] landing-font-48 font-bold">
-          {{ $t('promotion.locker_absolutely.title') }}
-        </div>
-        <div class="text-center mt-6 mb-[54px]">
-          <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
-        </div>
-        <div class="grid md:grid-cols-2 grid-cols-1 gap-x-[29px] items-center">
+      <div class="grid md:grid-cols-3 grid-cols-2 lg:gap-x-[200px] md:gap-x-[120px] gap-x-[80px] mt-5 md:gap-y-[72px] gap-y-[40px]">
+        <div v-for="(item, index) in $t('promotion.support_devices.list_devices')" :key="index" class="flex items-center">
           <div>
-            <div v-for="(item, index) in $t('promotion.locker_absolutely.items')" :key="index" class="flex mb-6 flex-wrap">
-              <div>
-                <img src="~/assets/images/landing/promotion/icon-success.png" class="mt-[5px] w-[24px] h-[24px]">
-              </div>
-              <div class="ml-[14px] text-[#000000] landing-font-20 font-normal w-4/5">
-                {{ item }}
-              </div>
-            </div>
+            <img :src="require(`~/assets/images/landing/promotion/${item.img}`)" class="h-[80px] w-[80px]">
           </div>
-          <div>
-            <img src="~/assets/images/landing/promotion/img_absolutely.png">
+          <div class="text-[#000000] landing-font-20 font-semibold ml-5">
+            {{ item.device }}
           </div>
         </div>
       </div>
-      <!--    <div class="cta py-[120px]">-->
-      <!--      <div class="bg-[#F5F6F7] md:px-[166px] px-[20px] py-16">-->
-      <!--        <div class="text-[#161922] landing-font-38 font-bold text-center">-->
-      <!--          {{ $t('promotion.cta.title') }}-->
-      <!--        </div>-->
-      <!--        <div class="mt-8 text-center">-->
-      <!--          <nuxt-link-->
-      <!--            :to="localePath($t('promotion.btn_signup.link'))"-->
-      <!--            class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup"-->
-      <!--          >-->
-      <!--            {{ $t('promotion.btn_signup.text') }}-->
-      <!--          </nuxt-link>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <!--    </div>-->
-      <div class="cta py-[120px]">
-        <div class="relative banner-cta">
+    </div>
+    <div class="py-[120px]">
+      <div class="landing-font-48 font-bold text-[#000000] mb-6 text-center">
+        {{ $t('promotion.goods_security.title') }}
+      </div>
+      <div class="text-center mb-[56px]">
+        <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
+      </div>
+      <div class="grid md:grid-cols-3 grid-cols-1 lg:gap-x-[100px] md:gap-x-[50px] gap-x-0 md:gap-y-0 gap-y-[50px]">
+        <div v-for="(item, index) in $t('promotion.goods_security.items')" :key="index">
           <div>
-            <img src="~/assets/images/landing/promotion/banner-cta.png" class="w-full lg:block hidden">
+            <img :src="require(`~/assets/images/landing/promotion/${item.icon}`)">
           </div>
-          <div class="landing-font-34 font-bold text-center lg:absolute xl:bottom-[50px] lg:bottom-[20px] text-white lg:w-[84%] w-full lg:left-[90px] text-center text-desc" v-html="$t('promotion.cta.title')" />
+          <div class="landing-font-20 text-[#000000] mt-[28px]">
+            {{ item.desc }}
+          </div>
         </div>
-        <div class="mt-[40px] text-center">
-          <div
-            class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup"
-            @click="choosePlan('pm_family')"
-          >
-            {{ $t('promotion.btn_signup.text') }}
+      </div>
+    </div>
+    <div class="customer-said py-[120px]">
+      <div class="text-[#161922] landing-font-45 font-bold">
+        {{ $t('promotion.customer_said.title') }}
+      </div>
+      <div class="mt-5 mb-6">
+        <img src="~/assets/images/landing/promotion/line-customer.png" class="w-1/2">
+      </div>
+      <el-carousel indicator-position="outside" :autoplay="false">
+        <el-carousel-item v-for="(item, index) in $t('promotion.customer_said.comments')" :key="index.toString()">
+          <div class="text-[#161922] landing-font-20 font-normal mb-3">{{ item.desc }}</div>
+          <div>
+            <div class="landing-font-20 text-[#161922] font-bold">
+              {{ item.author }}
+            </div>
+            <div class="landing-font-20 text-[#161922] font-bold">
+              {{ item.date_comment }}
+            </div>
           </div>
+        </el-carousel-item>
+      </el-carousel>
+    </div>
+    <div class="locker-absolutely py-[120px]">
+      <div class="text-[#000000] landing-font-48 font-bold">
+        {{ $t('promotion.locker_absolutely.title') }}
+      </div>
+      <div class="text-center mt-6 mb-[54px]">
+        <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
+      </div>
+      <div class="grid md:grid-cols-2 grid-cols-1 gap-x-[29px] items-center">
+        <div>
+          <div v-for="(item, index) in $t('promotion.locker_absolutely.items')" :key="index" class="flex mb-6 flex-wrap">
+            <div>
+              <img src="~/assets/images/landing/promotion/icon-success.png" class="mt-[5px] w-[24px] h-[24px]">
+            </div>
+            <div class="ml-[14px] text-[#000000] landing-font-20 font-normal w-4/5">
+              {{ item }}
+            </div>
+          </div>
+        </div>
+        <div>
+          <img src="~/assets/images/landing/promotion/img_absolutely.png">
+        </div>
+      </div>
+    </div>
+    <!--    <div class="cta py-[120px]">-->
+    <!--      <div class="bg-[#F5F6F7] md:px-[166px] px-[20px] py-16">-->
+    <!--        <div class="text-[#161922] landing-font-38 font-bold text-center">-->
+    <!--          {{ $t('promotion.cta.title') }}-->
+    <!--        </div>-->
+    <!--        <div class="mt-8 text-center">-->
+    <!--          <nuxt-link-->
+    <!--            :to="localePath($t('promotion.btn_signup.link'))"-->
+    <!--            class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup"-->
+    <!--          >-->
+    <!--            {{ $t('promotion.btn_signup.text') }}-->
+    <!--          </nuxt-link>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <div class="cta py-[120px]">
+      <div class="relative banner-cta">
+        <div>
+          <img src="~/assets/images/landing/promotion/banner-cta.png" class="w-full lg:block hidden">
+        </div>
+        <div class="landing-font-34 font-bold text-center lg:absolute xl:bottom-[50px] lg:bottom-[20px] text-white lg:w-[84%] w-full lg:left-[90px] text-center text-desc" v-html="$t('promotion.cta.title')" />
+      </div>
+      <div class="mt-[40px] text-center">
+        <div
+          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup"
+          @click="choosePlan('pm_family')"
+        >
+          {{ $t('promotion.btn_signup.text') }}
         </div>
       </div>
     </div>
