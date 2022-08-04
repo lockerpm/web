@@ -323,8 +323,8 @@ export default {
       return 0
     },
     choosePlan (alias) {
-      this.$cookies.set('trial_plan', alias === 'pm_free' ? 'pm_family' : alias)
-      this.$cookies.set('is_trial_promotion', true)
+      localStorage.setItem('trial_plan', alias === 'pm_free' ? 'pm_family' : alias)
+      localStorage.setItem('is_trial_promotion', true)
       if (this.$store.state.isLoggedIn) {
         this.$router.replace(this.localePath('/manage-plans'))
       } else {
