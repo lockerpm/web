@@ -73,7 +73,6 @@
 export default {
   layout: 'register',
   asyncData ({ $axios, params }) {
-    console.log(1)
     return $axios.$post('cystack_platform/pm/payments/trial/enterprise', { token: params.token })
       .then(res => {
         console.log(res)

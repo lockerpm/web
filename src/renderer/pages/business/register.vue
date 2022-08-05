@@ -100,46 +100,46 @@
                   {{ bugs.email[0] }}
                 </div>
               </el-form-item>
-              <!-- <el-form-item
-                :label="$t('common.new_password')"
-                prop="password"
-              >
-                <el-input
-                  v-model="newuser.password"
-                  :placeholder="$t('common.new_password_placeholder')"
-                  type="password"
-                  show-password
-                />
-                <div v-if="bugs.password" class="form-control-feedback">
-                  {{ bugs.password[0] }}
+              <div class="w-full grid grid-cols-2 gap-x-4">
+                <div class="col-span-1">
+                  <el-form-item
+                    :label="$t('common.phone')"
+                    prop="phone"
+                  >
+                    <el-input
+                      v-model="newuser.phone"
+                      :placeholder="$t('common.phone_placeholder')"
+                    />
+                    <div v-if="bugs.phone" class="form-control-feedback">
+                      {{ bugs.phone[0] }}
+                    </div>
+                  </el-form-item>
                 </div>
-              </el-form-item>
-              <el-form-item
-                :label="$t('common.confirm_password')"
-                prop="confirm_password"
-              >
-                <el-input
-                  v-model="newuser.confirm_password"
-                  :placeholder="$t('common.confirm_password_placeholder')"
-                  type="password"
-                  show-password
-                />
-                <div v-if="bugs.confirm_password" class="form-control-feedback">
-                  {{ bugs.confirm_password[0] }}
+                <div class="col-span-1">
+                  <el-form-item :label="$t('common.country')" prop="country">
+                    <el-select
+                      v-model="newuser.country"
+                      placeholder=""
+                      filterable
+                      class="w-full"
+                      auto-complete="off"
+                      @change="changeDialCode"
+                    >
+                      <el-option
+                        v-for="country in countries"
+                        :key="country.country_code"
+                        :value="country.country_code"
+                        :label="country.country_name"
+                      >
+                        <span>
+                          <span :class="`flag flag-${country.country_code.toLowerCase()}`" class="" />
+                          {{ country.country_name }}
+                        </span>
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
                 </div>
-              </el-form-item> -->
-              <el-form-item
-                :label="$t('common.phone')"
-                prop="phone"
-              >
-                <el-input
-                  v-model="newuser.phone"
-                  :placeholder="$t('common.phone_placeholder')"
-                />
-                <div v-if="bugs.phone" class="form-control-feedback">
-                  {{ bugs.phone[0] }}
-                </div>
-              </el-form-item>
+              </div>
               <el-form-item
                 :label="$t('common.company')"
                 prop="organization"
@@ -161,11 +161,6 @@
                   :placeholder="$t('common.job_title_placeholder')"
                 />
               </el-form-item>
-              <!-- <el-form-item>
-                <el-checkbox v-model="agree">
-                  {{ $t('business.register.receive_email') }}
-                </el-checkbox>
-              </el-form-item> -->
               <div class="flex flex-nowrap mb-2 mt-6">
                 <el-checkbox v-model="agree" class="mt-[2px]" />
                 <p class="ml-[10px] cursor-pointer" @click="()=>{agree=!agree}">
@@ -266,15 +261,6 @@ export default {
 
       return callback()
     }
-    const validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('Please input the password again'))
-      } else if (value !== this.newuser.password) {
-        callback(new Error('Two inputs don\'t match!'))
-      } else {
-        callback()
-      }
-    }
     return {
       loading: false,
       agree: false,
@@ -305,17 +291,15 @@ export default {
           { required: true },
           { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
         ],
-        // password: [
-        //   { required: true }
-        // ],
-        // confirm_password: [
-        //   { required: true },
-        //   { validator: validatePass }
-        // ],
+        country: [
+          { required: true }
+        ],
         organization: [
           { required: true }
         ]
       },
+      countries: [],
+      selectedCountryCode: '+84',
       enterPasswordVisible: false
     }
   },
@@ -325,6 +309,7 @@ export default {
     }
   },
   mounted () {
+    this.getCountries()
     this.$recaptcha.init()
   },
   methods: {
@@ -382,6 +367,7 @@ export default {
         return
       }
       this.newuser.language = this.locale
+      const phone = `${this.selectedCountryCode} ${this.newuser.phone}`
       const SERVICE_SCOPE = 'pwdmanager'
       if (SERVICE_SCOPE) {
         this.newuser.scope = SERVICE_SCOPE
@@ -390,12 +376,14 @@ export default {
       const token = await this.$recaptcha.execute('login')
       this.$axios.$post('https://api.locker.io/v2/sso/users', {
         ...this.newuser,
+        phone,
         full_name: this.fullName,
         request_code: token
       })
         .then(async response => {
+          this.enterPasswordVisible = false
           this.submitted = true
-          this.$cookies.set('trial_plan', 'pm_enterprise')
+          localStorage.setItem('trial_plan', 'pm_enterprise')
         })
         .catch(err => {
           if (err.response) {
@@ -405,7 +393,22 @@ export default {
         .then(() => {
           this.loading = false
         })
+    },
+    getCountries () {
+      this.$axios.$get('resources/countries')
+        .then(res => {
+          this.countries = res
+        })
+    },
+    changeDialCode (countryCode) {
+      for (let i = 0; i < this.countries.length; i++) {
+        if (this.countries[i].country_code.toUpperCase() === countryCode) {
+          this.selectedCountryCode = this.countries[i].country_phone_code
+          break
+        }
+      }
     }
+
   }
 }
 </script>
