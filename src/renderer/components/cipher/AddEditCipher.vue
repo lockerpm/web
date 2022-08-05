@@ -658,7 +658,12 @@ export default {
   asyncComputed: {
     ciphers: {
       async get () {
-        const result = await this.$cipherService.getAllDecrypted()
+        let result = []
+        try {
+          result = await this.$cipherService.getAllDecrypted()
+        } catch {
+
+        }
         return result
       },
       watch: ['$store.state.syncedCiphersToggle']
@@ -982,7 +987,11 @@ export default {
       }
     },
     async getWritableCollections (orgId) {
-      const allCollections = await this.$collectionService.getAllDecrypted()
+      let allCollections = []
+      try {
+        allCollections = await this.$collectionService.getAllDecrypted()
+      } catch (error) {
+      }
       return allCollections.filter(c => !c.readOnly && c.organizationId === orgId)
     },
     fillPassword (p) {
