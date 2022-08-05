@@ -11,7 +11,6 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
       request.headers.common.Authorization = 'Bearer ' + token
     }
     if (process.env.environment === 'staging') {
-      console.log(process.env.accessClientId, process.env.accessClientSecret)
       request.headers['CF-Access-Client-Id'] = process.env.accessClientId || ''
       request.headers['CF-Access-Client-Secret'] = process.env.accessClientSecret || ''
     }

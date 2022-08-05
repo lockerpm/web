@@ -325,6 +325,7 @@ export default {
       } else {
         return
       }
+      this.loading = true
       try {
         const res = await this.$axios.$post('cystack_platform/pm/users/exist', {
           email: this.newuser.email
@@ -355,6 +356,8 @@ export default {
           message: this.$t('landing_contact.messages.error_occurred'),
           type: 'error'
         })
+      } finally {
+        this.loading = false
       }
     },
     async register () {
