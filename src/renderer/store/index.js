@@ -27,7 +27,8 @@ export const state = () => ({
   pendingShares: 0,
   extensionLoggedIn: false,
   myShares: [],
-  shareInvitations: []
+  shareInvitations: [],
+  enterpriseInvitations: []
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -114,6 +115,9 @@ export const mutations = {
   },
   UPDATE_SHARE_INVITATIONS (state, value) {
     state.shareInvitations = value
+  },
+  UPDATE_ENTERPRISE_INVITATIONS (state, value) {
+    state.enterpriseInvitations = value
   }
 }
 export const actions = {
@@ -226,6 +230,12 @@ export const actions = {
   LoadShareInvitations ({ commit }) {
     return this.$axios.$get('cystack_platform/pm/sharing/invitations').then(res => {
       commit('UPDATE_SHARE_INVITATIONS', res)
+      return res
+    })
+  },
+  LoadEnterpriseInvitations ({ commit }) {
+    return this.$axios.$get('cystack_platform/pm/enterprises/members/invitations').then(res => {
+      commit('UPDATE_ENTERPRISE_INVITATIONS', res)
       return res
     })
   }

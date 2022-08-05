@@ -49,6 +49,9 @@ Vue.mixin({
     },
     shareInvitations () {
       return this.$store.state.shareInvitations
+    },
+    enterpriseInvitations () {
+      return this.$store.state.enterpriseInvitations
     }
   },
   mounted () {

@@ -115,6 +115,30 @@
         <i class="fa fa-chevron-left" />&nbsp;&nbsp;&nbsp;{{ $t('master_password.back_login') }}
       </button>
     </div>
+    <el-dialog
+      :visible.sync="dialogEnterpriseVisible"
+      width="400px"
+      top="15vh"
+      custom-class="enterprise-dialog"
+      :close-on-click-modal="false"
+      :show-close="false"
+      center
+    >
+      <div slot="title">
+        <img class="h-8 mx-auto" src="~/assets/images/logo/locker_logo.png">
+      </div>
+      <div class="text-center">
+        <div class="text-head-5 text-black font-bold">
+          {{ $t('data.enterprise.popup.title', {owner: enterpriseInvitation.owner}) }}
+        </div>
+        <div class="text-head-6 text-black font-semibold mt-3">
+          {{ $t('data.enterprise.popup.desc', {team: enterpriseInvitation.enterprise?enterpriseInvitation.enterprise.name:'', owner: enterpriseInvitation.owner}) }}
+        </div>
+        <button class="btn btn-primary mt-4 w-[75%]" @click="joinEnterprise">
+          {{ enterpriseInvitation.auto_approve ? $t('data.enterprise.join_now') : $t('data.enterprise.request_to_join') }}
+        </button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -131,7 +155,9 @@ export default {
       showPassword: false,
       showHint: false,
       step: 1,
-      loadingSend: false
+      loadingSend: false,
+      dialogEnterpriseVisible: false,
+      enterpriseInvitation: {}
     }
   },
   mounted () {
@@ -139,10 +165,15 @@ export default {
       this.notify(this.$t('data.notifications.extension_loggedin'), 'success')
       this.$store.commit('UPDATE_LOGIN_EXTENSION', false)
     }
+    this.$store.dispatch('LoadEnterpriseInvitations')
   },
   methods: {
     async setMasterPass () {
       this.loading = true
+      if (this.enterpriseInvitations.length && this.enterpriseInvitations[0].domain != null) {
+        this.dialogEnterpriseVisible = true
+        this.enterpriseInvitation = this.enterpriseInvitations[0]
+      }
       this.errors = false
       try {
         await this.login()
@@ -169,6 +200,17 @@ export default {
         .then(res => {
           this.loadingSend = false
           this.step = 3
+        })
+    },
+    joinEnterprise () {
+      this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${this.invitation.id}`)
+        .then(res => {
+          this.notify(this.$t('common.success'), 'success')
+        }).catch(() => {
+          this.notify(this.$t('common.failed'), 'warning')
+        }).finally(() => {
+          this.$store.dispatch('LoadEnterpriseInvitations')
+          this.dialogEnterpriseVisible = false
         })
     }
     // TODO change masterpass if have account
