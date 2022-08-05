@@ -447,9 +447,9 @@
 </template>
 
 <script>
-import EmergencyContact from '../../../components/setting/EmergencyContact.vue'
-import { Utils } from '../../../jslib/src/misc/utils.ts'
-import PasswordStrengthBar from '../../../components/password/PasswordStrengthBar'
+import EmergencyContact from '@/components/setting/EmergencyContact'
+import PasswordStrengthBar from '@/components/password/PasswordStrengthBar'
+import { Utils } from '@/jslib/src/misc/utils.ts'
 import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
 export default {
   components: {
