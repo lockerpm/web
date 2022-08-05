@@ -333,7 +333,12 @@ export default {
       }
     },
     async getWritableCollections (orgId) {
-      const allCollections = await this.$collectionService.getAllDecrypted()
+      let allCollections = []
+      try {
+        allCollections = await this.$collectionService.getAllDecrypted()
+      } catch (error) {
+
+      }
       return allCollections.filter(c => !c.readOnly && c.organizationId === orgId)
     },
     async getTeamPolicies (teamId) {
