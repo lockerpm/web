@@ -472,7 +472,7 @@
           @change="(v) => cipher.folderId = v"
           @addFolder="addFolder(false)"
         />
-        <template v-if="ownershipOptions.length">
+        <!-- <template v-if="ownershipOptions.length">
           <InputSelectOrg
             :label="$t('common.ownership')"
             :initial-value="cipher.organizationId"
@@ -507,11 +507,7 @@
               </el-checkbox>
             </el-checkbox-group>
           </div>
-          <!-- <div v-if="cipher.organizationId && cipher.type===CipherType.Login">
-            <label class="font-semibold">{{ $t('data.ciphers.show_password') }}</label>
-            <el-checkbox v-model="cipher.viewPassword" />
-          </div> -->
-        </template>
+        </template> -->
       </div>
       <div
         slot="footer"
