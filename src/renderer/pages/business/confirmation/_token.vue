@@ -73,7 +73,11 @@
 export default {
   layout: 'register',
   asyncData ({ $axios, params }) {
-    return $axios.$post('cystack_platform/pm/payments/trial/enterprise', { token: params.token })
+    const headers = {
+      'CF-Access-Client-Id': process.env.ACCESS_CLIENT_ID,
+      'CF-Access-Client-Secret': process.env.ACCESS_CLIENT_SECRET
+    }
+    return $axios.$post('cystack_platform/pm/payments/trial/enterprise', { token: params.token }, { headers })
       .then(res => {
         console.log(res)
         return {
