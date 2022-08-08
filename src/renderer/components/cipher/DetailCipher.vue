@@ -201,7 +201,28 @@
               :view-password="cipher.viewPassword"
               should-hide
             />
-            <TextHaveCopy :label="$t('data.ciphers.seed')" :text="cipher.cryptoWallet.seed" />
+            <!-- <TextHaveCopy :label="$t('data.ciphers.seed')" :text="cipher.cryptoWallet.seed" /> -->
+            <div class="grid md:grid-cols-6 cipher-item">
+              <div class="">{{ $t('data.ciphers.seed') }}</div>
+              <div class="col-span-4 font-semibold">
+                <InputSeedPhrase
+                  v-model="cipher.cryptoWallet.seed"
+                  :label="$t('data.ciphers.seed')"
+                  :edit-mode="false"
+                  :disabled="true"
+                  class="w-full !my-3"
+                />
+              </div>
+              <div class="text-right">
+                <button
+                  v-clipboard:copy="cipher.cryptoWallet.seed"
+                  v-clipboard:success="clipboardSuccessHandler"
+                  class="btn btn-icon btn-xs btn-action"
+                >
+                  <i class="far fa-copy" />
+                </button>
+              </div>
+            </div>
             <div class="grid md:grid-cols-6 cipher-item">
               <div class="">{{ $t('data.ciphers.networks') }}</div>
               <div class="col-span-4">
@@ -286,6 +307,7 @@ import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
 import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
 import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 import { FieldType } from '../../jslib/src/enums/fieldType'
+import InputSeedPhrase from '../input/InputSeedPhrase'
 CipherType.CryptoAccount = 6
 CipherType.CryptoWallet = 7
 export default {
@@ -296,7 +318,8 @@ export default {
     Vnodes,
     ShareCipher,
     MoveFolder,
-    PremiumDialog
+    PremiumDialog,
+    InputSeedPhrase
   },
   props: {
     type: {
