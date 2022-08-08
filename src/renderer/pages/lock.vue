@@ -19,7 +19,7 @@
             <div class="mr-2">{{ currentUser.email }}</div>
           </div>
         </div>
-        <form class="mb-8" @submit.prevent="setMasterPass">
+        <form class="mb-8" @submit.prevent="checkInvitation">
           <div class="form-group !mb-4">
             <label for="" class="text-left">
               {{ $t('master_password.enter_password') }}
@@ -58,7 +58,7 @@
             <button
               class="btn btn-primary w-full"
               :disabled="loading"
-              @click="setMasterPass"
+              @click="checkInvitation"
             >
               {{ $t('master_password.unlock') }}
             </button>
@@ -132,10 +132,10 @@
           {{ $t('data.enterprise.popup.title', {owner: enterpriseInvitation.owner}) }}
         </div>
         <div class="text-head-6 text-black font-semibold mt-3">
-          {{ $t('data.enterprise.popup.desc', {team: enterpriseInvitation.enterprise?enterpriseInvitation.enterprise.name:'', owner: enterpriseInvitation.owner}) }}
+          {{ enterpriseInvitation.status==='invited' ? $t('data.enterprise.popup.desc', {team: enterpriseInvitation.enterprise?enterpriseInvitation.enterprise.name:'', owner: enterpriseInvitation.owner}) : $t('data.enterprise.popup.desc2', {team: enterpriseInvitation.enterprise?enterpriseInvitation.enterprise.name: ''}) }}
         </div>
-        <button class="btn btn-primary mt-4 w-[75%]" @click="joinEnterprise">
-          {{ enterpriseInvitation.auto_approve ? $t('data.enterprise.join_now') : $t('data.enterprise.request_to_join') }}
+        <button v-if="enterpriseInvitation.status==='invited'" class="btn btn-primary mt-4 w-[75%]" @click="joinEnterprise">
+          {{ enterpriseInvitation.domain.auto_approve ? $t('data.enterprise.join_now') : $t('data.enterprise.request_to_join') }}
         </button>
       </div>
     </el-dialog>
@@ -170,10 +170,6 @@ export default {
   methods: {
     async setMasterPass () {
       this.loading = true
-      if (this.enterpriseInvitations.length && this.enterpriseInvitations[0].domain != null) {
-        this.dialogEnterpriseVisible = true
-        this.enterpriseInvitation = this.enterpriseInvitations[0]
-      }
       this.errors = false
       try {
         await this.login()
@@ -203,7 +199,7 @@ export default {
         })
     },
     joinEnterprise () {
-      this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${this.invitation.id}`)
+      this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${this.enterpriseInvitation.id}`, { status: 'confirmed' })
         .then(res => {
           this.notify(this.$t('common.success'), 'success')
         }).catch(() => {
@@ -211,7 +207,18 @@ export default {
         }).finally(() => {
           this.$store.dispatch('LoadEnterpriseInvitations')
           this.dialogEnterpriseVisible = false
+          setTimeout(() => {
+            this.checkInvitation()
+          }, 300)
         })
+    },
+    checkInvitation () {
+      if (this.enterpriseInvitations.length && this.enterpriseInvitations[0].domain != null) {
+        this.dialogEnterpriseVisible = true
+        this.enterpriseInvitation = this.enterpriseInvitations[0]
+      } else {
+        this.setMasterPass()
+      }
     }
     // TODO change masterpass if have account
   }
