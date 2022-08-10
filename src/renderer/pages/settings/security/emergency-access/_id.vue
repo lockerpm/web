@@ -15,7 +15,7 @@
               {{ $t('data.emergency_access.emergency_access') }}
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-              {{ $t('common.view') }}
+              {{ emergencyAccess.full_name }}
             </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
@@ -152,7 +152,13 @@ export default {
       id: null,
       ciphers: [],
       CipherType,
-      loading: false
+      loading: false,
+      list_granted: []
+    }
+  },
+  computed: {
+    emergencyAccess () {
+      return this.list_granted.find(item => item.id === this.$route.params.id)
     }
   },
   mounted () {
@@ -161,6 +167,7 @@ export default {
     }
     this.id = this.$route.params.id
     this.load()
+    this.getListGranted()
   },
   methods: {
     async load () {
@@ -208,6 +215,15 @@ export default {
     },
     addEdit (cipher) {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
+    },
+    getListGranted () {
+      this.$axios.$get('cystack_platform/pm/emergency_access/granted')
+        .then(res => {
+          this.list_granted = res
+        })
+        .catch(() => {
+          this.list_granted = []
+        })
     }
   }
 }

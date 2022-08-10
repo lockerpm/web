@@ -735,7 +735,8 @@ export default {
         this.userFingerPrint = fingerprint.join('-')
       }
       this.dontAskAgain = await this.$storageService.get('autoConfirmFingerprints')
-      this.openDialogConfirm()
+      // this.openDialogConfirm()
+      this.confirmEmergencyAccess(emergency_access)
     },
     openDialogConfirm () {
       this.dialogConfirmVisible = true
