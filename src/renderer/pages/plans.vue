@@ -331,7 +331,7 @@ export default {
       return 0
     },
     choosePlan (alias) {
-      this.$cookies.set('trial_plan', alias)
+      localStorage.setItem('trial_plan', alias)
       this.$router.replace(this.localePath('/register'))
     }
   }
