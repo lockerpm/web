@@ -1,13 +1,36 @@
 <template>
   <div>
-    <TopBanner v-if="$route.path != '/whitepaper'"/>
-    <Header v-if="$route.path != '/whitepaper'"/>
+    <TopBanner />
+    <Header />
+    <div v-if="showCookie != 'false'" id="cookie-bar" class="cookie-bar">
+      <div class="cookie-bar__wrap">
+        <div class="cookie-bar__msg-wrap">
+          <div class="cookie-bar__msg">
+            <p class="landing-font-18 font-bold mb-3">
+              {{ $t('cookie.title') }}
+            </p>
+            <p class="landing-font-14 mb-4" v-html="$t('cookie.desc')" />
+            <nuxt-link :to="localePath('/privacy')" class="landing-font-14 text-primary">
+              {{ $t('cookie.learn_more') }}
+            </nuxt-link>
+          </div>
+          <div class="cookie-bar__manage">
+            <button class="cookie-bar__btn" @click="offCookie">
+              {{ $t('cookie.accept') }}
+            </button>
+          </div>
+        </div>
+        <div class="cookie-bar__close" @click="offCookie">
+          <i class="el-icon-close" />
+        </div>
+      </div>
+    </div>
     <div class="max-w-6xl mx-auto">
       <div class="w-full px-6">
         <nuxt />
       </div>
     </div>
-    <Footer v-if="$route.path != '/whitepaper'"/>
+    <Footer />
   </div>
 </template>
 
@@ -29,7 +52,8 @@ export default {
   },
   data () {
     return {
-      externalContent: ''
+      externalContent: '',
+      showCookie: 'false'
     }
   },
   head () {
@@ -86,21 +110,6 @@ export default {
           hid: 'twitter:description',
           name: 'twitter:description',
           content: this.$t('landing.title')
-        },
-        {
-          hid: 'og:image',
-          property: 'og:image',
-          content: 'https://locker.io/preview.png'
-        },
-        {
-          hid: 'twitter:image',
-          name: 'twitter:image',
-          content: 'https://locker.io/preview.png'
-        },
-        {
-          hid: 'twitter:card',
-          name: 'twitter:card',
-          content: 'summary_large_image'
         }
       ],
       link: [
@@ -117,7 +126,7 @@ export default {
       const path = this.$route.path
       if (path === '/benefits' || path === `/${this.locale}/benefits`) { return 'how_it_works' }
       if (path === '/features' || path === `/${this.locale}/features`) { return 'features' }
-      if (path === '/plan' || path === `/${this.locale}/plan`) { return 'plan' }
+      if (path === '/plans' || path === `/${this.locale}/plans`) { return 'plan' }
       if (path === '/download' || path === `/${this.locale}/download`) { return 'download' }
       if (path === '/contact' || path === `/${this.locale}/contact`) { return 'landing_contact' }
       if (path === '/blog' || path === `/${this.locale}/blog`) { return 'blog' }
@@ -127,14 +136,26 @@ export default {
       if (path === '/comparison' || path === `/${this.locale}/comparison`) { return 'comparison' }
       if (path === '/refer-friend' || path === `/${this.locale}/refer-friend`) { return 'refer_friend' }
       if (path === '/about-us' || path === `/${this.locale}/about-us`) { return 'about_us' }
+      if (path === '/master-password' || path === `/${this.locale}/master-password`) { return 'landing_master_password' }
+      if (path === '/affiliate' || path === `/${this.locale}/affiliate`) { return 'landing_affiliate' }
       return 'landing'
     }
   },
   mounted () {
     // this.$store.dispatch('LoadCurrentUser')
     // this.$store.dispatch('LoadCurrentUserPw')
+    this.showCookie = this.checkCookie()
   },
   methods: {
+    checkCookie () {
+      const deviceId = this.$cookies.get('locker_device_id')
+      return localStorage.getItem(`${deviceId}_cookie`)
+    },
+    offCookie () {
+      const deviceId = this.$cookies.get('locker_device_id')
+      localStorage.setItem(`${deviceId}_cookie`, 'false')
+      this.showCookie = 'false'
+    },
     openURL (url) {
       if (remote) {
         remote.shell.openExternal(url)
@@ -160,7 +181,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .landing-btn {
   @apply hover:no-underline transition duration-200 ease-in-out text-white hover:text-white hover:bg-green-hover;
   display: inline-block;
@@ -171,6 +192,12 @@ export default {
   font-size: 16px;
   border-radius: 5px;
   background-color: #268334;
+  &:disabled {
+    background-color: #268334;
+    &:hover {
+      background-color: #268334;
+    }
+  }
 }
 
 .landing-btn2 {
@@ -204,13 +231,25 @@ export default {
   font-size: 50px;
   line-height: 66px;
 }
+.landing-font-52{
+  font-size: 52px;
+  line-height: 66px;
+}
 .landing-font-48 {
   font-size: 48px;
   line-height: 54px;
 }
+.landing-font-45 {
+  font-size: 45px;
+  line-height: 60px;
+}
 .landing-font-44 {
   font-size: 44px;
   line-height: 53px;
+}
+.landing-font-42 {
+  font-size: 42px;
+  line-height: 56px;
 }
 .landing-font-38 {
   font-size: 38px;
@@ -279,5 +318,61 @@ export default {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
+  overflow-x: hidden;
+}
+#cookie-bar{
+  position: fixed;
+  width: 100%;
+  bottom: 0px;
+  opacity: 1;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 90;
+  -webkit-transition: bottom 0.7s, opacity 0.8s;
+  transition: bottom 0.7s, opacity 0.8s;
+
+}
+#cookie-bar .cookie-bar__wrap{
+    @apply max-w-6xl;
+    position: relative;
+    margin: 0 auto;
+}
+#cookie-bar .cookie-bar__msg-wrap{
+  flex-direction: column;
+    display: block;
+    height: auto;
+    padding: 20px;
+    justify-content: space-between;
+}
+#cookie-bar .cookie-bar__msg{
+  padding-bottom: 24px;
+}
+#cookie-bar .cookie-bar__manage{
+  width: 100%;
+  padding: 0;
+  display: block;
+  text-align: right;
+}
+
+#cookie-bar .cookie-bar__btn{
+  @apply bg-primary;
+    padding: 8.425px 56.96px;
+    border-radius: 20px !important;
+    font-size: 14px !important;
+    line-height: 19px !important;
+    color: #fff !important;
+    text-shadow: 0 0 3px rgba(0,0,0, 0.7) !important;
+    margin: 0px !important;
+}
+#cookie-bar .cookie-bar__close{
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    padding: 8px;
+    font-size: 18px;
+    cursor: pointer;
 }
 </style>

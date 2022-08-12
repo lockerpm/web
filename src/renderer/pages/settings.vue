@@ -91,6 +91,10 @@ export default {
           label: 'referral',
           routeName: 'settings-referral'
         },
+        {
+          label: 'notifications',
+          routeName: 'settings-notifications'
+        },
         ...this.currentPlan.alias === 'pm_family_discount'
           ? [{
             label: 'family_members',

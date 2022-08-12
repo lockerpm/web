@@ -21,12 +21,12 @@
             />
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
-                <a
+                <nuxt-link
                   class="landing-btn w-full sm:w-auto mb-1"
-                  :href="`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
+                  :to="localePath('/register')"
                 >
                   {{ $t('landing.section1.btn[0].text') }}
-                </a>
+                </nuxt-link>
                 <p class="italic w-full landing-font-14 mt-1">
                   {{ $t('landing.section1.btn[0].note') }}
                 </p>
@@ -44,14 +44,14 @@
           <!-- Right -->
           <div class="hidden md:block md:w-1/2 order-2 justify-self-end top-[173px] pr-0">
             <img
-              src="~/assets/images/landing/index/img_1.png"
+              :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
               alt=""
               style="max-width: 120%; margin-left: 75px; max-height: 485px;"
             >
           </div>
           <div class="w-full md:hidden order-2 mt-16">
             <img
-              src="~/assets/images/landing/index/img_1.png"
+              :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
               alt=""
             >
           </div>
@@ -223,89 +223,34 @@
       class="full-width h-auto"
       style="background: #ffffff"
     >
-      <!--      <div class="flex flex-wrap lg:justify-between justify-center xl:transform xl:-translate-y-24">-->
-      <!--        <div class="w-2/12 relative">-->
-      <!--          <img-->
-      <!--            id="mobile"-->
-      <!--            src="~/assets/images/landing/index/mobile3x.png"-->
-      <!--            class="hidden lg:block pb-6 absolute bottom-0"-->
-      <!--            style="width: 100%"-->
-      <!--          >-->
-      <!--        </div>-->
-      <!--        <div class="w-4/12 relative">-->
-      <!--          <img-->
-      <!--            id="tablet"-->
-      <!--            src="~/assets/images/landing/index/tablet3x.png"-->
-      <!--            class="hidden lg:block absolute bottom-0 pb-4 right-0"-->
-      <!--            style="width: 60%;"-->
-      <!--          >-->
-      <!--        </div>-->
-      <!--        <div class="w-6/12">-->
-      <!--          <img-->
-      <!--            id="mac"-->
-      <!--            src="~/assets/images/landing/index/mac3x.png"-->
-      <!--            class="hidden lg:block"-->
-      <!--            style="width: 75%; float: right"-->
-      <!--          >-->
-      <!--        </div>-->
-      <!--        <img-->
-      <!--          src="~/assets/images/landing/index/mobile_rotated.png"-->
-      <!--          class="lg:hidden mx-6 my-12 w-[118px] h-[240px] self-end"-->
-      <!--        >-->
-      <!--        <img-->
-      <!--          src="~/assets/images/landing/index/tablet_rotated.png"-->
-      <!--          class="lg:hidden mx-6 my-12 w-[206px] h-[282px] self-end"-->
-      <!--        >-->
-      <!--        <img-->
-      <!--          src="~/assets/images/landing/index/mac_rotated.png"-->
-      <!--          class="lg:hidden w-[704px] h-[412px]"-->
-      <!--        >-->
-      <!--      </div>-->
       <div
-        class="hidden lg:block w-full h-auto text-center mt-20 mb-36 justify-center gap-x-6"
+        class="hidden lg:block w-full h-auto text-center pt-32 mb-36 justify-center gap-x-6 overflow-hidden"
       >
         <div class="inline w-2/12">
           <img
             id="mobile"
-            src="~/assets/images/landing/index/mobile_rotated.png"
-            class="inline self-end transition duration-150 ease-in-out;"
+            :src="require(`~/assets/images/landing/index/${$t('landing.devices.mobile.image')}`)"
+            class="inline self-end transition-all"
             style="width: 8%; transform: translate3d(-120px, 30px, 0px) rotateZ(28deg);"
           >
         </div>
         <div class="inline w-2/12">
           <img
             id="tablet"
-            src="~/assets/images/landing/index/tablet_rotated.png"
-            class="inline self-end transition duration-150 ease-in-out;"
+            :src="require(`~/assets/images/landing/index/${$t('landing.devices.tablet.image')}`)"
+            class="inline self-end transition-all"
             style="width: 14%; transform: translate3d(180px, 50px, 0px) rotateZ(10deg);"
           >
         </div>
         <div class="inline w-8/12">
           <img
             id="mac"
-            src="~/assets/images/landing/index/mac_rotated.png"
-            class="inline transition duration-150 ease-in-out;"
+            :src="require(`~/assets/images/landing/index/${$t('landing.devices.laptop.image')}`)"
+            class="inline transition-all"
             style="width: 50%; transform: translate3d(500px, -50px, 0px) rotateZ(-25deg);"
           >
         </div>
       </div>
-      <!-- <div class="lg:hidden block w-full h-[412px] mt-28 mb-16 relative">
-        <img
-          src="~/assets/images/landing/index/mobile_rotated.png"
-          class="lg:hidden mx-6 my-12 w-[118px] h-[240px] self-end"
-          style="position: absolute; left: 150px; bottom: 0px; z-index: 3;"
-        >
-        <img
-          src="~/assets/images/landing/index/tablet_rotated.png"
-          class="lg:hidden mx-6 my-12 w-[206px] h-[282px] self-end"
-          style="position: absolute; z-index: 2; bottom: 0px; left: 200px;"
-        >
-        <img
-          src="~/assets/images/landing/index/mac_rotated.png"
-          class="lg:hidden w-[704px] h-[412px]"
-          style="position: absolute; bottom: 40px; left: 200px;"
-        >
-      </div> -->
     </section>
     <!-- Devices end -->
     <!-- Platforms -->
@@ -318,7 +263,7 @@
           {{ $t('landing.platform.desc') }}
         </p>
       </div>
-      <div class="w-full mx-auto md:justify-between justify-center align-start grid sm:grid-cols-3 grid-cols-2">
+      <div class="w-full mx-auto md:justify-between justify-center align-start grid sm:grid-cols-3 grid-cols-2 justify-items-center">
         <div
           v-for="(item, index) in $t('landing.platform.platforms')"
           :key="index"
@@ -329,8 +274,7 @@
               <img
                 :src="require(`~/assets/images/landing/index/${item.img}`)"
                 :alt="item.name"
-                class="mx-auto"
-                style="align-self: center; max-width: 55%; max-height: 55%;"
+                class="mx-auto self-center max-w-[42px] max-h-[42px]"
               >
             </div>
 
@@ -465,14 +409,14 @@
               </p>
 
               <div class="w-full flex">
-                <a
+                <nuxt-link
                   :class="index === 0 ? 'landing-btn' : 'landing-btn2'"
                   class="mx-auto"
-                  :href="item.btn.link"
+                  :to="localePath(item.btn.link)"
                   style="align-self: center"
                 >
                   {{ item.btn.text }}
-                </a>
+                </nuxt-link>
               </div>
             </div>
           </div>

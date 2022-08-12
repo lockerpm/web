@@ -247,6 +247,71 @@
             />
           </div>
         </template>
+        <template v-if="cipher.type === CipherType.CryptoWallet">
+          <InputSelectCryptoWallet
+            ref="inputSelectCryptoWallet"
+            :label="$t('data.ciphers.wallet_app')"
+            class="w-full"
+            :initial-value="cryptoWallet.walletApp ? cryptoWallet.walletApp.alias : null"
+            :disabled="true"
+          />
+          <InputText
+            v-model="cryptoWallet.username"
+            :label="$t('data.ciphers.username')"
+            class="w-full"
+            :is-password="false"
+            :disabled="true"
+          />
+          <InputText
+            v-model="cryptoWallet.password"
+            :label="$t('data.ciphers.password_pin')"
+            class="w-full"
+            is-password
+            :disabled="true"
+          />
+          <InputText
+            v-model="cryptoWallet.address"
+            :label="$t('data.ciphers.wallet_address')"
+            class="w-full"
+            :disabled="true"
+          />
+          <InputText
+            v-model="cryptoWallet.privateKey"
+            :label="$t('data.ciphers.private_key')"
+            class="w-full"
+            is-password
+            :disabled="true"
+          />
+          <!-- <InputText
+            v-model="cryptoWallet.seed"
+            :label="$t('data.ciphers.seed')"
+            class="w-full !mb-1"
+            :error-text="err && err.length && err[0]"
+            :disabled="isDeleted"
+            is-textarea=""
+          /> -->
+          <div class="cs-field w-full">
+            <label>
+              {{ $t('data.ciphers.seed') }}
+            </label>
+          </div>
+          <InputSeedPhrase
+            v-model="cryptoWallet.seed"
+            :edit-mode="cipher.id ? true : false"
+            class="w-full !mb-3"
+            :disabled="true"
+          />
+          <!-- <div class="py-1 px-3 text-xs mb-3" style="background: rgba(242, 232, 135, 0.3);">
+            {{ $t('data.ciphers.seed_phrase_desc') }}
+          </div> -->
+          <InputSelectCryptoNetworks
+            ref="inputSelectCryptoWallet"
+            :label="$t('data.ciphers.networks')"
+            class="w-full !pt-6"
+            :initial-value="cryptoWallet.networks ? cryptoWallet.networks.map(n => n.alias) : []"
+            :disabled="true"
+          />
+        </template>
         <div
           v-if="cipher.type !== CipherType.SecureNote"
           class="my-5 text-black-700 text-head-6 font-semibold"
@@ -254,6 +319,15 @@
           {{ $t('data.ciphers.others') }}
         </div>
         <InputText
+          v-if="cipher.type === CipherType.CryptoWallet"
+          v-model="cryptoWallet.notes"
+          :label="$t('data.ciphers.notes')"
+          class="w-full"
+          is-textarea
+          :disabled="true"
+        />
+        <InputText
+          v-else
           v-model="cipher.notes"
           :label="$t('data.ciphers.notes')"
           class="w-full"
@@ -289,6 +363,10 @@ import PasswordGenerator from '../password/PasswordGenerator'
 import PasswordStrengthBar from '../password/PasswordStrengthBar'
 import InputText from '../input/InputText'
 import InputSelect from '../input/InputSelect'
+import InputSelectCryptoWallet from '../input/InputSelectCryptoWallet'
+import InputSelectCryptoNetworks from '../input/InputSelectCryptoNetworks'
+import InputSeedPhrase from '../input/InputSeedPhrase'
+CipherType.CryptoWallet = 7
 export default {
   components: {
     PasswordGenerator,
@@ -297,7 +375,10 @@ export default {
     ValidationObserver,
     PasswordStrengthBar,
     InputText,
-    InputSelect
+    InputSelect,
+    InputSelectCryptoWallet,
+    InputSelectCryptoNetworks,
+    InputSeedPhrase
   },
   props: {
     type: {
@@ -321,7 +402,20 @@ export default {
       errors: {},
       writeableCollections: [],
       cloneMode: false,
-      currentComponent: Dialog
+      currentComponent: Dialog,
+      cryptoWallet: {
+        walletApp: {
+          name: '',
+          alias: ''
+        },
+        username: '',
+        password: '',
+        address: '',
+        privateKey: '',
+        seed: '',
+        networks: [],
+        notes: ''
+      }
     }
   },
   computed: {
@@ -395,8 +489,11 @@ export default {
       this.dialogVisible = true
       this.cloneMode = cloneMode
       if (data.id || this.cloneMode) {
+        if (data.type === CipherType.CryptoWallet) {
+          this.cryptoWallet = data.cryptoWallet
+        }
         this.cipher = new Cipher({ ...data }, true)
-        this.writeableCollections = await this.getWritableCollections(this.cipher.organizationId)
+        // this.writeableCollections = await this.getWritableCollections(this.cipher.organizationId)
       } else if (CipherType[this.type]) {
         this.newCipher(this.type, data)
       } else {

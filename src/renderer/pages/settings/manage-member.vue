@@ -159,7 +159,7 @@ export default {
   async fetch ({ redirect, store, isDev }) {
     await store.dispatch('LoadCurrentPlan')
     if (store.state.currentPlan && store.state.currentPlan.alias !== 'pm_family') {
-      redirect(302, '/plans')
+      redirect(302, '/manage-plans')
     }
   },
   computed: {

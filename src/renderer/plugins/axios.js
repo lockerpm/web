@@ -1,17 +1,28 @@
 import https from 'https'
-
 export default function ({ store, $axios, app, isDev, redirect, route }) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.interceptors.request.use(request => {
     // Get token from auth.js store
     // const token = store.state.auth.accessToken
     const token = app.$cookies.get('cs_locker_token')
-
+    const deviceId = app.$cookies.get('device_id')
+    request.headers['device-id'] = deviceId
     // Update token axios header
     if (token) {
       request.headers.common.Authorization = 'Bearer ' + token
     }
     return request
+  })
+  $axios.onResponse(res => {
+    if (res.headers['device-id']) {
+      app.$cookies.set('device_id', res.headers['device-id'], {
+        path: '/',
+        ...isDev ? { secure: false } : { secure: true },
+        ...res.headers['device-expired-time'] ? { expires: app.$moment.unix(res.headers['device-expired-time']).toDate() } : {},
+        domain: 'locker.io'
+      })
+      $axios.setHeader('device-id', res.headers['device-id'])
+    }
   })
   $axios.onError(err => {
     if (err.response) {
@@ -36,11 +47,16 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
           '/download',
           '/features',
           '/how-it-works',
-          '/plan',
+          '/plans',
           '/security',
           '/blog',
           '/terms',
           '/privacy',
+          '/whitepaper',
+          '/about-us',
+          '/master-password',
+          '/refer-friend',
+          '/affiliate',
           '/'
         ]
         let currentPath = route.path

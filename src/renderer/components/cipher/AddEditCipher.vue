@@ -472,7 +472,7 @@
           @change="(v) => cipher.folderId = v"
           @addFolder="addFolder(false)"
         />
-        <template v-if="ownershipOptions.length">
+        <!-- <template v-if="ownershipOptions.length">
           <InputSelectOrg
             :label="$t('common.ownership')"
             :initial-value="cipher.organizationId"
@@ -507,11 +507,7 @@
               </el-checkbox>
             </el-checkbox-group>
           </div>
-          <!-- <div v-if="cipher.organizationId && cipher.type===CipherType.Login">
-            <label class="font-semibold">{{ $t('data.ciphers.show_password') }}</label>
-            <el-checkbox v-model="cipher.viewPassword" />
-          </div> -->
-        </template>
+        </template> -->
       </div>
       <div
         slot="footer"
@@ -771,11 +767,8 @@ export default {
         if (data.type === CipherType.CryptoWallet) {
           this.cryptoWallet = data.cryptoWallet
         }
-        if (data.type === CipherType.Login && data.login && this.cipher.login.uris == null) {
-          data.login.uris = [{
-            match: null,
-            uri: null
-          }]
+        if (data.type === CipherType.Login && data.login && data.login.uris == null) {
+          data.login.uris = [new LoginUriView()]
         }
         if (data.fields == null) {
           data.fields = []
@@ -865,8 +858,11 @@ export default {
         this.closeDialog()
         this.$emit('updated-cipher')
       } catch (e) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
-        console.log(e)
+        if (e.response && e.response.data && e.response.data.code === '3003') {
+          this.notify(this.$t('errors.3003'), 'error')
+        } else {
+          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
+        }
       } finally {
         this.loading = false
       }
@@ -959,6 +955,7 @@ export default {
       this.cipher.type = CipherType[type]
       this.cipher.login = new LoginView()
       this.cipher.login.uris = [new LoginUriView()]
+      this.cipher.login.uris[0].uri = 'https://'
       this.cipher.card = new CardView()
       this.cipher.identity = new IdentityView()
       this.cipher.secureNote = new SecureNoteView()

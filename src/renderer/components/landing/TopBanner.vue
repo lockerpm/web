@@ -7,7 +7,7 @@
             <span class="new-container">
               NEW
             </span>
-            <span v-html="$t('landing_banner.desc')"></span> 🎉
+            <span v-html="$t('landing_banner.desc')" /> 🎉
             <a
               :href="url"
               target="_blank"
@@ -58,7 +58,7 @@ export default {
   padding-bottom: 13px;
   position: sticky;
   top: 0;
-  z-index: 10000000;
+  z-index: 2000;
 }
 .new-container {
   background-color: #FFC400;

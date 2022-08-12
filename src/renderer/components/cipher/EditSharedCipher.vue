@@ -10,8 +10,11 @@
     <div slot="title">
       <div class="flex items-center">
         <template v-if="cipher.id">
-          <div class="text-[34px] mr-3">
+          <div v-if="cipher.type" class="text-[34px] mr-3">
             <Vnodes :vnodes="getIconCipher(cipher, 20)" />
+          </div>
+          <div v-else>
+            <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
           </div>
           <div class="text-black-700 font-semibold">{{ cipher.name }}</div>
         </template>

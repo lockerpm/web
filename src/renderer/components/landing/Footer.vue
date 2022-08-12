@@ -170,6 +170,14 @@ export default {
         }
         if (this.$route.path.startsWith('/blog') && locale === 'vi') {
           this.$router.push('/vi/blog')
+          return
+        }
+        if (this.$route.path.startsWith('/vi/whitepaper') && locale === 'en') {
+          window.location.replace('/whitepaper')
+          return
+        }
+        if (this.$route.path.startsWith('/whitepaper') && locale === 'vi') {
+          window.location.replace('/vi/whitepaper')
         }
       }, 200)
     }

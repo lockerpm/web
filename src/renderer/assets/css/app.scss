@@ -433,3 +433,38 @@ input:-webkit-autofill:active
 .wp-block-embed__wrapper iframe {
   max-width: 100% !important;
 }
+.wp-block-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.wp-block-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.wp-block-table td,
+.wp-block-table th {
+  padding: 0.5em;
+  border: 1px solid;
+  word-break: normal;
+}
+
+.count-noti-container {
+  display: flex;
+  position: absolute;
+  right: 1px;
+  top: 2px;
+}
+
+.count-noti {
+  background-color: #da112c;
+  border-radius: 2px;
+  color: #fff;
+  padding: 1px 3px;
+  background-clip: padding-box;
+  display: inline-block;
+  font-family: 'helvetica neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  -webkit-font-smoothing: subpixel-antialiased;
+  line-height: 1.3;
+  min-height: 13px;
+}

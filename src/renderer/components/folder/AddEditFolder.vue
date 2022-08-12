@@ -57,8 +57,9 @@
 
 <script>
 import { ValidationProvider } from 'vee-validate'
-import { FolderRequest } from '../../jslib/src/models/request'
+import { CipherRequest, FolderRequest } from '../../jslib/src/models/request'
 import InputText from '../../components/input/InputText'
+import { CipherType } from '../../jslib/src/enums'
 export default {
   components: {
     InputText,
@@ -119,7 +120,34 @@ export default {
       }).then(async () => {
         try {
           this.loading = true
-          await this.$axios.$delete(`cystack_platform/pm/folders/${folder.id}`)
+          if (folder.organizationId) {
+            let folderNameEnc = await this.$cryptoService.encrypt(folder.name)
+            folderNameEnc = folderNameEnc.encryptedString
+            const ciphers = await Promise.all(folder.ciphers.map(async cipher => {
+              const type_ = cipher.type
+              if (type_ === 7) {
+                cipher.type = CipherType.SecureNote
+                cipher.secureNote.type = 0
+              }
+              const cipherEnc = await this.$cipherService.encrypt(cipher, this.$cryptoService.getEncKey())
+              const data = new CipherRequest(cipherEnc)
+              data.type = type_
+              return {
+                id: cipher.id,
+                ...data
+              }
+            }))
+            const payload = {
+              folder: {
+                id: folder.id,
+                name: folderNameEnc,
+                ciphers
+              }
+            }
+            await this.$axios.$post(`cystack_platform/pm/sharing/${folder.organizationId}/folders/${folder.id}/delete`, payload)
+          } else {
+            await this.$axios.$delete(`cystack_platform/pm/folders/${folder.id}`)
+          }
           this.$emit('done')
           this.closeDialog()
           this.notify(this.$tc('data.notifications.delete_success', 1, { type: this.$t('common.folder') }), 'success')
@@ -136,9 +164,17 @@ export default {
     async putFolder (folder) {
       try {
         this.loading = true
-        const folderEnc = await this.$folderService.encrypt(folder)
-        const data = new FolderRequest(folderEnc)
-        await this.$axios.$put(`cystack_platform/pm/folders/${folder.id}`, data)
+        if (folder.organizationId) {
+          const orgKey = await this.$cryptoService.getOrgKey(folder.organizationId)
+          const folderEnc = await this.$folderService.encrypt(folder, orgKey)
+          const data = new FolderRequest(folderEnc)
+          await this.$axios.$put(`cystack_platform/pm/sharing/${folder.organizationId}/folders/${folder.id}`, data)
+        } else {
+          const folderEnc = await this.$folderService.encrypt(folder)
+          const data = new FolderRequest(folderEnc)
+          await this.$axios.$put(`cystack_platform/pm/folders/${folder.id}`, data)
+        }
+        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
         this.$emit('done')
         this.closeDialog()
       } catch (e) {

@@ -255,7 +255,7 @@
           <div
             v-for="(item, index) in benefit.features"
             :key="index"
-            class="rounded-md"
+            class="rounded-md flex flex-col justify-between"
             style="background-color:#F5F6F7"
           >
             <div class="px-[50px] pt-[60px] text-center">

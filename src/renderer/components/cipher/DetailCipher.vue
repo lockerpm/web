@@ -13,7 +13,7 @@
               class="flex items-center"
               :to="localeRoute({name: 'vault-folders-folderId', params: $route.params})"
             >
-              {{ folder.name }}
+              {{ folder.name || collection.name }}
             </el-breadcrumb-item>
           </template>
           <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId-id'">
@@ -49,7 +49,7 @@
             <i class="fa fa-pen" />
           </button>
           <button
-            v-if="canShareItem(organizations, cipher)"
+            v-if="isOwner(organizations, cipher)"
             class="btn btn-icon btn-xs btn-action"
             @click="shareItem(cipher)"
           >
@@ -201,7 +201,28 @@
               :view-password="cipher.viewPassword"
               should-hide
             />
-            <TextHaveCopy :label="$t('data.ciphers.seed')" :text="cipher.cryptoWallet.seed" />
+            <!-- <TextHaveCopy :label="$t('data.ciphers.seed')" :text="cipher.cryptoWallet.seed" /> -->
+            <div class="grid md:grid-cols-6 cipher-item">
+              <div class="">{{ $t('data.ciphers.seed') }}</div>
+              <div class="col-span-4 font-semibold">
+                <InputSeedPhrase
+                  v-model="cipher.cryptoWallet.seed"
+                  :label="$t('data.ciphers.seed')"
+                  :edit-mode="false"
+                  :disabled="true"
+                  class="w-full !my-3"
+                />
+              </div>
+              <div class="text-right">
+                <button
+                  v-clipboard:copy="cipher.cryptoWallet.seed"
+                  v-clipboard:success="clipboardSuccessHandler"
+                  class="btn btn-icon btn-xs btn-action"
+                >
+                  <i class="far fa-copy" />
+                </button>
+              </div>
+            </div>
             <div class="grid md:grid-cols-6 cipher-item">
               <div class="">{{ $t('data.ciphers.networks') }}</div>
               <div class="col-span-4">
@@ -243,15 +264,16 @@
           </div>
           <div v-if="shareMember.length > 0" class="grid md:grid-cols-6 cipher-item">
             <div class="">{{ $t('data.ciphers.shared_with') }}</div>
-            <div :class="showMember?'': 'flex'" class="col-span-4 gap-3">
-              <div v-for="member in showMember? shareMember : shareMember.slice(0,5)" :key="member.id" class="mt-3 flex">
+            <div :class="showMember?'gap-y-3 py-3': ''" class="col-span-4 flex flex-wrap">
+              <div v-for="member in showMember? shareMember : shareMember.slice(0,3)" :key="member.id" :class="shareMember.length<=3 ? 'md:w-1/3 pr-3 w-full':'pr-3 md:w-1/4 w-full'" class="flex">
                 <img :title="member.email" class="h-10 w-10 rounded-full" :src="member.avatar">
-                <div v-if="showMember" class="self-center ml-2">{{ member.email }}</div>
+                <span class="ml-1 self-center whitespace-nowrap overflow-hidden overflow-ellipsis">{{ member.full_name }}</span>
+                <!-- <div v-if="showMember" class="self-center ml-2">{{ member.email }}</div> -->
               </div>
-              <div v-if="!showMember && shareMember.length>5" class="bg-[#C4C4C4] h-10 w-10 rounded-full mt-3 text-[20px] text-black font-semibold text-center py-2">
-                {{ shareMember.length >= 105 ? '99+' : `+${shareMember.length - 5}` }}
+              <div v-if="!showMember && shareMember.length>3" class="bg-[#C4C4C4] h-10 w-10 rounded-full mt-3 text-[20px] text-black font-semibold text-center py-2" @click="showMember=true">
+                {{ shareMember.length >= 103 ? '99+' : `+${shareMember.length - 3}` }}
               </div>
-              <div class="cursor-pointer text-primary self-center mt-3" @click="showMember=!showMember">{{ showMember ? $t('common.collapse') : $t('common.see_all') }}</div>
+              <div v-if="showMember" class="cursor-pointer text-primary self-center" @click="showMember=false">{{ $t('common.collapse') }}</div>
             </div>
           </div>
         </div>
@@ -285,6 +307,7 @@ import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
 import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
 import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 import { FieldType } from '../../jslib/src/enums/fieldType'
+import InputSeedPhrase from '../input/InputSeedPhrase'
 CipherType.CryptoAccount = 6
 CipherType.CryptoWallet = 7
 export default {
@@ -295,7 +318,8 @@ export default {
     Vnodes,
     ShareCipher,
     MoveFolder,
-    PremiumDialog
+    PremiumDialog,
+    InputSeedPhrase
   },
   props: {
     type: {
@@ -323,7 +347,7 @@ export default {
     },
     collection () {
       if (this.collections) {
-        return find(this.collections, e => e.id === this.$route.params.tfolderId) || { name: 'Unassigned Folder', id: 'unassigned' }
+        return find(this.collections, e => e.id === this.$route.params.folderId) || { name: 'Unassigned Folder', id: 'unassigned' }
       }
       return {}
     },
