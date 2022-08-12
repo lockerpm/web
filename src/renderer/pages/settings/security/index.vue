@@ -772,7 +772,7 @@ export default {
     },
     async requestAccess (emergency_access) {
       this.$confirm(this.$t('data.notifications.request_emergency_access', { day: emergency_access.wait_time_days }), emergency_access.full_name || this.$t('common.warning'), {
-        confirmButtonText: 'Approve',
+        confirmButtonText: 'Yes',
         cancelButtonText: 'No',
         type: 'warning'
       }).then(async () => {

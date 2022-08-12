@@ -11,9 +11,9 @@
       <div class="text-head-5 text-black-700 font-semibold truncate">
         {{ emergency_access.id ? 'Edit emergency contact' : 'Invite emergency contact' }}
       </div>
-      <div class="setting-description">
+      <!-- <div class="setting-description">
         {{ $t('data.emergency_access.invite_emergency_contact_desc') }}
-      </div>
+      </div> -->
     </div>
     <div class="text-left">
       <InputText
@@ -98,6 +98,7 @@ export default {
       errors: {},
       collections: [],
       emergency_access: {
+        type: 'view'
       },
       file: null
     }
@@ -121,6 +122,7 @@ export default {
         this.emergency_access = { ...emergencyAccess }
       } else {
         this.emergency_access = {
+          type: 'view'
         }
       }
     },
