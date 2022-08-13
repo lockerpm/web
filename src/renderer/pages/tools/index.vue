@@ -54,7 +54,7 @@
         >
           <div class="setting-section-header">
             <div class="flex items-center">
-              <img src="~/assets/images/icons/icon_tools_pw_health.svg" alt="" class="mr-3">
+              <img src="~/assets/images/icons/icon_tools_relay.svg" style="height: 48px" alt="" class="mr-3">
               <div>
                 <div
                   class="setting-title cursor-pointer"
