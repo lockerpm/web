@@ -12,7 +12,7 @@
           <el-breadcrumb-item
             :to="localeRoute({name: 'tools-relay'})"
           >
-            Relay
+            {{ $t('data.tools.relay') }}
           </el-breadcrumb-item>
         </el-breadcrumb>
       </div>
@@ -121,7 +121,7 @@
                     <button
                       class="btn btn-icon btn-xs btn-action"
                       style="margin-right: 0"
-                      @click="editAddress(item.id)"
+                      @click="selectToEdit(item)"
                     >
                       <i class="far fa-check text-success" />
                     </button>
@@ -151,7 +151,7 @@
                   </p>
                 </div>
 
-                <a class="text-danger hover:text-danger" @click.prevent="deleteAddress(item.id)">
+                <a class="text-danger hover:text-danger" @click.prevent="selectToDelete(item)">
                   {{ $t('common.delete') }}
                 </a>
               </div>
@@ -161,6 +161,75 @@
       </div>
       <!-- Addresses end -->
     </div>
+
+    <!--  DIALOGS  -->
+
+    <!-- Confirm edit alias -->
+    <el-dialog
+      :title="$t('data.tools.edit_relay_alias.title')"
+      :visible.sync="dialog.confirmEdit.isOpen"
+      width="600px"
+      destroy-on-close
+      top="5vh"
+      custom-class="locker-dialog"
+      :close-on-click-modal="false"
+    >
+      <span
+        class="text-black"
+        v-html="$t('data.tools.edit_relay_alias.desc', { email: dialog.confirmEdit.data.full_address })"
+      />
+      <br>
+      <span class="text-danger">{{ $t('data.tools.edit_relay_alias.warning') }}</span>
+
+      <!-- Footer -->
+      <span slot="footer">
+        <hr class="border-black-100 mb-4">
+        <button class="btn btn-outline-primary mr-2" @click.prevent="dialog.confirmEdit.isOpen = false">
+          {{ $t('common.cancel') }}
+        </button>
+        <button :disabled="loading" class="btn btn-primary" @click.prevent="editAddress(dialog.confirmEdit.data.id)">
+          {{ $t('data.tools.edit_relay_alias.confirm') }}
+        </button>
+      </span>
+      <!-- Footer end -->
+    </el-dialog>
+    <!-- Confirm edit alias end -->
+
+    <!-- Confirm delete alias -->
+    <el-dialog
+      :title="$t('data.tools.delete_relay_alias.title')"
+      :visible.sync="dialog.confirmDelete.isOpen"
+      width="600px"
+      destroy-on-close
+      top="5vh"
+      custom-class="locker-dialog"
+      :close-on-click-modal="false"
+    >
+      <span class="text-primary font-medium text-lg">{{ dialog.confirmDelete.data.full_address }}</span>
+      <br>
+      <br>
+      <span
+        class="text-black"
+        v-html="$t('data.tools.delete_relay_alias.desc', { email: dialog.confirmDelete.data.full_address })"
+      />
+      <br>
+      <span class="text-danger">{{ $t('data.tools.delete_relay_alias.warning') }}</span>
+
+      <!-- Footer -->
+      <span slot="footer">
+        <hr class="border-black-100 mb-4">
+        <button class="btn btn-outline-primary mr-2" @click.prevent="dialog.confirmDelete.isOpen = false">
+          {{ $t('common.cancel') }}
+        </button>
+        <button :disabled="loading" class="btn btn-primary" @click.prevent="deleteAddress(dialog.confirmDelete.data.id)">
+          {{ $t('data.tools.delete_relay_alias.confirm') }}
+        </button>
+      </span>
+      <!-- Footer end -->
+    </el-dialog>
+    <!-- Confirm delete alias end -->
+
+    <!--  DIALOGS END  -->
   </div>
 </template>
 
@@ -172,7 +241,17 @@ export default {
       loading: false,
       isEditing: false,
       address: '',
-      addresses: []
+      addresses: [],
+      dialog: {
+        confirmEdit: {
+          isOpen: false,
+          data: {}
+        },
+        confirmDelete: {
+          isOpen: false,
+          data: {}
+        }
+      }
     }
   },
   mounted () {
@@ -200,7 +279,7 @@ export default {
         const addresses = [...this.addresses]
         addresses.push(res)
         this.addresses = [...addresses]
-        this.notify(this.$t('common.success'), 'success')
+        this.notify(this.$t('data.tools.relay_alias_added'), 'success')
       } catch {
 
       } finally {
@@ -211,13 +290,22 @@ export default {
       this.isEditing = true
       this.address = address
     },
+    selectToEdit (item) {
+      if (item.address === this.address) {
+        this.isEditing = false
+        return
+      }
+      this.dialog.confirmEdit.data = item
+      this.dialog.confirmEdit.isOpen = true
+    },
     async editAddress (id) {
+      this.dialog.confirmEdit.isOpen = false
       this.loading = true
       try {
         await this.$axios.$put(`cystack_platform/relay/addresses/${id}`, {
           address: this.address
         })
-        this.notify(this.$t('common.success'), 'success')
+        this.notify(this.$t('data.tools.relay_alias_edited'), 'success')
         const addresses = [...this.addresses]
         const item = addresses.find(i => i.id === id)
         item.address = this.address
@@ -228,7 +316,7 @@ export default {
         let message = e.message
         if (e.response.data) {
           message = e.response.data.message
-          if (e.response.data.details.address) {
+          if (e.response.data.details && e.response.data.details.address) {
             message = e.response.data.details.address[0]
           }
         }
@@ -237,24 +325,22 @@ export default {
         this.loading = false
       }
     },
+    selectToDelete (item) {
+      this.dialog.confirmDelete.data = item
+      this.dialog.confirmDelete.isOpen = true
+    },
     async deleteAddress (id) {
-      this.$alert('Are you sure?', 'Delete domain', {
-        confirmButtonText: this.$t('common.delete'),
-        callback: async action => {
-          if (action === 'confirm') {
-            this.loading = true
-            try {
-              await this.$axios.$delete(`cystack_platform/relay/addresses/${id}`)
-              this.notify(this.$t('common.success'), 'success')
-              this.addresses = this.addresses.filter(i => i.id !== id)
-            } catch {
+      this.dialog.confirmDelete.isOpen = false
+      this.loading = true
+      try {
+        await this.$axios.$delete(`cystack_platform/relay/addresses/${id}`)
+        this.notify(this.$t('data.tools.relay_alias_deleted'), 'success')
+        this.addresses = this.addresses.filter(i => i.id !== id)
+      } catch {
 
-            } finally {
-              this.loading = false
-            }
-          }
-        }
-      })
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
