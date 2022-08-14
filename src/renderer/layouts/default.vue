@@ -91,7 +91,7 @@
                       :disabled="loading2"
                       @click="deleteEmergencyAccess(invitation)"
                     >
-                      {{ $t('common.decline') }}
+                      {{ $t('common.reject') }}
                     </button>
                     <button
                       class="btn btn-primary"

@@ -1,82 +1,4 @@
 <template>
-  <!-- <el-dialog
-    :visible.sync="dialogVisible"
-    width="435px"
-    destroy-on-close
-    top="5vh"
-    custom-class="locker-dialog"
-    :close-on-click-modal="false"
-  >
-    <div slot="title">
-      <div class="flex items-center">
-        <div class="text-[34px] mr-3">
-          <Vnodes :vnodes="getIconCipher(cipher, 20)" />
-        </div>
-        <div class="text-black-700 font-semibold">{{ cipher.name }}</div>
-      </div>
-    </div>
-    <div class="text-left">
-      <div
-        v-if="isBelongToTeam"
-        class="mb-3"
-      >
-        {{ $t('data.ciphers.choose_at_least_folder') }}
-      </div>
-      <div
-        v-else
-        class="mb-3"
-      >
-        {{ $t('data.ciphers.choose_a_team') }}
-      </div>
-      <InputSelectTeam
-        v-if="!isBelongToTeam && dialogVisible"
-        :label="$t('common.ownership')"
-        :options="ownershipOptions"
-        class="w-full"
-        @change="handleChangeOrg"
-      />
-      <div
-        v-if="cipher.organizationId"
-        class="form-group"
-      >
-        <div class="flex items-center justify-between" />
-        <label for="">{{ $t('data.ciphers.folders_team') }}</label>
-        <el-checkbox-group
-          v-model="cipher.collectionIds"
-          :min="1"
-        >
-          <el-checkbox
-            v-for="(item, index) in writeableCollections"
-            :key="index"
-            :label="item.id"
-          >
-            {{ item.name }}
-          </el-checkbox>
-        </el-checkbox-group>
-      </div>
-    </div>
-    <div
-      slot="footer"
-      class="dialog-footer flex items-center text-left"
-    >
-      <div class="flex-grow" />
-      <div>
-        <button
-          class="btn btn-default"
-          @click="dialogVisible = false"
-        >
-          {{ $t('common.cancel') }}
-        </button>
-        <button
-          class="btn btn-primary"
-          :disabled="loading || !cipher.collectionIds.length"
-          @click="shareCipher(cipher)"
-        >
-          {{ isBelongToTeam ? $t('common.update') : $t('common.share') }}
-        </button>
-      </div>
-    </div>
-  </el-dialog> -->
   <el-dialog
     :visible.sync="dialogVisible"
     width="650px"
@@ -124,56 +46,6 @@
           @change="(v) => ciphers = v"
         />
       </div>
-      <!-- <div class="grid grid-cols-2 gap-x-2 mb-4">
-        <div class="w-full">
-          <div class="text-black-700 text-head-6 font-semibold">
-            {{ $t('data.ciphers.add_recipient_emails') }}
-          </div>
-          <div>
-            {{ $t('data.ciphers.add_recipient_emails_desc') }}
-          </div>
-        </div>
-        <InputText
-          v-model="user.username"
-          label="Email"
-          class="w-full !mb-4"
-          :add-button="true"
-          @add="addEmail"
-          @keyupEnter="addEmail"
-        />
-      </div>
-      <div
-        v-if="members"
-        class="w-full mb-4"
-      >
-        <el-tag
-          v-for="(email, index) in members"
-          :key="index"
-          class="mr-3 mb-3 w-full !flex justify-between items-center"
-          closable
-          :disable-transitions="false"
-          @close="handleClose(index)"
-        >
-          {{ email }}
-        </el-tag>
-      </div>
-      <div class="grid grid-cols-3 gap-x-2 mb-4">
-        <div class="col-span-2">
-          <div class="text-black-700 text-head-6 font-semibold">
-            {{ $t('data.ciphers.share_type') }}
-          </div>
-          <div>
-            {{ $t('data.ciphers.share_type_desc') }}
-          </div>
-        </div>
-        <InputSelect
-          :label="$t('common.share_type')"
-          initial-value="member"
-          class="w-full !mb-4"
-          :options="roleOptions"
-          @change="(v) => user.role = v"
-        />
-      </div> -->
       <div class="grid grid-cols-4 gap-x-2 mb-4">
         <InputText
           v-model="user.username"
@@ -244,7 +116,7 @@
             >
               {{ shareInvitationStatus[`${scope.row.status || 'shared'}`] }}
             </span>
-            <span v-if="scope.row.status === 'accepted'"><button class="btn btn-outline-primary mt-2" @click="$emit('confirm-user', { user: scope.row })">{{ $t('common.confirm') }}</button></span>
+            <span v-if="scope.row.status === 'accepted'"><button class="btn btn-outline-primary mt-2" @click="confirmUser(scope.row)">{{ $t('common.confirm') }}</button></span>
           </template>
         </el-table-column>
         <el-table-column width="50">
@@ -281,8 +153,6 @@
 </template>
 
 <script>
-
-import InputSelectTeam from '../../components/input/InputSelectTeam'
 import InputSelect from '../../components/input/InputSelect.vue'
 import InputText from '../../components/input/InputText.vue'
 import { CipherRequest } from '../../jslib/src/models/request'
@@ -291,7 +161,7 @@ import Vnodes from '../../components/Vnodes'
 import { Utils } from '../../jslib/src/misc/utils.ts'
 
 export default {
-  components: { InputSelectTeam, Vnodes, InputSelect, InputText },
+  components: { Vnodes, InputSelect, InputText },
   props: {
     cipherOptions: {
       type: Array,
@@ -430,12 +300,6 @@ export default {
           this.loading = false
         }
       }
-    },
-    async generateOrgKey (publicKey) {
-      const pk = new Uint8Array(Buffer.from(publicKey, 'base64'))
-      const orgKey = await this.$cryptoService.getOrgKey('095ccf45-983d-4fc1-951c-ad330073de93')
-      const key = await this.$cryptoService.rsaEncrypt(orgKey.key, pk.buffer)
-      return key.encryptedString
     },
     async handleChangeOrg (orgId) {
       this.$set(this.cipher, 'organizationId', orgId)
@@ -700,6 +564,22 @@ export default {
         }
       } else {
         row.role = role
+      }
+    },
+    async confirmUser (user) {
+      try {
+        this.loading = true
+        const publicKey = await this.getPublicKey(user.email)
+        const key = await this.generateMemberKey(publicKey, this.orgKey)
+        await this.$axios.$post(`pm/sharing/${this.cipher.organizationId}/members/${user.id}`, {
+          key
+        })
+        await this.getMyShares()
+        this.notify(this.$t('data.notifications.confirm_member_success'), 'success')
+      } catch (e) {
+        this.notify(this.$t('data.notifications.confirm_member_failed'), 'warning')
+      } finally {
+        this.loading = false
       }
     }
   }

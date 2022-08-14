@@ -187,7 +187,7 @@
         <div class="setting-section-header">
           <div>
             <div class="setting-title">{{ $t('data.emergency_access.trusted_emergency_contacts') }}</div>
-            <div v-if="trustedPendingRequests>0" class="text-warning">{{ trustedPendingRequests }} {{ trustedPendingRequests>1?'pending requests':'pending request' }}</div>
+            <div v-if="trustedPendingRequests>0" class="text-warning">{{ trustedPendingRequests }} {{ $tc('data.emergency_access.pending_request', trustedPendingRequests) }}</div>
           </div>
           <div>
             <button
@@ -262,7 +262,7 @@
                     effect="dark"
                     placement="top-start"
                   >
-                    <div slot="content">View: {{ $t(`data.emergency_access.view_desc`) }} <br> Takeover: {{ $t(`data.emergency_access.takeover_desc`) }}</div>
+                    <div slot="content">{{ $t('common.view') }}: {{ $t(`data.emergency_access.view_desc`) }} <br> {{ $t('common.takeover') }}: {{ $t(`data.emergency_access.takeover_desc`) }}</div>
                     <i class="el-icon-info" />
                   </el-tooltip></span>
                 </template>
@@ -334,7 +334,7 @@
         <div class="setting-section-header">
           <div>
             <div class="setting-title">{{ $t('data.emergency_access.designated_emergency_contacts') }}</div>
-            <div v-if="grantedPendingRequests>0" class="text-warning">{{ grantedPendingRequests }} {{ grantedPendingRequests>1?'pending requests':'pending request' }}</div>
+            <div v-if="grantedPendingRequests>0" class="text-warning">{{ grantedPendingRequests }} {{ $tc('data.emergency_access.pending_request', grantedPendingRequests) }}</div>
           </div>
         </div>
         <div class="setting-section-body">
@@ -398,7 +398,7 @@
                     effect="dark"
                     placement="top-start"
                   >
-                    <div slot="content">View: {{ $t(`data.emergency_access.view_desc`) }} <br> Takeover: {{ $t(`data.emergency_access.takeover_desc`) }}</div>
+                    <div slot="content">{{ $t('common.view') }}: {{ $t(`data.emergency_access.view_desc`) }} <br> {{ $t('common.takeover') }}: {{ $t(`data.emergency_access.takeover_desc`) }}</div>
                     <i class="el-icon-info" />
                   </el-tooltip></span>
                 </template>
@@ -735,7 +735,8 @@ export default {
         this.userFingerPrint = fingerprint.join('-')
       }
       this.dontAskAgain = await this.$storageService.get('autoConfirmFingerprints')
-      this.openDialogConfirm()
+      // this.openDialogConfirm()
+      this.confirmEmergencyAccess(emergency_access)
     },
     openDialogConfirm () {
       this.dialogConfirmVisible = true
@@ -772,7 +773,7 @@ export default {
     },
     async requestAccess (emergency_access) {
       this.$confirm(this.$t('data.notifications.request_emergency_access', { day: emergency_access.wait_time_days }), emergency_access.full_name || this.$t('common.warning'), {
-        confirmButtonText: 'Approve',
+        confirmButtonText: 'Yes',
         cancelButtonText: 'No',
         type: 'warning'
       }).then(async () => {
