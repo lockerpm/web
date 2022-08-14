@@ -116,14 +116,14 @@
                       style="margin-right: 0"
                       @click="isEditing = false"
                     >
-                      <i class="far fa-times text-danger" />
+                      <i class="fas fa-times text-danger" />
                     </button>
                     <button
                       class="btn btn-icon btn-xs btn-action"
                       style="margin-right: 0"
                       @click="selectToEdit(item)"
                     >
-                      <i class="far fa-check text-success" />
+                      <i class="fas fa-check text-success" />
                     </button>
                   </div>
 
