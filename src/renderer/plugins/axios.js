@@ -6,10 +6,13 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
     // const token = store.state.auth.accessToken
     const token = app.$cookies.get('cs_locker_token')
     const deviceId = app.$cookies.get('device_id')
-    request.headers['device-id'] = deviceId
+
     // Update token axios header
     if (token) {
       request.headers.common.Authorization = 'Bearer ' + token
+    }
+    if (deviceId) {
+      request.headers['device-id'] = deviceId
     }
     return request
   })

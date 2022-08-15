@@ -67,7 +67,7 @@
           class="btn btn-default"
           @click="dialogVisible = false"
         >
-          Cancel
+          {{ $t('common.cancel') }}
         </button>
         <button
           class="btn btn-primary"
@@ -122,7 +122,9 @@ export default {
         this.emergency_access = { ...emergencyAccess }
       } else {
         this.emergency_access = {
-          type: 'view'
+          type: 'view',
+          wait_time_days: 1,
+          email: ''
         }
       }
     },
