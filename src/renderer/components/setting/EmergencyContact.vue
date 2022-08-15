@@ -44,7 +44,7 @@
         <div>
           <el-select
             v-model="emergency_access.wait_time_days"
-            placeholder=""
+            :placeholder="$t('common.select_an_option')"
             :disabled="loading"
           >
             <el-option
@@ -110,8 +110,8 @@ export default {
         { label: this.$t('data.wait_time_days.twoDays'), value: 2 },
         { label: this.$t('data.wait_time_days.sevenDays'), value: 7 },
         { label: this.$t('data.wait_time_days.fourteenDays'), value: 14 },
-        { label: this.$t('data.wait_time_days.thirtyDays'), value: 30 },
-        { label: this.$t('data.wait_time_days.ninetyDays'), value: 90 }
+        { label: this.$t('data.wait_time_days.thirtyDays'), value: 30 }
+        // { label: this.$t('data.wait_time_days.ninetyDays'), value: 90 }
       ]
     }
   },
@@ -123,7 +123,7 @@ export default {
       } else {
         this.emergency_access = {
           type: 'view',
-          wait_time_days: 1,
+          wait_time_days: null,
           email: ''
         }
       }
