@@ -309,6 +309,9 @@ export default {
     }
   },
   mounted () {
+    if (this.$route.query.submitted === '1') {
+      this.submitted = true
+    }
     this.getCountries()
     this.$recaptcha.init()
   },
