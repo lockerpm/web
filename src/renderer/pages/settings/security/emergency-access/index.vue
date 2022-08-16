@@ -363,7 +363,7 @@
       <div class="text-left">
         <div class="text-left">
           <div class="form-group !mb-4">
-            <label for="">Nhập Master Password</label>
+            <label for="">{{ $t('master_password.new_password') }}</label>
             <div class="input-group mb-1.5">
               <input
                 v-model="masterPassword"
@@ -392,7 +392,7 @@
             />
           </div>
           <div class="form-group !mb-4">
-            <label for="">Xác nhận Master Password</label>
+            <label for="">{{ $t('master_password.re_password') }}</label>
             <div
               class="input-group"
               :class="[errors.masterRePassword ? 'is-invalid' :'']"
@@ -447,10 +447,10 @@
 </template>
 
 <script>
-import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
-import EmergencyContact from '@/components/setting/EmergencyContact.vue'
-import { Utils } from '@/jslib/src/misc/utils.ts'
+import EmergencyContact from '@/components/setting/EmergencyContact'
 import PasswordStrengthBar from '@/components/password/PasswordStrengthBar'
+import { Utils } from '@/jslib/src/misc/utils.ts'
+import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
 export default {
   components: {
     EmergencyContact,
