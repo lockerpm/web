@@ -4,7 +4,7 @@
     <section
       class="full-width h-auto"
     >
-      <div class="pt-20 mx-auto pl-6 md:pb-32 pb-20">
+      <div class="pt-20 mx-auto pl-6 md:pb-20 pb-10">
         <div class="w-full flex flex-wrap justify-end">
           <div class="lg:max-w-[570px] max-h-[485px] md:w-1/2 order-1 mb-8 md:mb-0 self-center">
             <h1 class="text-left font-bold text-black landing-font-50 mb-[24px]">
@@ -16,12 +16,12 @@
             />
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
-                <nuxt-link
+                <a
                   class="landing-btn w-full sm:w-auto mb-1"
-                  :to="localePath('/register')"
+                  href="#business-form"
                 >
                   {{ $t('business.welcome.start') }}
-                </nuxt-link>
+                </a>
                 <p class="italic w-full landing-font-14 mt-1">
                   {{ $t('landing.section1.btn[0].note') }}
                 </p>
@@ -44,14 +44,17 @@
               style="max-height: 720px;"
             >
           </div>
-          <div class="w-full md:hidden order-2 mt-16">
+          <div class="w-full md:hidden order-2 mt-24">
             <img
-              :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
+              src="~/assets/images/business/bg-welcome.png"
               alt=""
             >
           </div>
           <!-- Right end -->
         </div>
+      </div>
+      <div class="max-w-6xl mx-auto px-6 mb-16">
+        <div class="landing-font-16 text-black-500">{{ $t('business.welcome.trusted_by') }}</div>
       </div>
     </section>
     <!-- HERO BANNER END -->
@@ -62,9 +65,9 @@
     >
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="landing-font-42 font-semibold">{{ $t('business.top_priority.title') }}</h2>
-        <div class="mt-8 grid grid-cols-3 gap-8">
+        <div class="mt-8 grid md:grid-cols-3 grid-cols-1 gap-8">
           <div v-for="(item, index) in $t('business.top_priority.list_item')" :key="index">
-            <div class="w-full bg-white rounded-xl h-[180px]" />
+            <div class="w-full bg-white rounded-xl h-[180px] mb-6" />
             <div class="landing-font-24 font-semibold mb-6">{{ item.title }}</div>
             <div class="landing-font-16">{{ item.desc }}</div>
           </div>
@@ -76,12 +79,15 @@
     <!-- BENEFITS -->
     <section class="mt-5 pt-20">
       <div v-for="(item, index) in $t('business.benefits.list_item')" :key="index">
-        <div class="flex mb-20">
-          <div class="md:w-1/2 w-full" :class="index%2===0?'pr-20 order-1':'pl-20 order-2'">
+        <div class="flex flex-wrap mb-20 gap-y-8">
+          <div class="md:w-1/2 w-full" :class="index%2===0?'md:pr-20 pr-0 order-1':'md:pl-20 pl-0 order-2'">
             <h3 class="landing-font-38 font-semibold mb-6">{{ item.title }}</h3>
             <p class="landing-font-16 mb-8">{{ item.desc }}</p>
+            <div class="">
+              <a class="landing-btn" href="#business-form">Start a free trial</a>
+            </div>
           </div>
-          <div class="md:w-1/2 w-full" :class="index%2===0?'order-2':'order-1'">
+          <div class="md:w-1/2 w-full" :class="index%2===0?'order-2':'md:order-1 order-3'">
             <img :src="require(`~/assets/images/business/${item.image}`)" :alt="item.title">
           </div>
         </div>
@@ -95,7 +101,7 @@
       <div class="w-max landing-font-20 font-semibold my-8 border-b pb-3">
         {{ $t('business.features.for_members') }}
       </div>
-      <div class="grid grid-cols-2 gap-8">
+      <div class="grid sm:grid-cols-2 grid-cols-1 gap-8">
         <div
           v-for="(item, index) in $t('business.features.member_features')"
           :key="index"
@@ -109,7 +115,7 @@
       <div class="w-max landing-font-20 font-semibold my-8 border-b pb-3">
         {{ $t('business.features.for_admin') }}
       </div>
-      <div class="grid grid-cols-2 gap-8">
+      <div class="grid sm:grid-cols-2 grid-cols-1 gap-8">
         <div
           v-for="(item, index) in $t('business.features.admin_features')"
           :key="index"
@@ -129,7 +135,7 @@
     >
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="landing-font-42 font-semibold">{{ $t('business.clients_say.title') }}</h2>
-        <div class="mt-8 grid grid-cols-3 gap-8">
+        <div class="mt-8 grid md:grid-cols-3 grid-cols-1 gap-8">
           <div
             v-for="(item, index) in $t('business.clients_say.list_item')"
             :key="index"
@@ -151,14 +157,14 @@
 
     <!-- PLANS -->
     <section class="py-20">
-      <div class="flex mb-8">
-        <div class="md:w-1/2 w-full">
+      <div class="flex flex-wrap mb-8 gap-y-6">
+        <div class="md:w-1/2 w-full md:text-left text-center">
           <h2 class="landing-font-42 font-semibold">{{ $t('business.plans.title') }}</h2>
         </div>
-        <div class="md:w-1/2 w-full text-right self-center">
-          <button class="landing-btn">
+        <div class="md:w-1/2 w-full md:text-right text-center self-center">
+          <nuxt-link :to="localePath('/plans')" class="landing-btn">
             {{ $t('business.plans.learn_more') }}
-          </button>
+          </nuxt-link>
         </div>
       </div>
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-8 mb-8">
@@ -173,7 +179,7 @@
       </div>
       <div class="p-6 bg-[#E4F0E6] rounded-xl flex justify-between landing-font-20 font-semibold">
         <div class="flex-grow">{{ $t('business.plans.more_options') }}</div>
-        <div class="text-primary cursor-pointer">{{ $t('business.plans.contact_us') }}</div>
+        <div class="text-primary cursor-pointer" @click="openIntercom">{{ $t('business.plans.contact_us') }}</div>
       </div>
     </section>
 
@@ -208,10 +214,10 @@
         </el-collapse>
       </div>
     </section>
-    <div class="bg-[#69A757] rounded-2xl py-16 px-[94px] flex justify-between">
+    <div class="bg-[#69A757] rounded-2xl md:py-16 py-8 md:px-[94px] px-8 md:flex block justify-between mb-16">
       <div class="text-white landing-font-42 font-semibold flex-grow">{{ $t('business.cta.title') }}</div>
       <div class="self-center">
-        <button class="landing-btn !bg-white !text-primary">{{ $t('business.cta.button') }}</button>
+        <button class="landing-btn !bg-white !text-primary" @click="openIntercom">{{ $t('business.cta.button') }}</button>
       </div>
     </div>
   </div>
@@ -227,6 +233,11 @@ export default {
   data () {
     return {
       activeName: '1'
+    }
+  },
+  methods: {
+    openIntercom () {
+      if (window.Intercom) { window.Intercom('show') }
     }
   }
 

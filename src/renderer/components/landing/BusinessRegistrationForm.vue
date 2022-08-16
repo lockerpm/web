@@ -1,5 +1,5 @@
 <template>
-  <div class="shadow-custom rounded-lg h-auto bg-white py-[30px] px-[72px]">
+  <div class="shadow-custom rounded-lg h-auto bg-white py-[30px] md:px-[72px] px-8">
     <el-form
       id="business-form"
       ref="inputForm"
