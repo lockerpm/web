@@ -416,7 +416,12 @@ export default {
     },
     folders: {
       async get () {
-        return await this.$folderService.getAllDecrypted() || []
+        let result = []
+        try {
+          result = await this.$folderService.getAllDecrypted() || []
+        } catch (error) {
+        }
+        return result
       },
       watch: ['$store.state.syncedCiphersToggle']
     },
