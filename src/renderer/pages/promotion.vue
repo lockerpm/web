@@ -28,7 +28,7 @@
             </div>
             <div class="mt-[36px]">
               <div
-                class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup"
+                class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn"
                 @click="choosePlan('pm_family')"
               >
                 {{ $t('promotion.btn_signup.text') }}
@@ -66,7 +66,7 @@
         </div>
         <div class="text-center mt-[100px]">
           <div
-            class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup"
+            class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn"
             @click="choosePlan('pm_family')"
           >
             {{ $t('promotion.btn_signup.text') }}
@@ -117,7 +117,7 @@
       </div>
       <div class="text-center">
         <div
-          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup text-center absolute bottom-[-30px] md:ml-[-160px] ml-[-125px]"
+          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn text-center absolute bottom-[-30px] md:ml-[-160px] ml-[-125px]"
           @click="choosePlan('pm_family')"
         >
           {{ $t('promotion.btn_signup.text') }}
@@ -182,7 +182,7 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <div class="locker-absolutely py-[120px]">
+    <!-- <div class="locker-absolutely py-[120px]">
       <div class="text-[#000000] landing-font-48 font-bold">
         {{ $t('promotion.locker_absolutely.title') }}
       </div>
@@ -204,7 +204,7 @@
           <img src="~/assets/images/landing/promotion/img_absolutely.png">
         </div>
       </div>
-    </div>
+    </div> -->
     <!--    <div class="cta py-[120px]">-->
     <!--      <div class="bg-[#F5F6F7] md:px-[166px] px-[20px] py-16">-->
     <!--        <div class="text-[#161922] landing-font-38 font-bold text-center">-->
@@ -229,7 +229,7 @@
       </div>
       <div class="mt-[40px] text-center">
         <div
-          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup"
+          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn"
           @click="choosePlan('pm_family')"
         >
           {{ $t('promotion.btn_signup.text') }}
