@@ -143,7 +143,6 @@ export default {
         const encKey = await this.$cryptoService.makeEncKey(key)
         const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
         const keys = await this.$cryptoService.makeKeyPair(encKey[0])
-
         await this.$cryptoService.setKey(key)
         await this.$cryptoService.setKeyHash(hashedPassword)
         await this.$cryptoService.setEncKey(encKey[1].encryptedString)
@@ -166,8 +165,12 @@ export default {
             public_key: keys[0],
             encrypted_private_key: keys[1].encryptedString
           },
-          score: this.passwordStrength.score
+          score: this.passwordStrength.score,
+          trial_plan: localStorage.getItem('trial_plan'),
+          is_trial_promotion: localStorage.getItem('is_trial_promotion')
         })
+        localStorage.removeItem('trial_plan')
+        localStorage.removeItem('is_trial_promotion')
         this.notify(this.$t('master_password.create_success'), 'success')
         this.$store.commit('UPDATE_USER_PW', { ...this.$store.state.userPw, is_pwd_manager: true })
         await this.login()

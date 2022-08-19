@@ -125,7 +125,7 @@
         {{ $t('data.importFile.upgrade_dialog_message', {importedCount: importResult.ciphersCount, total: importResult.totalCipherImport}) }}
       </span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="$router.push(localeRoute({name: 'plans'}))">{{ $t('common.upgrade') }}</el-button>
+        <el-button type="primary" @click="$router.push(localeRoute({name: 'manage-plans'}))">{{ $t('common.upgrade') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -541,7 +541,6 @@ export default {
             cardPayload[key] = c.card[key]
           }
         })
-        console.log(cardPayload)
         cipher.notes = JSON.stringify(cardPayload)
         break
       case 4:
@@ -559,7 +558,6 @@ export default {
             identityPayload[key] = c.identity[key]
           }
         })
-        console.log(identityPayload)
         cipher.notes = JSON.stringify(identityPayload)
         break
       default:

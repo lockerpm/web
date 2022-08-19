@@ -202,7 +202,7 @@ export default {
         ...this.currentPlan.alias === 'pm_free'
           ? [{
             label: 'upgrade',
-            routeName: 'plans',
+            routeName: 'manage-plans',
             icon: 'upgrade'
           }]
           : [],

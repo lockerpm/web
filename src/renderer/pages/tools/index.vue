@@ -117,7 +117,7 @@
       <span>Upgrade to Premium plan to access this feature</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="$router.push(localeRoute({name: 'plans'}))">Upgrade</el-button>
+        <el-button type="primary" @click="$router.push(localeRoute({name: 'manage-plans'}))">Upgrade</el-button>
       </span>
     </el-dialog>
     <PremiumDialog ref="premiumDialog" />

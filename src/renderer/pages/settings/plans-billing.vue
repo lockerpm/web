@@ -15,7 +15,7 @@
           <div v-if="currentPlan.alias==='pm_free'">
             <button
               class="btn btn-primary mb-4 md:mb-0"
-              @click="$router.push(localeRoute({name: 'plans'}))"
+              @click="$router.push(localeRoute({name: 'manage-plans'}))"
             >
               <div class="flex">
                 <div class="mr-2">

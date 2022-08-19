@@ -19,12 +19,12 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <a
+        <nuxt-link
           class="hover:no-underline text-green font-semibold"
-          :href="`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
+          :to="localePath('/register')"
         >
           {{ $t('features.feature1.btn.text') }} <i class="el-icon-right" />
-        </a>
+        </nuxt-link>
       </div>
     </section>
     <section class="md:mt-[150px] mt-16">
@@ -43,12 +43,12 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <a
-          :href="`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
+        <nuxt-link
+          :to="localePath('/register')"
           class="hover:no-underline text-green font-semibold"
         >
           {{ $t('features.feature2.btn.text') }} <i class="el-icon-right" />
-        </a>
+        </nuxt-link>
       </div>
     </section>
     <section class="md:mt-[150px] mt-16">
@@ -67,12 +67,12 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <a
-          :href="`https://id.locker.io/register?SERVICE_URL=${encodeURIComponent('/vault')}&SERVICE_SCOPE=pwdmanager&lang=${locale}&ENVIRONMENT=production`"
+        <nuxt-link
+          :to="localePath('/register')"
           class="hover:no-underline text-green font-semibold"
         >
           {{ $t('features.feature3.btn.text') }} <i class="el-icon-right" />
-        </a>
+        </nuxt-link>
       </div>
     </section>
     <section id="locker-business" class="md:mt-[150px] mt-16 mb-[110px]">

@@ -18,6 +18,8 @@
                     {{ $t('data.welcome.text1') }}
                     <br>
                     {{ $t('data.welcome.text2') }}
+                    <br>
+                    <span v-html="$t('data.welcome.text3')" />
                   </div>
                 </div>
                 <div>
@@ -89,7 +91,7 @@
                       :disabled="loading2"
                       @click="deleteEmergencyAccess(invitation)"
                     >
-                      {{ $t('common.decline') }}
+                      {{ $t('common.reject') }}
                     </button>
                     <button
                       class="btn btn-primary"
@@ -163,11 +165,13 @@ export default {
     },
     'locked' (newValue) {
       if (newValue === true) {
+        clearInterval(this.intervalGet)
         this.$router.push(this.localeRoute({ name: 'lock' }))
         this.disconnectSocket()
       }
       if (newValue === false) {
-        this.$store.dispatch('LoadTeams')
+        this.$store.dispatch('LoadNotification')
+        // this.$store.dispatch('LoadTeams')
         // console.log('unlocked sync')
         this.getSyncData()
         // this.getInvitations()
@@ -176,6 +180,9 @@ export default {
         this.getShareInvitations()
         this.getMyShares()
         this.$store.dispatch('LoadCurrentPlan')
+        this.intervalGet = setInterval(() => {
+          this.$store.dispatch('LoadNotification')
+        }, 1000 * 30)
       }
     }
   },
@@ -194,11 +201,13 @@ export default {
         break
       case 'authBlocked':
       case 'logout':
+        clearInterval(this.intervalGet)
         this.logout()
         break
       case 'lockVault':
         break
       case 'locked':
+        clearInterval(this.intervalGet)
         this.lock()
         break
       case 'lockedUrl':
@@ -225,6 +234,7 @@ export default {
     this.$broadcasterService.unsubscribe(BroadcasterSubscriptionId)
     this.removeEvent()
     this.disconnectSocket()
+    clearInterval(this.intervalGet)
   },
   methods: {
     openURL (url) {
@@ -379,11 +389,11 @@ export default {
       window.onkeypress = () => this.noop()
     },
     checkWelcome () {
-      const deviceId = this.$cookies.get('device_id')
+      const deviceId = this.$cookies.get('locker_device_id')
       return localStorage.getItem(`${deviceId}_welcome`)
     },
     offWelcome () {
-      const deviceId = this.$cookies.get('device_id')
+      const deviceId = this.$cookies.get('locker_device_id')
       localStorage.setItem(`${deviceId}_welcome`, 'false')
       this.shouldWelcome = 'false'
     }

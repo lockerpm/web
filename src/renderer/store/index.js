@@ -205,7 +205,7 @@ export const actions = {
   },
   LoadNotification ({ commit }) {
     // const user = context.state.user
-    return this.$axios.$get('notifications?scope=cloud').then(res => {
+    return this.$axios.$get('notifications?scope=pwdmanager').then(res => {
       commit('UPDATE_NOTIFICATION', res)
     })
   },

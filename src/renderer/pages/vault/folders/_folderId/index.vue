@@ -1,5 +1,5 @@
 <template>
-  <ListCipher :filter="c => c.folderId === $route.params.folderId" route-name="vault" />
+  <ListCipher :filter="c => c.folderId === $route.params.folderId || c.collectionIds.includes($route.params.folderId)" route-name="vault" />
 </template>
 
 <script>

@@ -3,7 +3,6 @@
     <h1 class="text-left font-bold text-black landing-font-50 max-w-[890px] mb-20">
       {{ $t('common.terms') }}
     </h1>
-
     <NotionContent :block-map="blockMap" />
   </div>
 </template>
@@ -12,7 +11,6 @@
 import NotionContent from '~/components/landing/terms/NotionContent'
 
 export default {
-
   components: {
     NotionContent
   },
