@@ -27,21 +27,20 @@
                 </p>
               </div>
               <div>
-                <nuxt-link
+                <a
                   class="landing-btn2 w-full sm:w-auto sm:ml-4"
-                  :to="localeRoute({name: $t('landing.section1.btn[1].link')})"
+                  href="https://enterprise-staging.locker.io/admin/billing"
                 >
                   {{ $t('business.welcome.purchase_now') }}
-                </nuxt-link>
+                </a>
               </div>
             </div>
           </div>
           <!-- Right -->
-          <div class="hidden md:block md:w-1/2 order-2 pr-0">
+          <div class="hidden md:block md:w-1/2 order-2 pr-0 justify-self-end">
             <img
               src="~/assets/images/business/bg-welcome.png"
               alt=""
-              style="max-height: 720px;"
             >
           </div>
           <div class="w-full md:hidden order-2 mt-24">
