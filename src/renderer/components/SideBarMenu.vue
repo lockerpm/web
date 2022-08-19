@@ -220,7 +220,7 @@ export default {
             icon: 'upgrade'
           }]
           : [],
-        ...this.currentPlan.alias === 'pm_enterprise'
+        ...this.teams.length && ['primary_admin', 'admin'].includes(this.teams[0].role)
           ? [{
             label: 'dashboard',
             externalLink: process.env.lockerEnterprise,
