@@ -171,7 +171,7 @@ export default {
       }
       if (newValue === false) {
         this.$store.dispatch('LoadNotification')
-        // this.$store.dispatch('LoadTeams')
+        this.$store.dispatch('LoadTeams')
         // console.log('unlocked sync')
         this.getSyncData()
         // this.getInvitations()

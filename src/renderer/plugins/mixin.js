@@ -52,6 +52,9 @@ Vue.mixin({
     },
     enterpriseInvitations () {
       return this.$store.state.enterpriseInvitations
+    },
+    enterprisePolicies () {
+      return this.$store.state.enterprisePolicies
     }
   },
   mounted () {
@@ -563,6 +566,50 @@ Vue.mixin({
       default:
         this.$router.push(this.localeRoute({ name: 'download' }))
       }
+    },
+    // Check password policy
+    checkPasswordPolicy (password, policy_type = 'password_requirement') {
+      const violations = []
+      if (!this.enterprisePolicies) {
+        return violations
+      }
+      const policy = this.enterprisePolicies[policy_type]
+      if (policy && policy.enabled) {
+        if (policy.config.min_length && password.length < policy.config.min_length) {
+          violations.push(
+            this.$t('data.password_policies.min_password_length', { length: policy.config.min_length })
+          )
+        }
+        if (policy.config.require_special_character) {
+          const reg = /(?=.*[!@#$%^&*])/
+          const check = reg.test(password)
+          if (!check) {
+            violations.push(this.$t('data.password_policies.requires_special'))
+          }
+        }
+        if (policy.config.require_lower_case) {
+          const reg = /[a-z]/
+          const check = reg.test(password)
+          if (!check) {
+            violations.push(this.$t('data.password_policies.requires_lowercase'))
+          }
+        }
+        if (policy.config.require_upper_case) {
+          const reg = /[A-Z]/
+          const check = reg.test(password)
+          if (!check) {
+            violations.push(this.$t('data.password_policies.requires_uppercase'))
+          }
+        }
+        if (policy.config.require_digit) {
+          const reg = /[1-9]/
+          const check = reg.test(password)
+          if (!check) {
+            violations.push(this.$t('data.password_policies.requires_number'))
+          }
+        }
+      }
+      return violations
     }
   }
 })

@@ -90,13 +90,15 @@
         {{ $t('set_master_password.note') }}
       </div>
     </div>
+    <PasswordViolationDialog ref="passwordPolicyDialog" @confirm="preparePassword" />
   </div>
 </template>
 
 <script>
 import PasswordStrengthBar from '../components/password/PasswordStrengthBar'
+import PasswordViolationDialog from '../components/cipher/PasswordViolationDialog'
 export default {
-  components: { PasswordStrengthBar },
+  components: { PasswordStrengthBar, PasswordViolationDialog },
   layout: 'blank',
   middleware: ['HaveAccountService'],
   data () {
@@ -128,6 +130,14 @@ export default {
   mounted () {
   },
   methods: {
+    preparePassword () {
+      const violationItems = this.checkPasswordPolicy(this.masterPassword || '')
+      if (violationItems.length) {
+        this.$refs.passwordPolicyDialog.openDialog(violationItems)
+      } else {
+        this.setMasterPass()
+      }
+    },
     async setMasterPass () {
       await this.clearKeys()
       if (this.masterPassword.length < 8) {
