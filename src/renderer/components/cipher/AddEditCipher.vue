@@ -541,7 +541,7 @@
             v-else
             class="btn btn-primary"
             :disabled="loading || !cipher.name"
-            @click="cipher.id ?putCipher(cipher):postCipher(cipher)"
+            @click="preparePassword(cipher)"
           >
             {{ cipher.id ? $t('common.update') : $t('common.add') }}
           </button>
@@ -552,6 +552,7 @@
       ref="addEditFolder"
       @created-folder="handleCreatedFolder"
     />
+    <PasswordViolationDialog ref="passwordPolicyDialog" @confirm="cipher.id ? putCipher(cipher) : postCipher(cipher)" />
   </div>
 </template>
 
@@ -577,6 +578,7 @@ import InputCustomFields from '../input/InputCustomFields.vue'
 import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
 import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 import InlineEditCipher from './InlineEditCipher'
+import PasswordViolationDialog from './PasswordViolationDialog'
 CipherType.CryptoAccount = 6
 CipherType.CryptoWallet = CipherType.CryptoBackup = 7
 export default {
@@ -595,7 +597,8 @@ export default {
     InputSelectCryptoWallet,
     InputSelectCryptoNetworks,
     InputSeedPhrase,
-    InputCustomFields
+    InputCustomFields,
+    PasswordViolationDialog
   },
   props: {
     type: {
@@ -788,13 +791,19 @@ export default {
       this.$emit('close')
       this.currentComponent = Dialog
     },
+    preparePassword (cipher) {
+      const violationItems = cipher.login ? this.checkPasswordPolicy(cipher.login.password || '') : []
+      if (violationItems.length) {
+        this.$refs.passwordPolicyDialog.openDialog(violationItems)
+      } else {
+        cipher.id ? this.putCipher(cipher) : this.postCipher(cipher)
+      }
+    },
     async postCipher (cipher) {
       if (!cipher.name) { return }
       try {
         this.loading = true
         this.errors = {}
-        // this.cryptoAccount.notes = this.cipher.notes
-        // this.cryptoWallet.notes = this.cipher.notes
         const type_ = this.cipher.type
         if (this.cipher.type === CipherType.CryptoAccount || this.cipher.type === CipherType.CryptoWallet) {
           this.cipher.notes = JSON.stringify(this.cipher.type === CipherType.CryptoAccount ? this.cryptoAccount : this.cryptoWallet)

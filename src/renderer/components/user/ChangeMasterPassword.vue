@@ -1,69 +1,73 @@
 <template>
-  <el-dialog
-    :visible.sync="dialogVisible"
-    md:width="575px"
-    destroy-on-close
-    top="5vh"
-    custom-class="locker-dialog"
-  >
-    <div slot="title">
-      <div class="text-head-5 text-black-700 font-semibold truncate">
-        {{ $t('master_password.change') }}
+  <div>
+    <el-dialog
+      :visible.sync="dialogVisible"
+      md:width="575px"
+      destroy-on-close
+      top="5vh"
+      custom-class="locker-dialog"
+    >
+      <div slot="title">
+        <div class="text-head-5 text-black-700 font-semibold truncate">
+          {{ $t('master_password.change') }}
+        </div>
       </div>
-    </div>
-    <div class="text-left">
-      <InputText
-        v-model="oldMasterPassword"
-        :label="$t('master_password.current_password')"
-        class="w-full"
-        :error-text="errors.oldMasterPassword && $t('errors.invalid_password')"
-        is-password
-        @change="errors = {}"
-      />
-      <InputText
-        v-model="masterPassword"
-        :label="$t('master_password.new_password')"
-        class="w-full"
-        :error-text="errors.masterPassword && $t('errors.confirm_password')"
-        is-password
-        @change="errors = {}"
-      />
-      <PasswordStrengthBar v-if="masterPassword" :score="passwordStrength.score" class="mb-4" />
-      <InputText
-        v-model="masterRePassword"
-        :label="$t('master_password.re_password')"
-        class="w-full"
-        :error-text="errors.masterRePassword && $t('errors.confirm_password')"
-        is-password
-        @change="errors = {}"
-      />
-    </div>
-    <div slot="footer" class="dialog-footer flex items-center text-left">
-      <div class="flex-grow" />
-      <div>
-        <button
-          class="btn btn-default mb-4 md:mb-0"
-          @click="dialogVisible = false"
-        >
-          {{ $t('common.cancel') }}
-        </button>
-        <button
-          class="btn btn-primary"
-          :disabled="loading || !oldMasterPassword || !masterRePassword || !masterPassword || masterPassword !== masterRePassword"
-          @click="changePass"
-        >
-          {{ $t('master_password.change_btn') }}
-        </button>
+      <div class="text-left">
+        <InputText
+          v-model="oldMasterPassword"
+          :label="$t('master_password.current_password')"
+          class="w-full"
+          :error-text="errors.oldMasterPassword && $t('errors.invalid_password')"
+          is-password
+          @change="errors = {}"
+        />
+        <InputText
+          v-model="masterPassword"
+          :label="$t('master_password.new_password')"
+          class="w-full"
+          :error-text="errors.masterPassword && $t('errors.confirm_password')"
+          is-password
+          @change="errors = {}"
+        />
+        <PasswordStrengthBar v-if="masterPassword" :score="passwordStrength.score" class="mb-4" />
+        <InputText
+          v-model="masterRePassword"
+          :label="$t('master_password.re_password')"
+          class="w-full"
+          :error-text="errors.masterRePassword && $t('errors.confirm_password')"
+          is-password
+          @change="errors = {}"
+        />
       </div>
-    </div>
-  </el-dialog>
+      <div slot="footer" class="dialog-footer flex items-center text-left">
+        <div class="flex-grow" />
+        <div>
+          <button
+            class="btn btn-default mb-4 md:mb-0"
+            @click="dialogVisible = false"
+          >
+            {{ $t('common.cancel') }}
+          </button>
+          <button
+            class="btn btn-primary"
+            :disabled="loading || !oldMasterPassword || !masterRePassword || !masterPassword || masterPassword !== masterRePassword"
+            @click="preparePassword"
+          >
+            {{ $t('master_password.change_btn') }}
+          </button>
+        </div>
+      </div>
+    </el-dialog>
+    <PasswordViolationDialog ref="passwordPolicyDialog" @confirm="changePass" />
+  </div>
 </template>
 
 <script>
 import InputText from '../input/InputText'
 import PasswordStrengthBar from '../password/PasswordStrengthBar'
+import PasswordViolationDialog from '../cipher/PasswordViolationDialog'
 export default {
-  components: { PasswordStrengthBar, InputText },
+  components: { PasswordStrengthBar, InputText, PasswordViolationDialog },
   data () {
     return {
       folder: {},
@@ -104,6 +108,14 @@ export default {
     },
     closeDialog () {
       this.dialogVisible = false
+    },
+    preparePassword () {
+      const violationItems = this.checkPasswordPolicy(this.masterPassword || '')
+      if (violationItems.length) {
+        this.$refs.passwordPolicyDialog.openDialog(violationItems)
+      } else {
+        this.changePass()
+      }
     },
     async changePass () {
       if (this.masterPassword.length < 8) {
