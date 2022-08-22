@@ -209,6 +209,11 @@ Vue.mixin({
           if (res.count && res.count.ciphers) {
             this.$store.commit('UPDATE_CIPHER_COUNT', res.count.ciphers)
           }
+          const enterprisePolicies = {}
+          res.policies.forEach(element => {
+            enterprisePolicies[element.policyType] = element
+          })
+          this.$store.commit('UPDATE_ENTERPRISE_POLICIES', enterprisePolicies)
           res = new SyncResponse(res)
           allCiphers = allCiphers.concat(res.ciphers)
           await this.$syncService.syncProfile(res.profile)
@@ -575,33 +580,33 @@ Vue.mixin({
       }
       const policy = this.enterprisePolicies[policy_type]
       if (policy && policy.enabled) {
-        if (policy.config.min_length && password.length < policy.config.min_length) {
+        if (policy.config.minLength && password.length < policy.config.minLength) {
           violations.push(
-            this.$t('data.password_policies.min_password_length', { length: policy.config.min_length })
+            this.$t('data.password_policies.min_password_length', { length: policy.config.minLength })
           )
         }
-        if (policy.config.require_special_character) {
+        if (policy.config.requireSpecialCharacter) {
           const reg = /(?=.*[!@#$%^&*])/
           const check = reg.test(password)
           if (!check) {
             violations.push(this.$t('data.password_policies.requires_special'))
           }
         }
-        if (policy.config.require_lower_case) {
+        if (policy.config.requireLowerCase) {
           const reg = /[a-z]/
           const check = reg.test(password)
           if (!check) {
             violations.push(this.$t('data.password_policies.requires_lowercase'))
           }
         }
-        if (policy.config.require_upper_case) {
+        if (policy.config.requireUpperCase) {
           const reg = /[A-Z]/
           const check = reg.test(password)
           if (!check) {
             violations.push(this.$t('data.password_policies.requires_uppercase'))
           }
         }
-        if (policy.config.require_digit) {
+        if (policy.config.requireDigit) {
           const reg = /[1-9]/
           const check = reg.test(password)
           if (!check) {
