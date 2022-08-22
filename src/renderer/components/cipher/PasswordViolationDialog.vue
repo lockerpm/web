@@ -13,7 +13,7 @@
       </div>
       <div class="text-left">
         <div>
-          {{ $t('data.password_policies.password_violated_desc', {team: teams[0].name}) }}:
+          {{ $t('data.password_policies.password_violated_desc', {team: teams.length && teams[0].name}) }}:
         </div>
         <div v-for="(item, index) in violations" :key="index" class="font-semibold">
           - {{ item }}
