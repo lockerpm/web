@@ -4,7 +4,7 @@
       <div class="max-w-6xl mx-auto px-6">
         <div class="grid md:grid-cols-2 grid-cols-1 items-center gap-x-0">
           <div>
-            <div class="landing-font-52 font-bold text-[#161922]">
+            <div class="md:landing-font-52 landing-font-42 font-bold text-[#161922]">
               {{ $t('crypto.bg_welcome.title') }}
             </div>
             <div class="my-4">
