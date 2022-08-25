@@ -52,33 +52,17 @@
           <!-- Right end -->
         </div>
       </div>
-      <div class="max-w-6xl mx-auto px-6 mb-16">
+      <div class="max-w-6xl mx-auto px-6 mb-16 md:flex block gap-8">
         <div class="landing-font-16 text-black-500 mb-8">{{ $t('business.welcome.trusted_by') }}</div>
-        <div class="flex h-8 gap-12">
-          <img src="~/assets/images/business/vingroup.png">
-          <img src="~/assets/images/business/vincss.png">
-          <img src="~/assets/images/business/cystack.png">
+        <div class="md:flex grid grid-cols-2 gap-12">
+          <img class="h-8" src="~/assets/images/business/vingroup.png">
+          <img class="h-8" src="~/assets/images/business/vincss.png">
+          <img class="h-8" src="~/assets/images/business/cystack.png">
+          <img class="h-8" src="~/assets/images/business/whitehub.png">
         </div>
       </div>
     </section>
     <!-- HERO BANNER END -->
-
-    <!-- TOP PRIORITY -->
-    <section
-      class="py-20"
-    >
-      <h2 class="landing-font-42 font-semibold">{{ $t('business.top_priority.title') }}</h2>
-      <div class="mt-8 grid md:grid-cols-3 grid-cols-1 gap-8">
-        <div v-for="(item, index) in $t('business.top_priority.list_item')" :key="index">
-          <div class="w-full h-[180px] mb-6">
-            <img class="mx-auto" :src="require(`~/assets/images/business/${item.image}`)">
-          </div>
-          <div class="landing-font-24 font-semibold mb-6">{{ item.title }}</div>
-          <div class="landing-font-16">{{ item.desc }}</div>
-        </div>
-      </div>
-    </section>
-    <!-- TOP PRIORITY END-->
 
     <!-- BENEFITS -->
     <section class="mt-5 pt-20">
@@ -98,6 +82,23 @@
       </div>
     </section>
     <!-- BENEFITS END -->
+
+    <!-- TOP PRIORITY -->
+    <section
+      class="py-20"
+    >
+      <h2 class="landing-font-42 font-semibold">{{ $t('business.top_priority.title') }}</h2>
+      <div class="mt-8 grid md:grid-cols-3 grid-cols-1 gap-8">
+        <div v-for="(item, index) in $t('business.top_priority.list_item')" :key="index">
+          <div class="w-full h-[180px] mb-6">
+            <img class="mx-auto" :src="require(`~/assets/images/business/${item.image}`)">
+          </div>
+          <div class="landing-font-24 font-semibold mb-6">{{ item.title }}</div>
+          <div class="landing-font-16">{{ item.desc }}</div>
+        </div>
+      </div>
+    </section>
+    <!-- TOP PRIORITY END-->
 
     <!-- FEATURES -->
     <section class="py-20">

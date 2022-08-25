@@ -60,6 +60,7 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
           '/master-password',
           '/refer-friend',
           '/affiliate',
+          '/business',
           '/'
         ]
         let currentPath = route.path

@@ -148,37 +148,4 @@ export default {
   padding: 5px 15px;
   border: 1px solid #268334;
 }
-.questions .el-collapse{
-  background: #FFFFFF;
-  border: 1px solid #DFDFDF;
-  box-shadow: 0px 64px 100px rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-}
-.questions .el-collapse-item__header {
-  padding: 46px 80px 46px 58px;
-  border-bottom: 1px solid #DFDFDF !important;
-}
-.questions .el-collapse-item__content{
-  border-bottom: 1px solid #DFDFDF !important;
-  border-top: 0 !important;
-  border-right: 0 !important;
-  border-left: 0 !important;
-}
-.questions .el-collapse-item__header i.el-collapse-item__arrow{
-  display: block !important;
-  color: black !important;
-  font-weight: bold;
-}
-
-@media screen and (max-width: 640px){
-  .bg-welcome{
-    background-size: cover !important;
-  }
-  .questions .question{
-    font-size: 16px;
-  }
-  .questions .answer{
-    font-size: 14px;
-  }
-}
 </style>
