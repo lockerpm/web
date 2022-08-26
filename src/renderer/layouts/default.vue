@@ -129,7 +129,7 @@ export default {
   components: {
     Header, SideBarMenu
   },
-  middleware: ['LoggedIn', 'UserInfo', 'NotHaveAccountService'],
+  middleware: ['LoggedIn', 'UserInfo', 'NotHaveAccountService', 'blockBySource'],
   data () {
     return {
       externalContent: '',
