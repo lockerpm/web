@@ -155,7 +155,7 @@
                   >
                     {{ currentPlan.alias === item.alias? $t('data.plans.current_plan') : currentPlan.personal_trial_applied === false ? $t('data.plans.start_trial') : $t('data.plans.choose_this_plan') }}
                   </button>
-                  <div v-if="currentPlan.is_trailing && currentPlan.alias !== 'pm_free'" :class="currentPlan.alias === item.alias ? 'opacity-1':'opacity-0'" class="text-sm text-black-500 text-center cursor-pointer" @click="selectPlan(item, true)">
+                  <div v-if="currentPlan.is_trailing && currentPlan.alias !== 'pm_free' && trialLeft>=0" :class="currentPlan.alias === item.alias ? 'opacity-1':'opacity-0'" class="text-sm text-black-500 text-center cursor-pointer" @click="selectPlan(item, true)">
                     {{ $t('data.plans.trial_left', {trialLeft}) }} <span class="text-primary font-semibold">{{ $t('data.plans.purchase_now') }}</span>
                   </div>
                 </div>
