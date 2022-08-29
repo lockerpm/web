@@ -121,7 +121,7 @@
 <script>
 export default {
   layout: 'blank',
-  middleware: ['NotHaveAccountService'],
+  middleware: ['NotHaveAccountService', 'blockBySource'],
   data () {
     return {
       invalidPinAttempts: 0,

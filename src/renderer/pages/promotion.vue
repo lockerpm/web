@@ -4,7 +4,7 @@
       <img src="~/assets/images/landing/promotion/logo.png" class="m-auto w-[137px] h-[38px] mt-[19px]">
     </div>
     <div class="bg-welcome full-width h-auto pt-[76px] pb-[50px] bg-center bg-cover bg-no-repeat" :style="{backgroundImage: `url(${require(`~/assets/images/landing/promotion/bg_welcome.png`)})`}">
-      <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-7xl mx-auto px-6">
         <div class="grid md:grid-cols-2 grid-cols-1 items-center gap-x-[10px] md:gap-y-0 gap-y-[40px]">
           <div>
             <div class="text-[#161922] font-bold landing-font-48 mb-[14px]">
@@ -12,13 +12,13 @@
             </div>
             <div class="relative">
               <div class="full-width h-auto">
-                <img class="lg:h-[56px] h-[100px] 2xl:w-[65%] xl:w-[68%] lg:w-3/4 md:w-4/5 w-full" src="~/assets/images/landing/promotion/img_limited.png">
+                <img class="lg:h-[56px] h-[100px] 2xl:w-[70%] xl:w-[68%] lg:w-3/4 md:w-4/5 w-full" src="~/assets/images/landing/promotion/img_limited.png">
               </div>
               <div class="landing-font-20 text-[#FFFFFF] font-bold absolute top-[5px]">
                 {{ $t('promotion.welcome.text_limit') }}
               </div>
             </div>
-            <div class="mt-[80px]">
+            <div class="mt-6">
               <div v-for="(item, index) in $t('promotion.welcome.list_subtitle')" :key="index" class="flex items-center">
                 <img src="~/assets/images/landing/promotion/icon-success.png" style="width:12px; height: 12px">
                 <div class="landing-font-16 color-[#000000] font-normal ml-3">
@@ -26,7 +26,7 @@
                 </div>
               </div>
             </div>
-            <div class="mt-[36px]">
+            <div class="mt-9">
               <div
                 class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn"
                 @click="choosePlan('pm_family')"
@@ -35,7 +35,7 @@
               </div>
             </div>
           </div>
-          <div>
+          <div class="z-10">
             <img src="~/assets/images/landing/promotion/img_welcome.png">
           </div>
         </div>
@@ -255,7 +255,7 @@ export default {
       if (this.$store.state.isLoggedIn) {
         this.$router.replace(this.localePath('/manage-plans'))
       } else {
-        this.$router.replace(this.localePath('/register?utm_source=plans-family-promotion'))
+        this.$router.replace(this.localePath('/register?utm_source=plans-promotion'))
       }
     }
   }
