@@ -133,7 +133,8 @@ export default {
         await this.$axios.$post('cystack_platform/pm/users/me/password', {
           key: encKey[1].encryptedString,
           new_master_password_hash: newMasterPasswordHash,
-          master_password_hash: masterPasswordHash
+          master_password_hash: masterPasswordHash,
+          score: this.passwordStrength.score
         })
 
         this.notify(this.$t('data.notifications.update_master_success'), 'success')

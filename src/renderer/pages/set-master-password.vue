@@ -173,6 +173,7 @@ export default {
         localStorage.removeItem('is_trial_promotion')
         this.notify(this.$t('master_password.create_success'), 'success')
         this.$store.commit('UPDATE_USER_PW', { ...this.$store.state.userPw, is_pwd_manager: true })
+        window.open(process.env.extensionLink, '_blank')
         await this.login()
       } catch (e) {
         this.notify(this.$t('master_password.create_failed'), 'warning')
