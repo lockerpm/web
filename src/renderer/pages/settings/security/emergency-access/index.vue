@@ -688,7 +688,8 @@ export default {
         const encKey = await this.$cryptoService.remakeEncKey(key, oldEncKey)
         const request = {
           key: encKey[1].encryptedString,
-          new_master_password_hash: masterPasswordHash
+          new_master_password_hash: masterPasswordHash,
+          score: this.passwordStrength.score
         }
         await this.$axios.$post(`/cystack_platform/pm/emergency_access/${this.selectedEmergencyAccess.id}/password`, request)
         this.notify(this.$t('data.notifications.takeover_success', { user: this.selectedEmergencyAccess.email }), 'success')
