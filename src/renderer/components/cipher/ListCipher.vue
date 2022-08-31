@@ -1382,6 +1382,7 @@ export default {
             const cipherEnc = await this.$cipherService.encrypt(cipher, this.$cryptoService.getEncKey())
             const data = new CipherRequest(cipherEnc)
             data.type = type_
+            cipher.type = type_
             return {
               id: cipher.id,
               ...data
