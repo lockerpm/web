@@ -15,7 +15,7 @@
         </button>
       </div>
     </section>
-    <div class="grid md:grid-cols-4 grid-cols-2 items-center py-9">
+    <div class="grid lg:grid-cols-8 md:grid-cols-4 grid-cols-2 gap-4 items-center pt-9">
       <div v-for="(logo, index) in $t('private_email.company_logos')" :key="index">
         <img class="mx-auto" :src="require(`~/assets/images/landing/private-email/${logo}`)" :alt="logo" :title="logo.split('.')[0]">
       </div>
@@ -91,13 +91,50 @@
       </div>
     </section>
     <div class="py-[120px] text-center">
-      <div class="bg-[#F5F6F7] p-16">
-        <h2 class="landing-font-38 font-bold">{{ $t('private_email.cta.title') }}</h2>
-        <p class="text-black-600 mt-4 landing-font-18">{{ $t('private_email.cta.desc') }}</p>
-        <button class="landing-btn mt-8">
-          {{ $t('private_email.button') }}
-        </button>
+      <h2 class="landing-font-38 font-bold mb-8">{{ $t('private_email.cta.title') }}</h2>
+      <img class="mx-auto mb-8" src="~/assets/images/landing/private-email/boundary.svg">
+      <p class="text-black-600 landing-font-18 mb-16">{{ $t('private_email.cta.desc') }}</p>
+      <div class="rounded-xl text-left max-w-[870px] mx-auto  border-[#DFDFDF] border bg-black-700 text-white mb-[72px]">
+        <div class="">
+          <pre>
+            <code>
+            <span class="token tag">curl --location --request</span> <span class="token key">POST</span> <span class="token value">'https://api.locker.io/v3/relay/addresses'</span> \
+            <span class="token tag">--header</span> '<span class="token key">Authorization</span>: <span class="token value">Bearer  {your_api_key}</span>' \
+            --data-raw ''
+            </code>
+          </pre>
+        </div>
+        <div class="bg-black-600 p-4">
+          Example Response
+        </div>
+        <div class="">
+          <pre>
+            <code>
+            {
+              <span class="token key">"id"</span>: <span class="token value">88</span>,
+              <span class="token key">"address"</span>: <span class="token value">"example"</span>,
+              <span class="token key">"enabled"</span>: <span class="token value">true</span>,
+              <span class="token key">"description"</span>: <span class="token value">""</span>,
+              <span class="token key">"created_time"</span>: <span class="token value">1662042581.0</span>,
+              <span class="token key">"updated_time"</span>: <span class="token value">null</span>,
+              <span class="token key">"num_forwarded"</span>: <span class="token value">0</span>,
+              <span class="token key">"num_blocked"</span>: <span class="token value">0</span>,
+              <span class="token key">"num_replied"</span>: <span class="token value">0</span>,
+              <span class="token key">"num_spam"</span>: <span class="token value">0</span>,
+              <span class="token key">"domain"</span>: <span class="token value">"maily.org"</span>,
+              <span class="token key">"subdomain"</span>: <span class="token value">null</span>,
+              <span class="token key">"full_address"</span>: <span class="token value">"example@maily.org"</span>
+            }
+            </code>
+          </pre>
+        </div>
       </div>
+      <nuxt-link
+        to="/"
+        class="hover:no-underline text-green font-semibold"
+      >
+        {{ $t('private_email.button') }} <i class="el-icon-right" />
+      </nuxt-link>
     </div>
     <section class="py-[120px] text-center">
       <h2 class="landing-font-48 font-bold mb-8">{{ $t('private_email.feedback.title') }}</h2>

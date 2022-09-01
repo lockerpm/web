@@ -534,3 +534,14 @@ a:hover {
   padding: 5px 15px;
   border: 1px solid #268334;
 }
+.token {
+  &.tag{
+    color: white;
+  }
+  &.key {
+    color: #f92672;
+  }
+  &.value{
+    color: #a6e22e;
+  }
+}
