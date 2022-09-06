@@ -9,7 +9,9 @@
           {{ $t('private_email.welcome.title') }}
         </h1>
         <img class="mx-auto" src="~/assets/images/landing/private-email/boundary.svg">
-        <p class="my-8 landing-font-20" v-html="$t('private_email.welcome.desc')" />
+        <p class="my-8 landing-font-20 max-w-[700px] mx-auto">
+          {{ $t('private_email.welcome.desc') }} <nuxt-link :to="localePath('/')">Locker Password Manager</nuxt-link>
+        </p>
         <nuxt-link :to="localePath('/register')" class="landing-btn">
           {{ $t('private_email.button') }}
         </nuxt-link>
