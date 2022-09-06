@@ -48,7 +48,7 @@
         <!-- Password generator end -->
 
         <!-- Relay -->
-        <div
+        <!-- <div
           class="setting-section setting-section--hover"
           @click="go('tools-relay')"
         >
@@ -75,7 +75,7 @@
               </button>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- Relay end -->
 
         <!-- Password health -->

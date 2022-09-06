@@ -10,9 +10,9 @@
         </h1>
         <img class="mx-auto" src="~/assets/images/landing/private-email/boundary.svg">
         <p class="my-8 landing-font-20" v-html="$t('private_email.welcome.desc')" />
-        <button class="landing-btn">
+        <nuxt-link :to="localePath('/register')" class="landing-btn">
           {{ $t('private_email.button') }}
-        </button>
+        </nuxt-link>
       </div>
     </section>
     <div class="grid lg:grid-cols-8 md:grid-cols-4 grid-cols-2 gap-4 items-center pt-9">
@@ -130,15 +130,16 @@
         </div>
       </div>
       <nuxt-link
-        to="/"
+        :to="localePath('/register')"
         class="hover:no-underline text-green font-semibold"
       >
         {{ $t('private_email.button') }} <i class="el-icon-right" />
       </nuxt-link>
     </div>
     <section class="py-[120px] text-center">
-      <h2 class="landing-font-48 font-bold mb-8">{{ $t('private_email.feedback.title') }}</h2>
-      <img class="mx-auto" src="~/assets/images/landing/private-email/section-line.svg">
+      <!-- <h2 class="landing-font-48 font-bold mb-8">{{ $t('private_email.feedback.title') }}</h2>
+      <img class="mx-auto" src="~/assets/images/landing/private-email/section-line.svg"> -->
+      <h2 class="landing-font-48 font-bold mb-8">{{ $t('private_email.pick_your_plan') }}</h2>
       <div class="mt-16 grid md:grid-cols-2 grid-cols-1 gap-20 text-left">
         <div
           v-for="(item, index) in $t('private_email.plans')"
@@ -157,9 +158,16 @@
             </div>
           </div>
           <div class="mt-6 text-center">
-            <button class="landing-btn">
+            <nuxt-link v-if="index===0" :to="localePath('/register')" class="landing-btn">
               {{ $t('private_email.button') }}
-            </button>
+            </nuxt-link>
+            <div
+              v-else
+              class="landing-btn cursor-pointer"
+              @click="choosePlan('pm_premium')"
+            >
+              <span class="whitespace-nowrap">{{ $t('private_email.button') }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -184,9 +192,9 @@
     <div class="full-width my-[120px] py-[66px] text-center bg-[#F5F6F7]">
       <h2 class="landing-font-38 font-bold">{{ $t('private_email.protect_your_email') }}</h2>
       <div class="mt-8">
-        <button class="landing-btn">
+        <nuxt-link :to="localePath('/register')" class="landing-btn">
           {{ $t('private_email.button') }}
-        </button>
+        </nuxt-link>
       </div>
     </div>
   </div>
@@ -203,6 +211,10 @@ export default {
   mounted () {
   },
   methods: {
+    choosePlan (alias) {
+      localStorage.setItem('trial_plan', alias)
+      this.$router.replace(this.localePath('/register'))
+    }
   }
 }
 </script>

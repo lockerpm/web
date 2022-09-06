@@ -202,6 +202,11 @@ export default {
           routeName: 'shares'
         },
         {
+          label: 'private_email',
+          icon: 'private_email',
+          routeName: 'relay'
+        },
+        {
           label: 'trash',
           icon: 'trashh',
           routeName: 'trash'

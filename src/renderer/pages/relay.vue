@@ -4,11 +4,11 @@
       <!-- Breadcrumb -->
       <div class="mb-5">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item
+          <!-- <el-breadcrumb-item
             :to="localeRoute({name: 'tools'})"
           >
             Tools
-          </el-breadcrumb-item>
+          </el-breadcrumb-item> -->
           <el-breadcrumb-item
             :to="localeRoute({name: 'tools-relay'})"
           >
