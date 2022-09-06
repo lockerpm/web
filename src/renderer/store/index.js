@@ -27,7 +27,9 @@ export const state = () => ({
   pendingShares: 0,
   extensionLoggedIn: false,
   myShares: [],
-  shareInvitations: []
+  shareInvitations: [],
+  enterpriseInvitations: [],
+  enterprisePolicies: []
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -114,6 +116,12 @@ export const mutations = {
   },
   UPDATE_SHARE_INVITATIONS (state, value) {
     state.shareInvitations = value
+  },
+  UPDATE_ENTERPRISE_INVITATIONS (state, value) {
+    state.enterpriseInvitations = value
+  },
+  UPDATE_ENTERPRISE_POLICIES (state, value) {
+    state.enterprisePolicies = value
   }
 }
 export const actions = {
@@ -206,8 +214,17 @@ export const actions = {
     })
   },
   LoadTeams ({ commit }) {
-    return this.$axios.$get('cystack_platform/pm/teams').then(res => {
+    return this.$axios.$get('cystack_platform/pm/enterprises').then(res => {
       commit('UPDATE_TEAMS', res)
+      // if (res.length) {
+      //   this.$axios.$get(`cystack_platform/pm/enterprises/${res[0].id}/policy`).then(policy => {
+      //     const enterprisePolicies = {}
+      //     policy.forEach(element => {
+      //       enterprisePolicies[element.policy_type] = element
+      //     })
+      //     commit('UPDATE_ENTERPRISE_POLICIES', enterprisePolicies)
+      //   })
+      // }
       return res
     })
   },
@@ -226,6 +243,12 @@ export const actions = {
   LoadShareInvitations ({ commit }) {
     return this.$axios.$get('cystack_platform/pm/sharing/invitations').then(res => {
       commit('UPDATE_SHARE_INVITATIONS', res)
+      return res
+    })
+  },
+  LoadEnterpriseInvitations ({ commit }) {
+    return this.$axios.$get('cystack_platform/pm/enterprises/members/invitations').then(res => {
+      commit('UPDATE_ENTERPRISE_INVITATIONS', res)
       return res
     })
   }

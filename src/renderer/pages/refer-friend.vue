@@ -139,13 +139,4 @@ export default {
 .bg-welcome span{
   color:#3FAF49;
 }
-.referral-friend .btn-number{
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 29px;
-  border-radius: 4px;
-  padding: 5px 15px;
-  border: 1px solid #268334;
-}
 </style>

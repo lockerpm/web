@@ -416,13 +416,23 @@ export default {
     },
     folders: {
       async get () {
-        return await this.$folderService.getAllDecrypted() || []
+        let result = []
+        try {
+          result = await this.$folderService.getAllDecrypted() || []
+        } catch (error) {
+        }
+        return result
       },
       watch: ['$store.state.syncedCiphersToggle']
     },
     collections: {
       async get () {
-        let collections = await this.$collectionService.getAllDecrypted() || []
+        let collections = []
+        try {
+          collections = await this.$collectionService.getAllDecrypted() || []
+        } catch (error) {
+
+        }
         collections = collections.filter(f => f.id)
         collections.forEach(f => {
           const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])

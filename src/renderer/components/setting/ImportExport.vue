@@ -181,7 +181,12 @@ export default {
     },
     folders: {
       async get () {
-        let folders = await this.$folderService.getAllDecrypted() || []
+        let folders = []
+        try {
+          folders = await this.$folderService.getAllDecrypted() || []
+        } catch (error) {
+
+        }
         folders = folders.filter(f => f.id)
         folders.forEach(f => {
           const ciphers = this.ciphers && (this.ciphers.filter(c => c.folderId === f.id) || [])
@@ -193,7 +198,12 @@ export default {
     },
     collections: {
       async get () {
-        let collections = await this.$collectionService.getAllDecrypted() || []
+        let collections = []
+        try {
+          collections = await this.$collectionService.getAllDecrypted() || []
+        } catch (error) {
+
+        }
         collections = collections.filter(f => f.id)
         collections.forEach(f => {
           const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])

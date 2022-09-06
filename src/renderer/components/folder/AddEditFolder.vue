@@ -185,7 +185,12 @@ export default {
       }
     },
     async getWritableCollections () {
-      const allCollections = await this.$collectionService.getAllDecrypted()
+      let allCollections = []
+      try {
+        allCollections = await this.$collectionService.getAllDecrypted()
+      } catch (error) {
+
+      }
       this.writeableCollections = allCollections.filter(c => !c.readOnly)
     }
   }

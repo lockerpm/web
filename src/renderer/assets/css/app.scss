@@ -55,6 +55,14 @@ body {
     @apply px-8 py-5
   }
 }
+.el-dialog.enterprise-dialog {
+    .el-dialog__header {
+        @apply py-4 bg-[#F5F6F7];
+      }
+      .el-dialog__footer {
+        @apply pb-4
+      }
+}
 //.col-actions {
 //  display: none;
 //  visibility: hidden;
@@ -468,6 +476,14 @@ input:-webkit-autofill:active
   line-height: 1.3;
   min-height: 13px;
 }
+
+.el-input .el-input__count {
+  color: #5A6176;
+}
+
+a:hover {
+  text-decoration: none;
+}
 .questions .el-collapse {
   background: #FFFFFF;
   border: 1px solid #DFDFDF;
@@ -503,5 +519,29 @@ input:-webkit-autofill:active
 
   .questions .answer {
     font-size: 14px;
+  }
+}
+.questions .answer ul {
+  list-style: disc !important;
+  padding-left: 20px !important;
+}
+.btn-number {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  border-radius: 4px;
+  padding: 5px 15px;
+  border: 1px solid #268334;
+}
+.token {
+  &.tag{
+    color: white;
+  }
+  &.key {
+    color: #f92672;
+  }
+  &.value{
+    color: #a6e22e;
   }
 }

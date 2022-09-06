@@ -34,19 +34,19 @@
               </div>
             </div>
           </div>
-          <div v-if="invitations.length" class="flex-column-fluid lg:px-28 py-10 px-10">
+          <div v-if="enterpriseInvitations.length" class="flex-column-fluid lg:px-28 py-10 px-10">
             <div
-              v-for="invitation in invitations.slice(0, 1)"
+              v-for="invitation in enterpriseInvitations.slice(0, 1)"
               :key="invitation.id"
               class="banner-invitation border border-black-200 rounded p-5 md:p-8"
             >
               <div class="flex items-center justify-between">
                 <div class="">
                   <div class="text-lg font-semibold mb-2">
-                    Invitation to join {{ invitation.team && invitation.team.name }}
+                    {{ $t('data.enterprise.banner.title', {team: invitation.enterprise && invitation.enterprise.name}) }}
                   </div>
                   <div class="text-black-600 mb-5">
-                    You’ve been invited to the {{ invitation.team && invitation.team.name }} organization! Join now and start collaborating with your teammates.
+                    {{ $t('data.enterprise.banner.desc', {team: invitation.enterprise && invitation.enterprise.name, owner: invitation.owner}) }}
                   </div>
                   <div>
                     <button
@@ -59,7 +59,7 @@
                     <button
                       class="btn btn-primary"
                       :disabled="loading"
-                      @click="putInvitation(invitation.id, 'accept')"
+                      @click="putInvitation(invitation.id, 'confirmed')"
                     >
                       {{ $t('common.accept') }}
                     </button>
@@ -171,7 +171,7 @@ export default {
       }
       if (newValue === false) {
         this.$store.dispatch('LoadNotification')
-        // this.$store.dispatch('LoadTeams')
+        this.$store.dispatch('LoadTeams')
         // console.log('unlocked sync')
         this.getSyncData()
         // this.getInvitations()
@@ -260,15 +260,16 @@ export default {
     async putInvitation (id, status) {
       try {
         this.loading = true
-        await this.$axios.$put(`cystack_platform/pm/users/invitations/${id}`, {
+        await this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${id}`, {
           status
         })
-        this.notify(this.$t(`data.notifications.${status}_member_success`), 'success')
+        this.notify(this.$t('common.success'), 'success')
         this.getInvitations()
       } catch (e) {
-        this.notify(this.$t(`data.notifications.${status}_member_failed`), 'warning')
+        this.notify(this.$t('common.failed'), 'warning')
         console.log(e)
       } finally {
+        this.$store.dispatch('LoadEnterpriseInvitations')
         this.loading = false
       }
     },

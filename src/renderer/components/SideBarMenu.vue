@@ -103,19 +103,33 @@
     </div>
     <div>
       <nav class="my-10">
-        <nuxt-link
-          v-for="(item, index) in bottomMenu"
-          :key="index"
-          :to="localePath({name: item.routeName, params: item.params})"
-          class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
-          active-class="bg-white bg-opacity-20 !text-white"
-          :class="item.routeName==='settings-account'&&['settings-account', 'settings-options', 'settings-security', 'settings-plan-billing'].includes(getRouteBaseName())?'bg-white bg-opacity-20 !text-white':''"
-        >
-          <div class="mr-2 w-[22px] h-[22px] flex items-center">
-            <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
-          </div>
-          <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
-        </nuxt-link>
+        <template v-for="(item, index) in bottomMenu">
+          <a
+            v-if="item.externalLink"
+            :key="index"
+            class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+            :href="item.externalLink"
+          >
+            <div class="mr-2 w-[22px] h-[22px] flex items-center relative">
+              <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+              <div class="w-2 h-2 rounded-full bg-danger-600 absolute top-0 right-0" />
+            </div>
+            <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
+          </a>
+          <nuxt-link
+            v-else
+            :key="index"
+            :to="localePath({name: item.routeName, params: item.params})"
+            class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+            active-class="bg-white bg-opacity-20 !text-white"
+            :class="item.routeName==='settings-account'&&['settings-account', 'settings-options', 'settings-security', 'settings-plan-billing'].includes(getRouteBaseName())?'bg-white bg-opacity-20 !text-white':''"
+          >
+            <div class="mr-2 w-[22px] h-[22px] flex items-center">
+              <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+            </div>
+            <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
+          </nuxt-link>
+        </template>
         <a
           href="https://zo8rr5fc706.typeform.com/to/OotlSyQ7"
           target="_blank"
@@ -188,6 +202,11 @@ export default {
           routeName: 'shares'
         },
         {
+          label: 'private_email',
+          icon: 'private_email',
+          routeName: 'relay'
+        },
+        {
           label: 'trash',
           icon: 'trashh',
           routeName: 'trash'
@@ -204,6 +223,13 @@ export default {
             label: 'upgrade',
             routeName: 'manage-plans',
             icon: 'upgrade'
+          }]
+          : [],
+        ...this.teams.length && ['primary_admin', 'admin'].includes(this.teams[0].role)
+          ? [{
+            label: 'dashboard',
+            externalLink: process.env.lockerEnterprise,
+            icon: 'dashboard'
           }]
           : [],
         ...this.manageableTeams && this.manageableTeams.length

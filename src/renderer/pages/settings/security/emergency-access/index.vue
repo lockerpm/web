@@ -363,7 +363,7 @@
       <div class="text-left">
         <div class="text-left">
           <div class="form-group !mb-4">
-            <label for="">Nhập Master Password</label>
+            <label for="">{{ $t('master_password.new_password') }}</label>
             <div class="input-group mb-1.5">
               <input
                 v-model="masterPassword"
@@ -392,7 +392,7 @@
             />
           </div>
           <div class="form-group !mb-4">
-            <label for="">Xác nhận Master Password</label>
+            <label for="">{{ $t('master_password.re_password') }}</label>
             <div
               class="input-group"
               :class="[errors.masterRePassword ? 'is-invalid' :'']"
@@ -688,7 +688,8 @@ export default {
         const encKey = await this.$cryptoService.remakeEncKey(key, oldEncKey)
         const request = {
           key: encKey[1].encryptedString,
-          new_master_password_hash: masterPasswordHash
+          new_master_password_hash: masterPasswordHash,
+          score: this.passwordStrength.score
         }
         await this.$axios.$post(`/cystack_platform/pm/emergency_access/${this.selectedEmergencyAccess.id}/password`, request)
         this.notify(this.$t('data.notifications.takeover_success', { user: this.selectedEmergencyAccess.email }), 'success')

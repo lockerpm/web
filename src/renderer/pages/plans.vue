@@ -42,19 +42,27 @@
               {{ save17 }}
             </p> -->
             <p class="landing-font-20 text-green">{{ plan.title }}</p>
-            <p class="mt-4">
-              <span v-if="!(plan.alias==='pm_free'&&periodSwitch)" :class="periodSwitch?'line-through landing-font-16 text-black':'font-bold landing-font-50'">${{ plan.price.usd }}</span>
-              <span
-                v-if="periodSwitch && plan.yearly_price"
-                class="font-bold landing-font-50"
-              >${{ (plan.yearly_price.usd / 12) | formatNumber }}</span>
-              <span v-if="plan.duration" class="landing-font-16">/{{ plan.duration }}</span><span v-if="plan.accounts" class="landing-font-16">/{{ plan.accounts }}</span>
-            </p>
+            <div class="mt-4">
+              <div v-if="plan.coming_soon" class="font-bold landing-font-50">
+                Coming soon
+              </div>
+              <template v-else>
+                <span v-if="!(plan.alias==='pm_free'&&periodSwitch)" :class="periodSwitch?'line-through landing-font-16 text-black':'font-bold landing-font-50'">${{ plan.price.usd }}</span>
+                <span
+                  v-if="periodSwitch && plan.yearly_price"
+                  class="font-bold landing-font-50"
+                >${{ (plan.yearly_price.usd / 12) | formatNumber }}</span>
+                <span v-if="plan.duration" class="landing-font-16">/{{ plan.duration }}</span><span v-if="plan.accounts" class="landing-font-16">/{{ plan.accounts }}</span>
+              </template>
+            </div>
             <div
               v-if="periodSwitch"
               class="flex items-center mt-1"
             >
-              <div v-if="plan.alias != 'pm_free'">
+              <div v-if="plan.coming_soon" class="py-[1px] px-2 bg-primary text-white rounded-[20px]">
+                {{ plan.price }}
+              </div>
+              <div v-else-if="plan.alias != 'pm_free'">
                 {{ $t('data.plans.price_12months') }} ${{ plan.yearly_price.usd }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">{{ $t('data.plans.save') }} {{ discountPercentage(plan) }}%</span>
               </div>
             </div>
@@ -91,6 +99,7 @@
             <div class="mt-10">
               <div class="text-center absolute bottom-5 left-6 right-12">
                 <div
+                  v-if="!plan.coming_soon"
                   class="landing-btn !w-full sm:w-auto sm:ml-4 cursor-pointer"
                   style="font-weight: 600"
                   @click="choosePlan(plan.alias)"
@@ -113,7 +122,7 @@
                 <th class="w-1/12 pb-5 landing-font-18">Free</th>
                 <th class="w-8/36 pb-5 landing-font-18">Premium</th>
                 <th class="w-8/36 pb-5 landing-font-18">Family</th>
-                <!-- <th class="w-8/36 pb-5 landing-font-18">Business</th> -->
+                <th class="w-8/36 pb-5 landing-font-18">Business</th>
               </tr>
             </thead>
             <tbody>

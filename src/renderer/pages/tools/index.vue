@@ -11,6 +11,7 @@
         </el-breadcrumb>
       </div>
       <div class="setting-wrapper">
+        <!-- Password generator -->
         <el-popover
           placement="top-end"
           width="280"
@@ -44,7 +45,40 @@
             </div>
           </div>
         </el-popover>
+        <!-- Password generator end -->
 
+        <!-- Relay -->
+        <!-- <div
+          class="setting-section setting-section--hover"
+          @click="go('tools-relay')"
+        >
+          <div class="setting-section-header">
+            <div class="flex items-center">
+              <img src="~/assets/images/icons/icon_tools_relay.svg" style="height: 48px" alt="" class="mr-3">
+              <div>
+                <div
+                  class="setting-title cursor-pointer"
+                >
+                  {{ $t('data.tools.relay') }}
+                </div>
+                <div class="setting-description">
+                  {{ $t('data.tools.relay_desc') }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <button
+                class="btn btn-icon !text-black-600"
+                @click="go({name: 'tools-relay'})"
+              >
+                <i class="fa fa-chevron-right" />
+              </button>
+            </div>
+          </div>
+        </div> -->
+        <!-- Relay end -->
+
+        <!-- Password health -->
         <div
           class="setting-section setting-section--hover"
           @click="currentPlan.alias === 'pm_free' ? upgrade() : go('tools-password-health')"
@@ -76,6 +110,9 @@
             </div>
           </div>
         </div>
+        <!-- Password health end -->
+
+        <!-- Breach scanner -->
         <div
           class="setting-section setting-section--hover"
           @click="currentPlan.alias === 'pm_free' ? upgrade() : go('tools-breach')"
@@ -107,6 +144,7 @@
             </div>
           </div>
         </div>
+        <!-- Breach scanner end -->
       </div>
     </div>
     <el-dialog
