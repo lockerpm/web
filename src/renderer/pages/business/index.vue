@@ -58,7 +58,7 @@
           <img class="h-8" src="~/assets/images/business/vingroup.png">
           <img class="h-8" src="~/assets/images/business/vincss.png">
           <img class="h-8" src="~/assets/images/business/cystack.png">
-          <img class="h-8" src="~/assets/images/business/whitehub.png">
+          <img class="h-8" src="~/assets/images/business/whitehub.svg">
         </div>
       </div>
     </section>
@@ -135,7 +135,7 @@
     <!-- FEATURES END -->
 
     <!-- CLIENTS SAY -->
-    <section
+    <!-- <section
       class="py-20 bg-[#F5F5F5] full-width"
     >
       <div class="max-w-6xl mx-auto px-6">
@@ -157,7 +157,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- CLIENTS SAY END-->
 
     <!-- PLANS -->
