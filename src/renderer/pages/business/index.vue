@@ -58,7 +58,7 @@
           <img class="h-8" src="~/assets/images/business/vingroup.png">
           <img class="h-8" src="~/assets/images/business/vincss.png">
           <img class="h-8" src="~/assets/images/business/cystack.png">
-          <img class="h-8" src="~/assets/images/business/whitehub.png">
+          <img class="h-8" src="~/assets/images/business/whitehub.svg">
         </div>
       </div>
     </section>
@@ -70,7 +70,7 @@
         <div class="flex flex-wrap mb-20 gap-y-8">
           <div class="md:w-1/2 w-full" :class="index%2===0?'md:pr-20 pr-0 order-1':'md:pl-20 pl-0 order-2'">
             <h3 class="landing-font-38 font-semibold mb-6">{{ item.title }}</h3>
-            <p class="landing-font-16 mb-8">{{ item.desc }}</p>
+            <p class="landing-font-16 mb-8" v-html="item.desc" />
             <div class="">
               <a class="landing-btn" @click.prevent="goto('register-section')">Start a free trial</a>
             </div>
@@ -135,7 +135,7 @@
     <!-- FEATURES END -->
 
     <!-- CLIENTS SAY -->
-    <section
+    <!-- <section
       class="py-20 bg-[#F5F5F5] full-width"
     >
       <div class="max-w-6xl mx-auto px-6">
@@ -157,7 +157,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- CLIENTS SAY END-->
 
     <!-- PLANS -->

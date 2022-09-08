@@ -190,7 +190,11 @@ Vue.mixin({
         this.$store.commit('UPDATE_SYNCING', true)
         this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/vault' : this.$store.state.currentPath }))
       } catch (e) {
-        this.notify(this.$t('errors.invalid_master_password'), 'error')
+        if (e.response && e.response.data && e.response.data.message && e.response.data.code !== '0004') {
+          this.notify(e.response.data.message, 'warning')
+        } else {
+          this.notify(this.$t('errors.invalid_master_password'), 'warning')
+        }
       }
     },
     async clearKeys () {

@@ -233,6 +233,7 @@ export default {
           const cipherEnc = await this.$cipherService.encrypt(cipher, this.orgKey)
           const data = new CipherRequest(cipherEnc)
           data.type = type_
+          cipher.type = type_
           return {
             id: cipher.id,
             ...data
@@ -310,6 +311,7 @@ export default {
           const cipherEnc = await this.$cipherService.encrypt(cipher, personalKey)
           const data = new CipherRequest(cipherEnc)
           data.type = type_
+          cipher.type = type_
           return {
             id: cipher.id,
             ...data

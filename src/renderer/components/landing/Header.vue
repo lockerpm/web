@@ -28,7 +28,7 @@
       <!-- Icon on mobile end -->
 
       <!-- Right actions -->
-      <div class="hidden sm:flex lg:ml-[345px] lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
+      <div class="hidden sm:flex ml-auto mr-6 lg:order-4 order-2">
         <template v-if="isLoggedIn">
           <nuxt-link :to="localeRoute({name: 'vault'})" class="landing-btn">
             My Vault
@@ -54,10 +54,10 @@
       <!-- Content -->
       <div
         id="nav-content"
-        class="order-3 w-full mr-1 flex-grow lg:flex lg:items-start lg:w-auto hidden mt-2 lg:mt-0 bg-white lg:bg-transparent p-4 lg:p-0 z-20"
+        class="order-3 w-full mr-1 ml-10 flex-grow lg:flex lg:items-start lg:w-auto hidden mt-2 lg:mt-0 bg-white lg:bg-transparent p-4 lg:p-0 z-20"
       >
         <!-- Nav items -->
-        <ul class="list-reset lg:flex justify-end flex-1 items-center gap-x-[45px]">
+        <ul class="list-reset lg:flex justify-start flex-1 items-center gap-x-[45px]">
           <li
             v-for="(item, index) in $t('landing_header.menu')"
             :key="index"
