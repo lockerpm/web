@@ -66,9 +66,9 @@ export default {
         // end sendMessage
 
         if (this.$route.query.return_url && isString(this.$route.query.return_url)) {
-          this.$router.replace(this.localePath({ path: this.$route.query.return_url }))
+          this.$router.replace(this.localePath({ path: this.$route.query.return_url })).catch(() => {})
         } else {
-          this.$router.replace(this.localePath({ name: 'vault' }))
+          this.$router.replace(this.localePath({ name: 'vault' })).catch(() => {})
         }
         this.$store.commit('UPDATE_LOADING', false)
       }, 300)
