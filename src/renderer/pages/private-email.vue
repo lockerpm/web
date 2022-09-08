@@ -97,20 +97,20 @@
       <img class="mx-auto mb-8" src="~/assets/images/landing/private-email/boundary.svg">
       <p class="text-black-600 landing-font-18 mb-16">{{ $t('private_email.cta.desc') }}</p>
       <div class="rounded-xl text-left max-w-[870px] mx-auto  border-[#DFDFDF] border bg-black-700 text-white mb-[72px]">
-        <div class="">
-          <pre>
+        <div>
+          <pre class="overflow-x-scroll pr-6">
             <code>
-            <span class="token tag">curl --location --request</span> <span class="token key">POST</span> <span class="token value">'https://api.locker.io/v3/relay/addresses'</span> \
-            <span class="token tag">--header</span> '<span class="token key">Authorization</span>: <span class="token value">Bearer  {your_api_key}</span>' \
-            --data-raw ''
+              <span class="token tag">curl --location --request</span> <span class="token key">POST</span> <span class="token value">'https://api.locker.io/v3/relay/addresses'</span> \
+              <span class="token tag">--header</span> '<span class="token key">Authorization</span>: <span class="token value">Bearer  {your_api_key}</span>' \
+              --data-raw ''
             </code>
           </pre>
         </div>
         <div class="bg-black-600 p-4">
           Example Response
         </div>
-        <div class="">
-          <pre>
+        <div>
+          <pre class="overflow-x-scroll pr-6">
             <code>
             {
               <span class="token key">"id"</span>: <span class="token value">88</span>,
