@@ -107,7 +107,7 @@
                   </p>
 
                   <p class="text-black-500">
-                    Created {{ $moment(item.created_time * 1000).format('MMM DD, YYYY') }}
+                    {{$t('common.created')}} {{ $moment(item.created_time * 1000).format('MMM DD, YYYY') }}
                   </p>
                 </div>
 
@@ -124,10 +124,10 @@
             <div class="setting-section-body">
               <div class="flex flex-row items-center">
                 <div class="flex flex-1 justify-center" style="border-right: 1px solid #E8E8E9">
-                  <p><strong>{{ item.num_forwarded }}</strong> <span class="text-black-500">forwarded</span></p>
+                  <p><strong>{{ item.num_forwarded }}</strong> <span class="text-black-500">{{ $t('data.tools.relay_address.forwarded') }}</span></p>
                 </div>
                 <div class="flex flex-1 justify-center" style="border-right: 1px solid #E8E8E9">
-                  <p><strong>{{ item.num_blocked }}</strong> <span class="text-black-500">blocked</span></p>
+                  <p><strong>{{ item.num_blocked }}</strong> <span class="text-black-500">{{ $t('data.tools.relay_address.blocked') }}</span></p>
                 </div>
                 <div class="px-4">
                   <div style="background-color: #E4F0E699; padding: 6px 16px; border-radius: 100px">
@@ -159,7 +159,7 @@
       :current-subdomain="subdomains[0]"
       :is-open="modals.manageSubdomain.isVisible"
       :on-close="() => modals.manageSubdomain.isVisible = false"
-      :on-update="getSubdomains"
+      :on-edit="onSubdomainEdited"
     />
     <!-- Manage subdomain end -->
 
@@ -302,12 +302,16 @@ export default {
             paging: 0
           }
         })
-        console.log(this.subdomains)
       } catch {
 
       } finally {
         this.loading = false
       }
+    },
+
+    onSubdomainEdited (oldSubdomain) {
+      this.getSubdomains()
+      this.addresses = this.addresses.filter(a => a.subdomain !== subdomain)
     },
 
     // Edit address
@@ -322,11 +326,11 @@ export default {
     getBlockingMode (item) {
       let text = ''
       if (!item.enabled) {
-        text = 'Block all emails'
+        text = this.$t('data.tools.relay_address.block_all')
       } else if (item.block_spam) {
-        text = 'Block spam'
+        text = this.$t('data.tools.relay_address.block_spam')
       } else {
-        text = 'Forward'
+        text = this.$t('data.tools.relay_address.forward')
       }
       return text
     }

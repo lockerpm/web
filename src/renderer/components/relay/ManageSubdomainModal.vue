@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Manage custom sub-domain"
+    :title="$t('data.tools.relay_subdomain.manage_subdomain')"
     :visible="isOpen"
     :before-close="onClose"
     width="600px"
@@ -11,13 +11,13 @@
     @open="onOpen"
   >
     <p class="mb-2">
-      Your sub-domain: <span class="text-primary text-lg">@{{ currentSubdomain.subdomain }}.maily.org</span>
+      {{ $t('data.tools.relay_subdomain.your_subdomain') }}: <span class="text-primary text-lg">@{{ currentSubdomain.subdomain }}.maily.org</span>
     </p>
 
     <div v-if="isEditing">
       <!-- Input -->
       <p class="font-medium mb-2">
-        New sub-domain:
+        {{ $t('data.tools.relay_subdomain.new_subdomain') }}:
       </p>
       <el-input
         v-model="newSubdomain"
@@ -35,7 +35,7 @@
 
       <!-- Desc -->
       <p class="mt-2">
-        Current sub-domain will be permanently deleted when you change to a new sub-domain. All email aliases created from your current sub-domain will also be then deleted when you perform this action.
+        {{ $t('data.tools.relay_subdomain.edit_desc') }}
       </p>
       <!-- Desc end -->
     </div>
@@ -45,7 +45,7 @@
       class="btn btn-outline-primary"
       @click.prevent="isEditing = true"
     >
-      Change sub-domain
+      {{ $t('data.tools.relay_subdomain.change_subdomain') }}
     </button>
 
     <!-- Footer -->
@@ -77,7 +77,7 @@ export default {
       type: Function,
       default: () => {}
     },
-    onUpdate: {
+    onEdit: {
       type: Function,
       default: () => {}
     },
@@ -102,14 +102,14 @@ export default {
       this.isEditing = false
     },
     async updateDomain () {
-      this.loading = true
+      this.isLoading = true
       try {
         await this.$axios.$put(`cystack_platform/relay/subdomains/${this.currentSubdomain.id}`, {
           subdomain: this.newSubdomain
         })
-        this.notify('Done', 'success')
+        this.notify(this.$t('common.done'), 'success')
         this.onClose()
-        this.onUpdate(this.newSubdomain)
+        this.onEdit(this.currentSubdomain.subdomain)
       } catch (e) {
         if (e.response.data) {
           let msg = e.response.data.message
@@ -119,7 +119,7 @@ export default {
           this.notify(msg, 'error')
         }
       } finally {
-        this.loading = false
+        this.isLoading = false
       }
     }
   }

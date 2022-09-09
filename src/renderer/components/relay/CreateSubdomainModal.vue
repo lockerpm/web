@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Create new subdomain"
+    :title="$t('data.tools.relay_subdomain.create_subdomain')"
     :visible="isOpen"
     :before-close="onClose"
     width="600px"
@@ -12,7 +12,7 @@
   >
     <!-- Input -->
     <p class="font-medium mb-2">
-      New subdomain:
+      {{ $t('data.tools.relay_subdomain.new_subdomain') }}:
     </p>
     <el-input
       v-model="subdomain"
@@ -29,10 +29,7 @@
     <!-- Input end -->
 
     <!-- Desc -->
-    <p class="mt-2">
-      Custom sub-domain allows you to create custom email domain. <br>
-      <i>Example: viktor@viktor-agency.maily.org</i>
-    </p>
+    <p class="mt-2" v-html="$t('data.tools.relay_subdomain.create_desc')" />
     <!-- Desc end -->
 
     <!-- Footer -->
@@ -72,12 +69,12 @@ export default {
   },
   methods: {
     async createDomain () {
-      this.loading = true
+      this.isLoading = true
       try {
         await this.$axios.$post('cystack_platform/relay/subdomains', {
           subdomain: this.subdomain
         })
-        this.notify('Done', 'success')
+        this.notify(this.$t('common.done'), 'success')
         this.onClose()
         this.onCreate()
       } catch (e) {
@@ -89,7 +86,7 @@ export default {
           this.notify(msg, 'error')
         }
       } finally {
-        this.loading = false
+        this.isLoading = false
       }
     }
   }

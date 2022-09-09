@@ -2,7 +2,7 @@
   <div>
     <!-- Main modal -->
     <el-dialog
-      title="Edit private email"
+      :title="$t('data.tools.relay_address.edit_title')"
       :visible="isOpen"
       :before-close="onClose"
       width="600px"
@@ -35,23 +35,23 @@
       <p class="font-medium mb-2 mt-3">
         Configuration:
       </p>
-      <el-radio-group v-model="selectedOption" @change="onConfigChange" class="w-full">
+      <el-radio-group v-model="selectedOption" class="w-full" @change="onConfigChange">
         <el-radio label="forward" class="w-full py-2" style="display: flex">
           <span class="block">
-            <span class="font-medium block text-black mb-1">Forward</span>
-            <span class="text-black-500">Forward all emails to root email</span>
+            <span class="font-medium block text-black mb-1">{{ $t('data.tools.relay_address.forward') }}</span>
+            <span class="text-black-500">{{ $t('data.tools.relay_address.forward_desc') }}</span>
           </span>
         </el-radio>
         <el-radio label="block-spam" class="w-full py-2" style="display: flex">
           <span class="block">
-            <span class="font-medium block text-black mb-1">Block spam</span>
-            <span class="text-black-500">Block promotion and spam emails. Only forward important emails</span>
+            <span class="font-medium block text-black mb-1">{{ $t('data.tools.relay_address.block_spam') }}</span>
+            <span class="text-black-500">{{ $t('data.tools.relay_address.block_spam_desc') }}</span>
           </span>
         </el-radio>
         <el-radio label="block-all" class="w-full py-2" style="display: flex">
           <span class="block">
-            <span class="font-medium block text-black mb-1">Block all emails</span>
-            <span class="text-black-500">Block all emails including promotion, spam</span>
+            <span class="font-medium block text-black mb-1">{{ $t('data.tools.relay_address.block_all') }}</span>
+            <span class="text-black-500">{{ $t('data.tools.relay_address.block_all_desc') }}</span>
           </span>
         </el-radio>
       </el-radio-group>
@@ -240,11 +240,11 @@ export default {
     },
 
     async updateAddress () {
-      this.loading = true
+      this.isLoading = true
       this.dialog.confirmEdit.isOpen = false
       try {
         await this.$axios.$put(`cystack_platform/relay/addresses/${this.currentAddress.id}`, this.model)
-        this.notify('Done', 'success')
+        this.notify(this.$t('common.done'), 'success')
         this.onClose()
         this.onEdit()
       } catch (e) {
@@ -256,13 +256,13 @@ export default {
           this.notify(msg, 'error')
         }
       } finally {
-        this.loading = false
+        this.isLoading = false
       }
     },
 
     async deleteAddress () {
       this.dialog.confirmDelete.isOpen = false
-      this.loading = true
+      this.isLoading = true
       try {
         await this.$axios.$delete(`cystack_platform/relay/addresses/${this.currentAddress.id}`)
         this.notify(this.$t('data.tools.relay_alias_deleted'), 'success')
@@ -271,7 +271,7 @@ export default {
       } catch {
 
       } finally {
-        this.loading = false
+        this.isLoading = false
       }
     }
   }
