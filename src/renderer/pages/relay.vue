@@ -10,9 +10,9 @@
             Tools
           </el-breadcrumb-item> -->
           <el-breadcrumb-item
-            :to="localeRoute({name: 'tools-relay'})"
+            :to="localeRoute({name: 'relay'})"
           >
-            {{ $t('data.tools.relay') }}
+            {{ `${$t('data.tools.relay')}${isPremium ? ' Premium' : ''}` }}
           </el-breadcrumb-item>
         </el-breadcrumb>
       </div>
@@ -36,10 +36,10 @@
                 {{ $t('data.tools.relay_desc_1') }}
               </li>
               <li>
-                {{ $t('data.tools.relay_desc_2') }}
+                {{ isPremium ? $t('data.tools.relay_desc_2_premium') : $t('data.tools.relay_desc_2') }}
               </li>
               <li>
-                {{ $t('data.tools.relay_desc_3') }}
+                {{ isPremium ? $t('data.tools.relay_desc_3_premium') : $t('data.tools.relay_desc_3') }}
               </li>
             </ul>
           </div>
@@ -50,15 +50,33 @@
       <!-- Count + add -->
       <div class="flex justify-between items-center mb-5">
         <p>
-          {{ $t('data.tools.relay_your_alias_addresses') }} ({{ addresses.length }}/{{ limit }})
+          {{ $t('data.tools.relay_your_alias_addresses') }} ({{ `${addresses.length}${!isPremium ? '/' + limit : ''})` }}
         </p>
-        <button
-          :disabled="loading || addresses.length >= limit"
-          class="btn btn-primary"
-          @click="addAddress"
-        >
-          {{ $t('data.tools.relay_new_alias') }}
-        </button>
+        <div class="flex items-center">
+          <!-- subdomain -->
+          <template v-if="isPremium">
+            <el-switch :value="useSubdomain" @change="toggleUseSubdomain" />
+            <p class="ml-2">
+              {{ $t('data.tools.relay_use_subdomain') }}
+            </p>
+            <button
+              :disabled="loading"
+              class="btn btn-outline-primary mx-3"
+              @click="openManageSubdomain"
+            >
+              {{ $t('data.tools.relay_manage_subdomain') }}
+            </button>
+          </template>
+          <!-- subdomain end -->
+
+          <button
+            :disabled="loading || (!isPremium && addresses.length >= limit)"
+            class="btn btn-primary"
+            @click="addAddress"
+          >
+            {{ $t('data.tools.relay_new_alias') }}
+          </button>
+        </div>
       </div>
       <!-- Count + add end -->
 
@@ -229,12 +247,36 @@
     </el-dialog>
     <!-- Confirm delete alias end -->
 
+    <!-- Create subdomain -->
+    <CreateSubdomainModal
+      :is-open="modals.createSubdomain.isVisible"
+      :on-close="() => modals.createSubdomain.isVisible = false"
+      :on-create="getSubdomains"
+    />
+    <!-- Create subdomain end -->
+
+    <!-- Manage subdomain -->
+    <ManageSubdomainModal
+      :current-subdomain="subdomains[0]"
+      :is-open="modals.manageSubdomain.isVisible"
+      :on-close="() => modals.manageSubdomain.isVisible = false"
+      :on-update="getSubdomains"
+    />
+    <!-- Manage subdomain end -->
+
     <!--  DIALOGS END  -->
   </div>
 </template>
 
 <script>
+import CreateSubdomainModal from '../components/relay/CreateSubdomainModal'
+import ManageSubdomainModal from '../components/relay/ManageSubdomainModal'
+
 export default {
+  components: {
+    CreateSubdomainModal,
+    ManageSubdomainModal
+  },
   data () {
     return {
       limit: 5,
@@ -242,6 +284,8 @@ export default {
       isEditing: false,
       address: '',
       addresses: [],
+      subdomains: [],
+      useSubdomain: false,
       dialog: {
         confirmEdit: {
           isOpen: false,
@@ -251,13 +295,29 @@ export default {
           isOpen: false,
           data: {}
         }
+      },
+      modals: {
+        createSubdomain: {
+          isVisible: false
+        },
+        manageSubdomain: {
+          isVisible: false
+        }
       }
+    }
+  },
+  computed: {
+    isPremium () {
+      return this.currentUserPw.pwd_user_type !== 'free'
     }
   },
   mounted () {
     this.getAddresses()
+    this.getUseSubdomain()
+    this.getSubdomains()
   },
   methods: {
+    // List addresses
     async getAddresses () {
       this.loading = true
       try {
@@ -272,6 +332,8 @@ export default {
         this.loading = false
       }
     },
+
+    // Create address
     async addAddress () {
       this.loading = true
       try {
@@ -286,6 +348,9 @@ export default {
         this.loading = false
       }
     },
+
+    // Edit address
+
     startEditing (address) {
       this.isEditing = true
       this.address = address
@@ -325,6 +390,9 @@ export default {
         this.loading = false
       }
     },
+
+    // Delete address
+
     selectToDelete (item) {
       this.dialog.confirmDelete.data = item
       this.dialog.confirmDelete.isOpen = true
@@ -336,6 +404,63 @@ export default {
         await this.$axios.$delete(`cystack_platform/relay/addresses/${id}`)
         this.notify(this.$t('data.tools.relay_alias_deleted'), 'success')
         this.addresses = this.addresses.filter(i => i.id !== id)
+      } catch {
+
+      } finally {
+        this.loading = false
+      }
+    },
+
+    // Use subdomain
+
+    async getUseSubdomain () {
+      this.loading = true
+      try {
+        const res = await this.$axios.$get('cystack_platform/relay/subdomains/use_subdomain')
+        this.useSubdomain = res.use_relay_subdomain
+      } catch {
+
+      } finally {
+        this.loading = false
+      }
+    },
+    async toggleUseSubdomain (isEnabled) {
+      this.loading = true
+      try {
+        await this.$axios.$put('cystack_platform/relay/subdomains/use_subdomain', {
+          use_relay_subdomain: isEnabled
+        })
+        this.notify('Done', 'success')
+        this.useSubdomain = isEnabled
+        if (this.subdomains.length === 0) {
+          this.modals.createSubdomain.isVisible = true
+        }
+      } catch {
+
+      } finally {
+        this.loading = false
+      }
+    },
+
+    // Manage subdomain
+
+    openManageSubdomain () {
+      if (this.subdomains.length === 0) {
+        this.modals.createSubdomain.isVisible = true
+      } else {
+        this.modals.manageSubdomain.isVisible = true
+      }
+    },
+
+    async getSubdomains () {
+      this.loading = true
+      try {
+        this.subdomains = await this.$axios.$get('cystack_platform/relay/subdomains', {
+          params: {
+            paging: 0
+          }
+        })
+        console.log(this.subdomains)
       } catch {
 
       } finally {
