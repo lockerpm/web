@@ -32,29 +32,36 @@
       <!-- Input end -->
 
       <!-- Options -->
-      <p class="font-medium mb-2 mt-3">
-        Configuration:
-      </p>
-      <el-radio-group v-model="selectedOption" class="w-full" @change="onConfigChange">
-        <el-radio label="forward" class="w-full py-2" style="display: flex">
-          <span class="block">
-            <span class="font-medium block text-black mb-1">{{ $t('data.tools.relay_address.forward') }}</span>
-            <span class="text-black-500">{{ $t('data.tools.relay_address.forward_desc') }}</span>
-          </span>
-        </el-radio>
-        <el-radio label="block-spam" class="w-full py-2" style="display: flex">
-          <span class="block">
-            <span class="font-medium block text-black mb-1">{{ $t('data.tools.relay_address.block_spam') }}</span>
-            <span class="text-black-500">{{ $t('data.tools.relay_address.block_spam_desc') }}</span>
-          </span>
-        </el-radio>
-        <el-radio label="block-all" class="w-full py-2" style="display: flex">
-          <span class="block">
-            <span class="font-medium block text-black mb-1">{{ $t('data.tools.relay_address.block_all') }}</span>
-            <span class="text-black-500">{{ $t('data.tools.relay_address.block_all_desc') }}</span>
-          </span>
-        </el-radio>
-      </el-radio-group>
+      <div>
+        <p class="font-medium mb-2 mt-3">
+          Configuration:
+        </p>
+        <el-radio-group
+          v-model="selectedOption"
+          :disabled="!isPremium"
+          class="w-full"
+          @change="onConfigChange"
+        >
+          <el-radio label="forward" class="w-full py-2" style="display: flex">
+            <span class="block">
+              <span class="font-medium block text-black mb-1">{{ $t('data.tools.relay_address.forward') }}</span>
+              <span class="text-black-500">{{ $t('data.tools.relay_address.forward_desc') }}</span>
+            </span>
+          </el-radio>
+          <el-radio label="block-spam" class="w-full py-2" style="display: flex">
+            <span class="block">
+              <span class="font-medium block text-black mb-1">{{ $t('data.tools.relay_address.block_spam') }}</span>
+              <span class="text-black-500">{{ $t('data.tools.relay_address.block_spam_desc') }}</span>
+            </span>
+          </el-radio>
+          <el-radio label="block-all" class="w-full py-2" style="display: flex">
+            <span class="block">
+              <span class="font-medium block text-black mb-1">{{ $t('data.tools.relay_address.block_all') }}</span>
+              <span class="text-black-500">{{ $t('data.tools.relay_address.block_all_desc') }}</span>
+            </span>
+          </el-radio>
+        </el-radio-group>
+      </div>
       <!-- Options end -->
 
       <!-- Footer -->
@@ -198,6 +205,11 @@ export default {
           isOpen: false
         }
       }
+    }
+  },
+  computed: {
+    isPremium () {
+      return this.currentUserPw.pwd_user_type !== 'personal'
     }
   },
   methods: {

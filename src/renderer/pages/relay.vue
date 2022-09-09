@@ -212,7 +212,7 @@ export default {
   },
   computed: {
     isPremium () {
-      return this.currentUserPw.pwd_user_type !== 'free'
+      return this.currentUserPw.pwd_user_type !== 'personal'
     }
   },
   mounted () {
