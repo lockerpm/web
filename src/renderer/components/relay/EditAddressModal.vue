@@ -23,28 +23,50 @@
         show-word-limit
         class="text-primary"
       >
-        <template slot="append">{{ `@${currentAddress.subdomain ? currentAddress.subdomain + '.' : ''}${currentAddress.domain}` }}</template>
+        <template slot="append">
+          <span class="text-primary">
+            {{ `@${currentAddress.subdomain ? currentAddress.subdomain + '.' : ''}${currentAddress.domain}` }}
+          </span>
+        </template>
       </el-input>
       <!-- Input end -->
 
       <!-- Options -->
-      <p class="font-medium mb-2">
+      <p class="font-medium mb-2 mt-3">
         Configuration:
       </p>
-      <el-radio-group v-model="selectedOption" @change="onConfigChange">
-        <el-radio label="forward">Forward</el-radio>
-        <br>
-        <el-radio label="block-spam">Block spam</el-radio>
-        <br>
-        <el-radio label="block-all">Block all emails</el-radio>
+      <el-radio-group v-model="selectedOption" @change="onConfigChange" class="w-full">
+        <el-radio label="forward" class="w-full py-2" style="display: flex">
+          <span class="block">
+            <span class="font-medium block text-black mb-1">Forward</span>
+            <span class="text-black-500">Forward all emails to root email</span>
+          </span>
+        </el-radio>
+        <el-radio label="block-spam" class="w-full py-2" style="display: flex">
+          <span class="block">
+            <span class="font-medium block text-black mb-1">Block spam</span>
+            <span class="text-black-500">Block promotion and spam emails. Only forward important emails</span>
+          </span>
+        </el-radio>
+        <el-radio label="block-all" class="w-full py-2" style="display: flex">
+          <span class="block">
+            <span class="font-medium block text-black mb-1">Block all emails</span>
+            <span class="text-black-500">Block all emails including promotion, spam</span>
+          </span>
+        </el-radio>
       </el-radio-group>
       <!-- Options end -->
 
       <!-- Footer -->
       <span slot="footer">
-        <button class="btn btn-danger float-left" @click.prevent="dialog.confirmDelete.isOpen = true">
+        <hr style="border-top: 1px solid #E8E8E9" class="mb-4">
+        <a
+          class="text-danger font-medium float-left hover:text-danger"
+          @click.prevent="dialog.confirmDelete.isOpen = true"
+        >
+          <i class="fa fa-trash-alt" /> &nbsp;
           {{ $t('common.delete') }}
-        </button>
+        </a>
         <button class="btn btn-outline-primary mr-2" @click.prevent="onClose">
           {{ $t('common.cancel') }}
         </button>

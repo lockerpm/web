@@ -91,9 +91,9 @@
           <div class="setting-section">
             <!-- Top -->
             <div class="setting-section-header">
-              <div class="flex flex-row justify-between items-center w-full">
+              <div class="flex flex-row justify-between w-full">
                 <div>
-                  <p class="font-medium" style="line-height: 40px">
+                  <p class="font-medium">
                     {{ item.full_address }}
                     <span>
                       <button
@@ -105,10 +105,14 @@
                       </button>
                     </span>
                   </p>
+
+                  <p class="text-black-500">
+                    Created {{ $moment(item.created_time * 1000).format('MMM DD, YYYY') }}
+                  </p>
                 </div>
 
                 <a
-                  class="text-black hover:text-black"
+                  class="text-black font-medium hover:text-black mt-0.5"
                   @click="startEditing(item, index)"
                 >
                   <i class="far fa-edit" /> {{ $t('common.edit') }}
@@ -118,15 +122,19 @@
             <!-- Top end -->
 
             <div class="setting-section-body">
-              <hr class="border-black-100">
-              <div class="flex flex-row items-center justify-between mt-2">
-                <div>
-                  <p class="text-xs">
-                    {{ $t('common.created_date') }}
-                  </p>
-                  <p class="font-medium">
-                    {{ $moment(item.created_time * 1000).format('MMM DD, YYYY') }}
-                  </p>
+              <div class="flex flex-row items-center">
+                <div class="flex flex-1 justify-center" style="border-right: 1px solid #E8E8E9">
+                  <p><strong>{{ item.num_forwarded }}</strong> <span class="text-black-500">forwarded</span></p>
+                </div>
+                <div class="flex flex-1 justify-center" style="border-right: 1px solid #E8E8E9">
+                  <p><strong>{{ item.num_blocked }}</strong> <span class="text-black-500">blocked</span></p>
+                </div>
+                <div class="px-4">
+                  <div style="background-color: #E4F0E699; padding: 6px 16px; border-radius: 100px">
+                    <p class="text-primary">
+                      {{ getBlockingMode(item) }}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -309,6 +317,18 @@ export default {
         this.selectedAddress.addressEditable = true
       }
       this.modals.editAddress.isVisible = true
+    },
+
+    getBlockingMode (item) {
+      let text = ''
+      if (!item.enabled) {
+        text = 'Block all emails'
+      } else if (item.block_spam) {
+        text = 'Block spam'
+      } else {
+        text = 'Forward'
+      }
+      return text
     }
   }
 }

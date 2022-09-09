@@ -8,35 +8,45 @@
     top="5vh"
     custom-class="locker-dialog"
     :close-on-click-modal="false"
-    @open="newSubdomain = currentSubdomain.subdomain"
+    @open="onOpen"
   >
     <p class="mb-2">
       Your sub-domain: <span class="text-primary text-lg">@{{ currentSubdomain.subdomain }}.maily.org</span>
     </p>
 
-    <!-- Input -->
-    <p class="font-medium mb-2">
-      New sub-domain:
-    </p>
-    <el-input
-      v-model="newSubdomain"
-      autofocus
-      type="text"
-      maxlength="64"
-      minlength="3"
-      show-word-limit
-      class="text-primary"
-    >
-      <template slot="prepend">@</template>
-      <template slot="append">.maily.org</template>
-    </el-input>
-    <!-- Input end -->
+    <div v-if="isEditing">
+      <!-- Input -->
+      <p class="font-medium mb-2">
+        New sub-domain:
+      </p>
+      <el-input
+        v-model="newSubdomain"
+        autofocus
+        type="text"
+        maxlength="64"
+        minlength="3"
+        show-word-limit
+        class="text-primary"
+      >
+        <template slot="prepend"><span class="text-primary">@</span></template>
+        <template slot="append"><span class="text-primary">.maily.org</span></template>
+      </el-input>
+      <!-- Input end -->
 
-    <!-- Desc -->
-    <p class="mt-2">
-      Current sub-domain will be permanently deleted when you change to a new sub-domain. All email aliases created from your current sub-domain will also be then deleted when you perform this action.
-    </p>
-    <!-- Desc end -->
+      <!-- Desc -->
+      <p class="mt-2">
+        Current sub-domain will be permanently deleted when you change to a new sub-domain. All email aliases created from your current sub-domain will also be then deleted when you perform this action.
+      </p>
+      <!-- Desc end -->
+    </div>
+
+    <button
+      v-else
+      class="btn btn-outline-primary"
+      @click.prevent="isEditing = true"
+    >
+      Change sub-domain
+    </button>
 
     <!-- Footer -->
     <span slot="footer">
@@ -44,11 +54,12 @@
         {{ $t('common.cancel') }}
       </button>
       <button
+        v-if="isEditing"
         :disabled="isLoading || !newSubdomain || newSubdomain === currentSubdomain.subdomain"
         class="btn btn-primary"
         @click.prevent="updateDomain"
       >
-        {{ $t('common.next') }}
+        {{ $t('common.save') }}
       </button>
     </span>
     <!-- Footer end -->
@@ -81,10 +92,15 @@ export default {
   data () {
     return {
       isLoading: false,
+      isEditing: false,
       newSubdomain: ''
     }
   },
   methods: {
+    onOpen () {
+      this.newSubdomain = this.currentSubdomain.subdomain
+      this.isEditing = false
+    },
     async updateDomain () {
       this.loading = true
       try {
