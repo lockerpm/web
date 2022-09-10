@@ -7,17 +7,10 @@
       <div class="max-w-7xl mx-auto px-6">
         <div class="grid md:grid-cols-2 grid-cols-1 items-center gap-x-[10px] md:gap-y-0 gap-y-[40px]">
           <div>
-            <div class="text-[#161922] font-bold landing-font-48 mb-[14px]">
+            <div class="text-[#161922] font-bold landing-font-48 mb-3">
               {{ $t('promotion.welcome.title') }}
             </div>
-            <div class="relative">
-              <div class="full-width h-auto">
-                <img class="lg:h-[56px] h-[100px] 2xl:w-[70%] xl:w-[68%] lg:w-3/4 md:w-4/5 w-full" src="~/assets/images/landing/promotion/img_limited.png">
-              </div>
-              <div class="landing-font-20 text-[#FFFFFF] font-bold absolute top-[5px]">
-                {{ $t('promotion.welcome.text_limit') }}
-              </div>
-            </div>
+            <div v-html="$t('promotion.welcome.desc')" />
             <div class="mt-6">
               <div v-for="(item, index) in $t('promotion.welcome.list_subtitle')" :key="index" class="flex items-center">
                 <img src="~/assets/images/landing/promotion/icon-success.png" style="width:12px; height: 12px">
@@ -27,12 +20,12 @@
               </div>
             </div>
             <div class="mt-9">
-              <div
+              <button
                 class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn"
-                @click="choosePlan('pm_family')"
+                @click="claimOffer"
               >
-                {{ $t('promotion.btn_signup.text') }}
-              </div>
+                Buy now
+              </button>
             </div>
           </div>
           <div class="z-10">
@@ -41,126 +34,110 @@
         </div>
       </div>
     </div>
-    <div class="introduce_locker">
-      <div class="pt-[120px] pb-[100px]">
-        <div class="landing-font-48 font-bold text-[#000000] mb-6 text-center">
-          {{ $t('promotion.introduce_locker.fail.title') }}
-        </div>
-        <div class="text-center">
-          <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
-        </div>
-        <div class="mt-16 grid md:grid-cols-2 grid-cols-1 items-center md:gap-x-[118px] gap-x-0 md:gap-y-0 gap-y-[60px]">
-          <div>
-            <div v-for="(item, index) in $t('promotion.introduce_locker.fail.content_fail')" :key="index" class="flex flex-wrap mb-5">
-              <div>
-                <img src="~/assets/images/landing/promotion/icon-fail.svg" class="mt-[10px] w-[24px] h-[24px]">
-              </div>
-              <div class="landing-font-20 text-[#000000] font-normal ml-[14px] w-4/5">
-                {{ item }}
-              </div>
-            </div>
-          </div>
-          <div>
-            <img src="~/assets/images/landing/promotion/img_fail.png">
-          </div>
-        </div>
-        <div class="text-center mt-[100px]">
-          <div
-            class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn"
-            @click="choosePlan('pm_family')"
-          >
-            {{ $t('promotion.btn_signup.text') }}
-          </div>
-        </div>
+    <div class="mt-[135px] text-center">
+      <div class="landing-font-48 font-bold mb-6">
+        {{ $t('promotion.simplified.title') }}
       </div>
-      <div class="pt-[120px] pb-[240px]">
-        <div class="font-bold landing-font-48 text-[#000000] mb-6 text-center">
-          {{ $t('promotion.introduce_locker.goods.title') }}
-        </div>
-        <div class="text-center">
-          <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
-        </div>
-        <div class="mt-16 grid md:grid-cols-2 grid-cols-1 items-center md:gap-x-[118px] gap-x-0 md:gap-y-0 gap-y-[60px]">
-          <div>
-            <img src="~/assets/images/landing/promotion/img_goods.png">
+      <img class="mx-auto" src="~/assets/images/landing/promotion/line-check.svg">
+      <div class="mt-[70px]">
+        <div class="grid md:grid-cols-3 grid-cols-1 gap-x-[120px] gap-y-6">
+          <div v-for="(item, index) in $t('promotion.simplified.items').slice(0,3)" :key="index">
+            <img class="mx-auto mb-[6px]" :src="require(`~/assets/images/landing/promotion/icon-simplified-${index+1}.svg`)"></img>
+            <div class="landing-font-20 font-semibold mb-2">{{ item.title }}</div>
+            <div>{{ item.desc }}</div>
           </div>
-          <div>
-            <div v-for="(item, index) in $t('promotion.introduce_locker.goods.content_goods')" :key="index" class="flex mb-5 flex-wrap">
-              <div>
-                <img src="~/assets/images/landing/promotion/icon-success.png" class="mt-[10px] w-[24px] h-[24px]">
-              </div>
-              <div class="landing-font-20 text-[#000000] font-normal ml-[14px] w-4/5">
-                {{ item }}
-              </div>
-            </div>
+        </div>
+        <div class="grid md:grid-cols-2 grid-cols-1 gap-y-6 mt-14">
+          <div v-for="(item, index) in $t('promotion.simplified.items').slice(3)" :key="index" class="max-w-[340px] mx-auto">
+            <img class="mx-auto mb-[6px]" :src="require(`~/assets/images/landing/promotion/icon-simplified-${index+4}.svg`)"></img>
+            <div class="landing-font-20 font-semibold mb-2">{{ item.title }}</div>
+            <div>{{ item.desc }}</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="relative mb-[120px]">
-      <div class="full-width h-auto bg-[#F5F6F7] py-[120px]">
-        <div class="max-w-6xl mx-auto px-6">
-          <div class="landing-font-48 font-bold text-center text-[#000000] mb-[48px]">
-            {{ $t('promotion.locker_super.title') }}
-          </div>
-          <div class="grid md:grid-cols-2 grid-cols-1 md:gap-x-[80px] gap-x-0 md:gap-y-[24px] gap-y-[40px]">
-            <div v-for="(item, index) in $t('promotion.locker_super.content')" :key="index" class="flex flex-wrap">
+    <div class="mt-[160px]">
+      <div class="font-bold landing-font-48 text-[#000000] mb-6 text-center">
+        {{ $t('promotion.safest.title') }}
+      </div>
+      <img class="mx-auto" src="~/assets/images/landing/promotion/line-check.svg">
+      <div class="mt-16 grid md:grid-cols-2 grid-cols-1 items-center md:gap-x-[118px] gap-x-0 md:gap-y-0 gap-y-[60px]">
+        <div>
+          <img src="~/assets/images/landing/promotion/img_goods.png">
+        </div>
+        <div>
+          <div v-for="(item, index) in $t('promotion.safest.items')" :key="index" class="mb-7">
+            <div class="flex mb-3 items-center">
               <div>
-                <img src="~/assets/images/landing/promotion/icon-success.png" class="w-[24px] h-[24px] mt-[5px]">
+                <img src="~/assets/images/landing/promotion/icon-success.png" class="w-[24px] h-[24px]">
               </div>
-              <div class="ml-[14px] text-[#000000] landing-font-20 font-normal w-4/5">
-                {{ item }}
+              <div class="landing-font-20 text-[#000000] font-normal ml-[14px] w-4/5">
+                {{ item.title }}
               </div>
+            </div>
+            <div>
+              {{ item.desc }}
             </div>
           </div>
         </div>
       </div>
       <div class="text-center">
+        <button class="landing-btn mt-[60px] mx-auto" @click="claimOffer">
+          Buy now
+        </button>
+      </div>
+    </div>
+    <div class="mt-[160px]">
+      <div class="font-bold landing-font-28 text-[#000000] mb-6 text-center">
+        {{ $t('promotion.leading.title') }}
+      </div>
+      <img class="mx-auto" src="~/assets/images/landing/promotion/line-check.svg">
+      <div class="mt-14 grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8">
         <div
-          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn text-center absolute bottom-[-30px] md:ml-[-160px] ml-[-125px]"
-          @click="choosePlan('pm_family')"
+          v-for="(item, index) in $t('promotion.leading.items')"
+          :key="index"
+          class="landing-transition px-[30px] pt-11 bg-white rounded-lg shadow-xl"
         >
-          {{ $t('promotion.btn_signup.text') }}
-        </div>
-      </div>
-    </div>
-    <div class="py-[120px] support-devices">
-      <div class="landing-font-48 font-bold text-[#000000] mb-[71px] text-center">
-        {{ $t('promotion.support_devices.title') }}
-      </div>
-      <div class="text-center">
-        <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
-      </div>
-      <div class="grid md:grid-cols-3 grid-cols-2 lg:gap-x-[200px] md:gap-x-[120px] gap-x-[80px] mt-5 md:gap-y-[72px] gap-y-[40px]">
-        <div v-for="(item, index) in $t('promotion.support_devices.list_devices')" :key="index" class="flex items-center">
-          <div>
-            <img :src="require(`~/assets/images/landing/promotion/${item.img}`)" class="h-[80px] w-[80px]">
-          </div>
-          <div class="text-[#000000] landing-font-20 font-semibold ml-5">
-            {{ item.device }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="py-[120px]">
-      <div class="landing-font-48 font-bold text-[#000000] mb-6 text-center">
-        {{ $t('promotion.goods_security.title') }}
-      </div>
-      <div class="text-center mb-[56px]">
-        <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
-      </div>
-      <div class="grid md:grid-cols-3 grid-cols-1 lg:gap-x-[100px] md:gap-x-[50px] gap-x-0 md:gap-y-0 gap-y-[50px]">
-        <div v-for="(item, index) in $t('promotion.goods_security.items')" :key="index">
-          <div>
-            <img :src="require(`~/assets/images/landing/promotion/${item.icon}`)">
-          </div>
-          <div class="landing-font-20 text-[#000000] mt-[28px]">
+          <img
+            :src="require(`~/assets/images/landing/promotion/icon-leading-${index+1}.svg`)"
+            :alt="item.title"
+            class="h-[40px] mb-[16px]"
+          >
+          <h3 class="mb-[12px] font-bold text-black landing-font-18">
+            {{ item.title }}
+          </h3>
+          <p class="lg:max-w-[265px] mb-[40px] landing-font-14">
             {{ item.desc }}
-          </div>
+          </p>
         </div>
       </div>
     </div>
-    <div class="customer-said py-[120px]">
+    <section class="full-width py-[100px] bg-[#F8F9FA] mt-[100px]">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="grid md:grid-cols-2 grid-cols-1 md:gap-x-[116px] md:gap-y-0 gap-y-[40px] items-center">
+          <div>
+            <div class="mb-6 font-bold landing-font-48 text-black">
+              {{ $t('promotion.locker_team.title') }}
+            </div>
+            <div class="text-black mb-5">
+              {{ $t('promotion.locker_team.desc1') }}
+            </div>
+            <div class="text-black">
+              {{ $t('promotion.locker_team.desc2') }}
+            </div>
+          </div>
+          <div>
+            <div class="grid grid-cols-2 gap-x-12 gap-y-6">
+              <div v-for="(item, index) in $t('promotion.locker_team.items')" :key="index">
+                <div class="landing-font-32 font-bold text-[#3DB249] mb-3">{{ item.title }}</div>
+                <div class="landing-font-16 font-bold text-black">{{ item.desc }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="customer-said pt-[100px]">
       <div class="text-[#161922] landing-font-45 font-bold">
         {{ $t('promotion.customer_said.title') }}
       </div>
@@ -182,57 +159,170 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <!-- <div class="locker-absolutely py-[120px]">
-      <div class="text-[#000000] landing-font-48 font-bold">
-        {{ $t('promotion.locker_absolutely.title') }}
+    <div class="mt-[100px]">
+      <div class="font-bold landing-font-48 text-[#000000] mb-6 text-center">
+        {{ $t('promotion.locker_offers.title') }}
       </div>
-      <div class="text-center mt-6 mb-[54px]">
-        <img src="~/assets/images/landing/promotion/img_line.png" class="m-auto w-[290px]">
-      </div>
-      <div class="grid md:grid-cols-2 grid-cols-1 gap-x-[29px] items-center">
-        <div>
-          <div v-for="(item, index) in $t('promotion.locker_absolutely.items')" :key="index" class="flex mb-6 flex-wrap">
-            <div>
-              <img src="~/assets/images/landing/promotion/icon-success.png" class="mt-[5px] w-[24px] h-[24px]">
+      <img class="mx-auto" src="~/assets/images/landing/promotion/line-check.svg">
+      <div class="mt-12 mx-auto max-w-3xl rounded-xl shadow-xl p-8">
+        <div class="grid md:grid-cols-10 gap-x-10">
+          <div class="col-span-6">
+            <div
+              v-for="item in $t('promotion.locker_offers.content').filter((value, index) => index %2 === 0)"
+              :key="item"
+              class="flex gap-[14px] mb-5"
+            >
+              <img src="~/assets/images/landing/promotion/icon-success.png" class="h-6 w-6">
+              <p>{{ item }}</p>
             </div>
-            <div class="ml-[14px] text-[#000000] landing-font-20 font-normal w-4/5">
-              {{ item }}
+          </div>
+          <div class="col-span-4">
+            <div
+              v-for="item in $t('promotion.locker_offers.content').filter((value, index) => index %2 !== 0)"
+              :key="item"
+              class="flex gap-[14px] mb-5"
+            >
+              <img src="~/assets/images/landing/promotion/icon-success.png" class="h-6 w-6">
+              <p>{{ item }}</p>
             </div>
           </div>
         </div>
-        <div>
-          <img src="~/assets/images/landing/promotion/img_absolutely.png">
+        <div class="text-center">
+          <button class="landing-btn mt-[60px] mx-auto" @click="claimOffer">
+            Buy now
+          </button>
         </div>
       </div>
-    </div> -->
-    <!--    <div class="cta py-[120px]">-->
-    <!--      <div class="bg-[#F5F6F7] md:px-[166px] px-[20px] py-16">-->
-    <!--        <div class="text-[#161922] landing-font-38 font-bold text-center">-->
-    <!--          {{ $t('promotion.cta.title') }}-->
-    <!--        </div>-->
-    <!--        <div class="mt-8 text-center">-->
-    <!--          <nuxt-link-->
-    <!--            :to="localePath($t('promotion.btn_signup.link'))"-->
-    <!--            class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn-signup"-->
-    <!--          >-->
-    <!--            {{ $t('promotion.btn_signup.text') }}-->
-    <!--          </nuxt-link>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <div class="cta py-[120px]">
+    </div>
+    <div class="py-16 mt-20 rounded-xl shadow-2xl text-center">
+      <div class="landing-font-48 font-bold mb-3">
+        {{ $t('promotion.special_offer.title') }}
+      </div>
+      <p class="landing-font-20">
+        Get 1-year Locker Premium at only <span class="text-[#D8D8D8] line-through">$15.48</span> <span class="text-primary">$7.74</span> with our promotion code <span class="text-primary">LKPERSONAL50</span>.
+        <br>Limited time only.
+      </p>
+      <button class="landing-btn mt-[60px]" @click="claimOffer">
+        <i class="fas fa-shopping-cart" /> Claim this offer
+      </button>
+      <div class="my-2 landing-font-20">
+        {{ $t('promotion.special_offer.money_back') }}
+      </div>
+      <div class="flex items-center justify-center landing-font-18">
+        <span class="mr-3">{{ $t('promotion.special_offer.compatible_with') }}:</span>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-android.svg">
+        </div>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-window.svg">
+        </div>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-ios.svg">
+        </div>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-linux.svg">
+        </div>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-chrome.svg">
+        </div>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-macos.svg">
+        </div>
+      </div>
+    </div>
+    <!-- Platforms -->
+    <section class="mt-[100px]">
+      <div class="w-8/12 mx-auto">
+        <h2 class="text-center font-bold text-black landing-font-38 mb-[14px]">
+          {{ $t('landing.platform.title') }}
+        </h2>
+        <p class=" text-center text-black-600 leading-[26px] landing-font-18 mx-auto mb-[42px] md:max-w-[540px]">
+          {{ $t('landing.platform.desc') }}
+        </p>
+      </div>
+      <div class="w-full mx-auto md:justify-between justify-center align-start grid sm:grid-cols-3 grid-cols-2 justify-items-center">
+        <div
+          v-for="(item, index) in $t('landing.platform.platforms')"
+          :key="index"
+          class="opacity-90 mb-9"
+        >
+          <a :href="item.href || '#'" :target="item.href? '_blank' : '_self'" class="sm:flex flex-flex-nowrap text-center">
+            <div class="circle sm:mx-5 mx-auto">
+              <img
+                :src="require(`~/assets/images/landing/index/${item.img}`)"
+                :alt="item.name"
+                class="mx-auto self-center max-w-[42px] max-h-[42px]"
+              >
+            </div>
+
+            <p class="landing-font-16 font-semibold text-black self-center sm:mt-0 mt-2">
+              {{ item.name }}
+            </p>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- Platforms end -->
+    <section class="full-width py-[100px] bg-[#F8F9FA] mt-[100px] questions-transparent">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="landing-font-48 font-bold mb-[72px]">
+          {{ $t('promotion.faq.title') }}
+        </div>
+        <div class="max-w-6xl mx-auto">
+          <el-collapse v-model="activeName" accordion>
+            <el-collapse-item v-for="(item, index) in $t('promotion.faq.items')" :key="index" :name="(index+1).toString()">
+              <template slot="title">
+                <div class="font-bold landing-font-22 text-black question">
+                  {{ index + 1 }}. {{ item.q }}
+                </div>
+              </template>
+              <div class="answer font-normal landing-font-18 pl-[58px] md:pr-[80px] pr-[50px] md:py-[38px] py-[15px]" v-html="item.a" />
+            </el-collapse-item>
+          </el-collapse>
+        </div>
+      </div>
+    </section>
+    <div class="cta mt-[100px]">
       <div class="relative banner-cta">
         <div>
           <img src="~/assets/images/landing/promotion/banner-cta.png" class="w-full lg:block hidden">
         </div>
         <div class="landing-font-34 font-bold text-center lg:absolute xl:bottom-[50px] lg:bottom-[20px] text-white lg:w-[84%] w-full lg:left-[90px] text-center text-desc" v-html="$t('promotion.cta.title')" />
       </div>
-      <div class="mt-[40px] text-center">
-        <div
-          class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn"
-          @click="choosePlan('pm_family')"
-        >
-          {{ $t('promotion.btn_signup.text') }}
+    </div>
+    <div class="py-16 rounded-xl shadow-2xl text-center my-[120px]">
+      <div class="landing-font-48 font-bold mb-3">
+        {{ $t('promotion.special_offer.title') }}
+      </div>
+      <p class="landing-font-20">
+        Get 1-year Locker Premium at only <span class="text-[#D8D8D8] line-through">$15.48</span> <span class="text-primary">$7.74</span> with our promotion code <span class="text-primary">LKPERSONAL50</span>.
+        <br>Limited time only.
+      </p>
+      <button class="landing-btn mt-[60px]" @click="claimOffer">
+        <i class="fas fa-shopping-cart" /> Claim this offer
+      </button>
+      <div class="my-2 landing-font-20">
+        {{ $t('promotion.special_offer.money_back') }}
+      </div>
+      <div class="flex items-center justify-center landing-font-18">
+        <span class="mr-3">{{ $t('promotion.special_offer.compatible_with') }}:</span>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-android.svg">
+        </div>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-window.svg">
+        </div>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-ios.svg">
+        </div>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-linux.svg">
+        </div>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-chrome.svg">
+        </div>
+        <div class="p-2">
+          <img class="h-4" src="~/assets/images/landing/promotion/icon-macos.svg">
         </div>
       </div>
     </div>
@@ -243,7 +333,7 @@ export default {
   layout: 'white',
   data () {
     return ({
-      activeName: 'first',
+      activeName: '1',
       lockerPlans: [],
       plans: ''
     })
@@ -257,6 +347,9 @@ export default {
       } else {
         this.$router.replace(this.localePath('/register?utm_source=plans-promotion'))
       }
+    },
+    claimOffer () {
+      window.open('https://buy.stripe.com/5kA9Ef4sw4Dngpi5kk')
     }
   }
 }
@@ -329,5 +422,13 @@ export default {
       font-size: 28px !important;
     }
   }
+}
+.circle {
+  height: 75px;
+  width: 75px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 50%;
+  display: flex;
 }
 </style>
