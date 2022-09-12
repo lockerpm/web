@@ -7,7 +7,7 @@
       <div class="max-w-7xl mx-auto px-6">
         <div class="grid md:grid-cols-2 grid-cols-1 items-center gap-x-[10px] md:gap-y-0 gap-y-[40px]">
           <div>
-            <div class="text-[#161922] font-bold landing-font-48 mb-3">
+            <div class="text-[#161922] font-bold landing-font-48 mb-5">
               {{ $t('promotion.welcome.title') }}
             </div>
             <div v-html="$t('promotion.welcome.desc')" />
@@ -349,7 +349,7 @@ export default {
       }
     },
     claimOffer () {
-      window.open('https://buy.stripe.com/5kA9Ef4sw4Dngpi5kk')
+      window.open(process.env.stripePayment || 'https://buy.stripe.com/test_aEU4jYbbud6D8wwbII?prefilled_promo_code=LKPERSONAL50')
     }
   }
 }
