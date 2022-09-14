@@ -198,7 +198,7 @@
           <a class="landing-btn mt-8" @click.prevent="goto('register-section')">
             {{ $t('business.welcome.start') }}
           </a>
-          <p class="mt-3">or <span><a :href="`${enterpriseUrl}/admin/billing`">Purchase now</a></span></p>
+          <p class="mt-3">or <span><a :href="`${enterpriseUrl}/admin/billing`" class="text-info">Purchase now</a></span></p>
         </div>
         <div class="border border-[#E8E8E9] rounded-xl p-8 text-center">
           <div class="landing-font-24 font-semibold mb-9">Enterprise</div>
@@ -270,15 +270,7 @@ export default {
       activeName: '1'
     }
   },
-  computed: {
-    enterpriseUrl () {
-      return process.env.lockerEnterprise
-    }
-  },
   methods: {
-    openIntercom () {
-      if (window.Intercom) { window.Intercom('show') }
-    },
     goto (id) {
       if (process.client) {
         const el = document.getElementById(id)
