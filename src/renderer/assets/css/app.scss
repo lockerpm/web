@@ -382,8 +382,8 @@ input:-webkit-autofill:active
 
 .notion-h2 {
   @apply font-bold text-black;
-  font-size: 22px;
-  line-height: 26px;
+  font-size: 36px;
+  line-height: 48px;
   margin-top: 3rem;
   margin-bottom: 2rem;
 }
@@ -401,15 +401,16 @@ input:-webkit-autofill:active
 }
 
 .notion-text {
-  @apply text-black;
-  font-size: 16px;
+  @apply text-[#242736];
+  font-size: 18px;
+  line-height: 2rem;
   margin-bottom: 1rem;
 }
 
 .notion-list li {
   @apply text-black;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 18px;
+  line-height: 32px;
   margin-bottom: 1rem;
   display: list-item;
   list-style-type: disc;

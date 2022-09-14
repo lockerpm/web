@@ -2,7 +2,7 @@
   <div class="relative">
     <Header />
     <div class="w-full flex flex-wrap md:mt-0 mt-16">
-      <div class="bg-[#F5F7F9] lg:w-1/5 md:w-1/4 w-full md:h-screen h-16 z-50 sticky top-0 flex flex-col justify-between">
+      <div class="bg-[#F5F7F9] lg:w-1/5 md:w-[30%] w-full md:h-screen h-16 z-50 sticky top-0 flex flex-col justify-between">
         <div class="w-full pl-3 flex-grow overflow-y-scroll">
           <!-- Header -->
           <div class="flex flex-wrap pl-4 h-16 items-center md:hidden">
@@ -24,13 +24,13 @@
           </div>
           <!-- End header -->
           <!-- Whitepaper Menu -->
-          <div class="mt-[88px]">
+          <div id="whitepaper-menu" class="mt-[88px]">
             <div v-for="(item, index) in categories" :key="index" class="md:block hidden">
               <div v-if="item.articles.length > 0">
                 <el-collapse v-model="activeName">
                   <el-collapse-item :key="index" :name="(index+1).toString()">
                     <template slot="title">
-                      <div :id="item.id" class="text-[#161922] landing-font-14 font-medium">{{ item.titleCategory }}</div>
+                      <div :id="item.id" class="text-[#161922] landing-font-16 font-medium">{{ item.titleCategory }}</div>
                     </template>
                     <div class="ml-5" style="border-left: 1px solid #C5C5C8;">
                       <nuxt-link
@@ -39,7 +39,7 @@
                         :key="iItem.id"
                         :to="localePath(`/whitepaper/${iItem.slug + '-'+ iItem.id.split('-').join('')}`)"
                       >
-                        <div class="text-[#A2A3A7] font-normal landing-font-14 p-3 hover:bg-[#eceff1]" :class="currentArticleId === iItem.id ? 'category-active': ''"> {{ iItem.child }}</div>
+                        <div class="text-[#A2A3A7] font-normal landing-font-16 p-3 hover:bg-[#eceff1]" :class="currentArticleId === iItem.id ? 'category-active': ''"> {{ iItem.child }}</div>
                       </nuxt-link>
                     </div>
                   </el-collapse-item>
@@ -50,7 +50,7 @@
                   class="text-[#A2A3A7]"
                   :to="localePath(`/whitepaper/${item.slug + '-'+ item.id.split('-').join('')}`)"
                 >
-                  <div class="text-[#161922] font-medium landing-font-14 p-5">  {{ item.titleCategory }}</div>
+                  <div class="text-[#161922] font-medium landing-font-16 p-5">  {{ item.titleCategory }}</div>
                 </nuxt-link>
               </div>
             </div>
@@ -81,7 +81,7 @@
           <!-- Language switcher end -->
         </div>
       </div>
-      <div class="md:w-3/4 w-full">
+      <div class="md:w-[70%] w-full">
         <nuxt :nuxt-child-key="JSON.stringify(categories)" @articles-id="actionHandler" />
       </div>
     </div>
@@ -332,5 +332,9 @@ export default {
 }
 .category-next-active{
   background: #E8E8E9;
+}
+#whitepaper-menu .el-collapse-item__arrow {
+  font-size: 20px;
+  font-weight: 600;
 }
 </style>
