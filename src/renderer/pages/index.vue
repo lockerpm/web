@@ -61,6 +61,24 @@
     </section>
     <!-- Header end -->
 
+    <!-- Video intro -->
+    <section class="full-width w-full h-auto">
+      <div class="w-full flex flex-wrap my-16 justify-center">
+        <div class="rounded">
+          <button @click="dialogVisible = true">
+            <img
+              :src="require(`~/assets/images/landing/intro-thumbnail.png`)"
+              alt="Locker Password Manager video introduction"
+              class="hover:bg-sky-700"
+              style="width: 640px; height: 360px;"
+            >
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video intro end -->
+
     <!-- Feature -->
     <section
       class="full-width w-full h-auto md:pb-[118px] pb-20"
@@ -432,6 +450,8 @@ export default {
   layout: 'landing',
   data () {
     return {
+      videoId: 'kAutqE2ATfU',
+      dialogVisible: false,
       section1: {
         title: 'Tận hưởng trải nghiệm sử dụng internet an toàn và liền mạch',
         desc: 'Locker giúp bạn lưu trữ dữ liệu quan trọng <span class="text-green">an toàn</span>, quản lý mật khẩu <span class="text-green">trực quan</span>, và tự động đăng nhập trên mọi thiết bị.',
@@ -617,6 +637,7 @@ export default {
 
     }
   },
+
   mounted () {
     const mac = document.getElementById('mac')
     const mobile = document.getElementById('mobile')
@@ -653,6 +674,18 @@ export default {
       const tabletZRotate = 10 - Math.ceil(10 * offset / 300)
       tablet.style.transform = 'translate3d(' + tabletXAxis + 'px,' + tabletYAxis + 'px,0px) rotateZ(' + tabletZRotate + 'deg)'
     }
+  },
+  methods: {
+    ready (event) {
+      this.player = event.target
+    },
+    toggle () {
+      console.log('asdbasjhdbahjsdb')
+    },
+    handleClose (done) {
+      this.player.stopVideo()
+      done()
+    }
   }
 }
 </script>
@@ -665,5 +698,44 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 50%;
   display: flex;
+}
+.modal {
+  display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  border: 1px solid #888;
+  width:640px;
+}
+
+/* The Close Button */
+.close {
+  position: relative;
+  color: red;
+    margin: 15% auto; /* 15% from the top and centered */
+  font-size: 28px;
+  right: 0;
+  z-index: 10;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
