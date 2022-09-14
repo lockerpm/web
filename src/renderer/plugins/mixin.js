@@ -55,6 +55,9 @@ Vue.mixin({
     },
     enterprisePolicies () {
       return this.$store.state.enterprisePolicies
+    },
+    enterpriseUrl () {
+      return process.env.lockerEnterprise
     }
   },
   mounted () {
@@ -619,6 +622,9 @@ Vue.mixin({
         }
       }
       return violations
+    },
+    openIntercom () {
+      if (window.Intercom) { window.Intercom('show') }
     }
   }
 })
