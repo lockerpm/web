@@ -327,13 +327,15 @@ export default {
   border: none !important;
 }
 .category-active{
-  background: #FFFFFF;
-  color: #268334 !important;
+  @apply text-black font-bold;
+  /* background: #FFFFFF;
+  color: #268334 !important; */
 }
 .category-next-active{
   background: #E8E8E9;
 }
 #whitepaper-menu .el-collapse-item__arrow {
+  @apply text-black-600;
   font-size: 20px;
   font-weight: 600;
 }

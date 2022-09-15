@@ -1,6 +1,6 @@
 <template>
   <div class="btn-pre-next">
-    <div v-if="index === 0" class="bg-[#FFFFFF] md:mr-0 mr-5">
+    <div v-if="index === 0" class="md:w-1/2 w-full float-right bg-[#FFFFFF]">
       <nuxt-link
         class="btn-navigation btn-next"
         style="border-radius: 4px"
@@ -52,7 +52,7 @@
         </div>
       </div>
     </div>
-    <div v-if="index === 2" class="bg-[#FFFFFF] hover-btn md:mr-0 mr-5">
+    <div v-if="index === 2" class="md:w-1/2 w-full bg-[#FFFFFF] hover-btn md:mr-0 mr-5">
       <nuxt-link
         class="btn-navigation btn-prev"
         style="border-radius: 4px"
@@ -126,6 +126,7 @@ export default {
   }
 }
 .btn-navigation:hover{
+  @apply transition duration-200 ease-in-out;
   border: 1px solid #268334;
   border-radius: 4px;
 }
@@ -141,7 +142,7 @@ a{
   text-decoration: none !important;
 }
 .btn-pre-next a{
-  @apply  border-[1px] border-solid border-[#A2A3A7];
+  @apply  border-[1px] border-solid border-black-400 transition duration-200 ease-in-out;
   /*height: 107px;*/
 }
 
