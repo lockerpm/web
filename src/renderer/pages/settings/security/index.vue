@@ -575,6 +575,61 @@
             </div>
             <div class="invalid-feedback">{{ $t('errors.confirm_password') }}</div>
           </div>
+          <div class="form-group !mb-4">
+            <label for="">{{ $t('master_password.id_password') }}</label>
+            <div
+              class="input-group"
+              :class="[errors.idPassword ? 'is-invalid' :'']"
+            >
+              <input
+                v-model="idPassword"
+                :type="showIdPassword ? 'text' : 'password'"
+                class="form-control"
+                name="repassword"
+                placeholder=""
+              >
+              <div class="input-group-append !bg-white">
+                <button
+                  class="btn btn-icon"
+                  tabindex="-1"
+                  @click="showIdPassword = !showIdPassword"
+                >
+                  <i
+                    class="far"
+                    :class="{'fa-eye': !showIdPassword, 'fa-eye-slash': showIdPassword}"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group !mb-4">
+            <label for="">{{ $t('master_password.id_password_confirm') }}</label>
+            <div
+              class="input-group"
+              :class="[errors.idRePassword ? 'is-invalid' :'']"
+            >
+              <input
+                v-model="idRePassword"
+                :type="showIdRePassword ? 'text' : 'password'"
+                class="form-control"
+                name="repassword"
+                placeholder=""
+              >
+              <div class="input-group-append !bg-white">
+                <button
+                  class="btn btn-icon"
+                  tabindex="-1"
+                  @click="showIdRePassword = !showIdRePassword"
+                >
+                  <i
+                    class="far"
+                    :class="{'fa-eye': !showIdRePassword, 'fa-eye-slash': showIdRePassword}"
+                  />
+                </button>
+              </div>
+            </div>
+            <div class="invalid-feedback">{{ $t('errors.confirm_password') }}</div>
+          </div>
         </div>
       </div>
       <div
@@ -591,7 +646,7 @@
           </button>
           <button
             class="btn btn-primary"
-            :disabled="loadingSetPassword || !masterPassword || masterPassword!=masterRePassword"
+            :disabled="loadingSetPassword || !masterPassword || masterPassword!=masterRePassword || idPassword !== idRePassword"
             @click="setPasswordForGrantor()"
           >
             {{ $t('common.confirm') }}
@@ -632,10 +687,14 @@ export default {
       selectedEmergencyAccess: {},
       masterPassword: '',
       masterRePassword: '',
+      idPassword: '',
+      idRePassword: '',
       errors: {
       },
       showPassword: false,
       showRePassword: false,
+      showIdPassword: false,
+      showIdRePassword: false,
       loadingSetPassword: false,
       emergencyAccessStatus: this.$t('data.emergency_access.status')
     }
@@ -665,6 +724,13 @@ export default {
         this.errors.masterRePassword = 1
       } else {
         this.errors.masterRePassword = 0
+      }
+    },
+    idRePassword (newValue) {
+      if (this.idPassword && newValue && this.idPassword !== newValue) {
+        this.errors.idRePassword = 1
+      } else {
+        this.errors.idRePassword = 0
       }
     }
   },
@@ -866,7 +932,9 @@ export default {
         const encKey = await this.$cryptoService.remakeEncKey(key, oldEncKey)
         const request = {
           key: encKey[1].encryptedString,
-          new_master_password_hash: masterPasswordHash
+          new_password: this.idPassword,
+          new_master_password_hash: masterPasswordHash,
+          score: this.passwordStrength.score
         }
         await this.$axios.$post(`/cystack_platform/pm/emergency_access/${this.selectedEmergencyAccess.id}/password`, request)
         this.notify(this.$t('data.notifications.takeover_success', { user: this.selectedEmergencyAccess.email }), 'success')
