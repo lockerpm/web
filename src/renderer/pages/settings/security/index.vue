@@ -579,7 +579,7 @@
             <label for="">{{ $t('master_password.id_password') }}</label>
             <div
               class="input-group"
-              :class="[errors.idPassword ? 'is-invalid' :'']"
+              :class="[bugs.new_password ? 'is-invalid' :'']"
             >
               <input
                 v-model="idPassword"
@@ -601,6 +601,7 @@
                 </button>
               </div>
             </div>
+            <div class="invalid-feedback">{{ bugs.new_password && bugs.new_password[0] }}</div>
           </div>
           <div class="form-group !mb-4">
             <label for="">{{ $t('master_password.id_password_confirm') }}</label>
@@ -691,6 +692,7 @@ export default {
       idRePassword: '',
       errors: {
       },
+      bugs: {},
       showPassword: false,
       showRePassword: false,
       showIdPassword: false,
@@ -915,6 +917,7 @@ export default {
       }
       try {
         this.loadingSetPassword = true
+        this.bugs = {}
         const response = await this.$axios.$post(`/cystack_platform/pm/emergency_access/${this.selectedEmergencyAccess.id}/takeover`)
         const oldKeyBuffer = await this.$cryptoService.rsaDecrypt(response.key_encrypted)
         // console.log('oldKeyBuffer: ', oldKeyBuffer)
@@ -940,6 +943,7 @@ export default {
         this.notify(this.$t('data.notifications.takeover_success', { user: this.selectedEmergencyAccess.email }), 'success')
         this.dialogTakeoverVisible = false
       } catch (error) {
+        this.bugs = error.response && error.response.data && error.response.data.details
         this.notify(this.$t('data.notifications.error_occurred'), 'warning')
       } finally {
         this.loadingSetPassword = false
