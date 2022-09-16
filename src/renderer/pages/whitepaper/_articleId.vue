@@ -156,6 +156,9 @@ export default {
       if (indexParent === -1) {
         indexParent = this.tree.findIndex(item => item.id === this.articleId)
       }
+      if (this.tree.length && indexParent === -1) {
+        return this.$nuxt.error({ statusCode: 404 })
+      }
       let indexChildArticle = -1
       for (let i = 0; i < this.tree.length; i++) {
         if (this.tree[i].articles.length > 0) {
