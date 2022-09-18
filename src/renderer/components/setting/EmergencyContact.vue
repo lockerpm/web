@@ -141,9 +141,12 @@ export default {
         this.closeDialog()
         this.$emit('done')
       } catch (e) {
-        console.log(e)
         this.errors = (e.response && e.response.data && e.response.data.details) || {}
-        this.notify(this.$t('data.notifications.invite_user_failed'), 'warning')
+        if (e.response && e.response.data && e.response.data.message) {
+          this.notify(e.response.data.message, 'warning')
+        } else {
+          this.notify(this.$t('data.notifications.invite_user_failed'), 'warning')
+        }
       } finally {
         this.loading = false
       }

@@ -112,7 +112,7 @@
     font-size: 16px;
 } */
 .notion {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.5;
   color: rgb(55, 53, 47);
   caret-color: rgb(55, 53, 47);
@@ -248,12 +248,16 @@
   margin-top: 0;
 }
 .notion-h2 {
-  font-size: 1.5em;
+  font-size: 2.25em;
+  line-height: 48px;
   margin-top: 1.1em;
+  margin-bottom: 0.6em;
 }
 .notion-h3 {
-  font-size: 1.25em;
+  font-size: 1.75em;
+  line-height: 36px;
   margin-top: 1em;
+  margin-bottom: 0.5em;
 }
 .notion-emoji {
   font-family: "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
@@ -612,6 +616,7 @@ img.notion-page-icon {
   font-size: 14px;
   line-height: 1.4;
   color: rgba(55, 53, 47, 0.6);
+  text-align: center;
 }
 
 .notion-callout {
