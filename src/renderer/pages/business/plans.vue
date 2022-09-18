@@ -3,7 +3,7 @@
     <div class="max-w-[600px] mx-auto mt-32 text-center">
       <h1 class="landing-font-42 font-semibold">{{ $t('business_plan.title') }}</h1>
     </div>
-    <div class="mt-9">
+    <div class="mt-9 overflow-auto">
       <table class="w-full">
         <thead>
           <tr>
@@ -30,7 +30,7 @@
               </div>
             </th>
             <th class="w-1/4">
-              <div class="font-medium">
+              <div class="px-8 font-medium">
                 <div class="landing-font-24 font-semibold mb-9">Enterprise</div>
                 <div class="uppercase text-black-500">
                   PRICE IS SUBJECT TO <br> CUSTOM TERMS
@@ -70,7 +70,7 @@
               :key="idx"
             >
               <td
-                class="pl-6 landing-font-16 pb-5"
+                class="pl-6 landing-font-16 pb-5 font-semibold"
                 style="color: #5A6176"
               >
                 {{ item.label }}
@@ -104,6 +104,7 @@
                 <nuxt-link class="landing-btn !font-medium" :to="localePath('/business#register-section')">
                   {{ $t('business.welcome.start') }}
                 </nuxt-link>
+                <p class="mt-3">or <span><a :href="`${enterpriseUrl}/admin/billing`" class="text-info">Purchase now</a></span></p>
               </div>
             </td>
             <td>
@@ -111,6 +112,7 @@
                 <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium" @click="openIntercom">
                   {{ $t('business.plans.contact_us') }}
                 </button>
+                <p class="text-black-500 mt-3">For more information</p>
               </div>
             </td>
           </tr>

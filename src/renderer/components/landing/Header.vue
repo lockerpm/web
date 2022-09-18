@@ -61,7 +61,7 @@
             <nuxt-link
               class="inline-block nav-item text-black landing-transition"
               :to="localePath('/')"
-              active-class=""
+              :active-class="['business', 'business-plans'].includes(getRouteBaseName())?'':'nuxt-link-active'"
             >
               {{ $t('landing_header.personal') }}
             </nuxt-link>
@@ -87,7 +87,7 @@
             <nuxt-link
               v-else
               class="inline-block nav-item text-black landing-transition"
-              :to="localeRoute({name: item.link})"
+              :to="localeRoute({name: ['business', 'business-plans'].includes(getRouteBaseName()) && item.link === 'plans' ? `business-${item.link}` : item.link})"
             >
               {{ item.name }}
             </nuxt-link>
