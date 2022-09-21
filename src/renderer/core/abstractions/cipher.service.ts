@@ -1,7 +1,7 @@
-import { CipherType } from '../../jslib/src/enums/cipherType'
-import { CipherData } from '../../jslib/src/models/data/cipherData'
-import { Cipher } from '../../jslib/src/models/domain/cipher'
-import { CipherView } from '../../jslib/src/models/view/cipherView'
+import { CipherType } from '../enums/cipherType'
+import { CipherData } from '../models/data/cipherData'
+import { Cipher } from '../models/domain/cipher'
+import { CipherView } from '../models/view/cipherView'
 import { UriMatchType } from '~/jslib/src/enums/uriMatchType'
 
 import { Field } from '~/jslib/src/models/domain/field'

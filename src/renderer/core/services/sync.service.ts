@@ -11,7 +11,7 @@ import { StorageService } from '../../jslib/src/abstractions/storage.service'
 import { SyncService as SyncServiceAbstraction } from '../../jslib/src/abstractions/sync.service'
 import { UserService } from '../../jslib/src/abstractions/user.service'
 
-import { CipherData } from '../../jslib/src/models/data/cipherData'
+import { CipherData } from '../models/data/cipherData'
 import { CollectionData } from '../../core/models/data/collectionData'
 import { FolderData } from '../../jslib/src/models/data/folderData'
 import { OrganizationData } from '../../jslib/src/models/data/organizationData'
