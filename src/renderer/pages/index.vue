@@ -62,21 +62,35 @@
     <!-- Header end -->
 
     <!-- Video intro -->
-    <section class="full-width w-full h-auto">
-      <div class="w-full flex flex-wrap my-16 justify-center">
-        <div class="rounded">
+    <section class="mt-[50px] mb-[50px]">
+      <div class="w-full flex flex-wrap">
+        <div class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:px-24 order-1">
+          <h2 class="w-full font-bold landing-font-28 text-black mb-[20px]">
+            {{ $t('video_intro.title') }}
+          </h2>
+          <p class="landing-font-16">{{ $t('video_intro.desc') }}</p>
+        </div>
+        <!-- Left end -->
+        <!-- Right -->
+        <div class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2">
           <button @click="dialogVisible = true">
             <img
               :src="require(`~/assets/images/landing/intro-thumbnail.png`)"
               alt="Locker Password Manager video introduction"
-              class="hover:bg-sky-700"
-              style="width: 640px; height: 360px;"
             >
           </button>
         </div>
+        <!-- Right end -->
+
+        <!-- Video modal -->
+        <div v-if="dialogVisible" class="modal" @click="dialogVisible = false">
+          <div class="modal-content">
+            <youtube :video-id="videoId" player-width="960" player-height="540" :player-vars="{autoplay: 1}" />
+          </div>
+        </div>
+        <!-- Video modal end -->
       </div>
     </section>
-
     <!-- Video intro end -->
 
     <!-- Feature -->
@@ -674,18 +688,6 @@ export default {
       const tabletZRotate = 10 - Math.ceil(10 * offset / 300)
       tablet.style.transform = 'translate3d(' + tabletXAxis + 'px,' + tabletYAxis + 'px,0px) rotateZ(' + tabletZRotate + 'deg)'
     }
-  },
-  methods: {
-    ready (event) {
-      this.player = event.target
-    },
-    toggle () {
-      console.log('asdbasjhdbahjsdb')
-    },
-    handleClose (done) {
-      this.player.stopVideo()
-      done()
-    }
   }
 }
 </script>
@@ -718,7 +720,7 @@ export default {
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
   border: 1px solid #888;
-  width:640px;
+  width: 960px;
 }
 
 /* The Close Button */
