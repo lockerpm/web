@@ -256,32 +256,26 @@
       style="background: #ffffff"
     >
       <div
-        class="hidden lg:block w-full h-auto text-center pt-32 mb-36 justify-center gap-x-6 overflow-hidden"
+        class="hidden lg:flex w-full h-auto text-center pt-32 mb-24 justify-items-end justify-center gap-x-6 overflow-hidden"
       >
-        <div class="inline w-2/12">
-          <img
-            id="mobile"
-            :src="require(`~/assets/images/landing/index/${$t('landing.devices.mobile.image')}`)"
-            class="inline self-end transition-all"
-            style="width: 8%; transform: translate3d(-120px, 30px, 0px) rotateZ(28deg);"
-          >
-        </div>
-        <div class="inline w-2/12">
-          <img
-            id="tablet"
-            :src="require(`~/assets/images/landing/index/${$t('landing.devices.tablet.image')}`)"
-            class="inline self-end transition-all"
-            style="width: 14%; transform: translate3d(180px, 50px, 0px) rotateZ(10deg);"
-          >
-        </div>
-        <div class="inline w-8/12">
-          <img
-            id="mac"
-            :src="require(`~/assets/images/landing/index/${$t('landing.devices.laptop.image')}`)"
-            class="inline transition-all"
-            style="width: 50%; transform: translate3d(500px, -50px, 0px) rotateZ(-25deg);"
-          >
-        </div>
+        <img
+          id="mobile"
+          :src="require(`~/assets/images/landing/index/${$t('landing.devices.mobile.image')}`)"
+          class="inline self-end"
+          style="width: 6%;"
+        >
+        <img
+          id="tablet"
+          :src="require(`~/assets/images/landing/index/${$t('landing.devices.tablet.image')}`)"
+          class="inline self-end"
+          style="width: 10%;"
+        >
+        <img
+          id="mac"
+          :src="require(`~/assets/images/landing/index/${$t('landing.devices.laptop.image')}`)"
+          class="inline self-end"
+          style="width: 40%; "
+        >
       </div>
     </section>
     <!-- Devices end -->
@@ -648,45 +642,6 @@ export default {
           }
         ]
       }
-
-    }
-  },
-
-  mounted () {
-    const mac = document.getElementById('mac')
-    const mobile = document.getElementById('mobile')
-    const tablet = document.getElementById('tablet')
-    window.onscroll = function () {
-      const scrollPos = window.scrollY
-      if (scrollPos > 3800 && scrollPos < 4100) {
-        scrollRotate()
-      } else if (scrollPos > 4100) {
-        mac.style.transform = 'translate3d(0px,0px,0px) rotateZ(0deg)'
-        tablet.style.transform = 'translate3d(0px,60px,0px) rotateZ(0deg)'
-        mobile.style.transform = 'translate3d(0px,80px,0px) rotateZ(0deg)'
-      } else {
-        mac.style.transform = 'translate3d(500px,-50px,0px) rotateZ(-25deg)'
-        mobile.style.transform = 'translate3d(-120px,30px,0px) rotateZ(28deg)'
-        tablet.style.transform = 'translate3d(180px,50px,0px) rotateZ(10deg)'
-      }
-    }
-
-    function scrollRotate () {
-      const offset = window.pageYOffset - 3800
-      const macXAxis = 480 - Math.ceil(480 * offset / 300)
-      const macYAxis = Math.ceil(50 * offset / 300) - 50
-      const macZRotate = Math.ceil(25 * offset / 300) - 25
-      mac.style.transform = 'translate3d(' + macXAxis + 'px,' + macYAxis + 'px,0px) rotateZ(' + macZRotate + 'deg)'
-
-      const mobileXAxis = Math.ceil(120 * offset / 300) - 120
-      const mobileYAxis = 30 - Math.ceil(30 * offset / 300)
-      const mobileZRotate = 28 - Math.ceil(28 * offset / 300)
-      mobile.style.transform = 'translate3d(' + mobileXAxis + 'px,' + mobileYAxis + 'px,0px) rotateZ(' + mobileZRotate + 'deg)'
-
-      const tabletXAxis = 180 - Math.ceil(180 * offset / 300)
-      const tabletYAxis = 50 - Math.ceil(50 * offset / 300)
-      const tabletZRotate = 10 - Math.ceil(10 * offset / 300)
-      tablet.style.transform = 'translate3d(' + tabletXAxis + 'px,' + tabletYAxis + 'px,0px) rotateZ(' + tabletZRotate + 'deg)'
     }
   }
 }
@@ -721,23 +676,5 @@ export default {
   margin: 15% auto; /* 15% from the top and centered */
   border: 1px solid #888;
   width: 960px;
-}
-
-/* The Close Button */
-.close {
-  position: relative;
-  color: red;
-    margin: 15% auto; /* 15% from the top and centered */
-  font-size: 28px;
-  right: 0;
-  z-index: 10;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
 }
 </style>
