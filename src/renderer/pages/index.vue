@@ -61,6 +61,38 @@
     </section>
     <!-- Header end -->
 
+    <!-- Video intro -->
+    <section class="mt-[50px] mb-[50px]">
+      <div class="w-full flex flex-wrap">
+        <div class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:px-24 order-1">
+          <h2 class="w-full font-bold landing-font-28 text-black mb-[20px]">
+            {{ $t('video_intro.title') }}
+          </h2>
+          <p class="landing-font-16">{{ $t('video_intro.desc') }}</p>
+        </div>
+        <!-- Left end -->
+        <!-- Right -->
+        <div class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2">
+          <button @click="dialogVisible = true">
+            <img
+              :src="require(`~/assets/images/landing/intro-thumbnail.png`)"
+              alt="Locker Password Manager video introduction"
+            >
+          </button>
+        </div>
+        <!-- Right end -->
+
+        <!-- Video modal -->
+        <div v-if="dialogVisible" class="modal" @click="dialogVisible = false">
+          <div class="modal-content">
+            <youtube :video-id="videoId" player-width="960" player-height="540" :player-vars="{autoplay: 1}" />
+          </div>
+        </div>
+        <!-- Video modal end -->
+      </div>
+    </section>
+    <!-- Video intro end -->
+
     <!-- Feature -->
     <section
       class="full-width w-full h-auto md:pb-[118px] pb-20"
@@ -432,6 +464,8 @@ export default {
   layout: 'landing',
   data () {
     return {
+      videoId: 'kAutqE2ATfU',
+      dialogVisible: false,
       section1: {
         title: 'Tận hưởng trải nghiệm sử dụng internet an toàn và liền mạch',
         desc: 'Locker giúp bạn lưu trữ dữ liệu quan trọng <span class="text-green">an toàn</span>, quản lý mật khẩu <span class="text-green">trực quan</span>, và tự động đăng nhập trên mọi thiết bị.',
@@ -617,6 +651,7 @@ export default {
 
     }
   },
+
   mounted () {
     const mac = document.getElementById('mac')
     const mobile = document.getElementById('mobile')
@@ -665,5 +700,44 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 50%;
   display: flex;
+}
+.modal {
+  display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  border: 1px solid #888;
+  width: 960px;
+}
+
+/* The Close Button */
+.close {
+  position: relative;
+  color: red;
+    margin: 15% auto; /* 15% from the top and centered */
+  font-size: 28px;
+  right: 0;
+  z-index: 10;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
