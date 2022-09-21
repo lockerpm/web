@@ -7,10 +7,11 @@ import {
   SecureNoteView,
   View
 } from '../../../jslib/src/models/view'
-import { CipherType } from '../../enums/cipherType'
+// import { CipherType } from '../../enums/cipherType'
 import { CipherRepromptType } from '../../../jslib/src/enums/cipherRepromptType'
 import { PasswordHistoryView } from '../../../jslib/src/models/view/passwordHistoryView'
 import { Cipher } from '../domain/cipher'
+import { CipherType } from '../../../jslib/src/enums'
 
 export class CipherView implements View {
   id: string = null;
@@ -59,7 +60,7 @@ export class CipherView implements View {
   get subTitle (): string {
     switch (this.type) {
     case CipherType.Login:
-    case CipherType.MasterPassword:
+    case 8:
       return this.login.subTitle
     case CipherType.SecureNote:
       return this.secureNote.subTitle

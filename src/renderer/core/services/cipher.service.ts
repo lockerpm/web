@@ -1,4 +1,4 @@
-import { CipherType } from '../enums/cipherType'
+// import { CipherType } from '../enums/cipherType'
 import { FieldType } from '../../jslib/src/enums/fieldType'
 import { UriMatchType } from '../../jslib/src/enums/uriMatchType'
 
@@ -54,6 +54,7 @@ import { ConstantsService } from '../../jslib/src/services/constants.service'
 
 import { sequentialize } from '../../jslib/src/misc/sequentialize'
 import { Utils } from '../../jslib/src/misc/utils'
+import { CipherType } from '../../jslib/src/enums'
 
 const Keys = {
   ciphersPrefix: 'ciphers_',
