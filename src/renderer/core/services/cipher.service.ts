@@ -1,12 +1,12 @@
-import { CipherType } from '../../jslib/src/enums/cipherType'
+import { CipherType } from '../enums/cipherType'
 import { FieldType } from '../../jslib/src/enums/fieldType'
 import { UriMatchType } from '../../jslib/src/enums/uriMatchType'
 
-import { CipherData } from '../../jslib/src/models/data/cipherData'
+import { CipherData } from '../models/data/cipherData'
 
 import { Attachment } from '../../jslib/src/models/domain/attachment'
 import { Card } from '../../jslib/src/models/domain/card'
-import { Cipher } from '../../jslib/src/models/domain/cipher'
+import { Cipher } from '../models/domain/cipher'
 import Domain from '../../jslib/src/models/domain/domainBase'
 import { EncArrayBuffer } from '../../jslib/src/models/domain/encArrayBuffer'
 import { EncString } from '../../jslib/src/models/domain/encString'
@@ -33,7 +33,7 @@ import { CipherResponse } from '../../jslib/src/models/response/cipherResponse'
 import { ErrorResponse } from '../../jslib/src/models/response/errorResponse'
 
 import { AttachmentView } from '../../jslib/src/models/view/attachmentView'
-import { CipherView } from '../../jslib/src/models/view/cipherView'
+import { CipherView } from '../models/view/cipherView'
 import { FieldView } from '../../jslib/src/models/view/fieldView'
 import { PasswordHistoryView } from '../../jslib/src/models/view/passwordHistoryView'
 import { View } from '../../jslib/src/models/view/view'
@@ -297,13 +297,13 @@ export class CipherService implements CipherServiceAbstraction {
 
     @sequentialize(() => 'getAllDecrypted')
     async getAllDecrypted (): Promise<CipherView[]> {
-      if (this.decryptedCipherCache != null) {
-        const userId = await this.userService.getUserId()
-        if ((this.searchService().indexedEntityId ?? userId) !== userId) {
-          await this.searchService().indexCiphers(userId, this.decryptedCipherCache)
-        }
-        return this.decryptedCipherCache
-      }
+      // if (this.decryptedCipherCache != null) {
+      //   const userId = await this.userService.getUserId()
+      //   if ((this.searchService().indexedEntityId ?? userId) !== userId) {
+      //     await this.searchService().indexCiphers(userId, this.decryptedCipherCache)
+      //   }
+      //   return this.decryptedCipherCache
+      // }
 
       const decCiphers: CipherView[] = []
       const hasKey = await this.cryptoService.hasKey()
