@@ -4,9 +4,13 @@ import extractDomain from 'extract-domain'
 import find from 'lodash/find'
 import numeral from 'numeral'
 import { Avatar } from 'element-ui'
-import { CipherType } from '../jslib/src/enums'
+import { LoginUriView, LoginView } from '../jslib/src/models/view'
+import { CipherRequest } from '../jslib/src/models/request'
+import { CipherType } from '../core/enums/cipherType'
 import { SyncResponse } from '../core/models/response/syncResponse'
 import { WALLET_APP_LIST } from '../utils/crypto/applist/index'
+import { CipherView } from '../core/models/view/cipherView'
+
 // Vue.use(Image)
 Vue.mixin({
   data () {
@@ -190,6 +194,36 @@ Vue.mixin({
           this.$vaultTimeoutService.biometricLocked = false
         }
         // this.$messagingService.send('unlocked')
+
+        // Create master pw item if not exists
+        if (res.has_no_master_pw_item) {
+          console.log('LOLOLOLOL')
+          try {
+            const cipher = new CipherView()
+            cipher.type = CipherType.Login
+            const loginData = new LoginView()
+            loginData.username = 'locker.io'
+            loginData.password = this.masterPassword
+            const uriView = new LoginUriView()
+            uriView.uri = 'https://locker.io'
+            loginData.uris = [uriView]
+            cipher.login = loginData
+            cipher.name = 'Locker Master Password'
+            const cipherEnc = await this.$cipherService.encrypt(cipher)
+            const data = new CipherRequest(cipherEnc)
+            data.type = CipherType.MasterPassword
+            const passwordStrength = this.$passwordGenerationService.passwordStrength(this.masterPassword, ['cystack']) || {}
+            await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
+              ...data,
+              score: passwordStrength.score,
+              collectionIds: []
+            })
+          } catch (e) {
+            console.log(e)
+            // this.errors = (e.response && e.response.data && e.response.data.details) || {}
+          }
+        }
+
         this.$store.commit('UPDATE_SYNCING', true)
         this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/vault' : this.$store.state.currentPath }))
       } catch (e) {
@@ -357,6 +391,7 @@ Vue.mixin({
     getIconCipher (cipher, size = 70, defaultIcon = false) {
       switch (cipher.type) {
       case CipherType.Login:
+      case CipherType.MasterPassword:
         if (!defaultIcon) {
           if (cipher.login && cipher.login.uris && cipher.login.uris.length) {
             try {
