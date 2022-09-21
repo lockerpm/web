@@ -1,10 +1,10 @@
 <template>
-  <ListCipher route-name="passwords" :filter="c => [CipherType.Login, CipherType.MasterPassword].includes(c.type)" />
+  <ListCipher route-name="passwords" :filter="c => c.type === CipherType['Login']" />
 </template>
 
 <script>
 import ListCipher from '../../components/cipher/ListCipher'
-import { CipherType } from '../../core/enums/cipherType'
+import { CipherType } from '../../jslib/src/enums'
 export default {
   components: {
     ListCipher

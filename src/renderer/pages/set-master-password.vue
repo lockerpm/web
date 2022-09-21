@@ -97,12 +97,6 @@
 <script>
 import PasswordStrengthBar from '../components/password/PasswordStrengthBar'
 import PasswordViolationDialog from '../components/cipher/PasswordViolationDialog'
-import { CipherRequest } from '../jslib/src/models/request/cipherRequest.ts'
-import { LoginView } from '../jslib/src/models/view/loginView.ts'
-import { LoginUriView } from '../jslib/src/models/view/loginUriView.ts'
-import { CipherView } from '../core/models/view/cipherView.ts'
-import { CipherType } from '../core/enums/cipherType.ts'
-
 export default {
   components: { PasswordStrengthBar, PasswordViolationDialog },
   layout: 'blank',
@@ -136,7 +130,6 @@ export default {
   mounted () {
   },
   methods: {
-    // Check policy before submit
     preparePassword () {
       const violationItems = this.checkPasswordPolicy(this.masterPassword || '')
       if (violationItems.length) {
@@ -145,8 +138,6 @@ export default {
         this.setMasterPass()
       }
     },
-
-    // Submit master pw
     async setMasterPass () {
       await this.clearKeys()
       if (this.masterPassword.length < 8) {
