@@ -9,11 +9,12 @@ import {
   SecureNote,
   SymmetricCryptoKey
 } from '../../../jslib/src/models/domain'
-import { CipherType } from '../../enums/cipherType'
+// import { CipherType } from '../../enums/cipherType'
 import { CipherRepromptType } from '../../../jslib/src/enums/cipherRepromptType'
 import { CipherData } from '../data/cipherData'
 import { CipherView } from '../../../jslib/src/models/view'
 import { Password } from '../../../jslib/src/models/domain/password'
+import { CipherType } from '../../../jslib/src/enums'
 
 export class Cipher extends Domain {
   id: string;
@@ -71,7 +72,8 @@ export class Cipher extends Domain {
 
     switch (this.type) {
     case CipherType.Login:
-    case CipherType.MasterPassword:
+    // @ts-ignore
+    case 8:
       this.login = new Login(obj.login, alreadyEncrypted)
       break
     case CipherType.SecureNote:
@@ -117,7 +119,7 @@ export class Cipher extends Domain {
 
     switch (this.type) {
     case CipherType.Login:
-    case CipherType.MasterPassword:
+    case 8:
       model.login = await this.login.decrypt(this.organizationId, encKey)
       break
     case CipherType.SecureNote:
@@ -197,7 +199,8 @@ export class Cipher extends Domain {
 
     switch (c.type) {
     case CipherType.Login:
-    case CipherType.MasterPassword:
+    // @ts-ignore
+    case 8:
       c.login = this.login.toLoginData()
       break
     case CipherType.SecureNote:

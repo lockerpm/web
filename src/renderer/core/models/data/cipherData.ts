@@ -1,4 +1,3 @@
-import { CipherType } from '../../enums/cipherType'
 import {
   AttachmentData,
   CardData,
@@ -10,6 +9,8 @@ import {
 import { CipherRepromptType } from '../../../jslib/src/enums/cipherRepromptType'
 import { PasswordHistoryData } from '../../../jslib/src/models/data/passwordHistoryData'
 import { CipherResponse } from '../../../jslib/src/models/response'
+import { CipherType } from '../../../jslib/src/enums'
+// import { CipherType } from '../../enums/cipherType'
 
 export class CipherData {
   id: string;
@@ -59,7 +60,8 @@ export class CipherData {
 
     switch (this.type) {
     case CipherType.Login:
-    case CipherType.MasterPassword:
+    // @ts-ignore
+    case 8:
       this.login = new LoginData(response.login)
       break
     case CipherType.SecureNote:
