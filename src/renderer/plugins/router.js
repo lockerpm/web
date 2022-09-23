@@ -1,6 +1,11 @@
-export default ({ store, app, i18n, redirect }) => {
+export default ({ store, app, i18n, redirect, error }) => {
   // Every time the route changes (fired on initialization too)
   app.router.beforeEach(async (toRoute, fromRoute, next) => {
+    if (toRoute.path.startsWith('/vi/promotion')) {
+      error({ statusCode: 404 })
+      next()
+    }
+
     if (toRoute.path.startsWith('/vi')) {
       if (app.$cookies.get('i18n_redirected') !== 'vi') {
         i18n.setLocale('vi')
