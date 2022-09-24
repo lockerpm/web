@@ -117,7 +117,10 @@ export default {
     },
 
     preparePassword () {
-      const violationItems = this.checkPasswordPolicy(this.masterPassword || '')
+      const violationItems = this.checkPasswordPolicy(
+        this.masterPassword || '',
+        'master_password_requirement'
+      )
       if (violationItems.length) {
         this.$refs.passwordPolicyDialog.openDialog(violationItems)
       } else {
