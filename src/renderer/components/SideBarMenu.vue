@@ -159,7 +159,12 @@ export default {
   },
   data () {
     return {
-      menu: [
+      activeNames: '1'
+    }
+  },
+  computed: {
+    menu () {
+      return [
         {
           label: 'inventory',
           icon: 'inventory',
@@ -196,6 +201,13 @@ export default {
           icon: 'security',
           routeName: 'tools'
         },
+        ...this.currentPlan.alias === 'pm_enterprise'
+          ? [{
+            label: 'policies',
+            icon: 'policies',
+            routeName: 'policies'
+          }]
+          : [],
         {
           label: 'shares',
           icon: 'share',
@@ -211,11 +223,8 @@ export default {
           icon: 'trashh',
           routeName: 'trash'
         }
-      ],
-      activeNames: '1'
-    }
-  },
-  computed: {
+      ]
+    },
     bottomMenu () {
       return [
         ...this.currentPlan.alias === 'pm_free'

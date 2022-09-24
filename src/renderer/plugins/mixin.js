@@ -31,7 +31,8 @@ Vue.mixin({
     searchText () { return this.$store.state.searchText },
     teams () { return this.$store.state.teams || [] },
     currentOrg () {
-      return find(this.teams, team => team.id === this.$route.params.teamId) || {}
+      // return find(this.teams, team => team.id === this.$route.params.teamId) || {}
+      return this.teams.length ? this.teams[0] : {}
     },
     currentPlan () {
       return this.$store.state.currentPlan
@@ -657,6 +658,33 @@ Vue.mixin({
         }
       }
       return violations
+    },
+    listPasswordPolicy (policy_type = 'password_requirement') {
+      const res = []
+      if (!this.enterprisePolicies) {
+        return []
+      }
+      const policy = this.enterprisePolicies[policy_type]
+      if (policy && policy.enabled) {
+        if (policy.config.minLength) {
+          res.push(
+            this.$t('data.password_policies.min_password_length', { length: policy.config.minLength })
+          )
+        }
+        if (policy.config.requireSpecialCharacter) {
+          res.push(this.$t('data.password_policies.requires_special'))
+        }
+        if (policy.config.requireLowerCase) {
+          res.push(this.$t('data.password_policies.requires_lowercase'))
+        }
+        if (policy.config.requireUpperCase) {
+          res.push(this.$t('data.password_policies.requires_uppercase'))
+        }
+        if (policy.config.requireDigit) {
+          res.push(this.$t('data.password_policies.requires_number'))
+        }
+      }
+      return res
     },
     openIntercom () {
       if (window.Intercom) { window.Intercom('show') }
