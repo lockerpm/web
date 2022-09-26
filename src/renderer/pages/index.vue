@@ -42,12 +42,12 @@
             </div>
           </div>
           <!-- Right -->
-          <div class="hidden md:block md:w-1/2 order-2 justify-self-end top-[173px] pr-0">
+          <div class="hidden md:block md:w-1/2 order-2 justify-self-end items-center top-[180px] pr-0">
             <button @click="dialogVisible = true">
               <img
                 :src="require(`~/assets/images/landing/intro-thumbnail.png`)"
                 alt=""
-                style="max-width: 120%; margin-left: 75px; max-height: 485px;"
+                style="max-width: 120%; margin-left: 75px; max-height: 485px; margin-top: 15px"
               >
             </button>
           </div>
