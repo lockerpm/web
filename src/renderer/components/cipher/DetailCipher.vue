@@ -129,11 +129,13 @@
 
           <!-- Master Password -->
           <template v-if="cipher.type === CipherType.MasterPassword">
-            <TextHaveCopy
-              :label="$t('data.ciphers.password')"
-              :text="cipher.login.password"
-              :should-hide="true"
-            />
+            <div>
+              <TextHaveCopy
+                should-hide
+                :label="$t('data.ciphers.password')"
+                :text="cipher.login.password"
+              />
+            </div>
             <div class="grid md:grid-cols-6 cipher-item">
               <div class="">{{ $t('data.ciphers.password_security') }}</div>
               <div class="col-span-4 font-semibold">

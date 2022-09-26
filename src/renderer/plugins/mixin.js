@@ -503,6 +503,7 @@ Vue.mixin({
       let name = ''
       switch (cipher.type) {
       case CipherType.Login:
+      case CipherType.MasterPassword:
         name = 'passwords'
         break
       case CipherType.SecureNote:
