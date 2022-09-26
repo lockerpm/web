@@ -43,18 +43,20 @@
           </div>
           <!-- Right -->
           <div class="hidden md:block md:w-1/2 order-2 justify-self-end top-[173px] pr-0">
+            <button @click="dialogVisible = true">
+              <img
+                :src="require(`~/assets/images/landing/intro-thumbnail.png`)"
+                alt=""
+                style="max-width: 120%; margin-left: 75px; max-height: 485px;"
+              >
+            </button>
+          </div>
+          <!-- <div class="w-full md:hidden order-2 mt-16">
             <img
               :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
               alt=""
-              style="max-width: 120%; margin-left: 75px; max-height: 485px;"
             >
-          </div>
-          <div class="w-full md:hidden order-2 mt-16">
-            <img
-              :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
-              alt=""
-            >
-          </div>
+          </div> -->
           <!-- Right end -->
         </div>
       </div>
@@ -62,33 +64,11 @@
     <!-- Header end -->
 
     <!-- Video intro -->
-    <section class="mt-[50px] mb-[50px]">
-      <div class="w-full flex flex-wrap">
-        <div class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:px-24 order-1">
-          <h2 class="w-full font-bold landing-font-28 text-black mb-[20px]">
-            {{ $t('video_intro.title') }}
-          </h2>
-          <p class="landing-font-16">{{ $t('video_intro.desc') }}</p>
+    <section>
+      <div v-if="dialogVisible" class="modal" @click="dialogVisible = false">
+        <div class="modal-content">
+          <youtube :video-id="videoId" player-width="960" player-height="540" :player-vars="{autoplay: 0}" />
         </div>
-        <!-- Left end -->
-        <!-- Right -->
-        <div class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2">
-          <button @click="dialogVisible = true">
-            <img
-              :src="require(`~/assets/images/landing/intro-thumbnail.png`)"
-              alt="Locker Password Manager video introduction"
-            >
-          </button>
-        </div>
-        <!-- Right end -->
-
-        <!-- Video modal -->
-        <div v-if="dialogVisible" class="modal" @click="dialogVisible = false">
-          <div class="modal-content">
-            <youtube :video-id="videoId" player-width="960" player-height="540" :player-vars="{autoplay: 1}" />
-          </div>
-        </div>
-        <!-- Video modal end -->
       </div>
     </section>
     <!-- Video intro end -->
@@ -255,26 +235,12 @@
       class="full-width h-auto"
       style="background: #ffffff"
     >
-      <div
-        class="hidden lg:flex w-full h-auto text-center pt-32 mb-24 justify-items-end justify-center gap-x-6 overflow-hidden"
-      >
+      <div class="hidden lg:flex w-full h-auto text-center pt-32 mb-24 justify-items-end justify-center gap-x-6 overflow-hidden">
         <img
           id="mobile"
-          :src="require(`~/assets/images/landing/index/${$t('landing.devices.mobile.image')}`)"
+          :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
           class="inline self-end"
-          style="width: 6%;"
-        >
-        <img
-          id="tablet"
-          :src="require(`~/assets/images/landing/index/${$t('landing.devices.tablet.image')}`)"
-          class="inline self-end"
-          style="width: 10%;"
-        >
-        <img
-          id="mac"
-          :src="require(`~/assets/images/landing/index/${$t('landing.devices.laptop.image')}`)"
-          class="inline self-end"
-          style="width: 40%; "
+          style="width: 40%;"
         >
       </div>
     </section>
@@ -657,14 +623,15 @@ export default {
   display: flex;
 }
 .modal {
-  display: block; /* Hidden by default */
+  display: inline-block; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 1000000; /* Sit on top */
   left: 0;
   top: 0;
+  bottom: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
+  overflow: hidden; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
 }
@@ -673,7 +640,7 @@ export default {
 .modal-content {
   position: relative;
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
+  margin: 12% auto; /* 15% from the top and centered */
   border: 1px solid #888;
   width: 960px;
 }
