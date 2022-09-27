@@ -36,35 +36,39 @@ export default {
         if (this.$route.query.client === 'browser') {
           // window.postMessage({ command: 'locker-authResult', token: this.$route.query.token }, 'https://locker.io')
           const extensionToken = this.$route.query.token
-          for (const id of lockerExtensionId) {
+          try {
+            for (const id of lockerExtensionId) {
             // eslint-disable-next-line no-undef
-            chrome.runtime.sendMessage(id, { command: 'cs-authResult', token: extensionToken }, response => this.updateLoginExtension(response))
+              chrome.runtime.sendMessage(id, { command: 'cs-authResult', token: extensionToken }, response => this.updateLoginExtension(response))
+            }
+          } catch (error) {
+
           }
         } else {
-          try {
-            const url = 'https://api.locker.io/v3/sso/access_token'
-            this.$axios.post(url, {
-              SERVICE_URL: '/sso',
-              SERVICE_SCOPE: 'pwdmanager',
-              CLIENT: 'browser'
-            }).then(async result => {
-              // console.log(result)
-              const extensionToken = result.data ? result.data.access_token : ''
+          const url = 'https://api.locker.io/v3/sso/access_token'
+          this.$axios.post(url, {
+            SERVICE_URL: '/sso',
+            SERVICE_SCOPE: 'pwdmanager',
+            CLIENT: 'browser'
+          }).then(async result => {
+            // console.log(result)
+            const extensionToken = result.data ? result.data.access_token : ''
+            try {
               for (const id of lockerExtensionId) {
-                // eslint-disable-next-line no-undef
+              // eslint-disable-next-line no-undef
                 chrome.runtime.sendMessage(id, { command: 'cs-authResult', token: extensionToken }, response => this.updateLoginExtension(response))
               }
-            })
-          } catch (e) {
-            console.log(e)
-          }
+            } catch (error) {
+
+            }
+          }).catch(() => {})
         }
         // end sendMessage
 
         if (this.$route.query.return_url && isString(this.$route.query.return_url)) {
-          this.$router.replace(this.localePath({ path: this.$route.query.return_url }))
+          this.$router.replace(this.localePath({ path: this.$route.query.return_url })).catch(() => {})
         } else {
-          this.$router.replace(this.localePath({ name: 'vault' }))
+          this.$router.replace(this.localePath({ name: 'vault' })).catch(() => {})
         }
         this.$store.commit('UPDATE_LOADING', false)
       }, 300)

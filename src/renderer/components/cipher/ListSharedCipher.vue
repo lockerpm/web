@@ -629,8 +629,11 @@ export default {
           return c.isDeleted === this.deleted
         }
         let result = []
+        try {
+          result = await this.$searchService.searchCiphers('', [null, deletedFilter], null) || []
+        } catch (error) {
 
-        result = await this.$searchService.searchCiphers('', [null, deletedFilter], null) || []
+        }
         return result
       },
       watch: ['$store.state.syncedCiphersToggle']
@@ -648,8 +651,11 @@ export default {
           return c.isDeleted === this.deleted
         }
         let result = []
+        try {
+          result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+        } catch (error) {
 
-        result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
+        }
         result = result.filter(item => !item.collectionIds.length)
         if (this.getRouteBaseName() === 'shares') {
           result = result.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)
@@ -704,7 +710,12 @@ export default {
         if (this.$store.state.syncing) {
           return
         }
-        let collections = await this.$collectionService.getAllDecrypted() || []
+        let collections = []
+        try {
+          collections = await this.$collectionService.getAllDecrypted() || []
+        } catch (error) {
+
+        }
         collections = collections.filter(f => f.id)
         if (this.getRouteBaseName() === 'shares') {
           collections = collections.filter(item => this.getTeam(this.organizations, item.organizationId).type !== 0)
@@ -886,6 +897,7 @@ export default {
             const cipherEnc = await this.$cipherService.encrypt(cipher, this.$cryptoService.getEncKey())
             const data = new CipherRequest(cipherEnc)
             data.type = type_
+            cipher.type = type_
             return {
               id: cipher.id,
               ...data

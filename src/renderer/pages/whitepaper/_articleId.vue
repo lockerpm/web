@@ -59,7 +59,7 @@
             <div class="text-[#A2A3A7] landing-font-14 font-normal">{{ $t('whitepaper.content.title') }}</div>
           </div>
           <div v-for="(item, index) in sections" :key="index" class="mt-3 ml-6">
-            <a class="landing-font-14 text-black" @click="goto(item.id)">
+            <a class="landing-font-16 text-black" @click="goto(item.id)">
               {{ item.text }}
             </a>
           </div>

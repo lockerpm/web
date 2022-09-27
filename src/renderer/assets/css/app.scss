@@ -382,16 +382,15 @@ input:-webkit-autofill:active
 
 .notion-h2 {
   @apply font-bold text-black;
-  font-size: 22px;
-  line-height: 26px;
+  font-size: 36px;
+  line-height: 48px;
   margin-top: 3rem;
   margin-bottom: 2rem;
 }
 
 .notion-h3 {
   @apply text-black font-bold;
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 28px;
   margin-top: 21px;
   margin-bottom: 21px;
 }
@@ -401,15 +400,16 @@ input:-webkit-autofill:active
 }
 
 .notion-text {
-  @apply text-black;
-  font-size: 16px;
+  @apply text-[#242736];
+  font-size: 18px;
+  line-height: 2rem;
   margin-bottom: 1rem;
 }
 
 .notion-list li {
   @apply text-black;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 18px;
+  line-height: 32px;
   margin-bottom: 1rem;
   display: list-item;
   list-style-type: disc;
@@ -520,6 +520,14 @@ a:hover {
   .questions .answer {
     font-size: 14px;
   }
+
+  .questions-transparent .question {
+    font-size: 16px;
+  }
+
+  .questions-transparent .answer {
+    font-size: 14px;
+  }
 }
 .questions .answer ul {
   list-style: disc !important;
@@ -544,4 +552,23 @@ a:hover {
   &.value{
     color: #a6e22e;
   }
+}
+
+.questions-transparent .el-collapse-item__header {
+  padding: 46px 0px 24px 0px;
+}
+
+.questions-transparent .el-collapse-item__header i.el-collapse-item__arrow {
+  display: block !important;
+  color: black !important;
+  font-weight: bold;
+}
+
+.questions-transparent .answer ul {
+  list-style: disc !important;
+  padding-left: 20px !important;
+}
+
+.questions-transparent .answer {
+  padding: 0 0 0 24px;
 }

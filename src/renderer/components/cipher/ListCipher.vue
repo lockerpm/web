@@ -396,182 +396,6 @@
 
       <!-- List Ciphers -->
       <client-only v-if="!viewFolder">
-        <!-- <el-table
-          ref="multipleTable"
-          :data="dataRendered || []"
-          style="width: 100%"
-          row-class-name="hover-table-row"
-          lazy
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column
-            type="selection"
-            width="55"
-          />
-          <el-table-column
-            prop="name"
-            label=""
-            min-width="300"
-            show-overflow-tooltip
-          >
-            <template slot="header">
-              <div v-if="multipleSelection.length" class="flex items-center ">
-                <div class="text-black mr-8 whitespace-nowrap">
-                  {{ multipleSelection.length }} {{ $t('data.ciphers.selected_items') }}
-                </div>
-                <div v-if="deleted">
-                  <button
-                    class="btn btn-default btn-xs"
-                    @click="restoreCiphers(multipleSelection.map(e => e.id))"
-                  >
-                    {{ $t('common.restore') }}
-                  </button>
-                  <button
-                    class="btn btn-default btn-xs !text-danger"
-                    @click="deleteCiphers(multipleSelection.map(e => e.id))"
-                  >
-                    {{ $t('common.permanently_delete') }}
-                  </button>
-                </div>
-                <div v-else class="">
-                  <button
-                    class="btn btn-default btn-xs"
-                    @click="moveFolders(multipleSelection.map(e => e.id))"
-                  >
-                    {{ $t('common.move_folder') }}
-                  </button>
-                  <button
-                    class="btn btn-default btn-xs !text-danger"
-                    @click="moveTrashCiphers(multipleSelection.map(e => e.id))"
-                  >
-                    {{ $t('common.delete') }}
-                  </button>
-                </div>
-              </div>
-            </template>
-            <template slot-scope="scope">
-              <div class="flex items-center">
-                <div
-                  class="text-[34px] mr-3 flex-shrink-0"
-                  :class="{'filter grayscale': scope.row.isDeleted}"
-                >
-                  <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
-                </div>
-                <div class="flex flex-col">
-                  <a
-                    class="text-black font-semibold truncate flex items-center"
-                    :class="{'opacity-80': scope.row.isDeleted}"
-                    @click="routerCipher(scope.row, addEdit)"
-                  >
-                    {{ scope.row.name }}
-                    <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
-                  </a>
-                  <div>
-                    {{ scope.row.subTitle }}
-                  </div>
-                </div>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            :label="$t('data.ciphers.updated_time')"
-          >
-            <template slot-scope="scope">
-              <span class="break-normal">{{ $moment(scope.row.revisionDate).fromNow() }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="right"
-            :label="$t('common.actions')"
-          >
-            <template slot-scope="scope">
-              <div class="col-actions">
-                <button
-                  v-if="!scope.row.isDeleted && scope.row.login.canLaunch"
-                  class="btn btn-icon btn-xs hover:bg-black-400"
-                  :title="$t('common.go_to_website')"
-                  @click="openNewTab(scope.row.login.uri)"
-                >
-                  <i class="fas fa-external-link-square-alt" />
-                </button>
-                <el-dropdown
-                  v-if="!scope.row.isDeleted"
-                  trigger="click"
-                  :hide-on-click="false"
-                >
-                  <button class="btn btn-icon btn-xs hover:bg-black-400">
-                    <i class="far fa-clone" />
-                  </button>
-                  <el-dropdown-menu slot="dropdown">
-                    <template v-if="scope.row.type === CipherType.Login">
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.login.username"
-                        v-clipboard:success="clipboardSuccessHandler"
-                      >
-                        {{ $t('common.copy') }} {{ $t('common.username') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.login.password"
-                        v-clipboard:success="clipboardSuccessHandler"
-                      >
-                        {{ $t('common.copy') }} {{ $t('common.password') }}
-                      </el-dropdown-item>
-                    </template>
-                    <template v-if="scope.row.type === CipherType.SecureNote">
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.notes"
-                        v-clipboard:success="clipboardSuccessHandler"
-                        divided
-                      >
-                        {{ $t('common.copy') }} {{ $t('common.note') }}
-                      </el-dropdown-item>
-                    </template>
-                  </el-dropdown-menu>
-                </el-dropdown>
-                <button
-                  v-if="!scope.row.isDeleted && isOwner(organizations, scope.row)"
-                  class="btn btn-icon btn-xs hover:bg-black-400"
-                  :title="$t('common.share')"
-                  @click="shareItem(scope.row)"
-                >
-                  <i class="far fa-share-square" />
-                </button>
-                <el-dropdown trigger="click" :hide-on-click="false">
-                  <button class="btn btn-icon btn-xs hover:bg-black-400">
-                    <i class="fas fa-ellipsis-h" />
-                  </button>
-                  <el-dropdown-menu slot="dropdown">
-                    <template v-if="!scope.row.isDeleted && canManageItem(organizations, scope.row)">
-                      <el-dropdown-item @click.native="addEdit(scope.row)">
-                        {{ $t('common.edit') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item divided @click.native="cloneCipher(scope.row)">
-                        {{ $t('common.clone') }}
-                      </el-dropdown-item>
-                    </template>
-                    <template v-if="!scope.row.isDeleted">
-                      <el-dropdown-item @click.native="moveFolders([scope.row.id])">
-                        {{ $t('common.move_folder') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item divided @click.native="moveTrashCiphers([scope.row.id])">
-                        <span class="text-danger">{{ $t('common.delete') }}</span>
-                      </el-dropdown-item>
-                    </template>
-                    <template v-else>
-                      <el-dropdown-item divided @click.native="restoreCiphers([scope.row.id])">
-                        {{ $t('common.restore') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item @click.native="deleteCiphers([scope.row.id])">
-                        <span class="text-danger">{{ $t('common.permanently_delete') }}</span>
-                      </el-dropdown-item>
-                    </template>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table> -->
         <RecycleScroller
           ref="list"
           page-mode
@@ -580,6 +404,7 @@
         >
           <template slot="before">
             <div class="th flex">
+              <!-- Check all -->
               <div class="self-center mr-1">
                 <el-checkbox
                   v-model="checkedAll"
@@ -587,6 +412,8 @@
                   @change="checkAll"
                 />
               </div>
+              <!-- Check all end -->
+
               <div
                 v-if="multipleSelection.length"
                 class="flex items-center "
@@ -627,6 +454,8 @@
                 </div>
               </div>
             </div>
+
+            <!-- Headers -->
             <div
               v-for="header in headers"
               :key="header"
@@ -634,24 +463,35 @@
             >
               {{ header }}
             </div>
+            <!-- Headers end -->
           </template>
+
           <template #default="{item}">
             <div class="td">
               <div class="flex items-center">
+                <!-- Checkbox -->
                 <div class="mr-4">
                   <el-checkbox
+                    :disabled="isProtectedCipher(item)"
                     :value="item.checked?true:false"
                     :class="item.checked?'!visible':''"
                     @change="changeSelection(item)"
                   />
                 </div>
+                <!-- Checkbox end -->
+
+                <!-- Icon -->
                 <div
                   class="text-[34px] mr-3 flex-shrink-0"
                   :class="{'filter grayscale': item.isDeleted}"
                 >
                   <Vnodes :vnodes="getIconCipher(item, 34)" />
                 </div>
+                <!-- Icon end -->
+
+                <!-- Info block -->
                 <div class="flex flex-col overflow-hidden">
+                  <!-- Name -->
                   <a
                     class="text-black font-semibold truncate flex items-center"
                     :class="{'opacity-80': item.isDeleted}"
@@ -666,17 +506,28 @@
                       class="inline-block ml-2"
                     >
                   </a>
+                  <!-- Name end -->
+
+                  <!-- Subtitle -->
                   <div class="overflow-hidden overflow-ellipsis">
                     {{ item.type === CipherType.CryptoWallet && item.cryptoWallet ? item.cryptoWallet.username : item.subTitle }}
                   </div>
+                  <!-- Subtitle end -->
                 </div>
+                <!-- Info block end -->
               </div>
             </div>
+
+            <!-- Updated time -->
             <div class="td">
               <span class="break-normal">{{ $moment(item.revisionDate).fromNow() }}</span>
             </div>
+            <!-- Updated time end -->
+
+            <!-- Actions -->
             <div class="td">
               <div class="col-actions text-right">
+                <!-- Go to website -->
                 <button
                   v-if="!item.isDeleted && item.login.canLaunch"
                   class="btn btn-icon btn-xs hover:bg-black-400"
@@ -685,8 +536,11 @@
                 >
                   <i class="fas fa-external-link-square-alt" />
                 </button>
+                <!-- Go to website end -->
+
+                <!-- Copy -->
                 <el-dropdown
-                  v-if="!item.isDeleted && [CipherType.Login, CipherType.SecureNote, CipherType.CryptoAccount, CipherType.CryptoWallet].includes(item.type)"
+                  v-if="!item.isDeleted && [CipherType.Login, CipherType.SecureNote, CipherType.CryptoAccount, CipherType.CryptoWallet, CipherType.MasterPassword].includes(item.type)"
                   trigger="click"
                   :hide-on-click="false"
                 >
@@ -705,6 +559,14 @@
                         v-clipboard:copy="item.login.password"
                         v-clipboard:success="clipboardSuccessHandler"
                         :disabled="!canViewItem(organizations, item)"
+                      >
+                        {{ $t('common.copy') }} {{ $t('common.password') }}
+                      </el-dropdown-item>
+                    </template>
+                    <template v-if="item.type === CipherType.MasterPassword">
+                      <el-dropdown-item
+                        v-clipboard:copy="item.login.password"
+                        v-clipboard:success="clipboardSuccessHandler"
                       >
                         {{ $t('common.copy') }} {{ $t('common.password') }}
                       </el-dropdown-item>
@@ -745,15 +607,22 @@
                     </template>
                   </el-dropdown-menu>
                 </el-dropdown>
+                <!-- Copy end -->
+
+                <!-- Share -->
                 <button
-                  v-if="!item.isDeleted && isOwner(organizations, item) && !item.collectionIds.length"
+                  v-if="!item.isDeleted && isOwner(organizations, item) && !item.collectionIds.length && !isProtectedCipher(item)"
                   class="btn btn-icon btn-xs hover:bg-black-400"
                   :title="$t('common.share')"
                   @click="shareItem(item)"
                 >
                   <i class="far fa-share-square" />
                 </button>
+                <!-- Share end -->
+
+                <!-- Other actions -->
                 <el-dropdown
+                  v-if="!isProtectedCipher(item)"
                   trigger="click"
                   :hide-on-click="false"
                 >
@@ -797,18 +666,24 @@
                     </template>
                   </el-dropdown-menu>
                 </el-dropdown>
+                <!-- Other actions end -->
               </div>
             </div>
+            <!-- Actions end -->
           </template>
         </RecycleScroller>
       </client-only>
       <!-- List Ciphers end -->
     </div>
+
+    <!-- No cipher -->
     <NoCipher
       v-else-if="!$store.state.syncing"
       :type="type"
       @add-cipher="handleAddButton"
     />
+    <!-- No cipher end -->
+
     <AddEditCipher
       ref="addEditCipherDialog"
       :type="type"
@@ -834,7 +709,6 @@
 </template>
 
 <script>
-import * as lunr from 'lunr'
 import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy'
 import find from 'lodash/find'
@@ -848,13 +722,12 @@ import ShareCipher from '../../components/cipher/ShareCipher'
 import ShareFolder from '../../components/folder/ShareFolder'
 import MoveFolder from '../folder/MoveFolder'
 import NoCipher from '../../components/cipher/NoCipher'
-import { CipherType } from '../../jslib/src/enums'
+import { CipherType } from '../../core/enums/cipherType'
 import Vnodes from '../../components/Vnodes'
 import ChooseCipherType from '../../components/cipher/ChooseCipherType'
 import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
 import { CipherRequest } from '../../jslib/src/models/request'
-CipherType.CryptoAccount = 6
-CipherType.CryptoWallet = 7
+
 export default {
   components: {
     ChooseCipherType,
@@ -1098,7 +971,15 @@ export default {
         } catch (error) {
         }
         // remove ciphers generated by authenticator
-        result = result.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity, CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type))
+        result = result.filter(cipher => [
+          CipherType.Login,
+          CipherType.SecureNote,
+          CipherType.Card,
+          CipherType.Identity,
+          CipherType.CryptoAccount,
+          CipherType.CryptoWallet,
+          CipherType.MasterPassword
+        ].includes(cipher.type))
         result.map(item => {
           // if (item.organizationId) {
           //   item.isShared = this.isShared(item.organizationId)
@@ -1221,6 +1102,9 @@ export default {
     }
   },
   methods: {
+    isProtectedCipher (cipher) {
+      return cipher.type === CipherType.MasterPassword
+    },
     addEdit (cipher) {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     },
@@ -1358,8 +1242,10 @@ export default {
       if (this.checkedAll) {
         this.multipleSelection = []
         this.ciphers.forEach(cipher => {
-          cipher.checked = true
-          this.multipleSelection.push(cipher)
+          if (!this.isProtectedCipher(cipher)) {
+            cipher.checked = true
+            this.multipleSelection.push(cipher)
+          }
         })
       } else {
         this.ciphers.forEach(cipher => {
@@ -1394,6 +1280,7 @@ export default {
             const cipherEnc = await this.$cipherService.encrypt(cipher, this.$cryptoService.getEncKey())
             const data = new CipherRequest(cipherEnc)
             data.type = type_
+            cipher.type = type_
             return {
               id: cipher.id,
               ...data

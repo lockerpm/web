@@ -8,13 +8,12 @@
               NEW
             </span>
             <span v-html="$t('landing_banner.desc')" /> 🎉
-            <a
-              :href="url"
-              target="_blank"
+            <nuxt-link
+              :to="localePath('/private-email')"
               style="color: #15D127; text-decoration: none"
             >
               {{ $t('landing_banner.read_more') }} <i class="el-icon-right" />
-            </a>
+            </nuxt-link>
           </p>
         </div>
         <a class="close-btn" @click.prevent="close()">

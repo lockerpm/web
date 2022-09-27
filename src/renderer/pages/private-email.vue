@@ -9,7 +9,9 @@
           {{ $t('private_email.welcome.title') }}
         </h1>
         <img class="mx-auto" src="~/assets/images/landing/private-email/boundary.svg">
-        <p class="my-8 landing-font-20" v-html="$t('private_email.welcome.desc')" />
+        <p class="my-8 landing-font-20 max-w-[700px] mx-auto">
+          {{ $t('private_email.welcome.desc') }} <nuxt-link :to="localePath('/')">Locker Password Manager</nuxt-link>
+        </p>
         <nuxt-link :to="localePath('/register')" class="landing-btn">
           {{ $t('private_email.button') }}
         </nuxt-link>
@@ -95,20 +97,20 @@
       <img class="mx-auto mb-8" src="~/assets/images/landing/private-email/boundary.svg">
       <p class="text-black-600 landing-font-18 mb-16">{{ $t('private_email.cta.desc') }}</p>
       <div class="rounded-xl text-left max-w-[870px] mx-auto  border-[#DFDFDF] border bg-black-700 text-white mb-[72px]">
-        <div class="">
-          <pre>
+        <div>
+          <pre class="overflow-x-scroll pr-6">
             <code>
-            <span class="token tag">curl --location --request</span> <span class="token key">POST</span> <span class="token value">'https://api.locker.io/v3/relay/addresses'</span> \
-            <span class="token tag">--header</span> '<span class="token key">Authorization</span>: <span class="token value">Bearer  {your_api_key}</span>' \
-            --data-raw ''
+              <span class="token tag">curl --location --request</span> <span class="token key">POST</span> <span class="token value">'https://api.locker.io/v3/relay/addresses'</span> \
+              <span class="token tag">--header</span> '<span class="token key">Authorization</span>: <span class="token value">Bearer  {your_api_key}</span>' \
+              --data-raw ''
             </code>
           </pre>
         </div>
         <div class="bg-black-600 p-4">
           Example Response
         </div>
-        <div class="">
-          <pre>
+        <div>
+          <pre class="overflow-x-scroll pr-6">
             <code>
             {
               <span class="token key">"id"</span>: <span class="token value">88</span>,
@@ -140,6 +142,7 @@
       <!-- <h2 class="landing-font-48 font-bold mb-8">{{ $t('private_email.feedback.title') }}</h2>
       <img class="mx-auto" src="~/assets/images/landing/private-email/section-line.svg"> -->
       <h2 class="landing-font-48 font-bold mb-8">{{ $t('private_email.pick_your_plan') }}</h2>
+      <p class="text-black-600 landing-font-18 mb-16">{{ $t('private_email.pick_plan_desc') }}</p>
       <div class="mt-16 grid md:grid-cols-2 grid-cols-1 gap-20 text-left">
         <div
           v-for="(item, index) in $t('private_email.plans')"
@@ -164,9 +167,9 @@
             <div
               v-else
               class="landing-btn cursor-pointer"
-              @click="choosePlan('pm_premium')"
+              @click="() => {}"
             >
-              <span class="whitespace-nowrap">{{ $t('private_email.button') }}</span>
+              <span class="whitespace-nowrap">{{ $t('private_email.coming_soon') }}</span>
             </div>
           </div>
         </div>

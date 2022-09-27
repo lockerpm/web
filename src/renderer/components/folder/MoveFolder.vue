@@ -200,6 +200,7 @@ export default {
       const cipherEnc = await this.$cipherService.encrypt(cipher, orgKey)
       const data = new CipherRequest(cipherEnc)
       data.type = type_
+      cipher.type = type_
       await this.$axios.$post(`cystack_platform/pm/sharing/${collection.organizationId}/folders/${collection.id}/items`, { cipher: { ...data, id: cipher.id } })
     }
   }
