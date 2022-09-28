@@ -165,6 +165,22 @@ Vue.mixin({
         return ''
       }
     },
+    async createEncryptedMasterPwItem (masterPw, encKey) {
+      const cipher = new CipherView()
+      cipher.type = CipherType.Login
+      const loginData = new LoginView()
+      loginData.username = 'locker.io'
+      loginData.password = masterPw
+      const uriView = new LoginUriView()
+      uriView.uri = 'https://locker.io'
+      loginData.uris = [uriView]
+      cipher.login = loginData
+      cipher.name = 'Locker Master Password'
+      const cipherEnc = await this.$cipherService.encrypt(cipher, encKey)
+      const data = new CipherRequest(cipherEnc)
+      data.type = CipherType.MasterPassword
+      return data
+    },
     async login () {
       const lockerDeviceId = this.$cookies.get('locker_device_id')
       const deviceIdentifier = lockerDeviceId || this.randomString()
@@ -198,24 +214,11 @@ Vue.mixin({
 
         // Create master pw item if not exists
         if (res.has_no_master_pw_item) {
-          console.log('LOLOLOLOL')
           try {
-            const cipher = new CipherView()
-            cipher.type = CipherType.Login
-            const loginData = new LoginView()
-            loginData.username = 'locker.io'
-            loginData.password = this.masterPassword
-            const uriView = new LoginUriView()
-            uriView.uri = 'https://locker.io'
-            loginData.uris = [uriView]
-            cipher.login = loginData
-            cipher.name = 'Locker Master Password'
-            const cipherEnc = await this.$cipherService.encrypt(cipher)
-            const data = new CipherRequest(cipherEnc)
-            data.type = CipherType.MasterPassword
+            const encMasterPwItem = await this.createEncryptedMasterPwItem(this.masterPassword)
             const passwordStrength = this.$passwordGenerationService.passwordStrength(this.masterPassword, ['cystack']) || {}
             await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
-              ...data,
+              ...encMasterPwItem,
               score: passwordStrength.score,
               collectionIds: []
             })
