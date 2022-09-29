@@ -225,6 +225,7 @@
       >
         <client-only>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
+            <!-- Collection - Shared -->
             <template v-for="item in collections">
               <div
                 v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
@@ -233,15 +234,64 @@
                 :class="{'border-primary': selectedFolder.id === item.id}"
                 :title="item.name"
                 @click="routerFolder(item)"
-                @contextmenu.prevent="$refs.menu.open($event, item)"
               >
+                <!-- NOTE: if you want to enable right click menu, add @contextmenu.prevent="$refs.menu.open($event, item)" to button and uncomment bellow context code -->
+                <!-- Icon -->
                 <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
+                <!-- Icon end -->
+
+                <!-- Name + count -->
                 <div class="font-semibold truncate select-none line-clamp-1">
                   {{ item.name }}
                   <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
                 </div>
+                <!-- Name + count end -->
+
+                <!-- Actions -->
+                <el-dropdown
+                  v-if="!isProtectedCipher(item)"
+                  trigger="click"
+                  :hide-on-click="false"
+                >
+                  <button class="btn btn-icon btn-xs hover:bg-black-400">
+                    <i class="fas fa-ellipsis-h" />
+                  </button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      v-if="canManageItem(organizations, selectedFolder)"
+                      @click.native="addEditFolder(selectedFolder, false)"
+                    >
+                      {{ $t('common.rename') }}
+                    </el-dropdown-item>
+
+                    <el-dropdown-item
+                      v-if="isOwner(organizations, selectedFolder)"
+                      @click.native="shareFolder(selectedFolder)"
+                    >
+                      {{ $t('common.share') }}
+                    </el-dropdown-item>
+
+                    <el-dropdown-item
+                      v-if="selectedFolder.organizationId && isOwner(organizations, selectedFolder)"
+                      @click.native="stopSharing(selectedFolder)"
+                    >
+                      {{ $t('data.ciphers.stop_sharing') }}
+                    </el-dropdown-item>
+
+                    <el-dropdown-item
+                      v-if="canManageItem(organizations, selectedFolder)"
+                      @click.native="deleteFolder(selectedFolder)"
+                    >
+                      <span class="text-danger">{{ $t('common.delete') }}</span>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <!-- Actions end -->
               </div>
             </template>
+            <!-- Collection - Shared end -->
+
+            <!-- Folder -->
             <template v-for="item in folders">
               <div
                 v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
@@ -250,20 +300,68 @@
                 :class="{'border-primary': selectedFolder.id === item.id}"
                 :title="item.name"
                 @click="routerFolder(item)"
-                @contextmenu.prevent="$refs.menu.open($event, item)"
               >
+                <!-- Icon -->
                 <img
                   src="~/assets/images/icons/folderSolid.svg"
                   alt=""
                   class="select-none mr-2"
                 >
+                <!-- Icon end -->
+
+                <!-- Name + count -->
                 <div class="font-semibold truncate select-none line-clamp-1">
                   {{ item.name }}
                   <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
                 </div>
+                <!-- Name + count end -->
+
+                <!-- Actions -->
+                <el-dropdown
+                  v-if="!isProtectedCipher(item)"
+                  trigger="click"
+                  :hide-on-click="false"
+                >
+                  <button class="btn btn-icon btn-xs hover:bg-black-400">
+                    <i class="fas fa-ellipsis-h" />
+                  </button>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      v-if="canManageItem(organizations, selectedFolder)"
+                      @click.native="addEditFolder(selectedFolder, false)"
+                    >
+                      {{ $t('common.rename') }}
+                    </el-dropdown-item>
+
+                    <el-dropdown-item
+                      v-if="isOwner(organizations, selectedFolder)"
+                      @click.native="shareFolder(selectedFolder)"
+                    >
+                      {{ $t('common.share') }}
+                    </el-dropdown-item>
+
+                    <el-dropdown-item
+                      v-if="selectedFolder.organizationId && isOwner(organizations, selectedFolder)"
+                      @click.native="stopSharing(selectedFolder)"
+                    >
+                      {{ $t('data.ciphers.stop_sharing') }}
+                    </el-dropdown-item>
+
+                    <el-dropdown-item
+                      v-if="canManageItem(organizations, selectedFolder)"
+                      @click.native="deleteFolder(selectedFolder)"
+                    >
+                      <span class="text-danger">{{ $t('common.delete') }}</span>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <!-- Actions end -->
               </div>
             </template>
-            <component
+            <!-- Folder end -->
+
+            <!-- Context menu -->
+            <!-- <component
               :is="context"
               ref="menu"
               class="el-dropdown-menu"
@@ -299,7 +397,8 @@
                   <span class="text-danger">{{ $t('common.delete') }}</span>
                 </li>
               </template>
-            </component>
+            </component>-->
+            <!-- Context menu end -->
           </div>
         </client-only>
       </div>
