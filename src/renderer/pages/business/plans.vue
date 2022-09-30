@@ -9,22 +9,22 @@
           <tr>
             <th class="w-1/2 text-left pl-6 landing-font-18" />
             <th class="w-1/4 rounded-t-xl">
-              <div class="px-6 py-6 font-medium">
+              <div class="px-4 py-6 font-medium">
                 <div class="landing-font-24 font-semibold mb-5">Business</div>
-                <div class="flex justify-center gap-6">
+                <div class="flex justify-center gap-4">
+                  <div>
+                    <span class="landing-font-28 font-semibold">$8/user</span>
+                    <br>
+                    <span class="landing-font-16 font-semibold"> per month </span>
+                    <br>
+                    <span class="landing-font-16 text-black-500 lowercase whitespace-nowrap">{{ $t('plan.monthly') }}</span>
+                  </div>
                   <div>
                     <span class="landing-font-28 font-semibold">$5/user</span>
                     <br>
                     <span class="landing-font-16 font-semibold"> per month </span>
                     <br>
-                    <span class="landing-font-16 text-black-500 lowercase">{{ $t('plan.monthly') }}</span>
-                  </div>
-                  <div>
-                    <span class="landing-font-28 font-semibold">$8/user</span>
-                    <br>
-                    <span class="landing-font-16 font-semibold"> per year </span>
-                    <br>
-                    <span class="landing-font-16 text-black-500 lowercase">{{ $t('plan.annually') }}</span>
+                    <span class="landing-font-16 text-black-500 lowercase whitespace-nowrap">{{ $t('plan.annually') }}</span>
                   </div>
                 </div>
                 <nuxt-link class="landing-btn mt-8 !font-medium" :to="localePath('/business#register-section')">
