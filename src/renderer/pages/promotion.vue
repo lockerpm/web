@@ -366,10 +366,10 @@ export default {
   border-radius: 5px;
   background-color: #268334;
   &:disabled {
-   background-color: #268334;
-      &:hover {
-       background-color: #268334;
-      }
+    background-color: #268334;
+    &:hover {
+      background-color: #268334;
+    }
   }
 }
 .customer-said{
