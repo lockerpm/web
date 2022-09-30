@@ -13,7 +13,7 @@
             <div v-html="$t('promotion.welcome.desc')" />
             <div class="mt-6">
               <div v-for="(item, index) in $t('promotion.welcome.list_subtitle')" :key="index" class="flex items-center">
-                <img src="~/assets/images/landing/promotion/icon-success.png" style="width:12px; height: 12px">
+                <img src="~/assets/images/landing/promotion/icon-success.png" class="w-[12px] h-[12px]">
                 <div class="landing-font-16 color-[#000000] font-normal ml-3">
                   {{ item }}
                 </div>
