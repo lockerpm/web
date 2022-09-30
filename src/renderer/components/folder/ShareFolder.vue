@@ -22,6 +22,8 @@
           v-model="user.username"
           label="Email"
           class="w-full col-span-3"
+          :error-text="!isMemberEmailInputValid && !!user.username"
+          @keyupEnter="addMember"
         />
         <!-- <InputSelect
           label="Role"
@@ -30,9 +32,15 @@
           :options="roleOptions"
           @change="(v) => user.role = v"
         /> -->
-        <button class="btn btn-outline-primary mb-[10px]" @click="addMember">
+        <el-button
+          class="btn btn-outline-primary"
+          :loading="dialogLoading.addMember"
+          :disabled="!isMemberEmailInputValid"
+          style="margin-bottom: 0.625rem"
+          @click="addMember"
+        >
           {{ $t('data.folders.add_member') }}
-        </button>
+        </el-button>
       </div>
     </div>
     <div>
@@ -159,7 +167,10 @@ export default {
       },
       newMembers: [],
       orgKey: null,
-      sharingKey: null
+      sharingKey: null,
+      dialogLoading: {
+        addMember: false
+      }
     }
   },
   computed: {
@@ -189,6 +200,13 @@ export default {
           key: null
         }
       }) || []
+    },
+    isMemberEmailInputValid () {
+      const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
+      if (!emails.length) {
+        return false
+      }
+      return emails.every(this.validateEmail)
     }
   },
   methods: {
@@ -275,23 +293,33 @@ export default {
       }
     },
     async addMember () {
+      if (!this.isMemberEmailInputValid) {
+        return
+      }
       const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
       if (!emails.length) {
         return
       }
-      const members = await Promise.all(emails.map(async email => {
-        const publicKey = await this.getPublicKey(email)
-        const key = publicKey ? await this.generateMemberKey(publicKey, this.orgKey) : null
-        return {
-          id: null,
-          username: email,
-          key,
-          status: 'pending',
-          role: 'member'
-        }
-      }))
-      this.newMembers = this.newMembers.concat(members)
-      this.user.username = ''
+      try {
+        this.dialogLoading.addMember = true
+        const members = await Promise.all(emails.map(async email => {
+          const publicKey = await this.getPublicKey(email)
+          const key = publicKey ? await this.generateMemberKey(publicKey, this.orgKey) : null
+          return {
+            id: null,
+            username: email,
+            key,
+            status: 'pending',
+            role: 'member'
+          }
+        }))
+        this.newMembers = this.newMembers.concat(members)
+        this.user.username = ''
+      } catch (e) {
+        this.notify(this.$t('errors.something_went_wrong'), 'error')
+      } finally {
+        this.dialogLoading.addMember = false
+      }
     },
     async stopSharing (row) {
       if (row.status === 'pending') {

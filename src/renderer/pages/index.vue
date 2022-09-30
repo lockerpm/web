@@ -42,24 +42,36 @@
             </div>
           </div>
           <!-- Right -->
-          <div class="hidden md:block md:w-1/2 order-2 justify-self-end top-[173px] pr-0">
+          <div class="hidden md:block md:w-1/2 order-2 justify-self-end items-center top-[180px] pr-0">
+            <button @click="dialogVisible = true">
+              <img
+                :src="require(`~/assets/images/landing/intro-thumbnail.png`)"
+                alt=""
+                style="max-width: 120%; margin-left: 75px; max-height: 485px; margin-top: 15px"
+              >
+            </button>
+          </div>
+          <!-- <div class="w-full md:hidden order-2 mt-16">
             <img
               :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
               alt=""
-              style="max-width: 120%; margin-left: 75px; max-height: 485px;"
             >
-          </div>
-          <div class="w-full md:hidden order-2 mt-16">
-            <img
-              :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
-              alt=""
-            >
-          </div>
+          </div> -->
           <!-- Right end -->
         </div>
       </div>
     </section>
     <!-- Header end -->
+
+    <!-- Video intro -->
+    <section>
+      <div v-if="dialogVisible" class="modal" @click="dialogVisible = false">
+        <div class="modal-content">
+          <youtube :video-id="videoId" player-width="960" player-height="540" :player-vars="{autoplay: 0}" />
+        </div>
+      </div>
+    </section>
+    <!-- Video intro end -->
 
     <!-- Feature -->
     <section
@@ -223,33 +235,13 @@
       class="full-width h-auto"
       style="background: #ffffff"
     >
-      <div
-        class="hidden lg:block w-full h-auto text-center pt-32 mb-36 justify-center gap-x-6 overflow-hidden"
-      >
-        <div class="inline w-2/12">
-          <img
-            id="mobile"
-            :src="require(`~/assets/images/landing/index/${$t('landing.devices.mobile.image')}`)"
-            class="inline self-end transition-all"
-            style="width: 8%; transform: translate3d(-120px, 30px, 0px) rotateZ(28deg);"
-          >
-        </div>
-        <div class="inline w-2/12">
-          <img
-            id="tablet"
-            :src="require(`~/assets/images/landing/index/${$t('landing.devices.tablet.image')}`)"
-            class="inline self-end transition-all"
-            style="width: 14%; transform: translate3d(180px, 50px, 0px) rotateZ(10deg);"
-          >
-        </div>
-        <div class="inline w-8/12">
-          <img
-            id="mac"
-            :src="require(`~/assets/images/landing/index/${$t('landing.devices.laptop.image')}`)"
-            class="inline transition-all"
-            style="width: 50%; transform: translate3d(500px, -50px, 0px) rotateZ(-25deg);"
-          >
-        </div>
+      <div class="hidden lg:flex w-full h-auto text-center pt-32 mb-24 justify-items-end justify-center gap-x-6 overflow-hidden">
+        <img
+          id="mobile"
+          :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
+          class="inline self-end"
+          style="width: 40%;"
+        >
       </div>
     </section>
     <!-- Devices end -->
@@ -432,6 +424,8 @@ export default {
   layout: 'landing',
   data () {
     return {
+      videoId: 'kAutqE2ATfU',
+      dialogVisible: false,
       section1: {
         title: 'Tận hưởng trải nghiệm sử dụng internet an toàn và liền mạch',
         desc: 'Locker giúp bạn lưu trữ dữ liệu quan trọng <span class="text-green">an toàn</span>, quản lý mật khẩu <span class="text-green">trực quan</span>, và tự động đăng nhập trên mọi thiết bị.',
@@ -614,44 +608,6 @@ export default {
           }
         ]
       }
-
-    }
-  },
-  mounted () {
-    const mac = document.getElementById('mac')
-    const mobile = document.getElementById('mobile')
-    const tablet = document.getElementById('tablet')
-    window.onscroll = function () {
-      const scrollPos = window.scrollY
-      if (scrollPos > 3800 && scrollPos < 4100) {
-        scrollRotate()
-      } else if (scrollPos > 4100) {
-        mac.style.transform = 'translate3d(0px,0px,0px) rotateZ(0deg)'
-        tablet.style.transform = 'translate3d(0px,60px,0px) rotateZ(0deg)'
-        mobile.style.transform = 'translate3d(0px,80px,0px) rotateZ(0deg)'
-      } else {
-        mac.style.transform = 'translate3d(500px,-50px,0px) rotateZ(-25deg)'
-        mobile.style.transform = 'translate3d(-120px,30px,0px) rotateZ(28deg)'
-        tablet.style.transform = 'translate3d(180px,50px,0px) rotateZ(10deg)'
-      }
-    }
-
-    function scrollRotate () {
-      const offset = window.pageYOffset - 3800
-      const macXAxis = 480 - Math.ceil(480 * offset / 300)
-      const macYAxis = Math.ceil(50 * offset / 300) - 50
-      const macZRotate = Math.ceil(25 * offset / 300) - 25
-      mac.style.transform = 'translate3d(' + macXAxis + 'px,' + macYAxis + 'px,0px) rotateZ(' + macZRotate + 'deg)'
-
-      const mobileXAxis = Math.ceil(120 * offset / 300) - 120
-      const mobileYAxis = 30 - Math.ceil(30 * offset / 300)
-      const mobileZRotate = 28 - Math.ceil(28 * offset / 300)
-      mobile.style.transform = 'translate3d(' + mobileXAxis + 'px,' + mobileYAxis + 'px,0px) rotateZ(' + mobileZRotate + 'deg)'
-
-      const tabletXAxis = 180 - Math.ceil(180 * offset / 300)
-      const tabletYAxis = 50 - Math.ceil(50 * offset / 300)
-      const tabletZRotate = 10 - Math.ceil(10 * offset / 300)
-      tablet.style.transform = 'translate3d(' + tabletXAxis + 'px,' + tabletYAxis + 'px,0px) rotateZ(' + tabletZRotate + 'deg)'
     }
   }
 }
@@ -665,5 +621,27 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 50%;
   display: flex;
+}
+.modal {
+  display: inline-block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1000000; /* Sit on top */
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: hidden; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: 12% auto; /* 15% from the top and centered */
+  border: 1px solid #888;
+  width: 960px;
 }
 </style>
