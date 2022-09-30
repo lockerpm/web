@@ -311,7 +311,7 @@ export default {
 
     onSubdomainEdited (oldSubdomain) {
       this.getSubdomains()
-      this.addresses = this.addresses.filter(a => a.subdomain !== subdomain)
+      this.addresses = this.addresses.filter(a => a.subdomain !== oldSubdomain)
     },
 
     // Edit address
