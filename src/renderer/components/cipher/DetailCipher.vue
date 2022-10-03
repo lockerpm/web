@@ -2,6 +2,7 @@
   <div class="flex flex-col flex-grow relative">
     <div class="flex-grow lg:px-28 py-8 px-10 mb-20">
       <div class="flex items-center justify-between">
+        <!-- Breadcrumb -->
         <el-breadcrumb class="truncate" separator-class="el-icon-arrow-right">
           <template v-if="getRouteBaseName() === 'vault-folders-folderId-id'">
             <el-breadcrumb-item
@@ -40,7 +41,10 @@
             {{ cipher.name }}
           </el-breadcrumb-item>
         </el-breadcrumb>
-        <div class="header-actions">
+        <!-- Breadcrumb end -->
+
+        <!-- Actions -->
+        <div v-if="!isMasterPw" class="header-actions">
           <button
             v-if="canManageItem(organizations, cipher)"
             class="btn btn-icon btn-xs btn-action"
@@ -72,8 +76,11 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
+        <!-- Actions end -->
       </div>
+
       <client-only>
+        <!-- Icon + name -->
         <div class="mt-20 mb-9 text-center">
           <div class="mb-4 text-[70px]">
             <Vnodes :vnodes="getIconCipher(cipher, 34)" />
@@ -82,7 +89,11 @@
             {{ cipher.name }}
           </div>
         </div>
+        <!-- Icon + name end -->
+
+        <!-- Display cipher info -->
         <div v-show="!editMode" class="cipher-items">
+          <!-- Password -->
           <template v-if="cipher.type === CipherType.Login">
             <TextHaveCopy label="Email / Username" :text="cipher.login.username" />
             <TextHaveCopy
@@ -114,6 +125,43 @@
               </div>
             </div>
           </template>
+          <!-- Password end -->
+
+          <!-- Master Password -->
+          <template v-if="cipher.type === CipherType.MasterPassword">
+            <div>
+              <TextHaveCopy
+                should-hide
+                :label="$t('data.ciphers.password')"
+                :text="cipher.login.password"
+              />
+            </div>
+            <div class="grid md:grid-cols-6 cipher-item">
+              <div class="">{{ $t('data.ciphers.password_security') }}</div>
+              <div class="col-span-4 font-semibold">
+                <PasswordStrength :score="passwordStrength.score" />
+              </div>
+            </div>
+            <div
+              v-for="(item, index) in cipher.login.uris"
+              v-show="item.uri"
+              :key="index"
+              class="grid md:grid-cols-6 cipher-item"
+            >
+              <div class="">{{ $t('data.ciphers.website_address') }}</div>
+              <div class="col-span-4 font-semibold">
+                {{ item.uri }}
+              </div>
+              <div class="text-right">
+                <button v-if="item.canLaunch" class="btn btn-icon btn-xs btn-action" :title="$t('common.go_to_website')" @click="openNewTab(item.uri)">
+                  <i class="fas fa-external-link-square-alt" />
+                </button>
+              </div>
+            </div>
+          </template>
+          <!-- Master Password end -->
+
+          <!-- Card -->
           <template v-if="cipher.type === CipherType.Card">
             <TextHaveCopy :label="$t('data.ciphers.card_holder')" :text="cipher.card.cardholderName" />
             <TextHaveCopy :label="$t('data.ciphers.brand')" :text="cipher.card.brand" />
@@ -122,6 +170,9 @@
             <TextHaveCopy :label="$t('data.ciphers.expiration_year')" :text="cipher.card.expYear" />
             <TextHaveCopy :label="$t('data.ciphers.cvv')" :text="cipher.card.code" should-hide :view-password="cipher.viewPassword" />
           </template>
+          <!-- Card end -->
+
+          <!-- Identity -->
           <template v-if="cipher.type === CipherType.Identity">
             <TextHaveCopy :label="$t('data.ciphers.title')" :text="cipher.identity.title?$t(`common.${cipher.identity.title}`):null" />
             <TextHaveCopy :label="$t('data.ciphers.first_name')" :text="cipher.identity.firstName" />
@@ -139,6 +190,9 @@
             <TextHaveCopy :label="$t('data.ciphers.zip')" :text="cipher.identity.postalCode" />
             <TextHaveCopy :label="$t('data.ciphers.country')" :text="cipher.identity.country" />
           </template>
+          <!-- Identity end -->
+
+          <!-- Crypto account -->
           <template v-if="cipher.type === CipherType.CryptoAccount && cipher.cryptoAccount">
             <TextHaveCopy label="Email / Username" :text="cipher.cryptoAccount.username" />
             <TextHaveCopy
@@ -171,6 +225,9 @@
             <TextHaveCopy :label="$t('data.ciphers.recovery_email')" :text="cipher.cryptoAccount.emailRecovery" />
             <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoAccount.notes" :text-area="true" />
           </template>
+          <!-- Crypto account end -->
+
+          <!-- Crypto wallet -->
           <template v-if="cipher.type === CipherType.CryptoWallet && cipher.cryptoWallet">
             <div class="grid md:grid-cols-6 cipher-item">
               <div class="">{{ $t('data.ciphers.wallet_app') }}</div>
@@ -235,33 +292,60 @@
             </div>
             <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoWallet.notes" :text-area="true" />
           </template>
-          <TextHaveCopy v-if="![CipherType.CryptoAccount, CipherType.CryptoWallet].includes(cipher.type)" :label="$t('data.ciphers.notes')" :text="cipher.notes" :text-area="true" />
+          <!-- Crypto wallet end -->
+
+          <!-- Notes -->
+          <template>
+            <TextHaveCopy v-if="![CipherType.CryptoAccount, CipherType.CryptoWallet, CipherType.MasterPassword].includes(cipher.type)" :label="$t('data.ciphers.notes')" :text="cipher.notes" :text-area="true" />
+            <TextHaveCopy
+              v-if="cipher.type === CipherType.MasterPassword"
+              :label="$t('data.ciphers.notes')"
+              :text="$t('master_pw_item.desc')"
+              :text-area="true"
+            />
+          </template>
+          <!-- Notes end -->
+
+          <!-- Custom fields -->
           <template v-for="(field, index) in cipher.fields">
             <TextHaveCopy v-if="field.name || field.value!=null" :key="index" :label="field.name" :text="field.value" :should-hide="field.type === FieldType.Hidden" />
           </template>
-          <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">{{ $t('data.ciphers.owned_by') }}</div>
-            <div class="col-span-4 font-semibold flex items-center">
-              <span>{{ isOwner(organizations, cipher)? $t('common.me') : getTeam(organizations, cipher.organizationId).name || $t('common.me') }}</span>
-            </div>
-          </div>
-          <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">{{ $t('data.ciphers.folder') }}</div>
-            <div class="col-span-4">
-              <template v-if="cipher.collectionIds && cipher.collectionIds.length">
-                <div
-                  v-for="item in cipher.collectionIds"
-                  :key="item"
-                  class="font-semibold flex items-center"
-                >
-                  <img :src="item.id === 'unassigned' ? require('~/assets/images/icons/folderSolid.svg') : require('~/assets/images/icons/folderSolidShare.svg')" alt="" class="mr-3"> {{ findFolder(collections, item).name }}
-                </div>
-              </template>
-              <div v-if="cipher.folderId" class="font-semibold flex items-center">
-                <img src="~/assets/images/icons/folderSolid.svg" alt="" class="mr-3"> {{ findFolder(folders, cipher.folderId).name }}
+          <!-- Custom fields end -->
+
+          <!-- Owner -->
+          <template v-if="!isMasterPw">
+            <div class="grid md:grid-cols-6 cipher-item">
+              <div class="">{{ $t('data.ciphers.owned_by') }}</div>
+              <div class="col-span-4 font-semibold flex items-center">
+                <span>{{ isOwner(organizations, cipher)? $t('common.me') : getTeam(organizations, cipher.organizationId).name || $t('common.me') }}</span>
               </div>
             </div>
-          </div>
+          </template>
+          <!-- Owner end -->
+
+          <!-- Folder -->
+          <template v-if="!isMasterPw">
+            <div class="grid md:grid-cols-6 cipher-item">
+              <div class="">{{ $t('data.ciphers.folder') }}</div>
+              <div class="col-span-4">
+                <template v-if="cipher.collectionIds && cipher.collectionIds.length">
+                  <div
+                    v-for="item in cipher.collectionIds"
+                    :key="item"
+                    class="font-semibold flex items-center"
+                  >
+                    <img :src="item.id === 'unassigned' ? require('~/assets/images/icons/folderSolid.svg') : require('~/assets/images/icons/folderSolidShare.svg')" alt="" class="mr-3"> {{ findFolder(collections, item).name }}
+                  </div>
+                </template>
+                <div v-if="cipher.folderId" class="font-semibold flex items-center">
+                  <img src="~/assets/images/icons/folderSolid.svg" alt="" class="mr-3"> {{ findFolder(folders, cipher.folderId).name }}
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- Folder end -->
+
+          <!-- Share with -->
           <div v-if="shareMember.length > 0" class="grid md:grid-cols-6 cipher-item">
             <div class="">{{ $t('data.ciphers.shared_with') }}</div>
             <div :class="showMember?'gap-y-3 py-3': ''" class="col-span-4 flex flex-wrap">
@@ -276,12 +360,16 @@
               <div v-if="showMember" class="cursor-pointer text-primary self-center" @click="showMember=false">{{ $t('common.collapse') }}</div>
             </div>
           </div>
+          <!-- Share with end -->
         </div>
+        <!-- Display cipher info end -->
       </client-only>
+
       <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
       <MoveFolder ref="moveFolder" />
       <AddEditCipher ref="addEditCipherDialog" @reset-selection="back" />
       <PremiumDialog ref="premiumDialog" />
+
       <div class="max-w-[585px] mx-auto">
         <AddEditCipher
           ref="addEditCipherDialog"
@@ -298,7 +386,7 @@ import debounce from 'lodash/debounce'
 import find from 'lodash/find'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import PasswordStrength from '../password/PasswordStrength'
-import { CipherType } from '../../jslib/src/enums'
+import { CipherType } from '../../core/enums/cipherType'
 import TextHaveCopy from '../../components/cipher/TextHaveCopy'
 import Vnodes from '../../components/Vnodes'
 import ShareCipher from '../../components/cipher/ShareCipher'
@@ -308,8 +396,7 @@ import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
 import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 import { FieldType } from '../../jslib/src/enums/fieldType'
 import InputSeedPhrase from '../input/InputSeedPhrase'
-CipherType.CryptoAccount = 6
-CipherType.CryptoWallet = 7
+
 export default {
   components: {
     TextHaveCopy,
@@ -342,6 +429,9 @@ export default {
     }
   },
   computed: {
+    isMasterPw () {
+      return this.cipher.type === CipherType.MasterPassword
+    },
     folder () {
       return find(this.folders, e => e.id === this.cipher.folderId) || {}
     },
@@ -355,7 +445,7 @@ export default {
       return find(this.ciphers, e => e.id === this.$route.params.id) || { collectionIds: [] }
     },
     passwordStrength () {
-      if (this.cipher.login && this.cipher.type === CipherType.Login) {
+      if (this.cipher.login && [CipherType.Login, CipherType.MasterPassword].includes(this.cipher.type)) {
         return this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
       } else if (this.cipher.cryptoAccount) {
         return this.$passwordGenerationService.passwordStrength(this.cipher.cryptoAccount.password, ['cystack']) || {}

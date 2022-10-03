@@ -1,6 +1,6 @@
 import * as lunr from 'lunr'
 
-import { CipherView } from '../../jslib/src/models/view/cipherView'
+import { CipherView } from '../models/view/cipherView'
 
 import { CipherService } from '../abstractions/cipher.service'
 import { I18nService } from '../../jslib/src/abstractions/i18n.service'

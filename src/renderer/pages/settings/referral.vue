@@ -87,6 +87,7 @@
 
 <script>
 export default {
+  middleware: ['BlockEnterpriseMember'],
   asyncData ({ $axios }) {
     return $axios.$get('cystack_platform/pm/referrals')
       .then(res => {
