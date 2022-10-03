@@ -29,7 +29,7 @@
               <div>
                 <a
                   class="landing-btn2 w-full sm:w-auto sm:ml-4"
-                  href="https://enterprise-staging.locker.io/admin/billing"
+                  :href="`${enterpriseUrl}/admin/billing`"
                 >
                   {{ $t('business.welcome.purchase_now') }}
                 </a>
@@ -167,19 +167,49 @@
           <h2 class="landing-font-42 font-semibold">{{ $t('business.plans.title') }}</h2>
         </div>
         <div class="md:w-1/2 w-full md:text-right text-center self-center">
-          <nuxt-link :to="localePath('/plans')" class="landing-btn">
+          <nuxt-link :to="localePath('/business/plans')" class="landing-btn">
             {{ $t('business.plans.learn_more') }}
           </nuxt-link>
         </div>
       </div>
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-8 mb-8">
-        <div
+        <!-- <div
           v-for="(item, index) in $t('business.plans.list_item')"
           :key="index"
           class="border border-[#E8E8E9] rounded-xl p-8"
         >
           <div class="landing-font-24 font-semibold mb-3">{{ item.title }}</div>
           <p class="landing-font-16">{{ item.desc }}</p>
+        </div> -->
+        <div class="border border-[#E8E8E9] rounded-xl p-8 text-center">
+          <div class="landing-font-24 font-semibold mb-5">Business</div>
+          <div class="flex justify-center gap-16">
+            <div>
+              <span class="landing-font-28 font-semibold">$5</span>
+              <br>
+              <span class="landing-font-20 text-black-500">{{ $t('plan.monthly') }}</span>
+            </div>
+            <div>
+              <span class="landing-font-28 font-semibold">$8</span>
+              <br>
+              <span class="landing-font-20 text-black-500">{{ $t('plan.annually') }}</span>
+            </div>
+          </div>
+          <a class="landing-btn mt-8" @click.prevent="goto('register-section')">
+            {{ $t('business.welcome.start') }}
+          </a>
+          <p class="mt-3">or <span><a :href="`${enterpriseUrl}/admin/billing`" class="text-info">Purchase now</a></span></p>
+        </div>
+        <div class="border border-[#E8E8E9] rounded-xl p-8 text-center">
+          <div class="landing-font-24 font-semibold mb-9">Enterprise</div>
+          <div class="uppercase text-black-500">
+            PRICE IS SUBJECT TO <br> CUSTOM TERMS
+          </div>
+          <div class="mt-9">
+            <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9]" @click="openIntercom">
+              {{ $t('business.plans.contact_us') }}
+            </button>
+          </div>
         </div>
       </div>
       <div class="p-6 bg-[#E4F0E6] rounded-xl flex justify-between landing-font-20 font-semibold">
@@ -241,9 +271,6 @@ export default {
     }
   },
   methods: {
-    openIntercom () {
-      if (window.Intercom) { window.Intercom('show') }
-    },
     goto (id) {
       if (process.client) {
         const el = document.getElementById(id)
