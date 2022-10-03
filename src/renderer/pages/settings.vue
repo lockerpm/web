@@ -83,14 +83,16 @@ export default {
           label: 'security',
           routeName: 'settings-security'
         },
-        {
-          label: 'plans_billing',
-          routeName: 'settings-plans-billing'
-        },
-        {
-          label: 'referral',
-          routeName: 'settings-referral'
-        },
+        ...!this.isEnterpriseMember
+          ? [{
+            label: 'plans_billing',
+            routeName: 'settings-plans-billing'
+          },
+          {
+            label: 'referral',
+            routeName: 'settings-referral'
+          }]
+          : [],
         {
           label: 'notifications',
           routeName: 'settings-notifications'

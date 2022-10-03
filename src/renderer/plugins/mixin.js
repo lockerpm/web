@@ -28,6 +28,12 @@ Vue.mixin({
     isAllPage () {
       return this.getRouteBaseName() === 'vault'
     },
+    isEnterpriseMember () {
+      return this.$store.state.userPw.pwd_user_type === 'enterprise'
+    },
+    isPremiumFeaturesAvailable () {
+      return this.$store.state.userPw.pwd_user_type === 'enterprise' || this.$store.state.currentPlan !== 'pm_free'
+    },
     searchText () { return this.$store.state.searchText },
     teams () { return this.$store.state.teams || [] },
     currentOrg () {

@@ -300,8 +300,8 @@ export default {
   },
 
   watch: {
-    currentPlan (newValue) {
-      if (newValue.alias !== 'pm_enterprise') {
+    isEnterpriseMember (newValue) {
+      if (!newValue) {
         this.$router.push('/vault')
       }
     },
@@ -322,7 +322,7 @@ export default {
   },
 
   async mounted () {
-    if (this.currentPlan.alias !== 'pm_enterprise') {
+    if (!this.isEnterpriseMember) {
       this.$router.push('/vault')
     }
     this.loading = true
