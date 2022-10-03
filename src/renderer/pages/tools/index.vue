@@ -81,7 +81,7 @@
         <!-- Password health -->
         <div
           class="setting-section setting-section--hover"
-          @click="currentPlan.alias === 'pm_free' ? upgrade() : go('tools-password-health')"
+          @click="!isPremiumFeaturesAvailable ? upgrade() : go('tools-password-health')"
         >
           <div class="setting-section-header">
             <div class="flex items-center">
@@ -103,7 +103,7 @@
             <div>
               <button
                 class="btn btn-icon !text-black-600"
-                @click="currentPlan.alias === 'pm_free'?upgrade():go({name: 'tools-password-health'})"
+                @click="!isPremiumFeaturesAvailable ? upgrade() :go({name: 'tools-password-health'})"
               >
                 <i class="fa fa-chevron-right" />
               </button>
@@ -115,7 +115,7 @@
         <!-- Breach scanner -->
         <div
           class="setting-section setting-section--hover"
-          @click="currentPlan.alias === 'pm_free' ? upgrade() : go('tools-breach')"
+          @click="!isPremiumFeaturesAvailable ? upgrade() : go('tools-breach')"
         >
           <div class="setting-section-header">
             <div class="flex items-center">
@@ -137,7 +137,7 @@
             <div>
               <button
                 class="btn btn-icon !text-black-600"
-                @click="currentPlan.alias === 'pm_free' ? upgrade(): go('tools-breach')"
+                @click="!isPremiumFeaturesAvailable ? upgrade(): go('tools-breach')"
               >
                 <i class="fa fa-chevron-right" />
               </button>

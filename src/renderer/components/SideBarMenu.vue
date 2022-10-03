@@ -186,7 +186,7 @@ export default {
           icon: 'security',
           routeName: 'tools'
         },
-        ...this.currentPlan.alias === 'pm_enterprise'
+        ...this.isEnterpriseMember
           ? [{
             label: 'policies',
             icon: 'policies',
@@ -212,7 +212,7 @@ export default {
     },
     bottomMenu () {
       return [
-        ...this.currentPlan.alias === 'pm_free'
+        ...(this.currentPlan.alias === 'pm_free' && !this.isEnterpriseMember)
           ? [{
             label: 'upgrade',
             routeName: 'manage-plans',

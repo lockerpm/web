@@ -694,7 +694,7 @@ export default {
             const importResult = await this.postImport(finalImportResult)
             this.importResult = importResult
             this.notify(this.$t('data.notifications.import_success', { foldersCount: importResult.foldersCount, ciphersCount: importResult.ciphersCount, total: importResult.totalCipherImport }), 'success')
-            if (this.currentPlan.alias === 'pm_free' && importResult.ciphersCount < importResult.totalCipherImport) {
+            if (!this.isPremiumFeaturesAvailable && importResult.ciphersCount < importResult.totalCipherImport) {
               this.dialogVisible = true
             }
           } catch (error) {
@@ -824,7 +824,7 @@ export default {
         importedCiphers += 1000
       }
       let importedCipherCount = request.ciphers.length
-      if (this.currentPlan.alias === 'pm_free') {
+      if (!this.isPremiumFeaturesAvailable) {
         const currentPasswordCount = this.ciphers.filter(c => c.type === CipherType.Login && c.organizationId === null).length
         const importedPasswordCount = request.ciphers.filter(c => c.type === CipherType.Login).length
         const currentNoteCount = this.ciphers.filter(c => c.type === CipherType.SecureNote && c.organizationId === null).length
