@@ -115,6 +115,7 @@
               :label="$t('data.ciphers.website_address')"
               class="w-full"
               :disabled="isDeleted"
+              @onBlue="hendlaGenNameByUri"
             />
           </template>
         </template>
@@ -975,6 +976,11 @@ export default {
       this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
       if (this.cipher.organizationId) {
         this.handleChangeOrg(this.cipher.organizationId)
+      }
+    },
+    hendlaGenNameByUri () {
+      if (!this.cipher.name) {
+        this.cipher.name = this.cipher.login.uris[0].uri.replace('https://', '')
       }
     },
     handleChangeType (type) {
