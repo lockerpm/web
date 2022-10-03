@@ -8,7 +8,7 @@
         <thead>
           <tr>
             <th class="w-1/2 text-left pl-6 landing-font-18" />
-            <th class="w-1/4 rounded-t-xl">
+            <th class="h-[250px] w-1/4 rounded-t-xl h-1/4 ">
               <div class="px-4 py-6 font-medium">
                 <div class="landing-font-24 font-semibold mb-5">Business</div>
                 <div class="flex justify-center gap-4">
@@ -17,14 +17,14 @@
                     <br>
                     <span class="landing-font-16 font-semibold"> per month </span>
                     <br>
-                    <span class="landing-font-16 text-black-500 lowercase whitespace-nowrap">{{ $t('plan.monthly') }}</span>
+                    <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('plan.monthly') }}</span>
                   </div>
                   <div>
                     <span class="landing-font-28 font-semibold">$5/user</span>
                     <br>
                     <span class="landing-font-16 font-semibold"> per month </span>
                     <br>
-                    <span class="landing-font-16 text-black-500 lowercase whitespace-nowrap">{{ $t('plan.annually') }}</span>
+                    <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('plan.annually') }}</span>
                   </div>
                 </div>
                 <nuxt-link class="landing-btn mt-8 !font-medium" :to="localePath('/business#register-section')">
@@ -33,13 +33,13 @@
                 <p class="mt-3">or <span><a :href="`${enterpriseUrl}/admin/billing`" class="text-info">Purchase now</a></span></p>
               </div>
             </th>
-            <th class="w-1/4">
-              <div class="px-8 font-medium">
+            <th class="h-[250px] w-1/4 h-1/4">
+              <div class="px-8 py-6 font-medium h-full">
                 <div class="landing-font-24 font-semibold mb-9">Enterprise</div>
                 <div class="uppercase text-black-500">
                   PRICE IS SUBJECT TO <br> CUSTOM TERMS
                 </div>
-                <div class="mt-8">
+                <div class="mt-12">
                   <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium" @click="openIntercom">
                     {{ $t('business.plans.contact_us') }}
                   </button>

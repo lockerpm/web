@@ -38,16 +38,12 @@
           </div>
           <!-- Right -->
           <div class="hidden md:block md:w-1/2 order-2 pr-0 justify-self-end">
-            <img
-              src="~/assets/images/business/bg-welcome.png"
-              alt=""
-            >
+            <img v-if="locale==='en'" :src="require(`~/assets/images/business/bg-welcome.png`)" alt="">
+            <img v-else :src="require(`~/assets/images/business/bg-welcome_vi.png`)" alt="">
           </div>
           <div class="w-full md:hidden order-2 mt-24">
-            <img
-              src="~/assets/images/business/bg-welcome.png"
-              alt=""
-            >
+            <img v-if="locale==='en'" :src="require(`~/assets/images/business/bg-welcome.png`)" alt="">
+            <img v-else :src="require(`~/assets/images/business/bg-welcome_vi.png`)" alt="">
           </div>
           <!-- Right end -->
         </div>
@@ -76,7 +72,8 @@
             </div>
           </div>
           <div class="md:w-1/2 w-full" :class="index%2===0?'order-2':'md:order-1 order-3'">
-            <img :src="require(`~/assets/images/business/${item.image}`)" :alt="item.title">
+            <img v-if="locale==='en'" :src="require(`~/assets/images/business/${item.image}`)" :alt="item.title">
+            <img v-else :src="require(`~/assets/images/business/${item.image}`)" :alt="item.title">
           </div>
         </div>
       </div>
@@ -173,43 +170,50 @@
         </div>
       </div>
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-8 mb-8">
-        <!-- <div
-          v-for="(item, index) in $t('business.plans.list_item')"
-          :key="index"
-          class="border border-[#E8E8E9] rounded-xl p-8"
-        >
-          <div class="landing-font-24 font-semibold mb-3">{{ item.title }}</div>
-          <p class="landing-font-16">{{ item.desc }}</p>
-        </div> -->
-        <div class="border border-[#E8E8E9] rounded-xl p-8 text-center">
-          <div class="landing-font-24 font-semibold mb-5">Business</div>
-          <div class="flex justify-center gap-16">
-            <div>
-              <span class="landing-font-28 font-semibold">$5</span>
-              <br>
-              <span class="landing-font-20 text-black-500">{{ $t('plan.monthly') }}</span>
+        <div class="border border-[#E8E8E9] rounded-xl p-8">
+          <th class="h-[250px] w-1/4 rounded-t-xl h-1/4 ">
+            <div class="px-6 py-6 font-medium">
+              <div class="landing-font-24 font-semibold mb-5">Business</div>
+              <div class="flex justify-center gap-12">
+                <div>
+                  <span class="landing-font-28 font-semibold">$8/user</span>
+                  <br>
+                  <span class="landing-font-16 font-semibold"> per month </span>
+                  <br>
+                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('plan.monthly') }}</span>
+                </div>
+                <div>
+                  <span class="landing-font-28 font-semibold">$5/user</span>
+                  <br>
+                  <span class="landing-font-16 font-semibold"> per month </span>
+                  <br>
+                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('plan.annually') }}</span>
+                </div>
+              </div>
+              <nuxt-link class="landing-btn mt-8 !font-medium" :to="localePath('/business#register-section')">
+                {{ $t('business.welcome.start') }}
+              </nuxt-link>
+              <p class="mt-3">or <span><a :href="`${enterpriseUrl}/admin/billing`" class="text-info">Purchase now</a></span></p>
             </div>
-            <div>
-              <span class="landing-font-28 font-semibold">$8</span>
-              <br>
-              <span class="landing-font-20 text-black-500">{{ $t('plan.annually') }}</span>
-            </div>
-          </div>
-          <a class="landing-btn mt-8" @click.prevent="goto('register-section')">
-            {{ $t('business.welcome.start') }}
-          </a>
-          <p class="mt-3">or <span><a :href="`${enterpriseUrl}/admin/billing`" class="text-info">Purchase now</a></span></p>
+          </th>
+          <p class="landing-font-16">{{ $t('business.plans.desc1') }}</p>
         </div>
-        <div class="border border-[#E8E8E9] rounded-xl p-8 text-center">
-          <div class="landing-font-24 font-semibold mb-9">Enterprise</div>
-          <div class="uppercase text-black-500">
-            PRICE IS SUBJECT TO <br> CUSTOM TERMS
-          </div>
-          <div class="mt-9">
-            <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9]" @click="openIntercom">
-              {{ $t('business.plans.contact_us') }}
-            </button>
-          </div>
+        <div class="border border-[#E8E8E9] rounded-xl p-8">
+          <th class="h-[250px] w-1/4 h-1/4">
+            <div class="px-8 py-6 font-medium h-full">
+              <div class="landing-font-24 font-semibold mb-9">Enterprise</div>
+              <div class="uppercase text-black-500">
+                PRICE IS SUBJECT TO <br> CUSTOM TERMS
+              </div>
+              <div class="mt-12">
+                <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium" @click="openIntercom">
+                  {{ $t('business.plans.contact_us') }}
+                </button>
+              </div>
+              <p class="text-black-500 mt-3">For more information</p>
+            </div>
+          </th>
+          <p class="landing-font-16">{{ $t('business.plans.desc2') }}</p>
         </div>
       </div>
       <div class="p-6 bg-[#E4F0E6] rounded-xl flex justify-between landing-font-20 font-semibold">
@@ -283,6 +287,9 @@ export default {
           })
         }
       }
+    },
+    isViLocale () {
+      return this.$router.history.current.path.includes('/vi/')
     }
   }
 
