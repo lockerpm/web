@@ -13,8 +13,6 @@
         @close="hideNavMenu"
       />
     </div>
-
-    <!-- Search bar -->
     <div class="flex-grow">
       <div
         v-if="shouldShowSearch"
@@ -30,34 +28,23 @@
         >
       </div>
     </div>
-    <!-- Search bar end -->
-
     <div class="flex">
-      <template v-if="!currentTeam">
-        <!-- Referral -->
-        <div class="mr-3 md:block hidden">
-          <button
-            class="btn btn-outline-primary"
-            @click="$router.push(localePath({name: 'settings-referral'}))"
-          >
-            {{ $t('sidebar.referral') }}
-          </button>
-        </div>
-        <!-- Referral end -->
-
-        <!-- Manage plans -->
-        <div class="mr-3 md:block hidden">
-          <button
-            class="btn btn-primary"
-            @click="$router.push(localePath({name: 'manage-plans'}))"
-          >
-            {{ $t('common.manage_plans') }}
-          </button>
-        </div>
-        <!-- Manage plans end -->
-      </template>
-
-      <!-- Noti -->
+      <div class="mr-3 md:block hidden">
+        <button
+          class="btn btn-outline-primary"
+          @click="$router.push(localePath({name: 'settings-referral'}))"
+        >
+          {{ $t('sidebar.referral') }}
+        </button>
+      </div>
+      <div class="mr-3 md:block hidden">
+        <button
+          class="btn btn-primary"
+          @click="$router.push(localePath({name: 'manage-plans'}))"
+        >
+          {{ $t('common.manage_plans') }}
+        </button>
+      </div>
       <div class="mr-3 self-center">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
@@ -122,11 +109,7 @@
           </el-dropdown-menu>
         </el-dropdown>
       </div>
-      <!-- Noti end -->
-
-      <!-- Dropdown menu -->
       <el-dropdown trigger="click">
-        <!-- User info -->
         <div class="flex items-center">
           <el-avatar
             :size="35"
@@ -137,32 +120,27 @@
             <div class="text-sm font-semibold">
               <nobr>{{ currentUser.full_name }} <i class="el-icon-caret-bottom el-icon--right" /></nobr>
             </div>
-            <div class="text-xs text-black-600">{{ currentTeam ? currentTeam.name : currentPlan.name }}</div>
+            <div class="text-xs text-black-600">{{ currentPlan.name }}</div>
           </div>
         </div>
-        <!-- User info -->
-
         <el-dropdown-menu
           slot="dropdown"
           class="min-w-[200px]"
         >
-          <template v-if="!currentTeam">
-            <el-dropdown-item
-              class="text-warning md:hidden"
-              icon="fa fa-tasks"
-              @click.native="go('manage-plans')"
-            >
-              {{ $t('common.manage_plans') }}
-            </el-dropdown-item>
-            <el-dropdown-item
-              class="text-warning md:hidden"
-              icon="fa fa-user-friends"
-              @click.native="go('settings-referral')"
-            >
-              {{ $t('data.settings.referral') }}
-            </el-dropdown-item>
-          </template>
-
+          <el-dropdown-item
+            class="text-warning md:hidden"
+            icon="fa fa-tasks"
+            @click.native="go('manage-plans')"
+          >
+            {{ $t('common.manage_plans') }}
+          </el-dropdown-item>
+          <el-dropdown-item
+            class="text-warning md:hidden"
+            icon="fa fa-user-friends"
+            @click.native="go('settings-referral')"
+          >
+            {{ $t('data.settings.referral') }}
+          </el-dropdown-item>
           <el-dropdown-item
             class="text-warning"
             icon="fa fa-user-circle"
@@ -213,8 +191,6 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <!-- Dropdown menu end -->
-
       <div class="block md:hidden landing-transition ml-5">
         <a
           id="nav-toggle"
@@ -249,10 +225,7 @@ export default {
     manageableTeams () {
       return this.teams.filter(e => ['owner', 'admin'].includes(e.role) && e.is_business)
     },
-    notifications () { return this.$store.state.notifications },
-    currentTeam () {
-      return this.teams[0]
-    }
+    notifications () { return this.$store.state.notifications }
   },
   mounted () {
     // Set click event

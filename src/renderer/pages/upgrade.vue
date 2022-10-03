@@ -20,7 +20,6 @@
 
 <script>
 export default {
-  middleware: ['BlockEnterpriseMember'],
   data () {
     return {
       menu: [

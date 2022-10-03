@@ -1,4 +1,4 @@
-import { CipherView } from '../models/view/cipherView'
+import { CipherView } from '../../jslib/src/models/view/cipherView'
 import { SendView } from '../../jslib/src/models/view/sendView'
 
 export abstract class SearchService {

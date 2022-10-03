@@ -750,7 +750,6 @@ import Payment from '../../components/upgrade/Payment'
 import Check from '../../components/icons/check'
 import InputText from '../../components/input/InputText'
 export default {
-  middleware: ['BlockEnterpriseMember'],
   components: { Check, Payment, InputText },
   data () {
     return {

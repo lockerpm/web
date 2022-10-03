@@ -16,6 +16,7 @@ import { FolderView } from '../../jslib/src/models/view/folderView'
 import { LoginView } from '../../jslib/src/models/view/loginView'
 import { SecureNoteView } from '../../jslib/src/models/view/secureNoteView'
 
+import { CipherRepromptType } from '../../jslib/src/enums/cipherRepromptType'
 import { CipherType } from '../../jslib/src/enums/cipherType'
 import { FieldType } from '../../jslib/src/enums/fieldType'
 import { SecureNoteType } from '../../jslib/src/enums/secureNoteType'

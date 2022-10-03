@@ -180,8 +180,8 @@ export default {
     }
   },
   watch: {
-    isPremiumFeaturesAvailable (newValue) {
-      if (!newValue) {
+    currentPlan (newValue) {
+      if (newValue.alias === 'pm_free') {
         this.$router.push('/vault')
       }
     },
@@ -198,7 +198,7 @@ export default {
     }
   },
   async mounted () {
-    if (!this.isPremiumFeaturesAvailable) {
+    if (this.currentPlan.alias === 'pm_free') {
       this.$router.push('/vault')
     }
     this.loading = true

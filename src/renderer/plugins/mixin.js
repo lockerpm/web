@@ -4,13 +4,9 @@ import extractDomain from 'extract-domain'
 import find from 'lodash/find'
 import numeral from 'numeral'
 import { Avatar } from 'element-ui'
-import { LoginUriView, LoginView } from '../jslib/src/models/view'
-import { CipherRequest } from '../jslib/src/models/request'
-import { CipherType } from '../core/enums/cipherType'
+import { CipherType } from '../jslib/src/enums'
 import { SyncResponse } from '../core/models/response/syncResponse'
 import { WALLET_APP_LIST } from '../utils/crypto/applist/index'
-import { CipherView } from '../core/models/view/cipherView'
-
 // Vue.use(Image)
 Vue.mixin({
   data () {
@@ -28,17 +24,10 @@ Vue.mixin({
     isAllPage () {
       return this.getRouteBaseName() === 'vault'
     },
-    isEnterpriseMember () {
-      return this.$store.state.userPw.pwd_user_type === 'enterprise'
-    },
-    isPremiumFeaturesAvailable () {
-      return this.$store.state.userPw.pwd_user_type === 'enterprise' || this.$store.state.currentPlan !== 'pm_free'
-    },
     searchText () { return this.$store.state.searchText },
     teams () { return this.$store.state.teams || [] },
     currentOrg () {
-      // return find(this.teams, team => team.id === this.$route.params.teamId) || {}
-      return this.teams.length ? this.teams[0] : {}
+      return find(this.teams, team => team.id === this.$route.params.teamId) || {}
     },
     currentPlan () {
       return this.$store.state.currentPlan
@@ -66,9 +55,6 @@ Vue.mixin({
     },
     enterprisePolicies () {
       return this.$store.state.enterprisePolicies
-    },
-    enterpriseUrl () {
-      return process.env.lockerEnterprise
     }
   },
   mounted () {
@@ -171,22 +157,6 @@ Vue.mixin({
         return ''
       }
     },
-    async createEncryptedMasterPwItem (masterPw, encKey) {
-      const cipher = new CipherView()
-      cipher.type = CipherType.Login
-      const loginData = new LoginView()
-      loginData.username = 'locker.io'
-      loginData.password = masterPw
-      const uriView = new LoginUriView()
-      uriView.uri = 'https://locker.io'
-      loginData.uris = [uriView]
-      cipher.login = loginData
-      cipher.name = 'Locker Master Password'
-      const cipherEnc = await this.$cipherService.encrypt(cipher, encKey)
-      const data = new CipherRequest(cipherEnc)
-      data.type = CipherType.MasterPassword
-      return data
-    },
     async login () {
       const lockerDeviceId = this.$cookies.get('locker_device_id')
       const deviceIdentifier = lockerDeviceId || this.randomString()
@@ -217,23 +187,6 @@ Vue.mixin({
           this.$vaultTimeoutService.biometricLocked = false
         }
         // this.$messagingService.send('unlocked')
-
-        // Create master pw item if not exists
-        if (res.has_no_master_pw_item) {
-          try {
-            const encMasterPwItem = await this.createEncryptedMasterPwItem(this.masterPassword)
-            const passwordStrength = this.$passwordGenerationService.passwordStrength(this.masterPassword, ['cystack']) || {}
-            await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
-              ...encMasterPwItem,
-              score: passwordStrength.score,
-              collectionIds: []
-            })
-          } catch (e) {
-            console.log(e)
-            // this.errors = (e.response && e.response.data && e.response.data.details) || {}
-          }
-        }
-
         this.$store.commit('UPDATE_SYNCING', true)
         this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/vault' : this.$store.state.currentPath }))
       } catch (e) {
@@ -401,7 +354,6 @@ Vue.mixin({
     getIconCipher (cipher, size = 70, defaultIcon = false) {
       switch (cipher.type) {
       case CipherType.Login:
-      case CipherType.MasterPassword:
         if (!defaultIcon) {
           if (cipher.login && cipher.login.uris && cipher.login.uris.length) {
             try {
@@ -512,7 +464,6 @@ Vue.mixin({
       let name = ''
       switch (cipher.type) {
       case CipherType.Login:
-      case CipherType.MasterPassword:
         name = 'passwords'
         break
       case CipherType.SecureNote:
@@ -668,36 +619,6 @@ Vue.mixin({
         }
       }
       return violations
-    },
-    listPasswordPolicy (policy_type = 'password_requirement') {
-      const res = []
-      if (!this.enterprisePolicies) {
-        return []
-      }
-      const policy = this.enterprisePolicies[policy_type]
-      if (policy && policy.enabled) {
-        if (policy.config.minLength) {
-          res.push(
-            this.$t('data.password_policies.min_password_length', { length: policy.config.minLength })
-          )
-        }
-        if (policy.config.requireSpecialCharacter) {
-          res.push(this.$t('data.password_policies.requires_special'))
-        }
-        if (policy.config.requireLowerCase) {
-          res.push(this.$t('data.password_policies.requires_lowercase'))
-        }
-        if (policy.config.requireUpperCase) {
-          res.push(this.$t('data.password_policies.requires_uppercase'))
-        }
-        if (policy.config.requireDigit) {
-          res.push(this.$t('data.password_policies.requires_number'))
-        }
-      }
-      return res
-    },
-    openIntercom () {
-      if (window.Intercom) { window.Intercom('show') }
     }
   }
 })

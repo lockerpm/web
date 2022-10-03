@@ -316,6 +316,9 @@ export default {
     this.$recaptcha.init()
   },
   methods: {
+    openIntercom () {
+      if (window.Intercom) { window.Intercom('show') }
+    },
     async signupBusiness () {
       if (this.$refs.inputForm) {
         const isValid = await this.$refs.inputForm.validate()

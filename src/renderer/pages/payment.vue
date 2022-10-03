@@ -646,7 +646,7 @@ import Payment from '~/components/upgrade/Payment'
 export default {
   components: { Check, Payment, InputText, HeaderPayment },
   layout: 'blank',
-  middleware: ['NotHaveAccountService', 'BlockEnterpriseMember'],
+  middleware: ['NotHaveAccountService'],
   data () {
     return {
       step: 1,

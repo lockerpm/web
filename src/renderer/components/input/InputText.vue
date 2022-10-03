@@ -8,7 +8,6 @@
              'is-error': errorText,
              'is-disabled': disabled,
     }"
-    :style="{ marginBottom: errorText && errorText.type === 'string' ? '2rem' : '0.625rem !important' }"
   >
     <label for="">{{ label }} <span v-if="required" class="text-danger">*</span></label>
     <template v-if="isTextarea">
@@ -65,7 +64,7 @@
         class="fas fa-plus"
       />
     </button>
-    <div v-if="errorText && typeof errorText === 'string'" class="cs-helper-text">
+    <div v-if="errorText" class="cs-helper-text">
       {{ errorText }}
     </div>
   </div>

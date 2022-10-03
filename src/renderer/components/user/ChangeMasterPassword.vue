@@ -66,11 +66,6 @@
 import InputText from '../input/InputText'
 import PasswordStrengthBar from '../password/PasswordStrengthBar'
 import PasswordViolationDialog from '../cipher/PasswordViolationDialog'
-import { CipherView } from '../../core/models/view/cipherView.ts'
-import { CipherType } from '../../core/enums/cipherType.ts'
-import { LoginView } from '../../jslib/src/models/view/loginView.ts'
-import { LoginUriView } from '../../jslib/src/models/view/loginUriView.ts'
-import { CipherRequest } from '../../jslib/src/models/request/cipherRequest.ts'
 export default {
   components: { PasswordStrengthBar, InputText, PasswordViolationDialog },
   data () {
@@ -111,45 +106,17 @@ export default {
       this.shouldRedirect = shouldRedirect
       this.folder = { ...folder }
     },
-
     closeDialog () {
       this.dialogVisible = false
     },
-
     preparePassword () {
-      const violationItems = this.checkPasswordPolicy(
-        this.masterPassword || '',
-        'master_password_requirement'
-      )
+      const violationItems = this.checkPasswordPolicy(this.masterPassword || '')
       if (violationItems.length) {
         this.$refs.passwordPolicyDialog.openDialog(violationItems)
       } else {
         this.changePass()
       }
     },
-
-    // Create master pw item
-    async createMasterPwItem () {
-      try {
-        const cipher = new CipherView()
-        cipher.type = CipherType.Login
-        const loginData = new LoginView()
-        loginData.username = 'locker.io'
-        loginData.password = this.masterPassword
-        const uriView = new LoginUriView()
-        uriView.uri = 'https://locker.io'
-        loginData.uris = [uriView]
-        cipher.login = loginData
-        cipher.name = 'Locker Master Password'
-        const cipherEnc = await this.$cipherService.encrypt(cipher)
-        const data = new CipherRequest(cipherEnc)
-        data.type = CipherType.MasterPassword
-        return data
-      } catch (e) {
-        return null
-      }
-    },
-
     async changePass () {
       if (this.masterPassword.length < 8) {
         this.notify(this.$t('data.notifications.invalid_master_password'), 'error')
@@ -175,15 +142,11 @@ export default {
           this.notify(this.$t('data.notifications.incorrect_current_master'), 'warning')
           return
         }
-
-        const masterPwItem = await this.createMasterPwItem()
-
         await this.$axios.$post('cystack_platform/pm/users/me/password', {
           key: encKey[1].encryptedString,
           new_master_password_hash: newMasterPasswordHash,
           master_password_hash: masterPasswordHash,
-          score: this.passwordStrength.score,
-          master_password_cipher: masterPwItem || undefined
+          score: this.passwordStrength.score
         })
 
         this.notify(this.$t('data.notifications.update_master_success'), 'success')

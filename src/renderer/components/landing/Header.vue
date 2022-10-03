@@ -54,29 +54,10 @@
       <!-- Content -->
       <div
         id="nav-content"
-        class="order-3 w-full mx-10 flex-grow lg:flex lg:items-start lg:w-auto hidden mt-2 lg:mt-0 bg-white lg:bg-transparent p-4 lg:p-0 z-20"
+        class="order-3 w-full mr-1 ml-10 flex-grow lg:flex lg:items-start lg:w-auto hidden mt-2 lg:mt-0 bg-white lg:bg-transparent p-4 lg:p-0 z-20"
       >
-        <ul class="lg:flex justify-start items-center gap-x-[45px]">
-          <li>
-            <nuxt-link
-              class="inline-block nav-item text-black landing-transition"
-              :to="localePath('/')"
-              :active-class="['business', 'business-plans'].includes(getRouteBaseName())?'':'nuxt-link-active'"
-            >
-              {{ $t('landing_header.personal') }}
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link
-              class="inline-block nav-item text-black landing-transition"
-              :to="localePath('/business')"
-            >
-              {{ $t('landing_header.business') }}
-            </nuxt-link>
-          </li>
-        </ul>
         <!-- Nav items -->
-        <ul class="list-reset lg:flex justify-end flex-1 items-center gap-x-[45px]">
+        <ul class="list-reset lg:flex justify-start flex-1 items-center gap-x-[45px]">
           <li
             v-for="(item, index) in $t('landing_header.menu')"
             :key="index"
@@ -87,7 +68,7 @@
             <nuxt-link
               v-else
               class="inline-block nav-item text-black landing-transition"
-              :to="localeRoute({name: ['business', 'business-plans'].includes(getRouteBaseName()) && item.link === 'plans' ? `business-${item.link}` : item.link})"
+              :to="localeRoute({name: item.link})"
             >
               {{ item.name }}
             </nuxt-link>

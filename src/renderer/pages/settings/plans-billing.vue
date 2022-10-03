@@ -363,7 +363,6 @@ export default {
     AddMemberToFamilyPlan,
     CardDrawer
   },
-  middleware: ['BlockEnterpriseMember'],
   data () {
     return {
       cards: [],

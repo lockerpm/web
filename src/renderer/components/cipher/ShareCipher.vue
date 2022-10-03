@@ -7,7 +7,6 @@
     custom-class="locker-dialog"
     :close-on-click-modal="false"
   >
-    <!-- Title -->
     <div slot="title">
       <div class="flex items-center">
         <template v-if="cipher.id">
@@ -21,10 +20,7 @@
         </template>
       </div>
     </div>
-    <!-- Title end -->
-
     <div class="text-left">
-      <!-- Add cipher/folder -->
       <div
         v-if="!cipher.id"
         class="grid grid-cols-2 gap-x-2 mb-4"
@@ -50,31 +46,18 @@
           @change="(v) => ciphers = v"
         />
       </div>
-      <!-- Add cipher/folder end -->
-
-      <!-- Add member -->
       <div class="grid grid-cols-4 gap-x-2 mb-4">
         <InputText
           v-model="user.username"
           label="Email"
           class="w-full col-span-3"
-          :error-text="!isMemberEmailInputValid && !!user.username"
           @keyupEnter="addMember"
         />
-        <el-button
-          class="btn btn-outline-primary"
-          :loading="dialogLoading.addMember"
-          :disabled="!isMemberEmailInputValid"
-          style="margin-bottom: 0.625rem"
-          @click="addMember"
-        >
+        <button class="btn btn-outline-primary mb-[10px]" @click="addMember">
           {{ $t('data.folders.add_member') }}
-        </el-button>
+        </button>
       </div>
-      <!-- Add member end -->
     </div>
-
-    <!-- Member table -->
     <div>
       <el-table
         :data="newMembers.concat(members)"
@@ -145,9 +128,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <!-- Member table end -->
-
-    <!-- Footer -->
     <div
       slot="footer"
       class="dialog-footer flex items-center text-left"
@@ -169,7 +149,6 @@
         </button>
       </div>
     </div>
-    <!-- Footer end -->
   </el-dialog>
 </template>
 
@@ -219,10 +198,7 @@ export default {
       newMembers: [],
       ciphers: [],
       orgKey: null,
-      sharingKey: null,
-      dialogLoading: {
-        addMember: false
-      }
+      sharingKey: null
     }
   },
   computed: {
@@ -260,14 +236,6 @@ export default {
           key: null
         }
       }) || []
-    },
-
-    isMemberEmailInputValid () {
-      const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
-      if (!emails.length) {
-        return false
-      }
-      return emails.every(this.validateEmail)
     }
   },
   methods: {
@@ -528,33 +496,23 @@ export default {
       return sharedCiphers
     },
     async addMember () {
-      if (!this.isMemberEmailInputValid) {
-        return
-      }
       const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
       if (!emails.length) {
         return
       }
-      try {
-        this.dialogLoading.addMember = true
-        const members = await Promise.all(emails.map(async email => {
-          const publicKey = await this.getPublicKey(email)
-          const key = publicKey ? await this.generateMemberKey(publicKey, this.orgKey) : null
-          return {
-            id: null,
-            username: email,
-            key,
-            status: 'pending',
-            role: 'member'
-          }
-        }))
-        this.newMembers = this.newMembers.concat(members)
-        this.user.username = ''
-      } catch (e) {
-        this.notify(this.$t('errors.something_went_wrong'), 'error')
-      } finally {
-        this.dialogLoading.addMember = false
-      }
+      const members = await Promise.all(emails.map(async email => {
+        const publicKey = await this.getPublicKey(email)
+        const key = publicKey ? await this.generateMemberKey(publicKey, this.orgKey) : null
+        return {
+          id: null,
+          username: email,
+          key,
+          status: 'pending',
+          role: 'member'
+        }
+      }))
+      this.newMembers = this.newMembers.concat(members)
+      this.user.username = ''
     },
     async stopSharing (row) {
       if (row.status === 'pending') {
