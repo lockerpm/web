@@ -68,7 +68,9 @@
             <h3 class="landing-font-38 font-semibold mb-6">{{ item.title }}</h3>
             <p class="landing-font-16 mb-8" v-html="item.desc" />
             <div class="">
-              <a class="landing-btn" @click.prevent="goto('register-section')">Start a free trial</a>
+              <a class="landing-btn" @click.prevent="goto('register-section')">
+                {{ $t('business.welcome.start') }}
+              </a>
             </div>
           </div>
           <div class="md:w-1/2 w-full" :class="index%2===0?'order-2':'md:order-1 order-3'">
@@ -176,24 +178,31 @@
               <div class="landing-font-24 font-semibold mb-5">Business</div>
               <div class="flex justify-center gap-12">
                 <div>
-                  <span class="landing-font-28 font-semibold">$8/user</span>
+                  <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_1') }}</span>
                   <br>
-                  <span class="landing-font-16 font-semibold"> per month </span>
+                  <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
                   <br>
-                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('plan.monthly') }}</span>
+                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.monthly_pack') }}</span>
                 </div>
                 <div>
-                  <span class="landing-font-28 font-semibold">$5/user</span>
+                  <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_2') }}</span>
                   <br>
-                  <span class="landing-font-16 font-semibold"> per month </span>
+                  <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
                   <br>
-                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('plan.annually') }}</span>
+                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.yearly_pack') }}</span>
                 </div>
               </div>
               <nuxt-link class="landing-btn mt-8 !font-medium" :to="localePath('/business#register-section')">
                 {{ $t('business.welcome.start') }}
               </nuxt-link>
-              <p class="mt-3">or <span><a :href="`${enterpriseUrl}/admin/billing`" class="text-info">Purchase now</a></span></p>
+              <p class="mt-3">
+                {{ $t('business.plans.or') }}
+                <span>
+                  <a :href="`${enterpriseUrl}/admin/billing`" class="text-info">
+                    {{ $t('business.plans.do_it') }}
+                  </a>
+                </span>
+              </p>
             </div>
           </th>
           <p class="landing-font-16">{{ $t('business.plans.desc1') }}</p>
@@ -202,15 +211,16 @@
           <th class="h-[250px] w-1/4 h-1/4">
             <div class="px-8 py-6 font-medium h-full">
               <div class="landing-font-24 font-semibold mb-9">Enterprise</div>
-              <div class="uppercase text-black-500">
-                PRICE IS SUBJECT TO <br> CUSTOM TERMS
-              </div>
+              <div
+                class="uppercase text-black-500"
+                v-html="$t('business.plans.variable_price')"
+              />
               <div class="mt-12">
                 <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium" @click="openIntercom">
                   {{ $t('business.plans.contact_us') }}
                 </button>
               </div>
-              <p class="text-black-500 mt-3">For more information</p>
+              <p class="text-black-500 mt-3">{{ $t('business.plans.more_inf') }}</p>
             </div>
           </th>
           <p class="landing-font-16">{{ $t('business.plans.desc2') }}</p>
