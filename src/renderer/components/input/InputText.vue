@@ -35,7 +35,7 @@
         tabindex="0"
         @mouseleave="hovering = false"
         @focus="handleFocus"
-        @blur="focusing = false"
+        @blur="handleOnBlue"
         @input="handleInput"
         @mouseenter="handleHover"
         @keyup.enter="keyupEnter"
@@ -142,6 +142,10 @@ export default {
     })
   },
   methods: {
+    handleOnBlue () {
+      this.focusing = false
+      this.$emit('onBlue')
+    },
     togglePassword () {
       if (this.disabled) { return }
       this.type = this.type === 'text' ? 'password' : 'text'

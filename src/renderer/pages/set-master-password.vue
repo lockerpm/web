@@ -81,7 +81,7 @@
         <button
           class="btn btn-primary w-full"
           :disabled="loading || !masterPassword || (masterPassword !== masterRePassword)"
-          @click="setMasterPass"
+          @click="confirmDialogVisible = true"
         >
           {{ $t('set_master_password.create_button') }}
         </button>
@@ -90,6 +90,33 @@
         {{ $t('set_master_password.note') }}
       </div>
     </div>
+    <el-dialog
+      :show-close="false"
+      :visible.sync="confirmDialogVisible"
+      width="420px"
+      :title="$t('set_master_password.confirm_nodal.title')"
+      center
+    >
+      <img
+        :src="require(`~/assets/images/landing/master-password/important.png`)"
+        alt=""
+        class="block"
+        style="height: 120px; width: 120px; margin-left: auto; margin-right: auto;"
+      >
+      <p class="text-center">{{ $t('set_master_password.confirm_nodal.text1') }}</p>
+      <p class="text-center">{{ $t('set_master_password.confirm_nodal.text2') }}<a href="https://locker.io/master-password" target="_blank" rel="noopener noreferrer">{{ $t('set_master_password.confirm_nodal.link') }}</a>.</p>
+      <div class="flex justify-center mt-4">
+        <el-button class="flex w-full" type="primary" @click="confirmSetMasterPass">{{ $t('set_master_password.confirm_nodal.btn_next') }}</el-button>
+      </div>
+      <div class="flex justify-center mt-2">
+        <button
+          class="btn btn-sm btn-clean btn-primary !px-3 !font-normal"
+          @click="confirmDialogVisible = false"
+        >
+          {{ $t('set_master_password.confirm_nodal.btn_back') }}
+        </button>
+      </div>
+    </el-dialog>
     <PasswordViolationDialog ref="passwordPolicyDialog" @confirm="preparePassword" />
   </div>
 </template>
@@ -113,6 +140,7 @@ export default {
       masterRePassword: '',
       masterPasswordHint: '',
       loading: false,
+      confirmDialogVisible: false,
       errors: {
       },
       showPassword: false,
@@ -148,7 +176,10 @@ export default {
         this.setMasterPass()
       }
     },
-
+    confirmSetMasterPass () {
+      this.confirmDialogVisible = false
+      this.setMasterPass()
+    },
     // Submit master pw
     async setMasterPass () {
       await this.clearKeys()
@@ -206,3 +237,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .el-dialog__body {
+    padding-top: 0 !important;
+  }
+</style>

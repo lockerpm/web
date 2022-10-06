@@ -110,35 +110,46 @@
         </div>
       </div>
     </div>
-    <div class="setting-wrapper">
+    <div class="text-head-5 font-semibold mb-4 text-danger">
+      {{ $t('data.settings.danger_zone') }}
+    </div>
+    <div class="setting-wrapper" style="border-color: red;">
       <div class="setting-section">
-        <div class="setting-section-header">
-          <div>
-            <div class="setting-title">{{ $t('common.delete') }}</div>
-            <div class="setting-description mb-4">
-              {{ $t('data.settings.danger_zone_note') }}
-            </div>
+        <div>
+          <div class="flex justify-between items-center">
             <div>
-              <!-- <button
-                class="btn btn-default !text-danger mb-4 md:mb-0"
-                @click="openDeauthorizeSessions()"
-              >
-                {{ $t('data.settings.deauthorize_sessions') }}
-              </button> -->
-              <button
-                class="btn btn-default !text-danger mb-4 md:mb-0"
-                @click="openPurgeVault('purge')"
-              >
-                {{ $t('data.settings.delete_all_items') }}
-              </button>
-              <button
-                class="btn btn-default !text-danger mb-4 md:mb-0"
-                @click="openPurgeVault('delete_account')"
-              >
-                {{ $t('data.settings.delete_account') }}
-              </button>
+              <div class="setting-title"> {{ $t('data.settings.delete_all_items') }}</div>
+              <div class="setting-description mb-4">
+                {{ $t('data.settings.delete_all_items_desc') }}
+              </div>
             </div>
+            <button
+              class="btn btn-default !text-danger mt-2 md:mb-0 self-start"
+              @click="openPurgeVault('purge')"
+            >
+              {{ $t('data.settings.delete_all_items') }}
+            </button>
           </div>
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="setting-title"> {{ $t('data.settings.delete_account') }}</div>
+              <div class="setting-description mb-4">
+                {{ $t('data.settings.delete_account_desc') }}
+              </div>
+            </div>
+            <button
+              class="btn btn-default !text-danger mt-2 md:mb-0 self-start"
+              @click="openPurgeVault('delete_account')"
+            >
+              {{ $t('data.settings.delete_account') }}
+            </button>
+          </div>
+          <!-- <button
+            class="btn btn-default !text-danger mb-4 md:mb-0"
+            @click="openDeauthorizeSessions()"
+          >
+            {{ $t('data.settings.deauthorize_sessions') }}
+          </button> -->
         </div>
       </div>
     </div>

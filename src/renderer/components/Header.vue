@@ -193,7 +193,7 @@
           >
             <a
               class="hover:no-underline text-current hover:text-current"
-              href="https://zo8rr5fc706.typeform.com/to/OotlSyQ7"
+              href="https://forum.locker.io"
               target="_blank"
             >
               {{ $t('data.profile_menu.feedback') }}
