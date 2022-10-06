@@ -910,6 +910,13 @@ export default {
       return this.$moment(this.currentPlan.next_billing_time * 1000).diff(now, 'days')
     }
   },
+  watch: {
+    isEnterpriseMember (val) {
+      if (val) {
+        this.$router.push(this.localeRoute({ name: 'vault' }))
+      }
+    }
+  },
   beforeDestroy () {
     clearInterval(this.intervalBalance)
   },
