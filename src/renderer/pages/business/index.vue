@@ -195,10 +195,7 @@
                   <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.yearly_pack') }}</span>
                 </div>
               </div>
-              <nuxt-link
-                :to="localeRoute('/business/register')"
-                class="landing-btn mt-8 !font-medium"
-              >
+              <nuxt-link class="landing-btn mt-8 !font-medium" :to="localePath('/business#register-section')">
                 {{ $t('business.welcome.start') }}
               </nuxt-link>
               <p class="mt-3">
