@@ -16,12 +16,12 @@
             />
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
-                <a
+                <nuxt-link
+                  :to="localeRoute('/business/register')"
                   class="landing-btn w-full sm:w-auto mb-1"
-                  @click.prevent="goto('register-section')"
                 >
                   {{ $t('business.welcome.start') }}
-                </a>
+                </nuxt-link>
                 <p class="italic w-full landing-font-14 mt-1">
                   {{ $t('landing.section1.btn[0].note') }}
                 </p>
@@ -68,9 +68,12 @@
             <h3 class="landing-font-38 font-semibold mb-6">{{ item.title }}</h3>
             <p class="landing-font-16 mb-8" v-html="item.desc" />
             <div class="">
-              <a class="landing-btn" @click.prevent="goto('register-section')">
+              <nuxt-link
+                :to="localeRoute('/business/register')"
+                class="landing-btn"
+              >
                 {{ $t('business.welcome.start') }}
-              </a>
+              </nuxt-link>
             </div>
           </div>
           <div class="md:w-1/2 w-full" :class="index%2===0?'order-2':'md:order-1 order-3'">
@@ -192,7 +195,10 @@
                   <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.yearly_pack') }}</span>
                 </div>
               </div>
-              <nuxt-link class="landing-btn mt-8 !font-medium" :to="localePath('/business#register-section')">
+              <nuxt-link
+                :to="localeRoute('/business/register')"
+                class="landing-btn mt-8 !font-medium"
+              >
                 {{ $t('business.welcome.start') }}
               </nuxt-link>
               <p class="mt-3">

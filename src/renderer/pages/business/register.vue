@@ -20,14 +20,14 @@
       <div v-else class="flex flex-wrap">
         <div class="md:w-1/2 w-full">
           <h1
-            class="landing-font-42 font-semibold"
+            class="landing-font-38 font-semibold"
             v-html="$t('business.register.title')"
           />
           <div class="mt-8 landing-font-16 ">
             {{ $t('business.register.desc') }}
           </div>
           <div class="landing-font-16 italic text-black-500 my-5">
-            {{ $t('common.no_credit_card') }}
+            {{ $t('business.register.no_credit_card') }}
           </div>
           <div
             v-for="(item, index) in $t('business.register.features')"
