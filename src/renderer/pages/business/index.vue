@@ -17,7 +17,7 @@
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
                 <nuxt-link
-                  :to="localeRoute('/business/register')"
+                  :to="localeRoute('/business#register-section')"
                   class="landing-btn w-full sm:w-auto mb-1"
                 >
                   {{ $t('business.welcome.start') }}
@@ -169,33 +169,35 @@
           <h2 class="landing-font-42 font-semibold">{{ $t('business.plans.title') }}</h2>
         </div>
         <div class="md:w-1/2 w-full md:text-right text-center self-center">
-          <nuxt-link :to="localePath('/business/plans')" class="landing-btn">
+          <nuxt-link :to="localePath('/business#register-section')" class="landing-btn">
             {{ $t('business.plans.learn_more') }}
           </nuxt-link>
         </div>
       </div>
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-8 mb-8 text-center">
         <div class="border border-[#E8E8E9] rounded-xl p-8">
-          <th class="h-[250px] w-1/4 rounded-t-xl h-1/4 ">
+          <th class="w-1/4 rounded-t-xl h-1/4 ">
             <div class="px-6 py-6 font-medium">
-              <div class="landing-font-24 font-semibold mb-5">Business</div>
-              <div class="flex justify-center gap-12">
-                <div>
-                  <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_1') }}</span>
-                  <br>
-                  <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
-                  <br>
-                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.monthly_pack') }}</span>
-                </div>
-                <div>
-                  <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_2') }}</span>
-                  <br>
-                  <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
-                  <br>
-                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.yearly_pack') }}</span>
+              <div class="h-[50px] landing-font-24 font-semibold">Business</div>
+              <div class="h-[100px]">
+                <div class="flex justify-center gap-12">
+                  <div>
+                    <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_1') }}</span>
+                    <br>
+                    <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
+                    <br>
+                    <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.monthly_pack') }}</span>
+                  </div>
+                  <div>
+                    <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_2') }}</span>
+                    <br>
+                    <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
+                    <br>
+                    <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.yearly_pack') }}</span>
+                  </div>
                 </div>
               </div>
-              <nuxt-link class="landing-btn mt-8 !font-medium" :to="localePath('/business#register-section')">
+              <nuxt-link class="landing-btn mt-4 !font-medium" :to="localePath('/business#register-section')">
                 {{ $t('business.welcome.start') }}
               </nuxt-link>
               <p class="mt-3">
@@ -211,14 +213,14 @@
           <p class="landing-font-16">{{ $t('business.plans.desc1') }}</p>
         </div>
         <div class="border border-[#E8E8E9] rounded-xl p-8">
-          <th class="h-[250px] w-1/4 h-1/4">
+          <th class="w-1/4 h-1/4">
             <div class="px-8 py-6 font-medium">
-              <div class="landing-font-24 font-semibold mb-9">Enterprise</div>
+              <div class="h-[50px] landing-font-24 font-semibold">Enterprise</div>
               <div
-                class="uppercase text-black-500"
+                class="h-[100px] uppercase text-black-500 flex items-center justify-center"
                 v-html="$t('business.plans.variable_price')"
               />
-              <div class="mt-12">
+              <div class="mt-4">
                 <a
                   :href="`mailto: ${$t('landing_affiliate.help_box.email')}`"
                   target="_blank"
