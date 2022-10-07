@@ -16,12 +16,12 @@
             />
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
-                <a
+                <nuxt-link
+                  :to="localeRoute('/business/register')"
                   class="landing-btn w-full sm:w-auto mb-1"
-                  @click.prevent="goto('register-section')"
                 >
                   {{ $t('business.welcome.start') }}
-                </a>
+                </nuxt-link>
                 <p class="italic w-full landing-font-14 mt-1">
                   {{ $t('landing.section1.btn[0].note') }}
                 </p>
@@ -68,9 +68,12 @@
             <h3 class="landing-font-38 font-semibold mb-6">{{ item.title }}</h3>
             <p class="landing-font-16 mb-8" v-html="item.desc" />
             <div class="">
-              <a class="landing-btn" @click.prevent="goto('register-section')">
+              <nuxt-link
+                :to="localeRoute('/business/register')"
+                class="landing-btn"
+              >
                 {{ $t('business.welcome.start') }}
-              </a>
+              </nuxt-link>
             </div>
           </div>
           <div class="md:w-1/2 w-full" :class="index%2===0?'order-2':'md:order-1 order-3'">
@@ -192,7 +195,10 @@
                   <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.yearly_pack') }}</span>
                 </div>
               </div>
-              <nuxt-link class="landing-btn mt-8 !font-medium" :to="localePath('/business#register-section')">
+              <nuxt-link
+                :to="localeRoute('/business/register')"
+                class="landing-btn mt-8 !font-medium"
+              >
                 {{ $t('business.welcome.start') }}
               </nuxt-link>
               <p class="mt-3">
@@ -216,9 +222,14 @@
                 v-html="$t('business.plans.variable_price')"
               />
               <div class="mt-12">
-                <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium" @click="openIntercom">
-                  {{ $t('business.plans.contact_us') }}
-                </button>
+                <a
+                  :href="`mailto: ${$t('landing_affiliate.help_box.email')}`"
+                  target="_blank"
+                >
+                  <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium">
+                    {{ $t('business.plans.contact_us') }}
+                  </button>
+                </a>
               </div>
               <p class="text-black-500 mt-3">{{ $t('business.plans.more_inf') }}</p>
             </div>
@@ -228,7 +239,7 @@
       </div>
       <div class="p-6 bg-[#E4F0E6] rounded-xl flex justify-between landing-font-20 font-semibold">
         <div class="flex-grow">{{ $t('business.plans.more_options') }}</div>
-        <div class="text-primary cursor-pointer" @click="openIntercom">{{ $t('business.plans.contact_us') }}</div>
+        <a :href="`mailto: ${$t('landing_affiliate.help_box.email')}`" target="_blank">{{ $t('business.plans.contact_us') }}</a>
       </div>
     </section>
 
