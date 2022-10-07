@@ -222,9 +222,14 @@
                 v-html="$t('business.plans.variable_price')"
               />
               <div class="mt-12">
-                <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium" @click="openIntercom">
-                  {{ $t('business.plans.contact_us') }}
-                </button>
+                <a
+                  :href="`mailto: ${$t('landing_affiliate.help_box.email')}`"
+                  target="_blank"
+                >
+                  <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium">
+                    {{ $t('business.plans.contact_us') }}
+                  </button>
+                </a>
               </div>
               <p class="text-black-500 mt-3">{{ $t('business.plans.more_inf') }}</p>
             </div>
@@ -234,7 +239,7 @@
       </div>
       <div class="p-6 bg-[#E4F0E6] rounded-xl flex justify-between landing-font-20 font-semibold">
         <div class="flex-grow">{{ $t('business.plans.more_options') }}</div>
-        <div class="text-primary cursor-pointer" @click="openIntercom">{{ $t('business.plans.contact_us') }}</div>
+        <a :href="`mailto: ${$t('landing_affiliate.help_box.email')}`" target="_blank">{{ $t('business.plans.contact_us') }}</a>
       </div>
     </section>
 
