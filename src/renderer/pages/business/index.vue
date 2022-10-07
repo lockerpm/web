@@ -171,7 +171,7 @@
           </nuxt-link>
         </div>
       </div>
-      <div class="grid sm:grid-cols-2 grid-cols-1 gap-8 mb-8">
+      <div class="grid sm:grid-cols-2 grid-cols-1 gap-8 mb-8 text-center">
         <div class="border border-[#E8E8E9] rounded-xl p-8">
           <th class="h-[250px] w-1/4 rounded-t-xl h-1/4 ">
             <div class="px-6 py-6 font-medium">
@@ -209,7 +209,7 @@
         </div>
         <div class="border border-[#E8E8E9] rounded-xl p-8">
           <th class="h-[250px] w-1/4 h-1/4">
-            <div class="px-8 py-6 font-medium h-full">
+            <div class="px-8 py-6 font-medium">
               <div class="landing-font-24 font-semibold mb-9">Enterprise</div>
               <div
                 class="uppercase text-black-500"
