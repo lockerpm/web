@@ -69,7 +69,7 @@
             <p class="landing-font-16 mb-8" v-html="item.desc" />
             <div class="">
               <nuxt-link
-                :to="localeRoute('/business/register')"
+                :to="localeRoute('/business#register-section')"
                 class="landing-btn"
               >
                 {{ $t('business.welcome.start') }}
@@ -169,7 +169,7 @@
           <h2 class="landing-font-42 font-semibold">{{ $t('business.plans.title') }}</h2>
         </div>
         <div class="md:w-1/2 w-full md:text-right text-center self-center">
-          <nuxt-link :to="localePath('/business#register-section')" class="landing-btn">
+          <nuxt-link :to="localePath('/business/plans')" class="landing-btn">
             {{ $t('business.plans.learn_more') }}
           </nuxt-link>
         </div>
