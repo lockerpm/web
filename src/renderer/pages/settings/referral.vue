@@ -107,6 +107,11 @@ export default {
         this.$router.push(this.localeRoute({ name: 'vault' }))
       }
     }
+  },
+  mounted () {
+    if (this.isEnterpriseMember) {
+      this.$router.push(this.localeRoute({ name: 'vault' }))
+    }
   }
 }
 </script>

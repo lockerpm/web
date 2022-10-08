@@ -823,6 +823,10 @@ export default {
     clearInterval(this.intervalBalance)
   },
   mounted () {
+    if (this.isEnterpriseMember) {
+      this.$router.push(this.localeRoute({ name: 'vault' }))
+      return
+    }
     this.getPlans()
     this.getCards()
     this.$store.dispatch('LoadCurrentPlan')

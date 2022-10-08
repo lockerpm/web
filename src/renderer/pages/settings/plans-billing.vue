@@ -415,6 +415,10 @@ export default {
     }
   },
   mounted () {
+    if (this.isEnterpriseMember) {
+      this.$router.push(this.localeRoute({ name: 'vault' }))
+      return
+    }
     this.getCards()
     this.getInvoices()
     this.getPlans()
