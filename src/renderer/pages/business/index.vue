@@ -16,17 +16,17 @@
             />
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
-                <nuxt-link
-                  :to="localeRoute('/business#register-section')"
+                <a
+                  href="#register-section"
                   class="landing-btn w-full sm:w-auto mb-1"
                 >
                   {{ $t('business.welcome.start') }}
-                </nuxt-link>
+                </a>
                 <p class="italic w-full landing-font-14 mt-1">
                   {{ $t('landing.section1.btn[0].note') }}
                 </p>
               </div>
-              <div>
+              <div class="invisible">
                 <a
                   class="landing-btn2 w-full sm:w-auto sm:ml-4"
                   :href="`${enterpriseUrl}/admin/billing`"
@@ -68,12 +68,12 @@
             <h3 class="landing-font-38 font-semibold mb-6">{{ item.title }}</h3>
             <p class="landing-font-16 mb-8" v-html="item.desc" />
             <div class="">
-              <nuxt-link
-                :to="localeRoute('/business#register-section')"
-                class="landing-btn"
+              <a
+                href="#register-section"
+                class="landing-btn w-full sm:w-auto mb-1"
               >
                 {{ $t('business.welcome.start') }}
-              </nuxt-link>
+              </a>
             </div>
           </div>
           <div class="md:w-1/2 w-full" :class="index%2===0?'order-2':'md:order-1 order-3'">
@@ -197,10 +197,15 @@
                   </div>
                 </div>
               </div>
-              <nuxt-link class="landing-btn mt-4 !font-medium" :to="localePath('/business#register-section')">
-                {{ $t('business.welcome.start') }}
-              </nuxt-link>
-              <p class="mt-3">
+              <div class="mt-4">
+                <a
+                  href="#register-section"
+                  class="landing-btn w-full sm:w-auto mb-1"
+                >
+                  {{ $t('business.welcome.start') }}
+                </a>
+              </div>
+              <p class="mt-3 invisible">
                 {{ $t('business.plans.or') }}
                 <span>
                   <a :href="`${enterpriseUrl}/admin/billing`" class="text-info">

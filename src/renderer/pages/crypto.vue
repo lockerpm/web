@@ -7,13 +7,13 @@
             <div class="landing-font-60 font-bold text-[#161922]">
               {{ $t('crypto.bg_welcome.title') }}
             </div>
-            <div class="landing-font-20 font-normal text-[#3A3A3A] pt-4">
+            <div class="landing-font-18 font-normal text-[#3A3A3A] pt-4">
               {{ $t('crypto.bg_welcome.subtitle') }}
             </div>
             <div class="pt-12 pb-28">
               <a
                 class="landing-btn"
-                href="https://checkout.stripe.com/c/pay/cs_test_b1lI7Pw7OEPFxK9UVIgZuD5elecgzfh1L9ajD28TrbnckKSseHUSVSixHz#fidkdWxOYHwnPyd1blpxYHZxWjBvM3JmNnZsfDE8YmxjM3d0VjBfNGhzVScpJ3VpbGtuQH11anZgYUxhJz8ncWB2cVpkQFAxb1xnZ3BhM0E9cnJnTEwnKSd1d2BjbGlpYGFVd2poakZqYWAnPydJTlVAV1ZKS0RJMDUneCUl"
+                href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
                 style="align-self: center"
               >
                 {{ $t('crypto.bg_welcome.btn.text') }}
@@ -33,7 +33,7 @@
         <h2 class="font-semibold landing-font-42 mx-auto mb-10 text-red">
           {{ $t('crypto.warning.title') }}
         </h2>
-        <div class="font-normal landing-font-22 mx-auto mb-10 max-w-[830px]">
+        <div class="font-normal landing-font-18 mx-auto mb-10 max-w-[830px]">
           {{ $t('crypto.warning.subtitle') }}
         </div>
         <img
@@ -56,13 +56,13 @@
             <div
               v-for="(item, index) in $t('crypto.warning.consequences')"
               :key="index"
-              class="landing-font-22 font-normal mb-20"
+              class="landing-font-18 font-normal mb-20"
               v-html="item.conq"
             />
           </div>
           <a
             class="landing-btn mb-24"
-            href="https://checkout.stripe.com/c/pay/cs_test_b1lI7Pw7OEPFxK9UVIgZuD5elecgzfh1L9ajD28TrbnckKSseHUSVSixHz#fidkdWxOYHwnPyd1blpxYHZxWjBvM3JmNnZsfDE8YmxjM3d0VjBfNGhzVScpJ3VpbGtuQH11anZgYUxhJz8ncWB2cVpkQFAxb1xnZ3BhM0E9cnJnTEwnKSd1d2BjbGlpYGFVd2poakZqYWAnPydJTlVAV1ZKS0RJMDUneCUl"
+            href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
             style="align-self: center"
           >
             {{ $t('crypto.warning.btn_text1') }}
@@ -83,7 +83,7 @@
               class="font-semibold landing-font-42 mb-10"
               v-html="$t('crypto.sale_pitch.overall.title')"
             />
-            <div class="font-normal landing-font-22 max-w-[450px]">
+            <div class="font-normal landing-font-18 max-w-[450px]">
               {{ $t('crypto.sale_pitch.overall.desc') }}
             </div>
           </div>
@@ -92,7 +92,7 @@
               class="font-semibold landing-font-42 mb-10"
               v-html="$t('crypto.sale_pitch.overall.title')"
             />
-            <div class="font-normal landing-font-22 max-w-[450px]">
+            <div class="font-normal landing-font-18 max-w-[450px]">
               {{ $t('crypto.sale_pitch.overall.desc') }}
             </div>
           </div>
@@ -119,7 +119,7 @@
             >
               <div class="flex max-w-[560px] mb-[52px]">
                 <img :src="require(`~/assets/images/landing/crypto/XCircle.svg`)" class="h-[32px] mr-[10px]">
-                <div class="landing-font-22 font-normal">
+                <div class="landing-font-18 font-normal">
                   {{ item }}
                 </div>
               </div>
@@ -143,15 +143,15 @@
               class="font-semibold landing-font-38 mb-10 max-w-[840px]"
               v-html="$t('crypto.sale_pitch.hard_sol.title')"
             />
-            <div v-if="locale==='en'" class="font-normal landing-font-22 max-w-[640px] mb-20">
+            <div v-if="locale==='en'" class="font-normal landing-font-18 max-w-[640px] mb-20">
               {{ $t('crypto.sale_pitch.hard_sol.desc') }}
             </div>
-            <div v-else class="font-normal landing-font-22 max-w-[720px] mb-20">
+            <div v-else class="font-normal landing-font-18 max-w-[720px] mb-20">
               {{ $t('crypto.sale_pitch.hard_sol.desc') }}
             </div>
             <a
               class="landing-btn mb-24"
-              href="https://checkout.stripe.com/c/pay/cs_test_b1lI7Pw7OEPFxK9UVIgZuD5elecgzfh1L9ajD28TrbnckKSseHUSVSixHz#fidkdWxOYHwnPyd1blpxYHZxWjBvM3JmNnZsfDE8YmxjM3d0VjBfNGhzVScpJ3VpbGtuQH11anZgYUxhJz8ncWB2cVpkQFAxb1xnZ3BhM0E9cnJnTEwnKSd1d2BjbGlpYGFVd2poakZqYWAnPydJTlVAV1ZKS0RJMDUneCUl"
+              href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
               style="align-self: center"
             >
               {{ $t('crypto.warning.btn_text1') }}
@@ -177,7 +177,7 @@
               class="w-full font-bold landing-font-38 mb-[27px]"
               v-html="$t('crypto.sale_pitch.pitch.title')"
             />
-            <div class="font-normal landing-font-24 max-w-[630px] mb-20">
+            <div class="font-normal landing-font-22 max-w-[630px] mb-20">
               {{ $t('crypto.sale_pitch.pitch.desc') }}
             </div>
             <div
@@ -187,7 +187,7 @@
             >
               <div class="flex max-w-[670px] mb-[50px]">
                 <img :src="require(`~/assets/images/landing/crypto/CheckCircle.svg`)" class="h-[32px] mr-[10px]">
-                <div class="landing-font-22 font-normal">
+                <div class="landing-font-18 font-normal">
                   {{ item }}
                 </div>
               </div>
@@ -209,7 +209,7 @@
           <div>
             <a
               class="landing-btn"
-              href="https://checkout.stripe.com/c/pay/cs_test_b1lI7Pw7OEPFxK9UVIgZuD5elecgzfh1L9ajD28TrbnckKSseHUSVSixHz#fidkdWxOYHwnPyd1blpxYHZxWjBvM3JmNnZsfDE8YmxjM3d0VjBfNGhzVScpJ3VpbGtuQH11anZgYUxhJz8ncWB2cVpkQFAxb1xnZ3BhM0E9cnJnTEwnKSd1d2BjbGlpYGFVd2poakZqYWAnPydJTlVAV1ZKS0RJMDUneCUl"
+              href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
               style="align-self: center"
             >
               {{ $t('crypto.introduce_crypto.btn.text') }}
@@ -371,7 +371,7 @@
           >
           <div class="max-w-[540px]">
             <div
-              class="landing-font-20 !leading-6 font-normal"
+              class="landing-font-18 !leading-6 font-normal"
               v-html="$t('crypto.trial.desc')"
             />
           </div>
@@ -403,7 +403,7 @@
       <div class="flex justify-center items-center mt-[60px]">
         <a
           class="landing-btn"
-          href="https://checkout.stripe.com/c/pay/cs_test_b1lI7Pw7OEPFxK9UVIgZuD5elecgzfh1L9ajD28TrbnckKSseHUSVSixHz#fidkdWxOYHwnPyd1blpxYHZxWjBvM3JmNnZsfDE8YmxjM3d0VjBfNGhzVScpJ3VpbGtuQH11anZgYUxhJz8ncWB2cVpkQFAxb1xnZ3BhM0E9cnJnTEwnKSd1d2BjbGlpYGFVd2poakZqYWAnPydJTlVAV1ZKS0RJMDUneCUl"
+          href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
           style="background-color: white; color: #268334;"
         >
           <div class="flex justify-center items-center px-[29px]">
@@ -421,9 +421,13 @@
             {{ $t('crypto.final_pitch.desc1') }}
           </div>
           <div class="landing-font-32 font-bold text-center text-white">
-            <span class="text-[#F1D75B]">
-              {{ $t('crypto.final_pitch.desc2') }}
-            </span>
+            <a
+              href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
+            >
+              <span class="text-[#F1D75B]">
+                {{ $t('crypto.final_pitch.desc2') }}
+              </span>
+            </a>
             <span>
               {{ $t('crypto.final_pitch.desc3') }}
             </span>
