@@ -332,7 +332,7 @@ export default {
           this.enterPasswordVisible = false
           localStorage.setItem('trial_plan', 'pm_enterprise')
           setTimeout(() => {
-            this.$router.push(this.localePath('/business/register?submitted=1'))
+            this.$router.push(this.localePath(`/business/register?submitted=1&${this.newuser.email}`))
           }, 500)
         })
         .catch(err => {

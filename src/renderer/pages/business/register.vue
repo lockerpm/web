@@ -403,6 +403,13 @@ export default {
           this.countries = res
         })
     },
+    extractEmail () {
+      const link = this.$route.path
+      if (link.includes('=1&')) {
+        console.log(link.split('=1&'))
+        return link.split('=1&')
+      }
+    },
     changeDialCode (countryCode) {
       for (let i = 0; i < this.countries.length; i++) {
         if (this.countries[i].country_code.toUpperCase() === countryCode) {
