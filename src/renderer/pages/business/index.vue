@@ -17,8 +17,8 @@
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
                 <a
+                  href="#register-section"
                   class="landing-btn w-full sm:w-auto mb-1"
-                  @click.prevent="goto('register-section')"
                 >
                   {{ $t('business.welcome.start') }}
                 </a>
@@ -26,7 +26,7 @@
                   {{ $t('landing.section1.btn[0].note') }}
                 </p>
               </div>
-              <div>
+              <div class="invisible">
                 <a
                   class="landing-btn2 w-full sm:w-auto sm:ml-4"
                   :href="`${enterpriseUrl}/admin/billing`"
@@ -38,12 +38,12 @@
           </div>
           <!-- Right -->
           <div class="hidden md:block md:w-1/2 order-2 pr-0 justify-self-end">
-            <img v-if="locale==='en'" :src="require(`~/assets/images/business/bg-welcome.png`)" alt="">
-            <img v-else :src="require(`~/assets/images/business/bg-welcome_vi.png`)" alt="">
+            <img v-if="locale==='en'" :src="require(`~/assets/images/business/en/bg-welcome.png`)" alt="">
+            <img v-else :src="require(`~/assets/images/business/vi/bg-welcome_vi.png`)" alt="">
           </div>
           <div class="w-full md:hidden order-2 mt-24">
-            <img v-if="locale==='en'" :src="require(`~/assets/images/business/bg-welcome.png`)" alt="">
-            <img v-else :src="require(`~/assets/images/business/bg-welcome_vi.png`)" alt="">
+            <img v-if="locale==='en'" :src="require(`~/assets/images/business/en/bg-welcome.png`)" alt="">
+            <img v-else :src="require(`~/assets/images/business/vi/bg-welcome_vi.png`)" alt="">
           </div>
           <!-- Right end -->
         </div>
@@ -68,14 +68,17 @@
             <h3 class="landing-font-38 font-semibold mb-6">{{ item.title }}</h3>
             <p class="landing-font-16 mb-8" v-html="item.desc" />
             <div class="">
-              <a class="landing-btn" @click.prevent="goto('register-section')">
+              <a
+                href="#register-section"
+                class="landing-btn w-full sm:w-auto mb-1"
+              >
                 {{ $t('business.welcome.start') }}
               </a>
             </div>
           </div>
           <div class="md:w-1/2 w-full" :class="index%2===0?'order-2':'md:order-1 order-3'">
-            <img v-if="locale==='en'" :src="require(`~/assets/images/business/${item.image}`)" :alt="item.title">
-            <img v-else :src="require(`~/assets/images/business/${item.image}`)" :alt="item.title">
+            <img v-if="locale==='en'" :src="require(`~/assets/images/business/en/${item.image}`)" :alt="item.title">
+            <img v-else :src="require(`~/assets/images/business/vi/${item.image}`)" :alt="item.title">
           </div>
         </div>
       </div>
@@ -171,31 +174,38 @@
           </nuxt-link>
         </div>
       </div>
-      <div class="grid sm:grid-cols-2 grid-cols-1 gap-8 mb-8">
+      <div class="grid sm:grid-cols-2 grid-cols-1 gap-8 mb-8 text-center">
         <div class="border border-[#E8E8E9] rounded-xl p-8">
-          <th class="h-[250px] w-1/4 rounded-t-xl h-1/4 ">
+          <th class="w-1/4 rounded-t-xl h-1/4 ">
             <div class="px-6 py-6 font-medium">
-              <div class="landing-font-24 font-semibold mb-5">Business</div>
-              <div class="flex justify-center gap-12">
-                <div>
-                  <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_1') }}</span>
-                  <br>
-                  <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
-                  <br>
-                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.monthly_pack') }}</span>
-                </div>
-                <div>
-                  <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_2') }}</span>
-                  <br>
-                  <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
-                  <br>
-                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.yearly_pack') }}</span>
+              <div class="h-[50px] landing-font-24 font-semibold">Business</div>
+              <div class="h-[100px]">
+                <div class="flex justify-center gap-12">
+                  <div>
+                    <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_1') }}</span>
+                    <br>
+                    <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
+                    <br>
+                    <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.monthly_pack') }}</span>
+                  </div>
+                  <div>
+                    <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_2') }}</span>
+                    <br>
+                    <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
+                    <br>
+                    <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.yearly_pack') }}</span>
+                  </div>
                 </div>
               </div>
-              <nuxt-link class="landing-btn mt-8 !font-medium" :to="localePath('/business#register-section')">
-                {{ $t('business.welcome.start') }}
-              </nuxt-link>
-              <p class="mt-3">
+              <div class="mt-4">
+                <a
+                  href="#register-section"
+                  class="landing-btn w-full sm:w-auto mb-1"
+                >
+                  {{ $t('business.welcome.start') }}
+                </a>
+              </div>
+              <p class="mt-3 invisible">
                 {{ $t('business.plans.or') }}
                 <span>
                   <a :href="`${enterpriseUrl}/admin/billing`" class="text-info">
@@ -208,17 +218,22 @@
           <p class="landing-font-16">{{ $t('business.plans.desc1') }}</p>
         </div>
         <div class="border border-[#E8E8E9] rounded-xl p-8">
-          <th class="h-[250px] w-1/4 h-1/4">
-            <div class="px-8 py-6 font-medium h-full">
-              <div class="landing-font-24 font-semibold mb-9">Enterprise</div>
+          <th class="w-1/4 h-1/4">
+            <div class="px-8 py-6 font-medium">
+              <div class="h-[50px] landing-font-24 font-semibold">Enterprise</div>
               <div
-                class="uppercase text-black-500"
+                class="h-[100px] uppercase text-black-500 flex items-center justify-center"
                 v-html="$t('business.plans.variable_price')"
               />
-              <div class="mt-12">
-                <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium" @click="openIntercom">
-                  {{ $t('business.plans.contact_us') }}
-                </button>
+              <div class="mt-4">
+                <a
+                  :href="`mailto: ${$t('landing_affiliate.help_box.email')}`"
+                  target="_blank"
+                >
+                  <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium">
+                    {{ $t('business.plans.contact_us') }}
+                  </button>
+                </a>
               </div>
               <p class="text-black-500 mt-3">{{ $t('business.plans.more_inf') }}</p>
             </div>
@@ -228,7 +243,7 @@
       </div>
       <div class="p-6 bg-[#E4F0E6] rounded-xl flex justify-between landing-font-20 font-semibold">
         <div class="flex-grow">{{ $t('business.plans.more_options') }}</div>
-        <div class="text-primary cursor-pointer" @click="openIntercom">{{ $t('business.plans.contact_us') }}</div>
+        <a :href="`mailto: ${$t('landing_affiliate.help_box.email')}`" target="_blank">{{ $t('business.plans.contact_us') }}</a>
       </div>
     </section>
 

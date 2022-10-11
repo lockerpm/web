@@ -117,19 +117,14 @@
         </button>
       </div>
     </el-dialog>
-    <PasswordViolationDialog ref="passwordPolicyDialog" @confirm="preparePassword" />
+    <PasswordViolationDialog ref="passwordPolicyDialog" />
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
 import PasswordStrengthBar from '../components/password/PasswordStrengthBar'
 import PasswordViolationDialog from '../components/cipher/PasswordViolationDialog'
-import { CipherRequest } from '../jslib/src/models/request/cipherRequest.ts'
-import { LoginView } from '../jslib/src/models/view/loginView.ts'
-import { LoginUriView } from '../jslib/src/models/view/loginUriView.ts'
-import { CipherView } from '../core/models/view/cipherView.ts'
-import { CipherType } from '../core/enums/cipherType.ts'
-
 export default {
   components: { PasswordStrengthBar, PasswordViolationDialog },
   layout: 'blank',
@@ -165,20 +160,31 @@ export default {
   },
   methods: {
     // Check policy before submit
-    preparePassword () {
+    async preparePassword () {
+      if (!this.currentOrg?.id) {
+        this.setMasterPass()
+        return
+      }
+      this.loading = true
+      const res = await this.$axios.$get(`/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy/master_password_requirement`)
+      res.config = _.mapKeys(res.config, (_value, key) => _.camelCase(key))
       const violationItems = this.checkPasswordPolicy(
         this.masterPassword || '',
-        'master_password_requirement'
+        'master_password_requirement',
+        {
+          master_password_requirement: res
+        }
       )
       if (violationItems.length) {
         this.$refs.passwordPolicyDialog.openDialog(violationItems)
+        this.loading = false
       } else {
         this.setMasterPass()
       }
     },
     confirmSetMasterPass () {
       this.confirmDialogVisible = false
-      this.setMasterPass()
+      this.preparePassword()
     },
     // Submit master pw
     async setMasterPass () {

@@ -626,12 +626,12 @@ Vue.mixin({
       }
     },
     // Check password policy
-    checkPasswordPolicy (password, policy_type = 'password_requirement') {
+    checkPasswordPolicy (password, policy_type = 'password_requirement', policies = null) {
       const violations = []
-      if (!this.enterprisePolicies) {
+      if (!this.enterprisePolicies && !policies) {
         return violations
       }
-      const policy = this.enterprisePolicies[policy_type]
+      const policy = policies ? policies[policy_type] : this.enterprisePolicies[policy_type]
       if (policy && policy.enabled) {
         if (policy.config.minLength && password.length < policy.config.minLength) {
           violations.push(

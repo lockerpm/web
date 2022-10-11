@@ -58,7 +58,7 @@
         </div>
       </div>
     </el-dialog>
-    <PasswordViolationDialog ref="passwordPolicyDialog" @confirm="changePass" />
+    <PasswordViolationDialog ref="passwordPolicyDialog" />
   </div>
 </template>
 

@@ -43,6 +43,10 @@ module.exports = {
         700: '#072245', // 1,
         800: '#000000'
       },
+      red: {
+        DEFAULT: '#F84259',
+        ...colors.red
+      },
       green: {
         DEFAULT: '#268334',
         hover: '#1C7029',
