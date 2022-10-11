@@ -119,7 +119,7 @@
             <td />
             <td class="rounded-b-xl">
               <div class="text-center py-8">
-                <nuxt-link class="landing-btn !font-medium" :to="localePath('/business#register-section')">
+                <nuxt-link class="landing-btn !font-medium" :to="localePath('/business/register')">
                   {{ $t('business.welcome.start') }}
                 </nuxt-link>
                 <p class="mt-3 invisible">

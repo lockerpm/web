@@ -38,12 +38,12 @@
           </div>
           <!-- Right -->
           <div class="hidden md:block md:w-1/2 order-2 pr-0 justify-self-end">
-            <img v-if="locale==='en'" :src="require(`~/assets/images/business/bg-welcome.png`)" alt="">
-            <img v-else :src="require(`~/assets/images/business/bg-welcome_vi.png`)" alt="">
+            <img v-if="locale==='en'" :src="require(`~/assets/images/business/en/bg-welcome.png`)" alt="">
+            <img v-else :src="require(`~/assets/images/business/vi/bg-welcome_vi.png`)" alt="">
           </div>
           <div class="w-full md:hidden order-2 mt-24">
-            <img v-if="locale==='en'" :src="require(`~/assets/images/business/bg-welcome.png`)" alt="">
-            <img v-else :src="require(`~/assets/images/business/bg-welcome_vi.png`)" alt="">
+            <img v-if="locale==='en'" :src="require(`~/assets/images/business/en/bg-welcome.png`)" alt="">
+            <img v-else :src="require(`~/assets/images/business/vi/bg-welcome_vi.png`)" alt="">
           </div>
           <!-- Right end -->
         </div>
@@ -77,8 +77,8 @@
             </div>
           </div>
           <div class="md:w-1/2 w-full" :class="index%2===0?'order-2':'md:order-1 order-3'">
-            <img v-if="locale==='en'" :src="require(`~/assets/images/business/${item.image}`)" :alt="item.title">
-            <img v-else :src="require(`~/assets/images/business/${item.image}`)" :alt="item.title">
+            <img v-if="locale==='en'" :src="require(`~/assets/images/business/en/${item.image}`)" :alt="item.title">
+            <img v-else :src="require(`~/assets/images/business/vi/${item.image}`)" :alt="item.title">
           </div>
         </div>
       </div>
