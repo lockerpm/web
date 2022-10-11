@@ -136,32 +136,6 @@
     </section>
     <!-- FEATURES END -->
 
-    <!-- CLIENTS SAY -->
-    <!-- <section
-      class="py-20 bg-[#F5F5F5] full-width"
-    >
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="landing-font-42 font-semibold">{{ $t('business.clients_say.title') }}</h2>
-        <div class="mt-8 grid md:grid-cols-3 grid-cols-1 gap-8">
-          <div
-            v-for="(item, index) in $t('business.clients_say.list_item')"
-            :key="index"
-            class="bg-white rounded-xl py-8 px-6"
-          >
-            <div class="landing-font-20 font-semibold mb-10">{{ item.quote }}</div>
-            <div class="landing-font-14 font-bold">{{ item.name }}</div>
-            <div>{{ item.job_title }}</div>
-            <hr class="text-black-200 my-5">
-            <div class="flex justify-between items-center">
-              <img class="h-7" :src="require(`~/assets/images/business/${item.logo}`)">
-              <img :src="require(`~/assets/images/business/${item.avatar}`)">
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> -->
-    <!-- CLIENTS SAY END-->
-
     <!-- PLANS -->
     <section class="py-20">
       <div class="flex flex-wrap mb-8 gap-y-6">
