@@ -363,6 +363,7 @@ export default {
     AddMemberToFamilyPlan,
     CardDrawer
   },
+  middleware: ['BlockEnterpriseMember'],
   data () {
     return {
       cards: [],
@@ -406,7 +407,18 @@ export default {
       }
     }
   },
+  watch: {
+    isEnterpriseMember (val) {
+      if (val) {
+        this.$router.push(this.localeRoute({ name: 'vault' }))
+      }
+    }
+  },
   mounted () {
+    if (this.isEnterpriseMember) {
+      this.$router.push(this.localeRoute({ name: 'vault' }))
+      return
+    }
     this.getCards()
     this.getInvoices()
     this.getPlans()

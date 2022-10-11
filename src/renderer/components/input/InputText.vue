@@ -8,6 +8,7 @@
              'is-error': errorText,
              'is-disabled': disabled,
     }"
+    :style="{ marginBottom: errorText && errorText.type === 'string' ? '2rem' : '0.625rem !important' }"
   >
     <label for="">{{ label }} <span v-if="required" class="text-danger">*</span></label>
     <template v-if="isTextarea">
@@ -34,7 +35,7 @@
         tabindex="0"
         @mouseleave="hovering = false"
         @focus="handleFocus"
-        @blur="focusing = false"
+        @blur="handleOnBlue"
         @input="handleInput"
         @mouseenter="handleHover"
         @keyup.enter="keyupEnter"
@@ -64,7 +65,7 @@
         class="fas fa-plus"
       />
     </button>
-    <div v-if="errorText" class="cs-helper-text">
+    <div v-if="errorText && typeof errorText === 'string'" class="cs-helper-text">
       {{ errorText }}
     </div>
   </div>
@@ -141,6 +142,10 @@ export default {
     })
   },
   methods: {
+    handleOnBlue () {
+      this.focusing = false
+      this.$emit('onBlue')
+    },
     togglePassword () {
       if (this.disabled) { return }
       this.type = this.type === 'text' ? 'password' : 'text'

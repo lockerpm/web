@@ -2,33 +2,201 @@
   <div>
     <section class="bg-welcome full-width h-auto pt-[76px] bg-center bg-cover bg-no-repeat" :style="{backgroundImage: `url(${require(`~/assets/images/landing/crypto/bg-frame.png`)})`}">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="grid md:grid-cols-2 grid-cols-1 items-center gap-x-0">
-          <div>
-            <div class="md:landing-font-52 landing-font-42 font-bold text-[#161922]">
+        <div class="grid grid-cols-1 text-center gap-x-0">
+          <div class="pt-28">
+            <div class="landing-font-60 font-bold text-[#161922]">
               {{ $t('crypto.bg_welcome.title') }}
             </div>
-            <div class="my-4">
-              <img src="~/assets/images/landing/crypto/line.png">
-            </div>
-            <div class="landing-font-20 font-normal text-[#3A3A3A]">
+            <div class="landing-font-18 font-normal text-[#3A3A3A] pt-4">
               {{ $t('crypto.bg_welcome.subtitle') }}
             </div>
-            <div class="mt-[66px] mb-[137px]">
-              <nuxt-link
+            <div class="pt-12 pb-28">
+              <a
                 class="landing-btn"
-                :to="localePath({name: $t('crypto.bg_welcome.btn.link')})"
+                href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
                 style="align-self: center"
               >
                 {{ $t('crypto.bg_welcome.btn.text') }}
-              </nuxt-link>
+              </a>
             </div>
-          </div>
-          <div class="md:mt-[162px] mt-0 w-full">
-            <img class="" src="~/assets/images/landing/crypto/bg_welcome.png">
           </div>
         </div>
       </div>
     </section>
+
+    <section class="warning py-10 full-width h-auto bg-[#F5F7F9]">
+      <div class="w-full text-center">
+        <img
+          src="~/assets/images/landing/crypto/CaretDoubleDown.svg"
+          class="mx-auto mt-5 mb-6 h-9"
+        >
+        <h2 class="font-semibold landing-font-42 mx-auto mb-10 text-red">
+          {{ $t('crypto.warning.title') }}
+        </h2>
+        <div class="font-normal landing-font-18 mx-auto mb-10 max-w-[830px]">
+          {{ $t('crypto.warning.subtitle') }}
+        </div>
+        <img
+          src="~/assets/images/landing/crypto/Vengang.png"
+          class="mx-auto mb-20 max-w-[900px]"
+        >
+        <h2
+          class="font-bold landing-font-42 mx-auto mb-[60px]"
+          v-html="$t('crypto.warning.what_if')"
+        />
+        <div class="max-w-6xl mx-auto">
+          <div class="grid grid-cols-3 gap-x-16 justify-items-center">
+            <div
+              v-for="(item, index) in $t('crypto.warning.consequences')"
+              :key="index"
+              class="items-center"
+            >
+              <img :src="require(`~/assets/images/landing/crypto/${item.image}`)" class="h-[51px] mb-5">
+            </div>
+            <div
+              v-for="(item, index) in $t('crypto.warning.consequences')"
+              :key="index"
+              class="landing-font-18 font-normal mb-20"
+              v-html="item.conq"
+            />
+          </div>
+          <a
+            class="landing-btn mb-24"
+            href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
+            style="align-self: center"
+          >
+            {{ $t('crypto.warning.btn_text1') }}
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="sale-pitch full-width">
+      <h1
+        class="w-full text-center font-semibold landing-font-60 mx-auto mt-28 mb-20"
+        v-html="$t('crypto.sale_pitch.title')"
+      />
+      <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-[100px]">
+          <div v-if="locale==='en'" class="max-w-[516px]">
+            <h2
+              class="font-semibold landing-font-42 mb-10"
+              v-html="$t('crypto.sale_pitch.overall.title')"
+            />
+            <div class="font-normal landing-font-18 max-w-[450px]">
+              {{ $t('crypto.sale_pitch.overall.desc') }}
+            </div>
+          </div>
+          <div v-else class="max-w-[570px]">
+            <h2
+              class="font-semibold landing-font-42 mb-10"
+              v-html="$t('crypto.sale_pitch.overall.title')"
+            />
+            <div class="font-normal landing-font-18 max-w-[450px]">
+              {{ $t('crypto.sale_pitch.overall.desc') }}
+            </div>
+          </div>
+          <img
+            src="~/assets/images/landing/crypto/red-shirt-gray-laptop.png"
+            class="max-w-[345px]"
+          >
+        </div>
+
+        <h3
+          class="w-full text-center font-semibold landing-font-34 mx-auto mb-20"
+          v-html="$t('crypto.sale_pitch.common_reason.title')"
+        />
+        <div class="flex justify-between items-center">
+          <img
+            src="~/assets/images/landing/crypto/green-pants-grey-laptop.png"
+            class="max-w-[345px]"
+          >
+          <div>
+            <div
+              v-for="(item, index) in $t('crypto.sale_pitch.common_reason.reason')"
+              :key="index"
+              class="items-center"
+            >
+              <div class="flex max-w-[560px] mb-[52px]">
+                <img :src="require(`~/assets/images/landing/crypto/XCircle.svg`)" class="h-[32px] mr-[10px]">
+                <div class="landing-font-18 font-normal">
+                  {{ item }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sale-pitch-hard-sol full-width bg-[#F5F7F9]">
+      <div class="max-w-6xl mx-auto mt-16">
+        <div class="flex justify-between">
+          <div class="">
+            <h2
+              v-if="locale==='en'"
+              class="font-semibold landing-font-42 mb-10 max-w-[750px]"
+              v-html="$t('crypto.sale_pitch.hard_sol.title')"
+            />
+            <h2
+              v-else
+              class="font-semibold landing-font-38 mb-10 max-w-[840px]"
+              v-html="$t('crypto.sale_pitch.hard_sol.title')"
+            />
+            <div v-if="locale==='en'" class="font-normal landing-font-18 max-w-[640px] mb-20">
+              {{ $t('crypto.sale_pitch.hard_sol.desc') }}
+            </div>
+            <div v-else class="font-normal landing-font-18 max-w-[720px] mb-20">
+              {{ $t('crypto.sale_pitch.hard_sol.desc') }}
+            </div>
+            <a
+              class="landing-btn mb-24"
+              href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
+              style="align-self: center"
+            >
+              {{ $t('crypto.warning.btn_text1') }}
+            </a>
+          </div>
+          <img
+            src="~/assets/images/landing/crypto/red-shirt-despair.png"
+            class="max-w-[340px]"
+          >
+        </div>
+      </div>
+    </section>
+
+    <section class="sale-pitch-pitch py-10 full-width h-auto mt-[130px]">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between">
+          <img
+            src="~/assets/images/landing/crypto/green-shirt-shill.png"
+            class="max-w-[350px]"
+          >
+          <div class="max-w-[710px]">
+            <h2
+              class="w-full font-bold landing-font-38 mb-[27px]"
+              v-html="$t('crypto.sale_pitch.pitch.title')"
+            />
+            <div class="font-normal landing-font-22 max-w-[630px] mb-20">
+              {{ $t('crypto.sale_pitch.pitch.desc') }}
+            </div>
+            <div
+              v-for="(item, index) in $t('crypto.sale_pitch.pitch.detail')"
+              :key="index"
+              class="items-center"
+            >
+              <div class="flex max-w-[670px] mb-[50px]">
+                <img :src="require(`~/assets/images/landing/crypto/CheckCircle.svg`)" class="h-[32px] mr-[10px]">
+                <div class="landing-font-18 font-normal">
+                  {{ item }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="items-introduce-crypto py-[120px]">
       <div v-for="(item, index) in $t('crypto.introduce_crypto.items')" :key="index" class="grid md:grid-cols-2 grid-cols-1 items-center" :class="index === 1 ? 'my-[100px] md:gap-x-[120px] gap-y-[60px]' :'md:gap-x-[40px] gap-y-[60px]'">
         <div :class="index === 1 ? '!order-last': ''" class="md:order-first order-last">
@@ -39,17 +207,18 @@
             {{ item.desc }}
           </div>
           <div>
-            <nuxt-link
+            <a
               class="landing-btn"
-              :to="localePath({name: $t('crypto.introduce_crypto.btn.link')})"
+              href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
               style="align-self: center"
             >
               {{ $t('crypto.introduce_crypto.btn.text') }}
-            </nuxt-link>
+            </a>
           </div>
         </div>
         <div>
-          <img :src="require(`~/assets/images/landing/crypto/${item.img}`)">
+          <img v-if="locale==='en'" :src="require(`~/assets/images/landing/crypto/en/${item.img}`)" alt="">
+          <img v-else :src="require(`~/assets/images/landing/crypto/vi/${item.img}`)" alt="">
         </div>
       </div>
     </section>
@@ -190,27 +359,88 @@
         </div>
       </div>
     </section>
-    <section class="py-[120px]">
+
+    <section class="guarantee py-[100px] full-width h-auto">
       <div
-        class="w-full rounded-lg py-[56px] px-[72px] flex justify-between align-middle md:flex-row flex-col bg-[#F5F6F7]"
+        class="max-w-6xl mx-auto rounded-[10px] py-[40px] px-[122px]"
+        style="box-shadow: 5px 6px 32px rgba(0, 0, 0, 0.12);"
       >
-        <div>
-          <h2 class="landing-font-28 font-bold mb-3 sm:text-left text-center">{{ $t('crypto.cta.title') }}</h2>
+        <div class="flex justify-between items-center max-w-[865px]">
+          <img
+            src="~/assets/images/landing/crypto/guarantee.svg"
+            class="h-[250px]"
+          >
+          <div class="max-w-[540px]">
+            <div
+              class="landing-font-18 !leading-6 font-normal"
+              v-html="$t('crypto.trial.desc')"
+            />
+          </div>
         </div>
-        <nuxt-link
+      </div>
+      <div class="mt-10">
+        <div class="flex justify-center">
+          <div class="landing-font-18 font-normal mr-[12px]">
+            {{ $t('crypto.compability.desc') }}
+          </div>
+          <div
+            v-for="(item, index) in $t('crypto.compability.icon_list')"
+            :key="index"
+            class="items-center flex justify-between gap-x-[6px]"
+          >
+            <img :src="require(`~/assets/images/landing/crypto/${item}`)" class="h-[28px]">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta full-width py-[90px] bg-[#268334]">
+      <div class="max-w-[960px] mx-auto">
+        <div
+          class="landing-font-60 font-semibold text-center text-white"
+          v-html="$t('crypto.cta.title')"
+        />
+      </div>
+      <div class="flex justify-center items-center mt-[60px]">
+        <a
           class="landing-btn"
-          :to="localeRoute({name: $t('crypto.cta.btn.link')})"
-          style="align-self: center"
+          href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
+          style="background-color: white; color: #268334;"
         >
-          {{ $t('crypto.cta.btn.text') }}
-        </nuxt-link>
+          <div class="flex justify-center items-center px-[29px]">
+            <img :src="require(`~/assets/images/landing/crypto/ShoppingCart.svg`)" class="h-[32px] mr-3">
+            {{ $t('crypto.cta.btn.text2') }}
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="final-pitch full-width py-[90px]">
+      <div class="max-w-6xl h-[320px] flex justify-center items-center mx-auto bg-center bg-cover bg-no-repeat" :style="{backgroundImage: `url(${require(`~/assets/images/landing/crypto/final-pitch.png`)})`}">
+        <div class="px-[130px]">
+          <div class="landing-font-32 font-bold text-center text-white">
+            {{ $t('crypto.final_pitch.desc1') }}
+          </div>
+          <div class="landing-font-32 font-bold text-center text-white">
+            <a
+              href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
+            >
+              <span class="text-[#F1D75B]">
+                {{ $t('crypto.final_pitch.desc2') }}
+              </span>
+            </a>
+            <span>
+              {{ $t('crypto.final_pitch.desc3') }}
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   </div>
 </template>
 <script>
 export default {
-  layout: 'landing',
+  layout: 'landing-no-footer',
   data () {
     return {
       tabPosition: '0',

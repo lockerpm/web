@@ -154,14 +154,14 @@ export default {
     }
   },
   watch: {
-    currentPlan (newValue) {
-      if (newValue.alias === 'pm_free') {
+    isPremiumFeaturesAvailable (newValue) {
+      if (!newValue) {
         this.$router.push('/vault')
       }
     }
   },
   mounted () {
-    if (this.currentPlan.alias === 'pm_free') {
+    if (!this.isPremiumFeaturesAvailable) {
       this.$router.push('/vault')
     }
   },

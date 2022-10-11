@@ -81,7 +81,7 @@
         <button
           class="btn btn-primary w-full"
           :disabled="loading || !masterPassword || (masterPassword !== masterRePassword)"
-          @click="setMasterPass"
+          @click="confirmDialogVisible = true"
         >
           {{ $t('set_master_password.create_button') }}
         </button>
@@ -90,11 +90,39 @@
         {{ $t('set_master_password.note') }}
       </div>
     </div>
-    <PasswordViolationDialog ref="passwordPolicyDialog" @confirm="preparePassword" />
+    <el-dialog
+      :show-close="false"
+      :visible.sync="confirmDialogVisible"
+      width="420px"
+      :title="$t('set_master_password.confirm_nodal.title')"
+      center
+    >
+      <img
+        :src="require(`~/assets/images/landing/master-password/important.png`)"
+        alt=""
+        class="block"
+        style="height: 120px; width: 120px; margin-left: auto; margin-right: auto;"
+      >
+      <p class="text-center">{{ $t('set_master_password.confirm_nodal.text1') }}</p>
+      <p class="text-center">{{ $t('set_master_password.confirm_nodal.text2') }}<a href="https://locker.io/master-password" target="_blank" rel="noopener noreferrer">{{ $t('set_master_password.confirm_nodal.link') }}</a>.</p>
+      <div class="flex justify-center mt-4">
+        <el-button class="flex w-full" type="primary" @click="confirmSetMasterPass">{{ $t('set_master_password.confirm_nodal.btn_next') }}</el-button>
+      </div>
+      <div class="flex justify-center mt-2">
+        <button
+          class="btn btn-sm btn-clean btn-primary !px-3 !font-normal"
+          @click="confirmDialogVisible = false"
+        >
+          {{ $t('set_master_password.confirm_nodal.btn_back') }}
+        </button>
+      </div>
+    </el-dialog>
+    <PasswordViolationDialog ref="passwordPolicyDialog" />
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
 import PasswordStrengthBar from '../components/password/PasswordStrengthBar'
 import PasswordViolationDialog from '../components/cipher/PasswordViolationDialog'
 export default {
@@ -107,6 +135,7 @@ export default {
       masterRePassword: '',
       masterPasswordHint: '',
       loading: false,
+      confirmDialogVisible: false,
       errors: {
       },
       showPassword: false,
@@ -130,14 +159,30 @@ export default {
   mounted () {
   },
   methods: {
-    preparePassword () {
-      const violationItems = this.checkPasswordPolicy(this.masterPassword || '')
+    // Check policy before submit
+    async preparePassword () {
+      this.loading = true
+      const res = await this.$axios.$get(`/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy/master_password_requirement`)
+      res.config = _.mapKeys(res.config, (_value, key) => _.camelCase(key))
+      const violationItems = this.checkPasswordPolicy(
+        this.masterPassword || '',
+        'master_password_requirement',
+        {
+          master_password_requirement: res
+        }
+      )
       if (violationItems.length) {
         this.$refs.passwordPolicyDialog.openDialog(violationItems)
+        this.loading = false
       } else {
         this.setMasterPass()
       }
     },
+    confirmSetMasterPass () {
+      this.confirmDialogVisible = false
+      this.preparePassword()
+    },
+    // Submit master pw
     async setMasterPass () {
       await this.clearKeys()
       if (this.masterPassword.length < 8) {
@@ -194,3 +239,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .el-dialog__body {
+    padding-top: 0 !important;
+  }
+</style>

@@ -87,6 +87,7 @@
 
 <script>
 export default {
+  middleware: ['BlockEnterpriseMember'],
   asyncData ({ $axios }) {
     return $axios.$get('cystack_platform/pm/referrals')
       .then(res => {
@@ -98,6 +99,18 @@ export default {
   data () {
     return {
       title: this.$t('landing.title')
+    }
+  },
+  watch: {
+    isEnterpriseMember (val) {
+      if (val) {
+        this.$router.push(this.localeRoute({ name: 'vault' }))
+      }
+    }
+  },
+  mounted () {
+    if (this.isEnterpriseMember) {
+      this.$router.push(this.localeRoute({ name: 'vault' }))
     }
   }
 }
