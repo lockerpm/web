@@ -1,7 +1,7 @@
 <template>
   <div>
     <TopBanner />
-    <Header />
+    <Header v-if="!is_crypto" />
     <div v-if="showCookie != 'false'" id="cookie-bar" class="cookie-bar">
       <div class="cookie-bar__wrap">
         <div class="cookie-bar__msg-wrap">
@@ -30,7 +30,7 @@
         <nuxt />
       </div>
     </div>
-    <Footer />
+    <Footer v-if="!is_crypto" />
   </div>
 </template>
 
@@ -122,6 +122,9 @@ export default {
     // currentUser () {
     //   return this.$store.state.user
     // },
+    is_crypto () {
+      return this.$route.path === '/crypto'
+    },
     mappings () {
       const path = this.$route.path
       if (path === '/benefits' || path === `/${this.locale}/benefits`) { return 'how_it_works' }
