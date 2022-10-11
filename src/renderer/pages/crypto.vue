@@ -217,7 +217,8 @@
           </div>
         </div>
         <div>
-          <img :src="require(`~/assets/images/landing/crypto/${item.img}`)">
+          <img v-if="locale==='en'" :src="require(`~/assets/images/landing/crypto/en/${item.img}`)" alt="">
+          <img v-else :src="require(`~/assets/images/landing/crypto/vi/${item.img}`)" alt="">
         </div>
       </div>
     </section>
@@ -439,7 +440,7 @@
 </template>
 <script>
 export default {
-  layout: 'landing',
+  layout: 'landing-no-footer',
   data () {
     return {
       tabPosition: '0',
