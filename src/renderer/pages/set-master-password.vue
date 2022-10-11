@@ -161,6 +161,10 @@ export default {
   methods: {
     // Check policy before submit
     async preparePassword () {
+      if (!this.currentOrg?.id) {
+        this.setMasterPass()
+        return
+      }
       this.loading = true
       const res = await this.$axios.$get(`/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy/master_password_requirement`)
       res.config = _.mapKeys(res.config, (_value, key) => _.camelCase(key))
