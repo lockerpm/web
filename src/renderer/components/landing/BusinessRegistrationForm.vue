@@ -288,6 +288,11 @@ export default {
           } catch (error) {
             if (error.response && error.response.data && error.response.data.code === '7013') {
               this.notify(this.$t('errors.7013', { email: this.newuser.email }), 'warning')
+            } else if (error.response && error.response.data && error.response.data.code === '0004' && error.response.data.email) {
+              this.$message({
+                message: this.$t('landing_contact.messages.error_existed'),
+                type: 'error'
+              })
             } else {
               this.$message({
                 message: this.$t('landing_contact.messages.error_occurred'),
@@ -332,7 +337,7 @@ export default {
           this.enterPasswordVisible = false
           localStorage.setItem('trial_plan', 'pm_enterprise')
           setTimeout(() => {
-            this.$router.push(this.localePath('/business/register?submitted=1'))
+            this.$router.push(this.localePath(`/business/register?submitted=1&email=${this.newuser.email}`))
           }, 500)
         })
         .catch(err => {
