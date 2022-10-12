@@ -1,0 +1,13 @@
+name: Mirroring
+
+on: [push, delete]
+
+jobs:
+  to_gitlab:
+    runs-on: self-hosted
+    steps:    
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - run: git remote add mirror ${{ secrets.INPUT_TARGET_REPO_URL }} || true
+      - run: git push --tags --force --prune mirror "refs/remotes/origin/*:refs/heads/*"

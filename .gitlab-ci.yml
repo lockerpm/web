@@ -45,3 +45,22 @@ deploy_production:
     - master
     - tags
 
+build_desktop:
+  stage: build
+  script:
+    - cystack-deployer
+  tags:
+    - cs_monitoring
+  only:
+    - pwl
+    - tags
+
+deploy_desktop:
+  stage: deploy
+  script:
+    - cystack-deployer
+  tags:
+    - cs_monitoring
+  only:
+    - pwl
+    - tags

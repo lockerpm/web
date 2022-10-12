@@ -646,7 +646,7 @@ import Payment from '~/components/upgrade/Payment'
 export default {
   components: { Check, Payment, InputText, HeaderPayment },
   layout: 'blank',
-  middleware: ['NotHaveAccountService', 'BlockEnterpriseMember'],
+  middleware: ['NotHaveAccountService'],
   data () {
     return {
       step: 1,
@@ -1039,6 +1039,18 @@ export default {
       } catch (error) {
         this.notify(this.$t('data.notifications.error_occurred'), 'warning')
       }
+    }
+  },
+  async fetch () {
+    let userType = ''
+    if (this.$store.state.userPw.pwd_user_type) {
+      userType = this.$store.state.userPw.pwd_user_type
+    } else {
+      const res = await this.$axios.$get('/cystack_platform/pm/users/me')
+      userType = res.pwd_user_type
+    }
+    if (userType === 'enterprise') {
+      this.$nuxt.error({ errorCode: 404 })
     }
   }
 }
