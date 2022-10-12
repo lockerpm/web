@@ -165,20 +165,25 @@ export default {
         this.setMasterPass()
         return
       }
-      this.loading = true
-      const res = await this.$axios.$get(`/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy/master_password_requirement`)
-      res.config = _.mapKeys(res.config, (_value, key) => _.camelCase(key))
-      const violationItems = this.checkPasswordPolicy(
-        this.masterPassword || '',
-        'master_password_requirement',
-        {
-          master_password_requirement: res
+      try {
+        this.loading = true
+        const res = await this.$axios.$get(`/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy/master_password_requirement`)
+        res.config = _.mapKeys(res.config, (_value, key) => _.camelCase(key))
+        const violationItems = this.checkPasswordPolicy(
+          this.masterPassword || '',
+          'master_password_requirement',
+          {
+            master_password_requirement: res
+          }
+        )
+        if (violationItems.length) {
+          this.$refs.passwordPolicyDialog.openDialog(violationItems)
+          this.loading = false
+        } else {
+          this.setMasterPass()
         }
-      )
-      if (violationItems.length) {
-        this.$refs.passwordPolicyDialog.openDialog(violationItems)
-        this.loading = false
-      } else {
+      } catch (e) {
+        // TODO: remove this code later
         this.setMasterPass()
       }
     },
