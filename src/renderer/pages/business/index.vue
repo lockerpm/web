@@ -233,31 +233,6 @@
         </div>
       </div>
     </div>
-
-    <!-- FAQs -->
-    <section class="py-20 questions">
-      <div class="landing-font-38 font-bold text-center mb-[72px]">
-        {{ $t('business.faqs.title') }}
-      </div>
-      <div class="max-w-6xl mx-auto">
-        <el-collapse v-model="activeName" accordion>
-          <el-collapse-item v-for="(item, index) in $t('business.faqs.list_item')" :key="index" :name="(index+1).toString()">
-            <template slot="title">
-              <div class="font-bold landing-font-22 text-black question">
-                {{ item.title }}
-              </div>
-            </template>
-            <div class="answer font-normal landing-font-18 pl-[58px] md:pr-[80px] pr-[50px] md:py-[38px] py-[15px]" v-html="item.desc" />
-          </el-collapse-item>
-        </el-collapse>
-      </div>
-    </section>
-    <div class="bg-[#69A757] rounded-2xl md:py-16 py-8 md:px-[94px] px-8 md:flex block justify-between mb-16">
-      <div class="text-white landing-font-42 font-semibold flex-grow">{{ $t('business.cta.title') }}</div>
-      <div class="self-center">
-        <button class="landing-btn !bg-white !text-primary" @click="openIntercom">{{ $t('business.cta.button') }}</button>
-      </div>
-    </div>
   </div>
 </template>
 
