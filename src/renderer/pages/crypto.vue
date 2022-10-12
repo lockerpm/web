@@ -13,7 +13,7 @@
             <div class="pt-12 pb-28">
               <a
                 class="landing-btn"
-                href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
+                href="https://buy.stripe.com/cN26s3gbefi1c92fYZ"
                 style="align-self: center"
               >
                 {{ $t('crypto.bg_welcome.btn.text') }}
@@ -62,7 +62,7 @@
           </div>
           <a
             class="landing-btn mb-24"
-            href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
+            href="https://buy.stripe.com/cN26s3gbefi1c92fYZ"
             style="align-self: center"
           >
             {{ $t('crypto.warning.btn_text1') }}
@@ -151,7 +151,7 @@
             </div>
             <a
               class="landing-btn mb-24"
-              href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
+              href="https://buy.stripe.com/cN26s3gbefi1c92fYZ"
               style="align-self: center"
             >
               {{ $t('crypto.warning.btn_text1') }}
@@ -209,7 +209,7 @@
           <div>
             <a
               class="landing-btn"
-              href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
+              href="https://buy.stripe.com/cN26s3gbefi1c92fYZ"
               style="align-self: center"
             >
               {{ $t('crypto.introduce_crypto.btn.text') }}
@@ -406,7 +406,7 @@
       <div class="flex justify-center items-center mt-[60px]">
         <a
           class="landing-btn"
-          href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
+          href="https://buy.stripe.com/cN26s3gbefi1c92fYZ"
           style="background-color: white; color: #268334;"
         >
           <div class="flex justify-center items-center px-[29px]">
@@ -425,7 +425,7 @@
           </div>
           <div class="landing-font-32 font-bold text-center text-white">
             <a
-              href="https://buy.stripe.com/test_aEU4jYbbud6D8wwbII"
+              href="https://buy.stripe.com/cN26s3gbefi1c92fYZ"
             >
               <span class="text-[#F1D75B]">
                 {{ $t('crypto.final_pitch.desc2') }}
