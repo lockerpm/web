@@ -38,12 +38,12 @@
           </div>
           <!-- Right -->
           <div class="hidden md:block md:w-1/2 order-2 pr-0 justify-self-end">
-            <img v-if="locale==='en'" :src="require(`~/assets/images/business/en/bg-welcome.png`)" alt="">
-            <img v-else :src="require(`~/assets/images/business/vi/bg-welcome_vi.png`)" alt="">
+            <img v-if="locale==='en'" :src="(`/assets/img/landing/business/en/bg-welcome.png`)" alt="">
+            <img v-else :src="(`/assets/img/landing/business/vi/bg-welcome.png`)" alt="">
           </div>
           <div class="w-full md:hidden order-2 mt-24">
-            <img v-if="locale==='en'" :src="require(`~/assets/images/business/en/bg-welcome.png`)" alt="">
-            <img v-else :src="require(`~/assets/images/business/vi/bg-welcome_vi.png`)" alt="">
+            <img v-if="locale==='en'" :src="(`/assets/img/landing/business/en/bg-welcome.png`)" alt="">
+            <img v-else :src="(`/assets/img/landing/business/vi/bg-welcome.png`)" alt="">
           </div>
           <!-- Right end -->
         </div>
@@ -77,8 +77,8 @@
             </div>
           </div>
           <div class="md:w-1/2 w-full" :class="index%2===0?'order-2':'md:order-1 order-3'">
-            <img v-if="locale==='en'" :src="require(`~/assets/images/business/en/${item.image}`)" :alt="item.title">
-            <img v-else :src="require(`~/assets/images/business/vi/${item.image}`)" :alt="item.title">
+            <img v-if="locale==='en'" :src="(`/assets/img/landing/business/en/${item.image}`)" :alt="item.title">
+            <img v-else :src="(`/assets/img/landing/business/vi/${item.image}`)" :alt="item.title">
           </div>
         </div>
       </div>
@@ -135,32 +135,6 @@
       </div>
     </section>
     <!-- FEATURES END -->
-
-    <!-- CLIENTS SAY -->
-    <!-- <section
-      class="py-20 bg-[#F5F5F5] full-width"
-    >
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="landing-font-42 font-semibold">{{ $t('business.clients_say.title') }}</h2>
-        <div class="mt-8 grid md:grid-cols-3 grid-cols-1 gap-8">
-          <div
-            v-for="(item, index) in $t('business.clients_say.list_item')"
-            :key="index"
-            class="bg-white rounded-xl py-8 px-6"
-          >
-            <div class="landing-font-20 font-semibold mb-10">{{ item.quote }}</div>
-            <div class="landing-font-14 font-bold">{{ item.name }}</div>
-            <div>{{ item.job_title }}</div>
-            <hr class="text-black-200 my-5">
-            <div class="flex justify-between items-center">
-              <img class="h-7" :src="require(`~/assets/images/business/${item.logo}`)">
-              <img :src="require(`~/assets/images/business/${item.avatar}`)">
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> -->
-    <!-- CLIENTS SAY END-->
 
     <!-- PLANS -->
     <section class="py-20">
