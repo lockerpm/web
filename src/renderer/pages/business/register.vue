@@ -312,6 +312,9 @@ export default {
     if (this.$route.query.submitted === '1') {
       this.submitted = true
     }
+    if (this.$route.query.email !== '') {
+      this.newuser.email = this.$route.query.email
+    }
     this.getCountries()
     this.$recaptcha.init()
   },
@@ -341,6 +344,11 @@ export default {
           } catch (error) {
             if (error.response && error.response.data && error.response.data.code === '7013') {
               this.notify(this.$t('errors.7013', { email: this.newuser.email }), 'warning')
+            } else if (error.response && error.response.data && error.response.data.code === '7014' && error.response.data.email) {
+              this.$message({
+                message: this.$t('landing_contact.messages.error_existed'),
+                type: 'error'
+              })
             } else {
               this.$message({
                 message: this.$t('landing_contact.messages.error_occurred'),
