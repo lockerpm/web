@@ -148,6 +148,47 @@
           </nuxt-link>
         </div>
       </div>
+      <div class="grid sm:grid-cols-2 grid-cols-1 gap-8 mb-8 text-center">
+        <div class="border border-[#E8E8E9] rounded-xl p-8">
+          <th class="w-1/4 h-1/4 ">
+            <div class="px-6 py-6 font-medium">
+              <div class="h-[50px] landing-font-24 font-semibold">Business</div>
+              <div class="h-[100px]">
+                <div class="flex justify-center gap-12">
+                  <div>
+                    <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_1') }}</span>
+                    <br>
+                    <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
+                    <br>
+                    <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.monthly_pack') }}</span>
+                  </div>
+                  <div>
+                    <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_2') }}</span>
+                    <br>
+                    <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
+                    <br>
+                    <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.yearly_pack') }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </th>
+          <p class="landing-font-16">{{ $t('business.plans.desc1') }}</p>
+        </div>
+        <div class="border border-[#E8E8E9] rounded-xl p-8">
+          <th class="w-1/4 h-1/4">
+            <div class="px-8 py-6 font-medium">
+              <div class="h-[50px] landing-font-24 font-semibold">Enterprise</div>
+              <div
+                class="h-[100px] uppercase text-black-500 flex items-center justify-center"
+                v-html="$t('business.plans.variable_price')"
+              />
+              <p class="text-black-500 mt-3">{{ $t('business.plans.more_inf') }}</p>
+            </div>
+          </th>
+          <p class="landing-font-16">{{ $t('business.plans.desc2') }}</p>
+        </div>
+      </div>
       <div class="p-6 bg-[#E4F0E6] rounded-xl flex justify-between landing-font-20 font-semibold">
         <div class="flex-grow">{{ $t('business.plans.more_options') }}</div>
         <a :href="`mailto: ${$t('landing_affiliate.help_box.email')}`" target="_blank">{{ $t('business.plans.contact_us') }}</a>
