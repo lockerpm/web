@@ -137,7 +137,6 @@
     <!-- FEATURES END -->
 
     <!-- PLANS -->
-    <!--
     <section class="py-20">
       <div class="flex flex-wrap mb-8 gap-y-6">
         <div class="md:w-1/2 w-full md:text-left text-center">
@@ -180,6 +179,7 @@
                   {{ $t('business.welcome.start') }}
                 </a>
               </div>
+              <!--
               <p class="mt-3 invisible">
                 {{ $t('business.plans.or') }}
                 <span>
@@ -188,6 +188,7 @@
                   </a>
                 </span>
               </p>
+              -->
             </div>
           </th>
           <p class="landing-font-16">{{ $t('business.plans.desc1') }}</p>
@@ -221,7 +222,6 @@
         <a :href="`mailto: ${$t('landing_affiliate.help_box.email')}`" target="_blank">{{ $t('business.plans.contact_us') }}</a>
       </div>
     </section>
-    -->
 
     <!-- FORM -->
     <div id="register-section" class="bg-[#69A757] py-20 full-width">
