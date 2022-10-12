@@ -100,18 +100,6 @@ export default {
     return {
       title: this.$t('landing.title')
     }
-  },
-  watch: {
-    isEnterpriseMember (val) {
-      if (val) {
-        this.$router.push(this.localeRoute({ name: 'vault' }))
-      }
-    }
-  },
-  mounted () {
-    if (this.isEnterpriseMember) {
-      this.$router.push(this.localeRoute({ name: 'vault' }))
-    }
   }
 }
 </script>

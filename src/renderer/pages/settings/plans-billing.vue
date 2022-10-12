@@ -407,18 +407,7 @@ export default {
       }
     }
   },
-  watch: {
-    isEnterpriseMember (val) {
-      if (val) {
-        this.$router.push(this.localeRoute({ name: 'vault' }))
-      }
-    }
-  },
   mounted () {
-    if (this.isEnterpriseMember) {
-      this.$router.push(this.localeRoute({ name: 'vault' }))
-      return
-    }
     this.getCards()
     this.getInvoices()
     this.getPlans()

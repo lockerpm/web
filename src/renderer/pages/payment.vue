@@ -646,7 +646,7 @@ import Payment from '~/components/upgrade/Payment'
 export default {
   components: { Check, Payment, InputText, HeaderPayment },
   layout: 'blank',
-  middleware: ['NotHaveAccountService', 'BlockEnterpriseMember'],
+  middleware: ['NotHaveAccountService'],
   data () {
     return {
       step: 1,
@@ -812,21 +812,10 @@ export default {
       return this.$moment(this.currentPlan.next_billing_time * 1000).diff(now, 'days')
     }
   },
-  watch: {
-    isEnterpriseMember (val) {
-      if (val) {
-        this.$router.push(this.localeRoute({ name: 'vault' }))
-      }
-    }
-  },
   beforeDestroy () {
     clearInterval(this.intervalBalance)
   },
   mounted () {
-    if (this.isEnterpriseMember) {
-      this.$router.push(this.localeRoute({ name: 'vault' }))
-      return
-    }
     this.getPlans()
     this.getCards()
     this.$store.dispatch('LoadCurrentPlan')
@@ -1050,6 +1039,18 @@ export default {
       } catch (error) {
         this.notify(this.$t('data.notifications.error_occurred'), 'warning')
       }
+    }
+  },
+  async fetch () {
+    let userType = ''
+    if (this.$store.state.userPw.pwd_user_type) {
+      userType = this.$store.state.userPw.pwd_user_type
+    } else {
+      const res = await this.$axios.$get('/cystack_platform/pm/users/me')
+      userType = res.pwd_user_type
+    }
+    if (userType === 'enterprise') {
+      this.$nuxt.error({ errorCode: 404 })
     }
   }
 }

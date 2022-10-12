@@ -41,7 +41,9 @@
             >
               {{ save17 }}
             </p> -->
-            <p class="landing-font-20 text-green">{{ plan.title }}</p>
+            <p class="landing-font-20 text-green">
+              {{ plan.title }}
+            </p>
             <div class="mt-4">
               <div v-if="plan.coming_soon" class="font-bold landing-font-50">
                 Coming soon
@@ -106,6 +108,14 @@
                 >
                   {{ plan.button.text }}
                 </div>
+                <nuxt-link
+                  v-else
+                  class="landing-btn !w-full sm:w-auto sm:ml-4 cursor-pointer"
+                  style="font-weight: 600"
+                  :to="localeRoute('/business/plans')"
+                >
+                  See More
+                </nuxt-link>
               </div>
             </div>
           </div>
@@ -119,10 +129,12 @@
             <thead>
               <tr>
                 <th class="w-3/12 text-left pl-6 pb-5 landing-font-18">{{ $t('plan.feature') }}</th>
-                <th class="w-1/12 pb-5 landing-font-18">Free</th>
-                <th class="w-8/36 pb-5 landing-font-18">Premium</th>
-                <th class="w-8/36 pb-5 landing-font-18">Family</th>
+                <th class="w-3/12 pb-5 landing-font-18">Free</th>
+                <th class="w-3/12 pb-5 landing-font-18">Premium</th>
+                <th class="w-3/12 pb-5 landing-font-18">Family</th>
+                <!--
                 <th class="w-8/36 pb-5 landing-font-18">Business</th>
+                -->
               </tr>
             </thead>
             <tbody>

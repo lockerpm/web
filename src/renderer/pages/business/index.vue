@@ -39,11 +39,11 @@
           <!-- Right -->
           <div class="hidden md:block md:w-1/2 order-2 pr-0 justify-self-end">
             <img v-if="locale==='en'" :src="require(`~/assets/images/business/en/bg-welcome.png`)" alt="">
-            <img v-else :src="require(`~/assets/images/business/vi/bg-welcome_vi.png`)" alt="">
+            <img v-else :src="require(`~/assets/images/business/vi/bg-welcome.png`)" alt="">
           </div>
           <div class="w-full md:hidden order-2 mt-24">
             <img v-if="locale==='en'" :src="require(`~/assets/images/business/en/bg-welcome.png`)" alt="">
-            <img v-else :src="require(`~/assets/images/business/vi/bg-welcome_vi.png`)" alt="">
+            <img v-else :src="require(`~/assets/images/business/vi/bg-welcome.png`)" alt="">
           </div>
           <!-- Right end -->
         </div>
@@ -136,32 +136,6 @@
     </section>
     <!-- FEATURES END -->
 
-    <!-- CLIENTS SAY -->
-    <!-- <section
-      class="py-20 bg-[#F5F5F5] full-width"
-    >
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="landing-font-42 font-semibold">{{ $t('business.clients_say.title') }}</h2>
-        <div class="mt-8 grid md:grid-cols-3 grid-cols-1 gap-8">
-          <div
-            v-for="(item, index) in $t('business.clients_say.list_item')"
-            :key="index"
-            class="bg-white rounded-xl py-8 px-6"
-          >
-            <div class="landing-font-20 font-semibold mb-10">{{ item.quote }}</div>
-            <div class="landing-font-14 font-bold">{{ item.name }}</div>
-            <div>{{ item.job_title }}</div>
-            <hr class="text-black-200 my-5">
-            <div class="flex justify-between items-center">
-              <img class="h-7" :src="require(`~/assets/images/business/${item.logo}`)">
-              <img :src="require(`~/assets/images/business/${item.avatar}`)">
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> -->
-    <!-- CLIENTS SAY END-->
-
     <!-- PLANS -->
     <section class="py-20">
       <div class="flex flex-wrap mb-8 gap-y-6">
@@ -176,68 +150,64 @@
       </div>
       <div class="grid sm:grid-cols-2 grid-cols-1 gap-8 mb-8 text-center">
         <div class="border border-[#E8E8E9] rounded-xl p-8">
-          <th class="w-1/4 rounded-t-xl h-1/4 ">
-            <div class="px-6 py-6 font-medium">
-              <div class="h-[50px] landing-font-24 font-semibold">Business</div>
-              <div class="h-[100px]">
-                <div class="flex justify-center gap-12">
-                  <div>
-                    <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_1') }}</span>
-                    <br>
-                    <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
-                    <br>
-                    <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.monthly_pack') }}</span>
-                  </div>
-                  <div>
-                    <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_2') }}</span>
-                    <br>
-                    <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
-                    <br>
-                    <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.yearly_pack') }}</span>
-                  </div>
+          <div class="px-6 py-6 font-medium">
+            <div class="h-[50px] landing-font-24 font-semibold">Business</div>
+            <div class="h-[100px]">
+              <div class="flex justify-center gap-12">
+                <div>
+                  <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_1') }}</span>
+                  <br>
+                  <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
+                  <br>
+                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.monthly_pack') }}</span>
+                </div>
+                <div>
+                  <span class="landing-font-28 font-semibold">{{ $t('business.plans.price1_2') }}</span>
+                  <br>
+                  <span class="landing-font-16 font-semibold"> {{ $t('business.plans.per_month') }} </span>
+                  <br>
+                  <span class="landing-font-14 text-black-500 lowercase whitespace-nowrap">{{ $t('business.plans.yearly_pack') }}</span>
                 </div>
               </div>
-              <div class="mt-4">
-                <a
-                  href="#register-section"
-                  class="landing-btn w-full sm:w-auto mb-1"
-                >
-                  {{ $t('business.welcome.start') }}
-                </a>
-              </div>
-              <p class="mt-3 invisible">
-                {{ $t('business.plans.or') }}
-                <span>
-                  <a :href="`${enterpriseUrl}/admin/billing`" class="text-info">
-                    {{ $t('business.plans.do_it') }}
-                  </a>
-                </span>
-              </p>
             </div>
-          </th>
+            <div class="mt-4">
+              <a
+                href="#register-section"
+                class="landing-btn w-full sm:w-auto mb-1"
+              >
+                {{ $t('business.welcome.start') }}
+              </a>
+            </div>
+            <p class="mt-3 invisible">
+              {{ $t('business.plans.or') }}
+              <span>
+                <a :href="`${enterpriseUrl}/admin/billing`" class="text-info">
+                  {{ $t('business.plans.do_it') }}
+                </a>
+              </span>
+            </p>
+          </div>
           <p class="landing-font-16">{{ $t('business.plans.desc1') }}</p>
         </div>
         <div class="border border-[#E8E8E9] rounded-xl p-8">
-          <th class="w-1/4 h-1/4">
-            <div class="px-8 py-6 font-medium">
-              <div class="h-[50px] landing-font-24 font-semibold">Enterprise</div>
-              <div
-                class="h-[100px] uppercase text-black-500 flex items-center justify-center"
-                v-html="$t('business.plans.variable_price')"
-              />
-              <div class="mt-4">
-                <a
-                  :href="`mailto: ${$t('landing_affiliate.help_box.email')}`"
-                  target="_blank"
-                >
-                  <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium">
-                    {{ $t('business.plans.contact_us') }}
-                  </button>
-                </a>
-              </div>
-              <p class="text-black-500 mt-3">{{ $t('business.plans.more_inf') }}</p>
+          <div class="px-8 py-6 font-medium">
+            <div class="h-[50px] landing-font-24 font-semibold">Enterprise</div>
+            <div
+              class="h-[100px] uppercase text-black-500 flex items-center justify-center"
+              v-html="$t('business.plans.variable_price')"
+            />
+            <div class="mt-4">
+              <a
+                :href="`mailto: ${$t('landing_affiliate.help_box.email')}`"
+                target="_blank"
+              >
+                <button class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium">
+                  {{ $t('business.plans.contact_us') }}
+                </button>
+              </a>
             </div>
-          </th>
+            <p class="text-black-500 mt-3">{{ $t('business.plans.more_inf') }}</p>
+          </div>
           <p class="landing-font-16">{{ $t('business.plans.desc2') }}</p>
         </div>
       </div>
