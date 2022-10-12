@@ -278,12 +278,6 @@
         </el-collapse>
       </div>
     </section>
-    <div class="bg-[#69A757] rounded-2xl md:py-16 py-8 md:px-[94px] px-8 md:flex block justify-between mb-16">
-      <div class="text-white landing-font-42 font-semibold flex-grow">{{ $t('business.cta.title') }}</div>
-      <div class="self-center">
-        <button class="landing-btn !bg-white !text-primary" @click="openIntercom">{{ $t('business.cta.button') }}</button>
-      </div>
-    </div>
   </div>
 </template>
 
