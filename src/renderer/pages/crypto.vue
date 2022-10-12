@@ -217,8 +217,8 @@
           </div>
         </div>
         <div>
-          <img v-if="locale==='en'" :src="require(`~/assets/images/landing/crypto/en/${item.img}`)" alt="">
-          <img v-else :src="require(`~/assets/images/landing/crypto/vi/${item.img}`)" alt="">
+          <img v-if="locale==='en'" :src="(`/assets/images/landing/crypto/en/${item.img}`)" alt="">
+          <img v-else :src="(`/assets/images/landing/crypto/vi/${item.img}`)" alt="">
         </div>
       </div>
     </section>
@@ -306,12 +306,12 @@
           </div>
           <div v-show="tabPosition" class="grid md:grid-cols-2 grid-cols-1 md:gap-x-[130px] gap-y-[60px]">
             <div v-if="tabPosition === currentPosition" class="w-4/5 m-auto">
-              <img v-if="locale==='en'" :src="require(`~/assets/images/landing/crypto/en/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[Number(indexImage)].img}`)" class="w-[70%] m-auto">
-              <img v-else :src="require(`~/assets/images/landing/crypto/vi/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[Number(indexImage)].img}`)" class="w-[70%] m-auto">
+              <img v-if="locale==='en'" :src="(`/assets/images/landing/crypto/en/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[Number(indexImage)].img}`)" class="w-[70%] m-auto">
+              <img v-else :src="(`/assets/images/landing/crypto/vi/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[Number(indexImage)].img}`)" class="w-[70%] m-auto">
             </div>
             <div v-else class="w-4/5 m-auto" @change="indexImage = '0'">
-              <img v-if="locale==='en'" :src="require(`~/assets/images/landing/crypto/en/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[0].img}`)" class="w-[70%] m-auto">
-              <img v-else :src="require(`~/assets/images/landing/crypto/vi/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[0].img}`)" class="w-[70%] m-auto">
+              <img v-if="locale==='en'" :src="(`/assets/images/landing/crypto/en/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[0].img}`)" class="w-[70%] m-auto">
+              <img v-else :src="(`/assets/images/landing/crypto/vi/${$t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process[0].img}`)" class="w-[70%] m-auto">
             </div>
             <div>
               <div v-for="(item, idx) in $t('crypto.locker_start.list_tabs')[Number(tabPosition)].list_process" :key="idx" class="">
