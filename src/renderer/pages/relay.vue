@@ -212,7 +212,8 @@ export default {
   },
   computed: {
     isPremium () {
-      return this.isPremiumFeaturesAvailable
+      // return this.isPremiumFeaturesAvailable
+      return false
     }
   },
   mounted () {
