@@ -220,19 +220,6 @@
         <a :href="`mailto: ${$t('landing_affiliate.help_box.email')}`" target="_blank">{{ $t('business.plans.contact_us') }}</a>
       </div>
     </section>
-
-    <!-- FORM -->
-    <div id="register-section" class="bg-[#69A757] py-20 full-width">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center text-white mb-10">
-          <h2 class="landing-font-42 font-semibold mb-4">{{ $t('business.get_started.title') }}</h2>
-          <p class="landing-font-16">{{ $t('business.get_started.desc') }}</p>
-        </div>
-        <div class="w-full md:w-1/2 mx-auto">
-          <BusinessRegistrationForm />
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
