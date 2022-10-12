@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBanner />
+    <TopBanner v-if="!is_crypto" />
     <Header v-if="!is_crypto" />
     <div v-if="showCookie != 'false'" id="cookie-bar" class="cookie-bar">
       <div class="cookie-bar__wrap">
