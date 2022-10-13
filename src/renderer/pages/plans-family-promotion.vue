@@ -93,9 +93,9 @@
                   {{ plan.button.text }}
                 </div>
                 <div class="mt-2 text-center left-6 right-12">
-                  <div class="italic landing-font-16 text-center ml-[30px]">
-                    {{ $t('plans_family_promotion.text_credit') }}
-                  </div>
+                  <!--                  <div class="italic landing-font-16 text-center ml-[30px]">-->
+                  <!--                    {{ $t('plans_family_promotion.text_credit') }}-->
+                  <!--                  </div>-->
                 </div>
               </div>
             </div>

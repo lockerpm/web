@@ -27,9 +27,9 @@
                 >
                   {{ $t('landing.section1.btn[0].text') }}
                 </nuxt-link>
-                <p class="italic w-full landing-font-14 mt-1">
-                  {{ $t('landing.section1.btn[0].note') }}
-                </p>
+                <!--                <p class="italic w-full landing-font-14 mt-1">-->
+                <!--                  {{ $t('landing.section1.btn[0].note') }}-->
+                <!--                </p>-->
               </div>
               <!-- <div>
                 <nuxt-link
