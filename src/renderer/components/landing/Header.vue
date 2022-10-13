@@ -66,14 +66,14 @@
               {{ $t('landing_header.personal') }}
             </nuxt-link>
           </li>
-          <li>
-            <nuxt-link
-              class="inline-block nav-item text-black landing-transition"
-              :to="localePath('/business')"
-            >
-              {{ $t('landing_header.business') }}
-            </nuxt-link>
-          </li>
+          <!--          <li>-->
+          <!--            <nuxt-link-->
+          <!--              class="inline-block nav-item text-black landing-transition"-->
+          <!--              :to="localePath('/business')"-->
+          <!--            >-->
+          <!--              {{ $t('landing_header.business') }}-->
+          <!--            </nuxt-link>-->
+          <!--          </li>-->
         </ul>
         <!-- Nav items -->
         <ul class="list-reset lg:flex justify-end flex-1 items-center gap-x-[45px]">
