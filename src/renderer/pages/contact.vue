@@ -71,15 +71,6 @@ import uuidv1 from 'uuid/v1'
 export default {
   layout: 'landing',
   data () {
-    const phoneNotRequiredValidator = (rule, value, callback) => {
-      for (const i in value) {
-        if (isNaN(value[i])) {
-          return callback(new Error('Please input digits'))
-        }
-      }
-
-      return callback()
-    }
     return {
       isLoading: false,
       options: {
@@ -96,7 +87,7 @@ export default {
       },
       rules: {
         phone: [
-          { validator: phoneNotRequiredValidator, trigger: ['blur', 'change'] }
+          { validator: this.phoneNotRequiredValidator, trigger: ['blur', 'change'] }
         ],
         fullName: [
           { required: true, message: 'Please input Full name', trigger: 'blur' }
