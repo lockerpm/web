@@ -26,9 +26,6 @@
           <div class="mt-8 landing-font-16 ">
             {{ $t('business.register.desc') }}
           </div>
-          <div class="landing-font-16 italic text-black-500 my-5">
-            {{ $t('business.register.no_credit_card') }}
-          </div>
           <div
             v-for="(item, index) in $t('business.register.features')"
             :key="index"
