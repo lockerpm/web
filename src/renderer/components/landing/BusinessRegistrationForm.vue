@@ -125,7 +125,7 @@
         <el-button
           class="landing-btn w-full"
           :loading="loading"
-          :disabled="signupBtnDisabled"
+          :disabled="loading || !agree "
           @click.prevent="signupBusiness"
         >
           {{ $t('landing_contact.send') }}
@@ -133,7 +133,6 @@
       </el-form-item>
       <div class="w-1/2 mx-auto text-center text-xs text-black-500" v-html="$t('business.register.agree_policy')" />
     </el-form>
-
     <el-dialog
       :visible.sync="enterPasswordVisible"
       destroy-on-close
@@ -184,7 +183,7 @@
           </button>
           <button
             class="btn btn-primary"
-            :disabled="setPwBtnDisabled"
+            :disabled="loading || !newuser.password || !newuser.confirm_password || newuser.password !== newuser.confirm_password"
             @click="register"
           >
             {{ $t('common.sign_up') }}
@@ -202,6 +201,15 @@ export default {
     InputText
   },
   data () {
+    const phoneNotRequiredValidator = (rule, value, callback) => {
+      for (const i in value) {
+        if (isNaN(value[i])) {
+          return callback(new Error('Please input digits'))
+        }
+      }
+
+      return callback()
+    }
     return {
       loading: false,
       agree: false,
@@ -220,7 +228,7 @@ export default {
       rules: {
         phone: [
           { required: true },
-          { validator: this.phoneNotRequiredValidator, trigger: ['blur', 'change'] }
+          { validator: phoneNotRequiredValidator, trigger: ['blur', 'change'] }
         ],
         firstName: [
           { required: true }
@@ -247,12 +255,6 @@ export default {
   computed: {
     fullName () {
       return this.newuser.firstName + ' ' + this.newuser.lastName
-    },
-    signupBtnDisabled () {
-      return !!this.loading
-    },
-    setPwBtnDisabled () {
-      return this.loading || !this.newuser.password || !this.newuser.confirm_password || this.newuser.password !== this.newuser.confirm_password
     }
   },
   mounted () {
@@ -281,7 +283,7 @@ export default {
               request_code: token
             })
             setTimeout(() => {
-              this.$router.push(this.localePath(`/business/register?submitted=1&email=${this.newuser.email`))
+              this.$router.push(this.localePath(`/business/register?submitted=1&email=${this.newuser.email}`))
             }, 500)
           } catch (error) {
             if (error.response && error.response.data && error.response.data.code === '7013') {
