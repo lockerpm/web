@@ -213,7 +213,7 @@ export default {
   computed: {
     isPremium () {
       // return this.isPremiumFeaturesAvailable
-      return false
+      return this.isPremiumFeaturesAvailable && (process.env.environment === 'staging' || process.env.NODE_ENV !== 'production')
     }
   },
   mounted () {

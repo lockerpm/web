@@ -171,7 +171,7 @@
                 <el-button
                   class="landing-btn w-full"
                   :loading="loading"
-                  :disabled="loading || !agree "
+                  :disabled="signupBtnDisabled"
                   @click.prevent="signupBusiness"
                 >
                   {{ $t('landing_contact.send') }}
@@ -183,6 +183,7 @@
         </div>
       </div>
     </div>
+
     <el-dialog
       :visible.sync="enterPasswordVisible"
       destroy-on-close
@@ -233,7 +234,7 @@
           </button>
           <button
             class="btn btn-primary"
-            :disabled="loading || !newuser.password || !newuser.confirm_password || newuser.password !== newuser.confirm_password"
+            :disabled="setPwBtnDisabled"
             @click="register"
           >
             {{ $t('common.sign_up') }}
@@ -252,15 +253,6 @@ export default {
   },
   layout: 'register',
   data () {
-    const phoneNotRequiredValidator = (rule, value, callback) => {
-      for (const i in value) {
-        if (isNaN(value[i])) {
-          return callback(new Error('Please input digits'))
-        }
-      }
-
-      return callback()
-    }
     return {
       loading: false,
       agree: false,
@@ -279,7 +271,7 @@ export default {
       rules: {
         phone: [
           { required: true },
-          { validator: phoneNotRequiredValidator, trigger: ['blur', 'change'] }
+          { validator: this.phoneNotRequiredValidator, trigger: ['blur', 'change'] }
         ],
         firstName: [
           { required: true }
@@ -306,6 +298,12 @@ export default {
   computed: {
     fullName () {
       return this.newuser.firstName + ' ' + this.newuser.lastName
+    },
+    signupBtnDisabled () {
+      return !!this.loading
+    },
+    setPwBtnDisabled () {
+      return this.loading || !this.newuser.password || !this.newuser.confirm_password || this.newuser.password !== this.newuser.confirm_password
     }
   },
   mounted () {

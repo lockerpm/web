@@ -232,15 +232,6 @@
 export default {
   layout: 'landing',
   data () {
-    const phoneNotRequiredValidator = (rule, value, callback) => {
-      for (const i in value) {
-        if (isNaN(value[i])) {
-          return callback(new Error('Please input digits'))
-        }
-      }
-
-      return callback()
-    }
     return {
       activeName: '1',
       dialogFormVisible: false,
@@ -256,7 +247,7 @@ export default {
       isLoading: false,
       rules: {
         phone: [
-          { validator: phoneNotRequiredValidator, trigger: ['blur', 'change'] },
+          { validator: this.phoneNotRequiredValidator, trigger: ['blur', 'change'] },
           { required: true, message: 'Please input Phone', trigger: 'blur' }
         ],
         full_name: [

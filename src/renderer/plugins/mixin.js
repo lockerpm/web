@@ -698,6 +698,14 @@ Vue.mixin({
     },
     openIntercom () {
       if (window.Intercom) { window.Intercom('show') }
+    },
+    phoneNotRequiredValidator(rule, value, callback) {
+      const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/
+      if (!value.match(phoneRegex)) {
+        return callback(new Error('Invalid phone number'))
+      }
+
+      return callback()
     }
   }
 })
