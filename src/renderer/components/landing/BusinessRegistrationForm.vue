@@ -125,13 +125,13 @@
         <el-button
           class="landing-btn w-full"
           :loading="loading"
-          :disabled="loading || !agree "
+          :disabled="signupBtnDisabled"
           @click.prevent="signupBusiness"
         >
           {{ $t('landing_contact.send') }}
         </el-button>
       </el-form-item>
-      <div class="w-1/2 mx-auto text-center text-xs text-black-500" v-html="$t('business.register.agree_policy')" />
+      <div class="w-full mx-auto text-center text-xs text-black-500" v-html="$t('business.register.agree_policy')" />
     </el-form>
     <el-dialog
       :visible.sync="enterPasswordVisible"
@@ -255,6 +255,9 @@ export default {
   computed: {
     fullName () {
       return this.newuser.firstName + ' ' + this.newuser.lastName
+    },
+    signupBtnDisabled () {
+      return !!this.loading
     }
   },
   mounted () {
