@@ -157,6 +157,7 @@ export default {
     }
   },
   mounted () {
+    this.$store.dispatch('LoadTeams')
   },
   methods: {
     // Check policy before submit
