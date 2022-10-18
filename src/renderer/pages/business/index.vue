@@ -22,9 +22,6 @@
                 >
                   {{ $t('business.welcome.start') }}
                 </a>
-                <p class="italic w-full landing-font-14 mt-1">
-                  {{ $t('landing.section1.btn[0].note') }}
-                </p>
               </div>
               <div class="invisible">
                 <a
