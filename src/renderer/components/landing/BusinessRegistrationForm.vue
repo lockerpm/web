@@ -281,7 +281,7 @@ export default {
               request_code: token
             })
             setTimeout(() => {
-              this.$router.push(this.localePath('/business/register?submitted=1'))
+              this.$router.push(this.localePath(`/business/register?submitted=1&email=${this.newuser.email`))
             }, 500)
           } catch (error) {
             if (error.response && error.response.data && error.response.data.code === '7013') {
