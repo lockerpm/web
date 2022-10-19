@@ -54,9 +54,17 @@
           <div class="py-8 md:py-12">
             <div class="w-full mb-8">
               <h6 class="font-bold landing-font-16 mb-[20px]">
-                Follow us
+                {{ $t('landing_footer.join') }}
               </h6>
               <div class="flex">
+                <a
+                  class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
+                  style="border-radius: 50%"
+                  target="_blank"
+                  href="https://forum.locker.io"
+                >
+                  <i class="fac fa-locker mt-2" />
+                </a>
                 <a
                   class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
                   style="border-radius: 50%"
@@ -73,6 +81,8 @@
                 >
                   <i class="fab fa-twitter mt-2" />
                 </a>
+              </div>
+              <div class="flex mt-[20px]">
                 <a
                   class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
                   style="border-radius: 50%"
@@ -80,6 +90,22 @@
                   href="https://www.linkedin.com/showcase/lockerpm/"
                 >
                   <i class="fab fa-linkedin-in mt-2" />
+                </a>
+                <a
+                  class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
+                  style="border-radius: 50%"
+                  target="_blank"
+                  href="https://www.instagram.com/lockerpasswordmanager/"
+                >
+                  <i class="fab fa-instagram mt-2" />
+                </a>
+                <a
+                  class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
+                  style="border-radius: 50%"
+                  target="_blank"
+                  href="https://www.youtube.com/channel/UCDnpPE-fftcvkOUROdOrByA"
+                >
+                  <i class="fab fa-youtube mt-2" />
                 </a>
               </div>
               <address class="not-italic mt-5">

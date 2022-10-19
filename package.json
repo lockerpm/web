@@ -59,6 +59,7 @@
     "webpack-node-externals": "2.5.2"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@microsoft/signalr": "^5.0.5",
     "@microsoft/signalr-protocol-msgpack": "^5.0.5",
     "@notionhq/client": "^1.0.4",

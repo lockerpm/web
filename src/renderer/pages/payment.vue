@@ -1041,16 +1041,16 @@ export default {
       }
     }
   },
-  async fetch () {
+  async asyncData ({ store, $axios, error }) {
     let userType = ''
-    if (this.$store.state.userPw.pwd_user_type) {
-      userType = this.$store.state.userPw.pwd_user_type
+    if (store.state.userPw.pwd_user_type) {
+      userType = store.state.userPw.pwd_user_type
     } else {
-      const res = await this.$axios.$get('/cystack_platform/pm/users/me')
+      const res = await $axios.$get('/cystack_platform/pm/users/me')
       userType = res.pwd_user_type
     }
     if (userType === 'enterprise') {
-      this.$nuxt.error({ errorCode: 404 })
+      error({ errorCode: 404 })
     }
   }
 }
