@@ -793,7 +793,7 @@ export default {
       this.currentComponent = Dialog
     },
     preparePassword (cipher) {
-      const violationItems = cipher.login ? this.checkPasswordPolicy(cipher.login.password || '') : []
+      const violationItems = cipher.type === CipherType.Login ? this.checkPasswordPolicy(cipher.login.password || '') : []
       if (violationItems.length) {
         this.$refs.passwordPolicyDialog.openDialog(violationItems)
       } else {
