@@ -60,10 +60,6 @@
             style="width: 100%"
             row-class-name="hover-table-row"
           >
-            <!-- <el-table-column
-              type="selection"
-              width="55"
-            /> -->
             <el-table-column
               prop="name"
               label=""
@@ -128,44 +124,6 @@
                 </span>
               </template>
             </el-table-column>
-            <!-- <template v-if="getRouteBaseName()==='shares-your-shares'">
-              <el-table-column
-                :label="$t('common.user')"
-                show-overflow-tooltip
-              >
-                <template slot-scope="scope">
-                  <span>{{ scope.row.user?scope.row.user.email : 'N/A' }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                :label="$t('common.status')"
-                min-width="120"
-                show-overflow-tooltip
-              >
-                <template v-if="scope.row.user" slot-scope="scope">
-                  <span
-                    class="label whitespace-normal"
-                    :class="{'label-primary-light': scope.row.user.status === 'confirmed',
-                             'label-info': scope.row.user.status === 'accepted',
-                             'label-warning-light': scope.row.user.status === 'invited',
-                             'label-danger-light': scope.row.user.status === 'expired',
-                             'label-success': !scope.row.user.status
-                    }"
-                  >
-                    {{ shareInvitationStatus[`${scope.row.user.status || 'shared'}`] }}
-                  </span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                :label="$t('common.share_type')"
-                show-overflow-tooltip
-                min-width="120"
-              >
-                <template slot-scope="scope">
-                  <span>{{ scope.row.user? scope.row.user.share_type : 'N/A' }}</span>
-                </template>
-              </el-table-column>
-            </template> -->
             <template v-if="getRouteBaseName() === 'shares'">
               <el-table-column
                 :label="$t('common.status')"
@@ -204,14 +162,6 @@
             >
               <template slot-scope="scope">
                 <div class="col-actions">
-                  <!-- <button
-                    v-if="scope.row.login.canLaunch"
-                    class="btn btn-icon btn-xs hover:bg-black-400"
-                    :title="$t('common.go_to_website')"
-                    @click="openNewTab(scope.row.login.uri)"
-                  >
-                    <i class="fas fa-external-link-square-alt" />
-                  </button> -->
                   <template v-if="scope.row.status === 'invited' && getRouteBaseName()==='shares'">
                     <div class="flex">
                       <div class="btn btn-primary" @click="acceptShareInvitation(scope.row)">
@@ -299,19 +249,11 @@
                           </el-dropdown-item>
                         </template>
                         <template v-if="!scope.row.isDeleted">
-                          <el-dropdown-item :divided="scope.row.type" @click.native="leaveShare(scope.row)">
+                          <el-dropdown-item :divided="!!scope.row.type" @click.native="leaveShare(scope.row)">
                             <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
                           </el-dropdown-item>
                         </template>
                       </template>
-                      <!-- <template v-else-if="scope.row.status === 'invited' && getRouteBaseName()==='shares'">
-                      <el-dropdown-item @click.native="acceptShareInvitation(scope.row)">
-                        {{ $t('common.accept') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item @click.native="rejectShareInvitation(scope.row)">
-                        {{ $t('common.reject') }}
-                      </el-dropdown-item>
-                    </template> -->
                       <template v-else-if="scope.row.status === 'accepted' && getRouteBaseName()==='shares'">
                         <el-dropdown-item divided @click.native="leaveShare(scope.row)">
                           <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
@@ -325,30 +267,6 @@
                           {{ $t('data.ciphers.stop_sharing') }}
                         </el-dropdown-item>
                       </template>
-                      <!-- <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'invited'">
-                        <el-dropdown-item @click.native="editShareType(scope.row)">
-                          {{ $t('common.edit') }}
-                        </el-dropdown-item>
-                        <el-dropdown-item @click.native="stopSharing(scope.row)">
-                          {{ $t('common.cancel') }}
-                        </el-dropdown-item>
-                      </template>
-                      <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'confirmed'">
-                        <el-dropdown-item @click.native="editShareType(scope.row)">
-                          {{ $t('common.edit') }}
-                        </el-dropdown-item>
-                        <el-dropdown-item @click.native="stopSharing(scope.row)">
-                          {{ $t('data.ciphers.stop_sharing') }}
-                        </el-dropdown-item>
-                      </template>
-                      <template v-else-if="getRouteBaseName()==='shares-your-shares' && scope.row.user && scope.row.user.status === 'accepted'">
-                        <el-dropdown-item @click.native="promptConfirmUser(scope.row)">
-                          {{ $t('common.confirm') }}
-                        </el-dropdown-item>
-                        <el-dropdown-item @click.native="stopSharing(scope.row)">
-                          {{ $t('common.cancel') }}
-                        </el-dropdown-item>
-                      </template> -->
                     </el-dropdown-menu>
                   </el-dropdown>
                 </div>
@@ -359,19 +277,29 @@
       </client-only>
       <!-- List Ciphers end -->
     </div>
+
     <ShareNoCipher
       v-else-if="!$store.state.syncing"
       :type="type"
       @add-share="newShare"
     />
+
     <AddEditCipher ref="addEditCipherDialog" :type="type" />
+
     <AddEditFolder ref="addEditFolder" />
+
     <AddEditTeamFolder ref="addEditTeamFolder" />
+
     <ShareCipher ref="shareCipher" :cipher-options="allCiphers" @upgrade-plan="upgradePlan" @shared-cipher="getMyShares" @confirm-user="promptConfirmUser" />
+
     <EditSharedCipher ref="editSharedCipher" @updated-cipher="getMyShares" />
+
     <ShareFolder ref="shareFolder" @upgrade-plan="upgradePlan" @shared-folder="getMyShares" @confirm-user="promptConfirmUser" />
+
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
+
     <PremiumDialog ref="premiumDialog" />
+
     <el-dialog
       :visible.sync="dialogConfirmVisible"
       width="435px"
@@ -411,6 +339,7 @@
         </div>
       </div>
     </el-dialog>
+
     <el-dialog
       :title="$t('data.sharing.tips')"
       :visible.sync="dialogAcceptVisible"
@@ -587,7 +516,7 @@ export default {
       return this.teams.some(e => ['owner', 'admin'].includes(e.role))
     },
     tableData () {
-      return this.invitations.concat(this.collections, this.ciphers)
+      return this.invitations.concat(this.collections || [], this.ciphers || [])
     }
   },
   watch: {
@@ -606,7 +535,7 @@ export default {
 
       if (bottomOfWindow) {
         this.lastIndex += 50
-        if (this.lastIndex <= this.ciphers.length) {
+        if (this.lastIndex <= this.ciphers?.length) {
           this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.lastIndex, this.lastIndex + 50))
         }
       }
