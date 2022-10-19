@@ -218,6 +218,7 @@ export const actions = {
     })
   },
   LoadTeams ({ commit }) {
+    commit('UPDATE_TEAMS', [])
     return this.$axios.$get('cystack_platform/pm/enterprises').then(res => {
       commit('UPDATE_TEAMS', res)
       // if (res.length) {
