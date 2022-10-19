@@ -1,4 +1,3 @@
-import { library, dom } from '@fortawesome/fontawesome-svg-core'
-import { faLocker } from '@/plugins/icons'
-library.add(faLocker)
-dom.watch()
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { facLocker } from '@/plugins/icons'
+library.add(facLocker)

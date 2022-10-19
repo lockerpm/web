@@ -182,9 +182,13 @@
 </template>
 
 <script>
+import { dom } from '@fortawesome/fontawesome-svg-core'
 export default {
   computed: {
     currentYear () { return new Date().getFullYear() }
+  },
+  mounted () {
+    dom.i2svg({ node: document.getElementById('footer') })
   },
   methods: {
     setLocale (locale) {

@@ -30,7 +30,7 @@
         <nuxt />
       </div>
     </div>
-    <Footer v-if="!is_crypto" />
+    <Footer v-if="!is_crypto" id="footer" />
   </div>
 </template>
 
