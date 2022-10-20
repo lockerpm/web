@@ -221,7 +221,7 @@ export default {
           : [],
         ...this.teams.length && ['primary_admin', 'admin'].includes(this.teams[0].role)
           ? [{
-            label: 'dashboard',
+            label: 'enterprise_dashboard',
             externalLink: process.env.lockerEnterprise,
             icon: 'dashboard'
           }]
