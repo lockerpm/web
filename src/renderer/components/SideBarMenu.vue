@@ -94,6 +94,7 @@
             :key="index"
             class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
             :href="item.externalLink"
+            target="_blank"
           >
             <div class="mr-2 w-[22px] h-[22px] flex items-center relative justify-center">
               <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
@@ -221,7 +222,7 @@ export default {
           : [],
         ...this.teams.length && ['primary_admin', 'admin'].includes(this.teams[0].role)
           ? [{
-            label: 'dashboard',
+            label: 'enterprise_dashboard',
             externalLink: process.env.lockerEnterprise,
             icon: 'dashboard'
           }]

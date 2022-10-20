@@ -29,6 +29,11 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
   })
   $axios.onError(err => {
     if (err.response) {
+      if (err.response.status === 400) {
+        if (err.response.data.code === '1010') {
+          store.commit('UPDATE_SHOW_LOCKED', true)
+        }
+      }
       if (err.response.status === 401) {
         app.$cookies.remove('cs_locker_token')
         app.$cookies.set('intercom-id-hjus3ol6', 0, {

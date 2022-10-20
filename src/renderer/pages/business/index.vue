@@ -23,10 +23,10 @@
                   {{ $t('business.welcome.start') }}
                 </a>
               </div>
-              <div class="invisible">
+              <div>
                 <a
                   class="landing-btn2 w-full sm:w-auto sm:ml-4"
-                  :href="`${enterpriseUrl}/admin/billing`"
+                  :href="`${enterpriseUrl}/purchase`"
                 >
                   {{ $t('business.welcome.purchase_now') }}
                 </a>

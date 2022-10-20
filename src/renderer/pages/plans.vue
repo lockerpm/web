@@ -108,14 +108,15 @@
                 >
                   {{ plan.button.text }}
                 </div>
-                <!--                <nuxt-link-->
-                <!--                  v-else-->
-                <!--                  class="landing-btn !w-full sm:w-auto sm:ml-4 cursor-pointer"-->
-                <!--                  style="font-weight: 600"-->
-                <!--                  :to="localeRoute('/business/plans')"-->
-                <!--                >-->
-                <!--                  See More-->
-                <!--                </nuxt-link>-->
+                <template v-else>
+                  <nuxt-link
+                    class="landing-btn !w-full sm:w-auto sm:ml-4 cursor-pointer"
+                    style="font-weight: 600"
+                    :to="localeRoute('/business/plans')"
+                  >
+                    See More
+                  </nuxt-link>
+                </template>
               </div>
             </div>
           </div>

@@ -29,7 +29,8 @@ export const state = () => ({
   myShares: [],
   shareInvitations: [],
   enterpriseInvitations: [],
-  enterprisePolicies: []
+  enterprisePolicies: [],
+  showLocked: false
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -122,6 +123,9 @@ export const mutations = {
   },
   UPDATE_ENTERPRISE_POLICIES (state, value) {
     state.enterprisePolicies = value
+  },
+  UPDATE_SHOW_LOCKED (state, value) {
+    state.showLocked = value
   }
 }
 export const actions = {
@@ -214,6 +218,7 @@ export const actions = {
     })
   },
   LoadTeams ({ commit }) {
+    commit('UPDATE_TEAMS', [])
     return this.$axios.$get('cystack_platform/pm/enterprises').then(res => {
       commit('UPDATE_TEAMS', res)
       // if (res.length) {
