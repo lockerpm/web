@@ -549,10 +549,12 @@
         </div>
       </div>
     </component>
+
     <AddEditFolder
       ref="addEditFolder"
       @created-folder="handleCreatedFolder"
     />
+
     <PasswordViolationDialog ref="passwordPolicyDialog" @confirm="cipher.id ? putCipher(cipher) : postCipher(cipher)" />
   </div>
 </template>
@@ -793,7 +795,7 @@ export default {
       this.currentComponent = Dialog
     },
     preparePassword (cipher) {
-      const violationItems = cipher.login ? this.checkPasswordPolicy(cipher.login.password || '') : []
+      const violationItems = cipher.type === CipherType.Login ? this.checkPasswordPolicy(cipher.login.password || '') : []
       if (violationItems.length) {
         this.$refs.passwordPolicyDialog.openDialog(violationItems)
       } else {
