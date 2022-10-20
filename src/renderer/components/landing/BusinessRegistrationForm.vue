@@ -289,8 +289,8 @@ export default {
               this.$router.push(this.localePath(`/business/register?submitted=1&email=${this.newuser.email}`))
             }, 500)
           } catch (error) {
-            if (error.response && error.response.data && error.response.data.code === '7013') {
-              this.notify(this.$t('errors.7013', { email: this.newuser.email }), 'warning')
+            if (error.response && error.response.data && ['7103', '7015'].includes(error.response.data.code)) {
+              this.notify(this.$t(`errors.${error.response.data.code}`, { email: this.newuser.email }), 'warning')
             } else if (error.response && error.response.data && error.response.data.code === '0004' && error.response.data.email) {
               this.$message({
                 message: this.$t('landing_contact.messages.error_existed'),
