@@ -462,14 +462,23 @@
                       </el-dropdown-item>
                       <!-- Request view end -->
 
-                      <!-- Request takeover -->
+                      <!-- Request takeover reset Master Password-->
                       <el-dropdown-item
                         v-if="scope.row.status === 'recovery_approved' && scope.row.type==='takeover'"
                         @click.native="takeoverGrantorVault(scope.row)"
                       >
-                        <span class="text-success">{{ $t('common.takeover') }}</span>
+                        {{ $t('data.emergency_access.reset_master_pw') }}
                       </el-dropdown-item>
-                      <!-- Request takeover end -->
+                      <!-- Request takeover reset Master Password end -->
+
+                      <!-- Request takeover reset Locker password -->
+                      <el-dropdown-item
+                        v-if="scope.row.status === 'recovery_approved' && scope.row.type==='takeover'"
+                        @click.native="takeoverGrantorLocker(scope.row)"
+                      >
+                        {{ $t('data.emergency_access.reset_pw') }}
+                      </el-dropdown-item>
+                      <!-- Request takeover reset Locker password end -->
 
                       <!-- Remove -->
                       <el-dropdown-item @click.native="deleteEmergencyAccess(scope.row)">
@@ -553,135 +562,174 @@
         </div>
       </div>
       <!-- Header end -->
-
       <div class="text-left">
         <div class="text-left">
-          <!-- Step 1 - master pw -->
-          <template v-if="takeoverStep===1">
-            <!-- New master pw -->
-            <div class="form-group !mb-4">
-              <label for="">{{ $t('master_password.new_password') }}</label>
-              <div class="input-group mb-1.5">
-                <input
-                  v-model="masterPassword"
-                  :type="showPassword ? 'text' : 'password'"
-                  class="form-control"
-                  :name="randomString()"
-                  autocomplete="new-password"
-                >
-                <div class="input-group-append !bg-white">
-                  <button
-                    class="btn btn-icon"
-                    type="button"
-                    tabindex="-1"
-                    @click="showPassword = !showPassword"
-                  >
-                    <i
-                      class="far"
-                      :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
-                    />
-                  </button>
-                </div>
-              </div>
-              <PasswordStrengthBar
-                v-if="masterPassword"
-                :score="passwordStrength.score"
-              />
-            </div>
-            <!-- New master pw end -->
-
-            <!-- Re enter new master pw -->
-            <div class="form-group !mb-4">
-              <label for="">{{ $t('master_password.re_password') }}</label>
-              <div
-                class="input-group"
-                :class="[errors.masterRePassword ? 'is-invalid' :'']"
+          <!-- New master pw -->
+          <div class="form-group !mb-4">
+            <label for="">{{ $t('master_password.new_password') }}</label>
+            <div class="input-group mb-1.5">
+              <input
+                v-model="masterPassword"
+                :type="showPassword ? 'text' : 'password'"
+                class="form-control"
+                :name="randomString()"
+                autocomplete="new-password"
               >
-                <input
-                  v-model="masterRePassword"
-                  :type="showRePassword ? 'text' : 'password'"
-                  class="form-control"
-                  name="repassword"
-                  placeholder=""
+              <div class="input-group-append !bg-white">
+                <button
+                  class="btn btn-icon"
+                  type="button"
+                  tabindex="-1"
+                  @click="showPassword = !showPassword"
                 >
-                <div class="input-group-append !bg-white">
-                  <button
-                    class="btn btn-icon"
-                    tabindex="-1"
-                    @click="showRePassword = !showRePassword"
-                  >
-                    <i
-                      class="far"
-                      :class="{'fa-eye': !showRePassword, 'fa-eye-slash': showRePassword}"
-                    />
-                  </button>
-                </div>
+                  <i
+                    class="far"
+                    :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+                  />
+                </button>
               </div>
-              <div class="invalid-feedback">{{ $t('errors.confirm_password') }}</div>
             </div>
-            <!-- Re enter new master pw end -->
-          </template>
-          <!-- Step 1 - master pw end -->
+            <PasswordStrengthBar
+              v-if="masterPassword"
+              :score="passwordStrength.score"
+            />
+          </div>
+          <!-- New master pw end -->
 
+          <!-- Re enter new master pw -->
+          <div class="form-group !mb-4">
+            <label for="">{{ $t('master_password.re_password') }}</label>
+            <div
+              class="input-group"
+              :class="[errors.masterRePassword ? 'is-invalid' :'']"
+            >
+              <input
+                v-model="masterRePassword"
+                :type="showRePassword ? 'text' : 'password'"
+                class="form-control"
+                name="repassword"
+                placeholder=""
+              >
+              <div class="input-group-append !bg-white">
+                <button
+                  class="btn btn-icon"
+                  tabindex="-1"
+                  @click="showRePassword = !showRePassword"
+                >
+                  <i
+                    class="far"
+                    :class="{'fa-eye': !showRePassword, 'fa-eye-slash': showRePassword}"
+                  />
+                </button>
+              </div>
+            </div>
+            <div class="invalid-feedback">{{ $t('errors.confirm_password') }}</div>
+          </div>
+          <!-- Re enter new master pw end -->
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        slot="footer"
+        class="dialog-footer flex items-center text-left"
+      >
+        <div class="flex-grow" />
+        <div>
+          <button
+            class="btn btn-default"
+            @click="dialogTakeoverVisible = false"
+          >
+            {{ $t('common.cancel') }}
+          </button>
+          <button
+            class="btn btn-primary"
+            :disabled="loadingSetPassword || !masterPassword || masterPassword!=masterRePassword"
+            @click="setPasswordForGrantor()"
+          >
+            {{ $t('common.confirm') }}
+          </button>
+        </div>
+      </div>
+      <!-- Footer end -->
+    </el-dialog>
+    <!-- Take over dialog end -->
+
+    <!-- Take over Locker Password dialog -->
+    <el-dialog
+      :visible.sync="dialogTakeoverLockerVisible"
+      width="435px"
+      destroy-on-close
+      top="15vh"
+      custom-class="locker-dialog"
+      :close-on-click-modal="false"
+    >
+      <!-- Header -->
+      <div slot="title">
+        <div class="text-head-5 text-black-700 font-semibold truncate">
+          {{ $t('common.takeover') }}
+        </div>
+      </div>
+      <!-- Header end -->
+      <div class="text-left">
+        <div class="text-left">
           <!-- Step 2 - id pw -->
-          <template v-else>
-            <div class="form-group !mb-4">
-              <label for="">{{ $t('master_password.id_password') }}</label>
-              <div
-                class="input-group"
-                :class="[bugs.new_password ? 'is-invalid' :'']"
+          <div class="form-group !mb-4">
+            <label for="">{{ $t('master_password.id_password') }}</label>
+            <div
+              class="input-group"
+              :class="[bugs.new_password ? 'is-invalid' :'']"
+            >
+              <input
+                v-model="idPassword"
+                :type="showIdPassword ? 'text' : 'password'"
+                class="form-control"
+                name="repassword"
+                placeholder=""
               >
-                <input
-                  v-model="idPassword"
-                  :type="showIdPassword ? 'text' : 'password'"
-                  class="form-control"
-                  name="repassword"
-                  placeholder=""
+              <div class="input-group-append !bg-white">
+                <button
+                  class="btn btn-icon"
+                  tabindex="-1"
+                  @click="showIdPassword = !showIdPassword"
                 >
-                <div class="input-group-append !bg-white">
-                  <button
-                    class="btn btn-icon"
-                    tabindex="-1"
-                    @click="showIdPassword = !showIdPassword"
-                  >
-                    <i
-                      class="far"
-                      :class="{'fa-eye': !showIdPassword, 'fa-eye-slash': showIdPassword}"
-                    />
-                  </button>
-                </div>
+                  <i
+                    class="far"
+                    :class="{'fa-eye': !showIdPassword, 'fa-eye-slash': showIdPassword}"
+                  />
+                </button>
               </div>
-              <div class="invalid-feedback">{{ bugs.new_password && bugs.new_password[0] }}</div>
             </div>
-            <div class="form-group !mb-4">
-              <label for="">{{ $t('master_password.id_password_confirm') }}</label>
-              <div
-                class="input-group"
-                :class="[errors.idRePassword ? 'is-invalid' :'']"
+            <div class="invalid-feedback">{{ bugs.new_password && bugs.new_password[0] }}</div>
+          </div>
+          <div class="form-group !mb-4">
+            <label for="">{{ $t('master_password.id_password_confirm') }}</label>
+            <div
+              class="input-group"
+              :class="[errors.idRePassword ? 'is-invalid' :'']"
+            >
+              <input
+                v-model="idRePassword"
+                :type="showIdRePassword ? 'text' : 'password'"
+                class="form-control"
+                name="repassword"
+                placeholder=""
               >
-                <input
-                  v-model="idRePassword"
-                  :type="showIdRePassword ? 'text' : 'password'"
-                  class="form-control"
-                  name="repassword"
-                  placeholder=""
+              <div class="input-group-append !bg-white">
+                <button
+                  class="btn btn-icon"
+                  tabindex="-1"
+                  @click="showIdRePassword = !showIdRePassword"
                 >
-                <div class="input-group-append !bg-white">
-                  <button
-                    class="btn btn-icon"
-                    tabindex="-1"
-                    @click="showIdRePassword = !showIdRePassword"
-                  >
-                    <i
-                      class="far"
-                      :class="{'fa-eye': !showIdRePassword, 'fa-eye-slash': showIdRePassword}"
-                    />
-                  </button>
-                </div>
+                  <i
+                    class="far"
+                    :class="{'fa-eye': !showIdRePassword, 'fa-eye-slash': showIdRePassword}"
+                  />
+                </button>
               </div>
-              <div class="invalid-feedback">{{ $t('errors.id_confirm_password') }}</div>
             </div>
-          </template>
+            <div class="invalid-feedback">{{ $t('errors.id_confirm_password') }}</div>
+          </div>
           <!-- Step 2 - id pw end -->
         </div>
       </div>
@@ -695,16 +743,16 @@
         <div>
           <button
             class="btn btn-default"
-            @click="takeoverStep === 1 ? dialogTakeoverVisible = false : takeoverStep = 1"
+            @click="dialogTakeoverLockerVisible = false "
           >
-            {{ takeoverStep === 1 ? $t('common.cancel') : $t('common.back') }}
+            {{ $t('common.cancel') }}
           </button>
           <button
             class="btn btn-primary"
-            :disabled="loadingSetPassword || !masterPassword || masterPassword!=masterRePassword || idPassword !== idRePassword"
-            @click="takeoverStep === 1 ? takeoverStep=2 : setPasswordForGrantor()"
+            :disabled="loadingSetPassword || !idPassword || idPassword !== idRePassword"
+            @click="setLockerPasswordForGrantor()"
           >
-            {{ takeoverStep === 1 ? $t('common.next') : $t('common.confirm') }}
+            {{ $t('common.confirm') }}
           </button>
         </div>
       </div>
@@ -739,6 +787,7 @@ export default {
       dialogConfirmVisible: false,
       dialogRequestVisible: false,
       dialogTakeoverVisible: false,
+      dialogTakeoverLockerVisible: false,
       dontAskAgain: false,
       publicKey: null,
       userFingerPrint: '',
@@ -968,7 +1017,10 @@ export default {
       this.dialogTakeoverVisible = true
       this.selectedEmergencyAccess = item
     },
-
+    takeoverGrantorLocker (item) {
+      this.dialogTakeoverLockerVisible = true
+      this.selectedEmergencyAccess = item
+    },
     // Change master pw + id pw
     async setPasswordForGrantor () {
       if (this.masterPassword.length < 8) {
@@ -1013,6 +1065,23 @@ export default {
         this.notify(this.$t('data.notifications.error_occurred'), 'warning')
       } finally {
         this.loadingSetPassword = false
+      }
+    },
+    // Change locker pw (id password)
+    async setLockerPasswordForGrantor () {
+      if (this.idPassword.length < 8) {
+        this.notify(this.$t('data.notifications.invalid_master_password'), 'warning')
+        return
+      }
+      try {
+        await this.$axios.$post(`/cystack_platform/pm/emergency_access/${this.selectedEmergencyAccess.id}/id_password`, {
+          new_password: this.idPassword
+        })
+        this.notify(this.$t('data.notifications.takeover_locker_success', { user: this.selectedEmergencyAccess.email }), 'success')
+      } catch (e) {
+        this.notify(this.$t('data.notifications.takeover_locker_success', { user: this.selectedEmergencyAccess.email }), 'warning')
+      } finally {
+        this.dialogTakeoverLockerVisible = false
       }
     }
   }
