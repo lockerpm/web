@@ -30,7 +30,7 @@
         <nuxt />
       </div>
     </div>
-    <Footer v-if="!is_crypto" />
+    <Footer v-if="!is_crypto" id="footer" />
   </div>
 </template>
 
@@ -123,7 +123,7 @@ export default {
     //   return this.$store.state.user
     // },
     is_crypto () {
-      return this.$route.path === '/crypto'
+      return this.$route.name.startsWith('crypto')
     },
     mappings () {
       const path = this.$route.path

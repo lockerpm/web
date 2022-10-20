@@ -66,7 +66,7 @@
               {{ $t('landing_header.personal') }}
             </nuxt-link>
           </li>
-          <li>
+          <li v-if="isDevOrStaging">
             <nuxt-link
               class="inline-block nav-item text-black landing-transition"
               :to="localePath('/business')"
