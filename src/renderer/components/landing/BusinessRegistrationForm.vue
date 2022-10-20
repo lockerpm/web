@@ -283,6 +283,7 @@ export default {
             const token = await this.$recaptcha.execute('login')
             await this.$axios.$put('cystack_platform/pm/payments/trial/enterprise', {
               email: this.newuser.email,
+              enterprise_name: this.newuser.organization,
               request_code: token
             })
             setTimeout(() => {
