@@ -307,7 +307,7 @@ export default {
     if (this.$route.query.submitted === '1') {
       this.submitted = true
     }
-    if (this.$route.query.email !== '') {
+    if (this.$route.query.email) {
       this.newuser.email = this.$route.query.email
     }
     this.getCountries()
@@ -337,8 +337,8 @@ export default {
             })
             this.submitted = true
           } catch (error) {
-            if (error.response && error.response.data && error.response.data.code === '7013') {
-              this.notify(this.$t('errors.7013', { email: this.newuser.email }), 'warning')
+            if (error.response && error.response.data && ['7103', '7015'].includes(error.response.data.code)) {
+              this.notify(this.$t(`errors.${error.response.data.code}`, { email: this.newuser.email }), 'warning')
             } else if (error.response && error.response.data && error.response.data.code === '7014' && error.response.data.email) {
               this.$message({
                 message: this.$t('landing_contact.messages.error_existed'),
