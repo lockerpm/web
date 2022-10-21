@@ -35,10 +35,10 @@
                 >
                   {{ $t('business.welcome.start') }}
                 </nuxt-link>
-                <p class="mt-3 invisible">
+                <p class="mt-3">
                   {{ $t('business.plans.or') }}
                   <span>
-                    <a :href="`${enterpriseUrl}/admin/billing`" class="text-info">
+                    <a :href="`${enterpriseUrl}/purchase`" class="text-info">
                       {{ $t('business.plans.do_it') }}
                     </a>
                   </span>
@@ -122,10 +122,10 @@
                 <nuxt-link class="landing-btn !font-medium" :to="localePath('/business/register')">
                   {{ $t('business.welcome.start') }}
                 </nuxt-link>
-                <p class="mt-3 invisible">
+                <p class="mt-3">
                   {{ $t('business.plans.or') }}
                   <span>
-                    <a :href="`${enterpriseUrl}/admin/billing`" class="text-info">
+                    <a :href="`${enterpriseUrl}/purchase`" class="text-info">
                       {{ $t('business.plans.do_it') }}
                     </a>
                   </span>
