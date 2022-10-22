@@ -4,7 +4,7 @@
       <div class="mt-[40px]">
         <img class="h-8 mx-auto" src="~/assets/images/logo/locker_logo.png">
       </div>
-      <div class="text-center mb-[20px]">
+      <div class="text-center mt-[40px] mb-[20px]">
         {{ currentUser ? currentUser.email : '' }}
       </div>
       <div class="text-center ">
