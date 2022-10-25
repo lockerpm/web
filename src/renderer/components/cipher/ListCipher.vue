@@ -797,20 +797,29 @@
       @reset-selection="multipleSelection = []"
       @trashed-cipher="multipleSelection = []"
     />
+
     <ChooseCipherType ref="chooseCipherType" />
+
     <AddEditFolder ref="addEditFolder" />
+
     <AddEditTeamFolder ref="addEditTeamFolder" />
+
     <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" />
+
     <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" />
+
     <ShareCipher
       ref="shareCipher"
       @upgrade-plan="upgradePlan"
     />
+
     <ShareFolder ref="shareFolder" />
+
     <MoveFolder
       ref="moveFolder"
       @reset-selection="multipleSelection = []"
     />
+
     <PremiumDialog ref="premiumDialog" />
   </div>
 </template>

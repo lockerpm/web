@@ -7,43 +7,50 @@
         <div class="w-full lg:w-9/12">
           <div class="grid grid-cols-12 gap-8 py-8 md:py-12">
             <div
-              v-for="(parent, i) in $t('landing_footer.menu')"
-              :key="i"
+              v-for="(group, groupIndex) in $t('landing_footer.menu')"
+              :key="groupIndex"
               class="col-span-6 md:col-span-3"
             >
-              <h6 class="font-bold landing-font-16 mb-[20px]">
-                {{ parent.category }}
-              </h6>
-              <ul>
-                <li
-                  v-for="(item, index) in parent.items"
-                  :key="index"
-                  class="mb-3"
-                >
-                  <a
-                    v-if="item.external"
-                    target="_blank"
-                    class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
-                    :href="item.link"
-                  >
-                    {{ item.name }}
-                  </a>
-                  <nuxt-link
-                    v-else-if="item.params"
-                    class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
-                    :to="localePath(`/${item.link}?${item.params}`)"
-                  >
-                    {{ item.name }}
-                  </nuxt-link>
-                  <nuxt-link
-                    v-else
-                    class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
-                    :to="localePath(`/${item.link}`)"
-                  >
-                    {{ item.name }}
-                  </nuxt-link>
-                </li>
-              </ul>
+              <div
+                v-for="(parent, i) in group"
+                :key="i"
+              >
+                <div v-if="!(groupIndex === 1 && i === 0 && !isDevOrStaging)" class="mb-6">
+                  <h6 class="font-bold landing-font-16 mb-[20px]">
+                    {{ parent.category }}
+                  </h6>
+                  <ul>
+                    <li
+                      v-for="(item, index) in parent.items"
+                      :key="index"
+                      class="mb-3"
+                    >
+                      <a
+                        v-if="item.external"
+                        target="_blank"
+                        class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
+                        :href="item.link"
+                      >
+                        {{ item.name }}
+                      </a>
+                      <nuxt-link
+                        v-else-if="item.params"
+                        class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
+                        :to="localePath(`/${item.link}?${item.params}`)"
+                      >
+                        {{ item.name }}
+                      </nuxt-link>
+                      <nuxt-link
+                        v-else
+                        class="text-black-600 landing-transition hover:no-underline hover:text-green sm:max-w-[170px] block"
+                        :to="localePath(`/${item.link}`)"
+                      >
+                        {{ item.name }}
+                      </nuxt-link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
