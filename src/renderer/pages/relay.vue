@@ -212,8 +212,7 @@ export default {
   },
   computed: {
     isPremium () {
-      // return this.isPremiumFeaturesAvailable
-      return this.isPremiumFeaturesAvailable && this.isDevOrStaging
+      return this.isPremiumFeaturesAvailable
     }
   },
   mounted () {
