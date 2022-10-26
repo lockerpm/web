@@ -34,7 +34,7 @@
       <!-- Options -->
       <div>
         <p class="font-medium mb-2 mt-3">
-          Configuration:
+          {{ $t('common.configuration') }}
         </p>
         <el-radio-group
           v-model="selectedOption"
