@@ -3,37 +3,28 @@
     <div class="bg-welcome bg-[#EDF4ED] full-width h-auto">
       <img src="~/assets/images/landing/promotion/logo.png" class="m-auto w-[137px] h-[38px] mt-[19px]">
     </div>
-    <div class="bg-welcome full-width h-auto pt-[76px] pb-[50px] bg-center bg-cover bg-no-repeat" :style="{backgroundImage: `url(${require(`~/assets/images/landing/promotion/bg_welcome.png`)})`}">
+    <div class="bg-welcome full-width h-auto pt-[40px] pb-[50px] bg-center bg-cover bg-no-repeat" :style="{backgroundImage: `url(${require(`~/assets/images/landing/promotion/bg_welcome.png`)})`}">
       <div class="max-w-7xl mx-auto px-6">
-        <div class="grid md:grid-cols-2 grid-cols-1 items-center gap-x-[10px] md:gap-y-0 gap-y-[40px]">
-          <div>
-            <div class="text-[#161922] font-bold landing-font-48 mb-5">
-              {{ $t('promotion.welcome.title') }}
-            </div>
-            <div v-html="$t('promotion.welcome.desc')" />
-            <div class="mt-6">
-              <div v-for="(item, index) in $t('promotion.welcome.list_subtitle')" :key="index" class="flex items-center">
-                <img src="~/assets/images/landing/promotion/icon-success.png" class="w-[16px] h-[16px]">
-                <div class="landing-font-16 color-[#000000] font-normal ml-3">
-                  {{ item }}
-                </div>
-              </div>
-            </div>
-            <div class="mt-9">
-              <button
-                class="hover:no-underline text-[#FFFFFF] font-semibold landing-btn"
-                @click="claimOffer"
-              >
-                Buy now
-              </button>
-            </div>
-          </div>
-          <div class="z-10">
-            <img src="~/assets/images/landing/promotion/img_welcome.png">
-          </div>
+        <div class="text-[#161922] font-bold landing-font-60 mb-5 text-center">
+          {{ $t('promotion.welcome.title') }}
         </div>
+        <iframe
+          class="mx-auto pb-4"
+          width="848"
+          height="480"
+          src="https://www.youtube.com/embed/kAutqE2ATfU"
+        />
       </div>
     </div>
+
+    <a href="#start-section">
+      <img
+        src="~/assets/images/landing/crypto/CaretDoubleDown.svg"
+        class="mx-auto my-4 h-9"
+      >
+    </a>
+
+    <span id="start-section" class="anchor" />
     <div class="mt-[135px] text-center">
       <div class="landing-font-48 font-bold mb-6">
         {{ $t('promotion.simplified.title') }}
@@ -152,9 +143,9 @@
             <div class="landing-font-20 text-[#161922] font-bold">
               {{ item.author }}
             </div>
-            <div class="landing-font-20 text-[#161922] font-bold">
+            <!-- <div class="landing-font-20 text-[#161922] font-bold">
               {{ item.date_comment }}
-            </div>
+            </div> -->
           </div>
         </el-carousel-item>
       </el-carousel>
@@ -301,8 +292,24 @@
       <button class="landing-btn mt-[60px]" @click="claimOffer">
         <i class="fas fa-shopping-cart" /> Claim this offer
       </button>
-      <div class="my-2 landing-font-20">
+      <!-- <div class="my-2 landing-font-20">
         {{ $t('promotion.special_offer.money_back') }}
+      </div> -->
+      <div
+        class="max-w-6xl mx-auto py-[40px] px-[122px]"
+      >
+        <div class="flex justify-between items-center max-w-[865px]">
+          <img
+            src="~/assets/images/landing/crypto/guarantee.svg"
+            class="h-[250px]"
+          >
+          <div class="max-w-[540px]">
+            <div
+              class="landing-font-18 !leading-6 font-normal text-left"
+              v-html="$t('crypto.trial.desc')"
+            />
+          </div>
+        </div>
       </div>
       <div class="flex items-center justify-center landing-font-18">
         <span class="mr-3">{{ $t('promotion.special_offer.compatible_with') }}:</span>
