@@ -4,9 +4,9 @@
       <div class="mt-[40px]">
         <img class="h-8 mx-auto" src="~/assets/images/logo/locker_logo.png">
       </div>
-      <div class="text-center mt-[40px] mb-[20px]">
-        {{ currentUser ? currentUser.email : '' }}
-      </div>
+<!--      <div class="text-center mt-[40px] mb-[20px]">-->
+<!--        {{ currentUser ? currentUser.email : '' }}-->
+<!--      </div>-->
       <div class="text-center ">
         <h3 class="text-[24px] mb-[20px]">Great – you're in!</h3>
         <h5>You've successfully logged in.</h5>
@@ -57,9 +57,9 @@ export default {
   layout: 'authenticate',
   mounted () {
     this.token = this.$route.query.token
-    this.$nextTick(() => {
-      this.loginByToken()
-    })
+    // this.$nextTick(() => {
+    //   this.loginByToken()
+    // })
   },
   data () {
     return {
@@ -67,17 +67,17 @@ export default {
     }
   },
   methods: {
-    async loginByToken () {
-      await this.$axios.setToken(this.$route.query.token, 'Bearer')
-      await this.$cookies.set('cs_locker_token', this.$route.query.token, { path: '/', ...this.environment === '' ? { secure: true } : { secure: false } })
-      const isLoggedIn = this.$store.state.isLoggedIn
-      if (!isLoggedIn) {
-        this.$store.commit('UPDATE_IS_LOGGEDIN', true)
-      }
-      if (!this.currentUser.email) {
-        await this.$store.dispatch('LoadCurrentUser')
-      }
-    }
+    // async loginByToken () {
+    //   await this.$axios.setToken(this.$route.query.token, 'Bearer')
+    //   await this.$cookies.set('cs_locker_token', this.$route.query.token, { path: '/', ...this.environment === '' ? { secure: true } : { secure: false } })
+    //   const isLoggedIn = this.$store.state.isLoggedIn
+    //   if (!isLoggedIn) {
+    //     this.$store.commit('UPDATE_IS_LOGGEDIN', true)
+    //   }
+    //   if (!this.currentUser.email) {
+    //     await this.$store.dispatch('LoadCurrentUser')
+    //   }
+    // }
   }
 }
 </script>
