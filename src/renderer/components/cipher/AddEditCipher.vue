@@ -613,6 +613,13 @@ export default {
           // data.fields[0].type = FieldType.Text
         }
         this.cipher = new Cipher({ ...data }, true)
+        if (this.cloneMode) {
+          this.cipher.organizationId = null
+          this.cipher.collectionIds = []
+        }
+        if (this.cipher.collectionIds && this.cipher.collectionIds[0]) {
+          this.cipher.folderId = this.cipher.collectionIds[0]
+        }
         this.$refs.inputSelectFolder.value = this.cipher.folderId
       } else if (CipherType[this.type]) {
         this.newCipher(this.type, data)
@@ -652,22 +659,20 @@ export default {
         }
 
         // Check if current folder is a collection
-        let orgKey = null
         const collection = this.writeableCollections.find(c => c.id === this.cipher.folderId)
         if (collection) {
           this.cipher.organizationId = collection.organizationId
-          orgKey = await this.$cryptoService.getOrgKey(collection.organizationId)
           this.cipher.folderId = null
           this.cipher.collectionIds = [collection.id]
         }
 
-        // Ignore org in clone mode
+        // Remove org in clone mode
         if (this.cloneMode) {
           this.cipher.organizationId = null
         }
 
         // Encrypt cipher
-        const cipherEnc = await this.$cipherService.encrypt(cipher, orgKey)
+        const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
 
         // Change type back after encryption
@@ -697,9 +702,7 @@ export default {
     // Update cipher
     async putCipher (cipher) {
       try {
-        // const cipherEnc = await this.$cipherService.encrypt(cipher)
-        // const data = new CipherRequest(cipherEnc)
-        // this.cryptoWallet.notes = this.cipher.notes
+        // Change type to Note for new cipher types
         const type_ = this.cipher.type
         if (this.cipher.type === CipherType.CryptoWallet) {
           this.cipher.notes = JSON.stringify(this.cryptoWallet)
@@ -707,9 +710,32 @@ export default {
           this.cipher.secureNote = new SecureNote(this.cipher.secureNote, true)
           this.cipher.secureNote.type = 0
         }
+
+        // Check if current folder is a collection or remove from old collection if move back to folder
+        if (this.cipher.folderId) {
+          const collection = this.writeableCollections.find(c => c.id === this.cipher.folderId)
+          if (collection) {
+            this.cipher.organizationId = collection.organizationId
+            this.cipher.folderId = null
+            this.cipher.collectionIds = [collection.id]
+          } else {
+            this.cipher.organizationId = null
+            this.cipher.collectionIds = []
+          }
+        } else if (this.cipher.organizationId) {
+          this.cipher.organizationId = null
+          this.cipher.collectionIds = []
+        }
+
+        // Encrypt cipher
         const cipherEnc = await this.$cipherService.encrypt(cipher)
         const data = new CipherRequest(cipherEnc)
+
+        // Change type back after encryption
         data.type = type_
+        this.cipher.type = type_
+
+        // Send api
         await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, {
           ...data,
           score: this.passwordStrength.score,
