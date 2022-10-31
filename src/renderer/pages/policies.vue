@@ -286,16 +286,16 @@ export default {
 
   computed: {
     isPwPolicyEnabled () {
-      return this.enterprisePolicies.password_requirement && this.enterprisePolicies.password_requirement.enabled
+      return this.enterprisePolicies.password_requirement?.enabled
     },
     isMasterPwPolicyEnabled () {
-      return this.enterprisePolicies.master_password_requirement && this.enterprisePolicies.master_password_requirement.enabled
+      return this.enterprisePolicies.master_password_requirement?.enabled
     },
     isBlockFailedLoginEnabled () {
-      return this.enterprisePolicies.block_failed_login && this.enterprisePolicies.block_failed_login.enabled
+      return this.enterprisePolicies.block_failed_login?.enabled
     },
     isPasswordlessEnabled () {
-      return this.enterprisePolicies.passwordless && this.enterprisePolicies.passwordless.enabled
+      return this.enterprisePolicies.passwordless?.enabled
     }
   },
 

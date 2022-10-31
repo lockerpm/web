@@ -10,6 +10,7 @@ import { CipherType } from '../core/enums/cipherType'
 import { SyncResponse } from '../core/models/response/syncResponse'
 import { WALLET_APP_LIST } from '../utils/crypto/applist/index'
 import { CipherView } from '../core/models/view/cipherView'
+import _ from 'lodash'
 
 // Vue.use(Image)
 Vue.mixin({
@@ -709,6 +710,19 @@ Vue.mixin({
       }
 
       return callback()
+    },
+    async loadEnterprisePolicies () {
+      if (!this.currentOrg?.id) {
+        return
+      }
+      try {
+        const res = await this.$axios.$get(`/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy`)
+        const enterprisePolicies = {}
+        res.forEach(element => {
+          enterprisePolicies[element.policy_type] = element
+        })
+        this.$store.commit('UPDATE_ENTERPRISE_POLICIES', enterprisePolicies)
+      } catch (e) {}
     }
   }
 })
