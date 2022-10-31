@@ -946,8 +946,9 @@ export default {
     },
     canAddItem () {
       let res = !['shares', 'trash'].includes(this.routeName)
-      if (this.collection) {
-        res &= this.writeableCollections.some(c => c.id === this.collection.id)
+      const collection = find(this.collections, e => e.id === this.$route.params.folderId)
+      if (collection) {
+        res &= this.writeableCollections.some(c => c.id === collection.id)
       }
       return res
     }
