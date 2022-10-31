@@ -287,6 +287,10 @@ export default {
           status
         })
         this.notify(this.$t('common.success'), 'success')
+        if (status === 'confirmed') {
+          this.$store.dispatch('LoadCurrentUserPw')
+          this.$store.dispatch('LoadTeams')
+        }
         this.getInvitations()
       } catch (e) {
         this.notify(this.$t('common.failed'), 'warning')
