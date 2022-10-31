@@ -258,7 +258,7 @@
           :key="index"
           class="opacity-90 mb-9"
         >
-          <a :href="item.href || '#'" :target="item.href? '_blank' : '_self'" class="sm:flex flex-flex-nowrap text-center">
+          <div class="sm:flex flex-flex-nowrap text-center">
             <div class="circle sm:mx-5 mx-auto">
               <img
                 :src="require(`~/assets/images/landing/index/${item.img}`)"
@@ -270,7 +270,7 @@
             <p class="landing-font-16 font-semibold text-black self-center sm:mt-0 mt-2">
               {{ item.name }}
             </p>
-          </a>
+          </div>
         </div>
       </div>
     </section>
