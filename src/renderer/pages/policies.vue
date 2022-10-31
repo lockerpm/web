@@ -254,6 +254,15 @@
             </el-collapse-item>
             <!-- Passwordless login end -->
           </el-collapse>
+
+          <div v-if="isEmpty && !loading" class="setting-wrapper">
+            <div class="px-4 py-8 flex items-center flex flex-col">
+              <img :src="require('~/assets/images/pages/policies/empty-img.svg')" height="61">
+              <p class="mt-4">
+                {{ $t('data.policies.no_active_policies') }}
+              </p>
+            </div>
+          </div>
         </div>
       </LazyHydrate>
 
@@ -296,6 +305,12 @@ export default {
     },
     isPasswordlessEnabled () {
       return this.enterprisePolicies.passwordless?.enabled
+    },
+    isEmpty () {
+      return !this.isPasswordlessEnabled &&
+        !this.isMasterPwPolicyEnabled &&
+        !this.isBlockFailedLoginEnabled &&
+        !this.isPasswordlessEnabled
     }
   },
 
