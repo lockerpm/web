@@ -7,7 +7,9 @@
         </div>
         <div class="md:pl-60 flex flex-col flex-row-fluid">
           <Header />
-          <div v-if="shouldWelcome !=='false'" class="flex-column-fluid lg:px-28 py-10 px-10">
+
+          <!-- Welcome banner -->
+          <div v-if="shouldWelcome !=='false'" class="lg:px-28 py-10 px-10">
             <div class="border border-black-200 rounded p-5 md:p-8 relative">
               <div class="flex items-center justify-between">
                 <div class="">
@@ -34,6 +36,9 @@
               </div>
             </div>
           </div>
+          <!-- Welcome banner end -->
+
+          <!-- Enterprise invitations -->
           <div v-if="enterpriseInvitations.length" class="flex-column-fluid lg:px-28 py-10 px-10">
             <div
               v-for="invitation in enterpriseInvitations.slice(0, 1)"
@@ -71,6 +76,9 @@
               </div>
             </div>
           </div>
+          <!-- Enterprise invitations end -->
+
+          <!-- Emergency access invitations -->
           <div v-if="emergencyAccessInvitations.length" class="flex-column-fluid lg:px-28 py-10 px-10">
             <div
               v-for="invitation in emergencyAccessInvitations.slice(0, 1)"
@@ -108,6 +116,8 @@
               </div>
             </div>
           </div>
+          <!-- Emergency access invitations end -->
+
           <nuxt />
         </div>
       </template>
@@ -289,7 +299,7 @@ export default {
         this.notify(this.$t('common.success'), 'success')
         if (status === 'confirmed') {
           this.$store.dispatch('LoadCurrentUserPw')
-          this.$store.dispatch('LoadTeams')
+          this.$store.dispatch('LoadTeams').then(this.loadEnterprisePolicies)
         }
         this.getInvitations()
       } catch (e) {
