@@ -436,7 +436,10 @@
       @created-folder="handleCreatedFolder"
     />
 
-    <PasswordViolationDialog ref="passwordPolicyDialog" @confirm="cipher.id ? putCipher(cipher) : postCipher(cipher)" />
+    <PasswordViolationDialog
+      ref="passwordPolicyDialog"
+      @confirm="cipher.id ? putCipher(cipher) : postCipher(cipher)"
+    />
   </div>
 </template>
 
