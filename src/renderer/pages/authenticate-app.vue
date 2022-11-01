@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="w-[420px] rounded bg-white m-auto">
-      <div class="mt-[40px]">
+      <div class="mt-[40px] mb-[60px]">
         <img class="h-8 mx-auto" src="~/assets/images/logo/locker_logo.png">
       </div>
 <!--      <div class="text-center mt-[40px] mb-[20px]">-->
