@@ -27,9 +27,9 @@
         </div>
       </template>
 
-      <!-- Lock until pay -->
       <LockedUntilPay />
-      <!-- Lock until pay end -->
+
+      <WelcomeToBusiness />
     </client-only>
   </div>
 </template>
@@ -41,6 +41,7 @@ import WelcomeBanner from '../components/notice/WelcomeBanner'
 import EnterpriseInvitations from '../components/notice/EnterpriseInvitations'
 import EmergencyAccessInvitations from '../components/notice/EmergencyAccessInvitations'
 import LockedUntilPay from '../components/notice/LockedUntilPay'
+import WelcomeToBusiness from '../components/notice/WelcomeToBusiness'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
@@ -55,6 +56,7 @@ export default {
     WelcomeBanner,
     EnterpriseInvitations,
     EmergencyAccessInvitations,
+    WelcomeToBusiness,
     Header,
     SideBarMenu
   },

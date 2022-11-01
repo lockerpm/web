@@ -219,7 +219,7 @@ export default {
             icon: 'upgrade'
           }]
           : [],
-        ...this.teams.length && ['primary_admin', 'admin'].includes(this.teams[0].role)
+        ...this.isEnterpriseAdminOrOwner
           ? [{
             label: 'enterprise_dashboard',
             externalLink: process.env.lockerEnterprise,
