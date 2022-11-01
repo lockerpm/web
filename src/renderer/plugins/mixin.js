@@ -32,6 +32,9 @@ Vue.mixin({
     isEnterpriseMember () {
       return this.$store.state.userPw.pwd_user_type === 'enterprise'
     },
+    isEnterpriseAdminOrOwner () {
+      return this.teams.length && ['primary_admin', 'admin'].includes(this.teams[0].role)
+    },
     isPremiumFeaturesAvailable () {
       return this.$store.state.userPw.pwd_user_type === 'enterprise' || this.$store.state.currentPlan.alias !== 'pm_free'
     },
