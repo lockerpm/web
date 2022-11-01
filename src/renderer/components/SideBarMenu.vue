@@ -96,9 +96,8 @@
             :href="item.externalLink"
             target="_blank"
           >
-            <div class="mr-2 w-[22px] h-[22px] flex items-center relative justify-center">
+            <div class="mr-2 w-[22px] h-[22px] flex items-center justify-center">
               <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
-              <div class="w-2 h-2 rounded-full bg-danger-600 absolute top-0 right-0" />
             </div>
             <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
           </a>
@@ -225,14 +224,6 @@ export default {
             label: 'enterprise_dashboard',
             externalLink: process.env.lockerEnterprise,
             icon: 'dashboard'
-          }]
-          : [],
-        ...this.manageableTeams && this.manageableTeams.length
-          ? [{
-            label: 'dashboard',
-            routeName: 'admin-teamId',
-            icon: 'dashboard',
-            params: { teamId: this.manageableTeams[0].id }
           }]
           : [],
         {
