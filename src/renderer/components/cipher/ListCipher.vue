@@ -160,6 +160,14 @@
               </div>
               <el-dropdown-menu slot="dropdown" class="w-[200px] ">
                 <el-dropdown-item
+                  v-if="isSearching"
+                  class="flex items-center justify-between"
+                  @click.native="changeSort('', '')"
+                >
+                  <span>{{ $t('data.ciphers.most_relevant') }}</span>
+                  <i v-if="orderString==='_'" class="fa fa-check" />
+                </el-dropdown-item>
+                <el-dropdown-item
                   class="flex items-center justify-between"
                   @click.native="changeSort('name', 'asc')"
                 >
@@ -822,7 +830,6 @@ export default {
       ],
       dataRendered: [],
       renderIndex: 0,
-      // options: ['Login', 'SecureNote', 'Card', 'Identity', 'Folder'],
       selectedType: 'Login',
       viewFolder: false,
       showLogo: this.$cookies.get('show-logo') || false,
@@ -874,9 +881,6 @@ export default {
         return find(this.collections, e => e.id === this.$route.params.folderId) || { name: 'Unassigned Folder' }
       }
       return {}
-    },
-    filteredCollection () {
-      return groupBy(this.collections, 'organizationId')
     },
     orderString () {
       return `${this.orderField}_${this.orderDirection}`
@@ -951,12 +955,22 @@ export default {
         res &= this.writeableCollections.some(c => c.id === collection.id)
       }
       return res
+    },
+    isSearching () {
+      return this.searchText && this.searchText.trim().length > 0
     }
   },
   watch: {
     ciphers () {
       if (this.ciphers) {
         this.loading = false
+      }
+    },
+    isSearching (newVal) {
+      if (newVal) {
+        this.changeSort('', '')
+      } else {
+        this.changeSort('revisionDate', 'desc')
       }
     }
   },
@@ -985,9 +999,6 @@ export default {
           CipherType.MasterPassword
         ].includes(cipher.type))
         result.map(item => {
-          // if (item.organizationId) {
-          //   item.isShared = this.isShared(item.organizationId)
-          // }
           if (item.type === CipherType.CryptoWallet) {
             try {
               item.cryptoWallet = JSON.parse(item.notes)
@@ -1001,7 +1012,9 @@ export default {
             checked: false
           }
         })
-        result = orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+        if (this.orderField && this.orderDirection) {
+          result = orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+        }
         // this.dataRendered = result.slice(0, 50)
         // this.renderIndex = 50
         return result
@@ -1180,9 +1193,6 @@ export default {
     canDeleteTeamFolder (team) {
       return ['owner', 'admin'].includes(team.role) && !team.locked
     },
-    isBiz (team) {
-      return team.is_business
-    },
     confirmDialog (type) {
       if (type === 'Folder') {
         this.addEditFolder()
@@ -1210,13 +1220,6 @@ export default {
           this.multipleSelection = []
         })
       }
-    },
-    isShared (organizationId) {
-      const share = this.myShares.find(s => s.id === organizationId)
-      if (share) {
-        return share.members.length > 0
-      }
-      return !!organizationId
     },
     async stopSharing (cipher) {
       try {
