@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :visible="visible"
+    :visible.sync="visible"
     custom-class="locker-dialog max-w-[600px]"
     width="100%"
     @close="isFirst = false"
@@ -74,13 +74,11 @@ export default {
       window.open(process.env.lockerEnterprise, '_blank')
     },
     checkWelcome () {
-      const deviceId = this.$cookies.get('locker_device_id')
-      return localStorage.getItem(`${deviceId}_welcome_business`)
+      return localStorage.getItem('show_welcome_business')
     },
     offWelcome () {
       this.visible = false
-      const deviceId = this.$cookies.get('locker_device_id')
-      localStorage.setItem(`${deviceId}_welcome_business`, 'false')
+      localStorage.setItem('show_welcome_business', 'false')
       this.allowWelcome = false
     }
   }
