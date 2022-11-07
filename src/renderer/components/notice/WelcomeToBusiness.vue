@@ -72,6 +72,7 @@ export default {
   methods: {
     goToDashboard () {
       window.open(process.env.lockerEnterprise, '_blank')
+      this.offWelcome()
     },
     checkWelcome () {
       return localStorage.getItem('show_welcome_business')

@@ -1,9 +1,13 @@
 <template>
   <div class="flex flex-grow flex-col items-center">
+    <!-- Logo -->
     <div class="mt-[5.625rem] mb-5">
       <img src="~assets/images/logo/logo_black.svg" alt="" class="h-[36px]">
     </div>
+    <!-- Logo end -->
+
     <div class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center">
+      <!-- Basic lock form -->
       <template v-if="step===1">
         <div class="text-head-4 font-semibold mb-2.5">
           {{ $t('master_password.enter_password_title') }}
@@ -72,6 +76,9 @@
           </div>
         </div>
       </template>
+      <!-- Basic lock form end -->
+
+      <!-- Get hint step 2 (actually 1) -->
       <template v-if="step===2">
         <div class="text-head-4 font-semibold mb-2.5">
           {{ $t('master_password.master_password_hint') }}
@@ -97,6 +104,9 @@
           </button>
         </div>
       </template>
+      <!-- Get hint step 2 end -->
+
+      <!-- Get hint step 3 - sent hint success -->
       <template v-if="step===3">
         <img src="~/assets/images/icons/icon_settings.svg" alt="" class="mx-auto mb-4">
         <div class="text-head-4 font-semibold mb-2.5">
@@ -109,12 +119,18 @@
           <i class="fa fa-chevron-left" />&nbsp;&nbsp;&nbsp;{{ $t('master_password.back_login') }}
         </button>
       </template>
+      <!-- Get hint step 3 end -->
     </div>
+
+    <!-- Get hint step 2 go back btn -->
     <div v-if="step === 2" class="mt-1">
       <button class="btn btn-clean !text-primary" @click="step = 1">
         <i class="fa fa-chevron-left" />&nbsp;&nbsp;&nbsp;{{ $t('master_password.back_login') }}
       </button>
     </div>
+    <!-- Get hint step 2 go back btn end -->
+
+    <!-- Belong to enterprise dialog -->
     <el-dialog
       :visible.sync="dialogEnterpriseVisible"
       width="400px"
@@ -129,16 +145,37 @@
       </div>
       <div class="text-center">
         <div class="text-head-5 text-black font-bold">
-          {{ $t('data.enterprise.popup.title', {owner: enterpriseInvitation.owner}) }}
+          {{
+            $t('data.enterprise.popup.title', {
+              owner: enterpriseInvitation.owner
+            })
+          }}
         </div>
         <div class="text-head-6 text-black font-semibold mt-3">
-          {{ enterpriseInvitation.status==='invited' ? $t('data.enterprise.popup.desc', {team: enterpriseInvitation.enterprise?enterpriseInvitation.enterprise.name:'', owner: enterpriseInvitation.owner}) : $t('data.enterprise.popup.desc2', {team: enterpriseInvitation.enterprise?enterpriseInvitation.enterprise.name: ''}) }}
+          {{
+            enterpriseInvitation.status==='invited'
+              ? $t('data.enterprise.popup.desc', {
+                team: enterpriseInvitation.enterprise?enterpriseInvitation.enterprise.name:'',
+                owner: enterpriseInvitation.owner
+              }) : $t('data.enterprise.popup.desc2', {
+                team: enterpriseInvitation.enterprise?enterpriseInvitation.enterprise.name: ''
+              })
+          }}
         </div>
-        <button v-if="enterpriseInvitation.status==='invited'" class="btn btn-primary mt-4 w-[75%]" @click="joinEnterprise">
-          {{ enterpriseInvitation.domain.auto_approve ? $t('data.enterprise.join_now') : $t('data.enterprise.request_to_join') }}
+        <button
+          v-if="enterpriseInvitation.status==='invited'"
+          class="btn btn-primary mt-4 w-[75%]"
+          @click="joinEnterprise"
+        >
+          {{
+            enterpriseInvitation.domain.auto_approve
+              ? $t('data.enterprise.join_now')
+              : $t('data.enterprise.request_to_join')
+          }}
         </button>
       </div>
     </el-dialog>
+    <!-- Belong to enterprise dialog end -->
   </div>
 </template>
 
@@ -168,6 +205,7 @@ export default {
     this.$store.dispatch('LoadEnterpriseInvitations')
   },
   methods: {
+    // Unlock vault
     async setMasterPass () {
       this.loading = true
       this.errors = false
@@ -188,6 +226,8 @@ export default {
         }
       }
     },
+
+    // Send hint
     sendHint () {
       this.loadingSend = true
       this.$axios.$post('cystack_platform/pm/users/password_hint', {
@@ -198,6 +238,8 @@ export default {
           this.step = 3
         })
     },
+
+    // Join enterprise
     joinEnterprise () {
       this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${this.enterpriseInvitation.id}`, { status: 'confirmed' })
         .then(res => {
@@ -212,6 +254,8 @@ export default {
           }, 300)
         })
     },
+
+    // Check enterprise invitation
     checkInvitation () {
       if (this.enterpriseInvitations.length && this.enterpriseInvitations[0].domain != null) {
         this.dialogEnterpriseVisible = true
