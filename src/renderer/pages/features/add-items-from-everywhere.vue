@@ -14,7 +14,7 @@
               <div class=" w-full landing-font-20 text-[#3A3A3A] mb-[20px] mx-auto">
                 {{ $t('features.add_items.subtitle') }}
               </div>
-              <div class="pt-10">
+              <div class="max-w-[700px] mx-auto mt-[40px]">
                 <img src="~/assets/images/landing/features/detail/import_password.svg" width="w-full">
               </div>
             </div>
@@ -24,9 +24,9 @@
       <!-- Intro end -->
   
       <!-- Detail start -->
-      <section class="max-w-7xl mx-auto px-6">
-        <div class="w-full pt-[20px]">
-          <div class="w-full md:mb-0 md:pt-[40px] pt-40[px] order-1 max-w-[860px]">
+      <section class="max-w-[888px] mx-auto px-6">
+        <div class="w-full pt-[10px]">
+          <div class="w-full md:mb-0 order-1 max-w-[860px]">
             <div class="w-full font-bold landing-font-38 text-[#161922] mb-[20px] mx-auto">
               {{ $t('features.add_items.detail_title') }}
             </div>
@@ -51,8 +51,7 @@
                     :key="index"
                     class="w-full landing-font-16 text-black list-disc mx-auto"
                 >
-                    <li class="ml-[27px]">
-                        {{ $t(step.step) }} 
+                    <li class="ml-[27px]" v-html="$t(step.step)">
                     </li>
                 </ul>
                 <br>
@@ -63,8 +62,7 @@
                     :key="index"
                     class="w-full landing-font-16 text-black list-disc mx-auto"
                 >
-                    <li class="ml-[27px]">
-                        {{ $t(step.step) }} 
+                    <li class="ml-[27px]" v-html="$t(step.step)">
                     </li>
                 </ul>
                 <br>
