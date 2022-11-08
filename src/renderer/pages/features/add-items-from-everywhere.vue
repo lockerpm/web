@@ -44,14 +44,14 @@
             <div class="w-full landing-font-16 text-black  mx-auto" style="color: #5A6176;" >
                 {{ $t('features.add_items.guide.desc1') }}<br>
                 <br>
-                {{ $t('features.add_items.guide.desc2') }}<br>
+                <div v-html="$t('features.add_items.guide.desc2')"></div>
                 <br>
                 <ul 
                     v-for="(step, index) in $t('features.add_items.guide.list1')"
                     :key="index"
                     class="w-full landing-font-16 text-black list-disc mx-auto"
                 >
-                    <li class="ml-[27px]" v-html="$t(step.step)">
+                    <li class="ml-[27px]" v-html="$t(step)">
                     </li>
                 </ul>
                 <br>
@@ -62,7 +62,7 @@
                     :key="index"
                     class="w-full landing-font-16 text-black list-disc mx-auto"
                 >
-                    <li class="ml-[27px]" v-html="$t(step.step)">
+                    <li class="ml-[27px]" v-html="$t(step)">
                     </li>
                 </ul>
                 <br>
