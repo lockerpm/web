@@ -2,134 +2,34 @@
   <div class="flex flex-col sm:flex-row flex-1 relative">
     <client-only>
       <template v-if="!locked">
+        <!-- Sidebar -->
         <div class="hidden md:block">
           <SideBarMenu :closable="false" :pending-shares="pendingShares" />
         </div>
+        <!-- Sidebar end -->
+
         <div class="md:pl-60 flex flex-col flex-row-fluid">
           <Header />
-          <div v-if="shouldWelcome !=='false'" class="flex-column-fluid lg:px-28 py-10 px-10">
-            <div class="border border-black-200 rounded p-5 md:p-8 relative">
-              <div class="flex items-center justify-between">
-                <div class="">
-                  <div class="text-lg font-semibold mb-2">
-                    {{ $t('data.welcome.title') }}
-                  </div>
-                  <div class="text-black-600 mb-5">
-                    {{ $t('data.welcome.text1') }}
-                    <br>
-                    {{ $t('data.welcome.text2') }}
-                    <br>
-                    <span v-html="$t('data.welcome.text3')" />
-                  </div>
-                </div>
-                <div>
-                  <img src="~/assets/images/icons/welcome.svg" alt="">
-                </div>
-                <button
-                  class="btn btn-clean absolute top-2 -right-2"
-                  @click="offWelcome"
-                >
-                  <i class="el-icon-close text-lg" />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div v-if="enterpriseInvitations.length" class="flex-column-fluid lg:px-28 py-10 px-10">
-            <div
-              v-for="invitation in enterpriseInvitations.slice(0, 1)"
-              :key="invitation.id"
-              class="banner-invitation border border-black-200 rounded p-5 md:p-8"
-            >
-              <div class="flex items-center justify-between">
-                <div class="">
-                  <div class="text-lg font-semibold mb-2">
-                    {{ $t('data.enterprise.banner.title', {team: invitation.enterprise && invitation.enterprise.name}) }}
-                  </div>
-                  <div class="text-black-600 mb-5">
-                    {{ $t('data.enterprise.banner.desc', {team: invitation.enterprise && invitation.enterprise.name, owner: invitation.owner}) }}
-                  </div>
-                  <div>
-                    <button
-                      class="btn btn-default"
-                      :disabled="loading"
-                      @click="putInvitation(invitation.id, 'reject')"
-                    >
-                      {{ $t('common.reject') }}
-                    </button>
-                    <button
-                      class="btn btn-primary"
-                      :disabled="loading"
-                      @click="putInvitation(invitation.id, 'confirmed')"
-                    >
-                      {{ $t('common.accept') }}
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <img src="~/assets/images/icons/invitaion.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-if="emergencyAccessInvitations.length" class="flex-column-fluid lg:px-28 py-10 px-10">
-            <div
-              v-for="invitation in emergencyAccessInvitations.slice(0, 1)"
-              :key="invitation.id"
-              class="banner-invitation border border-black-200 rounded p-5 md:p-8"
-            >
-              <div class="flex items-center justify-between">
-                <div class="">
-                  <div class="text-lg font-semibold mb-2">
-                    {{ $t('data.emergency_access.invitation') }}
-                  </div>
-                  <div class="text-black-600 mb-5">
-                    {{ $t('data.emergency_access.invitation_details') }} {{ invitation.full_name }}.<br>{{ $t('data.emergency_access.access_type') }}: {{ invitation.type }}
-                  </div>
-                  <div>
-                    <button
-                      class="btn btn-default"
-                      :disabled="loading2"
-                      @click="deleteEmergencyAccess(invitation)"
-                    >
-                      {{ $t('common.reject') }}
-                    </button>
-                    <button
-                      class="btn btn-primary"
-                      :disabled="loading2"
-                      @click="acceptEmergencyAccessInvitation(invitation.id)"
-                    >
-                      {{ $t('common.accept') }}
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <img src="~/assets/images/icons/invitaion.svg" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
+
+          <!-- Welcome banner -->
+          <WelcomeBanner />
+          <!-- Welcome banner end -->
+
+          <!-- Enterprise invitations -->
+          <EnterpriseInvitations />
+          <!-- Enterprise invitations end -->
+
+          <!-- Emergency access invitations -->
+          <EmergencyAccessInvitations ref="emergencyAccessInvitations" />
+          <!-- Emergency access invitations end -->
+
           <nuxt />
         </div>
       </template>
 
-      <el-dialog
-        :title="$t('common.warning')"
-        :visible="showLocked"
-        width="400px"
-        custom-class="locker-dialog"
-        @close="$store.commit('UPDATE_SHOW_LOCKED', false)"
-      >
-        {{ $t('errors.locked_until_pay') }}
+      <LockedUntilPay />
 
-        <span slot="footer">
-          <el-button
-            type="primary"
-            @click="goToLock"
-          >
-            {{ $t('common.ok') }}
-          </el-button>
-        </span>
-      </el-dialog>
+      <WelcomeToBusiness />
     </client-only>
   </div>
 </template>
@@ -137,6 +37,12 @@
 <script>
 import Header from '../components/Header'
 import SideBarMenu from '../components/SideBarMenu.vue'
+import WelcomeBanner from '../components/notice/WelcomeBanner'
+import EnterpriseInvitations from '../components/notice/EnterpriseInvitations'
+import EmergencyAccessInvitations from '../components/notice/EmergencyAccessInvitations'
+import LockedUntilPay from '../components/notice/LockedUntilPay'
+import WelcomeToBusiness from '../components/notice/WelcomeToBusiness'
+
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
   var { remote } = require('electron')
@@ -146,22 +52,21 @@ const IdleTimeout = 60000 * 10 // 10 minutes
 
 export default {
   components: {
-    Header, SideBarMenu
+    LockedUntilPay,
+    WelcomeBanner,
+    EnterpriseInvitations,
+    EmergencyAccessInvitations,
+    WelcomeToBusiness,
+    Header,
+    SideBarMenu
   },
   middleware: ['LoggedIn', 'UserInfo', 'NotHaveAccountService', 'blockBySource'],
   data () {
     return {
-      externalContent: '',
       locked: true,
-      invitations: [],
-      loading: false,
-      loading2: false,
       lastActivity: null,
       idleTimer: null,
-      isIdle: false,
-      shouldWelcome: 'false',
-      emergencyAccessInvitations: []
-      // pendingShares: 0
+      isIdle: false
     }
   },
   head () {
@@ -169,14 +74,6 @@ export default {
       script: [
         { src: 'https://js.stripe.com/v3/' }
       ]
-    }
-  },
-  computed: {
-    manageableTeams () {
-      return this.teams.filter(e => ['owner', 'admin'].includes(e.role) && e.is_business)
-    },
-    showLocked () {
-      return this.$store.state.showLocked
     }
   },
   watch: {
@@ -194,10 +91,8 @@ export default {
       if (newValue === false) {
         this.$store.dispatch('LoadNotification')
         this.$store.dispatch('LoadTeams')
-        // console.log('unlocked sync')
         this.getSyncData()
-        // this.getInvitations()
-        this.getEmergencyAccessInvitations()
+        this.$refs.emergencyAccessInvitations.getEmergencyAccessInvitations()
         this.reconnectSocket()
         this.getShareInvitations()
         this.getMyShares()
@@ -249,7 +144,6 @@ export default {
   },
   asyncComputed: {
     async locked () {
-      // console.log('locked status: ', await this.$vaultTimeoutService.isLocked())
       return await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
     }
   },
@@ -260,14 +154,6 @@ export default {
     clearInterval(this.intervalGet)
   },
   methods: {
-    openURL (url) {
-      if (remote) {
-        remote.shell.openExternal(url)
-      }
-    },
-    async getInvitations () {
-      this.invitations = await this.$axios.$get('cystack_platform/pm/users/invitations')
-    },
     async getShareInvitations () {
       const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
       this.$store.commit('UPDATE_PENDING_SHARES', shareInvitations.filter(item => item.status === 'invited').length)
@@ -275,59 +161,6 @@ export default {
     },
     async getMyShares () {
       this.$store.dispatch('LoadMyShares')
-    },
-    async getEmergencyAccessInvitations () {
-      this.emergencyAccessInvitations = await this.$axios.$get('cystack_platform/pm/emergency_access/granted')
-      this.emergencyAccessInvitations = this.emergencyAccessInvitations.filter(invitations => invitations.status === 'invited')
-    },
-    async putInvitation (id, status) {
-      try {
-        this.loading = true
-        await this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${id}`, {
-          status
-        })
-        this.notify(this.$t('common.success'), 'success')
-        this.getInvitations()
-      } catch (e) {
-        this.notify(this.$t('common.failed'), 'warning')
-        console.log(e)
-      } finally {
-        this.$store.dispatch('LoadEnterpriseInvitations')
-        this.loading = false
-      }
-    },
-    async acceptEmergencyAccessInvitation (id) {
-      try {
-        this.loading2 = true
-        await this.$axios.$post(`cystack_platform/pm/emergency_access/${id}/accept`)
-        this.getEmergencyAccessInvitations()
-        this.notify(this.$t('data.notifications.accept_invitation_success'), 'success')
-      } catch (e) {
-        this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')
-      } finally {
-        this.loading2 = false
-      }
-    },
-    async deleteEmergencyAccess (emergency_access) {
-      this.$confirm(this.$t('data.notifications.delete_emergency_contact'), emergency_access.full_name || this.$t('common.warning'), {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(async () => {
-        try {
-          this.loading2 = true
-          await this.$axios.$delete(`cystack_platform/pm/emergency_access/${emergency_access.id}`)
-          this.getEmergencyAccessInvitations()
-          this.notify(this.$t('data.notifications.remove_user_success', { user: emergency_access.email }), 'success')
-        } catch (e) {
-          // this.errors = (e.response && e.response.data && e.response.data.details) || {}
-          this.notify(this.$t('data.notifications.remove_user_failed'), 'warning')
-        } finally {
-          this.loading2 = false
-        }
-      }).catch(() => {
-
-      })
     },
     async recordActivity () {
       const now = (new Date()).getTime()
@@ -355,13 +188,6 @@ export default {
     },
     noop () {
     },
-    idleStateChanged () {
-      if (this.isIdle) {
-        this.disconnectSocket()
-      } else {
-        this.reconnectSocket()
-      }
-    },
     init () {
       window.onmousemove = () => this.recordActivity()
       window.onmousedown = () => this.recordActivity()
@@ -369,7 +195,6 @@ export default {
       window.onclick = () => this.recordActivity()
       window.onscroll = () => this.recordActivity()
       window.onkeypress = () => this.recordActivity()
-      this.shouldWelcome = this.checkWelcome()
     },
     reconnectSocket () {
       const token = this.$cookies.get('cs_locker_token')
@@ -383,16 +208,12 @@ export default {
         const data = JSON.parse(message.data)
         switch (data.event) {
         case 'sync':
-          // console.log('socket sync')
           this.getSyncData()
           this.getShareInvitations()
           this.getMyShares()
           break
-        // case 'members':
-        //   this.getInvitations()
-        //   break
         case 'emergency_access':
-          this.getEmergencyAccessInvitations()
+          this.$refs.emergencyAccessInvitations.getEmergencyAccessInvitations()
           break
         default:
           break
@@ -410,19 +231,6 @@ export default {
       window.onclick = () => this.noop()
       window.onscroll = () => this.noop()
       window.onkeypress = () => this.noop()
-    },
-    checkWelcome () {
-      const deviceId = this.$cookies.get('locker_device_id')
-      return localStorage.getItem(`${deviceId}_welcome`)
-    },
-    offWelcome () {
-      const deviceId = this.$cookies.get('locker_device_id')
-      localStorage.setItem(`${deviceId}_welcome`, 'false')
-      this.shouldWelcome = 'false'
-    },
-    goToLock () {
-      this.$store.commit('UPDATE_SHOW_LOCKED', false)
-      this.$router.push(this.localeRoute({ name: 'lock' }))
     }
   }
 }

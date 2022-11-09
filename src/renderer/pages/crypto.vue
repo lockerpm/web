@@ -24,12 +24,18 @@
       </div>
     </section>
 
-    <section class="warning py-10 full-width h-auto bg-[#F5F7F9]">
-      <div class="w-full text-center">
+    <section class="py-10 full-width h-auto bg-[#F5F7F9]">
+      <a href="#warning-section">
         <img
           src="~/assets/images/landing/crypto/CaretDoubleDown.svg"
           class="mx-auto mt-5 mb-6 h-9"
         >
+      </a>
+    </section>
+
+    <span id="warning-section" class="anchor" />
+    <section class="warning py-10 full-width h-auto bg-[#F5F7F9]">
+      <div class="w-full text-center">
         <h2 class="font-semibold landing-font-42 mx-auto mb-10 text-red">
           {{ $t('crypto.warning.title') }}
         </h2>

@@ -10,6 +10,7 @@ import { CipherType } from '../core/enums/cipherType'
 import { SyncResponse } from '../core/models/response/syncResponse'
 import { WALLET_APP_LIST } from '../utils/crypto/applist/index'
 import { CipherView } from '../core/models/view/cipherView'
+import _ from 'lodash'
 
 // Vue.use(Image)
 Vue.mixin({
@@ -30,6 +31,9 @@ Vue.mixin({
     },
     isEnterpriseMember () {
       return this.$store.state.userPw.pwd_user_type === 'enterprise'
+    },
+    isEnterpriseAdminOrOwner () {
+      return this.teams.length && ['primary_admin', 'admin'].includes(this.teams[0].role)
     },
     isPremiumFeaturesAvailable () {
       return this.$store.state.userPw.pwd_user_type === 'enterprise' || this.$store.state.currentPlan.alias !== 'pm_free'
@@ -709,6 +713,19 @@ Vue.mixin({
       }
 
       return callback()
+    },
+    async loadEnterprisePolicies () {
+      if (!this.currentOrg?.id) {
+        return
+      }
+      try {
+        const res = await this.$axios.$get(`/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy`)
+        const enterprisePolicies = {}
+        res.forEach(element => {
+          enterprisePolicies[element.policy_type] = element
+        })
+        this.$store.commit('UPDATE_ENTERPRISE_POLICIES', enterprisePolicies)
+      } catch (e) {}
     }
   }
 })
