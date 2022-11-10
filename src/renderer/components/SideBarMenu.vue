@@ -60,6 +60,7 @@
 
           <nuxt-link
             v-else
+            :id="`sidebar__${item.label}`"
             :key="index"
             :to="localePath({name: item.routeName})"
             class="flex justify-between items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
@@ -103,6 +104,7 @@
           </a>
           <nuxt-link
             v-else
+            :id="`sidebar__${item.label}`"
             :key="index"
             :to="localePath({name: item.routeName, params: item.params})"
             class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"

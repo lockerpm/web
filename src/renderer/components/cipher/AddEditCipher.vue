@@ -2,6 +2,7 @@
   <div>
     <!-- Main dialog -->
     <component
+      id="add-edit-cipher-dialog"
       :is="currentComponent"
       :visible.sync="dialogVisible"
       width="435px"
@@ -9,6 +10,7 @@
       top="5vh"
       custom-class="locker-dialog"
       :close-on-click-modal="false"
+      @close="onClose"
     >
       <!-- Title -->
       <div slot="title">
@@ -948,6 +950,11 @@ export default {
       } else {
         this.cipher.fields.push(v.value)
       }
+    },
+
+    onClose () {
+      this.$tutorial.hide()
+      this.$tutorial.show('view-shares')
     }
   }
 }
