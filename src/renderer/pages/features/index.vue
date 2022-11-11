@@ -91,15 +91,12 @@
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
-        <!-- <nuxt-link
+        <nuxt-link
           :to="localePath($t('features.feature4.btn.link'))"
           class="hover:no-underline text-green font-semibold"
         >
           {{ $t('features.feature4.btn.text') }} <i class="el-icon-right" />
-        </nuxt-link> -->
-        <a href="#locker-business" class="hover:no-underline text-green font-semibold">
-          {{ $t('features.feature4.btn.text') }} <i class="el-icon-right" />
-        </a>
+        </nuxt-link>
       </div>
     </section>
   </div>

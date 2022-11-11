@@ -23,7 +23,7 @@
         <nuxt />
       </div>
     </div>
-    <Footer />
+    <Footer id="footer" />
   </div>
 </template>
 
