@@ -156,7 +156,7 @@
               :key="feature"
               class="flex gap-4 mb-3"
             >
-              <img src="~/assets/images/landing/private-email/check.svg"></img>
+              <img src="~/assets/images/landing/private-email/check.svg">
               <div>{{ feature }}</div>
             </div>
           </div>
