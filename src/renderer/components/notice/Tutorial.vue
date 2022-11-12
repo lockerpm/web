@@ -8,20 +8,20 @@
     >
       <div class="flex flex-col items-center">
         <h1 class="font-medium text-[28px] text-black">
-          Welcome to Locker
+          {{ $t('tutorial.welcome.title') }}
         </h1>
         <img src="~/assets/images/tutorial/welcome.svg" height="256">
         <p class="text-lg text-black text-center mb-8" style="max-width: 350px">
-          We will guide you through Locker’s most essential features in just 3 minutes.
+          {{ $t('tutorial.welcome.desc') }}
         </p>
         <el-button
           type="primary"
           @click="startTutorial"
         >
-          Let's get started
+          {{ $t('tutorial.welcome.start') }}
         </el-button>
         <a class="mt-3" @click.prevent="closeDialog">
-          Skip tutorial
+          {{ $t('tutorial.welcome.skip') }}
         </a>
       </div>
     </el-dialog>
@@ -34,21 +34,18 @@
     >
       <div class="flex flex-col">
         <h1 class="text-[24px] text-black mb-8">
-          6. Auto-save on the go
+          {{ $t('tutorial.extension.title') }}
         </h1>
         <img src="~/assets/images/tutorial/extension.png" style="width: 100%">
         <p class="mt-4">
-          With Locker Extension, you can:
+          {{ $t('tutorial.extension.desc') }}
         </p>
         <ul class="list-disc ml-4">
-          <li>
-            Save accounts and passwords while you browsing
-          </li>
-          <li>
-            Fill login credentials securely with a single click
-          </li>
-          <li>
-            Access all your passwords and other items quickly
+          <li
+            v-for="(item, index) in $t('tutorial.extension.list')"
+            :key="index"
+          >
+            {{ item }}
           </li>
         </ul>
         <div class="flex flex-row justify-between items-center mt-6">
@@ -56,10 +53,10 @@
             type="primary"
             @click="openExtension"
           >
-            Get the extension <i class="el-icon-right" />
+            <span v-html="$t('tutorial.extension.action')" />
           </el-button>
           <a @click.prevent="closeDialog">
-            Close
+            {{ $t('common.close') }}
           </a>
         </div>
       </div>

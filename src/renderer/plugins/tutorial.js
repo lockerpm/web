@@ -13,17 +13,14 @@ const tour = new Shepherd.Tour({
   }
 })
 
-export default async ({ store }, inject) => {
-  const language = store.state.i18n.locale
-  console.log(language)
-
+export default async ({ store, i18n }, inject) => {
   // Add new
   tour.addStep({
-    title: '1. Add a new password',
-    text: 'You can add new items like passwords, credit cards, secret notes, and more. Click on this button',
+    title: () => i18n.t('tutorial.step1.title'),
+    text: () => i18n.t('tutorial.step1.text'),
     buttons: [
       {
-        text: 'Skip',
+        text: () => i18n.t('common.skip'),
         action: () => {
           tour.hide()
           tour.show('view-shares')
@@ -43,11 +40,11 @@ export default async ({ store }, inject) => {
 
   // Add new password
   tour.addStep({
-    title: '1. Add a new password',
-    text: 'Select <strong>Password</strong>',
+    title: () => i18n.t('tutorial.step2.title'),
+    text: () => i18n.t('tutorial.step2.text'),
     buttons: [
       {
-        text: 'Skip',
+        text: () => i18n.t('common.skip'),
         action: () => {
           tour.hide()
           tour.show('view-shares')
@@ -67,11 +64,11 @@ export default async ({ store }, inject) => {
 
   // Edit password and create
   tour.addStep({
-    title: '2. Fill in and click save',
-    text: 'Fill in needed information for your first item then click <strong>Save</strong><br>Fields with * are required',
+    title: () => i18n.t('tutorial.step3.title'),
+    text: () => i18n.t('tutorial.step3.text'),
     buttons: [
       {
-        text: 'Skip',
+        text: () => i18n.t('common.skip'),
         action: () => {
           tour.hide()
           tour.show('view-shares')
@@ -88,11 +85,11 @@ export default async ({ store }, inject) => {
   // View shares
   tour.addStep({
     id: 'view-shares',
-    title: '3. Browse items & security',
-    text: 'These are your sidebar menu. You can browse items faster with categories. You can also check your vault <strong>Security</strong> and <strong>Share</strong> items with other Locker users. Let’s take a look!',
+    title: () => i18n.t('tutorial.step4.title'),
+    text: () => i18n.t('tutorial.step4.text'),
     buttons: [
       {
-        text: 'Skip',
+        text: () => i18n.t('common.skip'),
         action: tour.next,
         secondary: true
       }
@@ -109,11 +106,11 @@ export default async ({ store }, inject) => {
 
   // View settings
   tour.addStep({
-    title: '4. Sidebar menu options',
-    text: 'These are your settings menu. You can see your security status Locker settings here. <br> Continue by clicking <strong>Settings</strong>.',
+    title: () => i18n.t('tutorial.step5.title'),
+    text: () => i18n.t('tutorial.step5.text'),
     buttons: [
       {
-        text: 'Skip',
+        text: () => i18n.t('common.skip'),
         action: tour.next,
         secondary: true
       }
@@ -130,11 +127,11 @@ export default async ({ store }, inject) => {
 
   // View profile
   tour.addStep({
-    title: '5. Profile & options',
-    text: 'Click on your Profile name to see options for your Locker account.<br> You can also find <strong>This tutorial</strong> in the options.',
+    title: () => i18n.t('tutorial.step6.title'),
+    text: () => i18n.t('tutorial.step6.text'),
     buttons: [
       {
-        text: 'Next',
+        text: () => i18n.t('common.next'),
         action: () => {
           tour.cancel()
           store.commit('UPDATE_NOTICE', { showTutorialStep6: true })
