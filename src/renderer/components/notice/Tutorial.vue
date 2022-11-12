@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       :visible="showTutorial"
-      custom-class="locker-dialog max-w-[450px]"
+      custom-class="locker-tutorial-dialog max-w-[450px]"
       width="100%"
       @close="closeDialog"
     >
