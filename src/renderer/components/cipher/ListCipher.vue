@@ -82,20 +82,24 @@
                   v-if="routeName==='vault'"
                   trigger="click"
                 >
-                  <button class="btn btn-outline-primary">
+                  <button id="vault__add-btn" class="btn btn-outline-primary">
                     <i class="el-icon-plus text-lg" />
                     <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
                   </button>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
+                    <div
                       v-for="item in options"
+                      :id="`vault__add-btn__${item.value}`"
                       :key="item.value"
-                      :value="item.value"
-                      class="flex items-center justify-between"
-                      @click.native="confirmDialog(item.value)"
                     >
-                      {{ item.label }}
-                    </el-dropdown-item>
+                      <el-dropdown-item
+                        :value="item.value"
+                        class="flex items-center justify-between"
+                        @click.native="confirmDialog(item.value)"
+                      >
+                        {{ item.label }}
+                      </el-dropdown-item>
+                    </div>
                   </el-dropdown-menu>
                 </el-dropdown>
                 <template v-else>
