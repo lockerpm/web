@@ -953,8 +953,10 @@ export default {
     },
 
     onClose () {
-      this.$tutorial.hide()
-      this.$tutorial.show('view-shares')
+      if (this.$tutorial.isActive()) {
+        this.$tutorial.hide()
+        this.$tutorial.show('view-shares')
+      }
     }
   }
 }

@@ -87,17 +87,19 @@
                     <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
                   </button>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
+                    <div
                       v-for="item in options"
+                      :id="`vault__add-btn__${item.value}`"
                       :key="item.value"
-                      :value="item.value"
-                      class="flex items-center justify-between"
-                      @click.native="confirmDialog(item.value)"
                     >
-                      <span :id="`vault__add-btn__${item.value}`">
+                      <el-dropdown-item
+                        :value="item.value"
+                        class="flex items-center justify-between"
+                        @click.native="confirmDialog(item.value)"
+                      >
                         {{ item.label }}
-                      </span>
-                    </el-dropdown-item>
+                      </el-dropdown-item>
+                    </div>
                   </el-dropdown-menu>
                 </el-dropdown>
                 <template v-else>

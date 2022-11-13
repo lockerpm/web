@@ -28,7 +28,7 @@
 
     <el-dialog
       :visible="showTutorialStep6"
-      custom-class="locker-dialog max-w-[500px]"
+      custom-class="locker-tutorial-dialog max-w-[500px]"
       width="100%"
       @close="closeDialog"
     >
@@ -79,12 +79,15 @@ export default {
       this.$store.commit('UPDATE_NOTICE', { showTutorial: false, showTutorialStep6: false })
     },
     async startTutorial () {
-      await this.$router.push(this.localePath({ name: 'vault' }))
+      const isInVault = this.$route.path === '/vault'
+      if (!isInVault) {
+        await this.$router.push(this.localePath({ name: 'vault' }))
+      }
       this.closeDialog()
       this.$tutorial.cancel()
       setTimeout(() => {
         this.$tutorial.start()
-      }, 1000)
+      }, isInVault ? 0 : 1000)
     },
     openExtension () {
       window.open('https://chrome.google.com/webstore/detail/locker-password-manager/cmajindocfndlkpkjnmjpjoilibjgmgh/related', '_blank')
