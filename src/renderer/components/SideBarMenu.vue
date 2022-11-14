@@ -182,6 +182,11 @@ export default {
           ]
         },
         {
+          label: 'authenticator',
+          icon: 'authenticator',
+          routeName: 'authenticator'
+        },
+        {
           label: 'security',
           icon: 'security',
           routeName: 'tools'
