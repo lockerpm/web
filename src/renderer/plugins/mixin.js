@@ -4,6 +4,7 @@ import extractDomain from 'extract-domain'
 import find from 'lodash/find'
 import numeral from 'numeral'
 import { Avatar } from 'element-ui'
+import _ from 'lodash'
 import { LoginUriView, LoginView } from '../jslib/src/models/view'
 import { CipherRequest } from '../jslib/src/models/request'
 import { CipherType } from '../core/enums/cipherType'
@@ -30,6 +31,9 @@ Vue.mixin({
     },
     isEnterpriseMember () {
       return this.$store.state.userPw.pwd_user_type === 'enterprise'
+    },
+    isEnterpriseAdminOrOwner () {
+      return this.teams.length && ['primary_admin', 'admin'].includes(this.teams[0].role)
     },
     isPremiumFeaturesAvailable () {
       return this.$store.state.userPw.pwd_user_type === 'enterprise' || this.$store.state.currentPlan.alias !== 'pm_free'
@@ -240,11 +244,15 @@ Vue.mixin({
         this.$store.commit('UPDATE_SYNCING', true)
         this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/vault' : this.$store.state.currentPath }))
       } catch (e) {
-        if (e.response && e.response.data && e.response.data.message && e.response.data.code !== '0004') {
-          this.notify(e.response.data.message, 'warning')
-        } else {
+        if (!e.response?.data?.message || e.response?.data?.code === '0004') {
           this.notify(this.$t('errors.invalid_master_password'), 'warning')
+          return
         }
+        if (e.response?.data?.code === '1011' && this.$route.name.startsWith('set-master-password')) {
+          this.$router.push(this.localeRoute({ name: 'lock', query: { joinEnterprise: '1' } }))
+          return
+        }
+        this.notify(e.response.data.message, 'warning')
       }
     },
     async clearKeys () {
@@ -709,6 +717,19 @@ Vue.mixin({
       }
 
       return callback()
+    },
+    async loadEnterprisePolicies () {
+      if (!this.currentOrg?.id) {
+        return
+      }
+      try {
+        const res = await this.$axios.$get(`/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy`)
+        const enterprisePolicies = {}
+        res.forEach(element => {
+          enterprisePolicies[element.policy_type] = element
+        })
+        this.$store.commit('UPDATE_ENTERPRISE_POLICIES', enterprisePolicies)
+      } catch (e) {}
     }
   }
 })

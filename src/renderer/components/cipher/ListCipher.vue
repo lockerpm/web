@@ -27,6 +27,7 @@
       <div class="mb-10">
         <div class="flex justify-between">
           <div class="flex items-center">
+            <!-- Breadcrumb -->
             <div class="text-head-4">
               <template v-if="getRouteBaseName() === 'vault-folders-folderId'">
                 <nuxt-link
@@ -71,29 +72,34 @@
                 </span>
               </template>
             </div>
+            <!-- Breadcrumb end -->
 
             <!-- Add new button -->
-            <template v-if="!['shares', 'trash'].includes(routeName)">
+            <template v-if="canAddItem">
               <div class="mx-6 text-head-4"> | </div>
               <div class="self-center">
                 <el-dropdown
                   v-if="routeName==='vault'"
                   trigger="click"
                 >
-                  <button class="btn btn-outline-primary">
+                  <button id="vault__add-btn" class="btn btn-outline-primary">
                     <i class="el-icon-plus text-lg" />
                     <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
                   </button>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
+                    <div
                       v-for="item in options"
+                      :id="`vault__add-btn__${item.value}`"
                       :key="item.value"
-                      :value="item.value"
-                      class="flex items-center justify-between"
-                      @click.native="confirmDialog(item.value)"
                     >
-                      {{ item.label }}
-                    </el-dropdown-item>
+                      <el-dropdown-item
+                        :value="item.value"
+                        class="flex items-center justify-between"
+                        @click.native="confirmDialog(item.value)"
+                      >
+                        {{ item.label }}
+                      </el-dropdown-item>
+                    </div>
                   </el-dropdown-menu>
                 </el-dropdown>
                 <template v-else>
@@ -149,33 +155,6 @@
       <!-- Overview end -->
 
       <div class="flex items-center justify-end content-end mb-5">
-        <!-- Folder breadcrumb -->
-        <!-- <div class="flex-grow">
-          <el-breadcrumb separator-class="el-icon-arrow-right">
-            <template v-if="getRouteBaseName() === 'vault-folders-folderId'">
-              <el-breadcrumb-item
-                :to="localeRoute({name: 'vault'})"
-              >
-                {{ $t('sidebar.vault') }}
-              </el-breadcrumb-item>
-              <el-breadcrumb-item class="flex items-center">
-                {{ folder.name || collection.name }}
-              </el-breadcrumb-item>
-            </template>
-            <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId'">
-              <el-breadcrumb-item
-                :to="localeRoute({name: 'vault'})"
-              >
-                {{ $t('sidebar.vault') }}
-              </el-breadcrumb-item>
-              <el-breadcrumb-item class="flex items-center">
-                {{ getTeam(teams, $route.params.teamId).name }} - {{ collection.name }}
-              </el-breadcrumb-item>
-            </template>
-          </el-breadcrumb>
-        </div> -->
-        <!-- Folder breadcrumb end -->
-
         <!-- Sort menu -->
         <div v-if="!viewFolder" class="header-actions">
           <div class="flex">
@@ -184,6 +163,14 @@
                 {{ $t('data.ciphers.sort_by') }} <i class="el-icon-caret-bottom el-icon--right" />
               </div>
               <el-dropdown-menu slot="dropdown" class="w-[200px] ">
+                <el-dropdown-item
+                  v-if="isSearching"
+                  class="flex items-center justify-between"
+                  @click.native="changeSort('', '')"
+                >
+                  <span>{{ $t('data.ciphers.most_relevant') }}</span>
+                  <i v-if="orderString==='_'" class="fa fa-check" />
+                </el-dropdown-item>
                 <el-dropdown-item
                   class="flex items-center justify-between"
                   @click.native="changeSort('name', 'asc')"
@@ -412,95 +399,6 @@
       </div>
       <!-- List Folder end -->
 
-      <!-- List Shared Folder -->
-      <!-- <div
-        v-if="getRouteBaseName() === 'vault' && collections && viewFolder"
-        class="mb-10"
-      >
-        <client-only>
-          <template v-for="(value, key) in filteredCollection">
-            <div :key="key" class="mb-5 font-medium">
-              {{ getTeam(teams, key).name }}
-            </div>
-            <div :key="key" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
-              <template v-for="item in value">
-                <div
-                  v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
-                  :key="item.id"
-                  class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                  :class="{'border-primary': selectedFolder.id === item.id}"
-                  :title="`${item.name} (${item.ciphersCount})`"
-                  @click="routerCollection(item)"
-                  @contextmenu.prevent="canManageFolder(teams, item) ? $refs.menuTeam.open($event, item) : null"
-                >
-                  <div class="flex items-center">
-                    <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
-                    <div class="font-semibold truncate select-none">
-                      {{ item.name }}
-                      <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
-                    </div>
-                  </div>
-                </div>
-              </template>
-              <div
-                v-if="searchText.length<=1||(searchText.length>1&&countUnassignedItems(ciphers, key)>0)"
-                class="px-4 py-4 cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                :class="{'border-primary': selectedFolder.id === 'unassigned'}"
-                @click="routerCollection({id: 'unassigned', organizationId: key})"
-              >
-                <div class="flex items-center">
-                  <img src="~/assets/images/icons/folderSolid.svg" alt="" class="select-none mr-2">
-                  <div class="font-semibold truncate select-none">
-                    {{ $t('data.ciphers.unassigned_folder') }}
-                    <div class="text-black-500">{{ countUnassignedItems(ciphers, key) }} {{ countUnassignedItems(ciphers, key)>1?'items':'item' }}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="px-4 py-4 flex items-center cursor-pointer rounded border border-dashed border-[#E6E6E8] hover:border-primary justify-center font-semibold" @click="addEditTeamFolder">
-                <i class="el-icon-circle-plus-outline text-lg" />
-                <div class="ml-3 break-all">New Team folder</div>
-              </div>
-            </div>
-          </template>
-          <component
-            :is="context"
-            ref="menuTeam"
-            class="el-dropdown-menu"
-            @open="openContextTeamFolder"
-          >
-            <template #default>
-              <li
-                class="el-dropdown-menu__item w-[200px]"
-                @click.prevent="addEditTeamFolder(selectedFolder, false)"
-              >
-                {{ $t('common.rename') }}
-              </li>
-              <li
-                v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
-                class="el-dropdown-menu__item w-[200px]"
-                @click.prevent="putTeamFolderUsers(selectedFolder)"
-              >
-                {{ $t('data.groups.user_access') }}
-              </li>
-              <li
-                v-if="isBiz(getTeam(teams, selectedFolder.organizationId))"
-                class="el-dropdown-menu__item w-[200px]"
-                @click.prevent="putTeamFolderGroups(selectedFolder)"
-              >
-                {{ $t('data.folders.groups_access') }}
-              </li>
-              <li
-                class="el-dropdown-menu__item"
-                @click.prevent="deleteTeamFolder(selectedFolder)"
-              >
-                <span class="text-danger">{{ $t('common.delete') }}</span>
-              </li>
-            </template>
-          </component>
-        </client-only>
-      </div> -->
-      <!-- List Shared folders end -->
-
       <!-- List Ciphers -->
       <client-only v-if="!viewFolder">
         <RecycleScroller
@@ -647,7 +545,7 @@
 
                 <!-- Copy -->
                 <el-dropdown
-                  v-if="!item.isDeleted && [CipherType.Login, CipherType.SecureNote, CipherType.CryptoAccount, CipherType.CryptoWallet, CipherType.MasterPassword].includes(item.type)"
+                  v-if="!item.isDeleted && [CipherType.Login, CipherType.SecureNote, CipherType.CryptoWallet, CipherType.MasterPassword].includes(item.type)"
                   trigger="click"
                   :hide-on-click="false"
                 >
@@ -936,7 +834,6 @@ export default {
       ],
       dataRendered: [],
       renderIndex: 0,
-      // options: ['Login', 'SecureNote', 'Card', 'Identity', 'Folder'],
       selectedType: 'Login',
       viewFolder: false,
       showLogo: this.$cookies.get('show-logo') || false,
@@ -988,9 +885,6 @@ export default {
         return find(this.collections, e => e.id === this.$route.params.folderId) || { name: 'Unassigned Folder' }
       }
       return {}
-    },
-    filteredCollection () {
-      return groupBy(this.collections, 'organizationId')
     },
     orderString () {
       return `${this.orderField}_${this.orderDirection}`
@@ -1048,33 +942,46 @@ export default {
     },
     canCreateTeamFolder () {
       return this.teams.some(e => ['owner', 'admin'].includes(e.role))
+    },
+    writeableCollections () {
+      if (!this.collections || !this.organizations) {
+        return []
+      }
+      return this.collections.filter(item => {
+        const _type = this.getTeam(this.organizations, item.organizationId).type
+        return _type === 0
+      })
+    },
+    canAddItem () {
+      let res = !['shares', 'trash'].includes(this.routeName)
+      const collection = find(this.collections, e => e.id === this.$route.params.folderId)
+      if (collection) {
+        res &= this.writeableCollections.some(c => c.id === collection.id)
+      }
+      return res
+    },
+    isSearching () {
+      return this.searchText && this.searchText.trim().length > 0
     }
   },
-  // updated () {
-  //   this.loading = false
-  // },
   watch: {
     ciphers () {
       if (this.ciphers) {
         this.loading = false
       }
+    },
+    isSearching (newVal) {
+      if (newVal) {
+        this.changeSort('', '')
+      } else {
+        this.changeSort('revisionDate', 'desc')
+      }
     }
   },
   async mounted () {
     this.context = 'VueContext'
-    // window.onscroll = async () => {
-    //   const bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight + 500 >= document.documentElement.scrollHeight
-
-    //   if (bottomOfWindow) {
-    //     if (this.renderIndex <= this.ciphers.length) {
-    //       this.dataRendered = this.dataRendered.concat(this.ciphers.slice(this.renderIndex, this.renderIndex + 50))
-    //     }
-    //     this.renderIndex += 50
-    //   }
-    // }
   },
   asyncComputed: {
-
     ciphers: {
       async get () {
         // this.loading = true
@@ -1092,22 +999,10 @@ export default {
           CipherType.SecureNote,
           CipherType.Card,
           CipherType.Identity,
-          CipherType.CryptoAccount,
           CipherType.CryptoWallet,
           CipherType.MasterPassword
         ].includes(cipher.type))
         result.map(item => {
-          // if (item.organizationId) {
-          //   item.isShared = this.isShared(item.organizationId)
-          // }
-          if (item.type === CipherType.CryptoAccount) {
-            try {
-              item.cryptoAccount = JSON.parse(item.notes)
-              // item.notes = item.cryptoAccount ? item.cryptoAccount.notes : ''
-            } catch (error) {
-              console.log(error)
-            }
-          }
           if (item.type === CipherType.CryptoWallet) {
             try {
               item.cryptoWallet = JSON.parse(item.notes)
@@ -1121,7 +1016,9 @@ export default {
             checked: false
           }
         })
-        result = orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+        if (this.orderField && this.orderDirection) {
+          result = orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+        }
         // this.dataRendered = result.slice(0, 50)
         // this.renderIndex = 50
         return result
@@ -1153,45 +1050,6 @@ export default {
       },
       watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
     },
-    // weakPasswordScores: {
-    //   async get () {
-    //     const weakPasswordScores = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 }
-    //     if (this.getRouteBaseName() === 'vault') {
-    //       const allCiphers = await this.$cipherService.getAllDecrypted()
-    //       // const allCiphers = this.allCiphers || []
-    //       const isUserNameNotEmpty = c => {
-    //         return c.login.username != null && c.login.username.trim() !== ''
-    //       }
-    //       allCiphers.forEach(c => {
-    //         if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted || c.organizationId) {
-    //           return
-    //         }
-    //         const hasUserName = isUserNameNotEmpty(c)
-    //         let userInput = []
-    //         if (hasUserName) {
-    //           const atPosition = c.login.username.indexOf('@')
-    //           if (atPosition > -1) {
-    //             userInput = userInput.concat(
-    //               c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
-    //               .filter(i => i.length >= 3)
-    //           } else {
-    //             userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
-    //               .filter(i => i.length >= 3)
-    //           }
-    //         }
-    //         const result = this.$passwordGenerationService.passwordStrength(c.login.password,
-    //           userInput.length > 0 ? userInput : null)
-    //         weakPasswordScores[result.score]++
-    //       })
-    //       await this.$axios.$put('/cystack_platform/pm/users/me', {
-    //         scores: weakPasswordScores
-    //       })
-    //     }
-    //     return weakPasswordScores
-    //   },
-    //   // watch: ['allCiphers']
-    //   watch: ['$store.state.syncedCiphersToggle']
-    // }
     collections: {
       async get () {
         if (this.$store.state.syncing) {
@@ -1339,9 +1197,6 @@ export default {
     canDeleteTeamFolder (team) {
       return ['owner', 'admin'].includes(team.role) && !team.locked
     },
-    isBiz (team) {
-      return team.is_business
-    },
     confirmDialog (type) {
       if (type === 'Folder') {
         this.addEditFolder()
@@ -1369,13 +1224,6 @@ export default {
           this.multipleSelection = []
         })
       }
-    },
-    isShared (organizationId) {
-      const share = this.myShares.find(s => s.id === organizationId)
-      if (share) {
-        return share.members.length > 0
-      }
-      return !!organizationId
     },
     async stopSharing (cipher) {
       try {

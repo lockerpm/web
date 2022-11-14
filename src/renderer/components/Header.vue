@@ -127,7 +127,7 @@
       <!-- Dropdown menu -->
       <el-dropdown trigger="click">
         <!-- User info -->
-        <div class="flex items-center">
+        <div id="nav__profile" class="flex items-center">
           <el-avatar
             :size="35"
             :src="currentUser.avatar"
@@ -170,6 +170,7 @@
           >
             {{ $t('data.profile_menu.account_settings') }}
           </el-dropdown-item>
+
           <el-dropdown-item
             class="text-warning"
             icon="far fa-life-ring"
@@ -182,11 +183,7 @@
               {{ $t('data.profile_menu.support_center') }}
             </a>
           </el-dropdown-item>
-          <!-- <el-dropdown-item class="text-warning" icon="far fa-flag">
-            <a class="hover:no-underline text-current hover:text-current" :href="locale==='vi'?'https://support.locker.io/vi':'https://support.locker.io'" target="_blank">
-              {{ $t('data.profile_menu.tour') }}
-            </a>
-          </el-dropdown-item> -->
+
           <el-dropdown-item
             class="text-warning"
             icon="far fa-comment"
@@ -199,12 +196,22 @@
               {{ $t('data.profile_menu.feedback') }}
             </a>
           </el-dropdown-item>
+
+          <el-dropdown-item
+            class="text-warning"
+            icon="far fa-flag"
+            @click.native="startTutorial"
+          >
+            {{ $t('data.profile_menu.tour') }}
+          </el-dropdown-item>
+
           <el-dropdown-item
             icon="fas fa-lock"
             @click.native="lock"
           >
             {{ $t('data.profile_menu.lock') }}
           </el-dropdown-item>
+
           <el-dropdown-item
             icon="fas fa-sign-out-alt"
             @click.native="logout"
@@ -346,6 +353,9 @@ export default {
         }).catch(() => {
         // error callback
       })
+    },
+    startTutorial () {
+      this.$store.commit('UPDATE_NOTICE', { showTutorial: true })
     }
   }
 }

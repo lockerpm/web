@@ -19,7 +19,15 @@
           - {{ item }}
         </div>
       </div>
-      <div slot="footer" class="dialog-footer flex justify-center" />
+      <div slot="footer" class="dialog-footer flex justify-center">
+        <el-button
+          type="primary"
+          class="w-full"
+          @click="confirmPw"
+        >
+          {{ $t('data.password_policies.confirm_violation') }}
+        </el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -36,6 +44,10 @@ export default {
     openDialog (violations = []) {
       this.dialogVisible = true
       this.violations = { ...violations }
+    },
+    confirmPw () {
+      this.dialogVisible = false
+      this.$emit('confirm')
     }
   }
 }

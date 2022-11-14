@@ -60,6 +60,7 @@
 
           <nuxt-link
             v-else
+            :id="`sidebar__${item.label}`"
             :key="index"
             :to="localePath({name: item.routeName})"
             class="flex justify-between items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
@@ -96,14 +97,14 @@
             :href="item.externalLink"
             target="_blank"
           >
-            <div class="mr-2 w-[22px] h-[22px] flex items-center relative justify-center">
+            <div class="mr-2 w-[22px] h-[22px] flex items-center justify-center">
               <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
-              <div class="w-2 h-2 rounded-full bg-danger-600 absolute top-0 right-0" />
             </div>
             <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
           </a>
           <nuxt-link
             v-else
+            :id="`sidebar__${item.label}`"
             :key="index"
             :to="localePath({name: item.routeName, params: item.params})"
             class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
@@ -220,19 +221,11 @@ export default {
             icon: 'upgrade'
           }]
           : [],
-        ...this.teams.length && ['primary_admin', 'admin'].includes(this.teams[0].role)
+        ...this.isEnterpriseAdminOrOwner
           ? [{
             label: 'enterprise_dashboard',
             externalLink: process.env.lockerEnterprise,
             icon: 'dashboard'
-          }]
-          : [],
-        ...this.manageableTeams && this.manageableTeams.length
-          ? [{
-            label: 'dashboard',
-            routeName: 'admin-teamId',
-            icon: 'dashboard',
-            params: { teamId: this.manageableTeams[0].id }
           }]
           : [],
         {
