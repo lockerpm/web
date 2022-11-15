@@ -51,7 +51,7 @@ export default {
   },
   computed: {
     shouldRenderBtn () {
-      return this.type !== 'Trash'
+      return !['Trash'].includes(this.type)
     },
     shouldRenderBtnImport () {
       return this.type === 'Login' || this.type === 'Vault'

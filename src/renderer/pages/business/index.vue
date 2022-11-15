@@ -26,6 +26,7 @@
               <div>
                 <a
                   class="landing-btn2 w-full sm:w-auto sm:ml-4"
+                  style="padding: 16px 32px"
                   :href="`${enterpriseUrl}/purchase`"
                 >
                   {{ $t('business.welcome.purchase_now') }}

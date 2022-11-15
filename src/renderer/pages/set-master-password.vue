@@ -125,6 +125,8 @@
 import _ from 'lodash'
 import PasswordStrengthBar from '../components/password/PasswordStrengthBar'
 import PasswordViolationDialog from '../components/cipher/PasswordViolationDialog'
+import { MIN_MASTER_PW_LEN } from '../constants'
+
 export default {
   components: { PasswordStrengthBar, PasswordViolationDialog },
   layout: 'blank',
@@ -196,7 +198,7 @@ export default {
     // Submit master pw
     async setMasterPass () {
       await this.clearKeys()
-      if (this.masterPassword.length < 8) {
+      if (this.masterPassword.length < MIN_MASTER_PW_LEN) {
         this.notify(this.$t('data.notifications.invalid_master_password'), 'error')
         return
       }
