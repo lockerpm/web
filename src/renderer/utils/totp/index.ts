@@ -12,15 +12,13 @@ export interface OTPData {
 
 export const getTOTP = (otp: OTPData) => {
   try {
-    console.log(otp)
     return totp(otp.secret, {
       algorithm: otp.algorithm || 'SHA-1',
       period: otp.period || 30,
       digits: otp.digits || 6
     })
   } catch (e) {
-    console.log(e)
-    return 123
+    return ''
   }
 }
 
