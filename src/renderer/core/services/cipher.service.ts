@@ -13,7 +13,6 @@ import { EncString } from '../../jslib/src/models/domain/encString'
 import { Field } from '../../jslib/src/models/domain/field'
 import { Identity } from '../../jslib/src/models/domain/identity'
 import { Login } from '../../jslib/src/models/domain/login'
-// import { CryptoAccount } from "~/models/domain/cryptoAccount";
 import { LoginUri } from '../../jslib/src/models/domain/loginUri'
 import { Password } from '../../jslib/src/models/domain/password'
 import { SecureNote } from '../../jslib/src/models/domain/secureNote'

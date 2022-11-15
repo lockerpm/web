@@ -1,149 +1,107 @@
 <template>
-  <div class="flex flex-grow flex-col items-center">
+  <div class="flex flex-grow flex-col items-center mb-8">
+    <!-- Logo -->
     <div class="mt-[5.625rem] mb-5">
       <img src="~assets/images/logo/logo_black.svg" alt="" class="h-[36px]">
     </div>
-    <div class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center">
-      <template v-if="step===1">
-        <div class="text-head-4 font-semibold mb-2.5">
-          {{ $t('master_password.enter_password_title') }}
+    <!-- Logo end -->
+
+    <!-- Send hint -->
+    <SendHint
+      v-if="showSendHint"
+      :go-back="() => toggleSendHint(false)"
+    />
+    <!-- Send hint end -->
+
+    <!-- Join enterprise -->
+    <JoinEnterprise
+      v-else-if="showJoinEnterprise"
+      :continue-login="checkInvitation"
+    />
+    <!-- Join enterprise end -->
+
+    <!-- Basic lock form -->
+    <div
+      v-else
+      class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center"
+    >
+      <div class="text-head-4 font-semibold mb-2.5">
+        {{ $t('master_password.enter_password_title') }}
+      </div>
+      <div class="text-base mb-4">
+        {{ $t('master_password.enter_password_desc') }}
+      </div>
+      <div class="inline-block mb-8 select-none">
+        <div class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto">
+          <client-only>
+            <img :src="currentUser.avatar" alt="" class="w-[28px] h-[28px] rounded-full mr-2">
+          </client-only>
+          <div class="mr-2">{{ currentUser.email }}</div>
         </div>
-        <div class="text-base mb-4">
-          {{ $t('master_password.enter_password_desc') }}
-        </div>
-        <div class="inline-block mb-8 select-none">
-          <div class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto">
-            <client-only>
-              <img :src="currentUser.avatar" alt="" class="w-[28px] h-[28px] rounded-full mr-2">
-            </client-only>
-            <div class="mr-2">{{ currentUser.email }}</div>
-          </div>
-        </div>
-        <form class="mb-8" @submit.prevent="checkInvitation">
-          <div class="form-group !mb-4">
-            <label for="" class="text-left">
-              {{ $t('master_password.enter_password') }}
-            </label>
-            <div class="input-group mb-1.5">
-              <input
-                v-model="masterPassword"
-                :type="showPassword ? 'text' : 'password'"
-                class="form-control"
-                :class="[errors ? 'is-invalid' :'']"
-                :name="randomString()"
-                autocomplete="new-password"
+      </div>
+      <form class="mb-8" @submit.prevent="checkInvitation">
+        <div class="form-group !mb-4">
+          <label for="" class="text-left">
+            {{ $t('master_password.enter_password') }}
+          </label>
+          <div class="input-group mb-1.5">
+            <input
+              v-model="masterPassword"
+              :type="showPassword ? 'text' : 'password'"
+              class="form-control"
+              :class="[errors ? 'is-invalid' :'']"
+              :name="randomString()"
+              autocomplete="new-password"
+            >
+            <div class="input-group-append !bg-white">
+              <button
+                class="btn btn-icon"
+                type="button"
+                tabindex="-1"
+                @click="showPassword = !showPassword"
               >
-              <div class="input-group-append !bg-white">
-                <button
-                  class="btn btn-icon"
-                  type="button"
-                  tabindex="-1"
-                  @click="showPassword = !showPassword"
-                >
-                  <i
-                    class="far"
-                    :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
-                  />
-                </button>
-              </div>
-            </div>
-            <div class="invalid-feedback">{{ $t('errors.invalid_password') }}</div>
-            <div class="text-primary text-left cursor-pointer" @click="step = 2">
-              {{ $t('master_password.get_hint') }}
+                <i
+                  class="far"
+                  :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+                />
+              </button>
             </div>
           </div>
-        </form>
-        <div class="form-group">
-          <div class="grid lg:grid-cols-2 grid-cols-1 gap-2">
-            <button
-              class="btn btn-primary w-full"
-              :disabled="loading"
-              @click="checkInvitation"
-            >
-              {{ $t('master_password.unlock') }}
-            </button>
-            <button
-              class="btn btn-default w-full"
-              :disabled="loading"
-              @click="logout"
-            >
-              {{ $t('common.logout') }}
-            </button>
+          <div class="invalid-feedback">{{ $t('errors.invalid_password') }}</div>
+          <div class="text-primary text-left cursor-pointer" @click="toggleSendHint(true)">
+            {{ $t('master_password.get_hint') }}
           </div>
         </div>
-      </template>
-      <template v-if="step===2">
-        <div class="text-head-4 font-semibold mb-2.5">
-          {{ $t('master_password.master_password_hint') }}
-        </div>
-        <div class="text-base mb-4">
-          {{ $t('master_password.master_password_hint_desc') }}
-        </div>
-        <div class="inline-block mb-8 select-none">
-          <div class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto">
-            <client-only>
-              <img :src="currentUser.avatar" alt="" class="w-[28px] h-[28px] rounded-full mr-2">
-            </client-only>
-            <div class="mr-2">{{ currentUser.email }}</div>
-          </div>
-        </div>
-        <div class="form-group">
+      </form>
+      <div class="form-group">
+        <div class="grid lg:grid-cols-2 grid-cols-1 gap-2">
           <button
             class="btn btn-primary w-full"
-            :disabled="loadingSend"
-            @click="sendHint"
+            :disabled="loading"
+            @click="checkInvitation"
           >
-            {{ $t('master_password.send') }}
+            {{ $t('master_password.unlock') }}
+          </button>
+          <button
+            class="btn btn-default w-full"
+            :disabled="loading"
+            @click="logout"
+          >
+            {{ $t('common.logout') }}
           </button>
         </div>
-      </template>
-      <template v-if="step===3">
-        <img src="~/assets/images/icons/icon_settings.svg" alt="" class="mx-auto mb-4">
-        <div class="text-head-4 font-semibold mb-2.5">
-          {{ $t('master_password.master_password_hint') }}
-        </div>
-        <div class="text-base mb-4">
-          {{ $t('master_password.hint_success') }}
-        </div>
-        <button class="btn btn-clean !text-primary !pb-0" @click="step = 1">
-          <i class="fa fa-chevron-left" />&nbsp;&nbsp;&nbsp;{{ $t('master_password.back_login') }}
-        </button>
-      </template>
-    </div>
-    <div v-if="step === 2" class="mt-1">
-      <button class="btn btn-clean !text-primary" @click="step = 1">
-        <i class="fa fa-chevron-left" />&nbsp;&nbsp;&nbsp;{{ $t('master_password.back_login') }}
-      </button>
-    </div>
-    <el-dialog
-      :visible.sync="dialogEnterpriseVisible"
-      width="400px"
-      top="15vh"
-      custom-class="enterprise-dialog"
-      :close-on-click-modal="false"
-      :show-close="false"
-      center
-    >
-      <div slot="title">
-        <img class="h-8 mx-auto" src="~/assets/images/logo/locker_logo.png">
       </div>
-      <div class="text-center">
-        <div class="text-head-5 text-black font-bold">
-          {{ $t('data.enterprise.popup.title', {owner: enterpriseInvitation.owner}) }}
-        </div>
-        <div class="text-head-6 text-black font-semibold mt-3">
-          {{ enterpriseInvitation.status==='invited' ? $t('data.enterprise.popup.desc', {team: enterpriseInvitation.enterprise?enterpriseInvitation.enterprise.name:'', owner: enterpriseInvitation.owner}) : $t('data.enterprise.popup.desc2', {team: enterpriseInvitation.enterprise?enterpriseInvitation.enterprise.name: ''}) }}
-        </div>
-        <button v-if="enterpriseInvitation.status==='invited'" class="btn btn-primary mt-4 w-[75%]" @click="joinEnterprise">
-          {{ enterpriseInvitation.domain.auto_approve ? $t('data.enterprise.join_now') : $t('data.enterprise.request_to_join') }}
-        </button>
-      </div>
-    </el-dialog>
+    </div>
+    <!-- Basic lock form end -->
   </div>
 </template>
 
 <script>
+import SendHint from '../components/pages/lock/SendHint'
+import JoinEnterprise from '../components/pages/lock/JoinEnterprise'
+
 export default {
+  components: { JoinEnterprise, SendHint },
   layout: 'blank',
   middleware: ['NotHaveAccountService', 'blockBySource'],
   data () {
@@ -153,11 +111,8 @@ export default {
       loading: false,
       errors: false,
       showPassword: false,
-      showHint: false,
-      step: 1,
-      loadingSend: false,
-      dialogEnterpriseVisible: false,
-      enterpriseInvitation: {}
+      showSendHint: false,
+      showJoinEnterprise: false
     }
   },
   mounted () {
@@ -166,9 +121,16 @@ export default {
       this.$store.commit('UPDATE_LOGIN_EXTENSION', false)
     }
     this.$store.dispatch('LoadEnterpriseInvitations')
+    if (this.$route.query?.joinEnterprise === '1') {
+      this.showJoinEnterprise = true
+    }
   },
   methods: {
+    // Unlock vault
     async setMasterPass () {
+      if (!this.masterPassword) {
+        return
+      }
       this.loading = true
       this.errors = false
       try {
@@ -188,38 +150,21 @@ export default {
         }
       }
     },
-    sendHint () {
-      this.loadingSend = true
-      this.$axios.$post('cystack_platform/pm/users/password_hint', {
-        email: this.currentUser.email
-      })
-        .then(res => {
-          this.loadingSend = false
-          this.step = 3
-        })
+
+    toggleSendHint (value) {
+      this.showSendHint = value
     },
-    joinEnterprise () {
-      this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${this.enterpriseInvitation.id}`, { status: 'confirmed' })
-        .then(res => {
-          this.notify(this.$t('common.success'), 'success')
-        }).catch(() => {
-          this.notify(this.$t('common.failed'), 'warning')
-        }).finally(() => {
-          this.$store.dispatch('LoadEnterpriseInvitations')
-          this.dialogEnterpriseVisible = false
-          setTimeout(() => {
-            this.checkInvitation()
-          }, 300)
-        })
-    },
+
+    // Check enterprise invitation
     checkInvitation () {
       if (this.enterpriseInvitations.length && this.enterpriseInvitations[0].domain != null) {
-        this.dialogEnterpriseVisible = true
-        this.enterpriseInvitation = this.enterpriseInvitations[0]
+        this.showJoinEnterprise = true
       } else {
+        this.showJoinEnterprise = false
         this.setMasterPass()
       }
     }
+
     // TODO change masterpass if have account
   }
 }

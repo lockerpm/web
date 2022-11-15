@@ -254,6 +254,15 @@
             </el-collapse-item>
             <!-- Passwordless login end -->
           </el-collapse>
+
+          <div v-if="isEmpty && !loading" class="setting-wrapper">
+            <div class="px-4 py-8 flex items-center flex flex-col">
+              <img :src="require('~/assets/images/pages/policies/empty-img.svg')" height="61">
+              <p class="mt-4">
+                {{ $t('data.policies.no_active_policies') }}
+              </p>
+            </div>
+          </div>
         </div>
       </LazyHydrate>
 
@@ -286,16 +295,22 @@ export default {
 
   computed: {
     isPwPolicyEnabled () {
-      return this.enterprisePolicies.password_requirement && this.enterprisePolicies.password_requirement.enabled
+      return this.enterprisePolicies.password_requirement?.enabled
     },
     isMasterPwPolicyEnabled () {
-      return this.enterprisePolicies.master_password_requirement && this.enterprisePolicies.master_password_requirement.enabled
+      return this.enterprisePolicies.master_password_requirement?.enabled
     },
     isBlockFailedLoginEnabled () {
-      return this.enterprisePolicies.block_failed_login && this.enterprisePolicies.block_failed_login.enabled
+      return this.enterprisePolicies.block_failed_login?.enabled
     },
     isPasswordlessEnabled () {
-      return this.enterprisePolicies.passwordless && this.enterprisePolicies.passwordless.enabled
+      return this.enterprisePolicies.passwordless?.enabled
+    },
+    isEmpty () {
+      return !this.isPasswordlessEnabled &&
+        !this.isMasterPwPolicyEnabled &&
+        !this.isBlockFailedLoginEnabled &&
+        !this.isPasswordlessEnabled
     }
   },
 
