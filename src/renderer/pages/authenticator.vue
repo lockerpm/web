@@ -239,11 +239,9 @@
     />
     <!-- No cipher end -->
 
-    <AddEditCipher
-      ref="addEditCipherDialog"
-      type="TOTP"
+    <AddEditOTP
+      ref="addEditOTPDialog"
       @reset-selection="multipleSelection = []"
-      @trashed-cipher="multipleSelection = []"
     />
   </div>
 </template>
@@ -254,10 +252,10 @@ import cloneDeep from 'lodash/cloneDeep'
 import NoCipher from '../components/cipher/NoCipher'
 import { CipherType } from '../core/enums/cipherType.ts'
 import { parseOTPUri } from '../utils/totp/index.ts'
-import AddEditCipher from '../components/cipher/AddEditCipher'
+import AddEditOTP from '../components/cipher/AddEditOTP'
 
 export default {
-  components: { AddEditCipher, NoCipher },
+  components: { AddEditOTP, NoCipher },
 
   data () {
     return {
@@ -341,7 +339,7 @@ export default {
 
   methods: {
     addEdit (cipher) {
-      this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
+      this.$refs.addEditOTPDialog.openDialog(cloneDeep(cipher))
     },
     handleAddButton () {
       window.open('/download', '_blank')
@@ -361,7 +359,7 @@ export default {
       }
     },
     deleteCiphers (ids) {
-      this.$refs.addEditCipherDialog.deleteCiphers(ids)
+      this.$refs.addEditOTPDialog.deleteCiphers(ids)
     },
     changeSort (orderField, orderDirection) {
       this.orderField = orderField
