@@ -138,38 +138,19 @@
                 <!-- Checkbox -->
                 <div class="mr-4">
                   <el-checkbox
-                    :value="item.checked?true:false"
-                    :class="item.checked?'!visible':''"
+                    :value="!!item.checked"
+                    :class="item.checked ? '!visible' : ''"
                     @change="changeSelection(item)"
                   />
                 </div>
                 <!-- Checkbox end -->
 
-                <!-- Icon -->
-                <div
-                  class="text-[34px] mr-3 flex-shrink-0"
-                >
-                  <img :src="require(`~/assets/images/icons/icon_Authenticator.svg`)" class="rounded mx-auto" style="height: 34px">
-                </div>
-                <!-- Icon end -->
-
-                <!-- Info block -->
-                <div class="flex flex-col overflow-hidden">
-                  <!-- Name -->
-                  <p
-                    class="text-black font-semibold truncate flex items-center"
-                  >
-                    <span class="overflow-hidden overflow-ellipsis">{{ item.name }}</span>
-                  </p>
-                  <!-- Name end -->
-
-                  <!-- Subtitle -->
-                  <div class="overflow-hidden overflow-ellipsis">
-                    {{ item.otpData.account }}
-                  </div>
-                  <!-- Subtitle end -->
-                </div>
-                <!-- Info block end -->
+                <!-- Info -->
+                <OTPInfoBlock
+                  :name="item.name"
+                  :otp-data="item.otpData"
+                />
+                <!-- Info end -->
               </div>
             </div>
 
@@ -192,7 +173,7 @@
                   </button>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
-                      v-clipboard:copy="item.otpData.account"
+                      v-clipboard:copy="getOtp(item.otpData)"
                       v-clipboard:success="clipboardSuccessHandler"
                     >
                       {{ $t('common.copy') }} OTP
@@ -251,11 +232,12 @@ import orderBy from 'lodash/orderBy'
 import cloneDeep from 'lodash/cloneDeep'
 import NoCipher from '../components/cipher/NoCipher'
 import { CipherType } from '../core/enums/cipherType.ts'
-import { parseOTPUri } from '../utils/totp/index.ts'
+import { parseOTPUri, getTOTP } from '../utils/totp/index.ts'
 import AddEditOTP from '../components/cipher/AddEditOTP'
+import OTPInfoBlock from '../components/cipher/OTPInfoBlock'
 
 export default {
-  components: { AddEditOTP, NoCipher },
+  components: { OTPInfoBlock, AddEditOTP, NoCipher },
 
   data () {
     return {
@@ -378,6 +360,9 @@ export default {
           this.multipleSelection = []
         })
       }
+    },
+    getOtp (otpData) {
+      return getTOTP(otpData)
     }
   }
 }
