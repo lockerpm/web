@@ -9,17 +9,20 @@
     }"
   >
     <label>{{ label }} <span v-if="required" class="text-danger">*</span></label>
+
     <el-select
       v-model="value"
       :placeholder="placeholder"
       class="cs-select w-full"
-      :disabled="disabled"
+      :disabled="disabled || !canChangeFolder"
       @focus="handleFocus"
       @blur="focusing = false"
       @change="handleChange"
     >
+      <!-- Existing folders -->
+      <!-- Self folder + writeable collections + (protected collections to display its name but disabled) -->
       <el-option
-        v-for="item in options"
+        v-for="item in (canChangeFolder ? options : [...options, ...protectedOptions])"
         :key="item.id"
         :label="item.name || $t('data.folders.no_folder')"
         :value="item.id"
@@ -30,13 +33,19 @@
           <div class="text-black">{{ item.name || $t('data.folders.no_folder') }}</div>
         </div>
       </el-option>
+      <!-- Existing folders end -->
+
+      <!-- New folder -->
       <el-option value="" @click.native="$emit('addFolder')">
         <div class="flex items-center">
           <img src="~/assets/images/icons/folderAdd.svg" alt="" class="mr-2.5">
           <div class="text-black">{{ $t('data.folders.add_folder') }}</div>
         </div>
       </el-option>
+      <!-- New folder end -->
     </el-select>
+
+    <!-- Arrow btn -->
     <button v-if="focusing || initialValue" class="btn btn-icon btn-select !py-0">
       <svg
         width="8px"
@@ -56,6 +65,8 @@
         />
       </svg>
     </button>
+    <!-- Arrow btn end -->
+
     <div v-if="errorText" class="cs-helper-text">
       {{ errorText }}
     </div>
@@ -94,6 +105,12 @@ export default {
       default () {
         return []
       }
+    },
+    protectedOptions: {
+      type: Array,
+      default () {
+        return []
+      }
     }
   },
   data () {
@@ -107,6 +124,9 @@ export default {
   computed: {
     shouldShowPlaceHolder () {
       return this.placeholder && this.focusing && !this.value
+    },
+    canChangeFolder () {
+      return !this.protectedOptions.some(f => f.id === this.initialValue)
     }
   },
   watch: {
@@ -201,5 +221,10 @@ export default {
     line-height: 19px;
     user-select: none;
   }
+}
+</style>
+<style>
+.cs-select .el-input.is-disabled .el-input__inner {
+  color: #161922
 }
 </style>
