@@ -375,8 +375,11 @@ import Vnodes from '../../components/Vnodes'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { Utils } from '../../jslib/src/misc/utils.ts'
 import PremiumDialog from '../../components/upgrade/PremiumDialog'
+
+CipherType.MasterPassword = 8
 CipherType.CryptoBackup = 7
 CipherType[7] = 'Crypto Backup'
+
 export default {
   components: {
     AddEditCipher,
@@ -560,9 +563,12 @@ export default {
         const deletedFilter = c => {
           return c.isDeleted === this.deleted
         }
+        const nonProtectedCipher = c => {
+          return c.type !== CipherType.MasterPassword
+        }
         let result = []
         try {
-          result = await this.$searchService.searchCiphers('', [null, deletedFilter], null) || []
+          result = await this.$searchService.searchCiphers('', [nonProtectedCipher, deletedFilter], null) || []
         } catch (error) {
 
         }
