@@ -18,7 +18,7 @@ export const getTOTP = (otp: OTPData) => {
       digits: otp.digits || 6
     })
   } catch (e) {
-    return null
+    return ''
   }
 }
 
