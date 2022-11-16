@@ -78,7 +78,7 @@ export default {
         }, 100)
       }
     },
-    getRemainingTime (period) {
+    getRemainingTime (period = 30) {
       // Better late 1 sec than early
       return (period + 1) - Math.floor(new Date().getTime() / 1000) % period
     }
