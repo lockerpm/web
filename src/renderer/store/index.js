@@ -17,12 +17,15 @@ export const state = () => ({
   loading: false,
   syncing: false,
   userPw: {},
-  isLoggedInPw: false,
   syncedCiphersToggle: false,
   searchText: '',
   teams: [],
   currentPlan: {},
   cipherCount: null,
+  notDeletedCipherCount: {
+    total: 0,
+    ciphers: {}
+  },
   pendingShares: 0,
   extensionLoggedIn: false,
   myShares: [],
@@ -38,7 +41,6 @@ export const mutations = {
     state.isLoggedIn = value
   },
   CLEAR_ALL_DATA (state) {
-    // Auth
     state.isLoggedIn = false
     state.notifications = {
       results: [],
@@ -46,6 +48,15 @@ export const mutations = {
       count: 0
     }
     state.teams = []
+    state.syncing = false
+    state.cipherCount = null
+    state.notDeletedCipherCount = {
+      total: 0,
+      ciphers: {}
+    }
+    state.pendingShares = 0
+    state.enterpriseInvitations = []
+    state.enterprisePolicies = []
   },
   UPDATE_USER (state, user) {
     state.user = user
@@ -88,6 +99,9 @@ export const mutations = {
   },
   UPDATE_CIPHER_COUNT (state, value) {
     state.cipherCount = value
+  },
+  UPDATE_NOT_DELETED_CIPHER_COUNT (state, value) {
+    state.notDeletedCipherCount = value
   },
   UPDATE_PENDING_SHARES (state, value) {
     state.pendingShares = value

@@ -50,6 +50,9 @@ Vue.mixin({
     cipherCount () {
       return this.$store.state.cipherCount
     },
+    notDeletedCipherCount () {
+      return this.$store.state.notDeletedCipherCount
+    },
     pendingShares () {
       return this.$store.state.pendingShares
     },
@@ -263,6 +266,9 @@ Vue.mixin({
           let res = await this.$axios.$get(`cystack_platform/pm/sync?paging=1&size=${pageSize}&page=${page}`)
           if (res.count && res.count.ciphers) {
             this.$store.commit('UPDATE_CIPHER_COUNT', res.count.ciphers)
+          }
+          if (res.count && res.count.notDeletedCiphers) {
+            this.$store.commit('UPDATE_NOT_DELETED_CIPHER_COUNT', res.count.notDeletedCiphers)
           }
           const enterprisePolicies = {}
           res.policies.forEach(element => {
