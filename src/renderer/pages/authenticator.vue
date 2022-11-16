@@ -24,7 +24,7 @@
           class="uppercase text-head-6"
         >
           <span class="text-primary font-semibold">
-            {{ ($store.state.syncing && cipherCount != null) ? cipherCount : ciphers.length }}
+            {{ itemsCount }}
           </span>
           {{ $tc('type.0', ciphers.length) }}
         </div>
@@ -269,6 +269,15 @@ export default {
 
     isSearching () {
       return this.searchText && this.searchText.trim().length > 0
+    },
+
+    itemsCount () {
+      if (this.$store.state.syncing) {
+        if (this.notDeletedCipherCount?.ciphers[CipherType.TOTP]) {
+          return this.notDeletedCipherCount.ciphers[CipherType.TOTP]
+        }
+      }
+      return this.ciphers.length
     }
   },
 
