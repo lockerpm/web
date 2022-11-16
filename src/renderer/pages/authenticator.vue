@@ -305,10 +305,9 @@ export default {
           result = await this.$searchService.searchCiphers(this.searchText, [filter], null) || []
         } catch (error) {
         }
-        result.map(item => {
+        result = result.map(item => {
           try {
             item.otpData = parseOTPUri(item.notes)
-            // item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
           } catch (error) {
             console.log(error)
           }
