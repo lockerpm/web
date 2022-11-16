@@ -962,9 +962,12 @@ export default {
       return this.searchText && this.searchText.trim().length > 0
     },
     itemsCount () {
-      if (this.$store.state.syncing) {
-        if (!this.type && this.notDeletedCipherCount?.total) {
-          return this.notDeletedCipherCount.total
+      if (this.$store.state.syncing && this.type) {
+        if (this.type === 'Vault' && this.notDeletedCipherCount?.total) {
+          return this.notDeletedCipherCount.total - this.notDeletedCipherCount?.ciphers[CipherType.TOTP] || 0
+        }
+        if (this.type === 'Trash' && this.notDeletedCipherCount?.total && this.cipherCount) {
+          return this.cipherCount - this.notDeletedCipherCount.total
         }
         if (this.type === 'Login') {
           let pwCount = this.notDeletedCipherCount?.ciphers[CipherType.Login] || 0
