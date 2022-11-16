@@ -10,8 +10,8 @@
             {{ $t('data.policies.title') }}
           </el-breadcrumb-item>
           <el-breadcrumb-item
-            v-if="getRouteBaseName() === 'policies-violated'"
-            :to="localeRoute({name: 'policies-violated'})"
+            v-if="getRouteBaseName() === 'policies-index-violated'"
+            :to="localeRoute({name: 'policies-index-violated'})"
           >
             {{ $t('data.policies.violated_items') }}
           </el-breadcrumb-item>
@@ -83,12 +83,12 @@
                 <a
                   v-if="violatedPasswords.length"
                   class="text-danger hover:text-danger"
-                  @click.prevent="go({name: 'policies-violated'})"
+                  @click.prevent="go({name: 'policies-index-violated'})"
                 >
                   <span style="font-size: 22px; vertical-align: middle;" class="mr-1">
                     <i class="el-icon-error" />
                   </span>
-                  <span>{{ $t('data.policies.you_have_violated_items', { count: violatedPasswords.length }) }}</span>
+                  <span>{{ $tc('data.policies.you_have_violated_items', violatedPasswords.length) }}</span>
                 </a>
               </div>
               <!-- Body end -->
@@ -276,7 +276,7 @@
 
 <script>
 import LazyHydrate from 'vue-lazy-hydration'
-import { CipherType } from '../core/enums/cipherType'
+import { CipherType } from '../../core/enums/cipherType'
 
 // const worker = new Worker()
 export default {
@@ -307,7 +307,7 @@ export default {
       return this.enterprisePolicies.passwordless?.enabled
     },
     isEmpty () {
-      return !this.isPasswordlessEnabled &&
+      return !this.isPwPolicyEnabled &&
         !this.isMasterPwPolicyEnabled &&
         !this.isBlockFailedLoginEnabled &&
         !this.isPasswordlessEnabled
