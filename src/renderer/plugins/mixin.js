@@ -50,6 +50,9 @@ Vue.mixin({
     cipherCount () {
       return this.$store.state.cipherCount
     },
+    notDeletedCipherCount () {
+      return this.$store.state.notDeletedCipherCount
+    },
     pendingShares () {
       return this.$store.state.pendingShares
     },
@@ -61,9 +64,6 @@ Vue.mixin({
     },
     myShares () {
       return this.$store.state.myShares
-    },
-    shareInvitations () {
-      return this.$store.state.shareInvitations
     },
     enterpriseInvitations () {
       return this.$store.state.enterpriseInvitations
@@ -136,7 +136,7 @@ Vue.mixin({
       await this.$cryptoService.clearKeys()
       await this.$userService.clear()
       await this.$cookies.remove('cs_locker_token')
-      this.$store.commit('UPDATE_IS_LOGGEDIN', false)
+      this.$store.commit('CLEAR_ALL_DATA')
       this.$router.push(this.localeRoute({ name: 'login' }))
       window.Intercom('shutdown')
       window.intercomSettings = { app_id: 'hjus3ol6', api_base: 'https://hjus3ol6.intercom-messenger.com' }
@@ -266,6 +266,9 @@ Vue.mixin({
           let res = await this.$axios.$get(`cystack_platform/pm/sync?paging=1&size=${pageSize}&page=${page}`)
           if (res.count && res.count.ciphers) {
             this.$store.commit('UPDATE_CIPHER_COUNT', res.count.ciphers)
+          }
+          if (res.count && res.count.notDeletedCiphers) {
+            this.$store.commit('UPDATE_NOT_DELETED_CIPHER_COUNT', res.count.notDeletedCiphers)
           }
           const enterprisePolicies = {}
           res.policies.forEach(element => {
