@@ -144,7 +144,7 @@ export default {
   },
   asyncComputed: {
     async locked () {
-      return await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
+      return await this.$vaultTimeoutService.isLocked()
     }
   },
   beforeDestroy () {

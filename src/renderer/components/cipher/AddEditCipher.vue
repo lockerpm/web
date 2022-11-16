@@ -607,7 +607,6 @@ export default {
 
   methods: {
     async openDialog (data, cloneMode = false, inline = false) {
-      console.log(data.organizationId)
       this.currentComponent = inline ? InlineEditCipher : Dialog
       this.folders = await this.getFolders()
       this.writeableCollections = await this.getWritableCollections()
@@ -633,7 +632,9 @@ export default {
         if (this.cipher.collectionIds && this.cipher.collectionIds[0]) {
           this.cipher.folderId = this.cipher.collectionIds[0]
         }
-        this.$refs.inputSelectFolder.value = this.cipher.folderId
+        setTimeout(() => {
+          this.$refs.inputSelectFolder.value = this.cipher.folderId
+        }, 0)
       } else if (CipherType[this.type]) {
         this.newCipher(this.type, data)
       } else {

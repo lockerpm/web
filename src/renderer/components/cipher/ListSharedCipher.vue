@@ -547,7 +547,7 @@ export default {
       }
     }
     // this.getPendingShares()
-    const locked = await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
+    const locked = await this.$vaultTimeoutService.isLocked()
     if (!locked) {
       if (this.getRouteBaseName() === 'shares') {
         this.getShareInvitations()
