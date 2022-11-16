@@ -448,7 +448,7 @@
 </template>
 <script>
 export default {
-  layout: 'landing',
+  layout: 'white',
   data () {
     return {
       tabPosition: '0',
