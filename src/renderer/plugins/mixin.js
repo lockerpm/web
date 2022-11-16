@@ -62,9 +62,6 @@ Vue.mixin({
     myShares () {
       return this.$store.state.myShares
     },
-    shareInvitations () {
-      return this.$store.state.shareInvitations
-    },
     enterpriseInvitations () {
       return this.$store.state.enterpriseInvitations
     },
@@ -136,7 +133,7 @@ Vue.mixin({
       await this.$cryptoService.clearKeys()
       await this.$userService.clear()
       await this.$cookies.remove('cs_locker_token')
-      this.$store.commit('UPDATE_IS_LOGGEDIN', false)
+      this.$store.commit('CLEAR_ALL_DATA')
       this.$router.push(this.localeRoute({ name: 'login' }))
       window.Intercom('shutdown')
       window.intercomSettings = { app_id: 'hjus3ol6', api_base: 'https://hjus3ol6.intercom-messenger.com' }

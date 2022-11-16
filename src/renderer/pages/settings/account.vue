@@ -18,7 +18,7 @@
             <el-avatar :size="70" :src="currentUser.avatar" class="mr-4" />
             <div>
               <div class="setting-title">{{ currentUser.full_name }}</div>
-              <div class="setting-description">{{ currentPlan.name }}</div>
+              <div class="setting-description">{{ currentTeam ? currentTeam.name : currentPlan.name }}</div>
             </div>
           </div>
           <div>
@@ -179,6 +179,9 @@ export default {
   computed: {
     currentPlan () {
       return this.$store.state.currentPlan
+    },
+    currentTeam () {
+      return this.teams[0]
     }
   },
   async mounted () {

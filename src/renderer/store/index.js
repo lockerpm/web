@@ -21,13 +21,11 @@ export const state = () => ({
   syncedCiphersToggle: false,
   searchText: '',
   teams: [],
-  currentTeam: {},
   currentPlan: {},
   cipherCount: null,
   pendingShares: 0,
   extensionLoggedIn: false,
   myShares: [],
-  shareInvitations: [],
   enterpriseInvitations: [],
   enterprisePolicies: [],
   showLocked: false
@@ -36,21 +34,12 @@ export const mutations = {
   SET_LANG (state, payload) {
     state.user.language = payload
   },
-  SET_AUTH (state, auth) {
-    state.isLoggedIn = auth
-  },
   UPDATE_IS_LOGGEDIN (state, value) {
     state.isLoggedIn = value
   },
   CLEAR_ALL_DATA (state) {
     // Auth
     state.isLoggedIn = false
-    // // User
-    state.user.full_name = ''
-    state.user.email = ''
-    state.user.avatar = ''
-    state.user.organization = ''
-    state.user.phone = ''
     state.notifications = {
       results: [],
       unread_count: 0,
@@ -85,9 +74,6 @@ export const mutations = {
   UPDATE_SYNCING (state, syncing) {
     state.syncing = syncing
   },
-  UPDATE_IS_LOGGEDIN_PW (state, value) {
-    state.isLoggedInPw = value
-  },
   UPDATE_SYNCED_CIPHERS (state) {
     state.syncedCiphersToggle = !state.syncedCiphersToggle
   },
@@ -96,9 +82,6 @@ export const mutations = {
   },
   UPDATE_TEAMS (state, value) {
     state.teams = value
-  },
-  UPDATE_TEAM (state, value) {
-    state.currentTeam = value
   },
   UPDATE_CURRENT_PLAN (state, plan) {
     state.currentPlan = plan
@@ -114,9 +97,6 @@ export const mutations = {
   },
   UPDATE_MY_SHARES (state, value) {
     state.myShares = value
-  },
-  UPDATE_SHARE_INVITATIONS (state, value) {
-    state.shareInvitations = value
   },
   UPDATE_ENTERPRISE_INVITATIONS (state, value) {
     state.enterpriseInvitations = value
@@ -242,12 +222,6 @@ export const actions = {
   LoadMyShares ({ commit }) {
     return this.$axios.$get('cystack_platform/pm/sharing/my_share').then(res => {
       commit('UPDATE_MY_SHARES', res)
-      return res
-    })
-  },
-  LoadShareInvitations ({ commit }) {
-    return this.$axios.$get('cystack_platform/pm/sharing/invitations').then(res => {
-      commit('UPDATE_SHARE_INVITATIONS', res)
       return res
     })
   },
