@@ -17,17 +17,18 @@ export const state = () => ({
   loading: false,
   syncing: false,
   userPw: {},
-  isLoggedInPw: false,
   syncedCiphersToggle: false,
   searchText: '',
   teams: [],
-  currentTeam: {},
   currentPlan: {},
   cipherCount: null,
+  notDeletedCipherCount: {
+    total: 0,
+    ciphers: {}
+  },
   pendingShares: 0,
   extensionLoggedIn: false,
   myShares: [],
-  shareInvitations: [],
   enterpriseInvitations: [],
   enterprisePolicies: [],
   notice: {
@@ -40,27 +41,26 @@ export const mutations = {
   SET_LANG (state, payload) {
     state.user.language = payload
   },
-  SET_AUTH (state, auth) {
-    state.isLoggedIn = auth
-  },
   UPDATE_IS_LOGGEDIN (state, value) {
     state.isLoggedIn = value
   },
   CLEAR_ALL_DATA (state) {
-    // Auth
     state.isLoggedIn = false
-    // // User
-    state.user.full_name = ''
-    state.user.email = ''
-    state.user.avatar = ''
-    state.user.organization = ''
-    state.user.phone = ''
     state.notifications = {
       results: [],
       unread_count: 0,
       count: 0
     }
     state.teams = []
+    state.syncing = false
+    state.cipherCount = null
+    state.notDeletedCipherCount = {
+      total: 0,
+      ciphers: {}
+    }
+    state.pendingShares = 0
+    state.enterpriseInvitations = []
+    state.enterprisePolicies = []
   },
   UPDATE_USER (state, user) {
     state.user = user
@@ -89,9 +89,6 @@ export const mutations = {
   UPDATE_SYNCING (state, syncing) {
     state.syncing = syncing
   },
-  UPDATE_IS_LOGGEDIN_PW (state, value) {
-    state.isLoggedInPw = value
-  },
   UPDATE_SYNCED_CIPHERS (state) {
     state.syncedCiphersToggle = !state.syncedCiphersToggle
   },
@@ -101,14 +98,14 @@ export const mutations = {
   UPDATE_TEAMS (state, value) {
     state.teams = value
   },
-  UPDATE_TEAM (state, value) {
-    state.currentTeam = value
-  },
   UPDATE_CURRENT_PLAN (state, plan) {
     state.currentPlan = plan
   },
   UPDATE_CIPHER_COUNT (state, value) {
     state.cipherCount = value
+  },
+  UPDATE_NOT_DELETED_CIPHER_COUNT (state, value) {
+    state.notDeletedCipherCount = value
   },
   UPDATE_PENDING_SHARES (state, value) {
     state.pendingShares = value
@@ -118,9 +115,6 @@ export const mutations = {
   },
   UPDATE_MY_SHARES (state, value) {
     state.myShares = value
-  },
-  UPDATE_SHARE_INVITATIONS (state, value) {
-    state.shareInvitations = value
   },
   UPDATE_ENTERPRISE_INVITATIONS (state, value) {
     state.enterpriseInvitations = value
@@ -249,12 +243,6 @@ export const actions = {
   LoadMyShares ({ commit }) {
     return this.$axios.$get('cystack_platform/pm/sharing/my_share').then(res => {
       commit('UPDATE_MY_SHARES', res)
-      return res
-    })
-  },
-  LoadShareInvitations ({ commit }) {
-    return this.$axios.$get('cystack_platform/pm/sharing/invitations').then(res => {
-      commit('UPDATE_SHARE_INVITATIONS', res)
       return res
     })
   },

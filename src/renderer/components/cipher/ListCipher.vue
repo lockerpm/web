@@ -142,7 +142,10 @@
           v-if="ciphers && !viewFolder"
           class="uppercase text-head-6"
         >
-          <span class="text-primary font-semibold">{{ ($store.state.syncing && cipherCount!=null)?cipherCount : ciphers.length }}</span> {{ $tc('type.0', ciphers.length) }}
+          <span class="text-primary font-semibold">
+            {{ itemsCount }}
+          </span>
+          {{ $tc('type.0', ciphers.length) }}
         </div>
         <div
           v-if="folders && viewFolder"
@@ -726,7 +729,6 @@
 import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy'
 import find from 'lodash/find'
-import groupBy from 'lodash/groupBy'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import AddEditFolder from '../folder/AddEditFolder'
 import AddEditTeamFolder from '../folder/AddEditTeamFolder'
@@ -962,6 +964,27 @@ export default {
     },
     isSearching () {
       return this.searchText && this.searchText.trim().length > 0
+    },
+    itemsCount () {
+      if (this.$store.state.syncing && this.type) {
+        if (this.type === 'Vault' && this.notDeletedCipherCount?.total) {
+          return this.notDeletedCipherCount.total - this.notDeletedCipherCount?.ciphers[CipherType.TOTP] || 0
+        }
+        if (this.type === 'Trash' && this.notDeletedCipherCount?.total && this.cipherCount) {
+          return this.cipherCount - this.notDeletedCipherCount.total
+        }
+        if (this.type === 'Login') {
+          let pwCount = this.notDeletedCipherCount?.ciphers[CipherType.Login] || 0
+          pwCount += this.notDeletedCipherCount?.ciphers[CipherType.MasterPassword] || 0
+          if (pwCount) {
+            return pwCount
+          }
+        }
+        if (this.notDeletedCipherCount?.ciphers[CipherType[this.type]]) {
+          return this.notDeletedCipherCount.ciphers[CipherType[this.type]]
+        }
+      }
+      return this.ciphers.length
     }
   },
   watch: {

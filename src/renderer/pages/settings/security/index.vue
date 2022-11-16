@@ -845,7 +845,7 @@ export default {
     }
   },
   async mounted () {
-    const locked = await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
+    const locked = await this.$vaultTimeoutService.isLocked()
     if (!locked) {
       await Promise.all([
         this.getUser(),

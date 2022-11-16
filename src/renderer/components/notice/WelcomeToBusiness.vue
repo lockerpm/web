@@ -51,7 +51,8 @@ export default {
     return {
       isFirst: true,
       visible: false,
-      allowWelcome: false
+      allowWelcome: false,
+      timeout: null
     }
   },
   computed: {
@@ -62,9 +63,14 @@ export default {
   watch: {
     shouldWelcome (newVal) {
       if (newVal) {
-        this.visible = true
+        this.timeout = setTimeout(() => {
+          this.visible = true
+        }, 1000)
       }
     }
+  },
+  beforeDestroy () {
+    clearInterval(this.timeout)
   },
   mounted () {
     this.allowWelcome = this.checkWelcome() !== 'false'
