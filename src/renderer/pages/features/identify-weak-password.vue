@@ -22,19 +22,6 @@
               </nuxt-link>
             </div>
           </div>
-          <div class="w-full landing-font-20 text-[#3A3A3A] mb-[20px] mx-auto">
-            {{ $t('features.identify_weak_password.subtitle') }}
-          </div>
-          <div class="max-w-[700px] mx-auto mt-[50px]">
-            <img src="~/assets/images/landing/features/detail/identify_weak_password.svg">
-            <nuxt-link
-              class="mx-auto landing-btn mt-[50px]"
-              :to="localePath('/download')"
-              style="align-self: center"
-            >
-              {{ $t('features.identify_weak_password.button_text') }}
-            </nuxt-link>
-          </div>
         </div>
       </div>
     </section>
