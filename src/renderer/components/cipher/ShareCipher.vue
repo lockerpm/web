@@ -52,7 +52,22 @@
       </div>
       <!-- Add cipher/folder end -->
 
-      <!-- Add member -->
+      <!-- Add member/group -->
+      <el-select
+        v-model="user.username"
+        remote
+        filterable
+        placeholder="Email or group"
+        :filter-method="searchGroups"
+      >
+        <el-option
+          v-for="item in groups"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        />
+      </el-select>
+
       <div class="grid grid-cols-4 gap-x-2 mb-4">
         <InputText
           v-model="user.username"
@@ -71,7 +86,7 @@
           {{ $t('data.folders.add_member') }}
         </el-button>
       </div>
-      <!-- Add member end -->
+      <!-- Add member/group end -->
     </div>
 
     <!-- Member table -->
@@ -163,7 +178,7 @@
         <button
           class="btn btn-primary"
           :disabled="loading"
-          @click="cipher.id?shareItem(cipher):shareMultiple()"
+          @click="cipher.id ? shareItem(cipher) : shareMultiple()"
         >
           {{ isBelongToTeam ? $t('common.update') : $t('common.share') }}
         </button>
@@ -222,7 +237,8 @@ export default {
       sharingKey: null,
       dialogLoading: {
         addMember: false
-      }
+      },
+      groups: []
     }
   },
   computed: {
@@ -271,19 +287,6 @@ export default {
     }
   },
   methods: {
-    addEmail () {
-      const emails = this.user.username.split(',').map(item => item.trim()).filter(item => item.length)
-      const members = emails.map(email => {
-        return {
-          id: null,
-          username: email,
-          role: 'member',
-          status: 'pending'
-        }
-      })
-      this.newMembers = this.newMembers.concat(members)
-      this.user.username = ''
-    },
     handleClose (index) {
       this.newMembers.splice(index, 1)
     },
@@ -309,30 +312,6 @@ export default {
       this.newMembers = []
       this.dialogVisible = false
     },
-    async shareCipher (cipher) {
-      if (this.checkPolicies(cipher)) {
-        try {
-          this.loading = true
-          const cipherEnc = await this.$cipherService.encrypt(cipher)
-          const data = new CipherRequest(cipherEnc)
-          const url = this.isBelongToTeam ? `cystack_platform/pm/ciphers/${cipher.id}` : `cystack_platform/pm/ciphers/${cipher.id}/share`
-          await this.$axios.$put(url, {
-            ...data,
-            score: this.passwordStrength.score,
-            collectionIds: cipher.collectionIds
-            // view_password: cipher.viewPassword
-          })
-          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
-          this.closeDialog()
-          this.$emit('shared-cipher')
-        } catch (e) {
-          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
-          console.log(e)
-        } finally {
-          this.loading = false
-        }
-      }
-    },
     async handleChangeOrg (orgId) {
       this.$set(this.cipher, 'organizationId', orgId)
       this.cipher.folderId = null
@@ -354,64 +333,6 @@ export default {
 
       }
       return allCollections.filter(c => !c.readOnly && c.organizationId === orgId)
-    },
-    async getTeamPolicies (teamId) {
-      this.policies = await this.$axios.$get(`cystack_platform/pm/teams/${teamId}/policy`)
-    },
-    checkPolicies (cipher) {
-      if (cipher.type === CipherType.Login) {
-        if (this.policies.min_password_length && cipher.login.password.length < this.policies.min_password_length) {
-          this.notify(this.$t('data.notifications.min_password_length', { length: this.policies.min_password_length }), 'warning')
-          return false
-        }
-        if (this.policies.max_password_length && cipher.login.password.length > this.policies.max_password_length) {
-          this.notify(this.$t('data.notifications.max_password_length', { length: this.policies.max_password_length }), 'warning')
-          return false
-        }
-        if (this.policies.password_composition) {
-          if (this.policies.require_special_character) {
-            const reg = /(?=.*[!@#$%^&*])/
-            const check = reg.test(cipher.login.password)
-            if (!check) {
-              this.notify(this.$t('data.notifications.requires_special'), 'warning')
-              return false
-            }
-          }
-          if (this.policies.require_lower_case) {
-            const reg = /[a-z]/
-            const check = reg.test(cipher.login.password)
-            if (!check) {
-              this.notify(this.$t('data.notifications.requires_lowercase'), 'warning')
-              return false
-            }
-          }
-          if (this.policies.require_upper_case) {
-            const reg = /[A-Z]/
-            const check = reg.test(cipher.login.password)
-            if (!check) {
-              this.notify(this.$t('data.notifications.requires_uppercase'), 'warning')
-              return false
-            }
-          }
-          if (this.policies.require_digit) {
-            const reg = /[1-9]/
-            const check = reg.test(cipher.login.password)
-            if (!check) {
-              this.notify(this.$t('data.notifications.requires_number'), 'warning')
-              return false
-            }
-          }
-          if (this.policies.avoid_ambiguous_character) {
-            const ambiguousCharacters = ['I', 'l', '1', 'O', '0']
-            const check = ambiguousCharacters.some(c => cipher.login.password.includes(c))
-            if (check) {
-              this.notify(this.$t('data.notifications.avoid_ambiguous'), 'warning')
-              return false
-            }
-          }
-        }
-      }
-      return true
     },
     async getPublicKey (email) {
       const { public_key: publicKey } = await this.$axios.$post('cystack_platform/pm/sharing/public_key', { email })
@@ -623,6 +544,21 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+    async searchGroups (query) {
+      const defaultOptions = []
+      if (query) {
+        defaultOptions.push({
+          name: `"${query}"`
+        })
+      }
+      this.groups = defaultOptions
+      const res = await this.$axios.$get('cystack_platform/pm/enterprises/user_groups', {
+        params: {
+          q: query
+        }
+      })
+      this.groups = [...defaultOptions, ...res]
     }
   }
 }
