@@ -34,6 +34,9 @@ export const state = () => ({
     showLocked: false,
     showTutorial: false,
     showTutorialStep6: false
+  },
+  ui: {
+    closeAllModal: false
   }
 })
 export const mutations = {
@@ -131,6 +134,12 @@ export const mutations = {
   UPDATE_NOTICE (state, value) {
     state.notice = {
       ...state.notice,
+      ...value
+    }
+  },
+  UPDATE_UI (state, value) {
+    state.ui = {
+      ...state.ui,
       ...value
     }
   }

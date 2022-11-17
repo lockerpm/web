@@ -596,6 +596,11 @@ export default {
   watch: {
     cryptoWallet () {
       this.cipher.cryptoWallet = this.cryptoWallet
+    },
+    '$store.state.ui.closeAllModal' (newVal) {
+      if (newVal) {
+        this.dialogVisible = false
+      }
     }
   },
 
@@ -869,6 +874,11 @@ export default {
       this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
       if (this.cipher.organizationId) {
         this.handleChangeOrg(this.cipher.organizationId)
+      }
+
+      // Set item name if open from tutorial
+      if (this.$tutorial.isActive()) {
+        this.cipher.name = 'New password'
       }
     },
 

@@ -4,6 +4,8 @@
       :visible="showTutorial"
       custom-class="locker-tutorial-dialog max-w-[450px]"
       width="100%"
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
       @close="closeDialog"
     >
       <div class="flex flex-col items-center">
@@ -30,6 +32,8 @@
       :visible="showTutorialStep6"
       custom-class="locker-tutorial-dialog max-w-[500px]"
       width="100%"
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
       @close="closeDialog"
     >
       <div class="flex flex-col">
@@ -90,6 +94,7 @@ export default {
       }, isInVault ? 0 : 1000)
     },
     openExtension () {
+      this.closeDialog()
       window.open('https://chrome.google.com/webstore/detail/locker-password-manager/cmajindocfndlkpkjnmjpjoilibjgmgh/related', '_blank')
     }
   }
