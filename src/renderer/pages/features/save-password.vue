@@ -50,11 +50,11 @@
           {{ $t('features.save_password.get_locker') }}
           <p class="landing-font-16">
             <span class="text-green">
-              <nuxt-link v-if="locale===en" :to="localeRoute({name: 'download'})">
+              <nuxt-link v-if="locale==='en'" :to="localeRoute({name: 'download'})">
                 &nbsp;here
               </nuxt-link>
               <nuxt-link v-else :to="localeRoute({name: 'download'})">
-                &nbsp;đây
+                &nbsp;tại đây
               </nuxt-link>
             </span>
           </p>
