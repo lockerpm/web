@@ -70,8 +70,14 @@ export default async ({ store, i18n }, inject) => {
       {
         text: () => i18n.t('common.skip'),
         action: () => {
-          tour.hide()
-          tour.show('view-shares')
+          store.commit('UPDATE_UI', { closeAllModal: true })
+          setTimeout(() => {
+            store.commit('UPDATE_UI', { closeAllModal: false })
+          }, 0)
+
+          // Already called in dialog onClose
+          // tour.hide()
+          // tour.show('view-shares')
         },
         secondary: true
       }
@@ -142,8 +148,7 @@ export default async ({ store, i18n }, inject) => {
     attachTo: {
       element: '#nav__profile',
       on: 'bottom'
-    },
-    canClickTarget: false
+    }
     // advanceOn: {
     //   selector: '#nav__profile',
     //   event: 'click'

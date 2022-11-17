@@ -604,6 +604,11 @@ export default {
   watch: {
     cryptoWallet () {
       this.cipher.cryptoWallet = this.cryptoWallet
+    },
+    '$store.state.ui.closeAllModal' (newVal) {
+      if (newVal) {
+        this.dialogVisible = false
+      }
     }
   },
 
@@ -884,6 +889,11 @@ export default {
       // this.cipher.fields[0].type = FieldType.Text
       this.cipher.folderId = this.$route.params.folderId || null
       this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
+
+      // Set item name if open from tutorial
+      if (this.$tutorial.isActive()) {
+        this.cipher.name = 'New password'
+      }
     },
 
     // Set item name to url
