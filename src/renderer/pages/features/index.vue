@@ -9,15 +9,17 @@
         <div
           v-for="(item, index) in $t('features.feature1.details')"
           :key="index"
-          class="flex flex-col items-start space-y-[15px]"
+          class="flex flex-col items-start"
         >
-          <img :src="require(`~/assets/images/landing/features/${item.img}`)" class="h-[35px]">
+          <div class="h-[35px]">
+            <img :src="require(`~/assets/images/landing/features/${item.img}`)">
+          </div>
           <nuxt-link
-            class="text-black font-bold landing-font-22 mt-[16px] cursor-pointer"
+            class="text-black font-bold landing-font-22 my-[13px] cursor-pointer"
             :to="localePath(item.link)"
           >
             {{ item.title }}</nuxt-link>
-          <p class="text-black landing-font-14 mt-[13px]">{{ item.desc }}</p>
+          <p class="text-black landing-font-14">{{ item.desc }}</p>
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
@@ -37,13 +39,15 @@
           :key="index"
           class="flex flex-col items-start"
         >
-          <img :src="require(`~/assets/images/landing/features/${item.img}`)" class="h-[35px]">
+          <div class="h-[35px]">
+            <img :src="require(`~/assets/images/landing/features/${item.img}`)">
+          </div>
           <nuxt-link
-            class="text-black font-bold landing-font-22 mt-[16px] cursor-pointer"
+            class="text-black font-bold landing-font-22 my-[13px] cursor-pointer"
             :to="localePath(item.link)"
           >
             {{ item.title }}</nuxt-link>
-          <p class="text-black landing-font-14 mt-[13px]">{{ item.desc }}</p>
+          <p class="text-black landing-font-14">{{ item.desc }}</p>
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
@@ -63,13 +67,15 @@
           :key="index"
           class="flex flex-col items-start"
         >
-          <img :src="require(`~/assets/images/landing/features/${item.img}`)" class="h-[35px]">
+          <div class="h-[35px]">
+            <img :src="require(`~/assets/images/landing/features/${item.img}`)">
+          </div>
           <nuxt-link
-            class="text-black font-bold landing-font-22 mt-[16px] cursor-pointer"
+            class="text-black font-bold landing-font-22 my-[13px] cursor-pointer"
             :to="localePath(item.link)"
           >
             {{ item.title }}</nuxt-link>
-          <p class="text-black landing-font-14 mt-[13px]">{{ item.desc }}</p>
+          <p class="text-black landing-font-14">{{ item.desc }}</p>
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
@@ -89,13 +95,15 @@
           :key="index"
           class="flex flex-col items-start space-y-[15px]"
         >
-          <img :src="require(`~/assets/images/landing/features/${item.img}`)" class="h-[35px]">
+          <div class="h-[35px]">
+            <img :src="require(`~/assets/images/landing/features/${item.img}`)">
+          </div>
           <nuxt-link
-            class="text-black font-bold landing-font-22 mt-[16px] cursor-pointer"
+            class="text-black font-bold landing-font-22 my-[13px] cursor-pointer"
             :to="localePath(item.link)"
           >
             {{ item.title }}</nuxt-link>
-          <p class="text-black landing-font-14 mt-[13px]">{{ item.desc }}</p>
+          <p class="text-black landing-font-14">{{ item.desc }}</p>
         </div>
       </div>
       <div class="landing-font-18 align-top mt-[45px]">
