@@ -234,6 +234,7 @@ import NoCipher from '../components/cipher/NoCipher'
 import { CipherType } from '../core/enums/cipherType.ts'
 import AddEditOTP from '../components/cipher/AddEditOTP'
 import OTPInfoBlock from '../components/cipher/OTPInfoBlock'
+import { getTOTP, parseOTPUri } from '../utils/totp/index.ts'
 
 export default {
   components: { OTPInfoBlock, AddEditOTP, NoCipher },
@@ -306,7 +307,7 @@ export default {
         }
         result = result.map(item => {
           try {
-            item.otpData = this.$authenticator.parseOTPUri(item.notes)
+            item.otpData = parseOTPUri(item.notes)
           } catch (error) {
             console.log(error)
           }
@@ -369,7 +370,7 @@ export default {
       }
     },
     getOtp (otpData) {
-      return this.$authenticator.getTOTP(otpData)
+      return getTOTP(otpData)
     }
   }
 }

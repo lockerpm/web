@@ -1,6 +1,6 @@
-import totp from 'totp-generator'
+const totp = require('totp-generator')
 
-interface OTPData {
+export interface OTPData {
   account?: string
   secret: string
   algorithm?: 'SHA-1' | 'SHA-256' | 'SHA-512' | 'MD-5' | string
@@ -8,7 +8,7 @@ interface OTPData {
   digits?: number
 }
 
-const getTOTP = (otp: OTPData) => {
+export const getTOTP = (otp: OTPData) => {
   try {
     const res = totp(otp.secret, {
       algorithm: otp.algorithm || 'SHA-1',
@@ -26,7 +26,7 @@ const getTOTP = (otp: OTPData) => {
 }
 
 // Parse OTP from URI
-const parseOTPUri = (uri: string) => {
+export const parseOTPUri = (uri: string) => {
   const res: OTPData = {
     account: undefined,
     secret: undefined,
@@ -137,12 +137,4 @@ export const beautifyName = (name: string) => {
   }
 
   return name
-}
-
-export default async (_, inject) => {
-  const authenticator = {
-    getTOTP,
-    parseOTPUri
-  }
-  inject('authenticator', authenticator)
 }
