@@ -232,7 +232,6 @@ import orderBy from 'lodash/orderBy'
 import cloneDeep from 'lodash/cloneDeep'
 import NoCipher from '../components/cipher/NoCipher'
 import { CipherType } from '../core/enums/cipherType.ts'
-import { parseOTPUri, getTOTP } from '../utils/totp/index.ts'
 import AddEditOTP from '../components/cipher/AddEditOTP'
 import OTPInfoBlock from '../components/cipher/OTPInfoBlock'
 
@@ -307,7 +306,7 @@ export default {
         }
         result = result.map(item => {
           try {
-            item.otpData = parseOTPUri(item.notes)
+            item.otpData = this.$authenticator.parseOTPUri(item.notes)
           } catch (error) {
             console.log(error)
           }
@@ -370,7 +369,7 @@ export default {
       }
     },
     getOtp (otpData) {
-      return getTOTP(otpData)
+      return this.$authenticator.getTOTP(otpData)
     }
   }
 }

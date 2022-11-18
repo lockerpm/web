@@ -40,8 +40,6 @@
 </template>
 
 <script>
-import { getTOTP } from '../../utils/totp/index.ts'
-
 export default {
   props: {
     name: {
@@ -67,14 +65,14 @@ export default {
   },
   mounted () {
     this.start = this.getRemainingTime(this.otpData.period)
-    this.otp = getTOTP(this.otpData)
+    this.otp = this.$authenticator.getTOTP(this.otpData)
   },
   methods: {
     countdown (val) {
       if (val.main === 0) {
         this.start = this.otpData.period
         setTimeout(() => {
-          this.otp = getTOTP(this.otpData)
+          this.otp = this.$authenticator.getTOTP(this.otpData)
         }, 100)
       }
     },
