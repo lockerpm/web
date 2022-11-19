@@ -14,11 +14,12 @@
           <div class="h-[35px]">
             <img :src="require(`~/assets/images/landing/features/${item.img}`)">
           </div>
-          <nuxt-link
+          <nuxt-link v-if="item.link"
             class="text-black font-bold landing-font-22 my-[13px] cursor-pointer"
             :to="localePath(item.link)"
           >
             {{ item.title }}</nuxt-link>
+          <p v-else class="text-black font-bold landing-font-22 my-[13px] cursor-pointer">{{ item.title }}</p>
           <p class="text-black landing-font-14">{{ item.desc }}</p>
         </div>
       </div>
@@ -42,11 +43,12 @@
           <div class="h-[35px]">
             <img :src="require(`~/assets/images/landing/features/${item.img}`)">
           </div>
-          <nuxt-link
+          <nuxt-link v-if="item.link"
             class="text-black font-bold landing-font-22 my-[13px] cursor-pointer"
             :to="localePath(item.link)"
           >
             {{ item.title }}</nuxt-link>
+          <p v-else class="text-black font-bold landing-font-22 my-[13px] cursor-pointer">{{ item.title }}</p>
           <p class="text-black landing-font-14">{{ item.desc }}</p>
         </div>
       </div>
@@ -70,11 +72,12 @@
           <div class="h-[35px]">
             <img :src="require(`~/assets/images/landing/features/${item.img}`)">
           </div>
-          <nuxt-link
+          <nuxt-link v-if="item.link"
             class="text-black font-bold landing-font-22 my-[13px] cursor-pointer"
             :to="localePath(item.link)"
           >
             {{ item.title }}</nuxt-link>
+          <p v-else class="text-black font-bold landing-font-22 my-[13px] cursor-pointer">{{ item.title }}</p>
           <p class="text-black landing-font-14">{{ item.desc }}</p>
         </div>
       </div>
@@ -98,11 +101,12 @@
           <div class="h-[35px]">
             <img :src="require(`~/assets/images/landing/features/${item.img}`)">
           </div>
-          <nuxt-link
+          <nuxt-link v-if="item.link"
             class="text-black font-bold landing-font-22 my-[13px] cursor-pointer"
             :to="localePath(item.link)"
           >
             {{ item.title }}</nuxt-link>
+          <p v-else class="text-black font-bold landing-font-22 my-[13px] cursor-pointer">{{ item.title }}</p>
           <p class="text-black landing-font-14">{{ item.desc }}</p>
         </div>
       </div>
