@@ -78,6 +78,10 @@ export default {
       return this.$store.state.notice.showTutorialStep6
     }
   },
+  beforeDestroy () {
+    this.closeDialog()
+    this.$tutorial.cancel()
+  },
   methods: {
     closeDialog () {
       this.$store.commit('UPDATE_NOTICE', { showTutorial: false, showTutorialStep6: false })
