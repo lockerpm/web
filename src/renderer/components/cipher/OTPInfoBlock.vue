@@ -1,46 +1,49 @@
 <template>
-  <div class="flex items-center">
-    <div
-      class="text-[34px] mr-3 flex-shrink-0"
-    >
-      <circular-count-down-timer
-        :circles="[{
-          id: 'main',
-          steps: otpData.period,
-          size: 34,
-          showValue: false,
-          stepLength: -1,
-          value: start,
-          strokeWidth: 5,
-          strokeColor: '#268334'
-        }]"
-        :interval="1000"
-        :size="34"
-        main-circle-id="main"
-        @update="countdown"
-      />
-    </div>
+  <div class="flex items-center w-full">
+    <el-avatar :size="40" :src="getAvatarUrl(name)" shape="square">
+      <img :src="require('~/assets/images/icons/icon_Authenticator.svg')">
+    </el-avatar>
 
-    <div class="flex flex-col overflow-hidden">
+    <div class="flex flex-1 flex-col overflow-hidden ml-4">
       <!-- Name -->
       <p
-        class="text-black font-semibold truncate flex items-center"
+        class="text-black truncate flex items-center"
       >
         <span class="overflow-hidden overflow-ellipsis">{{ name }}</span>
       </p>
       <!-- Name end -->
+    </div>
 
-      <!-- Subtitle -->
-      <div class="overflow-hidden overflow-ellipsis">
+    <div class="mr-3">
+      <p class="text-primary font-bold text-[24px]">
         {{ otp }}
-      </div>
-      <!-- Subtitle end -->
+      </p>
+    </div>
+
+    <div>
+      <circular-count-down-timer
+        :circles="[{
+          id: 'main',
+          steps: otpData.period,
+          size: 24,
+          showValue: false,
+          stepLength: -1,
+          value: start,
+          strokeWidth: 3,
+          strokeColor: '#268334'
+        }]"
+        :interval="1000"
+        :size="24"
+        main-circle-id="main"
+        @update="countdown"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { getTOTP } from '../../utils/totp/index.ts'
+import { generateLettersAvatarUrl } from '../../utils/avatar/index.ts'
 
 export default {
   props: {
@@ -81,6 +84,9 @@ export default {
     getRemainingTime (period = 30) {
       // Better late 1 sec than early
       return (period + 1) - Math.floor(new Date().getTime() / 1000) % period
+    },
+    getAvatarUrl (name) {
+      return generateLettersAvatarUrl(name)
     }
   }
 }
