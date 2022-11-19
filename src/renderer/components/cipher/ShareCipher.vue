@@ -53,29 +53,15 @@
       <!-- Add cipher/folder end -->
 
       <!-- Add member/group -->
-      <el-select
-        v-model="user.username"
-        remote
-        filterable
-        placeholder="Email or group"
-        :filter-method="searchGroups"
-      >
-        <el-option
-          v-for="item in groups"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id"
-        />
-      </el-select>
-
       <div class="grid grid-cols-4 gap-x-2 mb-4">
         <InputText
           v-model="user.username"
-          label="Email"
+          label="Email or Group"
           class="w-full col-span-3"
           :error-text="!isMemberEmailInputValid && !!user.username"
           @keyupEnter="addMember"
         />
+
         <el-button
           class="btn btn-outline-primary"
           :loading="dialogLoading.addMember"
@@ -85,6 +71,27 @@
         >
           {{ $t('data.folders.add_member') }}
         </el-button>
+
+        <el-popover
+          v-model="searchOptionsVisible"
+          placement="bottom"
+          trigger="manual"
+          width="100%"
+          style="width: 100%"
+        >
+          <div style="margin: -12px; padding: 10px 0">
+            <div
+              v-for="item in groups"
+              :key="item.id"
+              class="w-full hover:bg-black-100 text-black"
+              style="padding: 11px 20px; transition: all ease .2s"
+            >
+              <p>
+                {{ item.name }}
+              </p>
+            </div>
+          </div>
+        </el-popover>
       </div>
       <!-- Add member/group end -->
     </div>
@@ -238,7 +245,9 @@ export default {
       dialogLoading: {
         addMember: false
       },
-      groups: []
+      groups: [],
+      searchOptionsVisible: false,
+      searchTimeout: null
     }
   },
   computed: {
@@ -284,6 +293,19 @@ export default {
         return false
       }
       return emails.every(this.validateEmail)
+    }
+  },
+  watch: {
+    'user.username' (val) {
+      clearTimeout(this.searchTimeout)
+      if (val && val.trim()) {
+        this.searchOptionsVisible = !!this.groups.length
+        this.searchTimeout = setTimeout(() => {
+          this.searchGroups(val)
+        }, 500)
+      } else {
+        this.searchOptionsVisible = false
+      }
     }
   },
   methods: {
@@ -546,19 +568,13 @@ export default {
       }
     },
     async searchGroups (query) {
-      const defaultOptions = []
-      if (query) {
-        defaultOptions.push({
-          name: `"${query}"`
-        })
-      }
-      this.groups = defaultOptions
       const res = await this.$axios.$get('cystack_platform/pm/enterprises/user_groups', {
         params: {
           q: query
         }
       })
-      this.groups = [...defaultOptions, ...res]
+      this.groups = res
+      this.searchOptionsVisible = !!res.length
     }
   }
 }
