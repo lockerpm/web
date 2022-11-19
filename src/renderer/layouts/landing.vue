@@ -379,9 +379,4 @@ export default {
     font-size: 18px;
     cursor: pointer;
 }
-.password-manager {
-  text-decoration: underline;
-  color: #268334;
-  cursor: pointer;
-}
 </style>

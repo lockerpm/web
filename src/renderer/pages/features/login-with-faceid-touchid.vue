@@ -46,7 +46,7 @@
               class="w-full landing-font-16 text-black list-disc mx-auto"
             >
               <li class="ml-[27px]">
-                {{ $t(step) }}
+                {{ step }}
               </li>
             </ul>
             <div v-html="$t('features.login_with_faceid_touchid.destails[1].detail_desc2')" />
