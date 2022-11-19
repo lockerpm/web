@@ -29,8 +29,13 @@ export default async ({ store, i18n }, inject) => {
       }
     ],
     attachTo: {
-      element: '#vault__add-btn',
+      element: () => document.querySelector('#vault__add-btn'),
       on: 'auto'
+    },
+    modalOverlayOpeningPadding: 10,
+    modalOverlayOpeningRadius: 30,
+    popperOptions: {
+      modifiers: [{ name: 'offset', options: { offset: [0, 22] } }]
     },
     advanceOn: {
       selector: '#vault__add-btn',
@@ -66,6 +71,7 @@ export default async ({ store, i18n }, inject) => {
   tour.addStep({
     title: () => i18n.t('tutorial.step3.title'),
     text: () => i18n.t('tutorial.step3.text'),
+    useModalOverlay: false,
     buttons: [
       {
         text: () => i18n.t('common.skip'),
@@ -137,7 +143,7 @@ export default async ({ store, i18n }, inject) => {
     text: () => i18n.t('tutorial.step6.text'),
     buttons: [
       {
-        text: () => i18n.t('common.next'),
+        text: () => i18n.t('common.skip'),
         action: () => {
           tour.cancel()
           store.commit('UPDATE_NOTICE', { showTutorialStep6: true })
@@ -148,11 +154,24 @@ export default async ({ store, i18n }, inject) => {
     attachTo: {
       element: '#nav__profile',
       on: 'bottom'
+    },
+    modalOverlayOpeningPadding: 10,
+    modalOverlayOpeningRadius: 30,
+    popperOptions: {
+      modifiers: [{ name: 'offset', options: { offset: [0, 22] } }]
     }
     // advanceOn: {
     //   selector: '#nav__profile',
     //   event: 'click'
     // }
+  })
+
+  Shepherd.on('cancel', () => {
+    store.commit('UPDATE_UI', { isTutorialActive: false })
+  })
+
+  Shepherd.on('start', () => {
+    store.commit('UPDATE_UI', { isTutorialActive: true })
   })
 
   inject('tutorial', tour)

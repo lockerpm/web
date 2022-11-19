@@ -70,7 +70,7 @@
               class="text-right"
             >
               <el-popover
-                placement="right"
+                :placement="$store.state.ui.isTutorialActive ? 'top' : 'right'"
                 width="280"
                 trigger="click"
                 popper-class="locker-pw-generator"

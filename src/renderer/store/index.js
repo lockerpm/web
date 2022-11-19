@@ -36,7 +36,8 @@ export const state = () => ({
     showTutorialStep6: false
   },
   ui: {
-    closeAllModal: false
+    closeAllModal: false,
+    isTutorialActive: false
   }
 })
 export const mutations = {
