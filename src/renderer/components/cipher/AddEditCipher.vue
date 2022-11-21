@@ -2,8 +2,8 @@
   <div>
     <!-- Main dialog -->
     <component
-      id="add-edit-cipher-dialog"
       :is="currentComponent"
+      id="add-edit-cipher-dialog"
       :visible.sync="dialogVisible"
       width="435px"
       destroy-on-close
@@ -614,7 +614,6 @@ export default {
 
   methods: {
     async openDialog (data, cloneMode = false, inline = false) {
-      console.log(data.organizationId)
       this.currentComponent = inline ? InlineEditCipher : Dialog
       this.folders = await this.getFolders()
       this.writeableCollections = await this.getWritableCollections()
@@ -640,7 +639,9 @@ export default {
         if (this.cipher.collectionIds && this.cipher.collectionIds[0]) {
           this.cipher.folderId = this.cipher.collectionIds[0]
         }
-        this.$refs.inputSelectFolder.value = this.cipher.folderId
+        setTimeout(() => {
+          this.$refs.inputSelectFolder.value = this.cipher.folderId
+        }, 0)
       } else if (CipherType[this.type]) {
         this.newCipher(this.type, data)
       } else {
@@ -889,6 +890,9 @@ export default {
       // this.cipher.fields[0].type = FieldType.Text
       this.cipher.folderId = this.$route.params.folderId || null
       this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
+      if (this.cipher.organizationId) {
+        this.handleChangeOrg(this.cipher.organizationId)
+      }
 
       // Set item name if open from tutorial
       if (this.$tutorial.isActive()) {
