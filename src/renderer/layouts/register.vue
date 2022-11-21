@@ -1,23 +1,6 @@
 <template>
   <div>
-    <nav
-      id="header"
-      class="fixed w-full z-30 transition duration-300 ease-in-out bg-transparent"
-    >
-      <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-[14px] px-6">
-        <!-- Logo -->
-        <div class="flex items-center order-1">
-          <nuxt-link :to="localePath('/')">
-            <img
-              src="~/assets/images/logo/logo_black.svg"
-              alt="Locker"
-              class="h-[36px]"
-            >
-          </nuxt-link>
-        </div>
-        <!-- Logo end -->
-      </div>
-    </nav>
+    <Header />
     <div class="max-w-6xl mx-auto">
       <div class="w-full px-6">
         <nuxt />
@@ -28,10 +11,12 @@
 </template>
 
 <script>
+import Header from '../components/landing/Header'
 import Footer from '../components/landing/Footer'
 
 export default {
   components: {
+    Header,
     Footer
   },
   data () {

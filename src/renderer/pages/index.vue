@@ -258,7 +258,12 @@
           :key="index"
           class="opacity-90 mb-9"
         >
-          <a :href="item.href || '#'" :target="item.href? '_blank' : '_self'" class="sm:flex flex-flex-nowrap text-center">
+          <a
+            v-if="!!item.href"
+            :href="item.href || '#'"
+            :target="item.href? '_blank' : '_self'"
+            class="sm:flex flex-flex-nowrap text-center"
+          >
             <div class="circle sm:mx-5 mx-auto">
               <img
                 :src="require(`~/assets/images/landing/index/${item.img}`)"
