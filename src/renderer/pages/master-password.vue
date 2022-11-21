@@ -47,8 +47,7 @@
           alt=""
           class="mx-auto"
         >
-        <div class="text-black landing-font-20 mt-8">
-          {{ $t('landing_master_password.what_is_mp.desc') }}
+        <div class="text-black landing-font-20 mt-8" v-html="$t('landing_master_password.what_is_mp.desc')">
         </div>
       </div>
     </section>

@@ -10,8 +10,8 @@
             {{ $t('data.policies.title') }}
           </el-breadcrumb-item>
           <el-breadcrumb-item
-            v-if="getRouteBaseName() === 'policies-violated'"
-            :to="localeRoute({name: 'policies-violated'})"
+            v-if="getRouteBaseName() === 'policies-index-violated'"
+            :to="localeRoute({name: 'policies-index-violated'})"
           >
             {{ $t('data.policies.violated_items') }}
           </el-breadcrumb-item>
@@ -83,12 +83,12 @@
                 <a
                   v-if="violatedPasswords.length"
                   class="text-danger hover:text-danger"
-                  @click.prevent="go({name: 'policies-violated'})"
+                  @click.prevent="go({name: 'policies-index-violated'})"
                 >
                   <span style="font-size: 22px; vertical-align: middle;" class="mr-1">
                     <i class="el-icon-error" />
                   </span>
-                  <span>{{ $t('data.policies.you_have_violated_items', { count: violatedPasswords.length }) }}</span>
+                  <span>{{ $tc('data.policies.you_have_violated_items', violatedPasswords.length) }}</span>
                 </a>
               </div>
               <!-- Body end -->
@@ -254,6 +254,15 @@
             </el-collapse-item>
             <!-- Passwordless login end -->
           </el-collapse>
+
+          <div v-if="isEmpty && !loading" class="setting-wrapper">
+            <div class="px-4 py-8 flex items-center flex flex-col">
+              <img :src="require('~/assets/images/pages/policies/empty-img.svg')" height="61">
+              <p class="mt-4">
+                {{ $t('data.policies.no_active_policies') }}
+              </p>
+            </div>
+          </div>
         </div>
       </LazyHydrate>
 
@@ -267,7 +276,7 @@
 
 <script>
 import LazyHydrate from 'vue-lazy-hydration'
-import { CipherType } from '../core/enums/cipherType'
+import { CipherType } from '../../core/enums/cipherType'
 
 // const worker = new Worker()
 export default {
@@ -286,16 +295,22 @@ export default {
 
   computed: {
     isPwPolicyEnabled () {
-      return this.enterprisePolicies.password_requirement && this.enterprisePolicies.password_requirement.enabled
+      return this.enterprisePolicies.password_requirement?.enabled
     },
     isMasterPwPolicyEnabled () {
-      return this.enterprisePolicies.master_password_requirement && this.enterprisePolicies.master_password_requirement.enabled
+      return this.enterprisePolicies.master_password_requirement?.enabled
     },
     isBlockFailedLoginEnabled () {
-      return this.enterprisePolicies.block_failed_login && this.enterprisePolicies.block_failed_login.enabled
+      return this.enterprisePolicies.block_failed_login?.enabled
     },
     isPasswordlessEnabled () {
-      return this.enterprisePolicies.passwordless && this.enterprisePolicies.passwordless.enabled
+      return this.enterprisePolicies.passwordless?.enabled
+    },
+    isEmpty () {
+      return !this.isPwPolicyEnabled &&
+        !this.isMasterPwPolicyEnabled &&
+        !this.isBlockFailedLoginEnabled &&
+        !this.isPasswordlessEnabled
     }
   },
 

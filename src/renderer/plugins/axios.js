@@ -31,7 +31,7 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
     if (err.response) {
       if (err.response.status === 400) {
         if (err.response.data.code === '1010') {
-          store.commit('UPDATE_SHOW_LOCKED', true)
+          store.commit('UPDATE_NOTICE', { showLocked: true })
         }
       }
       if (err.response.status === 401) {

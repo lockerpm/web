@@ -192,41 +192,6 @@
           </template>
           <!-- Identity end -->
 
-          <!-- Crypto account -->
-          <template v-if="cipher.type === CipherType.CryptoAccount && cipher.cryptoAccount">
-            <TextHaveCopy label="Email / Username" :text="cipher.cryptoAccount.username" />
-            <TextHaveCopy
-              :label="$t('data.ciphers.password')"
-              :text="cipher.cryptoAccount.password"
-              :view-password="cipher.viewPassword"
-              should-hide
-            />
-            <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">{{ $t('data.ciphers.password_security') }}</div>
-              <div class="col-span-4 font-semibold">
-                <PasswordStrength :score="passwordStrength.score" />
-              </div>
-            </div>
-            <div
-              v-if="cipher.cryptoAccount.uris"
-              class="grid md:grid-cols-6 cipher-item"
-            >
-              <div class="">{{ $t('data.ciphers.website_address') }}</div>
-              <div class="col-span-4 font-semibold">
-                {{ cipher.cryptoAccount.uris.uri }}
-              </div>
-              <div class="text-right">
-                <button class="btn btn-icon btn-xs btn-action" :title="$t('common.go_to_website')" @click="openNewTab(cipher.cryptoAccount.uris.uri)">
-                  <i class="fas fa-external-link-square-alt" />
-                </button>
-              </div>
-            </div>
-            <TextHaveCopy :label="$t('data.ciphers.phone')" :text="cipher.cryptoAccount.phone" />
-            <TextHaveCopy :label="$t('data.ciphers.recovery_email')" :text="cipher.cryptoAccount.emailRecovery" />
-            <TextHaveCopy :label="$t('data.ciphers.notes')" :text="cipher.cryptoAccount.notes" :text-area="true" />
-          </template>
-          <!-- Crypto account end -->
-
           <!-- Crypto wallet -->
           <template v-if="cipher.type === CipherType.CryptoWallet && cipher.cryptoWallet">
             <div class="grid md:grid-cols-6 cipher-item">
@@ -296,7 +261,7 @@
 
           <!-- Notes -->
           <template>
-            <TextHaveCopy v-if="![CipherType.CryptoAccount, CipherType.CryptoWallet, CipherType.MasterPassword].includes(cipher.type)" :label="$t('data.ciphers.notes')" :text="cipher.notes" :text-area="true" />
+            <TextHaveCopy v-if="![CipherType.CryptoWallet, CipherType.MasterPassword].includes(cipher.type)" :label="$t('data.ciphers.notes')" :text="cipher.notes" :text-area="true" />
             <TextHaveCopy
               v-if="cipher.type === CipherType.MasterPassword"
               :label="$t('data.ciphers.notes')"
@@ -367,12 +332,12 @@
 
       <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
       <MoveFolder ref="moveFolder" />
-      <AddEditCipher ref="addEditCipherDialog" @reset-selection="back" />
       <PremiumDialog ref="premiumDialog" />
 
       <div class="max-w-[585px] mx-auto">
         <AddEditCipher
           ref="addEditCipherDialog"
+          :type="type || cipher.type"
           @close="editMode=false"
           @reset-selection="back"
         />
@@ -447,8 +412,6 @@ export default {
     passwordStrength () {
       if (this.cipher.login && [CipherType.Login, CipherType.MasterPassword].includes(this.cipher.type)) {
         return this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
-      } else if (this.cipher.cryptoAccount) {
-        return this.$passwordGenerationService.passwordStrength(this.cipher.cryptoAccount.password, ['cystack']) || {}
       } else if (this.cipher.cryptoWallet) {
         return this.$passwordGenerationService.passwordStrength(this.cipher.cryptoWallet.password, ['cystack']) || {}
       }
@@ -471,14 +434,6 @@ export default {
         }
         const result = await this.$searchService.searchCiphers('', [null, deletedFilter], null) || []
         result.map(item => {
-          if (item.type === CipherType.CryptoAccount) {
-            try {
-              item.cryptoAccount = JSON.parse(item.notes)
-              // item.notes = item.cryptoAccount ? item.cryptoAccount.notes : null
-            } catch (error) {
-              console.log(error)
-            }
-          }
           if (item.type === CipherType.CryptoWallet) {
             try {
               item.cryptoWallet = JSON.parse(item.notes)
@@ -536,7 +491,6 @@ export default {
   methods: {
     addEdit () {
       this.editMode = true
-      // this.$refs.addEditCipherDialog.type = this.cipher.type === CipherType.CryptoAccount ? 'CryptoAccount' : this.cipher.type === CipherType.CryptoWallet ? 'CryptoWallet' : ''
       this.$refs.addEditCipherDialog.openDialog(this.cipher, false, true)
     },
     shareItem (cipher) {

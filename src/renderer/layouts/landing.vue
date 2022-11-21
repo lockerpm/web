@@ -182,11 +182,12 @@ export default {
 </script>
 
 <style lang="scss">
+
 .landing-btn {
   @apply hover:no-underline transition duration-200 ease-in-out text-white hover:text-white hover:bg-green-hover;
   display: inline-block;
-  padding: 13px 20px;
-  min-width: 160px;
+  padding: 18px 36px;
+  min-width: 240px;
   text-align: center;
   font-weight: bold;
   font-size: 16px;
@@ -312,7 +313,7 @@ export default {
   }
 }
 .full-width {
-  width: 100vw;
+  width: calc(100vw - 4px);
   position: relative;
   left: 50%;
   right: 50%;

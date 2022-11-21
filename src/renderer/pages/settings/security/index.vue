@@ -770,6 +770,7 @@ import { Utils } from '@/jslib/src/misc/utils.ts'
 import PasswordStrengthBar from '@/components/password/PasswordStrengthBar'
 import EmergencyContact from '@/components/setting/EmergencyContact.vue'
 import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
+import { MIN_MASTER_PW_LEN } from '@/constants'
 export default {
   components: {
     ChangeMasterPassword,
@@ -844,7 +845,7 @@ export default {
     }
   },
   async mounted () {
-    const locked = await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
+    const locked = await this.$vaultTimeoutService.isLocked()
     if (!locked) {
       await Promise.all([
         this.getUser(),
@@ -1023,7 +1024,7 @@ export default {
     },
     // Change master pw + id pw
     async setPasswordForGrantor () {
-      if (this.masterPassword.length < 8) {
+      if (this.masterPassword.length < MIN_MASTER_PW_LEN) {
         this.notify(this.$t('data.notifications.invalid_master_password'), 'warning')
         return
       }
@@ -1069,7 +1070,7 @@ export default {
     },
     // Change locker pw (id password)
     async setLockerPasswordForGrantor () {
-      if (this.idPassword.length < 8) {
+      if (this.idPassword.length < MIN_MASTER_PW_LEN) {
         this.notify(this.$t('data.notifications.invalid_master_password'), 'warning')
         return
       }

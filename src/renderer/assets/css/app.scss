@@ -63,6 +63,14 @@ body {
         @apply pb-4
       }
 }
+.el-dialog.locker-tutorial-dialog {
+  .el-dialog__header {
+    display: none;
+  }
+  .el-dialog__body {
+    @apply px-8 py-8
+  }
+}
 //.col-actions {
 //  display: none;
 //  visibility: hidden;

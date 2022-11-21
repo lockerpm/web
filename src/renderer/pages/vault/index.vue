@@ -15,8 +15,6 @@ export default {
         this.$refs.listCipher.$refs.chooseCipherType.$refs.addEditCipherDialog.cipher.login.password = this.$route.query.password
       }, 500)
     }
-  },
-  methods: {
   }
 }
 </script>

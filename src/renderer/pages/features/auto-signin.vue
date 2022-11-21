@@ -29,8 +29,8 @@
           :key="index"
           class="w-full md:mb-0 md:pt-[40px] pt-40[px] order-1 max-w-[860px]"
         >
-          <div class="w-full font-bold landing-font-38 text-[#161922] mb-[20px]">
-            {{ $t(detail.detail_title) }}
+          <div class="w-full font-bold landing-font-38 text-[#161922] mb-[20px]"
+            v-html="detail.detail_title">
           </div>
           <div
             class="w-full landing-font-16"
