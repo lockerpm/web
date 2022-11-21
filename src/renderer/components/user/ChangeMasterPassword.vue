@@ -71,6 +71,8 @@ import { CipherType } from '../../core/enums/cipherType.ts'
 import { LoginView } from '../../jslib/src/models/view/loginView.ts'
 import { LoginUriView } from '../../jslib/src/models/view/loginUriView.ts'
 import { CipherRequest } from '../../jslib/src/models/request/cipherRequest.ts'
+import { MIN_MASTER_PW_LEN } from '../../constants'
+
 export default {
   components: { PasswordStrengthBar, InputText, PasswordViolationDialog },
   data () {
@@ -151,7 +153,7 @@ export default {
     },
 
     async changePass () {
-      if (this.masterPassword.length < 8) {
+      if (this.masterPassword.length < MIN_MASTER_PW_LEN) {
         this.notify(this.$t('data.notifications.invalid_master_password'), 'error')
         return
       }

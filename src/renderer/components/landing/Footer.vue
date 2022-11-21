@@ -15,7 +15,7 @@
                 v-for="(parent, i) in group"
                 :key="i"
               >
-                <div v-if="!(groupIndex === 1 && i === 0 && !isDevOrStaging)" class="mb-6">
+                <div class="mb-6">
                   <h6 class="font-bold landing-font-16 mb-[20px]">
                     {{ parent.category }}
                   </h6>

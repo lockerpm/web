@@ -1,5 +1,5 @@
 <template>
-  <div class="full-width bg-[#DFDFDF]">
+  <div :class="submitted?'full-width bg-[#388337]':'full-width bg-[#DFDFDF]'">
     <div class="max-w-6xl px-6 mx-auto" :class="submitted?'h-screen flex items-center justify-center':'mt-20 py-[100px]'">
       <div v-if="submitted">
         <div class="text-center mb-4">

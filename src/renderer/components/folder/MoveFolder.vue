@@ -104,34 +104,20 @@ export default {
         const collection = this.collections.find(c => c.id === this.folderId)
         const personalKey = await this.$cryptoService.getEncKey()
         const promises = []
+
+        // Get decrypted ciphers list
         this.ids.forEach(async id => {
           const encCipher = await this.$cipherService.get(id)
           const decCipher = await encCipher.decrypt()
           this.ciphers.push({ ...decCipher, id })
           promises.push(this.removeFromCollection(decCipher, personalKey))
         })
+
+        // Remove from collection
         await Promise.all(promises)
-        // const encCipher = await this.$cipherService.get(this.ids[0])
-        // const cipher = await encCipher.decrypt()
-        // if (cipher.collectionIds && cipher.collectionIds.length) {
-        //   const personalKey = await this.$cryptoService.getEncKey()
-        //   const type_ = cipher.type
-        //   if (type_ === 7) {
-        //     cipher.type = CipherType.SecureNote
-        //     cipher.secureNote.type = 0
-        //   }
-        //   const cipherEnc = await this.$cipherService.encrypt(cipher, personalKey)
-        //   const data = new CipherRequest(cipherEnc)
-        //   // console.log(data)
-        //   data.type = type_
-        //   cipher.type = type_
-        //   try {
-        //     await this.$axios.put(`cystack_platform/pm/sharing/${cipher.organizationId}/folders/${cipher.collectionIds[0]}/items`, { cipher: { ...data, id: cipher.id } })
-        //   } catch (error) {
-        //     return
-        //   }
-        // }
+
         if (collection) {
+          // Remove from current folder
           await this.$axios.$put('cystack_platform/pm/ciphers/move', {
             ids: this.ids,
             folderId: null
@@ -164,10 +150,6 @@ export default {
       this.$refs.addEditFolder.openDialog({})
     },
     async handleCreatedFolder (folder) {
-      // this.folders = await this.getFolders()
-      // setTimeout(async () => {
-      //   this.folders = await this.getFolders()
-      // }, 300)
       this.folders.push(folder)
       this.cipher.folderId = folder.id
       this.folderId = folder.id

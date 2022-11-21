@@ -69,6 +69,7 @@
               <template slot-scope="scope">
                 <div class="flex items-center">
                   <template v-if="!['invited', 'accepted'].includes(scope.row.status)">
+                    <!-- Item -->
                     <div
                       v-if="scope.row.type"
                       class="text-[34px] mr-3 flex-shrink-0"
@@ -76,6 +77,8 @@
                     >
                       <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
                     </div>
+
+                    <!-- Folder -->
                     <div v-else>
                       <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
                     </div>
@@ -372,8 +375,11 @@ import Vnodes from '../../components/Vnodes'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { Utils } from '../../jslib/src/misc/utils.ts'
 import PremiumDialog from '../../components/upgrade/PremiumDialog'
+
+CipherType.MasterPassword = 8
 CipherType.CryptoBackup = 7
 CipherType[7] = 'Crypto Backup'
+
 export default {
   components: {
     AddEditCipher,
@@ -541,7 +547,7 @@ export default {
       }
     }
     // this.getPendingShares()
-    const locked = await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
+    const locked = await this.$vaultTimeoutService.isLocked()
     if (!locked) {
       if (this.getRouteBaseName() === 'shares') {
         this.getShareInvitations()
@@ -557,9 +563,12 @@ export default {
         const deletedFilter = c => {
           return c.isDeleted === this.deleted
         }
+        const nonProtectedCipher = c => {
+          return c.type !== CipherType.MasterPassword
+        }
         let result = []
         try {
-          result = await this.$searchService.searchCiphers('', [null, deletedFilter], null) || []
+          result = await this.$searchService.searchCiphers('', [nonProtectedCipher, deletedFilter], null) || []
         } catch (error) {
 
         }
@@ -657,25 +666,6 @@ export default {
           })
         } else if (this.getRouteBaseName() === 'shares-your-shares') {
           collections = collections.filter(item => this.getTeam(this.organizations, item.organizationId).type === 0)
-          // const resultMapping = []
-          // collections.forEach(item => {
-          //   const org = find(this.myShares, e => e.organization_id === item.organizationId) || {}
-          //   const members = org.members || []
-          //   members.forEach(member => {
-          //     resultMapping.push({
-          //       ...item,
-          //       subTitle: item.subTitle,
-          //       user: {
-          //         ...member,
-          //         share_type: member.share_type === 'Edit' ? this.$t('data.ciphers.editable') : member.share_type === 'View' ? this.$t('data.ciphers.viewable') : this.$t('data.ciphers.only_use')
-          //       }
-          //     })
-          //   })
-          //   if (members.length) {
-          //     resultMapping.push(item)
-          //   }
-          // })
-          // collections = resultMapping
         }
         collections.forEach(f => {
           const ciphers = this.allCiphers && (this.allCiphers.filter(c => c.collectionIds.includes(f.id)) || [])

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import Vnodes from '../../components/Vnodes'
+import Vnodes from '../../../components/Vnodes'
 
 export default {
   components: {

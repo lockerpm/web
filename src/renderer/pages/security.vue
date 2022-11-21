@@ -272,7 +272,7 @@ export default {
 
 <style scoped>
 .full-width {
-  width: 100vw;
+  width: calc(100vw - 4px);
   position: relative;
   left: 50%;
   right: 50%;
