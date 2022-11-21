@@ -444,6 +444,8 @@ Vue.mixin({
         return this.getIconDefaultCipher('Card', size)
       case CipherType.Identity:
         return this.getIconDefaultCipher('Identity', size)
+      case CipherType.TOTP:
+        return this.getIconDefaultCipher('Authenticator', size)
       case 6:
         return this.getIconDefaultCipher('CryptoAccount', size)
       case 7:
