@@ -12,7 +12,8 @@
               {{ $t('features.aes_256.subtitle') }}
             </div>
             <div class="pt-20 mx-auto max-w-[670px]">
-              <img src="~/assets/images/landing/features/detail/aes_256.png">
+              <img v-if="locale==='en'" src="~/assets/images/landing/features/detail/en/aes_256.png">
+              <img v-else src="~/assets/images/landing/features/detail/vi/aes_256.png">
             </div>
           </div>
         </div>

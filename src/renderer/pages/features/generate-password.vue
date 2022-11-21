@@ -12,7 +12,8 @@
               {{ $t('features.generate_password.subtitle') }}
             </div>
             <div class="pt-20 mx-auto max-w-[630px]">
-              <img src="~/assets/images/landing/features/detail/generate_password.png">
+              <img v-if="locale==='en'" src="~/assets/images/landing/features/detail/en/generate_password.png">
+              <img v-else src="~/assets/images/landing/features/detail/vi/generate_password.png">
             </div>
           </div>
         </div>
