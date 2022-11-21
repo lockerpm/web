@@ -12,7 +12,8 @@
               {{ $t('features.zero_knowledge.subtitle') }}
             </div>
             <div class="mx-auto max-w-[820px]">
-              <img src="~/assets/images/landing/features/detail/zero_knowledge.png">
+              <img v-if="locale==='en'" src="~/assets/images/landing/features/detail/en/zero_knowledge.png">
+              <img v-else src="~/assets/images/landing/features/detail/vi/zero_knowledge.png">
             </div>
           </div>
         </div>
