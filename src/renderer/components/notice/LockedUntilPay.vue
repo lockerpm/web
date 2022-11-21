@@ -4,7 +4,7 @@
     :visible="showLocked"
     width="400px"
     custom-class="locker-dialog"
-    @close="$store.commit('UPDATE_SHOW_LOCKED', false)"
+    @close="$store.commit('UPDATE_NOTICE', { showLocked: false })"
   >
     {{ $t('errors.locked_until_pay') }}
 
@@ -23,12 +23,12 @@
 export default {
   computed: {
     showLocked () {
-      return this.$store.state.showLocked
+      return this.$store.state.notice.showLocked
     }
   },
   methods: {
     goToLock () {
-      this.$store.commit('UPDATE_SHOW_LOCKED', false)
+      this.$store.commit('UPDATE_NOTICE', { showLocked: false })
       this.$router.push(this.localeRoute({ name: 'lock' }))
     }
   }

@@ -97,6 +97,7 @@
     "papaparse": "^5.3.1",
     "prismjs": "^1.28.0",
     "read-excel-file": "^5.2.25",
+    "shepherd.js": "^10.0.1",
     "slugify": "^1.6.5",
     "sweetalert2": "^10.16.7",
     "tldjs": "^2.3.1",

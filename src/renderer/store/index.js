@@ -31,7 +31,15 @@ export const state = () => ({
   myShares: [],
   enterpriseInvitations: [],
   enterprisePolicies: [],
-  showLocked: false
+  notice: {
+    showLocked: false,
+    showTutorial: false,
+    showTutorialStep6: false
+  },
+  ui: {
+    closeAllModal: false,
+    isTutorialActive: false
+  }
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -118,8 +126,17 @@ export const mutations = {
   UPDATE_ENTERPRISE_POLICIES (state, value) {
     state.enterprisePolicies = value
   },
-  UPDATE_SHOW_LOCKED (state, value) {
-    state.showLocked = value
+  UPDATE_NOTICE (state, value) {
+    state.notice = {
+      ...state.notice,
+      ...value
+    }
+  },
+  UPDATE_UI (state, value) {
+    state.ui = {
+      ...state.ui,
+      ...value
+    }
   }
 }
 export const actions = {

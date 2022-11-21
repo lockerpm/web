@@ -2,6 +2,7 @@
   <div>
     <!-- Main dialog -->
     <component
+      id="add-edit-cipher-dialog"
       :is="currentComponent"
       :visible.sync="dialogVisible"
       width="435px"
@@ -9,6 +10,7 @@
       top="5vh"
       custom-class="locker-dialog"
       :close-on-click-modal="false"
+      @close="onClose"
     >
       <!-- Title -->
       <div slot="title">
@@ -68,7 +70,7 @@
               class="text-right"
             >
               <el-popover
-                placement="right"
+                :placement="$store.state.ui.isTutorialActive ? 'top' : 'right'"
                 width="280"
                 trigger="click"
                 popper-class="locker-pw-generator"
@@ -602,6 +604,11 @@ export default {
   watch: {
     cryptoWallet () {
       this.cipher.cryptoWallet = this.cryptoWallet
+    },
+    '$store.state.ui.closeAllModal' (newVal) {
+      if (newVal) {
+        this.dialogVisible = false
+      }
     }
   },
 
@@ -883,6 +890,14 @@ export default {
       // this.cipher.fields[0].type = FieldType.Text
       this.cipher.folderId = this.$route.params.folderId || null
       this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
+      if (this.cipher.organizationId) {
+        this.handleChangeOrg(this.cipher.organizationId)
+      }
+
+      // Set item name if open from tutorial
+      if (this.$tutorial.isActive()) {
+        this.cipher.name = 'New password'
+      }
     },
 
     // Set item name to url
@@ -964,6 +979,13 @@ export default {
         this.cipher.fields[v.index].type = v.value.type != null ? v.value.type : this.cipher.fields[v.index].type
       } else {
         this.cipher.fields.push(v.value)
+      }
+    },
+
+    onClose () {
+      if (this.$tutorial.isActive()) {
+        this.$tutorial.hide()
+        this.$tutorial.show('view-shares')
       }
     }
   }

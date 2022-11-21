@@ -78,26 +78,72 @@
             <template v-if="canAddItem">
               <div class="mx-6 text-head-4"> | </div>
               <div class="self-center">
-                <el-dropdown
-                  v-if="routeName==='vault'"
-                  trigger="click"
-                >
-                  <button class="btn btn-outline-primary">
-                    <i class="el-icon-plus text-lg" />
-                    <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
-                  </button>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                      v-for="item in options"
-                      :key="item.value"
-                      :value="item.value"
-                      class="flex items-center justify-between"
-                      @click.native="confirmDialog(item.value)"
+                <!-- Choose type to add -->
+                <template v-if="routeName==='vault'">
+                  <!-- Button for tutorial -->
+                  <el-popover
+                    v-model="addBtnDropdownVisible"
+                    placement="bottom"
+                    width="150"
+                    trigger="manual"
+                  >
+                    <button
+                      id="vault__add-btn"
+                      slot="reference"
+                      class="btn btn-outline-primary"
+                      :class="{ 'hidden': !$store.state.ui.isTutorialActive }"
+                      @click="addBtnDropdownVisible = !addBtnDropdownVisible"
                     >
-                      {{ item.label }}
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
+                      <i class="el-icon-plus text-lg" />
+                      <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
+                    </button>
+                    <div style="margin: -12px; padding: 10px 0">
+                      <div
+                        v-for="item in options"
+                        :id="`vault__add-btn__${item.value}`"
+                        :key="item.value"
+                        class="text-black hover:bg-black-100 w-full cursor-pointer"
+                        style="padding: 11px 20px; transition: all ease 0.2s"
+                        @click="confirmDialog(item.value)"
+                      >
+                        <p>
+                          {{ item.label }}
+                        </p>
+                      </div>
+                    </div>
+                  </el-popover>
+                  <!-- Button for tutorial end -->
+
+                  <!-- Normal button -->
+                  <el-dropdown trigger="click">
+                    <button
+                      class="btn btn-outline-primary"
+                      :class="{ 'hidden': $store.state.ui.isTutorialActive }"
+                    >
+                      <i class="el-icon-plus text-lg" />
+                      <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
+                    </button>
+                    <el-dropdown-menu slot="dropdown">
+                      <div
+                        v-for="item in options"
+                        :key="item.value"
+                      >
+                        <el-dropdown-item
+                          :value="item.value"
+                          class="flex items-center justify-between"
+                          @click.native="confirmDialog(item.value)"
+                        >
+                          {{ item.label }}
+                        </el-dropdown-item>
+                      </div>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                  <!-- Normal button end -->
+                </template>
+
+                <!-- Choose type to add end -->
+
+                <!-- Add a specific type -->
                 <template v-else>
                   <button
                     class="btn btn-outline-primary"
@@ -107,6 +153,7 @@
                     <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
                   </button>
                 </template>
+                <!-- Add a specific type end -->
               </div>
             </template>
             <!-- Add new button end -->
@@ -837,7 +884,10 @@ export default {
       showLogo: this.$cookies.get('show-logo') || false,
       folders: [],
       collections: [],
-      checkedAll: false
+      checkedAll: false,
+
+      // For tutorial
+      addBtnDropdownVisible: false
     }
   },
   computed: {
@@ -1094,6 +1144,14 @@ export default {
       watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
     }
   },
+  beforeDestroy () {
+    if (this.$tutorial.isActive()) {
+      const currentStep = this.$tutorial.getCurrentStep()
+      if (currentStep.id.startsWith('add-pw')) {
+        this.$tutorial.cancel()
+      }
+    }
+  },
   methods: {
     isProtectedCipher (cipher) {
       return cipher.type === CipherType.MasterPassword
@@ -1217,6 +1275,7 @@ export default {
       return ['owner', 'admin'].includes(team.role) && !team.locked
     },
     confirmDialog (type) {
+      this.addBtnDropdownVisible = false
       if (type === 'Folder') {
         this.addEditFolder()
       } else {
