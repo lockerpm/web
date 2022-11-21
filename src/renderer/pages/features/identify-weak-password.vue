@@ -11,11 +11,11 @@
             <div class="w-full landing-font-20 text-[#3A3A3A] mb-[20px] mx-auto">
               {{ $t('features.identify_weak_password.subtitle') }}
             </div>
-            <div class="max-w-[700px] mx-auto mt-[50px]">
-              <img src="~/assets/images/landing/features/detail/identify_weak_password.svg">
+            <div class="max-w-[750px] mx-auto mt-[50px]">
+              <img src="~/assets/images/landing/features/detail/identify_weak_password.svg" class="ml-[12%]">
               <nuxt-link
-                class="mx-auto landing-btn mt-[50px]"
-                :to="localePath('/download')"
+                class="mx-auto landing-btn"
+                :to="localePath('/password-health-checker')"
                 style="align-self: center"
               >
                 {{ $t('features.identify_weak_password.button_text') }}
@@ -36,7 +36,7 @@
           class="w-full md:mb-0 md:pt-[40px] pt-40[px] order-1 max-w-[860px]"
         >
           <div class="w-full font-bold landing-font-38 text-[#161922] mb-[20px]">
-            {{ $t(detail.detail_title) }}
+            {{ detail.detail_title }}
           </div>
           <div
             class="w-full landing-font-16"
