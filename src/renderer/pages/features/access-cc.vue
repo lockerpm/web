@@ -12,7 +12,8 @@
               {{ $t('features.access_cc.subtitle') }}
             </div>
             <div class="pt-20 max-w-[500px] mx-auto">
-              <img src="~/assets/images/landing/features/detail/access_cc.png">
+              <img v-if="locale==='en'" src="~/assets/images/landing/features/detail/en/access_cc.png">
+              <img v-else src="~/assets/images/landing/features/detail/vi/access_cc.png">
             </div>
           </div>
         </div>
@@ -72,6 +73,7 @@
 <script>
 export default {
   layout: 'landing',
+  middleware: ['blockProduction'],
   data () {
     return {
     }

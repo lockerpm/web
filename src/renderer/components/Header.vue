@@ -127,7 +127,7 @@
       <!-- Dropdown menu -->
       <el-dropdown trigger="click">
         <!-- User info -->
-        <div id="nav__profile" class="flex items-center">
+        <div id="nav__profile" class="flex items-center" @click="showTutorialLastStep">
           <el-avatar
             :size="35"
             :src="currentUser.avatar"
@@ -243,7 +243,7 @@ export default {
   },
   asyncComputed: {
     async locked () {
-      return await this.$vaultTimeoutService.isLocked(this.$store.state.isLoggedInPw)
+      return await this.$vaultTimeoutService.isLocked()
     }
   },
   computed: {
@@ -360,6 +360,12 @@ export default {
     },
     startTutorial () {
       this.$store.commit('UPDATE_NOTICE', { showTutorial: true })
+    },
+    showTutorialLastStep () {
+      if (this.$tutorial.isActive()) {
+        this.$tutorial.cancel()
+        this.$store.commit('UPDATE_NOTICE', { showTutorialStep6: true })
+      }
     }
   }
 }

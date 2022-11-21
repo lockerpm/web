@@ -12,7 +12,8 @@
               {{ $t('features.zero_knowledge.subtitle') }}
             </div>
             <div class="mx-auto max-w-[820px]">
-              <img src="~/assets/images/landing/features/detail/zero_knowledge.png">
+              <img v-if="locale==='en'" src="~/assets/images/landing/features/detail/en/zero_knowledge.png">
+              <img v-else src="~/assets/images/landing/features/detail/vi/zero_knowledge.png">
             </div>
           </div>
         </div>
@@ -45,8 +46,11 @@
             {{ $t('features.zero_knowledge.more_info') }}
             <p class="landing-font-16">
               <span class="text-green">
-                <a href="https://locker.io/blog/can-locker-access-and-read-your-data">
+                <a v-if="locale==='en'" href="https://locker.io/blog/can-locker-access-and-read-your-data">
                   &nbsp;here
+                </a>
+                <a v-else href="https://locker.io/blog/can-locker-access-and-read-your-data">
+                  &nbsp;tại đây
                 </a>
               </span>
             </p>
@@ -87,6 +91,7 @@
 <script>
 export default {
   layout: 'landing',
+  middleware: ['blockProduction'],
   data () {
     return {
     }

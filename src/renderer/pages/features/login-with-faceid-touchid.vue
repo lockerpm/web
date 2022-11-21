@@ -15,8 +15,8 @@
               {{ $t('features.login_with_faceid_touchid.subtitle') }}
             </div>
             <div class="max-w-[356px] pt-10 mx-auto">
-              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/log_in_with_FaceID_en.svg" width="w-full">
-              <img v-else src="~/assets/images/landing/features/detail/log_in_with_FaceID_vi.svg" width="w-full">
+              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/en/log_in_with_FaceID.svg" width="w-full">
+              <img v-else src="~/assets/images/landing/features/detail/vi/log_in_with_FaceID.svg" width="w-full">
             </div>
           </div>
         </div>

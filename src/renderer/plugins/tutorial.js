@@ -16,6 +16,7 @@ const tour = new Shepherd.Tour({
 export default async ({ store, i18n }, inject) => {
   // Add new
   tour.addStep({
+    id: 'add-pw-1',
     title: () => i18n.t('tutorial.step1.title'),
     text: () => i18n.t('tutorial.step1.text'),
     buttons: [
@@ -29,8 +30,13 @@ export default async ({ store, i18n }, inject) => {
       }
     ],
     attachTo: {
-      element: '#vault__add-btn',
+      element: () => document.querySelector('#vault__add-btn'),
       on: 'auto'
+    },
+    modalOverlayOpeningPadding: 10,
+    modalOverlayOpeningRadius: 30,
+    popperOptions: {
+      modifiers: [{ name: 'offset', options: { offset: [0, 22] } }]
     },
     advanceOn: {
       selector: '#vault__add-btn',
@@ -40,6 +46,7 @@ export default async ({ store, i18n }, inject) => {
 
   // Add new password
   tour.addStep({
+    id: 'add-pw-2',
     title: () => i18n.t('tutorial.step2.title'),
     text: () => i18n.t('tutorial.step2.text'),
     buttons: [
@@ -64,14 +71,22 @@ export default async ({ store, i18n }, inject) => {
 
   // Edit password and create
   tour.addStep({
+    id: 'add-pw-3',
     title: () => i18n.t('tutorial.step3.title'),
     text: () => i18n.t('tutorial.step3.text'),
+    useModalOverlay: false,
     buttons: [
       {
         text: () => i18n.t('common.skip'),
         action: () => {
-          tour.hide()
-          tour.show('view-shares')
+          store.commit('UPDATE_UI', { closeAllModal: true })
+          setTimeout(() => {
+            store.commit('UPDATE_UI', { closeAllModal: false })
+          }, 0)
+
+          // Already called in dialog onClose
+          // tour.hide()
+          // tour.show('view-shares')
         },
         secondary: true
       }
@@ -131,7 +146,7 @@ export default async ({ store, i18n }, inject) => {
     text: () => i18n.t('tutorial.step6.text'),
     buttons: [
       {
-        text: () => i18n.t('common.next'),
+        text: () => i18n.t('common.skip'),
         action: () => {
           tour.cancel()
           store.commit('UPDATE_NOTICE', { showTutorialStep6: true })
@@ -143,11 +158,23 @@ export default async ({ store, i18n }, inject) => {
       element: '#nav__profile',
       on: 'bottom'
     },
-    canClickTarget: false
+    modalOverlayOpeningPadding: 10,
+    modalOverlayOpeningRadius: 30,
+    popperOptions: {
+      modifiers: [{ name: 'offset', options: { offset: [0, 22] } }]
+    }
     // advanceOn: {
     //   selector: '#nav__profile',
     //   event: 'click'
     // }
+  })
+
+  Shepherd.on('cancel', () => {
+    store.commit('UPDATE_UI', { isTutorialActive: false })
+  })
+
+  Shepherd.on('start', () => {
+    store.commit('UPDATE_UI', { isTutorialActive: true })
   })
 
   inject('tutorial', tour)

@@ -1,4 +1,4 @@
-<template>
+/<template>
   <div>
     <!-- Intro -->
     <section class="full-width w-full h-auto md:pb-[56px] pb-14">
@@ -12,8 +12,8 @@
               {{ $t('features.sync_password.subtitle') }}
             </div>
             <div class="pt-20 mx-auto max-w-[788px]">
-              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/sync_password_en.svg" class="h-full">
-              <img v-else src="~/assets/images/landing/features/detail/sync_password_vi.svg" class="h-full">
+              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/en/sync_password.png" class="h-full">
+              <img v-else src="~/assets/images/landing/features/detail/vi/sync_password.png" class="h-full">
             </div>
           </div>
         </div>

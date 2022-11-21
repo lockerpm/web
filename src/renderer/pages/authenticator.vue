@@ -24,7 +24,7 @@
           class="uppercase text-head-6"
         >
           <span class="text-primary font-semibold">
-            {{ ($store.state.syncing && cipherCount != null) ? cipherCount : ciphers.length }}
+            {{ itemsCount }}
           </span>
           {{ $tc('type.0', ciphers.length) }}
         </div>
@@ -91,7 +91,9 @@
           :item-size="65"
           :items="ciphers || []"
         >
+          <!-- Headers -->
           <template slot="before">
+            <!-- Check all -->
             <div class="th flex">
               <!-- Check all -->
               <div class="self-center mr-1">
@@ -120,18 +122,11 @@
                 </div>
               </div>
             </div>
-
-            <!-- Headers -->
-            <div
-              v-for="header in headers"
-              :key="header"
-              class="th"
-            >
-              {{ header }}
-            </div>
-            <!-- Headers end -->
+            <!-- Check all end -->
           </template>
+          <!-- Headers end -->
 
+          <!-- Body -->
           <template #default="{item}">
             <div class="td">
               <div class="flex items-center">
@@ -154,32 +149,17 @@
               </div>
             </div>
 
-            <!-- Updated time -->
-            <div class="td">
-              <span class="break-normal">{{ $moment(item.revisionDate).fromNow() }}</span>
-            </div>
-            <!-- Updated time end -->
-
             <!-- Actions -->
-            <div class="td">
+            <div class="td" style="max-width: 70px; margin-left: 10px">
               <div class="col-actions text-right">
                 <!-- Copy -->
-                <el-dropdown
-                  trigger="click"
-                  :hide-on-click="false"
+                <button
+                  class="btn btn-icon btn-xs hover:bg-black-400"
+                  v-clipboard:copy="getOtp(item.otpData)"
+                  v-clipboard:success="clipboardSuccessHandler"
                 >
-                  <button class="btn btn-icon btn-xs hover:bg-black-400">
-                    <i class="far fa-clone" />
-                  </button>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item
-                      v-clipboard:copy="getOtp(item.otpData)"
-                      v-clipboard:success="clipboardSuccessHandler"
-                    >
-                      {{ $t('common.copy') }} OTP
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
+                  <i class="far fa-clone" />
+                </button>
                 <!-- Copy end -->
 
                 <!-- Other actions -->
@@ -206,6 +186,7 @@
             </div>
             <!-- Actions end -->
           </template>
+          <!-- Body end -->
         </RecycleScroller>
       </client-only>
       <!-- List Ciphers end -->
@@ -232,9 +213,9 @@ import orderBy from 'lodash/orderBy'
 import cloneDeep from 'lodash/cloneDeep'
 import NoCipher from '../components/cipher/NoCipher'
 import { CipherType } from '../core/enums/cipherType.ts'
-import { parseOTPUri, getTOTP } from '../utils/totp/index.ts'
 import AddEditOTP from '../components/cipher/AddEditOTP'
 import OTPInfoBlock from '../components/cipher/OTPInfoBlock'
+import { getTOTP, parseOTPUri } from '../utils/totp/index.ts'
 
 export default {
   components: { OTPInfoBlock, AddEditOTP, NoCipher },
@@ -269,6 +250,15 @@ export default {
 
     isSearching () {
       return this.searchText && this.searchText.trim().length > 0
+    },
+
+    itemsCount () {
+      if (this.$store.state.syncing) {
+        if (this.notDeletedCipherCount?.ciphers[CipherType.TOTP]) {
+          return this.notDeletedCipherCount.ciphers[CipherType.TOTP]
+        }
+      }
+      return this.ciphers.length
     }
   },
 
@@ -296,10 +286,9 @@ export default {
           result = await this.$searchService.searchCiphers(this.searchText, [filter], null) || []
         } catch (error) {
         }
-        result.map(item => {
+        result = result.map(item => {
           try {
             item.otpData = parseOTPUri(item.notes)
-            // item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
           } catch (error) {
             console.log(error)
           }

@@ -12,8 +12,8 @@
               {{ $t('features.auto_signin.subtitle') }}
             </div>
             <div class="pt-20 max-w-[500px] mx-auto">
-              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/auto_signin_en.png">
-              <img v-else src="~/assets/images/landing/features/detail/auto_signin_vi.svg">
+              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/en/auto_signin.png">
+              <img v-else src="~/assets/images/landing/features/detail/vi/auto_signin.png">
             </div>
           </div>
         </div>

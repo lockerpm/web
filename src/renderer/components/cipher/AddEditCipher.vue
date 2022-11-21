@@ -70,7 +70,7 @@
               class="text-right"
             >
               <el-popover
-                placement="right"
+                :placement="$store.state.ui.isTutorialActive ? 'top' : 'right'"
                 width="280"
                 trigger="click"
                 popper-class="locker-pw-generator"
@@ -334,30 +334,36 @@
 
         <!-- NOTES -->
         <template>
+          <!-- Label -->
           <div
             v-if="cipher.type !== CipherType.SecureNote"
             class="my-5 text-black-700 text-head-6 font-semibold"
           >
             {{ $t('data.ciphers.others') }}
           </div>
+          <!-- Label end -->
 
-          <InputText
-            v-else-if="cipher.type === CipherType.CryptoWallet"
-            v-model="cryptoWallet.notes"
-            :label="$t('data.ciphers.notes')"
-            class="w-full"
-            :disabled="isDeleted"
-            is-textarea
-          />
+          <!-- Input -->
+          <template>
+            <InputText
+              v-if="cipher.type === CipherType.CryptoWallet"
+              v-model="cryptoWallet.notes"
+              :label="$t('data.ciphers.notes')"
+              class="w-full"
+              :disabled="isDeleted"
+              is-textarea
+            />
 
-          <InputText
-            v-else
-            v-model="cipher.notes"
-            :label="$t('data.ciphers.notes')"
-            class="w-full"
-            :disabled="isDeleted"
-            is-textarea
-          />
+            <InputText
+              v-else
+              v-model="cipher.notes"
+              :label="$t('data.ciphers.notes')"
+              class="w-full"
+              :disabled="isDeleted"
+              is-textarea
+            />
+          </template>
+          <!-- Input end -->
         </template>
         <!-- NOTES END -->
 
@@ -382,6 +388,7 @@
           :label="$t('data.folders.select_folder')"
           :initial-value="cipher.folderId"
           :options="[...folders, ...writeableCollections]"
+          :protected-options="nonWriteableCollections"
           :disabled="isDeleted"
           class="w-full"
           @change="(v) => cipher.folderId = v"
@@ -513,6 +520,7 @@ export default {
       CipherType,
       errors: {},
       writeableCollections: [],
+      nonWriteableCollections: [],
       cloneMode: false,
       currentComponent: Dialog,
       cryptoWallet: {
@@ -596,6 +604,11 @@ export default {
   watch: {
     cryptoWallet () {
       this.cipher.cryptoWallet = this.cryptoWallet
+    },
+    '$store.state.ui.closeAllModal' (newVal) {
+      if (newVal) {
+        this.dialogVisible = false
+      }
     }
   },
 
@@ -604,6 +617,7 @@ export default {
       this.currentComponent = inline ? InlineEditCipher : Dialog
       this.folders = await this.getFolders()
       this.writeableCollections = await this.getWritableCollections()
+      this.nonWriteableCollections = await this.getNonWritableCollections()
       this.dialogVisible = true
       this.cloneMode = cloneMode
       if (data.id || this.cloneMode) {
@@ -625,7 +639,9 @@ export default {
         if (this.cipher.collectionIds && this.cipher.collectionIds[0]) {
           this.cipher.folderId = this.cipher.collectionIds[0]
         }
-        this.$refs.inputSelectFolder.value = this.cipher.folderId
+        setTimeout(() => {
+          this.$refs.inputSelectFolder.value = this.cipher.folderId
+        }, 0)
       } else if (CipherType[this.type]) {
         this.newCipher(this.type, data)
       } else {
@@ -718,7 +734,10 @@ export default {
 
         // Check if current folder is a collection or remove from old collection if move back to folder
         if (this.cipher.folderId) {
-          const collection = this.writeableCollections.find(c => c.id === this.cipher.folderId)
+          const collection = [
+            ...this.writeableCollections,
+            ...this.nonWriteableCollections
+          ].find(c => c.id === this.cipher.folderId)
           if (collection) {
             this.cipher.organizationId = collection.organizationId
             this.cipher.folderId = null
@@ -728,8 +747,12 @@ export default {
             this.cipher.collectionIds = []
           }
         } else if (this.cipher.organizationId) {
-          this.cipher.organizationId = null
-          this.cipher.collectionIds = []
+          // If move item from folder share back to no folder -> remove orgId
+          const collection = this.writeableCollections.find(c => c.organizationId === this.cipher.organizationId)
+          if (collection) {
+            this.cipher.organizationId = null
+            this.cipher.collectionIds = []
+          }
         }
 
         // Encrypt cipher
@@ -870,25 +893,17 @@ export default {
       if (this.cipher.organizationId) {
         this.handleChangeOrg(this.cipher.organizationId)
       }
+
+      // Set item name if open from tutorial
+      if (this.$tutorial.isActive()) {
+        this.cipher.name = 'New password'
+      }
     },
 
     // Set item name to url
     handleGenNameByUri () {
       if (!this.cipher.name) {
         this.cipher.name = this.cipher.login.uris[0].uri.replace('https://', '')
-      }
-    },
-
-    // Move cipher to new org collection
-    async handleChangeOrg (orgId) {
-      this.cipher.folderId = null
-      if (orgId) {
-        this.writeableCollections = await this.getWritableCollections(orgId)
-        if (this.writeableCollections.length) {
-          this.cipher.collectionIds = [this.writeableCollections[0].id]
-        }
-      } else {
-        this.cipher.collectionIds = []
       }
     },
 
@@ -901,6 +916,21 @@ export default {
         collections = collections.filter(item => {
           const _type = this.getTeam(organizations, item.organizationId).type
           return _type === 0
+        })
+      } catch (error) {
+      }
+      return collections
+    },
+
+    // Get non-writable collections
+    async getNonWritableCollections () {
+      let collections = []
+      try {
+        collections = await this.$collectionService.getAllDecrypted()
+        const organizations = await this.$userService.getAllOrganizations()
+        collections = collections.filter(item => {
+          const _type = this.getTeam(organizations, item.organizationId).type
+          return _type !== 0
         })
       } catch (error) {
       }

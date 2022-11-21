@@ -1,6 +1,4 @@
-import totp from 'totp-generator'
-import base32 from 'hi-base32'
-import proto from './migration-payload_pb'
+const totp = require('totp-generator')
 
 export interface OTPData {
   account?: string
@@ -12,13 +10,18 @@ export interface OTPData {
 
 export const getTOTP = (otp: OTPData) => {
   try {
-    return totp(otp.secret, {
+    const res = totp(otp.secret, {
       algorithm: otp.algorithm || 'SHA-1',
       period: otp.period || 30,
       digits: otp.digits || 6
     })
+    if (!res) {
+      console.log(otp.account)
+    }
+    return res
   } catch (e) {
-    return ''
+    console.error(e)
+    return 'N/A'
   }
 }
 
@@ -72,70 +75,6 @@ export const parseOTPUri = (uri: string) => {
   }
 
   return res
-}
-
-export const decodeGoogleAuthenticatorImport = (uri: string): OTPData[] => {
-  if (!uri) {
-    return []
-  }
-
-  const components = uri.split('?')
-
-  if (components.length < 2) {
-    return []
-  }
-
-  const query = _parseQueryString(components[1])
-  const buffer = query.data
-
-  // @ts-ignore
-  const payload = proto.MigrationPayload.deserializeBinary(buffer)
-  const data = payload.toObject()
-
-  // Currently only accept TOTP
-  return data.otpParametersList.filter(item => item.type === 2).map(item => {
-    let algorithm: string
-    let digits: number
-
-    switch (item.algorithm) {
-    case 1:
-      algorithm = 'SHA-1'
-      break
-    case 2:
-      algorithm = 'SHA-256'
-      break
-    case 3:
-      algorithm = 'SHA-512'
-      break
-    case 4:
-      algorithm = 'MD5'
-      break
-    default:
-      algorithm = 'SHA-1'
-    }
-    switch (item.digits) {
-    case 1:
-      digits = 6
-      break
-    case 2:
-      digits = 8
-      break
-    default:
-      digits = 6
-    }
-
-    const account = (item.issuer && !item.name.startsWith(item.issuer)) ? `${item.issuer} (${item.name})` : item.name
-
-    const otp: OTPData = {
-      algorithm,
-      digits,
-      account,
-      secret: base32.encode(Buffer.from(item.secret, 'base64')),
-      period: 30
-    }
-
-    return otp
-  })
 }
 
 // ------------------ SUPPORT --------------------
