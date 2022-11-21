@@ -11,8 +11,9 @@
             <div class="w-full landing-font-20 text-[#3A3A3A] mb-[20px] mx-auto">
               {{ $t('features.sync_password.subtitle') }}
             </div>
-            <div class="pt-20">
-              <img src="~/assets/images/landing/features/detail/sync_password.png">
+            <div class="pt-20 mx-auto max-w-[788px]">
+              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/sync_password_en.svg" class="h-full">
+              <img v-else src="~/assets/images/landing/features/detail/sync_password_vi.svg" class="h-full">
             </div>
           </div>
         </div>
@@ -72,6 +73,7 @@
 <script>
 export default {
   layout: 'landing',
+  middleware: ['blockProduction'],
   data () {
     return {
     }

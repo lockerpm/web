@@ -15,7 +15,8 @@
               {{ $t('features.save_password.subtitle') }}
             </div>
             <div class="pt-20 mx-auto max-w-[600px]">
-              <img src="~/assets/images/landing/features/detail/save_password.png">
+              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/save_password_en.png">
+              <img v-else src="~/assets/images/landing/features/detail/save_password_vi.svg">
             </div>
           </div>
         </div>
@@ -91,6 +92,7 @@
 <script>
 export default {
   layout: 'landing',
+  middleware: ['blockProduction'],
   data () {
     return {
     }

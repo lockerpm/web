@@ -15,7 +15,8 @@
               {{ $t('features.add_items.subtitle') }}
             </div>
             <div class="max-w-[700px] mx-auto mt-[40px]">
-              <img src="~/assets/images/landing/features/detail/import_password.svg" width="w-full">
+              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/import_password_en.svg" width="w-full">
+              <img v-else src="~/assets/images/landing/features/detail/import_password_vi.svg" width="w-full">
             </div>
           </div>
         </div>
