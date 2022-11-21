@@ -17,18 +17,148 @@
       </div>
     </div>
 
-    <a href="#start-section">
-      <img
-        src="~/assets/images/landing/crypto/CaretDoubleDown.svg"
-        class="mx-auto my-4 h-9"
-      >
-    </a>
+    <section class="py-10 full-width h-auto bg-[#F5F7F9]">
+      <a href="#warning-section">
+        <img
+          src="~/assets/images/landing/crypto/CaretDoubleDown.svg"
+          class="mx-auto mt-5 mb-6 h-9"
+        >
+      </a>
+    </section>
 
-    <span id="start-section" class="anchor" />
-    <div class="mt-[135px] text-center">
-      <div class="landing-font-48 font-bold mb-6">
-        {{ $t('promotion.simplified.title') }}
+    <span id="warning-section" class="anchor" />
+    <section class="warning py-10 full-width h-auto bg-[#F5F7F9]">
+      <div class="w-full text-center">
+        <h2
+          class="font-bold landing-font-48 mx-auto mb-[60px]"
+          v-html="$t('promotion.warning.what_if')"
+        />
+        <div class="max-w-6xl mx-auto">
+          <div class="grid grid-cols-3 gap-x-16 justify-items-center">
+            <div
+              v-for="(item, index) in $t('promotion.warning.consequences')"
+              :key="index"
+              class="items-center"
+            >
+              <img :src="require(`~/assets/images/landing/crypto/${item.image}`)" class="h-[51px] mb-5">
+            </div>
+            <div
+              v-for="(item, index) in $t('promotion.warning.consequences')"
+              :key="index"
+              class="landing-font-18 font-normal mb-20"
+              v-html="item.conq"
+            />
+          </div>
+          <a
+            class="landing-btn mb-24"
+            href="https://buy.stripe.com/cN26s3gbefi1c92fYZ"
+            style="align-self: center"
+          >
+            {{ $t('promotion.warning.btn_text1') }}
+          </a>
+        </div>
       </div>
+    </section>
+
+    <section class="sale-pitch full-width">
+      <h1
+        class="w-full text-center font-semibold landing-font-48 mx-auto mt-28 mb-20"
+        v-html="$t('promotion.sale_pitch.title')"
+      />
+      <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-[100px]">
+          <div v-if="locale==='en'" class="max-w-[516px]">
+            <h2
+              class="font-semibold landing-font-38 mb-10"
+              v-html="$t('promotion.sale_pitch.overall.title')"
+            />
+            <div class="font-normal landing-font-18 max-w-[450px]">
+              {{ $t('promotion.sale_pitch.overall.desc') }}
+            </div>
+          </div>
+          <div v-else class="max-w-[570px]">
+            <h2
+              class="font-semibold landing-font-32y mb-10"
+              v-html="$t('promotion.sale_pitch.overall.title')"
+            />
+            <div class="font-normal landing-font-18 max-w-[450px]">
+              {{ $t('promotion.sale_pitch.overall.desc') }}
+            </div>
+          </div>
+          <img
+            src="~/assets/images/landing/crypto/red-shirt-gray-laptop.png"
+            class="max-w-[345px]"
+          >
+        </div>
+
+        <div class="w-full text-center font-semibold landing-font-48 mx-auto mb-20">
+          {{ $t('promotion.sale_pitch.common_reason.title') }}
+        </div>
+
+        <div class="flex justify-between items-center">
+          <img
+            src="~/assets/images/landing/crypto/green-pants-grey-laptop.png"
+            class="max-w-[345px]"
+          >
+          <div>
+            <div
+              v-for="(item, index) in $t('crypto.sale_pitch.common_reason.reason')"
+              :key="index"
+              class="items-center"
+            >
+              <div class="flex max-w-[560px] mb-[52px]">
+                <img :src="require(`~/assets/images/landing/crypto/XCircle.svg`)" class="h-[32px] mr-[10px]">
+                <div class="landing-font-18 font-normal">
+                  {{ item }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sale-pitch-hard-sol full-width bg-[#F5F7F9]">
+      <div class="max-w-6xl mx-auto mt-16">
+        <div class="flex justify-between">
+          <div class="">
+            <h2
+              v-if="locale==='en'"
+              class="font-semibold landing-font-48 mb-10 max-w-[750px]"
+              v-html="$t('promotion.sale_pitch.hard_sol.title')"
+            />
+            <h2
+              v-else
+              class="font-semibold landing-font-48 mb-10 max-w-[840px]"
+              v-html="$t('promotion.sale_pitch.hard_sol.title')"
+            />
+            <div v-if="locale==='en'" class="font-normal landing-font-18 max-w-[640px] mb-20">
+              {{ $t('promotion.sale_pitch.hard_sol.desc') }}
+            </div>
+            <div v-else class="font-normal landing-font-18 max-w-[720px] mb-20">
+              {{ $t('promotion.sale_pitch.hard_sol.desc') }}
+            </div>
+            <a
+              class="landing-btn mb-24"
+              href="https://buy.stripe.com/cN26s3gbefi1c92fYZ"
+              style="align-self: center"
+            >
+              {{ $t('promotion.warning.btn_text1') }}
+            </a>
+          </div>
+          <img
+            src="~/assets/images/landing/crypto/red-shirt-despair.png"
+            class="max-w-[340px]"
+          >
+        </div>
+      </div>
+    </section>
+
+    <div class="mt-[135px] text-center">
+      <div
+        class="landing-font-48 font-bold mb-6"
+        v-html="$t('promotion.simplified.title')"
+      />
       <img class="mx-auto" src="~/assets/images/landing/promotion/line-check.svg">
       <div class="mt-[70px]">
         <div class="grid md:grid-cols-3 grid-cols-1 gap-x-[120px] gap-y-6">

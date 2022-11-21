@@ -160,6 +160,7 @@ export default {
   },
   mounted () {
     this.$store.dispatch('LoadTeams')
+    this.$router.push(this.localeRoute({ name: 'lock', query: { joinEnterprise: '1' } }))
   },
   methods: {
     // Check policy before submit

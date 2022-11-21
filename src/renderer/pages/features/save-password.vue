@@ -32,13 +32,13 @@
           class="w-full md:mb-0 md:pt-[40px] pt-40[px] order-1 max-w-[860px]"
         >
           <div class="w-full font-bold landing-font-38 text-[#161922] mb-[20px]">
-            {{ $t(detail.detail_title) }}
+            {{ detail.detail_title }}
           </div>
           <div
             class="w-full landing-font-16"
             style="color: #5A6176;"
           >
-            {{ $t(detail.detail_desc) }}
+            {{ detail.detail_desc }}
           </div>
         </div>
       </div>
@@ -50,8 +50,11 @@
           {{ $t('features.save_password.get_locker') }}
           <p class="landing-font-16">
             <span class="text-green">
-              <nuxt-link :to="localeRoute({name: 'download'})">
+              <nuxt-link v-if="locale==='en'" :to="localeRoute({name: 'download'})">
                 &nbsp;here
+              </nuxt-link>
+              <nuxt-link v-else :to="localeRoute({name: 'download'})">
+                &nbsp;tại đây
               </nuxt-link>
             </span>
           </p>

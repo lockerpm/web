@@ -4,13 +4,13 @@ import extractDomain from 'extract-domain'
 import find from 'lodash/find'
 import numeral from 'numeral'
 import { Avatar } from 'element-ui'
+import _ from 'lodash'
 import { LoginUriView, LoginView } from '../jslib/src/models/view'
 import { CipherRequest } from '../jslib/src/models/request'
 import { CipherType } from '../core/enums/cipherType'
 import { SyncResponse } from '../core/models/response/syncResponse'
 import { WALLET_APP_LIST } from '../utils/crypto/applist/index'
 import { CipherView } from '../core/models/view/cipherView'
-import _ from 'lodash'
 
 // Vue.use(Image)
 Vue.mixin({
@@ -244,11 +244,15 @@ Vue.mixin({
         this.$store.commit('UPDATE_SYNCING', true)
         this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/vault' : this.$store.state.currentPath }))
       } catch (e) {
-        if (e.response && e.response.data && e.response.data.message && e.response.data.code !== '0004') {
-          this.notify(e.response.data.message, 'warning')
-        } else {
+        if (!e.response?.data?.message || e.response?.data?.code === '0004') {
           this.notify(this.$t('errors.invalid_master_password'), 'warning')
+          return
         }
+        if (e.response?.data?.code === '1011' && this.$route.name.startsWith('set-master-password')) {
+          this.$router.push(this.localeRoute({ name: 'lock', query: { joinEnterprise: '1' } }))
+          return
+        }
+        this.notify(e.response.data.message, 'warning')
       }
     },
     async clearKeys () {
@@ -444,6 +448,8 @@ Vue.mixin({
         return this.getIconDefaultCipher('Card', size)
       case CipherType.Identity:
         return this.getIconDefaultCipher('Identity', size)
+      case CipherType.TOTP:
+        return this.getIconDefaultCipher('Authenticator', size)
       case 6:
         return this.getIconDefaultCipher('CryptoAccount', size)
       case 7:
