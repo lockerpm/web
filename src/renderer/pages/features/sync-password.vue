@@ -1,4 +1,4 @@
-<template>
+/<template>
   <div>
     <!-- Intro -->
     <section class="full-width w-full h-auto md:pb-[56px] pb-14">
@@ -11,9 +11,9 @@
             <div class="w-full landing-font-20 text-[#3A3A3A] mb-[20px] mx-auto">
               {{ $t('features.sync_password.subtitle') }}
             </div>
-            <div class="pt-20">
-              <img v-if="locale==='en'" src="~/assets/images/landing/features/detail/en/sync_password.png">
-              <img v-else src="~/assets/images/landing/features/detail/vi/sync_password.png">
+            <div class="pt-20 mx-auto max-w-[788px]">
+              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/en/sync_password.png" class="h-full">
+              <img v-else src="~/assets/images/landing/features/detail/vi/sync_password.png" class="h-full">
             </div>
           </div>
         </div>
@@ -73,6 +73,7 @@
 <script>
 export default {
   layout: 'landing',
+  middleware: ['blockProduction'],
   data () {
     return {
     }
