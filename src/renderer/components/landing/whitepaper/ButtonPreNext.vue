@@ -1,6 +1,6 @@
 <template>
   <div class="btn-pre-next">
-    <div v-if="index === 0" class="md:w-1/2 w-full float-right bg-[#FFFFFF]">
+    <div v-if="index === 0" class="md:w-1/2 w-full float-right mb-8 bg-[#FFFFFF]">
       <nuxt-link
         class="btn-navigation btn-next"
         style="border-radius: 4px"

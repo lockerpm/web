@@ -15,7 +15,8 @@
               {{ $t('features.save_password.subtitle') }}
             </div>
             <div class="pt-20 mx-auto max-w-[600px]">
-              <img src="~/assets/images/landing/features/detail/save_password.png">
+              <img v-if="locale==='en'" src="~/assets/images/landing/features/detail/en/save_password.png">
+              <img v-else src="~/assets/images/landing/features/detail/vi/save_password.png">
             </div>
           </div>
         </div>
@@ -32,13 +33,13 @@
           class="w-full md:mb-0 md:pt-[40px] pt-40[px] order-1 max-w-[860px]"
         >
           <div class="w-full font-bold landing-font-38 text-[#161922] mb-[20px]">
-            {{ $t(detail.detail_title) }}
+            {{ detail.detail_title }}
           </div>
           <div
             class="w-full landing-font-16"
             style="color: #5A6176;"
           >
-            {{ $t(detail.detail_desc) }}
+            {{ detail.detail_desc }}
           </div>
         </div>
       </div>
@@ -50,8 +51,11 @@
           {{ $t('features.save_password.get_locker') }}
           <p class="landing-font-16">
             <span class="text-green">
-              <nuxt-link :to="localeRoute({name: 'download'})">
+              <nuxt-link v-if="locale==='en'" :to="localeRoute({name: 'download'})">
                 &nbsp;here
+              </nuxt-link>
+              <nuxt-link v-else :to="localeRoute({name: 'download'})">
+                &nbsp;tại đây
               </nuxt-link>
             </span>
           </p>

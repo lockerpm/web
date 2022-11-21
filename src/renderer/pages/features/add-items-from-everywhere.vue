@@ -50,7 +50,7 @@
               :key="index"
               class="w-full landing-font-16 text-black list-disc mx-auto"
             >
-              <li class="ml-[27px]" v-html="$t(step)" />
+              <li class="ml-[27px]" v-html="step" />
             </ul>
             <br>
             {{ $t('features.add_items.guide.desc3') }}<br>
@@ -60,7 +60,7 @@
               :key="index"
               class="w-full landing-font-16 text-black list-disc mx-auto"
             >
-              <li class="ml-[27px]" v-html="$t(step)" />
+              <li class="ml-[27px]" v-html="step" />
             </ul>
             <br>
             {{ $t('features.add_items.guide.desc4') }}
@@ -101,7 +101,6 @@
 <script>
 export default {
   layout: 'landing',
-  middleware: ['blockProduction'],
   data () {
     return {
     }

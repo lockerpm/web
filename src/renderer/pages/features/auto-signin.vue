@@ -12,7 +12,8 @@
               {{ $t('features.auto_signin.subtitle') }}
             </div>
             <div class="pt-20 max-w-[500px] mx-auto">
-              <img src="~/assets/images/landing/features/detail/auto_signin.png">
+              <img v-if="locale==='en'" src="~/assets/images/landing/features/detail/en/auto_signin.png">
+              <img v-else src="~/assets/images/landing/features/detail/vi/auto_signin.png">
             </div>
           </div>
         </div>
@@ -28,8 +29,8 @@
           :key="index"
           class="w-full md:mb-0 md:pt-[40px] pt-40[px] order-1 max-w-[860px]"
         >
-          <div class="w-full font-bold landing-font-38 text-[#161922] mb-[20px]">
-            {{ $t(detail.detail_title) }}
+          <div class="w-full font-bold landing-font-38 text-[#161922] mb-[20px]"
+            v-html="detail.detail_title">
           </div>
           <div
             class="w-full landing-font-16"

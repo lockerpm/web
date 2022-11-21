@@ -11,6 +11,8 @@
         <div class="md:pl-60 flex flex-col flex-row-fluid">
           <Header />
 
+          <Tutorial />
+
           <!-- Welcome banner -->
           <WelcomeBanner />
           <!-- Welcome banner end -->
@@ -42,6 +44,7 @@ import EnterpriseInvitations from '../components/notice/EnterpriseInvitations'
 import EmergencyAccessInvitations from '../components/notice/EmergencyAccessInvitations'
 import LockedUntilPay from '../components/notice/LockedUntilPay'
 import WelcomeToBusiness from '../components/notice/WelcomeToBusiness'
+import Tutorial from '../components/notice/Tutorial'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
@@ -52,6 +55,7 @@ const IdleTimeout = 60000 * 10 // 10 minutes
 
 export default {
   components: {
+    Tutorial,
     LockedUntilPay,
     WelcomeBanner,
     EnterpriseInvitations,

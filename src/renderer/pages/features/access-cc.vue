@@ -12,7 +12,8 @@
               {{ $t('features.access_cc.subtitle') }}
             </div>
             <div class="pt-20 max-w-[500px] mx-auto">
-              <img src="~/assets/images/landing/features/detail/access_cc.png">
+              <img v-if="locale==='en'" src="~/assets/images/landing/features/detail/en/access_cc.png">
+              <img v-else src="~/assets/images/landing/features/detail/vi/access_cc.png">
             </div>
           </div>
         </div>
@@ -29,7 +30,7 @@
           class="w-full md:mb-0 md:pt-[40px] pt-40[px] order-1 max-w-[860px]"
         >
           <div class="w-full font-bold landing-font-38 text-[#161922] mb-[20px]">
-            {{ $t(detail.detail_title) }}
+            {{ detail.detail_title }}
           </div>
           <div
             class="w-full landing-font-16"
