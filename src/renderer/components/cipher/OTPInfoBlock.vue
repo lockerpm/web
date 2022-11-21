@@ -86,7 +86,10 @@ export default {
       return (period + 1) - Math.floor(new Date().getTime() / 1000) % period
     },
     getAvatarUrl (name) {
-      return generateLettersAvatarUrl(name)
+      if (!name) {
+        return ''
+      }
+      return generateLettersAvatarUrl(name.trim().split(' ')[0])
     }
   }
 }
