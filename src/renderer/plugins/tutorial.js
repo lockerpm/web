@@ -16,6 +16,7 @@ const tour = new Shepherd.Tour({
 export default async ({ store, i18n }, inject) => {
   // Add new
   tour.addStep({
+    id: 'add-pw-1',
     title: () => i18n.t('tutorial.step1.title'),
     text: () => i18n.t('tutorial.step1.text'),
     buttons: [
@@ -45,6 +46,7 @@ export default async ({ store, i18n }, inject) => {
 
   // Add new password
   tour.addStep({
+    id: 'add-pw-2',
     title: () => i18n.t('tutorial.step2.title'),
     text: () => i18n.t('tutorial.step2.text'),
     buttons: [
@@ -69,6 +71,7 @@ export default async ({ store, i18n }, inject) => {
 
   // Edit password and create
   tour.addStep({
+    id: 'add-pw-3',
     title: () => i18n.t('tutorial.step3.title'),
     text: () => i18n.t('tutorial.step3.text'),
     useModalOverlay: false,

@@ -1144,6 +1144,14 @@ export default {
       watch: ['searchText', 'orderField', 'orderDirection', 'ciphers']
     }
   },
+  beforeDestroy () {
+    if (this.$tutorial.isActive()) {
+      const currentStep = this.$tutorial.getCurrentStep()
+      if (currentStep.id.startsWith('add-pw')) {
+        this.$tutorial.cancel()
+      }
+    }
+  },
   methods: {
     isProtectedCipher (cipher) {
       return cipher.type === CipherType.MasterPassword
