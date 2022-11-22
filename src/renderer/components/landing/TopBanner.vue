@@ -9,7 +9,7 @@
             </span>
             <span v-html="$t('landing_banner.desc')" /> 🎉
             <nuxt-link
-              :to="localePath('/private-email')"
+              :to="locale === 'vi' ? '/vi/blog/mung-black-friday-giam-dam-sau-goi-locker-premium-va-family-friends' : '/blog/lockers-black-friday-sale-is-on-take-69-off-premium-and-family-friends'"
               style="color: #15D127; text-decoration: none"
             >
               {{ $t('landing_banner.read_more') }} <i class="el-icon-right" />
