@@ -2,8 +2,8 @@
   <div>
     <!-- Main dialog -->
     <component
-      id="add-edit-cipher-dialog"
       :is="currentComponent"
+      id="add-edit-cipher-dialog"
       :visible.sync="dialogVisible"
       width="435px"
       destroy-on-close
