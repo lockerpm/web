@@ -15,7 +15,8 @@
               {{ $t('features.login_with_faceid_touchid.subtitle') }}
             </div>
             <div class="max-w-[356px] pt-10 mx-auto">
-              <img src="~/assets/images/landing/features/detail/log_in_with_FaceID.svg" width="w-full">
+              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/en/log_in_with_FaceID.svg" width="w-full">
+              <img v-else src="~/assets/images/landing/features/detail/vi/log_in_with_FaceID.svg" width="w-full">
             </div>
           </div>
         </div>
@@ -46,7 +47,7 @@
               class="w-full landing-font-16 text-black list-disc mx-auto"
             >
               <li class="ml-[27px]">
-                {{ $t(step) }}
+                {{ step }}
               </li>
             </ul>
             <div v-html="$t('features.login_with_faceid_touchid.destails[1].detail_desc2')" />
@@ -94,6 +95,7 @@
 <script>
 export default {
   layout: 'landing',
+  middleware: ['blockProduction'],
   data () {
     return {
     }
