@@ -465,6 +465,7 @@
               </div>
               <!-- Check all end -->
 
+              <!-- Multi select action -->
               <div
                 v-if="multipleSelection.length"
                 class="flex items-center "
@@ -504,6 +505,7 @@
                   </button>
                 </div>
               </div>
+              <!-- Multi select action end -->
             </div>
 
             <!-- Headers -->
