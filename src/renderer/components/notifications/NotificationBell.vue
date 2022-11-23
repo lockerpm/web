@@ -168,7 +168,7 @@ export default {
         await this.$axios.$post(`cystack_platform/pm/sharing/${sharingId}/groups/${groupId}`, {
           members
         })
-        this.notify(this.$t('common.success'), 'success')
+        this.notify(this.$t('data.sharing.shared_to_new_member'), 'success')
       } catch (e) {
         this.notify(this.$t('errors.something_went_wrong'), 'warning')
       }
