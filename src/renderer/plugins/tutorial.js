@@ -22,12 +22,12 @@ export default async ({ store, i18n }, inject) => {
   }
 
   const BACK_BTN = {
-    text: '<i class="el-icon-back"></i>',
+    text: '<i class="el-icon-arrow-left"></i>',
     classes: 'tutorial-arrow',
     secondary: true
   }
   const NEXT_BTN = {
-    text: '<i class="el-icon-right"></i>',
+    text: '<i class="el-icon-arrow-right"></i>',
     classes: 'tutorial-arrow',
     secondary: true
   }
