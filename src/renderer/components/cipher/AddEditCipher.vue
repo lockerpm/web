@@ -70,7 +70,7 @@
               class="text-right"
             >
               <el-popover
-                :placement="$store.state.ui.isTutorialActive ? 'top' : 'right'"
+                :placement="$store.state.tutorial.isActive ? 'top' : 'right'"
                 width="280"
                 trigger="click"
                 popper-class="locker-pw-generator"
@@ -983,7 +983,7 @@ export default {
     },
 
     onClose () {
-      if (this.$tutorial.isActive()) {
+      if (this.$tutorial.isActive() && this.$store.state.tutorial.currentStepId !== 'add-pw-1') {
         this.$tutorial.hide()
         this.$tutorial.show('view-shares')
       }

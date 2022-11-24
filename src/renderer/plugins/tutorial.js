@@ -14,6 +14,32 @@ const tour = new Shepherd.Tour({
 })
 
 export default async ({ store, i18n }, inject) => {
+  const _closeModals = () => {
+    store.commit('UPDATE_UI', { closeAllModal: true })
+    setTimeout(() => {
+      store.commit('UPDATE_UI', { closeAllModal: false })
+    }, 0)
+  }
+
+  const BACK_BTN = {
+    text: '<i class="el-icon-back"></i>',
+    classes: 'tutorial-arrow',
+    secondary: true
+  }
+  const NEXT_BTN = {
+    text: '<i class="el-icon-right"></i>',
+    classes: 'tutorial-arrow',
+    secondary: true
+  }
+  const SKIP_BTN = {
+    text: () => i18n.t('common.skip'),
+    classes: 'tutorial-skip',
+    secondary: true,
+    action: () => {
+      tour.cancel()
+    }
+  }
+
   // Add new
   tour.addStep({
     id: 'add-pw-1',
@@ -21,13 +47,20 @@ export default async ({ store, i18n }, inject) => {
     text: () => i18n.t('tutorial.step1.text'),
     buttons: [
       {
-        text: () => i18n.t('common.skip'),
+        ...BACK_BTN,
+        action: () => {
+          tour.cancel()
+          store.commit('UPDATE_NOTICE', { showTutorial: true })
+        }
+      },
+      {
+        ...NEXT_BTN,
         action: () => {
           tour.hide()
           tour.show('view-shares')
-        },
-        secondary: true
-      }
+        }
+      },
+      SKIP_BTN
     ],
     attachTo: {
       element: () => document.querySelector('#vault__add-btn'),
@@ -51,13 +84,19 @@ export default async ({ store, i18n }, inject) => {
     text: () => i18n.t('tutorial.step2.text'),
     buttons: [
       {
-        text: () => i18n.t('common.skip'),
+        ...BACK_BTN,
+        action: () => {
+          tour.back()
+        }
+      },
+      {
+        ...NEXT_BTN,
         action: () => {
           tour.hide()
           tour.show('view-shares')
-        },
-        secondary: true
-      }
+        }
+      },
+      SKIP_BTN
     ],
     attachTo: {
       element: '#vault__add-btn__Login',
@@ -77,19 +116,21 @@ export default async ({ store, i18n }, inject) => {
     useModalOverlay: false,
     buttons: [
       {
-        text: () => i18n.t('common.skip'),
+        ...BACK_BTN,
         action: () => {
-          store.commit('UPDATE_UI', { closeAllModal: true })
-          setTimeout(() => {
-            store.commit('UPDATE_UI', { closeAllModal: false })
-          }, 0)
-
-          // Already called in dialog onClose
-          // tour.hide()
-          // tour.show('view-shares')
-        },
-        secondary: true
-      }
+          tour.hide()
+          store.commit('UPDATE_TUTORIAL', { currentStepId: 'add-pw-1' })
+          _closeModals()
+          tour.show('add-pw-1')
+        }
+      },
+      {
+        ...NEXT_BTN,
+        action: () => {
+          _closeModals()
+        }
+      },
+      SKIP_BTN
     ],
     attachTo: {
       element: () => document.querySelectorAll('#add-edit-cipher-dialog > div')[1],
@@ -104,10 +145,19 @@ export default async ({ store, i18n }, inject) => {
     text: () => i18n.t('tutorial.step4.text'),
     buttons: [
       {
-        text: () => i18n.t('common.skip'),
-        action: tour.next,
-        secondary: true
-      }
+        ...BACK_BTN,
+        action: () => {
+          tour.hide()
+          tour.show('add-pw-1')
+        }
+      },
+      {
+        ...NEXT_BTN,
+        action: () => {
+          tour.next()
+        }
+      },
+      SKIP_BTN
     ],
     attachTo: {
       element: '#sidebar__shares',
@@ -125,10 +175,18 @@ export default async ({ store, i18n }, inject) => {
     text: () => i18n.t('tutorial.step5.text'),
     buttons: [
       {
-        text: () => i18n.t('common.skip'),
-        action: tour.next,
-        secondary: true
-      }
+        ...BACK_BTN,
+        action: () => {
+          tour.back()
+        }
+      },
+      {
+        ...NEXT_BTN,
+        action: () => {
+          tour.next()
+        }
+      },
+      SKIP_BTN
     ],
     attachTo: {
       element: '#sidebar__settings',
@@ -146,13 +204,19 @@ export default async ({ store, i18n }, inject) => {
     text: () => i18n.t('tutorial.step6.text'),
     buttons: [
       {
-        text: () => i18n.t('common.skip'),
+        ...BACK_BTN,
+        action: () => {
+          tour.back()
+        }
+      },
+      {
+        ...NEXT_BTN,
         action: () => {
           tour.cancel()
           store.commit('UPDATE_NOTICE', { showTutorialStep6: true })
-        },
-        secondary: true
-      }
+        }
+      },
+      SKIP_BTN
     ],
     attachTo: {
       element: '#nav__profile',
@@ -170,11 +234,15 @@ export default async ({ store, i18n }, inject) => {
   })
 
   Shepherd.on('cancel', () => {
-    store.commit('UPDATE_UI', { isTutorialActive: false })
+    store.commit('UPDATE_TUTORIAL', { isActive: false })
   })
 
   Shepherd.on('start', () => {
-    store.commit('UPDATE_UI', { isTutorialActive: true })
+    store.commit('UPDATE_TUTORIAL', { isActive: true })
+  })
+
+  Shepherd.on('show', e => {
+    store.commit('UPDATE_TUTORIAL', { currentStepId: e.step.id })
   })
 
   inject('tutorial', tour)
