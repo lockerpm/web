@@ -461,7 +461,7 @@ export default {
       sharedCiphers.push({
         cipher: { id: cipher.id, ...data },
         members: this.newMembers,
-        grousp: this.newGroups
+        groups: this.newGroups
       })
       return sharedCiphers
     },
