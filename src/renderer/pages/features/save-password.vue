@@ -95,7 +95,6 @@
 <script>
 export default {
   layout: 'landing',
-  middleware: ['blockProduction'],
   data () {
     return {
     }
