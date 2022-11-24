@@ -37,8 +37,11 @@ export const state = () => ({
     showTutorialStep6: false
   },
   ui: {
-    closeAllModal: false,
-    isTutorialActive: false
+    closeAllModal: false
+  },
+  tutorial: {
+    isActive: false,
+    currentStepId: ''
   }
 })
 export const mutations = {
@@ -135,6 +138,12 @@ export const mutations = {
   UPDATE_UI (state, value) {
     state.ui = {
       ...state.ui,
+      ...value
+    }
+  },
+  UPDATE_TUTORIAL (state, value) {
+    state.tutorial = {
+      ...state.tutorial,
       ...value
     }
   }

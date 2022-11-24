@@ -124,5 +124,13 @@ export default {
   .shepherd-arrow {
     background: white !important;
   }
+
+  .tutorial-skip {
+    margin-left: auto;
+  }
+
+  .tutorial-arrow {
+    padding: 8px 13px
+  }
 }
 </style>
