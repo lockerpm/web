@@ -228,14 +228,6 @@
                       {{ $t('data.policies.passwordless_desc') }}
                     </p>
                   </div>
-
-                  <div style="border-radius: 100px; margin-right: 16px; overflow: hidden">
-                    <div class="bg-success">
-                      <p class="font-semibold text-white px-3 py-1">
-                        {{ $t('common.good') }}
-                      </p>
-                    </div>
-                  </div>
                 </div>
               </template>
               <!-- Header end -->
@@ -253,6 +245,39 @@
               <!-- Body end -->
             </el-collapse-item>
             <!-- Passwordless login end -->
+
+            <!-- 2FA -->
+            <el-collapse-item v-if="isLogin2FAEnabled" class="setting-wrapper">
+              <!-- Header -->
+              <template slot="title">
+                <div class="flex flex-row items-center py-4 w-full">
+                  <img src="~/assets/images/icons/policy_pwless.svg" style="height: 36px">
+
+                  <div class="flex flex-col ml-4 flex-1">
+                    <p class="font-semibold text-black mb-1 h-auto line-h-auto">
+                      {{ $t('data.policies.2fa') }}
+                    </p>
+                    <p class="text-black text-xs font-normal">
+                      {{ $t('data.policies.2fa_desc') }}
+                    </p>
+                  </div>
+                </div>
+              </template>
+              <!-- Header end -->
+
+              <!-- Body -->
+              <div class="px-4">
+                <hr class="border-black-100 mb-4">
+                <p class="text-lg text-black font-semibold">
+                  {{ $t('data.policies.policy_details') }}
+                </p>
+                <p class="text-black">
+                  {{ $t('data.policies.2fa_policy_details', { target: login2FATarget }) }}
+                </p>
+              </div>
+              <!-- Body end -->
+            </el-collapse-item>
+            <!-- 2FA end -->
           </el-collapse>
 
           <div v-if="isEmpty && !loading" class="setting-wrapper">
@@ -306,11 +331,22 @@ export default {
     isPasswordlessEnabled () {
       return this.enterprisePolicies.passwordless?.enabled
     },
+    isLogin2FAEnabled () {
+      return this.enterprisePolicies['2fa']?.enabled
+    },
     isEmpty () {
       return !this.isPwPolicyEnabled &&
         !this.isMasterPwPolicyEnabled &&
         !this.isBlockFailedLoginEnabled &&
-        !this.isPasswordlessEnabled
+        !this.isPasswordlessEnabled &&
+        !this.isLogin2FAEnabled
+    },
+    login2FATarget () {
+      const onlyAdmin = this.enterprisePolicies['2fa']?.config.onlyAdmin
+      if (onlyAdmin) {
+        return this.locale === 'vi' ? 'Các quản trị viên' : 'Admins'
+      }
+      return this.locale === 'vi' ? 'Người dùng' : 'Users'
     }
   },
 

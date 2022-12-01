@@ -15,7 +15,10 @@ import { CipherView } from '../core/models/view/cipherView'
 // Vue.use(Image)
 Vue.mixin({
   data () {
-    return { folders: [] }
+    return {
+      folders: [],
+      notEnable2FA: false
+    }
   },
   computed: {
     language () { return this.$store.state.user.language },
@@ -244,14 +247,27 @@ Vue.mixin({
         this.$store.commit('UPDATE_SYNCING', true)
         this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/vault' : this.$store.state.currentPath }))
       } catch (e) {
+        // Wrong master pw
         if (!e.response?.data?.message || e.response?.data?.code === '0004') {
           this.notify(this.$t('errors.invalid_master_password'), 'warning')
           return
         }
+
+        // Force join enterprise
         if (e.response?.data?.code === '1011' && this.$route.name.startsWith('set-master-password')) {
           this.$router.push(this.localeRoute({ name: 'lock', query: { joinEnterprise: '1' } }))
           return
         }
+
+        // Force 2FA
+        if (e.response?.data?.code === '1012') {
+          this.notEnable2FA = true
+          if (this.$route.name.startsWith('set-master-password')) {
+            this.$router.push(this.localeRoute({ name: 'lock' }))
+          }
+          return
+        }
+
         this.notify(e.response.data.message, 'warning')
       }
     },
@@ -722,6 +738,12 @@ Vue.mixin({
       }
 
       return callback()
+    },
+    async checkBlockedBy2FA () {
+      try {
+        const res = await this.$axios.$get('/cystack_platform/pm/users/me/block_by_2fa')
+        this.notEnable2FA = res.block
+      } catch (e) {}
     },
     async loadEnterprisePolicies () {
       if (!this.currentOrg?.id) {
