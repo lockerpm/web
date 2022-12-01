@@ -91,7 +91,7 @@
                       id="vault__add-btn"
                       slot="reference"
                       class="btn btn-outline-primary"
-                      :class="{ 'hidden': !$store.state.ui.isTutorialActive }"
+                      :class="{ 'hidden': !$store.state.tutorial.isActive }"
                       @click="addBtnDropdownVisible = !addBtnDropdownVisible"
                     >
                       <i class="el-icon-plus text-lg" />
@@ -118,7 +118,7 @@
                   <el-dropdown trigger="click">
                     <button
                       class="btn btn-outline-primary"
-                      :class="{ 'hidden': $store.state.ui.isTutorialActive }"
+                      :class="{ 'hidden': $store.state.tutorial.isActive }"
                     >
                       <i class="el-icon-plus text-lg" />
                       <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
@@ -1044,6 +1044,11 @@ export default {
         this.changeSort('', '')
       } else {
         this.changeSort('revisionDate', 'desc')
+      }
+    },
+    '$store.state.tutorial.currentStepId' (newVal) {
+      if (newVal !== 'add-pw-2') {
+        this.addBtnDropdownVisible = false
       }
     }
   },
