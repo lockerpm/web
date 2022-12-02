@@ -43,7 +43,7 @@
           <div
             class="flex px-3 py-2 mt-2 justify-between"
             :class="item.read ? '' : 'bg-[#F6F6F6] hover:bg-transparent'"
-            @click="handleNotiClick(item)"
+            @click="item.type !== 'member_to_group_share' && handleNotiClick(item)"
           >
             <!-- Icon -->
             <div class="min-w-[40px]">
@@ -55,6 +55,17 @@
             <div class="landing-font-14 px-4 flex-1">
               <div v-if="locale==='vi'" class="font-semibold">{{ item.title.vi }}</div>
               <div v-if="locale==='en'" class="font-semibold">{{ item.title.en }}</div>
+              <el-button
+                v-if="item.type === 'member_to_group_share'"
+                size="small"
+                type="primary"
+                :loading="isLoading.shareWithNewMember"
+                :disabled="isLoading.shareWithNewMember || (item.metadata && item.metadata.clicked)"
+                class="!my-1"
+                @click="handleNotiClick(item)"
+              >
+                {{ (item.metadata && item.metadata.clicked) ? $t('common.confirmed') : $t('common.confirm') }}
+              </el-button>
               <div class="">{{ $moment(item.publish_time * 1000).fromNow() }}</div>
             </div>
             <!-- Body end -->
@@ -82,6 +93,13 @@
 import { Utils } from '../../jslib/src/misc/utils.ts'
 
 export default {
+  data () {
+    return {
+      isLoading: {
+        shareWithNewMember: false
+      }
+    }
+  },
   computed: {
     notifications () { return this.$store.state.notifications }
   },
@@ -102,7 +120,7 @@ export default {
       }
     },
 
-    handleNotiClick (item) {
+    async handleNotiClick (item) {
       this.setRead(item.id)
       switch (item.type) {
       case 'item_sharing': {
@@ -115,8 +133,18 @@ export default {
       }
       case 'member_to_group_share': {
         // eslint-disable-next-line camelcase
-        const { group_id, sharing_id, emails } = item.metadata
-        this.shareKeyToNewMember(sharing_id, group_id, emails)
+        const { group_id, sharing_id, emails, clicked } = item.metadata
+        if (!clicked) {
+          this.isLoading.shareWithNewMember = true
+          const isSuccess = await this.shareKeyToNewMember(sharing_id, group_id, emails)
+          this.isLoading.shareWithNewMember = false
+          if (isSuccess) {
+            item.metadata.clicked = true
+            this.setRead(item.id, {
+              clicked: true
+            })
+          }
+        }
         break
       }
       default:
@@ -134,14 +162,16 @@ export default {
         }).catch(() => {})
     },
 
-    setRead (id) {
-      this.$axios.$put(`/notifications/${id}`, { read: true }).then(
+    setRead (id, metadata) {
+      this.$axios.$put(`/notifications/${id}`, { read: true, metadata }).then(
         () => {
           this.$store.dispatch('LoadNotification')
         }).catch(() => {
         // error callback
       })
     },
+
+    // ---------------- SUPPORTING FUNCTIONS ----------------
 
     async getPublicKey (email) {
       const { public_key: publicKey } = await this.$axios.$post('cystack_platform/pm/sharing/public_key', { email })
@@ -173,8 +203,10 @@ export default {
           members
         })
         this.notify(this.$t('data.sharing.shared_to_new_member'), 'success')
+        return true
       } catch (e) {
         this.notify(this.$t('errors.something_went_wrong'), 'warning')
+        return false
       }
     }
   }
