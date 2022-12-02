@@ -156,9 +156,13 @@ export default {
 
     async shareKeyToNewMember (sharingId, groupId, emails) {
       try {
+        const orgKey = await this.$cryptoService.getOrgKey(sharingId)
+        if (!orgKey) {
+          this.notify(this.$t('data.sharing.item_no_longer_shared'), 'warning')
+          return
+        }
         const members = await Promise.all(emails.map(async email => {
           const publicKey = await this.getPublicKey(email)
-          const orgKey = await this.$cryptoService.getOrgKey(sharingId)
           const key = publicKey ? await this.generateMemberKey(publicKey, orgKey) : null
           return {
             username: email,

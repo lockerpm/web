@@ -393,7 +393,7 @@ export default {
           members: this.newMembers,
           groups: this.newGroups
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'success')
+        this.notify(this.$t('data.notifications.update_share_success'), 'success')
         this.closeDialog()
         this.$emit('shared-cipher')
       } catch (e) {
@@ -401,7 +401,7 @@ export default {
           this.notify(e.response.data.message, 'warning')
           this.$emit('upgrade-plan')
         }
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type}`, 1) }), 'warning')
+        this.notify(this.$t('errors.something_went_wrong'), 'warning')
         // console.log(e)
       } finally {
         this.loading = false
@@ -552,10 +552,10 @@ export default {
           folder: null,
           cipher: { ...data, id: this.cipher.id }
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${this.cipher.type}`, 1) }), 'success')
+        this.notify(this.$t('data.notifications.stop_share_success'), 'success')
         await this.getMyShares()
       } catch (error) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.cipher.type}`, 1) }), 'warning')
+        this.notify(this.$t('errors.something_went_wrong'), 'warning')
       }
     },
 
@@ -569,11 +569,11 @@ export default {
           await this.$axios.$put(`cystack_platform/pm/sharing/${this.cipher.organizationId}/${row.type === 'group' ? 'groups' : 'members'}/${row.id}`, {
             role
           })
-          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${this.cipher.type}`, 1) }), 'success')
+          this.notify(this.$t('data.notifications.update_share_success'), 'success')
           await this.getMyShares()
           this.$emit('updated-cipher')
         } catch (error) {
-          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.cipher.type}`, 1) }), 'warning')
+          this.notify(this.$t('errors.something_went_wrong'), 'warning')
           console.log(error)
         }
       } else {
