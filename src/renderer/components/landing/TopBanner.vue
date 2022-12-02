@@ -3,13 +3,13 @@
     <div class="max-w-6xl mx-auto">
       <div class="w-full px-6 flex flex-row">
         <div class="flex-1">
-          <p class="font-normal" style="color: white">
+          <p class="font-normal text-center" style="color: white">
             <span class="new-container">
               NEW
             </span>
             <span v-html="$t('landing_banner.desc')" /> 🎉
             <nuxt-link
-              :to="locale === 'vi' ? '/vi/blog/mung-black-friday-giam-dam-sau-goi-locker-premium-va-family-friends' : '/blog/lockers-black-friday-sale-is-on-take-69-off-premium-and-family-friends'"
+              :to="url"
               style="color: #15D127; text-decoration: none"
             >
               {{ $t('landing_banner.read_more') }} <i class="el-icon-right" />
@@ -35,9 +35,9 @@ export default {
   computed: {
     url () {
       if (this.$store.state.user.language === 'vi') {
-        return 'https://locker.io/vi/blog/chinh-thuc-ra-mat-trinh-quan-ly-mat-khau-locker'
+        return '/vi/blog/xac-thuc-khong-mat-khau'
       } else {
-        return 'https://locker.io/blog/locker-password-manager-has-just-arrived-download-for-free'
+        return '/blog/pave-the-way-to-passwordless-with-locker#a-future-without-passwords'
       }
     }
   },
