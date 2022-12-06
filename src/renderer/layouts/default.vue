@@ -109,6 +109,7 @@ export default {
         this.intervalGet = setInterval(() => {
           this.$store.dispatch('LoadNotification')
         }, 1000 * 30)
+        this.checkOnboardingProgress()
       }
     }
   },
