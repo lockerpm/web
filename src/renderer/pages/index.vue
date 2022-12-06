@@ -93,20 +93,61 @@
             <div
               v-for="(item, index) in $t('landing.section2.features')"
               :key="index"
-              class="landing-transition px-[30px] pt-11 bg-white rounded-lg hover:shadow-xl"
+              class="landing-transition bg-white rounded-lg hover:shadow-xl"
             >
-              <img
-                :src="require(`~/assets/images/landing/index/${item.img}`)"
-                :alt="item.title"
-                class="h-[40px] mb-[16px]"
+              <div
+                v-if="(!item.link)"
+                :to="localePath(`${item.link}`)"
+                class="block px-[30px] pt-11 h-full"
               >
-              <h3 class="mb-[12px] font-bold text-black landing-font-20">
-                {{ item.title }}
-              </h3>
-              <p class="lg:max-w-[265px] mb-[40px] landing-font-14">
-                {{ item.desc }}
-              </p>
+                <img
+                  :src="require(`~/assets/images/landing/index/${item.img}`)"
+                  :alt="item.title"
+                  class="h-[40px] mb-[16px]"
+                >
+                <h3 class="mb-[12px] font-bold text-black landing-font-20">
+                  {{ item.title }}
+                </h3>
+                <p class="lg:max-w-[265px] mb-[40px] landing-font-14">
+                  {{ item.desc }}
+                </p>
+              </div>
+              <nuxt-link
+                v-if="(item.static === false && item.link)"
+                :to="localePath(`${item.link}`)"
+                class="block px-[30px] pt-11 h-full"
+              >
+                <img
+                  :src="require(`~/assets/images/landing/index/${item.img}`)"
+                  :alt="item.title"
+                  class="h-[40px] mb-[16px]"
+                >
+                <h3 class="mb-[12px] font-bold text-black landing-font-20">
+                  {{ item.title }}
+                </h3>
+                <p class="lg:max-w-[265px] mb-[40px] landing-font-14">
+                  {{ item.desc }}
+                </p>
+              </nuxt-link>
+              <a
+                v-if="(item.static === true && item.link)"
+                :href="`${item.link}`"
+                class="block px-[30px] pt-11 h-full"
+              >
+                <img
+                  :src="require(`~/assets/images/landing/index/${item.img}`)"
+                  :alt="item.title"
+                  class="h-[40px] mb-[16px]"
+                >
+                <h3 class="mb-[12px] font-bold text-black landing-font-20">
+                  {{ item.title }}
+                </h3>
+                <p class="lg:max-w-[265px] mb-[40px] landing-font-14">
+                  {{ item.desc }}
+                </p>
+              </a>
             </div>
+
           </div>
           <div class="max-w-xs mx-auto sm:max-w-none order-3 mt-[60px]">
             <div class="mb-4 sm:mb-0">
