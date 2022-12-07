@@ -123,9 +123,10 @@
           <div
             class="w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2"
           >
-            <div
+            <nuxt-link
               v-for="(item, index) in personal.features"
               :key="index"
+              :to="item.link"
               class="landing-transition px-[30px] pt-11 bg-white rounded-md hover:shadow-xl"
             >
               <img
@@ -139,7 +140,7 @@
               <p class="lg:max-w-[265px] mb-[40px]">
                 {{ item.desc }}
               </p>
-            </div>
+            </nuxt-link>
           </div>
         </div>
       </div>
