@@ -115,6 +115,7 @@
             />
           </ValidationProvider>
           <InputSelect
+            ref="inputSelectBrand"
             :label="$t('data.ciphers.brand')"
             :initial-value="cipher.card.brand"
             class="w-full"
@@ -127,6 +128,7 @@
             :label="$t('data.ciphers.card_number')"
             class="w-full"
             :disabled="isDeleted"
+            @input="changeCardNumber"
           />
           <div class="grid grid-cols-2 gap-2">
             <InputSelect
@@ -476,6 +478,8 @@ import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 import InlineEditCipher from './InlineEditCipher'
 import PasswordViolationDialog from './PasswordViolationDialog'
 
+import { detectCardBrand } from "../../utils/common"
+
 CipherType.CryptoWallet = CipherType.CryptoBackup = 7
 
 export default {
@@ -653,6 +657,19 @@ export default {
       this.dialogVisible = false
       this.$emit('close')
       this.currentComponent = Dialog
+    },
+
+    // Change card Number
+    changeCardNumber(number) {
+      const cardLabel = detectCardBrand(number)
+      const brandOption = this.cardBrandOptions.find((o) => o.label === cardLabel)
+      if (brandOption) {
+        this.$refs.inputSelectBrand.value = brandOption.value
+        this.cipher.card.brand = brandOption.value
+      } else {
+        this.$refs.inputSelectBrand.value = null
+        this.cipher.card.brand = null
+      }
     },
 
     // Check for password violations
