@@ -82,14 +82,14 @@
           <button
             class="btn btn-default"
             :disabled="loading"
-            @click="putInvitation(enterpriseInvitations.slice(0, 1).id, 'reject')"
+            @click="putInvitation('reject')"
           >
             {{ $t('common.reject') }}
           </button>
           <button
             class="btn btn-primary"
             :disabled="loading"
-            @click="putInvitation(enterpriseInvitations.slice(0, 1).id, 'confirmed')"
+            @click="putInvitation('confirmed')"
           >
             {{ $t('common.accept') }}
           </button>
@@ -109,10 +109,10 @@ export default {
     }
   },
   methods: {
-    async putInvitation (id, status) {
+    async putInvitation (status) {
       try {
         this.loading = true
-        await this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${id}`, {
+        await this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${this.enterpriseInvitations[0]?.id}`, {
           status
         })
         this.notify(this.$t('common.success'), 'success')
