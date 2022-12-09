@@ -4,7 +4,7 @@
       <div class="mt-[120px] mb-[20px]">
         <img class="h-8 mx-auto" src="~/assets/images/logo/locker_logo.png">
       </div>
-      <div class="block max-w-sm p-6 bg-white border border-[#E3E3E3] rounded dark:bg-gray-800">
+      <div class="block w-full bg-white border border-[#E3E3E3] rounded dark:bg-gray-800">
         <div class="text-center ">
           <h3 class="text-[24px] mb-[30px] mt-[80px] font-medium">Log in successful</h3>
           <img class="h-[60px] mx-auto" src="~/assets/images/icons/success.svg">
