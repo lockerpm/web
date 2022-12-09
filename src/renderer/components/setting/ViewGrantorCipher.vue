@@ -115,6 +115,7 @@
             :label="$t('data.ciphers.card_number')"
             class="w-full"
             :disabled="true"
+            @input="changeCardNumber"
           />
           <div class="grid grid-cols-2 gap-2">
             <InputSelect
@@ -534,12 +535,13 @@ export default {
       const cardLabel = detectCardBrand(number)
       const brandOption = this.cardBrandOptions.find((o) => o.label === cardLabel)
       if (brandOption) {
-        this.$refs.inputSelectBrand.value = brandOption.value
         this.cipher.card.brand = brandOption.value
+      } else if (cardLabel) {
+        this.cipher.card.brand = 'Other'
       } else {
-        this.$refs.inputSelectBrand.value = null
         this.cipher.card.brand = null
       }
+      this.$refs.inputSelectBrand.value = this.cipher.card.brand
     },
   }
 }

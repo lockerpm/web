@@ -114,20 +114,13 @@
               :disabled="isDeleted"
             />
           </ValidationProvider>
-          <InputSelect
-            ref="inputSelectBrand"
-            :label="$t('data.ciphers.brand')"
-            :initial-value="cipher.card.brand"
-            class="w-full"
-            :disabled="isDeleted"
-            :options="cardBrandOptions"
-            @change="(v) => cipher.card.brand = v"
-          />
           <InputText
             v-model="cipher.card.number"
             :label="$t('data.ciphers.card_number')"
             class="w-full"
             :disabled="isDeleted"
+            :suffixIcon="currentCard ? currentCard.icon : ''"
+            :iconType="currentCard ? currentCard.iconType : ''"
             @input="changeCardNumber"
           />
           <div class="grid grid-cols-2 gap-2">
@@ -546,17 +539,20 @@ export default {
   computed: {
     cardBrandOptions () {
       return [
-        { label: '----', value: null },
-        { label: 'Visa', value: 'Visa' },
-        { label: 'Mastercard', value: 'Mastercard' },
-        { label: 'American Express', value: 'Amex' },
-        { label: 'Discover', value: 'Discover' },
-        { label: 'Diners Club', value: 'Diners Club' },
-        { label: 'JCB', value: 'JCB' },
-        { label: 'Maestro', value: 'Maestro' },
-        { label: 'UnionPay', value: 'UnionPay' },
-        { label: this.$t('other'), value: 'Other' }
+        { label: '----', value: null, icon: '' },
+        { label: 'Visa', value: 'Visa', icon: 'fab fa-cc-visa' },
+        { label: 'Mastercard', value: 'Mastercard', icon: 'fab fa-cc-mastercard' },
+        { label: 'American Express', value: 'Amex', icon: 'fab fa-cc-amex' },
+        { label: 'Discover', value: 'Discover', icon: 'fab fa-cc-discover' },
+        { label: 'Diners Club', value: 'Diners Club', icon: 'fab fa-cc-diners-club' },
+        { label: 'JCB', value: 'JCB', icon: 'fab fa-cc-jcb' },
+        { label: 'Maestro', value: 'Maestro', icon: require('~/assets/images/icons/cards/meastro.svg'), iconType: 'img' },
+        { label: 'UnionPay', value: 'UnionPay', icon: require('~/assets/images/icons/cards/unionpay.svg'), iconType: 'img' },
+        { label: this.$t('other'), value: 'Other', icon: 'fas fa-credit-card' }
       ]
+    },
+    currentCard () {
+      return this.cardBrandOptions.find(c => c.value && c.value === this.cipher.card.brand)
     },
     cardExpMonthOptions () {
       return [
@@ -664,10 +660,10 @@ export default {
       const cardLabel = detectCardBrand(number)
       const brandOption = this.cardBrandOptions.find((o) => o.label === cardLabel)
       if (brandOption) {
-        this.$refs.inputSelectBrand.value = brandOption.value
         this.cipher.card.brand = brandOption.value
+      } else if (cardLabel) {
+        this.cipher.card.brand = 'Other'
       } else {
-        this.$refs.inputSelectBrand.value = null
         this.cipher.card.brand = null
       }
     },
