@@ -84,7 +84,7 @@
             :disabled="loading"
             @click="putInvitation('reject')"
           >
-            {{ $t('common.reject') }}
+            {{ $t('common.decline') }}
           </button>
           <button
             class="btn btn-primary"
@@ -93,7 +93,7 @@
           >
             {{ $t('common.accept') }}
           </button>
-    </div>
+        </div>
       </div>
     </el-dialog>
   </div>
