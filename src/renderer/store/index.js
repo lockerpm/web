@@ -34,7 +34,10 @@ export const state = () => ({
   notice: {
     showLocked: false,
     showTutorial: false,
-    showTutorialStep6: false
+    showTutorialStep6: false,
+    showWelcome: false,
+    allowShowWelcomeBusiness: false,
+    allowShowTutorial: false
   },
   ui: {
     closeAllModal: false

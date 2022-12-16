@@ -1,5 +1,5 @@
 <template>
-  <div v-if="shouldWelcome !=='false'" class="lg:px-28 py-10 px-10">
+  <div v-if="shouldWelcome" class="lg:px-28 py-10 px-10">
     <div class="border border-black-200 rounded p-5 md:p-8 relative">
       <div class="flex items-center justify-between">
         <div class="">
@@ -30,23 +30,17 @@
 
 <script>
 export default {
-  data () {
-    return {
-      shouldWelcome: 'false'
+  computed: {
+    shouldWelcome () {
+      return this.$store.state.notice.showWelcome
     }
   },
-  mounted () {
-    this.shouldWelcome = this.checkWelcome()
-  },
   methods: {
-    checkWelcome () {
-      const deviceId = this.$cookies.get('locker_device_id')
-      return localStorage.getItem(`${deviceId}_welcome`)
-    },
     offWelcome () {
-      const deviceId = this.$cookies.get('locker_device_id')
-      localStorage.setItem(`${deviceId}_welcome`, 'false')
-      this.shouldWelcome = 'false'
+      this.$store.commit('UPDATE_NOTICE', { showWelcome: false })
+      this.updateOnboardingProgress({
+        welcome: true
+      })
     }
   }
 }
