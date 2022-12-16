@@ -1,40 +1,101 @@
 <template>
   <div v-if="enterpriseInvitations.length" class="flex-column-fluid lg:px-28 py-10 px-10">
-    <div
-      v-for="invitation in enterpriseInvitations.slice(0, 1)"
-      :key="invitation.id"
-      class="banner-invitation border border-black-200 rounded p-5 md:p-8"
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="700px"
+      destroy-on-close
+      top="5vh"
+      custom-class="enterprise-invitations-dialog"
+      :close-on-click-modal="false"
     >
-      <div class="flex items-center justify-between">
-        <div class="">
-          <div class="text-lg font-semibold mb-2">
-            {{ $t('data.enterprise.banner.title', {team: invitation.enterprise && invitation.enterprise.name}) }}
-          </div>
-          <div class="text-black-600 mb-5">
-            {{ $t('data.enterprise.banner.desc', {team: invitation.enterprise && invitation.enterprise.name, owner: invitation.owner}) }}
-          </div>
-          <div>
-            <button
-              class="btn btn-default"
-              :disabled="loading"
-              @click="putInvitation(invitation.id, 'reject')"
-            >
-              {{ $t('common.reject') }}
-            </button>
-            <button
-              class="btn btn-primary"
-              :disabled="loading"
-              @click="putInvitation(invitation.id, 'confirmed')"
-            >
-              {{ $t('common.accept') }}
-            </button>
-          </div>
-        </div>
-        <div>
-          <img src="~/assets/images/icons/invitaion.svg" alt="">
+      <div slot="title">
+        <div class="flex items-center justify-center">
+          <p class="enterprise-invitations-dialog__title">{{ $t('data.enterprise.popup.title') }}</p>
         </div>
       </div>
-    </div>
+      <div
+        v-for="invitation in enterpriseInvitations.slice(0, 1)"
+        :key="invitation.id"
+        class="enterprise-invitations-dialog__content"
+      >
+        <p class="text-center">{{ $t('data.enterprise.popup.subtitle') }}</p>
+        <div class="flex items-center my-3 rounded-xl bg-black-200 invitation-info">
+          <div class="invitation-info__left py-2 pl-10 pr-2 w-1/2">
+            <p class="text-xs mb-2">{{ $t('data.enterprise.popup.oragnization') }}</p>
+            <div class="flex items-center">
+              <i class="fas fa-city mr-3"></i>
+              <span class="text-black-700 text-lg">
+                {{ invitation.enterprise.name }}
+              </span>
+            </div>
+          </div>
+          <div class="invitation-info__center h-14 border-l border-solid border-black-400"></div>
+          <div class="invitation-info__right py-2 pl-10 pr-2 w-1/2">
+            <p class="text-xs mb-2">{{ $t('data.enterprise.popup.inviter') }}</p>
+            <div class="flex items-center">
+              <i class="fas fa-user mr-3"></i>
+              <p class="text-black-700 text-lg">
+                {{ invitation.owner }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="invitation-info__left mobile p-3 pl-5 w-full mb-4 mt-3">
+          <p class="text-xs mb-2">{{ $t('data.enterprise.popup.oragnization') }}</p>
+          <div class="flex items-center">
+            <i class="fas fa-city mr-3"></i>
+            <span class="text-black-700 text-lg">
+              {{ invitation.enterprise.name }}
+            </span>
+          </div>
+        </div>
+        <div class="invitation-info__right mobile p-3 pl-5 mb-4 w-full">
+          <p class="text-xs mb-2">{{ $t('data.enterprise.popup.inviter') }}</p>
+          <div class="flex items-center">
+            <i class="fas fa-user mr-3"></i>
+            <p class="text-black-700 text-lg">
+              {{ invitation.owner }}
+            </p>
+          </div>
+        </div>
+        <div class="invitation-info__content">
+          <p class="font-bold">{{ $t('data.enterprise.popup.accept.title') }}</p>
+            <ul class="list-disc pl-7 py-4">
+              <li v-for="item in $t('data.enterprise.popup.accept.list')" :key="item">
+                {{ item }}
+              </li>
+            </ul>
+            <p class="font-bold mt-2">{{ $t('data.enterprise.popup.decline.title') }}</p>
+            <ul class="pt-4">
+              <li v-for="item in $t('data.enterprise.popup.decline.list')" :key="item">
+                {{ item }}
+              </li>
+            </ul>
+        </div>
+      </div>
+      <div
+        slot="footer"
+        class="dialog-footer flex items-center text-left"
+      >
+        <div class="flex-grow" />
+        <div class="btns">
+          <button
+            class="btn btn-default"
+            :disabled="loading"
+            @click="putInvitation('reject')"
+          >
+            {{ $t('common.decline') }}
+          </button>
+          <button
+            class="btn btn-primary"
+            :disabled="loading"
+            @click="putInvitation('confirmed')"
+          >
+            {{ $t('common.accept') }}
+          </button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -42,17 +103,16 @@
 export default {
   data () {
     return {
-      loading: false
+      loading: false,
+      dialogVisible: true,
+      invitations: []
     }
   },
   methods: {
-    async getInvitations () {
-      this.invitations = await this.$axios.$get('cystack_platform/pm/users/invitations')
-    },
-    async putInvitation (id, status) {
+    async putInvitation (status) {
       try {
         this.loading = true
-        await this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${id}`, {
+        await this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${this.enterpriseInvitations[0]?.id}`, {
           status
         })
         this.notify(this.$t('common.success'), 'success')
@@ -60,7 +120,6 @@ export default {
           this.$store.dispatch('LoadCurrentUserPw')
           this.$store.dispatch('LoadTeams').then(this.loadEnterprisePolicies)
         }
-        this.getInvitations()
       } catch (e) {
         this.notify(this.$t('common.failed'), 'warning')
         console.log(e)
@@ -73,6 +132,93 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+.enterprise-invitations-dialog {
+  &__title {
+    font-size: 40px;
+    line-height: 48px;
+  }
+  .el-dialog__header {
+    padding: 20px 80px;
+  }
+  .el-dialog__body {
+    padding: 20px 80px;
+  }
+  .el-dialog__footer {
+    padding: 20px 80px;
+  }
+  .invitation-info {
+    &__left,
+    &__right {
+      i {
+        font-size: 24px;
+      }
+      &.mobile {
+        display: none;
+      }
+    }
+  }
+}
+@media (max-width: 640px) {
+  .enterprise-invitations-dialog {
+    width: 90% !important;
+    &__title {
+      font-size: 24px;
+      line-height: 32px;
+    }
+    .el-dialog__header {
+      padding: 16px 20px;
+    }
+    .el-dialog__body {
+      padding: 16px 20px;
+    }
+    .el-dialog__footer {
+      padding: 16px 20px;
+    }
+    .invitation-info {
+      display: none;
+      &__left,
+      &__right {
+        &.mobile {
+          display: block !important;
+          width: 100%;
+          border-radius: 8px 10px 10px 8px;
+        }
+      }
+      &__left {
+        &.mobile {
+          background: rgba(44, 142, 93, 0.05);
+          border-left: 6px solid #2C8E5D;
+        }
+      }
+      &__right {
+        &.mobile {
+          background: rgba(58, 75, 222, 0.05);
+          border-left: 6px solid #3A4BDE;
+        }
+      }
+      &__content {
+        background: #F1F1F1;
+        border-radius: 12px;
+        padding: 16px;
+      }
+    }
+  }
+  .dialog-footer {
+    .flex-grow {
+      display: none;
+    }
+    .btns {
+      width: 100%;
+      display: block;
+      .btn {
+        width: 100% !important;
+        margin-bottom: 12px;
+        &:last-child {
+          margin-bottom: 0px;
+        }
+      }
+    }
+  }
+}
 </style>

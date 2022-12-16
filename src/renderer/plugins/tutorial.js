@@ -13,12 +13,18 @@ const tour = new Shepherd.Tour({
   }
 })
 
-export default async ({ store, i18n }, inject) => {
+export default async ({ store, i18n, $axios }, inject) => {
   const _closeModals = () => {
     store.commit('UPDATE_UI', { closeAllModal: true })
     setTimeout(() => {
       store.commit('UPDATE_UI', { closeAllModal: false })
     }, 0)
+  }
+
+  const _skip = () => {
+    $axios.$put('/cystack_platform/pm/users/me/onboarding_process', {
+      tutorial: true
+    })
   }
 
   const BACK_BTN = {
@@ -36,6 +42,7 @@ export default async ({ store, i18n }, inject) => {
     classes: 'tutorial-skip',
     secondary: true,
     action: () => {
+      _skip()
       tour.cancel()
     }
   }
