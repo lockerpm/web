@@ -3,7 +3,7 @@
     :visible.sync="visible"
     custom-class="locker-dialog max-w-[600px]"
     width="100%"
-    @close="isFirst = false"
+    @close="onNormalClose"
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold text-center" v-html="$t('data.welcome_business.title')" />
@@ -51,11 +51,13 @@ export default {
     return {
       isFirst: true,
       visible: false,
-      allowWelcome: false,
       timeout: null
     }
   },
   computed: {
+    allowWelcome () {
+      return this.$store.state.notice.allowShowWelcomeBusiness
+    },
     shouldWelcome () {
       return this.allowWelcome && this.isEnterpriseAdminOrOwner && this.isFirst
     }
@@ -72,21 +74,29 @@ export default {
   beforeDestroy () {
     clearInterval(this.timeout)
   },
-  mounted () {
-    this.allowWelcome = this.checkWelcome() !== 'false'
-  },
   methods: {
     goToDashboard () {
       window.open(process.env.lockerEnterprise, '_blank')
       this.offWelcome()
     },
-    checkWelcome () {
-      return localStorage.getItem('show_welcome_business')
-    },
     offWelcome () {
       this.visible = false
-      localStorage.setItem('show_welcome_business', 'false')
-      this.allowWelcome = false
+      this.$store.commit('UPDATE_NOTICE', { allowShowWelcomeBusiness: false })
+      this.updateOnboardingProgress({
+        vault_to_dashboard: true
+      })
+      this.shouldOpenTutorial()
+    },
+    shouldOpenTutorial () {
+      if (this.$store.state.notice.allowShowTutorial) {
+        setTimeout(() => {
+          this.$store.commit('UPDATE_NOTICE', { showTutorial: true })
+        }, 1000)
+      }
+    },
+    onNormalClose () {
+      this.isFirst = false
+      this.shouldOpenTutorial()
     }
   }
 }
