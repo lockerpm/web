@@ -25,21 +25,25 @@
       />
     </template>
     <template v-else>
-      <input
-        ref="input"
-        class="cs-input"
-        :type="type"
-        :placeholder="shouldShowPlaceHolder ? placeholder : ''"
-        :disabled="disabled"
-        :value="value"
-        tabindex="0"
-        @mouseleave="hovering = false"
-        @focus="handleFocus"
-        @blur="handleOnBlue"
-        @input="handleInput"
-        @mouseenter="handleHover"
-        @keyup.enter="keyupEnter"
-      >
+      <div class="input-container" :class="{'suffix-icon': suffixIcon}">
+        <input
+          ref="input"
+          class="cs-input"
+          :type="type"
+          :placeholder="shouldShowPlaceHolder ? placeholder : ''"
+          :disabled="disabled"
+          :value="value"
+          tabindex="0"
+          @mouseleave="hovering = false"
+          @focus="handleFocus"
+          @blur="handleOnBlue"
+          @input="handleInput"
+          @mouseenter="handleHover"
+          @keyup.enter="keyupEnter"
+        >
+        <i v-if="suffixIcon && iconType == 'icon'" :class="suffixIcon"></i>
+        <img v-if="suffixIcon && iconType == 'img'" :src="suffixIcon"/>
+      </div>
     </template>
 
     <button
@@ -109,6 +113,14 @@ export default {
     required: {
       type: Boolean,
       default: false
+    },
+    suffixIcon: {
+      type: String,
+      default: ''
+    },
+    iconType: {
+      type: String,
+      default: 'icon'
     }
   },
   data () {
@@ -194,8 +206,22 @@ export default {
   border: solid 1px #e6e8f4;
   padding-top: 16px;
   background-color: #F3F3F3;
-  .cs-input {
+  .input-container {
     width: 100%;
+    display: flex;
+    align-items: center;
+    .cs-input {
+      width: 100%;
+    }
+    i {
+      font-size: 24px;
+    }
+    img {
+      height: 24px;
+    }
+    &.suffix-icon {
+      padding-right: 12px;
+    }
   }
   &.is-hover, &.is-focus {
     @apply border-primary bg-white;
