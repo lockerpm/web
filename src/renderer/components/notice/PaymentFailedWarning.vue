@@ -37,7 +37,7 @@ export default {
       }
       try {
         const res = await this.$axios.$get(`cystack_platform/pm/enterprises/${this.currentOrg.id}/payments/next_attempt`)
-        this.nextTime = res.next_payment_attempt
+        this.nextTime = res.next_payment_attempt * 1000
       } catch (e) {
         //
       }
