@@ -700,8 +700,8 @@ export default {
           this.cipher.collectionIds = [collection.id]
         }
 
-        // Remove org in clone mode
-        if (this.cloneMode) {
+        // Remove org in clone mode and not set to any collection
+        if (this.cloneMode && !collection) {
           this.cipher.organizationId = null
         }
 
