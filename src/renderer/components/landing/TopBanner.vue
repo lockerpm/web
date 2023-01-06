@@ -8,12 +8,12 @@
               NEW
             </span>
             <span v-html="$t('landing_banner.desc')" /> 🎉
-            <nuxt-link
-              :to="url"
+            <a
+              :href="url"
               style="color: #15D127; text-decoration: none"
             >
               {{ $t('landing_banner.read_more') }} <i class="el-icon-right" />
-            </nuxt-link>
+            </a>
           </p>
         </div>
         <a class="close-btn" @click.prevent="close()">
@@ -35,9 +35,9 @@ export default {
   computed: {
     url () {
       if (this.$store.state.user.language === 'vi') {
-        return '/vi/blog/xac-thuc-khong-mat-khau'
+        return 'https://support.locker.io/vi/articles/Nhap-du-lieu-tu-LastPass-3618294835b442168390a6a4def14a12'
       } else {
-        return '/blog/pave-the-way-to-passwordless-with-locker#a-future-without-passwords'
+        return 'https://support.locker.io/articles/Import-from-LastPass-e5e86298c03d4eb180d19dec78e3db11'
       }
     }
   },
