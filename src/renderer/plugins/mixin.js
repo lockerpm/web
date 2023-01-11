@@ -268,6 +268,13 @@ Vue.mixin({
           return
         }
 
+        // Enterprise expired
+        if (e.response?.data?.code === '1010') {
+          // Don't notify
+          return
+        }
+
+        // Default
         this.notify(e.response.data.message, 'warning')
       }
     },
