@@ -1,5 +1,8 @@
 <template>
-  <ListSharedCipher route-name="shares" :filter="c => c.organizationId" />
+  <ListSharedCipher
+    route-name="shares"
+    :filter="c => c.organizationId && getSharedCipherMembers(c.organizationId).length > 0"
+  />
 </template>
 
 <script>

@@ -550,7 +550,7 @@
                   >
                     <span class="overflow-hidden overflow-ellipsis">{{ item.name }}</span>
                     <img
-                      v-if="item.organizationId"
+                      v-if="item.organizationId && getSharedCipherMembers(item.organizationId).length > 0"
                       src="~/assets/images/icons/shares.svg"
                       alt="Shared"
                       :title="$t('common.shared_with_you')"
