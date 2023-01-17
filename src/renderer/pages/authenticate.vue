@@ -51,7 +51,6 @@ export default {
             SERVICE_SCOPE: 'pwdmanager',
             CLIENT: 'browser'
           }).then(async result => {
-            // console.log(result)
             const extensionToken = result.data ? result.data.access_token : ''
             try {
               for (const id of lockerExtensionId) {
@@ -64,8 +63,9 @@ export default {
           }).catch(() => {})
         }
         // end sendMessage
-
-        if (this.$route.query.return_url && isString(this.$route.query.return_url)) {
+        if (this.$route.query.external_url && isString(this.$route.query.external_url)) {
+          window.location.replace(this.$route.query.external_url)
+        } else if (this.$route.query.return_url && isString(this.$route.query.return_url)) {
           this.$router.replace(this.localePath({ path: this.$route.query.return_url })).catch(() => {})
         } else {
           this.$router.replace(this.localePath({ name: 'vault' })).catch(() => {})
