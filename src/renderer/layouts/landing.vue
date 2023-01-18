@@ -1,6 +1,8 @@
 <template>
   <div>
+    <TetHolidayClosing />
     <TopBanner />
+
     <Header />
     <div v-if="showCookie != 'false'" id="cookie-bar" class="cookie-bar">
       <div class="cookie-bar__wrap">
@@ -38,6 +40,7 @@
 import Header from '../components/landing/Header'
 import Footer from '../components/landing/Footer'
 import TopBanner from '../components/landing/TopBanner'
+import TetHolidayClosing from '../components/landing/TetHolidayClosing'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
@@ -48,7 +51,8 @@ export default {
   components: {
     Header,
     Footer,
-    TopBanner
+    TopBanner,
+    TetHolidayClosing
   },
   data () {
     return {
