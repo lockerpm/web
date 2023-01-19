@@ -79,7 +79,7 @@
     "cookie-universal-nuxt": "^2.1.4",
     "cors": "^2.8.5",
     "credit-card-type": "^9.1.0",
-    "duo_web_sdk": "git+https://github.com/duosecurity/duo_web_sdk.git#5f9a1a8598d2cda494c4f5ee0e38b31474abfee9",
+    "duo_web_sdk": "github:duosecurity/duo_web_sdk",
     "element-ui": "2.15.1",
     "express": "^4.18.1",
     "extract-domain": "^2.3.3",

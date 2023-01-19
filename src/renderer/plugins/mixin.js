@@ -799,8 +799,20 @@ Vue.mixin({
         console.log(e)
         return false
       }
+    },
+    getSharedCipherMembers (organizationId) {
+      const share = this.myShares.find(s => s.id === organizationId) || { members: [] }
+      return share.members.map(member => {
+        return {
+          ...member,
+          username: member.email,
+          status: member.status,
+          role: member.role,
+          id: member.id,
+          key: null
+        }
+      }) || []
     }
-
   }
 })
 
