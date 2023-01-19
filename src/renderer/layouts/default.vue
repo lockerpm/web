@@ -1,6 +1,8 @@
 <template>
   <div>
     <PaymentFailedWarning />
+    <TrialAboutToExpireWarning />
+
     <div class="flex flex-col sm:flex-row flex-1 relative">
       <client-only>
         <template v-if="!locked">
@@ -49,6 +51,7 @@ import LockedUntilPay from '../components/notice/LockedUntilPay'
 import WelcomeToBusiness from '../components/notice/WelcomeToBusiness'
 import Tutorial from '../components/notice/Tutorial'
 import PaymentFailedWarning from '../components/notice/PaymentFailedWarning'
+import TrialAboutToExpireWarning from '../components/notice/TrialAboutToExpireWarning'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
@@ -61,6 +64,7 @@ export default {
   components: {
     Tutorial,
     PaymentFailedWarning,
+    TrialAboutToExpireWarning,
     LockedUntilPay,
     WelcomeBanner,
     EnterpriseInvitations,

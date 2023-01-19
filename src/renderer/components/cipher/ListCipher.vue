@@ -75,8 +75,8 @@
             <!-- Breadcrumb end -->
 
             <!-- Add new button -->
-            <template v-if="canAddItem">
-              <div class="mx-6 text-head-4"> | </div>
+            <div v-if="canAddItem" class="flex items-center">
+              <div class="mx-6 text-head-4 mb-[5px]"> | </div>
               <div class="self-center">
                 <!-- Choose type to add -->
                 <template v-if="routeName==='vault'">
@@ -155,7 +155,7 @@
                 </template>
                 <!-- Add a specific type end -->
               </div>
-            </template>
+            </div>
             <!-- Add new button end -->
           </div>
 

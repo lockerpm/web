@@ -1,7 +1,7 @@
 <template>
   <nav
     id="header"
-    class="fixed w-full z-30 transition duration-300 ease-in-out bg-transparent"
+    class="sticky sm:top-[50px] top-[74px] w-full z-30 transition duration-300 ease-in-out bg-transparent"
   >
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-[14px] px-6">
       <!-- Logo -->

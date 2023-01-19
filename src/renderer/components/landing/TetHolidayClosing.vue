@@ -7,20 +7,44 @@
             <span class="new-container">
               NEW
             </span>
-            <span v-html="$t('landing_banner.desc')" /> 🎉
+            <span v-html="$t('landing_banner.tet_holiday.desc')" /> 🎉
             <a
-              :href="url"
               style="color: #15D127; text-decoration: none"
+              @click.prevent="dialogVisible = true"
             >
-              {{ $t('landing_banner.read_more') }} <i class="el-icon-right" />
+              {{ $t('landing_banner.tet_holiday.read_more') }} <i class="el-icon-right" />
             </a>
           </p>
         </div>
-        <a class="close-btn" @click.prevent="close()">
-          <i class="el-icon-close" />
-        </a>
+        <!--        <a class="close-btn" @click.prevent="close()">-->
+        <!--          <i class="el-icon-close" />-->
+        <!--        </a>-->
       </div>
     </div>
+
+    <el-dialog
+      append-to-body
+      :visible.sync="dialogVisible"
+      custom-class="max-w-[600px]"
+      width="90%"
+    >
+      <img
+        src="https://s.cystack.net/resource/home/content/30174004/Frame-4044.png"
+        alt="Happy Lunar New Year"
+        class="mt-6 mb-6"
+      >
+      <span
+        v-for="(text, index) in $t('landing_banner.tet_holiday.details')"
+        :key="index"
+      >
+        <span
+          class="text-black"
+          v-html="text"
+        />
+        <br>
+        <br>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -29,16 +53,8 @@ export default {
   name: 'TopBanner',
   data () {
     return {
-      visible: true
-    }
-  },
-  computed: {
-    url () {
-      if (this.$store.state.user.language === 'vi') {
-        return 'https://support.locker.io/vi/articles/Nhap-du-lieu-tu-LastPass-3618294835b442168390a6a4def14a12'
-      } else {
-        return 'https://support.locker.io/articles/Import-from-LastPass-e5e86298c03d4eb180d19dec78e3db11'
-      }
+      visible: true,
+      dialogVisible: false
     }
   },
   methods: {
@@ -54,9 +70,9 @@ export default {
   background-color: #222222;
   padding-top: 13px;
   padding-bottom: 13px;
-  /*position: sticky;*/
+  position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 2000;
 }
 .new-container {
   background-color: #FFC400;
