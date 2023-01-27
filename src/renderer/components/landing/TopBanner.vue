@@ -54,7 +54,7 @@ export default {
   background-color: #222222;
   padding-top: 13px;
   padding-bottom: 13px;
-  /*position: sticky;*/
+  position: sticky;
   top: 0;
   z-index: 1000;
 }
