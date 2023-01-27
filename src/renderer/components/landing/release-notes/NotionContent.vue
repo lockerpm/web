@@ -32,7 +32,7 @@
 
     <!-- Content -->
     <div class="w-full md:w-3/4">
-      <NotionRenderer :block-map="blockMap[language]" full-page />
+      <NotionRenderer :block-map="blockMapValues" full-page />
     </div>
     <!-- Content end -->
   </div>
@@ -68,6 +68,16 @@ export default {
           sections: sections.filter(s => s.index > h.index)
         }
       })
+    },
+
+    blockMapValues () {
+      const blockMapValues = JSON.parse(JSON.stringify(this.blockMap[this.language]))
+      this.menus.forEach(m => {
+        m.sections.forEach(s => {
+          blockMapValues[s.value.id].value.properties.title[0][0] = `${m.title} - ${s.title}`
+        })
+      })
+      return blockMapValues
     }
   },
 
@@ -76,7 +86,7 @@ export default {
       if (process.client) {
         const sections = document.querySelectorAll(heading)
         for (let index = 0; index < sections.length; index++) {
-          if (sections[index].innerText === item.title) {
+          if (sections[index].innerText.includes(item.title)) {
             window.scroll(0, sections[index].offsetTop - 140)
           }
         }
