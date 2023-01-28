@@ -54,17 +54,19 @@ export default {
         title: item.value?.properties?.title[0][0] || '',
         index
       }))
-      const headers = allValues.filter(item => item.value.type === 'header')
-      const sections = allValues.filter(item => item.value.type === 'sub_header')
+      const headers = allValues.filter(item => item.value.type === 'header').map((h, index) => ({ ...h, stt: index }))
+      const sections = allValues.filter(item => item.value.type === 'sub_header').map((s, index) => ({ ...s, stt: index }))
       return headers.map((h, index) => {
         if (index < headers.length - 1) {
           return {
             title: h.title,
+            stt: h.stt,
             sections: sections.filter(s => s.index > h.index && s.index < headers[index + 1].index)
           }
         }
         return {
           title: h.title,
+          stt: h.stt,
           sections: sections.filter(s => s.index > h.index)
         }
       })
@@ -84,11 +86,9 @@ export default {
   methods: {
     goto (item, heading = 'h2') {
       if (process.client) {
-        const sections = document.querySelectorAll(heading)
-        for (let index = 0; index < sections.length; index++) {
-          if (sections[index].innerText.includes(item.title)) {
-            window.scroll(0, sections[index].offsetTop - 140)
-          }
+        const sections = document.getElementsByClassName(`notion-${heading}`)
+        if (sections[item.stt] && sections[item.stt].innerText.includes(item.title)) {
+          window.scroll(0, sections[item.stt].offsetTop - 140)
         }
       }
     }
