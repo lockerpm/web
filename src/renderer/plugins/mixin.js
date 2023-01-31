@@ -15,7 +15,10 @@ import { CipherView } from '../core/models/view/cipherView'
 // Vue.use(Image)
 Vue.mixin({
   data () {
-    return { folders: [] }
+    return {
+      folders: [],
+      notEnable2FA: false
+    }
   },
   computed: {
     language () { return this.$store.state.user.language },
@@ -244,14 +247,34 @@ Vue.mixin({
         this.$store.commit('UPDATE_SYNCING', true)
         this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/vault' : this.$store.state.currentPath }))
       } catch (e) {
+        // Wrong master pw
         if (!e.response?.data?.message || e.response?.data?.code === '0004') {
           this.notify(this.$t('errors.invalid_master_password'), 'warning')
           return
         }
+
+        // Force join enterprise
         if (e.response?.data?.code === '1011' && this.$route.name.startsWith('set-master-password')) {
           this.$router.push(this.localeRoute({ name: 'lock', query: { joinEnterprise: '1' } }))
           return
         }
+
+        // Force 2FA
+        if (e.response?.data?.code === '1012') {
+          this.notEnable2FA = true
+          if (this.$route.name.startsWith('set-master-password')) {
+            this.$router.push(this.localeRoute({ name: 'lock' }))
+          }
+          return
+        }
+
+        // Enterprise expired
+        if (e.response?.data?.code === '1010') {
+          // Don't notify
+          return
+        }
+
+        // Default
         this.notify(e.response.data.message, 'warning')
       }
     },
@@ -723,6 +746,12 @@ Vue.mixin({
 
       return callback()
     },
+    async checkBlockedBy2FA () {
+      try {
+        const res = await this.$axios.$get('/cystack_platform/pm/users/me/block_by_2fa')
+        this.notEnable2FA = res.block
+      } catch (e) {}
+    },
     async loadEnterprisePolicies () {
       if (!this.currentOrg?.id) {
         return
@@ -735,6 +764,54 @@ Vue.mixin({
         })
         this.$store.commit('UPDATE_ENTERPRISE_POLICIES', enterprisePolicies)
       } catch (e) {}
+    },
+    async checkOnboardingProgress () {
+      try {
+        const res = await this.$axios.$get('/cystack_platform/pm/users/me/onboarding_process')
+        const progress = {
+          tutorial: res.tutorial,
+          welcome: res.welcome,
+          vaultToDashboard: res.vault_to_dashboard
+        }
+        this.$store.commit('UPDATE_NOTICE', {
+          showWelcome: !progress.welcome,
+          allowShowWelcomeBusiness: !progress.vaultToDashboard,
+          allowShowTutorial: !progress.tutorial
+        })
+
+        // Should open tutorial right away or wait after welcome business
+        const willOpenWelcomeBusiness = !progress.vaultToDashboard && this.isEnterpriseAdminOrOwner
+        if (!progress.tutorial && !willOpenWelcomeBusiness) {
+          setTimeout(() => {
+            this.$store.commit('UPDATE_NOTICE', { showTutorial: true })
+          }, 1000)
+        }
+      } catch (e) {
+        console.log(e)
+        return null
+      }
+    },
+    async updateOnboardingProgress (payload) {
+      try {
+        await this.$axios.$put('/cystack_platform/pm/users/me/onboarding_process', payload)
+        return true
+      } catch (e) {
+        console.log(e)
+        return false
+      }
+    },
+    getSharedCipherMembers (organizationId) {
+      const share = this.myShares.find(s => s.id === organizationId) || { members: [] }
+      return share.members.map(member => {
+        return {
+          ...member,
+          username: member.email,
+          status: member.status,
+          role: member.role,
+          id: member.id,
+          key: null
+        }
+      }) || []
     }
   }
 })

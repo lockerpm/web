@@ -22,7 +22,7 @@
         >
           {{ $t('tutorial.welcome.start') }}
         </el-button>
-        <a class="mt-3" @click.prevent="closeDialog">
+        <a class="mt-3" @click.prevent="closeDialog(true)">
           {{ $t('tutorial.welcome.skip') }}
         </a>
       </div>
@@ -59,7 +59,7 @@
           >
             <span v-html="$t('tutorial.extension.action')" />
           </el-button>
-          <a @click.prevent="closeDialog">
+          <a @click.prevent="closeDialog(true)">
             {{ $t('common.close') }}
           </a>
         </div>
@@ -83,7 +83,12 @@ export default {
     this.$tutorial.cancel()
   },
   methods: {
-    closeDialog () {
+    closeDialog (isSkip = false) {
+      if (isSkip) {
+        this.updateOnboardingProgress({
+          tutorial: true
+        })
+      }
       this.$store.commit('UPDATE_NOTICE', { showTutorial: false, showTutorialStep6: false })
     },
     async startTutorial () {
@@ -98,7 +103,7 @@ export default {
       }, isInVault ? 0 : 1000)
     },
     openExtension () {
-      this.closeDialog()
+      this.closeDialog(true)
       window.open('https://chrome.google.com/webstore/detail/locker-password-manager/cmajindocfndlkpkjnmjpjoilibjgmgh/related', '_blank')
     }
   }
@@ -123,6 +128,14 @@ export default {
   }
   .shepherd-arrow {
     background: white !important;
+  }
+
+  .tutorial-skip {
+    margin-left: auto;
+  }
+
+  .tutorial-arrow {
+    padding: 8px 13px
   }
 }
 </style>

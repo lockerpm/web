@@ -75,8 +75,8 @@
             <!-- Breadcrumb end -->
 
             <!-- Add new button -->
-            <template v-if="canAddItem">
-              <div class="mx-6 text-head-4"> | </div>
+            <div v-if="canAddItem" class="flex items-center">
+              <div class="mx-6 text-head-4 mb-[5px]"> | </div>
               <div class="self-center">
                 <!-- Choose type to add -->
                 <template v-if="routeName==='vault'">
@@ -91,7 +91,7 @@
                       id="vault__add-btn"
                       slot="reference"
                       class="btn btn-outline-primary"
-                      :class="{ 'hidden': !$store.state.ui.isTutorialActive }"
+                      :class="{ 'hidden': !$store.state.tutorial.isActive }"
                       @click="addBtnDropdownVisible = !addBtnDropdownVisible"
                     >
                       <i class="el-icon-plus text-lg" />
@@ -118,7 +118,7 @@
                   <el-dropdown trigger="click">
                     <button
                       class="btn btn-outline-primary"
-                      :class="{ 'hidden': $store.state.ui.isTutorialActive }"
+                      :class="{ 'hidden': $store.state.tutorial.isActive }"
                     >
                       <i class="el-icon-plus text-lg" />
                       <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
@@ -155,7 +155,7 @@
                 </template>
                 <!-- Add a specific type end -->
               </div>
-            </template>
+            </div>
             <!-- Add new button end -->
           </div>
 
@@ -552,7 +552,7 @@
                   >
                     <span class="overflow-hidden overflow-ellipsis">{{ item.name }}</span>
                     <img
-                      v-if="item.organizationId"
+                      v-if="item.organizationId && getSharedCipherMembers(item.organizationId).length > 0"
                       src="~/assets/images/icons/shares.svg"
                       alt="Shared"
                       :title="$t('common.shared_with_you')"
@@ -1046,6 +1046,11 @@ export default {
         this.changeSort('', '')
       } else {
         this.changeSort('revisionDate', 'desc')
+      }
+    },
+    '$store.state.tutorial.currentStepId' (newVal) {
+      if (newVal !== 'add-pw-2') {
+        this.addBtnDropdownVisible = false
       }
     }
   },

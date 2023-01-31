@@ -1,38 +1,43 @@
 <template>
-  <div class="flex flex-col sm:flex-row flex-1 relative">
-    <client-only>
-      <template v-if="!locked">
-        <!-- Sidebar -->
-        <div class="hidden md:block">
-          <SideBarMenu :closable="false" :pending-shares="pendingShares" />
-        </div>
-        <!-- Sidebar end -->
+  <div>
+    <PaymentFailedWarning />
+    <TrialAboutToExpireWarning />
 
-        <div class="md:pl-60 flex flex-col flex-row-fluid">
-          <Header />
+    <div class="flex flex-col sm:flex-row flex-1 relative">
+      <client-only>
+        <template v-if="!locked">
+          <!-- Sidebar -->
+          <div class="hidden md:block">
+            <SideBarMenu :closable="false" :pending-shares="pendingShares" />
+          </div>
+          <!-- Sidebar end -->
 
-          <Tutorial />
+          <div class="md:pl-60 flex flex-col flex-row-fluid">
+            <Header />
 
-          <!-- Welcome banner -->
-          <WelcomeBanner />
-          <!-- Welcome banner end -->
+            <Tutorial />
 
-          <!-- Enterprise invitations -->
-          <EnterpriseInvitations />
-          <!-- Enterprise invitations end -->
+            <!-- Welcome banner -->
+            <WelcomeBanner />
+            <!-- Welcome banner end -->
 
-          <!-- Emergency access invitations -->
-          <EmergencyAccessInvitations ref="emergencyAccessInvitations" />
-          <!-- Emergency access invitations end -->
+            <!-- Enterprise invitations -->
+            <EnterpriseInvitations />
+            <!-- Enterprise invitations end -->
 
-          <nuxt />
-        </div>
-      </template>
+            <!-- Emergency access invitations -->
+            <EmergencyAccessInvitations ref="emergencyAccessInvitations" />
+            <!-- Emergency access invitations end -->
 
-      <LockedUntilPay />
+            <nuxt />
+          </div>
+        </template>
 
-      <WelcomeToBusiness />
-    </client-only>
+        <LockedUntilPay />
+
+        <WelcomeToBusiness />
+      </client-only>
+    </div>
   </div>
 </template>
 
@@ -45,6 +50,8 @@ import EmergencyAccessInvitations from '../components/notice/EmergencyAccessInvi
 import LockedUntilPay from '../components/notice/LockedUntilPay'
 import WelcomeToBusiness from '../components/notice/WelcomeToBusiness'
 import Tutorial from '../components/notice/Tutorial'
+import PaymentFailedWarning from '../components/notice/PaymentFailedWarning'
+import TrialAboutToExpireWarning from '../components/notice/TrialAboutToExpireWarning'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
@@ -56,6 +63,8 @@ const IdleTimeout = 60000 * 10 // 10 minutes
 export default {
   components: {
     Tutorial,
+    PaymentFailedWarning,
+    TrialAboutToExpireWarning,
     LockedUntilPay,
     WelcomeBanner,
     EnterpriseInvitations,
@@ -104,6 +113,7 @@ export default {
         this.intervalGet = setInterval(() => {
           this.$store.dispatch('LoadNotification')
         }, 1000 * 30)
+        this.checkOnboardingProgress()
       }
     }
   },

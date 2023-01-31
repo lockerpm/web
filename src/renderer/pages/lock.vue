@@ -20,6 +20,12 @@
     />
     <!-- Join enterprise end -->
 
+    <!-- Not enable 2FA -->
+    <NotEnable2FA
+      v-else-if="notEnable2FA"
+    />
+    <!-- Not enable 2FA end -->
+
     <!-- Basic lock form -->
     <div
       v-else
@@ -99,9 +105,10 @@
 <script>
 import SendHint from '../components/pages/lock/SendHint'
 import JoinEnterprise from '../components/pages/lock/JoinEnterprise'
+import NotEnable2FA from '../components/pages/lock/NotEnable2FA'
 
 export default {
-  components: { JoinEnterprise, SendHint },
+  components: { JoinEnterprise, SendHint, NotEnable2FA },
   layout: 'blank',
   middleware: ['NotHaveAccountService', 'blockBySource'],
   data () {
@@ -116,6 +123,7 @@ export default {
     }
   },
   mounted () {
+    this.checkBlockedBy2FA()
     if (this.extensionLoggedIn) {
       this.notify(this.$t('data.notifications.extension_loggedin'), 'success')
       this.$store.commit('UPDATE_LOGIN_EXTENSION', false)

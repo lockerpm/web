@@ -102,6 +102,7 @@
             />
           </ValidationProvider>
           <InputSelect
+            ref="inputSelectBrand"
             :label="$t('data.ciphers.brand')"
             :initial-value="cipher.card.brand"
             class="w-full"
@@ -114,6 +115,7 @@
             :label="$t('data.ciphers.card_number')"
             class="w-full"
             :disabled="true"
+            @input="changeCardNumber"
           />
           <div class="grid grid-cols-2 gap-2">
             <InputSelect
@@ -366,6 +368,9 @@ import InputSelect from '../input/InputSelect'
 import InputSelectCryptoWallet from '../input/InputSelectCryptoWallet'
 import InputSelectCryptoNetworks from '../input/InputSelectCryptoNetworks'
 import InputSeedPhrase from '../input/InputSeedPhrase'
+
+import { detectCardBrand } from "../../utils/common"
+
 CipherType.CryptoWallet = 7
 export default {
   components: {
@@ -523,7 +528,21 @@ export default {
     },
     handleChangeType (type) {
       this.newCipher(type)
-    }
+    },
+
+    // Change card Number
+    changeCardNumber(number) {
+      const cardLabel = detectCardBrand(number)
+      const brandOption = this.cardBrandOptions.find((o) => o.label === cardLabel)
+      if (brandOption) {
+        this.cipher.card.brand = brandOption.value
+      } else if (cardLabel) {
+        this.cipher.card.brand = 'Other'
+      } else {
+        this.cipher.card.brand = null
+      }
+      this.$refs.inputSelectBrand.value = this.cipher.card.brand
+    },
   }
 }
 </script>

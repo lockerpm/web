@@ -12,7 +12,8 @@
               {{ $t('features.identify_weak_password.subtitle') }}
             </div>
             <div class="max-w-[750px] mx-auto mt-[50px]">
-              <img src="~/assets/images/landing/features/detail/identify_weak_password.svg" class="ml-[12%]">
+              <img v-if="locale === 'en'" src="~/assets/images/landing/features/detail/en/identify_weak_password.svg" class="ml-[12%]">
+              <img v-else src="~/assets/images/landing/features/detail/vi/identify_weak_password.svg" class="ml-[12%]">
               <nuxt-link
                 class="mx-auto landing-btn"
                 :to="localePath('/password-health-checker')"
@@ -79,7 +80,6 @@
 <script>
 export default {
   layout: 'landing',
-  middleware: ['blockProduction'],
   data () {
     return {
     }

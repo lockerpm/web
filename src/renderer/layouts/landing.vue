@@ -1,6 +1,7 @@
 <template>
   <div>
     <TopBanner />
+
     <Header />
     <div v-if="showCookie != 'false'" id="cookie-bar" class="cookie-bar">
       <div class="cookie-bar__wrap">
@@ -48,7 +49,7 @@ export default {
   components: {
     Header,
     Footer,
-    TopBanner
+    TopBanner,
   },
   data () {
     return {
