@@ -1,14 +1,23 @@
 <template>
-  <div
-    v-loading="loading"
-    class="flex flex-col flex-column-fluid relative"
-  >
+  <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
     <!-- Navigation Menu -->
-    <div v-if="['vault', 'passwords', 'notes', 'identities', 'cards', 'crypto-backups'].includes(getRouteBaseName())" class="navigation-bar">
+    <div
+      v-if="
+        [
+          'vault',
+          'passwords',
+          'notes',
+          'identities',
+          'cards',
+          'crypto-backups'
+        ].includes(getRouteBaseName())
+      "
+      class="navigation-bar"
+    >
       <nuxt-link
         v-for="(item, index) in menuVault"
         :key="index"
-        :to="localeRoute({name: item.routeName})"
+        :to="localeRoute({ name: item.routeName })"
         active-class="navigation-item__active"
         class="navigation-item"
         exact
@@ -32,7 +41,7 @@
               <template v-if="getRouteBaseName() === 'vault-folders-folderId'">
                 <nuxt-link
                   class="font-medium hover:no-underline"
-                  :to="localeRoute({name: 'vault'})"
+                  :to="localeRoute({ name: 'vault' })"
                 >
                   {{ $t('sidebar.vault') }}
                 </nuxt-link>
@@ -40,30 +49,38 @@
                   &nbsp; / &nbsp; {{ folder.name || collection.name }}
                 </span>
               </template>
-              <template v-else-if="getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId'">
+              <template
+                v-else-if="
+                  getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId'
+                "
+              >
                 <nuxt-link
                   class="font-medium hover:no-underline"
-                  :to="localeRoute({name: 'vault'})"
+                  :to="localeRoute({ name: 'vault' })"
                 >
                   {{ $t('sidebar.vault') }}
                 </nuxt-link>
                 <span class="font-medium">
-                  &nbsp; / &nbsp; {{ getTeam(teams, $route.params.teamId).name }} - {{ collection.name }}
+                  &nbsp; / &nbsp;
+                  {{ getTeam(teams, $route.params.teamId).name }} -
+                  {{ collection.name }}
                 </span>
               </template>
-              <template v-else-if="getRouteBaseName() ==='vault'">
+              <template v-else-if="getRouteBaseName() === 'vault'">
                 <span class="font-medium">{{ $t('common.all_items') }}</span>
               </template>
-              <template v-else-if="getRouteBaseName() ==='shares'">
-                <span class="font-medium">{{ $t('sidebar.shared_with_you') }}</span>
+              <template v-else-if="getRouteBaseName() === 'shares'">
+                <span class="font-medium">{{
+                  $t('sidebar.shared_with_you')
+                }}</span>
               </template>
-              <template v-else-if="getRouteBaseName() ==='trash'">
+              <template v-else-if="getRouteBaseName() === 'trash'">
                 <span class="font-medium">Trash</span>
               </template>
-              <template v-else-if="getRouteBaseName() ==='shares-your-shares'">
+              <template v-else-if="getRouteBaseName() === 'shares-your-shares'">
                 <span class="font-medium">{{ $t('type.your_shares') }}</span>
               </template>
-              <template v-else-if="getRouteBaseName() ==='shares-requests'">
+              <template v-else-if="getRouteBaseName() === 'shares-requests'">
                 <span class="font-medium">{{ $t('type.requests') }}</span>
               </template>
               <template v-else>
@@ -76,10 +93,10 @@
 
             <!-- Add new button -->
             <div v-if="canAddItem" class="flex items-center">
-              <div class="mx-6 text-head-4 mb-[5px]"> | </div>
+              <div class="mx-6 text-head-4 mb-[5px]">|</div>
               <div class="self-center">
                 <!-- Choose type to add -->
-                <template v-if="routeName==='vault'">
+                <template v-if="routeName === 'vault'">
                   <!-- Button for tutorial -->
                   <el-popover
                     v-model="addBtnDropdownVisible"
@@ -91,11 +108,13 @@
                       id="vault__add-btn"
                       slot="reference"
                       class="btn btn-outline-primary"
-                      :class="{ 'hidden': !$store.state.tutorial.isActive }"
+                      :class="{ hidden: !$store.state.tutorial.isActive }"
                       @click="addBtnDropdownVisible = !addBtnDropdownVisible"
                     >
                       <i class="el-icon-plus text-lg" />
-                      <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
+                      <span class="ml-3 break-all">{{
+                        $t('common.add_new')
+                      }}</span>
                     </button>
                     <div style="margin: -12px; padding: 10px 0">
                       <div
@@ -118,16 +137,15 @@
                   <el-dropdown trigger="click">
                     <button
                       class="btn btn-outline-primary"
-                      :class="{ 'hidden': $store.state.tutorial.isActive }"
+                      :class="{ hidden: $store.state.tutorial.isActive }"
                     >
                       <i class="el-icon-plus text-lg" />
-                      <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
+                      <span class="ml-3 break-all">{{
+                        $t('common.add_new')
+                      }}</span>
                     </button>
                     <el-dropdown-menu slot="dropdown">
-                      <div
-                        v-for="item in options"
-                        :key="item.value"
-                      >
+                      <div v-for="item in options" :key="item.value">
                         <el-dropdown-item
                           :value="item.value"
                           class="flex items-center justify-between"
@@ -150,7 +168,9 @@
                     @click="handleAddButton"
                   >
                     <i class="el-icon-plus text-lg" />
-                    <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
+                    <span class="ml-3 break-all">{{
+                      $t('common.add_new')
+                    }}</span>
                   </button>
                 </template>
                 <!-- Add a specific type end -->
@@ -160,19 +180,16 @@
           </div>
 
           <!-- view folder button -->
-          <div
-            v-if="getRouteBaseName()==='vault'"
-            class="self-center"
-          >
+          <div v-if="getRouteBaseName() === 'vault'" class="self-center">
             <button
               class="btn btn-icon hover:bg-[#E5E5E5]"
-              :class="viewFolder?'bg-[#E5E5E5]':''"
-              @click="viewFolder=!viewFolder"
+              :class="viewFolder ? 'bg-[#E5E5E5]' : ''"
+              @click="viewFolder = !viewFolder"
             >
               <!-- <i v-if="!viewFolder" class="fas fa-folder-open" @click="viewFolder=true" /> -->
               {{ $t('common.view_folder') }}
               <span><i
-                :class="viewFolder?'fas':'far'"
+                :class="viewFolder ? 'fas' : 'far'"
                 class="fa-folder cursor-pointer"
               /></span>
             </button>
@@ -181,20 +198,15 @@
         </div>
 
         <!-- number of items -->
-        <div
-          v-if="ciphers && !viewFolder"
-          class="uppercase text-head-6"
-        >
+        <div v-if="ciphers && !viewFolder" class="uppercase text-head-6">
           <span class="text-primary font-semibold">
             {{ itemsCount }}
           </span>
           {{ $tc('type.0', ciphers.length) }}
         </div>
-        <div
-          v-if="folders && viewFolder"
-          class="uppercase text-head-6"
-        >
-          <span class="text-primary font-semibold">{{ folders.length }}</span> {{ $tc('type.Folder', folders.length) }}
+        <div v-if="folders && viewFolder" class="uppercase text-head-6">
+          <span class="text-primary font-semibold">{{ folders.length }}</span>
+          {{ $tc('type.Folder', folders.length) }}
         </div>
         <!-- number of items end -->
       </div>
@@ -206,44 +218,55 @@
           <div class="flex">
             <el-dropdown trigger="click" class="self-center">
               <div class="text-sm text-black-600 font-semibold">
-                {{ $t('data.ciphers.sort_by') }} <i class="el-icon-caret-bottom el-icon--right" />
+                {{ $t('data.ciphers.sort_by') }}
+                <i class="el-icon-caret-bottom el-icon--right" />
               </div>
-              <el-dropdown-menu slot="dropdown" class="w-[200px] ">
+              <el-dropdown-menu slot="dropdown" class="w-[200px]">
                 <el-dropdown-item
                   v-if="isSearching"
                   class="flex items-center justify-between"
                   @click.native="changeSort('', '')"
                 >
                   <span>{{ $t('data.ciphers.most_relevant') }}</span>
-                  <i v-if="orderString==='_'" class="fa fa-check" />
+                  <i v-if="orderString === '_'" class="fa fa-check" />
                 </el-dropdown-item>
                 <el-dropdown-item
                   class="flex items-center justify-between"
                   @click.native="changeSort('name', 'asc')"
                 >
-                  <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.ascending') }}</span>
-                  <i v-if="orderString==='name_asc'" class="fa fa-check" />
+                  <span>{{ $t('data.ciphers.name') }}
+                    {{ $t('data.ciphers.ascending') }}</span>
+                  <i v-if="orderString === 'name_asc'" class="fa fa-check" />
                 </el-dropdown-item>
                 <el-dropdown-item
                   class="flex items-center justify-between"
                   @click.native="changeSort('name', 'desc')"
                 >
-                  <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.descending') }}</span>
-                  <i v-if="orderString==='name_desc'" class="fa fa-check" />
+                  <span>{{ $t('data.ciphers.name') }}
+                    {{ $t('data.ciphers.descending') }}</span>
+                  <i v-if="orderString === 'name_desc'" class="fa fa-check" />
                 </el-dropdown-item>
                 <el-dropdown-item
                   class="flex items-center justify-between"
                   @click.native="changeSort('revisionDate', 'asc')"
                 >
-                  <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.ascending') }}</span>
-                  <i v-if="orderString==='revisionDate_asc'" class="fa fa-check" />
+                  <span>{{ $t('data.ciphers.time') }}
+                    {{ $t('data.ciphers.ascending') }}</span>
+                  <i
+                    v-if="orderString === 'revisionDate_asc'"
+                    class="fa fa-check"
+                  />
                 </el-dropdown-item>
                 <el-dropdown-item
                   class="flex items-center justify-between"
                   @click.native="changeSort('revisionDate', 'desc')"
                 >
-                  <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.descending') }}</span>
-                  <i v-if="orderString==='revisionDate_desc'" class="fa fa-check" />
+                  <span>{{ $t('data.ciphers.time') }}
+                    {{ $t('data.ciphers.descending') }}</span>
+                  <i
+                    v-if="orderString === 'revisionDate_desc'"
+                    class="fa fa-check"
+                  />
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -253,18 +276,27 @@
 
       <!-- List Folders -->
       <div
-        v-if="getRouteBaseName() === 'vault' && (folders || collections) && viewFolder"
+        v-if="
+          getRouteBaseName() === 'vault' &&
+            (folders || collections) &&
+            viewFolder
+        "
         class="mb-10"
       >
         <client-only>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6 ">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-6"
+          >
             <!-- Collection - Shared -->
             <template v-for="item in collections">
               <div
-                v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
+                v-if="
+                  searchText.length <= 1 ||
+                    (searchText.length > 1 && item.ciphersCount > 0)
+                "
                 :key="item.id"
                 class="px-4 py-4 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                :class="{'border-primary': selectedFolder.id === item.id}"
+                :class="{ 'border-primary': selectedFolder.id === item.id }"
                 :title="item.name"
               >
                 <!-- NOTE: if you want to enable right click menu, add @contextmenu.prevent="$refs.menu.open($event, item)" to button and uncomment bellow context code -->
@@ -283,15 +315,15 @@
                   @click="routerFolder(item)"
                 >
                   {{ item.name }}
-                  <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
+                  <div class="text-black-500">
+                    {{ item.ciphersCount }}
+                    {{ item.ciphersCount > 1 ? 'items' : 'item' }}
+                  </div>
                 </div>
                 <!-- Name + count end -->
 
                 <!-- Actions -->
-                <el-dropdown
-                  v-if="!isProtectedCipher(item)"
-                  trigger="click"
-                >
+                <el-dropdown v-if="!isProtectedCipher(item)" trigger="click">
                   <button class="btn btn-icon btn-xs hover:bg-black-400">
                     <i class="fas fa-ellipsis-h" />
                   </button>
@@ -333,10 +365,13 @@
             <!-- Folder -->
             <template v-for="item in folders">
               <div
-                v-if="searchText.length<=1||(searchText.length>1&&item.ciphersCount>0)"
+                v-if="
+                  searchText.length <= 1 ||
+                    (searchText.length > 1 && item.ciphersCount > 0)
+                "
                 :key="item.id"
                 class="px-4 py-4 flex items-center cursor-pointer rounded border border-[#E6E6E8] hover:border-primary"
-                :class="{'border-primary': selectedFolder.id === item.id}"
+                :class="{ 'border-primary': selectedFolder.id === item.id }"
                 :title="item.name"
               >
                 <!-- Icon -->
@@ -354,15 +389,15 @@
                   @click="routerFolder(item)"
                 >
                   {{ item.name }}
-                  <div class="text-black-500">{{ item.ciphersCount }} {{ item.ciphersCount>1?'items':'item' }}</div>
+                  <div class="text-black-500">
+                    {{ item.ciphersCount }}
+                    {{ item.ciphersCount > 1 ? 'items' : 'item' }}
+                  </div>
                 </div>
                 <!-- Name + count end -->
 
                 <!-- Actions -->
-                <el-dropdown
-                  v-if="!isProtectedCipher(item)"
-                  trigger="click"
-                >
+                <el-dropdown v-if="!isProtectedCipher(item)" trigger="click">
                   <button class="btn btn-icon btn-xs hover:bg-black-400">
                     <i class="fas fa-ellipsis-h" />
                   </button>
@@ -459,19 +494,17 @@
               <div class="self-center mr-1">
                 <el-checkbox
                   v-model="checkedAll"
-                  :class="checkedAll?'!visible':''"
+                  :class="checkedAll ? '!visible' : ''"
                   @change="checkAll"
                 />
               </div>
               <!-- Check all end -->
 
               <!-- Multi select action -->
-              <div
-                v-if="multipleSelection.length"
-                class="flex items-center "
-              >
+              <div v-if="multipleSelection.length" class="flex items-center">
                 <div class="text-black mr-8 whitespace-nowrap">
-                  {{ multipleSelection.length }} {{ $t('data.ciphers.selected_items') }}
+                  {{ multipleSelection.length }}
+                  {{ $t('data.ciphers.selected_items') }}
                 </div>
                 <div v-if="deleted">
                   <button
@@ -487,10 +520,7 @@
                     {{ $t('common.permanently_delete') }}
                   </button>
                 </div>
-                <div
-                  v-else
-                  class=""
-                >
+                <div v-else class="">
                   <button
                     class="btn btn-default btn-xs"
                     @click="moveFolders(multipleSelection.map(e => e.id))"
@@ -509,25 +539,21 @@
             </div>
 
             <!-- Headers -->
-            <div
-              v-for="header in headers"
-              :key="header"
-              class="th"
-            >
+            <div v-for="header in headers" :key="header" class="th">
               {{ header }}
             </div>
             <!-- Headers end -->
           </template>
 
-          <template #default="{item}">
+          <template #default="{ item }">
             <div class="td">
               <div class="flex items-center">
                 <!-- Checkbox -->
                 <div class="mr-4">
                   <el-checkbox
                     :disabled="isProtectedCipher(item)"
-                    :value="item.checked?true:false"
-                    :class="item.checked?'!visible':''"
+                    :value="item.checked ? true : false"
+                    :class="item.checked ? '!visible' : ''"
                     @change="changeSelection(item)"
                   />
                 </div>
@@ -536,7 +562,7 @@
                 <!-- Icon -->
                 <div
                   class="text-[34px] mr-3 flex-shrink-0"
-                  :class="{'filter grayscale': item.isDeleted}"
+                  :class="{ 'filter grayscale': item.isDeleted }"
                 >
                   <Vnodes :vnodes="getIconCipher(item, 34)" />
                 </div>
@@ -547,12 +573,17 @@
                   <!-- Name -->
                   <a
                     class="text-black font-semibold truncate flex items-center"
-                    :class="{'opacity-80': item.isDeleted}"
+                    :class="{ 'opacity-80': item.isDeleted }"
                     @click="routerCipher(item, addEdit)"
                   >
-                    <span class="overflow-hidden overflow-ellipsis">{{ item.name }}</span>
+                    <span class="overflow-hidden overflow-ellipsis">{{
+                      item.name
+                    }}</span>
                     <img
-                      v-if="item.organizationId && getSharedCipherMembers(item.organizationId).length > 0"
+                      v-if="
+                        item.organizationId &&
+                          isCipherShared(item.organizationId)
+                      "
                       src="~/assets/images/icons/shares.svg"
                       alt="Shared"
                       :title="$t('common.shared_with_you')"
@@ -563,7 +594,11 @@
 
                   <!-- Subtitle -->
                   <div class="overflow-hidden overflow-ellipsis">
-                    {{ item.type === CipherType.CryptoWallet && item.cryptoWallet ? item.cryptoWallet.username : item.subTitle }}
+                    {{
+                      item.type === CipherType.CryptoWallet && item.cryptoWallet
+                        ? item.cryptoWallet.username
+                        : item.subTitle
+                    }}
                   </div>
                   <!-- Subtitle end -->
                 </div>
@@ -573,7 +608,9 @@
 
             <!-- Updated time -->
             <div class="td">
-              <span class="break-normal">{{ $moment(item.revisionDate).fromNow() }}</span>
+              <span class="break-normal">{{
+                $moment(item.revisionDate).fromNow()
+              }}</span>
             </div>
             <!-- Updated time end -->
 
@@ -593,7 +630,15 @@
 
                 <!-- Copy -->
                 <el-dropdown
-                  v-if="!item.isDeleted && [CipherType.Login, CipherType.SecureNote, CipherType.CryptoWallet, CipherType.MasterPassword].includes(item.type)"
+                  v-if="
+                    !item.isDeleted &&
+                      [
+                        CipherType.Login,
+                        CipherType.SecureNote,
+                        CipherType.CryptoWallet,
+                        CipherType.MasterPassword
+                      ].includes(item.type)
+                  "
                   trigger="click"
                   :hide-on-click="false"
                 >
@@ -632,7 +677,12 @@
                         {{ $t('common.copy') }} {{ $t('common.note') }}
                       </el-dropdown-item>
                     </template>
-                    <template v-if="item.type === CipherType.CryptoWallet && item.cryptoWallet">
+                    <template
+                      v-if="
+                        item.type === CipherType.CryptoWallet &&
+                          item.cryptoWallet
+                      "
+                    >
                       <el-dropdown-item
                         v-clipboard:copy="item.cryptoWallet.seed"
                         v-clipboard:success="clipboardSuccessHandler"
@@ -643,19 +693,22 @@
                         v-clipboard:copy="item.cryptoWallet.address"
                         v-clipboard:success="clipboardSuccessHandler"
                       >
-                        {{ $t('common.copy') }} {{ $t('data.ciphers.wallet_address') }}
+                        {{ $t('common.copy') }}
+                        {{ $t('data.ciphers.wallet_address') }}
                       </el-dropdown-item>
                       <el-dropdown-item
                         v-clipboard:copy="item.cryptoWallet.privateKey"
                         v-clipboard:success="clipboardSuccessHandler"
                       >
-                        {{ $t('common.copy') }} {{ $t('data.ciphers.private_key') }}
+                        {{ $t('common.copy') }}
+                        {{ $t('data.ciphers.private_key') }}
                       </el-dropdown-item>
                       <el-dropdown-item
                         v-clipboard:copy="item.cryptoWallet.password"
                         v-clipboard:success="clipboardSuccessHandler"
                       >
-                        {{ $t('common.copy') }} {{ $t('data.ciphers.password_pin') }}
+                        {{ $t('common.copy') }}
+                        {{ $t('data.ciphers.password_pin') }}
                       </el-dropdown-item>
                     </template>
                   </el-dropdown-menu>
@@ -664,7 +717,7 @@
 
                 <!-- Share -->
                 <button
-                  v-if="!item.isDeleted && isOwner(organizations, item) && !item.collectionIds.length && !isProtectedCipher(item)"
+                  v-if="isCipherShareable(item, organizations)"
                   class="btn btn-icon btn-xs hover:bg-black-400"
                   :title="$t('common.share')"
                   @click="shareItem(item)"
@@ -684,7 +737,10 @@
                   </button>
                   <el-dropdown-menu slot="dropdown">
                     <template v-if="!item.isDeleted">
-                      <el-dropdown-item v-if="canManageItem(organizations, item)" @click.native="addEdit(item)">
+                      <el-dropdown-item
+                        v-if="canManageItem(organizations, item)"
+                        @click.native="addEdit(item)"
+                      >
                         {{ $t('common.edit') }}
                       </el-dropdown-item>
                       <el-dropdown-item
@@ -693,10 +749,20 @@
                       >
                         {{ $t('common.clone') }}
                       </el-dropdown-item>
-                      <el-dropdown-item v-if="isOwner(organizations, item)" @click.native="moveFolders([item.id])">
+                      <el-dropdown-item
+                        v-if="isOwner(organizations, item)"
+                        @click.native="moveFolders([item.id])"
+                      >
                         {{ $t('common.move_folder') }}
                       </el-dropdown-item>
-                      <el-dropdown-item v-if="isOwner(organizations, item) && item.organizationId && !item.collectionIds.length" @click.native="stopSharing(item)">
+                      <el-dropdown-item
+                        v-if="
+                          isOwner(organizations, item) &&
+                            item.organizationId &&
+                            !item.collectionIds.length
+                        "
+                        @click.native="stopSharing(item)"
+                      >
                         {{ $t('data.ciphers.stop_sharing') }}
                       </el-dropdown-item>
                       <el-dropdown-item
@@ -704,7 +770,9 @@
                         divided
                         @click.native="moveTrashCiphers([item.id])"
                       >
-                        <span class="text-danger">{{ $t('common.delete') }}</span>
+                        <span class="text-danger">{{
+                          $t('common.delete')
+                        }}</span>
                       </el-dropdown-item>
                     </template>
                     <template v-else-if="isOwner(organizations, item)">
@@ -713,8 +781,12 @@
                       >
                         {{ $t('common.restore') }}
                       </el-dropdown-item>
-                      <el-dropdown-item @click.native="deleteCiphers([item.id])">
-                        <span class="text-danger">{{ $t('common.permanently_delete') }}</span>
+                      <el-dropdown-item
+                        @click.native="deleteCiphers([item.id])"
+                      >
+                        <span class="text-danger">{{
+                          $t('common.permanently_delete')
+                        }}</span>
                       </el-dropdown-item>
                     </template>
                   </el-dropdown-menu>
@@ -754,17 +826,11 @@
 
     <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" />
 
-    <ShareCipher
-      ref="shareCipher"
-      @upgrade-plan="upgradePlan"
-    />
+    <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
 
     <ShareFolder ref="shareFolder" />
 
-    <MoveFolder
-      ref="moveFolder"
-      @reset-selection="multipleSelection = []"
-    />
+    <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
 
     <PremiumDialog ref="premiumDialog" />
   </div>
@@ -926,13 +992,19 @@ export default {
     },
     folder () {
       if (this.folders) {
-        return find(this.folders, e => e.id === this.$route.params.folderId) || {}
+        return (
+          find(this.folders, e => e.id === this.$route.params.folderId) || {}
+        )
       }
       return {}
     },
     collection () {
       if (this.collections) {
-        return find(this.collections, e => e.id === this.$route.params.folderId) || { name: 'Unassigned Folder' }
+        return (
+          find(this.collections, e => e.id === this.$route.params.folderId) || {
+            name: 'Unassigned Folder'
+          }
+        )
       }
       return {}
     },
@@ -985,10 +1057,12 @@ export default {
       // return true
     },
     shouldRenderShare () {
-      return (this.getRouteBaseName() === 'shares')
+      return this.getRouteBaseName() === 'shares'
     },
     canManageTeamFolder () {
-      return this.teams.some(e => ['owner', 'admin', 'manager'].includes(e.role))
+      return this.teams.some(e =>
+        ['owner', 'admin', 'manager'].includes(e.role)
+      )
     },
     canCreateTeamFolder () {
       return this.teams.some(e => ['owner', 'admin'].includes(e.role))
@@ -1004,7 +1078,10 @@ export default {
     },
     canAddItem () {
       let res = !['shares', 'trash'].includes(this.routeName)
-      const collection = find(this.collections, e => e.id === this.$route.params.folderId)
+      const collection = find(
+        this.collections,
+        e => e.id === this.$route.params.folderId
+      )
       if (collection) {
         res &= this.writeableCollections.some(c => c.id === collection.id)
       }
@@ -1016,14 +1093,23 @@ export default {
     itemsCount () {
       if (this.$store.state.syncing && this.type) {
         if (this.type === 'Vault' && this.notDeletedCipherCount?.total) {
-          return this.notDeletedCipherCount.total - this.notDeletedCipherCount?.ciphers[CipherType.TOTP] || 0
+          return (
+            this.notDeletedCipherCount.total -
+              this.notDeletedCipherCount?.ciphers[CipherType.TOTP] || 0
+          )
         }
-        if (this.type === 'Trash' && this.notDeletedCipherCount?.total && this.cipherCount) {
+        if (
+          this.type === 'Trash' &&
+          this.notDeletedCipherCount?.total &&
+          this.cipherCount
+        ) {
           return this.cipherCount - this.notDeletedCipherCount.total
         }
         if (this.type === 'Login') {
-          let pwCount = this.notDeletedCipherCount?.ciphers[CipherType.Login] || 0
-          pwCount += this.notDeletedCipherCount?.ciphers[CipherType.MasterPassword] || 0
+          let pwCount =
+            this.notDeletedCipherCount?.ciphers[CipherType.Login] || 0
+          pwCount +=
+            this.notDeletedCipherCount?.ciphers[CipherType.MasterPassword] || 0
           if (pwCount) {
             return pwCount
           }
@@ -1066,18 +1152,24 @@ export default {
         }
         let result = []
         try {
-          result = await this.$searchService.searchCiphers(this.searchText, [this.filter, deletedFilter], null) || []
-        } catch (error) {
-        }
+          result =
+            (await this.$searchService.searchCiphers(
+              this.searchText,
+              [this.filter, deletedFilter],
+              null
+            )) || []
+        } catch (error) {}
         // remove ciphers generated by authenticator
-        result = result.filter(cipher => [
-          CipherType.Login,
-          CipherType.SecureNote,
-          CipherType.Card,
-          CipherType.Identity,
-          CipherType.CryptoWallet,
-          CipherType.MasterPassword
-        ].includes(cipher.type))
+        result = result.filter(cipher =>
+          [
+            CipherType.Login,
+            CipherType.SecureNote,
+            CipherType.Card,
+            CipherType.Identity,
+            CipherType.CryptoWallet,
+            CipherType.MasterPassword
+          ].includes(cipher.type)
+        )
         result.map(item => {
           if (item.type === CipherType.CryptoWallet) {
             try {
@@ -1093,13 +1185,30 @@ export default {
           }
         })
         if (this.orderField && this.orderDirection) {
-          result = orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+          result =
+            orderBy(
+              result,
+              [
+                c =>
+                  this.orderField === 'name'
+                    ? c.name && c.name.toLowerCase()
+                    : c.revisionDate
+              ],
+              [this.orderDirection]
+            ) || []
         }
         // this.dataRendered = result.slice(0, 50)
         // this.renderIndex = 50
         return result
       },
-      watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
+      watch: [
+        '$store.state.syncedCiphersToggle',
+        'deleted',
+        'searchText',
+        'filter',
+        'orderField',
+        'orderDirection'
+      ]
     },
     organizations: {
       async get () {
@@ -1112,13 +1221,13 @@ export default {
       async get () {
         let folders = []
         try {
-          folders = await this.$folderService.getAllDecrypted() || []
-        } catch (error) {
-
-        }
+          folders = (await this.$folderService.getAllDecrypted()) || []
+        } catch (error) {}
         folders = folders.filter(f => f.id)
         folders.forEach(f => {
-          const ciphers = this.ciphers && (this.ciphers.filter(c => c.folderId === f.id) || [])
+          const ciphers =
+            this.ciphers &&
+            (this.ciphers.filter(c => c.folderId === f.id) || [])
           f.ciphersCount = ciphers && ciphers.length
           f.ciphers = ciphers
         })
@@ -1133,13 +1242,13 @@ export default {
         }
         let collections = []
         try {
-          collections = await this.$collectionService.getAllDecrypted() || []
-        } catch (error) {
-
-        }
+          collections = (await this.$collectionService.getAllDecrypted()) || []
+        } catch (error) {}
         collections = collections.filter(f => f.id)
         collections.forEach(f => {
-          const ciphers = this.ciphers && (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
+          const ciphers =
+            this.ciphers &&
+            (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
           f.ciphersCount = ciphers && ciphers.length
           f.ciphers = ciphers
         })
@@ -1160,14 +1269,14 @@ export default {
     }
   },
   methods: {
-    isProtectedCipher (cipher) {
-      return cipher.type === CipherType.MasterPassword
-    },
     addEdit (cipher) {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     },
     handleAddButton () {
-      if (this.getRouteBaseName() === 'vault-tfolders-tfolderId' && !this.collection.readOnly) {
+      if (
+        this.getRouteBaseName() === 'vault-tfolders-tfolderId' &&
+        !this.collection.readOnly
+      ) {
         this.addEdit({
           organizationId: this.collection.organizationId
         })
@@ -1199,7 +1308,11 @@ export default {
     moveFolders (ids) {
       if (ids.length === 1) {
         const cipher = this.ciphers.find(c => c.id === ids[0])
-        this.$refs.moveFolder.folderId = cipher ? (cipher.collectionIds && cipher.collectionIds.length) ? cipher.collectionIds[0] : cipher.folderId : null
+        this.$refs.moveFolder.folderId = cipher
+          ? cipher.collectionIds && cipher.collectionIds.length
+            ? cipher.collectionIds[0]
+            : cipher.folderId
+          : null
       } else {
         this.$refs.moveFolder.folderId = null
       }
@@ -1219,22 +1332,28 @@ export default {
       this.orderDirection = orderDirection
     },
     routerFolder (item) {
-      this.$router.push(this.localeRoute({
-        name: 'vault-folders-folderId',
-        params: { folderId: item.id }
-      }))
+      this.$router.push(
+        this.localeRoute({
+          name: 'vault-folders-folderId',
+          params: { folderId: item.id }
+        })
+      )
     },
     routerCollection (item) {
       if (item.id === 'unassigned') {
-        this.$router.push(this.localeRoute({
-          name: 'vault-teams-teamId-tfolders-tfolderId',
-          params: { teamId: item.organizationId, tfolderId: item.id }
-        }))
+        this.$router.push(
+          this.localeRoute({
+            name: 'vault-teams-teamId-tfolders-tfolderId',
+            params: { teamId: item.organizationId, tfolderId: item.id }
+          })
+        )
       } else {
-        this.$router.push(this.localeRoute({
-          name: 'vault-teams-teamId-tfolders-tfolderId',
-          params: { teamId: item.organizationId, tfolderId: item.id }
-        }))
+        this.$router.push(
+          this.localeRoute({
+            name: 'vault-teams-teamId-tfolders-tfolderId',
+            params: { teamId: item.organizationId, tfolderId: item.id }
+          })
+        )
       }
     },
     openContextFolder (event, data) {
@@ -1273,7 +1392,10 @@ export default {
     },
     countUnassignedItems (ciphers = [], organizationId) {
       if (ciphers) {
-        const filteredCipher = ciphers.filter(c => c.organizationId === organizationId && c.collectionIds.length === 0)
+        const filteredCipher = ciphers.filter(
+          c =>
+            c.organizationId === organizationId && c.collectionIds.length === 0
+        )
         return filteredCipher.length
       }
       return 0
@@ -1320,21 +1442,26 @@ export default {
           }
           let folderNameEnc = await this.$cryptoService.encrypt(cipher.name)
           folderNameEnc = folderNameEnc.encryptedString
-          const ciphers = await Promise.all(cipher.ciphers.map(async cipher => {
-            const type_ = cipher.type
-            if (type_ === 7) {
-              cipher.type = CipherType.SecureNote
-              cipher.secureNote.type = 0
-            }
-            const cipherEnc = await this.$cipherService.encrypt(cipher, this.$cryptoService.getEncKey())
-            const data = new CipherRequest(cipherEnc)
-            data.type = type_
-            cipher.type = type_
-            return {
-              id: cipher.id,
-              ...data
-            }
-          }))
+          const ciphers = await Promise.all(
+            cipher.ciphers.map(async cipher => {
+              const type_ = cipher.type
+              if (type_ === 7) {
+                cipher.type = CipherType.SecureNote
+                cipher.secureNote.type = 0
+              }
+              const cipherEnc = await this.$cipherService.encrypt(
+                cipher,
+                this.$cryptoService.getEncKey()
+              )
+              const data = new CipherRequest(cipherEnc)
+              data.type = type_
+              cipher.type = type_
+              return {
+                id: cipher.id,
+                ...data
+              }
+            })
+          )
           const payload = {
             folder: {
               id: cipher.id,
@@ -1342,7 +1469,15 @@ export default {
               ciphers
             }
           }
-          memberId ? await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, payload) : await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/stop`, payload)
+          memberId
+            ? await this.$axios.$post(
+              `cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`,
+              payload
+            )
+            : await this.$axios.$post(
+              `cystack_platform/pm/sharing/${cipher.organizationId}/stop`,
+              payload
+            )
         } else {
           let memberId = null
           if (cipher.user) {
@@ -1355,25 +1490,44 @@ export default {
             cipher.secureNote.type = 0
           }
           const personalKey = await this.$cryptoService.getEncKey()
-          const cipherEnc = await this.$cipherService.encrypt(cipher, personalKey)
+          const cipherEnc = await this.$cipherService.encrypt(
+            cipher,
+            personalKey
+          )
           const data = new CipherRequest(cipherEnc)
           // console.log(data)
           data.type = type_
           cipher.type = type_
           memberId
-            ? await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`, {
-              folder: null,
-              cipher: { ...data, id: cipher.id }
-            })
-            : await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/stop`, {
-              folder: null,
-              cipher: { ...data, id: cipher.id }
-            })
+            ? await this.$axios.$post(
+              `cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`,
+              {
+                folder: null,
+                cipher: { ...data, id: cipher.id }
+              }
+            )
+            : await this.$axios.$post(
+              `cystack_platform/pm/sharing/${cipher.organizationId}/stop`,
+              {
+                folder: null,
+                cipher: { ...data, id: cipher.id }
+              }
+            )
         }
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type || 'Folder'}`, 1) }), 'success')
+        this.notify(
+          this.$tc('data.notifications.update_success', 1, {
+            type: this.$tc(`type.${cipher.type || 'Folder'}`, 1)
+          }),
+          'success'
+        )
         this.$store.dispatch('LoadMyShares')
       } catch (error) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type || 'Folder'}`, 1) }), 'warning')
+        this.notify(
+          this.$tc('data.notifications.update_failed', 1, {
+            type: this.$tc(`type.${cipher.type || 'Folder'}`, 1)
+          }),
+          'warning'
+        )
       }
     }
   }
@@ -1415,7 +1569,7 @@ export default {
 .vue-recycle-scroller__item-view .td .items-center .mr-4 .el-checkbox {
   visibility: hidden;
 }
-.vue-recycle-scroller__item-view:hover .td .items-center .mr-4 .el-checkbox{
+.vue-recycle-scroller__item-view:hover .td .items-center .mr-4 .el-checkbox {
   visibility: visible !important;
 }
 .vue-recycle-scroller__slot .th .self-center .el-checkbox {
