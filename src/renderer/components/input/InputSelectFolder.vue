@@ -1,11 +1,12 @@
 <template>
   <div
     class="cs-field"
-    :class="{'is-focus': focusing,
-             'have-value': true,
-             'is-hover': hovering,
-             'is-error': errorText,
-             'is-disabled': disabled,
+    :class="{
+      'is-focus': focusing,
+      'have-value': true,
+      'is-hover': hovering,
+      'is-error': errorText,
+      'is-disabled': disabled
     }"
   >
     <label>{{ label }} <span v-if="required" class="text-danger">*</span></label>
@@ -22,15 +23,29 @@
       <!-- Existing folders -->
       <!-- Self folder + writeable collections + (protected collections to display its name but disabled) -->
       <el-option
-        v-for="item in (canChangeFolder ? options : [...options, ...protectedOptions])"
+        v-for="item in canChangeFolder
+          ? options
+          : [...options, ...protectedOptions]"
         :key="item.id"
         :label="item.name || $t('data.folders.no_folder')"
         :value="item.id"
       >
         <div class="flex items-center">
-          <img v-if="item.organizationId" src="~/assets/images/icons/folderShare.png" alt="" class="w-[18px] mr-2.5">
-          <img v-else src="~/assets/images/icons/folder.svg" alt="" class="mr-2.5">
-          <div class="text-black">{{ item.name || $t('data.folders.no_folder') }}</div>
+          <img
+            v-if="item.organizationId"
+            src="~/assets/images/icons/folderShare.png"
+            alt=""
+            class="w-[18px] mr-2.5"
+          >
+          <img
+            v-else
+            src="~/assets/images/icons/folder.svg"
+            alt=""
+            class="mr-2.5"
+          >
+          <div class="text-black">
+            {{ item.name || $t('data.folders.no_folder') }}
+          </div>
         </div>
       </el-option>
       <!-- Existing folders end -->
@@ -38,7 +53,11 @@
       <!-- New folder -->
       <el-option value="" @click.native="$emit('addFolder')">
         <div class="flex items-center">
-          <img src="~/assets/images/icons/folderAdd.svg" alt="" class="mr-2.5">
+          <img
+            src="~/assets/images/icons/folderAdd.svg"
+            alt=""
+            class="mr-2.5"
+          >
           <div class="text-black">{{ $t('data.folders.add_folder') }}</div>
         </div>
       </el-option>
@@ -46,7 +65,10 @@
     </el-select>
 
     <!-- Arrow btn -->
-    <button v-if="focusing || initialValue" class="btn btn-icon btn-select !py-0">
+    <button
+      v-if="focusing || initialValue"
+      class="btn btn-icon btn-select !py-0"
+    >
       <svg
         width="8px"
         height="13px"
@@ -129,10 +151,8 @@ export default {
       return !this.protectedOptions.some(f => f.id === this.initialValue)
     }
   },
-  watch: {
-  },
-  created () {
-  },
+  watch: {},
+  created () {},
   mounted () {
     this.$nextTick(() => {
       this.value = this.initialValue
@@ -140,15 +160,21 @@ export default {
   },
   methods: {
     handleFocus () {
-      if (this.disabled) { return }
+      if (this.disabled) {
+        return
+      }
       this.focusing = true
     },
     handleHover () {
-      if (this.disabled) { return }
+      if (this.disabled) {
+        return
+      }
       this.hovering = true
     },
     handleChange (value) {
-      if (this.disabled) { return }
+      if (this.disabled) {
+        return
+      }
       this.$emit('change', value)
     }
   }
@@ -165,19 +191,22 @@ export default {
   border-radius: 2px;
   border: solid 1px #e6e8f4;
   padding-top: 16px;
-  &.is-hover, &.is-focus {
+  &.is-hover,
+  &.is-focus {
     @apply border-primary;
     label {
-      @apply text-primary
+      @apply text-primary;
     }
   }
   &.is-error {
     @apply border-danger mb-4 last:mb-8;
-    label, .cs-helper-text {
-      @apply text-danger
+    label,
+    .cs-helper-text {
+      @apply text-danger;
     }
   }
-  &.is-focus label, &.have-value label {
+  &.is-focus label,
+  &.have-value label {
     font-size: 12px;
     line-height: 19px;
     top: 5px;
@@ -185,8 +214,11 @@ export default {
   }
   &.is-disabled {
     cursor: not-allowed;
-    input, button, input:hover, button:hover {
-      cursor: not-allowed!important;
+    input,
+    button,
+    input:hover,
+    button:hover {
+      cursor: not-allowed !important;
       user-select: none;
     }
   }
@@ -202,7 +234,7 @@ export default {
     position: absolute;
     bottom: -22px;
     font-size: 12px;
-    transition: .3s cubic-bezier(.4,0,.2,1);
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .btn-select {
     position: absolute;
@@ -211,13 +243,13 @@ export default {
   }
   label {
     font-size: 14px;
-    color: #90A0C1;
+    color: #90a0c1;
     position: absolute;
     top: 15px;
     left: 13px;
     pointer-events: none;
-    transition: .4s cubic-bezier(.25,.8,.25,1);
-    transition-duration: .3s;
+    transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 0.3s;
     line-height: 19px;
     user-select: none;
   }
@@ -225,6 +257,6 @@ export default {
 </style>
 <style>
 .cs-select .el-input.is-disabled .el-input__inner {
-  color: #161922
+  color: #161922;
 }
 </style>

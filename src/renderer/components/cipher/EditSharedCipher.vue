@@ -123,11 +123,11 @@ export default {
           role: this.user.role,
           hide_passwords: this.user.hide_passwords
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'success')
+        this.notify(this.$t('data.notifications.update_share_success'), 'success')
         this.$emit('updated-cipher')
         this.closeDialog()
       } catch (error) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${CipherType[this.cipher.type]}`, 1) }), 'warning')
+        this.notify(this.$t('errors.something_went_wrong'), 'warning')
         console.log(error)
       }
     }

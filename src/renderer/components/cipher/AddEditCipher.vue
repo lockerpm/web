@@ -16,7 +16,8 @@
       <div slot="title">
         <div class="text-head-5 text-black-700 font-semibold truncate">
           <span v-if="cipher.id">
-            {{ isDeleted ? $t('common.restore') : $t('common.edit') }} {{ $tc(`type.${cipher.type}`, 1) }}
+            {{ isDeleted ? $t('common.restore') : $t('common.edit') }}
+            {{ $tc(`type.${cipher.type}`, 1) }}
           </span>
           <span v-else>
             {{ $t('common.add') }} {{ $tc(`type.${cipher.type}`, 1) }}
@@ -61,14 +62,8 @@
               :disabled="isDeleted"
               is-password
             />
-            <PasswordStrengthBar
-              :score="passwordStrength.score"
-              class="mt-2"
-            />
-            <div
-              v-if="!isDeleted"
-              class="text-right"
-            >
+            <PasswordStrengthBar :score="passwordStrength.score" class="mt-2" />
+            <div v-if="!isDeleted" class="text-right">
               <el-popover
                 :placement="$store.state.tutorial.isActive ? 'top' : 'right'"
                 width="280"
@@ -77,10 +72,7 @@
               >
                 <PasswordGenerator @fill="fillPassword" />
 
-                <button
-                  slot="reference"
-                  class="btn btn-clean !text-primary"
-                >
+                <button slot="reference" class="btn btn-clean !text-primary">
                   {{ $t('data.ciphers.generate_random_password') }}
                 </button>
               </el-popover>
@@ -100,7 +92,9 @@
 
         <!-- CARD FIELDS -->
         <template v-if="cipher.type === CipherType.Card">
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">{{ $t('data.ciphers.card_details') }}</div>
+          <div class="mb-4 text-black-700 text-head-6 font-semibold">
+            {{ $t('data.ciphers.card_details') }}
+          </div>
           <ValidationProvider
             v-slot="{ errors: err }"
             rules="required"
@@ -119,8 +113,8 @@
             :label="$t('data.ciphers.card_number')"
             class="w-full"
             :disabled="isDeleted"
-            :suffixIcon="currentCard ? currentCard.icon : ''"
-            :iconType="currentCard ? currentCard.iconType : ''"
+            :suffix-icon="currentCard ? currentCard.icon : ''"
+            :icon-type="currentCard ? currentCard.iconType : ''"
             @input="changeCardNumber"
           />
           <div class="grid grid-cols-2 gap-2">
@@ -130,7 +124,7 @@
               class="w-full"
               :disabled="isDeleted"
               :options="cardExpMonthOptions"
-              @change="(v) => cipher.card.expMonth = v"
+              @change="v => (cipher.card.expMonth = v)"
             />
             <InputText
               v-model="cipher.card.expYear"
@@ -160,7 +154,7 @@
               class="w-full"
               :disabled="isDeleted"
               :options="identityTitleOptions"
-              @change="(v) => cipher.identity.title = v"
+              @change="v => (cipher.identity.title = v)"
             />
             <InputText
               v-model="cipher.identity.firstName"
@@ -217,7 +211,9 @@
               :disabled="isDeleted"
             />
           </div>
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">{{ $t('data.ciphers.contact_info') }}</div>
+          <div class="mb-4 text-black-700 text-head-6 font-semibold">
+            {{ $t('data.ciphers.contact_info') }}
+          </div>
           <div class="grid grid-cols-2 gap-x-2 mb-4">
             <InputText
               v-model="cipher.identity.address1"
@@ -265,7 +261,9 @@
             :label="$t('data.ciphers.wallet_app')"
             :disabled="isDeleted"
             class="w-full"
-            :initial-value="cryptoWallet.walletApp ? cryptoWallet.walletApp.alias : null"
+            :initial-value="
+              cryptoWallet.walletApp ? cryptoWallet.walletApp.alias : null
+            "
             @change="handleChangeCryptoWallet"
           />
           <InputText
@@ -322,7 +320,11 @@
             :label="$t('data.ciphers.networks')"
             :disabled="isDeleted"
             class="w-full !pt-6"
-            :initial-value="cryptoWallet.networks ? cryptoWallet.networks.map(n => n.alias) : []"
+            :initial-value="
+              cryptoWallet.networks
+                ? cryptoWallet.networks.map(n => n.alias)
+                : []
+            "
             @change="handleChangeCryptoNetworks"
           />
         </template>
@@ -364,9 +366,7 @@
 
         <!-- CUSTOM FIELDS -->
         <template>
-          <div
-            class="my-5 text-black-700 text-head-6 font-semibold"
-          >
+          <div class="my-5 text-black-700 text-head-6 font-semibold">
             {{ $t('data.ciphers.custom_fields') }}
           </div>
           <InputCustomFields
@@ -386,31 +386,29 @@
           :protected-options="nonWriteableCollections"
           :disabled="isDeleted"
           class="w-full"
-          @change="(v) => cipher.folderId = v"
+          @change="v => (cipher.folderId = v)"
           @addFolder="addFolder(false)"
         />
       </div>
       <!-- Body end -->
 
       <!-- Footer -->
-      <div
-        slot="footer"
-        class="dialog-footer flex items-center text-left"
-      >
+      <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow">
           <button
             v-if="cipher.id"
             class="btn btn-icon !text-danger"
-            @click="isDeleted ? deleteCiphers([cipher.id]) : moveTrashCiphers([cipher.id])"
+            @click="
+              isDeleted
+                ? deleteCiphers([cipher.id])
+                : moveTrashCiphers([cipher.id])
+            "
           >
             <i class="fa fa-trash-alt" />
           </button>
         </div>
         <div>
-          <button
-            class="btn btn-default"
-            @click="closeDialog"
-          >
+          <button class="btn btn-default" @click="closeDialog">
             {{ $t('common.cancel') }}
           </button>
           <button
@@ -435,10 +433,7 @@
     </component>
     <!-- Main dialog end -->
 
-    <AddEditFolder
-      ref="addEditFolder"
-      @created-folder="handleCreatedFolder"
-    />
+    <AddEditFolder ref="addEditFolder" @created-folder="handleCreatedFolder" />
 
     <PasswordViolationDialog
       ref="passwordPolicyDialog"
@@ -454,7 +449,14 @@ import { CipherType, SecureNoteType } from '../../jslib/src/enums'
 import { Cipher, SecureNote } from '../../jslib/src/models/domain'
 import { CipherRequest } from '../../jslib/src/models/request'
 // import { CipherRequest } from '../../core/models/request/cipherRequest'
-import { CipherView, LoginView, SecureNoteView, IdentityView, CardView, LoginUriView } from '../../jslib/src/models/view'
+import {
+  CipherView,
+  LoginView,
+  SecureNoteView,
+  IdentityView,
+  CardView,
+  LoginUriView
+} from '../../jslib/src/models/view'
 import AddEditFolder from '../folder/AddEditFolder'
 import PasswordGenerator from '../password/PasswordGenerator'
 import PasswordStrengthBar from '../password/PasswordStrengthBar'
@@ -468,10 +470,9 @@ import InputSeedPhrase from '../input/InputSeedPhrase'
 import InputCustomFields from '../input/InputCustomFields.vue'
 import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
 import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
+import { detectCardBrand } from '../../utils/common'
 import InlineEditCipher from './InlineEditCipher'
 import PasswordViolationDialog from './PasswordViolationDialog'
-
-import { detectCardBrand } from "../../utils/common"
 
 CipherType.CryptoWallet = CipherType.CryptoBackup = 7
 
@@ -541,18 +542,38 @@ export default {
       return [
         { label: '----', value: null, icon: '' },
         { label: 'Visa', value: 'Visa', icon: 'fab fa-cc-visa' },
-        { label: 'Mastercard', value: 'Mastercard', icon: 'fab fa-cc-mastercard' },
+        {
+          label: 'Mastercard',
+          value: 'Mastercard',
+          icon: 'fab fa-cc-mastercard'
+        },
         { label: 'American Express', value: 'Amex', icon: 'fab fa-cc-amex' },
         { label: 'Discover', value: 'Discover', icon: 'fab fa-cc-discover' },
-        { label: 'Diners Club', value: 'Diners Club', icon: 'fab fa-cc-diners-club' },
+        {
+          label: 'Diners Club',
+          value: 'Diners Club',
+          icon: 'fab fa-cc-diners-club'
+        },
         { label: 'JCB', value: 'JCB', icon: 'fab fa-cc-jcb' },
-        { label: 'Maestro', value: 'Maestro', icon: require('~/assets/images/icons/cards/meastro.svg'), iconType: 'img' },
-        { label: 'UnionPay', value: 'UnionPay', icon: require('~/assets/images/icons/cards/unionpay.svg'), iconType: 'img' },
+        {
+          label: 'Maestro',
+          value: 'Maestro',
+          icon: require('~/assets/images/icons/cards/meastro.svg'),
+          iconType: 'img'
+        },
+        {
+          label: 'UnionPay',
+          value: 'UnionPay',
+          icon: require('~/assets/images/icons/cards/unionpay.svg'),
+          iconType: 'img'
+        },
         { label: this.$t('other'), value: 'Other', icon: 'fas fa-credit-card' }
       ]
     },
     currentCard () {
-      return this.cardBrandOptions.find(c => c.value && c.value === this.cipher.card.brand)
+      return this.cardBrandOptions.find(
+        c => c.value && c.value === this.cipher.card.brand
+      )
     },
     cardExpMonthOptions () {
       return [
@@ -585,17 +606,30 @@ export default {
     },
     passwordStrength () {
       if (this.cipher.login) {
-        return this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
+        return (
+          this.$passwordGenerationService.passwordStrength(
+            this.cipher.login.password,
+            ['cystack']
+          ) || {}
+        )
       }
       if (this.cipher.cryptoWallet) {
-        return this.$passwordGenerationService.passwordStrength(this.cipher.cryptoWallet.password, ['cystack']) || {}
+        return (
+          this.$passwordGenerationService.passwordStrength(
+            this.cipher.cryptoWallet.password,
+            ['cystack']
+          ) || {}
+        )
       }
       return {}
     },
     ownershipOptions () {
       const teams = this.teams.filter(e => ['owner', 'admin'].includes(e.role))
       if (teams.length) {
-        return [{ name: this.currentUser.email, organization_id: null }, ...teams]
+        return [
+          { name: this.currentUser.email, organization_id: null },
+          ...teams
+        ]
       }
       return []
     }
@@ -624,7 +658,11 @@ export default {
         if (data.type === CipherType.CryptoWallet) {
           this.cryptoWallet = data.cryptoWallet
         }
-        if (data.type === CipherType.Login && data.login && data.login.uris == null) {
+        if (
+          data.type === CipherType.Login &&
+          data.login &&
+          data.login.uris == null
+        ) {
           data.login.uris = [new LoginUriView()]
         }
         if (data.fields == null) {
@@ -656,9 +694,9 @@ export default {
     },
 
     // Change card Number
-    changeCardNumber(number) {
+    changeCardNumber (number) {
       const cardLabel = detectCardBrand(number)
-      const brandOption = this.cardBrandOptions.find((o) => o.label === cardLabel)
+      const brandOption = this.cardBrandOptions.find(o => o.label === cardLabel)
       if (brandOption) {
         this.cipher.card.brand = brandOption.value
       } else if (cardLabel) {
@@ -670,7 +708,10 @@ export default {
 
     // Check for password violations
     preparePassword (cipher) {
-      const violationItems = cipher.type === CipherType.Login ? this.checkPasswordPolicy(cipher.login.password || '') : []
+      const violationItems =
+        cipher.type === CipherType.Login
+          ? this.checkPasswordPolicy(cipher.login.password || '')
+          : []
       if (violationItems.length) {
         this.$refs.passwordPolicyDialog.openDialog(violationItems)
       } else {
@@ -680,7 +721,9 @@ export default {
 
     // Create cipher
     async postCipher (cipher) {
-      if (!cipher.name) { return }
+      if (!cipher.name) {
+        return
+      }
       try {
         this.loading = true
         this.errors = {}
@@ -693,7 +736,9 @@ export default {
         }
 
         // Check if current folder is a collection
-        const collection = this.writeableCollections.find(c => c.id === this.cipher.folderId)
+        const collection = this.writeableCollections.find(
+          c => c.id === this.cipher.folderId
+        )
         if (collection) {
           this.cipher.organizationId = collection.organizationId
           this.cipher.folderId = null
@@ -719,13 +764,26 @@ export default {
           score: this.passwordStrength.score,
           collectionIds: cipher.collectionIds
         })
-        this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
+        this.notify(
+          this.$tc('data.notifications.create_success', 1, {
+            type: this.$tc(`type.${this.type}`, 1)
+          }),
+          'success'
+        )
         this.closeDialog()
       } catch (e) {
         if (e.response && e.response.data && e.response.data.code === '5002') {
-          this.notify(this.$t('errors.5002', { type: this.$tc(`type.${this.type}`, 1) }), 'error')
+          this.notify(
+            this.$t('errors.5002', { type: this.$tc(`type.${this.type}`, 1) }),
+            'error'
+          )
         } else {
-          this.notify(this.$tc('data.notifications.create_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
+          this.notify(
+            this.$tc('data.notifications.create_failed', 1, {
+              type: this.$tc(`type.${this.type}`, 1)
+            }),
+            'warning'
+          )
         }
         // this.errors = (e.response && e.response.data && e.response.data.details) || {}
       } finally {
@@ -761,7 +819,9 @@ export default {
           }
         } else if (this.cipher.organizationId) {
           // If move item from folder share back to no folder -> remove orgId
-          const collection = this.writeableCollections.find(c => c.organizationId === this.cipher.organizationId)
+          const collection = this.writeableCollections.find(
+            c => c.organizationId === this.cipher.organizationId
+          )
           if (collection) {
             this.cipher.organizationId = null
             this.cipher.collectionIds = []
@@ -782,14 +842,24 @@ export default {
           score: this.passwordStrength.score,
           collectionIds: cipher.collectionIds
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
+        this.notify(
+          this.$tc('data.notifications.update_success', 1, {
+            type: this.$tc(`type.${this.type}`, 1)
+          }),
+          'success'
+        )
         this.closeDialog()
         this.$emit('updated-cipher')
       } catch (e) {
         if (e.response && e.response.data && e.response.data.code === '3003') {
           this.notify(this.$t('errors.3003'), 'error')
         } else {
-          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
+          this.notify(
+            this.$tc('data.notifications.update_failed', 1, {
+              type: this.$tc(`type.${this.type}`, 1)
+            }),
+            'warning'
+          )
         }
       } finally {
         this.loading = false
@@ -798,82 +868,133 @@ export default {
 
     // Delete cipher
     async deleteCiphers (ids) {
-      this.$confirm(this.$tc('data.notifications.delete_selected_desc', ids.length), this.$t('common.warning'), {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(async () => {
-        try {
-          this.loading = true
-          await this.$axios.$put('cystack_platform/pm/ciphers/permanent_delete', { ids })
-          await this.$cipherService.delete(ids)
-          this.notify(this.$tc('data.notifications.delete_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
-          this.closeDialog()
-          this.$emit('reset-selection')
-        } catch (e) {
-          if (e.response && e.response.data && e.response.code === '5001') {
-            this.notify(this.$t('errors.5001'), 'error')
-          } else {
-            this.notify(this.$tc('data.notifications.delete_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
-          }
-          console.log(e)
-        } finally {
-          this.loading = false
+      this.$confirm(
+        this.$tc('data.notifications.delete_selected_desc', ids.length),
+        this.$t('common.warning'),
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
         }
-      }).catch(() => {
-
-      })
+      )
+        .then(async () => {
+          try {
+            this.loading = true
+            await this.$axios.$put(
+              'cystack_platform/pm/ciphers/permanent_delete',
+              { ids }
+            )
+            await this.$cipherService.delete(ids)
+            this.notify(
+              this.$tc('data.notifications.delete_success', ids.length, {
+                type: this.$tc('type.0', ids.length)
+              }),
+              'success'
+            )
+            this.closeDialog()
+            this.$emit('reset-selection')
+          } catch (e) {
+            if (e.response && e.response.data && e.response.code === '5001') {
+              this.notify(this.$t('errors.5001'), 'error')
+            } else {
+              this.notify(
+                this.$tc('data.notifications.delete_failed', ids.length, {
+                  type: this.$tc('type.0', ids.length)
+                }),
+                'warning'
+              )
+            }
+            console.log(e)
+          } finally {
+            this.loading = false
+          }
+        })
+        .catch(() => {})
     },
 
     // Move to trash
     async moveTrashCiphers (ids) {
-      this.$confirm(this.$tc('data.notifications.trash_selected_desc', ids.length, { count: ids.length }), this.$t('common.warning'), {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        dangerouslyUseHTMLString: true,
-        type: 'warning'
-      }).then(async () => {
-        try {
-          this.loading = true
-          await this.$axios.$put('cystack_platform/pm/ciphers/delete', { ids })
-          this.notify(this.$tc('data.notifications.trash_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
-          this.$emit('trashed-cipher')
-        } catch (e) {
-          if (e.response && e.response.data && e.response.code === '5001') {
-            this.notify(this.$t('errors.5001'), 'error')
-          } else {
-            this.notify(this.$tc('data.notifications.trash_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
-          }
-          this.$emit('reset-selection')
-        } finally {
-          this.loading = false
+      this.$confirm(
+        this.$tc('data.notifications.trash_selected_desc', ids.length, {
+          count: ids.length
+        }),
+        this.$t('common.warning'),
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          dangerouslyUseHTMLString: true,
+          type: 'warning'
         }
-      }).catch(() => {
-
-      })
+      )
+        .then(async () => {
+          try {
+            this.loading = true
+            await this.$axios.$put('cystack_platform/pm/ciphers/delete', {
+              ids
+            })
+            this.notify(
+              this.$tc('data.notifications.trash_success', ids.length, {
+                type: this.$tc('type.0', ids.length)
+              }),
+              'success'
+            )
+            this.$emit('trashed-cipher')
+          } catch (e) {
+            if (e.response && e.response.data && e.response.code === '5001') {
+              this.notify(this.$t('errors.5001'), 'error')
+            } else {
+              this.notify(
+                this.$tc('data.notifications.trash_failed', ids.length, {
+                  type: this.$tc('type.0', ids.length)
+                }),
+                'warning'
+              )
+            }
+            this.$emit('reset-selection')
+          } finally {
+            this.loading = false
+          }
+        })
+        .catch(() => {})
     },
 
     // Restore cipher
     async restoreCiphers (ids) {
-      this.$confirm(this.$tc('data.notifications.restore_selected_desc', ids.length), this.$t('common.warning'), {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(async () => {
-        try {
-          this.loading = true
-          await this.$axios.$put('cystack_platform/pm/ciphers/restore', { ids })
-          this.notify(this.$tc('data.notifications.restore_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
-          this.$emit('reset-selection')
-        } catch (e) {
-          this.notify(this.$tc('data.notifications.restore_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
-          console.log(e)
-        } finally {
-          this.loading = false
+      this.$confirm(
+        this.$tc('data.notifications.restore_selected_desc', ids.length),
+        this.$t('common.warning'),
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
         }
-      }).catch(() => {
-
-      })
+      )
+        .then(async () => {
+          try {
+            this.loading = true
+            await this.$axios.$put('cystack_platform/pm/ciphers/restore', {
+              ids
+            })
+            this.notify(
+              this.$tc('data.notifications.restore_success', ids.length, {
+                type: this.$tc('type.0', ids.length)
+              }),
+              'success'
+            )
+            this.$emit('reset-selection')
+          } catch (e) {
+            this.notify(
+              this.$tc('data.notifications.restore_failed', ids.length, {
+                type: this.$tc('type.0', ids.length)
+              }),
+              'warning'
+            )
+            console.log(e)
+          } finally {
+            this.loading = false
+          }
+        })
+        .catch(() => {})
     },
 
     // Open create folder dialog
@@ -890,7 +1011,9 @@ export default {
 
     newCipher (type, data) {
       this.cipher = new CipherView()
-      this.cipher.organizationId = data.organizationId ? data.organizationId : null
+      this.cipher.organizationId = data.organizationId
+        ? data.organizationId
+        : null
       this.cipher.type = CipherType[type]
       this.cipher.login = new LoginView()
       this.cipher.login.uris = [new LoginUriView()]
@@ -902,7 +1025,9 @@ export default {
       this.cipher.fields = []
       // this.cipher.fields[0].type = FieldType.Text
       this.cipher.folderId = this.$route.params.folderId || null
-      this.cipher.collectionIds = this.$route.params.tfolderId ? [this.$route.params.tfolderId] : []
+      this.cipher.collectionIds = this.$route.params.tfolderId
+        ? [this.$route.params.tfolderId]
+        : []
       if (this.cipher.organizationId) {
         this.handleChangeOrg(this.cipher.organizationId)
       }
@@ -930,8 +1055,7 @@ export default {
           const _type = this.getTeam(organizations, item.organizationId).type
           return _type === 0
         })
-      } catch (error) {
-      }
+      } catch (error) {}
       return collections
     },
 
@@ -945,8 +1069,7 @@ export default {
           const _type = this.getTeam(organizations, item.organizationId).type
           return _type !== 0
         })
-      } catch (error) {
-      }
+      } catch (error) {}
       return collections
     },
 
@@ -970,7 +1093,9 @@ export default {
     },
 
     handleChangeCryptoNetworks (v) {
-      const selectedNetworks = v.map(alias => CHAIN_LIST.find(n => n.alias === alias))
+      const selectedNetworks = v.map(alias =>
+        CHAIN_LIST.find(n => n.alias === alias)
+      )
       this.cryptoWallet.networks = selectedNetworks.map(selectedNetwork => {
         return {
           name: selectedNetwork.name,
@@ -989,14 +1114,18 @@ export default {
       } else if (v.index != null) {
         this.cipher.fields[v.index].value = v.value.value
         this.cipher.fields[v.index].name = v.value.name
-        this.cipher.fields[v.index].type = v.value.type != null ? v.value.type : this.cipher.fields[v.index].type
+        this.cipher.fields[v.index].type =
+          v.value.type != null ? v.value.type : this.cipher.fields[v.index].type
       } else {
         this.cipher.fields.push(v.value)
       }
     },
 
     onClose () {
-      if (this.$tutorial.isActive() && this.$store.state.tutorial.currentStepId !== 'add-pw-1') {
+      if (
+        this.$tutorial.isActive() &&
+        this.$store.state.tutorial.currentStepId !== 'add-pw-1'
+      ) {
         this.$tutorial.hide()
         this.$tutorial.show('view-shares')
       }

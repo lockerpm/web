@@ -59,68 +59,7 @@
 
       <!-- Noti -->
       <div class="mr-3 self-center">
-        <el-dropdown trigger="click">
-          <span class="el-dropdown-link">
-            <i class="fas fa-bell text-head-5 hover:text-primary" />
-            <span
-              v-if="notifications.unread_count > 0"
-              class="count-noti-container"
-            >
-              <span
-                v-if="notifications.unread_count<=99"
-                class="count-noti"
-              >{{ notifications.unread_count }}</span>
-              <span
-                v-else
-                class="count-noti"
-              >99+</span>
-            </span>
-          </span>
-          <el-dropdown-menu
-            slot="dropdown"
-            class="w-[400px] notification"
-          >
-            <div class="flex justify-between px-4 pt-4 text-head-6 font-semibold">
-              <div>
-                {{ $t('sidebar.notifications') }}
-              </div>
-              <div class="text-[#005AE4] cursor-pointer" @click="setReadAll">
-                {{ $t('data.notifications.mark_all_as_read') }}
-              </div>
-            </div>
-            <template v-if="notifications.count > 0">
-              <el-dropdown-item
-                v-for="(item, index) in notifications.results"
-                :key="index"
-              >
-                <div
-                  class="flex px-3 py-2 mt-2 justify-between"
-                  :class="item.read?'':'bg-[#F6F6F6] hover:bg-transparent'"
-                  @click="routeNotification(item)"
-                >
-                  <div class="min-w-[40px]">
-                    <img v-if="item.type === 'item_sharing'" src="~/assets/images/icons/noti_sharing.svg">
-                    <img v-else-if="item.type === 'emergency_access'" src="~/assets/images/icons/noti_emergencyAccess.svg">
-                    <img v-else-if="item.type === 'data_breach'" src="~/assets/images/icons/noti_dataBreach.svg">
-                    <img v-else-if="item.type === 'password_tip_trick'" src="~/assets/images/icons/noti_tipTrick.svg">
-                    <img v-else src="~/assets/images/icons/noti_marketing.svg">
-                  </div>
-                  <div class="landing-font-14 px-4 flex-1">
-                    <div v-if="locale==='vi'" class="font-semibold">{{ item.title.vi }}</div>
-                    <div v-if="locale==='en'" class="font-semibold">{{ item.title.en }}</div>
-                    <div class="">{{ $moment(item.publish_time*1000).fromNow() }}</div>
-                  </div>
-                  <div v-if="!item.read" class="min-w-3 w-3 h-3 rounded-full bg-primary self-center" />
-                </div>
-              </el-dropdown-item>
-            </template>
-            <template v-else>
-              <el-dropdown-item>
-                {{ $t('data.notifications.no_notifications') }}
-              </el-dropdown-item>
-            </template>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <NotificationBell />
       </div>
       <!-- Noti end -->
 
@@ -237,8 +176,11 @@
 <script>
 import debounce from 'lodash/debounce'
 import SideBarMenu from '../components/SideBarMenu.vue'
+import NotificationBell from './notifications/NotificationBell'
+
 export default {
   components: {
+    NotificationBell,
     SideBarMenu
   },
   asyncComputed: {
@@ -257,10 +199,6 @@ export default {
     currentPlan () {
       return this.$store.state.currentPlan
     },
-    manageableTeams () {
-      return this.teams.filter(e => ['owner', 'admin'].includes(e.role) && e.is_business)
-    },
-    notifications () { return this.$store.state.notifications },
     currentTeam () {
       return this.teams[0]
     }
@@ -325,38 +263,6 @@ export default {
       if (headerDiv.classList.contains('sidebar-open')) {
         headerDiv.classList.remove('sidebar-open')
       }
-    },
-    setReadAll () {
-      this.$axios.$get('/notifications/read_all?scope=pwdmanager')
-        .then(response => {
-          this.$store.dispatch('LoadNotification')
-        }).catch(() => {})
-    },
-    routeNotification (item) {
-      this.setRead(item.id)
-      switch (item.type) {
-      case 'item_sharing': {
-        this.$router.push(this.localeRoute({ name: 'shares' }))
-        break
-      }
-      case 'emergency_access': {
-        this.$router.push(this.localeRoute({ name: 'settings-security' }))
-        break
-      }
-      default:
-        this.$router.push({
-          name: 'vault'
-        })
-        break
-      }
-    },
-    setRead (id) {
-      this.$axios.$put(`/notifications/${id}`, { read: true }).then(
-        response => {
-          this.$store.dispatch('LoadNotification')
-        }).catch(() => {
-        // error callback
-      })
     },
     startTutorial () {
       this.$store.commit('UPDATE_NOTICE', { showTutorial: true })

@@ -273,7 +273,7 @@ export default {
           const url = 'cystack_platform/pm/sharing'
           await this.$axios.$put(url, payload)
         }
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
+        this.notify(this.$tc('data.notifications.share_success', 1), 'success')
         this.closeDialog()
         this.newMembers = []
         this.$emit('shared-folder')
@@ -285,9 +285,9 @@ export default {
         if (e.response && e.response.data && e.response.data.code === '5000') {
           this.notify(this.$tc('errors.5000', 2), 'error')
         } else {
-          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.Folder', 1) }), 'warning')
+          this.notify(this.$t('errors.something_went_wrong'), 'warning')
+          console.log(e)
         }
-        // console.log(e)
       } finally {
         this.loading = false
       }
@@ -348,10 +348,11 @@ export default {
         await this.$axios.$post(`cystack_platform/pm/sharing/${this.folder.organizationId}/members/${row.id}/stop`, {
           folder: { ...data, id: this.folder.id, ciphers }
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
+        this.notify(this.$t('data.notifications.stop_share_success'), 'success')
         await this.getMyShares()
       } catch (error) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.Folder', 1) }), 'warning')
+        this.notify(this.$t('errors.something_went_wrong'), 'warning')
+        console.log(error)
       }
     },
     async getMyShares () {
@@ -369,11 +370,11 @@ export default {
           await this.$axios.$put(`cystack_platform/pm/sharing/${this.folder.organizationId}/members/${row.id}`, {
             role
           })
-          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
+          this.notify(this.$t('data.notifications.update_share_success'), 'success')
           await this.getMyShares()
           this.$emit('updated-cipher')
         } catch (error) {
-          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc('type.Folder', 1) }), 'warning')
+          this.notify(this.$t('errors.something_went_wrong'), 'warning')
           console.log(error)
         }
       } else {
