@@ -376,6 +376,7 @@ import { CipherRequest } from '../../jslib/src/models/request'
 import { Utils } from '../../jslib/src/misc/utils.ts'
 import PremiumDialog from '../../components/upgrade/PremiumDialog'
 
+CipherType.TOTP = 5
 CipherType.MasterPassword = 8
 CipherType.CryptoBackup = 7
 CipherType[7] = 'Crypto Backup'
@@ -564,7 +565,7 @@ export default {
           return c.isDeleted === this.deleted
         }
         const nonProtectedCipher = c => {
-          return c.type !== CipherType.MasterPassword
+          return ![CipherType.MasterPassword, CipherType.TOTP].includes(c.type)
         }
         let result = []
         try {
@@ -857,10 +858,10 @@ export default {
               cipher: { ...data, id: cipher.id }
             })
         }
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type || 'Folder'}`, 1) }), 'success')
+        this.notify(this.$t('data.notifications.stop_share_success'), 'success')
         await this.getMyShares()
       } catch (error) {
-        this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type || 'Folder'}`, 1) }), 'warning')
+        this.notify(this.$t('errors.something_went_wrong'), 'warning')
         console.log(error)
       }
     },
@@ -871,16 +872,16 @@ export default {
         type: 'warning'
       }).then(async () => {
         try {
-          await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId}/leave`)
+          await this.$axios.$post(`cystack_platform/pm/sharing/${cipher.organizationId || cipher?.team?.id}/leave`)
           if (cipher.ciphers) {
             const deletedIds = cipher.ciphers.map(c => c.id)
             await this.$cipherService.delete(deletedIds)
           } else {
             await this.$cipherService.delete([cipher.id])
           }
-          this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${cipher.type || 'Folder'}`, 1) }), 'success')
+          this.notify(this.$t('data.notifications.leave_share_success'), 'success')
         } catch (error) {
-          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${cipher.type || 'Folder'}`, 1) }), 'warning')
+          this.notify(this.$t('errors.something_went_wrong'), 'warning')
           console.log(error)
         }
       })

@@ -21,11 +21,21 @@ Vue.mixin({
     }
   },
   computed: {
-    language () { return this.$store.state.user.language },
-    locale () { return this.$store.state.i18n.locale },
-    currentUser () { return this.$store.state.user },
-    currentUserPw () { return this.$store.state.userPw },
-    environment () { return this.$store.state.environment },
+    language () {
+      return this.$store.state.user.language
+    },
+    locale () {
+      return this.$store.state.i18n.locale
+    },
+    currentUser () {
+      return this.$store.state.user
+    },
+    currentUserPw () {
+      return this.$store.state.userPw
+    },
+    environment () {
+      return this.$store.state.environment
+    },
     isLoggedIn () {
       return this.$store.state.isLoggedIn
     },
@@ -36,13 +46,23 @@ Vue.mixin({
       return this.$store.state.userPw.pwd_user_type === 'enterprise'
     },
     isEnterpriseAdminOrOwner () {
-      return this.teams.length && ['primary_admin', 'admin'].includes(this.teams[0].role)
+      return (
+        this.teams.length &&
+        ['primary_admin', 'admin'].includes(this.teams[0].role)
+      )
     },
     isPremiumFeaturesAvailable () {
-      return this.$store.state.userPw.pwd_user_type === 'enterprise' || this.$store.state.currentPlan.alias !== 'pm_free'
+      return (
+        this.$store.state.userPw.pwd_user_type === 'enterprise' ||
+        this.$store.state.currentPlan.alias !== 'pm_free'
+      )
     },
-    searchText () { return this.$store.state.searchText },
-    teams () { return this.$store.state.teams || [] },
+    searchText () {
+      return this.$store.state.searchText
+    },
+    teams () {
+      return this.$store.state.teams || []
+    },
     currentOrg () {
       // return find(this.teams, team => team.id === this.$route.params.teamId) || {}
       return this.teams.length ? this.teams[0] : {}
@@ -78,19 +98,26 @@ Vue.mixin({
       return process.env.lockerEnterprise
     },
     isDevOrStaging () {
-      return (process.env.environment === 'staging' || process.env.NODE_ENV !== 'production')
+      return (
+        process.env.environment === 'staging' ||
+        process.env.NODE_ENV !== 'production'
+      )
     }
   },
-  mounted () {
-  },
-  beforeDestroy () {
-  },
+  mounted () {},
+  beforeDestroy () {},
   methods: {
     changeLang (value) {
       if (value === 'vi') {
         this.$moment.locale('vi', {
-          months: 'tháng 1_tháng 2_tháng 3_tháng 4_tháng 5_tháng 6_tháng 7_tháng 8_tháng 9_tháng 10_tháng 11_tháng 12'.split('_'),
-          monthsShort: 'Th01_Th02_Th03_Th04_Th05_Th06_Th07_Th08_Th09_Th10_Th11_Th12'.split('_'),
+          months:
+            'tháng 1_tháng 2_tháng 3_tháng 4_tháng 5_tháng 6_tháng 7_tháng 8_tháng 9_tháng 10_tháng 11_tháng 12'.split(
+              '_'
+            ),
+          monthsShort:
+            'Th01_Th02_Th03_Th04_Th05_Th06_Th07_Th08_Th09_Th10_Th11_Th12'.split(
+              '_'
+            ),
           relativeTime: {
             future: '%s tới',
             past: '%s trước',
@@ -142,7 +169,10 @@ Vue.mixin({
       this.$store.commit('CLEAR_ALL_DATA')
       this.$router.push(this.localeRoute({ name: 'login' }))
       window.Intercom('shutdown')
-      window.intercomSettings = { app_id: 'hjus3ol6', api_base: 'https://hjus3ol6.intercom-messenger.com' }
+      window.intercomSettings = {
+        app_id: 'hjus3ol6',
+        api_base: 'https://hjus3ol6.intercom-messenger.com'
+      }
       window.Intercom('boot', { app_id: 'hjus3ol6' })
     },
     async lock () {
@@ -174,8 +204,16 @@ Vue.mixin({
     },
     async genKey (masterPassword, email) {
       try {
-        const key = await this.$cryptoService.makeKey(masterPassword, email, 0, 100000)
-        const hashedPassword = await this.$cryptoService.hashPassword(masterPassword, key)
+        const key = await this.$cryptoService.makeKey(
+          masterPassword,
+          email,
+          0,
+          100000
+        )
+        const hashedPassword = await this.$cryptoService.hashPassword(
+          masterPassword,
+          key
+        )
         return hashedPassword
       } catch (e) {
         return ''
@@ -202,22 +240,40 @@ Vue.mixin({
       const deviceIdentifier = lockerDeviceId || this.randomString()
       if (!lockerDeviceId) {
         const expireTime = 50 * 365 * 24 * 3600
-        this.$cookies.set('locker_device_id', deviceIdentifier, { maxAge: expireTime })
+        this.$cookies.set('locker_device_id', deviceIdentifier, {
+          maxAge: expireTime
+        })
       }
       try {
         await this.clearKeys()
-        const key = await this.$cryptoService.makeKey(this.masterPassword, this.currentUser.email, 0, 100000)
-        const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
-        const res = await this.$axios.$post('cystack_platform/pm/users/session', {
-          client_id: 'web',
-          password: hashedPassword,
-          device_name: this.$platformUtilsService.getDeviceString(),
-          device_type: this.$platformUtilsService.getDevice(),
-          device_identifier: deviceIdentifier
-        })
+        const key = await this.$cryptoService.makeKey(
+          this.masterPassword,
+          this.currentUser.email,
+          0,
+          100000
+        )
+        const hashedPassword = await this.$cryptoService.hashPassword(
+          this.masterPassword,
+          key
+        )
+        const res = await this.$axios.$post(
+          'cystack_platform/pm/users/session',
+          {
+            client_id: 'web',
+            password: hashedPassword,
+            device_name: this.$platformUtilsService.getDeviceString(),
+            device_type: this.$platformUtilsService.getDevice(),
+            device_identifier: deviceIdentifier
+          }
+        )
         this.$messagingService.send('loggedIn')
         await this.$tokenService.setTokens(res.access_token, res.refresh_token)
-        await this.$userService.setInformation(this.$tokenService.getUserId(), this.currentUser.email, 0, 100000)
+        await this.$userService.setInformation(
+          this.$tokenService.getUserId(),
+          this.currentUser.email,
+          0,
+          100000
+        )
         await this.$cryptoService.setKey(key)
         await this.$cryptoService.setKeyHash(hashedPassword)
         await this.$cryptoService.setEncKey(res.key)
@@ -231,8 +287,14 @@ Vue.mixin({
         // Create master pw item if not exists
         if (res.has_no_master_pw_item) {
           try {
-            const encMasterPwItem = await this.createEncryptedMasterPwItem(this.masterPassword)
-            const passwordStrength = this.$passwordGenerationService.passwordStrength(this.masterPassword, ['cystack']) || {}
+            const encMasterPwItem = await this.createEncryptedMasterPwItem(
+              this.masterPassword
+            )
+            const passwordStrength =
+              this.$passwordGenerationService.passwordStrength(
+                this.masterPassword,
+                ['cystack']
+              ) || {}
             await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
               ...encMasterPwItem,
               score: passwordStrength.score,
@@ -245,7 +307,14 @@ Vue.mixin({
         }
 
         this.$store.commit('UPDATE_SYNCING', true)
-        this.$router.push(this.localeRoute({ path: this.$store.state.currentPath === '/lock' ? '/vault' : this.$store.state.currentPath }))
+        this.$router.push(
+          this.localeRoute({
+            path:
+              this.$store.state.currentPath === '/lock'
+                ? '/vault'
+                : this.$store.state.currentPath
+          })
+        )
       } catch (e) {
         // Wrong master pw
         if (!e.response?.data?.message || e.response?.data?.code === '0004') {
@@ -254,8 +323,13 @@ Vue.mixin({
         }
 
         // Force join enterprise
-        if (e.response?.data?.code === '1011' && this.$route.name.startsWith('set-master-password')) {
-          this.$router.push(this.localeRoute({ name: 'lock', query: { joinEnterprise: '1' } }))
+        if (
+          e.response?.data?.code === '1011' &&
+          this.$route.name.startsWith('set-master-password')
+        ) {
+          this.$router.push(
+            this.localeRoute({ name: 'lock', query: { joinEnterprise: '1' } })
+          )
           return
         }
 
@@ -290,12 +364,17 @@ Vue.mixin({
         const userId = await this.$userService.getUserId()
         this.$messagingService.send('syncStarted')
         while (true) {
-          let res = await this.$axios.$get(`cystack_platform/pm/sync?paging=1&size=${pageSize}&page=${page}`)
+          let res = await this.$axios.$get(
+            `cystack_platform/pm/sync?paging=1&size=${pageSize}&page=${page}`
+          )
           if (res.count && res.count.ciphers) {
             this.$store.commit('UPDATE_CIPHER_COUNT', res.count.ciphers)
           }
           if (res.count && res.count.notDeletedCiphers) {
-            this.$store.commit('UPDATE_NOT_DELETED_CIPHER_COUNT', res.count.notDeletedCiphers)
+            this.$store.commit(
+              'UPDATE_NOT_DELETED_CIPHER_COUNT',
+              res.count.notDeletedCiphers
+            )
           }
           const enterprisePolicies = {}
           res.policies.forEach(element => {
@@ -398,7 +477,13 @@ Vue.mixin({
         return c.login.username != null && c.login.username.trim() !== ''
       }
       allCiphers.forEach(c => {
-        if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted || c.organizationId) {
+        if (
+          c.type !== CipherType.Login ||
+          c.login.password == null ||
+          c.login.password === '' ||
+          c.isDeleted ||
+          c.organizationId
+        ) {
           return
         }
         const hasUserName = isUserNameNotEmpty(c)
@@ -406,16 +491,27 @@ Vue.mixin({
         if (hasUserName) {
           const atPosition = c.login.username.indexOf('@')
           if (atPosition > -1) {
-            userInput = userInput.concat(
-              c.login.username.substr(0, atPosition).trim().toLowerCase().split(/[^A-Za-z0-9]/))
+            userInput = userInput
+              .concat(
+                c.login.username
+                  .substr(0, atPosition)
+                  .trim()
+                  .toLowerCase()
+                  .split(/[^A-Za-z0-9]/)
+              )
               .filter(i => i.length >= 3)
           } else {
-            userInput = c.login.username.trim().toLowerCase().split(/[^A-Za-z0-9]/)
+            userInput = c.login.username
+              .trim()
+              .toLowerCase()
+              .split(/[^A-Za-z0-9]/)
               .filter(i => i.length >= 3)
           }
         }
-        const result = this.$passwordGenerationService.passwordStrength(c.login.password,
-          userInput.length > 0 ? userInput : null)
+        const result = this.$passwordGenerationService.passwordStrength(
+          c.login.password,
+          userInput.length > 0 ? userInput : null
+        )
         weakPasswordScores[result.score]++
       })
       await this.$axios.$put('/cystack_platform/pm/users/me', {
@@ -444,20 +540,24 @@ Vue.mixin({
             try {
               const domain = extractDomain(cipher.login.uris[0]._uri)
               if (domain) {
-                return (this.$createElement(Avatar, {
-                  props: {
-                    src: `${process.env.logoUrl}${domain}?size=${size}`,
-                    size,
-                    alt: domain,
-                    shape: 'square'
-                  }
-                }, [
-                  this.$createElement('img', {
-                    attrs: {
-                      src: require('~/assets/images/icons/icon_Login.svg')
+                return this.$createElement(
+                  Avatar,
+                  {
+                    props: {
+                      src: `${process.env.logoUrl}${domain}?size=${size}`,
+                      size,
+                      alt: domain,
+                      shape: 'square'
                     }
-                  })
-                ]))
+                  },
+                  [
+                    this.$createElement('img', {
+                      attrs: {
+                        src: require('~/assets/images/icons/icon_Login.svg')
+                      }
+                    })
+                  ]
+                )
               }
             } catch (e) {
               return this.getIconDefaultCipher('Login', size)
@@ -479,21 +579,27 @@ Vue.mixin({
         if (!defaultIcon) {
           if (cipher.cryptoWallet && cipher.cryptoWallet.walletApp) {
             try {
-              const selectedApp = WALLET_APP_LIST.find(a => a.alias === cipher.cryptoWallet.walletApp.alias)
-              return (this.$createElement(Avatar, {
-                props: {
-                  src: selectedApp.logo,
-                  size,
-                  alt: selectedApp.name,
-                  shape: 'square'
-                }
-              }, [
-                this.$createElement('img', {
-                  attrs: {
-                    src: require('~/assets/images/icons/icon_CryptoWallet.svg')
+              const selectedApp = WALLET_APP_LIST.find(
+                a => a.alias === cipher.cryptoWallet.walletApp.alias
+              )
+              return this.$createElement(
+                Avatar,
+                {
+                  props: {
+                    src: selectedApp.logo,
+                    size,
+                    alt: selectedApp.name,
+                    shape: 'square'
                   }
-                })
-              ]))
+                },
+                [
+                  this.$createElement('img', {
+                    attrs: {
+                      src: require('~/assets/images/icons/icon_CryptoWallet.svg')
+                    }
+                  })
+                ]
+              )
             } catch (e) {
               return this.getIconDefaultCipher('CryptoWallet', size)
             }
@@ -526,25 +632,31 @@ Vue.mixin({
       }
 
       if (this.getRouteBaseName() === 'vault') {
-        this.$router.push(this.localeRoute({
-          name: 'vault-id',
-          params: { id: cipher.id }
-        }))
+        this.$router.push(
+          this.localeRoute({
+            name: 'vault-id',
+            params: { id: cipher.id }
+          })
+        )
         return
       }
       if (this.getRouteBaseName() === 'vault-folders-folderId') {
-        this.$router.push(this.localeRoute({
-          name: 'vault-folders-folderId-id',
-          params: { ...this.$route.params, id: cipher.id }
-        }))
+        this.$router.push(
+          this.localeRoute({
+            name: 'vault-folders-folderId-id',
+            params: { ...this.$route.params, id: cipher.id }
+          })
+        )
         return
       }
 
       if (this.getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId') {
-        this.$router.push(this.localeRoute({
-          name: 'vault-teams-teamId-tfolders-tfolderId-id',
-          params: { ...this.$route.params, id: cipher.id }
-        }))
+        this.$router.push(
+          this.localeRoute({
+            name: 'vault-teams-teamId-tfolders-tfolderId-id',
+            params: { ...this.$route.params, id: cipher.id }
+          })
+        )
         return
       }
 
@@ -570,10 +682,12 @@ Vue.mixin({
         name = 'crypto-backups'
         break
       }
-      this.$router.push(this.localeRoute({
-        name: name + '-id',
-        params: { id: cipher.id }
-      }))
+      this.$router.push(
+        this.localeRoute({
+          name: name + '-id',
+          params: { id: cipher.id }
+        })
+      )
     },
     isOwner (teams, cipher) {
       if (cipher.organizationId) {
@@ -641,7 +755,10 @@ Vue.mixin({
         subscribed: true,
         service: 'locker-blog-subscribe'
       }
-      return this.$axios.put('https://tracking.cystack.net/v2/email/subscription', payload)
+      return this.$axios.put(
+        'https://tracking.cystack.net/v2/email/subscription',
+        payload
+      )
     },
     validateEmail (email) {
       if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
@@ -665,16 +782,27 @@ Vue.mixin({
       }
     },
     // Check password policy
-    checkPasswordPolicy (password, policy_type = 'password_requirement', policies = null) {
+    checkPasswordPolicy (
+      password,
+      policy_type = 'password_requirement',
+      policies = null
+    ) {
       const violations = []
       if (!this.enterprisePolicies && !policies) {
         return violations
       }
-      const policy = policies ? policies[policy_type] : this.enterprisePolicies[policy_type]
+      const policy = policies
+        ? policies[policy_type]
+        : this.enterprisePolicies[policy_type]
       if (policy && policy.enabled) {
-        if (policy.config.minLength && password.length < policy.config.minLength) {
+        if (
+          policy.config.minLength &&
+          password.length < policy.config.minLength
+        ) {
           violations.push(
-            this.$t('data.password_policies.min_password_length', { length: policy.config.minLength })
+            this.$t('data.password_policies.min_password_length', {
+              length: policy.config.minLength
+            })
           )
         }
         if (policy.config.requireSpecialCharacter) {
@@ -688,14 +816,18 @@ Vue.mixin({
           const reg = /[a-z]/
           const check = reg.test(password)
           if (!check) {
-            violations.push(this.$t('data.password_policies.requires_lowercase'))
+            violations.push(
+              this.$t('data.password_policies.requires_lowercase')
+            )
           }
         }
         if (policy.config.requireUpperCase) {
           const reg = /[A-Z]/
           const check = reg.test(password)
           if (!check) {
-            violations.push(this.$t('data.password_policies.requires_uppercase'))
+            violations.push(
+              this.$t('data.password_policies.requires_uppercase')
+            )
           }
         }
         if (policy.config.requireDigit) {
@@ -717,7 +849,9 @@ Vue.mixin({
       if (policy && policy.enabled) {
         if (policy.config.minLength) {
           res.push(
-            this.$t('data.password_policies.min_password_length', { length: policy.config.minLength })
+            this.$t('data.password_policies.min_password_length', {
+              length: policy.config.minLength
+            })
           )
         }
         if (policy.config.requireSpecialCharacter) {
@@ -736,7 +870,9 @@ Vue.mixin({
       return res
     },
     openIntercom () {
-      if (window.Intercom) { window.Intercom('show') }
+      if (window.Intercom) {
+        window.Intercom('show')
+      }
     },
     phoneNotRequiredValidator (rule, value, callback) {
       const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/
@@ -748,7 +884,9 @@ Vue.mixin({
     },
     async checkBlockedBy2FA () {
       try {
-        const res = await this.$axios.$get('/cystack_platform/pm/users/me/block_by_2fa')
+        const res = await this.$axios.$get(
+          '/cystack_platform/pm/users/me/block_by_2fa'
+        )
         this.notEnable2FA = res.block
       } catch (e) {}
     },
@@ -757,7 +895,9 @@ Vue.mixin({
         return
       }
       try {
-        const res = await this.$axios.$get(`/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy`)
+        const res = await this.$axios.$get(
+          `/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy`
+        )
         const enterprisePolicies = {}
         res.forEach(element => {
           enterprisePolicies[element.policy_type] = element
@@ -767,7 +907,9 @@ Vue.mixin({
     },
     async checkOnboardingProgress () {
       try {
-        const res = await this.$axios.$get('/cystack_platform/pm/users/me/onboarding_process')
+        const res = await this.$axios.$get(
+          '/cystack_platform/pm/users/me/onboarding_process'
+        )
         const progress = {
           tutorial: res.tutorial,
           welcome: res.welcome,
@@ -780,7 +922,8 @@ Vue.mixin({
         })
 
         // Should open tutorial right away or wait after welcome business
-        const willOpenWelcomeBusiness = !progress.vaultToDashboard && this.isEnterpriseAdminOrOwner
+        const willOpenWelcomeBusiness =
+          !progress.vaultToDashboard && this.isEnterpriseAdminOrOwner
         if (!progress.tutorial && !willOpenWelcomeBusiness) {
           setTimeout(() => {
             this.$store.commit('UPDATE_NOTICE', { showTutorial: true })
@@ -793,25 +936,52 @@ Vue.mixin({
     },
     async updateOnboardingProgress (payload) {
       try {
-        await this.$axios.$put('/cystack_platform/pm/users/me/onboarding_process', payload)
+        await this.$axios.$put(
+          '/cystack_platform/pm/users/me/onboarding_process',
+          payload
+        )
         return true
       } catch (e) {
         console.log(e)
         return false
       }
     },
+    isCipherShared (organizationId) {
+      const share = this.myShares.find(s => s.id === organizationId) || {
+        members: [],
+        groups: []
+      }
+      return share?.members?.length || share?.groups?.length
+    },
+    isProtectedCipher (cipher) {
+      return cipher.type === CipherType.MasterPassword
+    },
+    isCipherShareable (cipher, organizations) {
+      return (
+        !cipher.isDeleted &&
+        this.isOwner(organizations, cipher) &&
+        // Not in any shared folder
+        !cipher.collectionIds.length &&
+        !this.isProtectedCipher(cipher)
+      )
+    },
     getSharedCipherMembers (organizationId) {
-      const share = this.myShares.find(s => s.id === organizationId) || { members: [] }
-      return share.members.map(member => {
-        return {
-          ...member,
-          username: member.email,
-          status: member.status,
-          role: member.role,
-          id: member.id,
-          key: null
-        }
-      }) || []
+      const share = this.myShares.find(s => s.id === organizationId) || {
+        members: [],
+        groups: []
+      }
+      return (
+        share.members.map(member => {
+          return {
+            ...member,
+            username: member.email,
+            status: member.status,
+            role: member.role,
+            id: member.id,
+            key: null
+          }
+        }) || []
+      )
     }
   }
 })

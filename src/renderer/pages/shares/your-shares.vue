@@ -1,7 +1,7 @@
 <template>
   <ListSharedCipher
     route-name="shares"
-    :filter="c => c.organizationId && getSharedCipherMembers(c.organizationId).length > 0"
+    :filter="c => c.organizationId && isCipherShared(c.organizationId)"
   />
 </template>
 
@@ -11,9 +11,7 @@ export default {
   components: {
     ListSharedCipher
   },
-  mounted () {
-  },
-  methods: {
-  }
+  mounted () {},
+  methods: {}
 }
 </script>
