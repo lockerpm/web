@@ -19,10 +19,10 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
     // Update base api url
     if (
       store.state.isOnPremise &&
-      store.state.baseApi &&
+      store.state.onPremiseBaseApi &&
       !request.url.endsWith('/onpremise/host')
     ) {
-      request.baseURL = store.state.baseApi
+      request.baseURL = store.state.onPremiseBaseApi
     }
 
     return request

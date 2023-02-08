@@ -101,6 +101,9 @@ Vue.mixin({
         process.env.environment === 'staging' ||
         process.env.NODE_ENV !== 'production'
       )
+    },
+    isOnPremise () {
+      return this.$store.state.isOnPremise
     }
   },
   mounted () {},
@@ -162,9 +165,7 @@ Vue.mixin({
     async logout () {
       console.log('###### LOG OUT')
 
-      const isLoggedOnPremise =
-        this.$store.state.isOnPremise && this.$store.state.isLoggedInOnPremise
-      if (!isLoggedOnPremise) {
+      if (!this.isOnPremise || this.$store.state.isLoggedInOnPremise) {
         await this.$axios.$post('/users/logout')
       }
 
@@ -264,6 +265,7 @@ Vue.mixin({
         const res = await this.$axios.$post(
           'cystack_platform/pm/users/session',
           {
+            email: this.isOnPremise ? this.currentUser.email : undefined,
             client_id: 'web',
             password: hashedPassword,
             device_name: this.$platformUtilsService.getDeviceString(),
@@ -272,6 +274,16 @@ Vue.mixin({
           }
         )
         this.$messagingService.send('loggedIn')
+
+        if (this.isOnPremise) {
+          this.$axios.setToken(res.access_token, 'Bearer')
+          await this.$cookies.set('cs_locker_token', res.access_token, {
+            path: '/',
+            ...(this.environment === '' ? { secure: true } : { secure: false })
+          })
+          this.$store.commit('UPDATE_IS_LOGGEDIN_ON_PREMISE', true)
+        }
+
         await this.$tokenService.setTokens(res.access_token, res.refresh_token)
         await this.$userService.setInformation(
           this.$tokenService.getUserId(),
@@ -312,12 +324,16 @@ Vue.mixin({
         }
 
         this.$store.commit('UPDATE_SYNCING', true)
+        let path =
+          this.$store.state.currentPath === '/lock'
+            ? '/vault'
+            : this.$store.state.currentPath
+        if (path === '/on-premise-create-master-pw') {
+          path = '/vault'
+        }
         this.$router.push(
           this.localeRoute({
-            path:
-              this.$store.state.currentPath === '/lock'
-                ? '/vault'
-                : this.$store.state.currentPath
+            path
           })
         )
       } catch (e) {
@@ -889,10 +905,7 @@ Vue.mixin({
       return callback()
     },
     async checkBlockedBy2FA () {
-      if (
-        this.$store.state.isOnPremise &&
-        !this.$store.state.isLoggedInOnPremise
-      ) {
+      if (this.isOnPremise && !this.$store.state.isLoggedInOnPremise) {
         console.log('Ignore blocked by 2fa')
         return
       }
@@ -995,6 +1008,19 @@ Vue.mixin({
           }
         }) || []
       )
+    },
+    async validateOnPremiseBaseApi (baseApi) {
+      try {
+        await this.$axios.$post('/cystack_platform/pm/users/onpremise/host', {
+          host: baseApi
+        })
+        return true
+      } catch (e) {
+        this.$store.commit('CLEAR_ALL_DATA')
+        this.$router.push('/')
+        this.$axios.setToken(false)
+        return false
+      }
     }
   }
 })

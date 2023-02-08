@@ -257,7 +257,7 @@ export const actions = {
     })
   },
   LoadCurrentIntercom ({ commit, state }) {
-    if (state.isOnPremise && !state.isLoggedInOnPremise) {
+    if (state.isOnPremise) {
       console.log('Ignore Intercom')
       return
     }

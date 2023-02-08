@@ -15,25 +15,13 @@ export default {
       return
     }
 
-    const isValid = await this.validateBaseApi(baseApi)
+    const isValid = await this.validateOnPremiseBaseApi(baseApi)
     if (isValid) {
       this.loginWithoutToken(email, baseApi)
     }
   },
 
   methods: {
-    async validateBaseApi (baseApi) {
-      try {
-        await this.$axios.$post('/cystack_platform/pm/users/onpremise/host', {
-          host: baseApi
-        })
-        return true
-      } catch (e) {
-        this.$router.push('/')
-        return false
-      }
-    },
-
     async loginWithoutToken (email, baseApi) {
       this.$store.commit('UPDATE_IS_LOGGEDIN', true)
       this.$store.commit('UPDATE_IS_LOGGEDIN_ON_PREMISE', false)
