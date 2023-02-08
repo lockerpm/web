@@ -3,16 +3,26 @@
     <div class="mt-[3rem] mb-5">
       <img src="~assets/images/logo/logo_black.svg" alt="" class="h-[36px]">
     </div>
-    <div class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center">
-      <div class="text-head-4 font-semibold mb-2.5">{{ $t('set_master_password.title') }}</div>
+    <div
+      class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center"
+    >
+      <div class="text-head-4 font-semibold mb-2.5">
+        {{ $t('set_master_password.title') }}
+      </div>
       <div class="text-base text-black-600 mb-4">
         {{ $t('set_master_password.subtitle') }}
       </div>
       <div class="inline-block mb-8 select-none">
         <div class="flex items-center">
-          <div class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto">
+          <div
+            class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto"
+          >
             <client-only>
-              <img :src="currentUser.avatar" alt="" class="w-[28px] h-[28px] rounded-full mr-2">
+              <img
+                :src="currentUser.avatar"
+                alt=""
+                class="w-[28px] h-[28px] rounded-full mr-2"
+              >
             </client-only>
             <div class="mr-2">{{ currentUser.email }}</div>
           </div>
@@ -26,7 +36,9 @@
       </div>
       <div class="text-left">
         <div class="form-group !mb-4">
-          <label for="">{{ $t('set_master_password.enter_master_password') }}</label>
+          <label for="">{{
+            $t('set_master_password.enter_master_password')
+          }}</label>
           <div class="input-group mb-1.5">
             <input
               v-model="masterPassword"
@@ -36,19 +48,35 @@
               autocomplete="new-password"
             >
             <div class="input-group-append !bg-white">
-              <button class="btn btn-icon" type="button" tabindex="-1" @click="showPassword = !showPassword">
+              <button
+                class="btn btn-icon"
+                type="button"
+                tabindex="-1"
+                @click="showPassword = !showPassword"
+              >
                 <i
                   class="far"
-                  :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+                  :class="{
+                    'fa-eye': !showPassword,
+                    'fa-eye-slash': showPassword
+                  }"
                 />
               </button>
             </div>
           </div>
-          <PasswordStrengthBar v-if="masterPassword" :score="passwordStrength.score" />
+          <PasswordStrengthBar
+            v-if="masterPassword"
+            :score="passwordStrength.score"
+          />
         </div>
         <div class="form-group !mb-4">
-          <label for="">{{ $t('set_master_password.confirm_master_password') }}</label>
-          <div class="input-group" :class="[errors.masterRePassword ? 'is-invalid' :'']">
+          <label for="">{{
+            $t('set_master_password.confirm_master_password')
+          }}</label>
+          <div
+            class="input-group"
+            :class="[errors.masterRePassword ? 'is-invalid' : '']"
+          >
             <input
               v-model="masterRePassword"
               :type="showRePassword ? 'text' : 'password'"
@@ -57,30 +85,43 @@
               placeholder=""
             >
             <div class="input-group-append !bg-white">
-              <button class="btn btn-icon" tabindex="-1" @click="showRePassword = !showRePassword">
+              <button
+                class="btn btn-icon"
+                tabindex="-1"
+                @click="showRePassword = !showRePassword"
+              >
                 <i
                   class="far"
-                  :class="{'fa-eye': !showRePassword, 'fa-eye-slash': showRePassword}"
+                  :class="{
+                    'fa-eye': !showRePassword,
+                    'fa-eye-slash': showRePassword
+                  }"
                 />
               </button>
             </div>
           </div>
-          <div class="invalid-feedback">{{ $t('errors.confirm_password') }}</div>
+          <div class="invalid-feedback">
+            {{ $t('errors.confirm_password') }}
+          </div>
         </div>
         <div class="form-group !mb-8">
-          <label for="">{{ $t('set_master_password.master_password_hint') }}</label>
+          <label for="">{{
+            $t('set_master_password.master_password_hint')
+          }}</label>
           <input
             v-model="masterPasswordHint"
             class="form-control"
             placeholder=""
             type="text"
-          ></input>
+          >
         </div>
       </div>
       <div class="form-group !mb-4">
         <button
           class="btn btn-primary w-full"
-          :disabled="loading || !masterPassword || (masterPassword !== masterRePassword)"
+          :disabled="
+            loading || !masterPassword || masterPassword !== masterRePassword
+          "
           @click="confirmDialogVisible = true"
         >
           {{ $t('set_master_password.create_button') }}
@@ -101,12 +142,32 @@
         :src="require(`~/assets/images/landing/master-password/important.png`)"
         alt=""
         class="block"
-        style="height: 120px; width: 120px; margin-left: auto; margin-right: auto;"
+        style="
+          height: 120px;
+          width: 120px;
+          margin-left: auto;
+          margin-right: auto;
+        "
       >
-      <p class="text-center">{{ $t('set_master_password.confirm_nodal.text1') }}</p>
-      <p class="text-center">{{ $t('set_master_password.confirm_nodal.text2') }}<a href="https://locker.io/master-password" target="_blank" rel="noopener noreferrer">{{ $t('set_master_password.confirm_nodal.link') }}</a>.</p>
+      <p class="text-center">
+        {{ $t('set_master_password.confirm_nodal.text1') }}
+      </p>
+      <p class="text-center">
+        {{ $t('set_master_password.confirm_nodal.text2')
+        }}<a
+          href="https://locker.io/master-password"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ $t('set_master_password.confirm_nodal.link') }}</a>.
+      </p>
       <div class="flex justify-center mt-4">
-        <el-button class="flex w-full" type="primary" @click="confirmSetMasterPass">{{ $t('set_master_password.confirm_nodal.btn_next') }}</el-button>
+        <el-button
+          class="flex w-full"
+          type="primary"
+          @click="confirmSetMasterPass"
+        >
+          {{ $t('set_master_password.confirm_nodal.btn_next') }}
+        </el-button>
       </div>
       <div class="flex justify-center mt-2">
         <button
@@ -138,15 +199,18 @@ export default {
       masterPasswordHint: '',
       loading: false,
       confirmDialogVisible: false,
-      errors: {
-      },
+      errors: {},
       showPassword: false,
       showRePassword: false
     }
   },
   computed: {
     passwordStrength () {
-      return this.$passwordGenerationService.passwordStrength(this.masterPassword, ['cystack']) || {}
+      return (
+        this.$passwordGenerationService.passwordStrength(this.masterPassword, [
+          'cystack'
+        ]) || {}
+      )
     }
   },
   watch: {
@@ -160,7 +224,6 @@ export default {
   },
   mounted () {
     this.$store.dispatch('LoadTeams')
-    this.$router.push(this.localeRoute({ name: 'lock', query: { joinEnterprise: '1' } }))
   },
   methods: {
     // Check policy before submit
@@ -171,7 +234,9 @@ export default {
       }
       try {
         this.loading = true
-        const res = await this.$axios.$get(`/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy/master_password_requirement`)
+        const res = await this.$axios.$get(
+          `/cystack_platform/pm/enterprises/${this.currentOrg.id}/policy/master_password_requirement`
+        )
         res.config = _.mapKeys(res.config, (_value, key) => _.camelCase(key))
         const violationItems = this.checkPasswordPolicy(
           this.masterPassword || '',
@@ -199,7 +264,10 @@ export default {
     async setMasterPass () {
       await this.clearKeys()
       if (this.masterPassword.length < MIN_MASTER_PW_LEN) {
-        this.notify(this.$t('data.notifications.invalid_master_password'), 'error')
+        this.notify(
+          this.$t('data.notifications.invalid_master_password'),
+          'error'
+        )
         return
       }
       try {
@@ -207,9 +275,17 @@ export default {
         const kdf = 0
         const kdfIterations = 100000
         const referenceData = ''
-        const key = await this.$cryptoService.makeKey(this.masterPassword, this.currentUser.email, kdf, kdfIterations)
+        const key = await this.$cryptoService.makeKey(
+          this.masterPassword,
+          this.currentUser.email,
+          kdf,
+          kdfIterations
+        )
         const encKey = await this.$cryptoService.makeEncKey(key)
-        const hashedPassword = await this.$cryptoService.hashPassword(this.masterPassword, key)
+        const hashedPassword = await this.$cryptoService.hashPassword(
+          this.masterPassword,
+          key
+        )
         const keys = await this.$cryptoService.makeKeyPair(encKey[0])
         await this.$cryptoService.setKey(key)
         await this.$cryptoService.setKeyHash(hashedPassword)
@@ -240,7 +316,10 @@ export default {
         localStorage.removeItem('trial_plan')
         localStorage.removeItem('is_trial_promotion')
         this.notify(this.$t('master_password.create_success'), 'success')
-        this.$store.commit('UPDATE_USER_PW', { ...this.$store.state.userPw, is_pwd_manager: true })
+        this.$store.commit('UPDATE_USER_PW', {
+          ...this.$store.state.userPw,
+          is_pwd_manager: true
+        })
         window.open(process.env.extensionLink, '_blank')
         await this.login()
       } catch (e) {
@@ -254,7 +333,7 @@ export default {
 </script>
 
 <style>
-  .el-dialog__body {
-    padding-top: 0 !important;
-  }
+.el-dialog__body {
+  padding-top: 0 !important;
+}
 </style>

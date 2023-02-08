@@ -23,10 +23,6 @@ export default {
       externalContent: ''
     }
   },
-  mounted () {
-    // this.$store.dispatch('LoadCurrentUser')
-    // this.$store.dispatch('LoadCurrentUserPw')
-  },
   methods: {
     openURL (url) {
       if (remote) {

@@ -1,6 +1,7 @@
 import https from 'https'
 export default function ({ store, $axios, app, isDev, redirect, route }) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
+
   $axios.interceptors.request.use(request => {
     // Get token from auth.js store
     // const token = store.state.auth.accessToken
@@ -14,19 +15,37 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
     if (deviceId) {
       request.headers['device-id'] = deviceId
     }
+
+    // Update base api url
+    if (
+      store.state.isOnPremise &&
+      store.state.baseApi &&
+      !request.url.endsWith('/onpremise/host')
+    ) {
+      request.baseURL = store.state.baseApi
+    }
+
     return request
   })
+
   $axios.onResponse(res => {
     if (res.headers['device-id']) {
       app.$cookies.set('device_id', res.headers['device-id'], {
         path: '/',
-        ...isDev ? { secure: false } : { secure: true },
-        ...res.headers['device-expired-time'] ? { expires: app.$moment.unix(res.headers['device-expired-time']).toDate() } : {},
+        ...(isDev ? { secure: false } : { secure: true }),
+        ...(res.headers['device-expired-time']
+          ? {
+            expires: app.$moment
+              .unix(res.headers['device-expired-time'])
+              .toDate()
+          }
+          : {}),
         domain: 'locker.io'
       })
       $axios.setHeader('device-id', res.headers['device-id'])
     }
   })
+
   $axios.onError(err => {
     if (err.response) {
       if (err.response.status === 400) {
@@ -75,7 +94,11 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
         }
         const paths = currentPath.split('/')
         currentPath = '/' + (paths[1] || '')
-        if (!WHITELIST_PATH.includes(currentPath) && currentPath && !route.name.startsWith('all___')) {
+        if (
+          !WHITELIST_PATH.includes(currentPath) &&
+          currentPath &&
+          !route.name.startsWith('all___')
+        ) {
           redirect(302, '/login')
         }
       }

@@ -1,5 +1,8 @@
 <template>
-  <div v-if="enterpriseInvitations.length" class="flex-column-fluid lg:px-28 py-10 px-10">
+  <div
+    v-if="enterpriseInvitations.length"
+    class="flex-column-fluid lg:px-28 py-10 px-10"
+  >
     <el-dialog
       :visible.sync="dialogVisible"
       width="700px"
@@ -10,7 +13,9 @@
     >
       <div slot="title">
         <div class="flex items-center justify-center">
-          <p class="enterprise-invitations-dialog__title">{{ $t('data.enterprise.popup.title') }}</p>
+          <p class="enterprise-invitations-dialog__title">
+            {{ $t('data.enterprise.popup.title') }}
+          </p>
         </div>
       </div>
       <div
@@ -19,21 +24,29 @@
         class="enterprise-invitations-dialog__content"
       >
         <p class="text-center">{{ $t('data.enterprise.popup.subtitle') }}</p>
-        <div class="flex items-center my-3 rounded-xl bg-black-200 invitation-info">
+        <div
+          class="flex items-center my-3 rounded-xl bg-black-200 invitation-info"
+        >
           <div class="invitation-info__left py-2 pl-10 pr-2 w-1/2">
-            <p class="text-xs mb-2">{{ $t('data.enterprise.popup.oragnization') }}</p>
+            <p class="text-xs mb-2">
+              {{ $t('data.enterprise.popup.oragnization') }}
+            </p>
             <div class="flex items-center">
-              <i class="fas fa-city mr-3"></i>
+              <i class="fas fa-city mr-3" />
               <span class="text-black-700 text-lg">
                 {{ invitation.enterprise.name }}
               </span>
             </div>
           </div>
-          <div class="invitation-info__center h-14 border-l border-solid border-black-400"></div>
+          <div
+            class="invitation-info__center h-14 border-l border-solid border-black-400"
+          />
           <div class="invitation-info__right py-2 pl-10 pr-2 w-1/2">
-            <p class="text-xs mb-2">{{ $t('data.enterprise.popup.inviter') }}</p>
+            <p class="text-xs mb-2">
+              {{ $t('data.enterprise.popup.inviter') }}
+            </p>
             <div class="flex items-center">
-              <i class="fas fa-user mr-3"></i>
+              <i class="fas fa-user mr-3" />
               <p class="text-black-700 text-lg">
                 {{ invitation.owner }}
               </p>
@@ -41,9 +54,11 @@
           </div>
         </div>
         <div class="invitation-info__left mobile p-3 pl-5 w-full mb-4 mt-3">
-          <p class="text-xs mb-2">{{ $t('data.enterprise.popup.oragnization') }}</p>
+          <p class="text-xs mb-2">
+            {{ $t('data.enterprise.popup.oragnization') }}
+          </p>
           <div class="flex items-center">
-            <i class="fas fa-city mr-3"></i>
+            <i class="fas fa-city mr-3" />
             <span class="text-black-700 text-lg">
               {{ invitation.enterprise.name }}
             </span>
@@ -52,31 +67,38 @@
         <div class="invitation-info__right mobile p-3 pl-5 mb-4 w-full">
           <p class="text-xs mb-2">{{ $t('data.enterprise.popup.inviter') }}</p>
           <div class="flex items-center">
-            <i class="fas fa-user mr-3"></i>
+            <i class="fas fa-user mr-3" />
             <p class="text-black-700 text-lg">
               {{ invitation.owner }}
             </p>
           </div>
         </div>
         <div class="invitation-info__content">
-          <p class="font-bold">{{ $t('data.enterprise.popup.accept.title') }}</p>
-            <ul class="list-disc pl-7 py-4">
-              <li v-for="item in $t('data.enterprise.popup.accept.list')" :key="item">
-                {{ item }}
-              </li>
-            </ul>
-            <p class="font-bold mt-2">{{ $t('data.enterprise.popup.decline.title') }}</p>
-            <ul class="pt-4">
-              <li v-for="item in $t('data.enterprise.popup.decline.list')" :key="item">
-                {{ item }}
-              </li>
-            </ul>
+          <p class="font-bold">
+            {{ $t('data.enterprise.popup.accept.title') }}
+          </p>
+          <ul class="list-disc pl-7 py-4">
+            <li
+              v-for="item in $t('data.enterprise.popup.accept.list')"
+              :key="item"
+            >
+              {{ item }}
+            </li>
+          </ul>
+          <p class="font-bold mt-2">
+            {{ $t('data.enterprise.popup.decline.title') }}
+          </p>
+          <ul class="pt-4">
+            <li
+              v-for="item in $t('data.enterprise.popup.decline.list')"
+              :key="item"
+            >
+              {{ item }}
+            </li>
+          </ul>
         </div>
       </div>
-      <div
-        slot="footer"
-        class="dialog-footer flex items-center text-left"
-      >
+      <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow" />
         <div class="btns">
           <button
@@ -112,9 +134,12 @@ export default {
     async putInvitation (status) {
       try {
         this.loading = true
-        await this.$axios.$put(`cystack_platform/pm/enterprises/members/invitations/${this.enterpriseInvitations[0]?.id}`, {
-          status
-        })
+        await this.$axios.$put(
+          `cystack_platform/pm/enterprises/members/invitations/${this.enterpriseInvitations[0]?.id}`,
+          {
+            status
+          }
+        )
         this.notify(this.$t('common.success'), 'success')
         if (status === 'confirmed') {
           this.$store.dispatch('LoadCurrentUserPw')
@@ -127,7 +152,7 @@ export default {
         this.$store.dispatch('LoadEnterpriseInvitations')
         this.loading = false
       }
-    },
+    }
   }
 }
 </script>
@@ -188,17 +213,17 @@ export default {
       &__left {
         &.mobile {
           background: rgba(44, 142, 93, 0.05);
-          border-left: 6px solid #2C8E5D;
+          border-left: 6px solid #2c8e5d;
         }
       }
       &__right {
         &.mobile {
           background: rgba(58, 75, 222, 0.05);
-          border-left: 6px solid #3A4BDE;
+          border-left: 6px solid #3a4bde;
         }
       }
       &__content {
-        background: #F1F1F1;
+        background: #f1f1f1;
         border-radius: 12px;
         padding: 16px;
       }

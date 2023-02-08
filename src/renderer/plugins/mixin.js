@@ -4,7 +4,6 @@ import extractDomain from 'extract-domain'
 import find from 'lodash/find'
 import numeral from 'numeral'
 import { Avatar } from 'element-ui'
-import _ from 'lodash'
 import { LoginUriView, LoginView } from '../jslib/src/models/view'
 import { CipherRequest } from '../jslib/src/models/request'
 import { CipherType } from '../core/enums/cipherType'
@@ -162,12 +161,18 @@ Vue.mixin({
     },
     async logout () {
       console.log('###### LOG OUT')
-      await this.$axios.$post('/users/logout')
+
+      const isLoggedOnPremise =
+        this.$store.state.isOnPremise && this.$store.state.isLoggedInOnPremise
+      if (!isLoggedOnPremise) {
+        await this.$axios.$post('/users/logout')
+      }
+
       await this.$cryptoService.clearKeys()
       await this.$userService.clear()
       await this.$cookies.remove('cs_locker_token')
       this.$store.commit('CLEAR_ALL_DATA')
-      this.$router.push(this.localeRoute({ name: 'login' }))
+      this.$router.push(this.localeRoute({ name: 'index' }))
       window.Intercom('shutdown')
       window.intercomSettings = {
         app_id: 'hjus3ol6',
@@ -761,6 +766,7 @@ Vue.mixin({
       )
     },
     validateEmail (email) {
+      // eslint-disable-next-line no-useless-escape
       if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
         return true
       }
@@ -874,7 +880,7 @@ Vue.mixin({
         window.Intercom('show')
       }
     },
-    phoneNotRequiredValidator (rule, value, callback) {
+    phoneNotRequiredValidator (_rule, value, callback) {
       const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/
       if (!value.match(phoneRegex)) {
         return callback(new Error('Invalid phone number'))
@@ -883,6 +889,13 @@ Vue.mixin({
       return callback()
     },
     async checkBlockedBy2FA () {
+      if (
+        this.$store.state.isOnPremise &&
+        !this.$store.state.isLoggedInOnPremise
+      ) {
+        console.log('Ignore blocked by 2fa')
+        return
+      }
       try {
         const res = await this.$axios.$get(
           '/cystack_platform/pm/users/me/block_by_2fa'

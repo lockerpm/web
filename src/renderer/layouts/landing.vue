@@ -11,7 +11,10 @@
               {{ $t('cookie.title') }}
             </p>
             <p class="landing-font-14 mb-4" v-html="$t('cookie.desc')" />
-            <nuxt-link :to="localePath('/privacy')" class="landing-font-14 text-primary">
+            <nuxt-link
+              :to="localePath('/privacy')"
+              class="landing-font-14 text-primary"
+            >
               {{ $t('cookie.learn_more') }}
             </nuxt-link>
           </div>
@@ -49,7 +52,7 @@ export default {
   components: {
     Header,
     Footer,
-    TopBanner,
+    TopBanner
   },
   data () {
     return {
@@ -66,7 +69,11 @@ export default {
       },
       title: this.$t(`${this.mappings}.head_title`),
       meta: [
-        { hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        {
+          hid: 'viewport',
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1'
+        },
         {
           hid: 'og:title',
           property: 'og:title',
@@ -114,7 +121,11 @@ export default {
         }
       ],
       link: [
-        { rel: 'alternate', hreflang: this.locale, href: this.getAlternatePath(this.locale) }
+        {
+          rel: 'alternate',
+          hreflang: this.locale,
+          href: this.getAlternatePath(this.locale)
+        }
         // { rel: 'alternate', hreflang: 'vi', href: this.getAlternatePath('vi') }
       ]
     }
@@ -125,26 +136,61 @@ export default {
     // },
     mappings () {
       const path = this.$route.path
-      if (path === '/benefits' || path === `/${this.locale}/benefits`) { return 'how_it_works' }
-      if (path === '/features' || path === `/${this.locale}/features`) { return 'features' }
-      if (path === '/plans' || path === `/${this.locale}/plans`) { return 'plan' }
-      if (path === '/download' || path === `/${this.locale}/download`) { return 'download' }
-      if (path === '/contact' || path === `/${this.locale}/contact`) { return 'landing_contact' }
-      if (path === '/blog' || path === `/${this.locale}/blog`) { return 'blog' }
-      if (path === '/password-generator' || path === `/${this.locale}/password-generator`) { return 'password_generator' }
-      if (path === '/security' || path === `/${this.locale}/security`) { return 'security' }
-      if (path === '/password-health-checker' || path === `/${this.locale}/password-health-checker`) { return 'password_health_checker' }
-      if (path === '/comparison' || path === `/${this.locale}/comparison`) { return 'comparison' }
-      if (path === '/refer-friend' || path === `/${this.locale}/refer-friend`) { return 'refer_friend' }
-      if (path === '/about-us' || path === `/${this.locale}/about-us`) { return 'about_us' }
-      if (path === '/master-password' || path === `/${this.locale}/master-password`) { return 'landing_master_password' }
-      if (path === '/affiliate' || path === `/${this.locale}/affiliate`) { return 'landing_affiliate' }
+      if (path === '/benefits' || path === `/${this.locale}/benefits`) {
+        return 'how_it_works'
+      }
+      if (path === '/features' || path === `/${this.locale}/features`) {
+        return 'features'
+      }
+      if (path === '/plans' || path === `/${this.locale}/plans`) {
+        return 'plan'
+      }
+      if (path === '/download' || path === `/${this.locale}/download`) {
+        return 'download'
+      }
+      if (path === '/contact' || path === `/${this.locale}/contact`) {
+        return 'landing_contact'
+      }
+      if (path === '/blog' || path === `/${this.locale}/blog`) {
+        return 'blog'
+      }
+      if (
+        path === '/password-generator' ||
+        path === `/${this.locale}/password-generator`
+      ) {
+        return 'password_generator'
+      }
+      if (path === '/security' || path === `/${this.locale}/security`) {
+        return 'security'
+      }
+      if (
+        path === '/password-health-checker' ||
+        path === `/${this.locale}/password-health-checker`
+      ) {
+        return 'password_health_checker'
+      }
+      if (path === '/comparison' || path === `/${this.locale}/comparison`) {
+        return 'comparison'
+      }
+      if (path === '/refer-friend' || path === `/${this.locale}/refer-friend`) {
+        return 'refer_friend'
+      }
+      if (path === '/about-us' || path === `/${this.locale}/about-us`) {
+        return 'about_us'
+      }
+      if (
+        path === '/master-password' ||
+        path === `/${this.locale}/master-password`
+      ) {
+        return 'landing_master_password'
+      }
+      if (path === '/affiliate' || path === `/${this.locale}/affiliate`) {
+        return 'landing_affiliate'
+      }
       return 'landing'
     }
   },
   mounted () {
-    // this.$store.dispatch('LoadCurrentUser')
-    // this.$store.dispatch('LoadCurrentUserPw')
     this.showCookie = this.checkCookie()
   },
   methods: {
@@ -183,7 +229,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 .landing-btn {
   @apply hover:no-underline transition duration-200 ease-in-out text-white hover:text-white hover:bg-green-hover;
   display: inline-block;
@@ -217,11 +262,11 @@ export default {
 .landing-transition {
   @apply transition duration-200 ease-in-out;
 }
-.landing-font-72{
+.landing-font-72 {
   font-size: 72px;
   line-height: 66px;
 }
-.landing-font-60{
+.landing-font-60 {
   font-size: 60px;
   line-height: 72px;
 }
@@ -233,7 +278,7 @@ export default {
   font-size: 50px;
   line-height: 66px;
 }
-.landing-font-52{
+.landing-font-52 {
   font-size: 52px;
   line-height: 66px;
 }
@@ -269,7 +314,7 @@ export default {
   font-size: 28px;
   line-height: 32px;
 }
-.landing-font-24{
+.landing-font-24 {
   font-size: 24px;
   line-height: 29px;
 }
@@ -322,7 +367,7 @@ export default {
   margin-right: -50vw;
   overflow-x: hidden;
 }
-#cookie-bar{
+#cookie-bar {
   position: fixed;
   width: 100%;
   bottom: 0px;
@@ -333,48 +378,47 @@ export default {
   z-index: 90;
   -webkit-transition: bottom 0.7s, opacity 0.8s;
   transition: bottom 0.7s, opacity 0.8s;
-
 }
-#cookie-bar .cookie-bar__wrap{
-    @apply max-w-6xl;
-    position: relative;
-    margin: 0 auto;
+#cookie-bar .cookie-bar__wrap {
+  @apply max-w-6xl;
+  position: relative;
+  margin: 0 auto;
 }
-#cookie-bar .cookie-bar__msg-wrap{
+#cookie-bar .cookie-bar__msg-wrap {
   flex-direction: column;
-    display: block;
-    height: auto;
-    padding: 20px;
-    justify-content: space-between;
+  display: block;
+  height: auto;
+  padding: 20px;
+  justify-content: space-between;
 }
-#cookie-bar .cookie-bar__msg{
+#cookie-bar .cookie-bar__msg {
   padding-bottom: 24px;
 }
-#cookie-bar .cookie-bar__manage{
+#cookie-bar .cookie-bar__manage {
   width: 100%;
   padding: 0;
   display: block;
   text-align: right;
 }
 
-#cookie-bar .cookie-bar__btn{
+#cookie-bar .cookie-bar__btn {
   @apply bg-primary;
-    padding: 8.425px 56.96px;
-    border-radius: 20px !important;
-    font-size: 14px !important;
-    line-height: 19px !important;
-    color: #fff !important;
-    text-shadow: 0 0 3px rgba(0,0,0, 0.7) !important;
-    margin: 0px !important;
+  padding: 8.425px 56.96px;
+  border-radius: 20px !important;
+  font-size: 14px !important;
+  line-height: 19px !important;
+  color: #fff !important;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.7) !important;
+  margin: 0px !important;
 }
-#cookie-bar .cookie-bar__close{
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
-    padding: 8px;
-    font-size: 18px;
-    cursor: pointer;
+#cookie-bar .cookie-bar__close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+  font-size: 18px;
+  cursor: pointer;
 }
 </style>

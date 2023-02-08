@@ -49,17 +49,21 @@ export default ({ store, app, isDev }) => {
           delete obj.currentPlan
           if (obj.user) {
             // eslint-disable-next-line camelcase
-            const { language, is_factor2 } = obj.user
+            const { language, is_factor2, email } = obj.user
             obj.user = {
               language,
               avatar: '',
-              is_factor2
+              is_factor2,
+              email
             }
           }
 
           const result = JSON.stringify(obj)
 
-          return app.$cookies.set(key, result, { path: '/', ...environment === '' ? { secure: true } : { secure: false } })
+          return app.$cookies.set(key, result, {
+            path: '/',
+            ...(environment === '' ? { secure: true } : { secure: false })
+          })
         },
         removeItem: key => app.$cookies.remove(key)
       }

@@ -45,7 +45,12 @@ export const state = () => ({
   tutorial: {
     isActive: false,
     currentStepId: ''
-  }
+  },
+
+  // On premise
+  isOnPremise: false,
+  onPremiseBaseApi: '',
+  isLoggedInOnPremise: false
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -53,6 +58,9 @@ export const mutations = {
   },
   UPDATE_IS_LOGGEDIN (state, value) {
     state.isLoggedIn = value
+  },
+  UPDATE_IS_LOGGEDIN_ON_PREMISE (state, value) {
+    state.isLoggedInOnPremise = value
   },
   CLEAR_ALL_DATA (state) {
     state.isLoggedIn = false
@@ -71,9 +79,16 @@ export const mutations = {
     state.pendingShares = 0
     state.enterpriseInvitations = []
     state.enterprisePolicies = []
+    state.baseApi = ''
+    state.onPremiseBaseApi = false
+    state.isLoggedInOnPremise = false
   },
   UPDATE_USER (state, user) {
     state.user = user
+  },
+  UPDATE_ON_PREMISE_INFO (state, baseApi) {
+    state.isOnPremise = !!baseApi
+    state.onPremiseBaseApi = baseApi
   },
   UPDATE_USER_PW (state, user) {
     state.userPw = user
@@ -166,8 +181,9 @@ export const actions = {
 
     commit('UPDATE_IS_LOGGEDIN', state.isLoggedIn)
     commit('UPDATE_USER', state.user)
+    commit('UPDATE_ON_PREMISE_INFO', state.onPremiseBaseApi)
     commit('UPDATE_USER_PW', state.userPw)
-    const environment = isDev ? 'dev' : (process.env.environment || '')
+    const environment = isDev ? 'dev' : process.env.environment || ''
     commit('UPDATE_DEV', environment)
     commit('UPDATE_PATH', state.currentPath)
     commit('UPDATE_PREVIOUS_PATH', state.previousPath)
@@ -187,8 +203,9 @@ export const actions = {
 
       commit('UPDATE_IS_LOGGEDIN', state.isLoggedIn)
       commit('UPDATE_USER', state.user)
+      commit('UPDATE_ON_PREMISE_INFO', state.onPremiseBaseApi)
       commit('UPDATE_USER_PW', state.userPw)
-      const environment = isDev ? 'dev' : (process.env.environment || '')
+      const environment = isDev ? 'dev' : process.env.environment || ''
       commit('UPDATE_DEV', environment)
       commit('UPDATE_PATH', state.currentPath)
       commit('UPDATE_PREVIOUS_PATH', state.previousPath)
@@ -210,29 +227,48 @@ export const actions = {
       resolve(payload)
     })
   },
-  LoadCurrentUser ({ commit }) {
+  LoadCurrentUser ({ commit, state }) {
+    if (state.isOnPremise && !state.isLoggedInOnPremise) {
+      console.log('Ignore current user')
+      return {
+        language: 'en'
+      }
+    }
     return this.$axios.$get('me').then(res => {
       commit('UPDATE_USER', res)
       commit('SET_LANG', res.language)
       return res
     })
   },
-  LoadCurrentUserPw ({ commit }) {
+  LoadCurrentUserPw ({ commit, state }) {
+    if (state.isOnPremise && !state.isLoggedInOnPremise) {
+      console.log('Ignore user pw')
+      return
+    }
     return this.$axios.$get('/cystack_platform/pm/users/me').then(res => {
       commit('UPDATE_USER_PW', res)
       if (this.$vaultTimeoutService) {
-        this.$vaultTimeoutService.setVaultTimeoutOptions(res.timeout, res.timeout_action)
+        this.$vaultTimeoutService.setVaultTimeoutOptions(
+          res.timeout,
+          res.timeout_action
+        )
       }
       return res
     })
   },
-  LoadCurrentIntercom ({ commit }) {
-    return this.$axios.$get('cystack_platform/pm/users/me/intercom').then(res => {
-      window.intercomSettings = res
-      commit('UPDATE_USER_INTERCOM', res)
-      // eslint-disable-next-line no-undef
-      Intercom('update')
-    })
+  LoadCurrentIntercom ({ commit, state }) {
+    if (state.isOnPremise && !state.isLoggedInOnPremise) {
+      console.log('Ignore Intercom')
+      return
+    }
+    return this.$axios
+      .$get('cystack_platform/pm/users/me/intercom')
+      .then(res => {
+        window.intercomSettings = res
+        commit('UPDATE_USER_INTERCOM', res)
+        // eslint-disable-next-line no-undef
+        Intercom('update')
+      })
   },
   LoadNotification ({ commit }) {
     // const user = context.state.user
@@ -240,8 +276,12 @@ export const actions = {
       commit('UPDATE_NOTIFICATION', res)
     })
   },
-  LoadTeams ({ commit }) {
+  LoadTeams ({ commit, state }) {
     commit('UPDATE_TEAMS', [])
+    if (state.isOnPremise && !state.isLoggedInOnPremise) {
+      console.log('Ignore teams')
+      return []
+    }
     return this.$axios.$get('cystack_platform/pm/enterprises').then(res => {
       commit('UPDATE_TEAMS', res)
       // if (res.length) {
@@ -263,15 +303,23 @@ export const actions = {
     })
   },
   LoadMyShares ({ commit }) {
-    return this.$axios.$get('cystack_platform/pm/sharing/my_share').then(res => {
-      commit('UPDATE_MY_SHARES', res)
-      return res
-    })
+    return this.$axios
+      .$get('cystack_platform/pm/sharing/my_share')
+      .then(res => {
+        commit('UPDATE_MY_SHARES', res)
+        return res
+      })
   },
-  LoadEnterpriseInvitations ({ commit }) {
-    return this.$axios.$get('cystack_platform/pm/enterprises/members/invitations').then(res => {
-      commit('UPDATE_ENTERPRISE_INVITATIONS', res)
-      return res
-    })
+  LoadEnterpriseInvitations ({ commit, state }) {
+    if (state.isOnPremise && !state.isLoggedInOnPremise) {
+      console.log('Ignore invitations')
+      return
+    }
+    return this.$axios
+      .$get('cystack_platform/pm/enterprises/members/invitations')
+      .then(res => {
+        commit('UPDATE_ENTERPRISE_INVITATIONS', res)
+        return res
+      })
   }
 }

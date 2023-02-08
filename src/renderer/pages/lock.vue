@@ -7,10 +7,7 @@
     <!-- Logo end -->
 
     <!-- Send hint -->
-    <SendHint
-      v-if="showSendHint"
-      :go-back="() => toggleSendHint(false)"
-    />
+    <SendHint v-if="showSendHint" :go-back="() => toggleSendHint(false)" />
     <!-- Send hint end -->
 
     <!-- Join enterprise -->
@@ -21,9 +18,7 @@
     <!-- Join enterprise end -->
 
     <!-- Not enable 2FA -->
-    <NotEnable2FA
-      v-else-if="notEnable2FA"
-    />
+    <NotEnable2FA v-else-if="notEnable2FA" />
     <!-- Not enable 2FA end -->
 
     <!-- Basic lock form -->
@@ -40,7 +35,11 @@
       <div class="inline-block mb-8 select-none">
         <div class="rounded-[21px] flex items-center bg-black-250 p-1 mx-auto">
           <client-only>
-            <img :src="currentUser.avatar" alt="" class="w-[28px] h-[28px] rounded-full mr-2">
+            <img
+              :src="currentUser.avatar"
+              alt=""
+              class="w-[28px] h-[28px] rounded-full mr-2"
+            >
           </client-only>
           <div class="mr-2">{{ currentUser.email }}</div>
         </div>
@@ -55,7 +54,7 @@
               v-model="masterPassword"
               :type="showPassword ? 'text' : 'password'"
               class="form-control"
-              :class="[errors ? 'is-invalid' :'']"
+              :class="[errors ? 'is-invalid' : '']"
               :name="randomString()"
               autocomplete="new-password"
             >
@@ -68,13 +67,21 @@
               >
                 <i
                   class="far"
-                  :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+                  :class="{
+                    'fa-eye': !showPassword,
+                    'fa-eye-slash': showPassword
+                  }"
                 />
               </button>
             </div>
           </div>
-          <div class="invalid-feedback">{{ $t('errors.invalid_password') }}</div>
-          <div class="text-primary text-left cursor-pointer" @click="toggleSendHint(true)">
+          <div class="invalid-feedback">
+            {{ $t('errors.invalid_password') }}
+          </div>
+          <div
+            class="text-primary text-left cursor-pointer"
+            @click="toggleSendHint(true)"
+          >
             {{ $t('master_password.get_hint') }}
           </div>
         </div>
@@ -123,6 +130,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.currentUser)
     this.checkBlockedBy2FA()
     if (this.extensionLoggedIn) {
       this.notify(this.$t('data.notifications.extension_loggedin'), 'success')
@@ -165,7 +173,10 @@ export default {
 
     // Check enterprise invitation
     checkInvitation () {
-      if (this.enterpriseInvitations.length && this.enterpriseInvitations[0].domain != null) {
+      if (
+        this.enterpriseInvitations.length &&
+        this.enterpriseInvitations[0].domain != null
+      ) {
         this.showJoinEnterprise = true
       } else {
         this.showJoinEnterprise = false
