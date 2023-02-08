@@ -130,7 +130,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.currentUser)
     this.checkBlockedBy2FA()
     if (this.extensionLoggedIn) {
       this.notify(this.$t('data.notifications.extension_loggedin'), 'success')

@@ -10,6 +10,15 @@ export default {
   async mounted () {
     const email = this.$cookies.get('on_premise_email')
     const baseApi = this.$cookies.get('on_premise_base_url')
+    const baseCookiesDomain = process.env.lockerCookieDomain
+    this.$cookies.remove('on_premise_email', {
+      domain: baseCookiesDomain,
+      path: '/'
+    })
+    this.$cookies.remove('on_premise_base_url', {
+      domain: baseCookiesDomain,
+      path: '/'
+    })
     if (!email || !baseApi) {
       this.$router.push('/')
       return

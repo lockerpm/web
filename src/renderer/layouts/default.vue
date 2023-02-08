@@ -222,9 +222,14 @@ export default {
     },
     reconnectSocket () {
       const token = this.$cookies.get('cs_locker_token')
+      const socketUrl = this.isOnPremise
+        ? this.$store.state.onPremiseBaseApi
+          .replace('http', 'ws')
+          .replace('/v3', '/ws')
+        : process.env.wsUrl
       this.$connect(
         this.sanitizeUrl(
-          `${process.env.wsUrl}/cystack_platform/pm/sync?token=${token}`
+          `${socketUrl}/cystack_platform/pm/sync?token=${token}`
         ),
         {
           format: 'json',
