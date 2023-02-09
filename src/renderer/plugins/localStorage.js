@@ -49,10 +49,10 @@ export default ({ store, app, isDev }) => {
           delete obj.currentPlan
           if (obj.user) {
             // eslint-disable-next-line camelcase
-            const { language, is_factor2, email } = obj.user
+            const { language, is_factor2, email, avatar } = obj.user
             obj.user = {
               language,
-              avatar: '',
+              avatar,
               is_factor2,
               email
             }
