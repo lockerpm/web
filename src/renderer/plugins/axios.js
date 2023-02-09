@@ -66,6 +66,7 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
           path: '/'
         })
         $axios.setToken(false)
+
         store.commit('UPDATE_IS_LOGGEDIN', false)
 
         const WHITELIST_PATH = [
@@ -86,7 +87,8 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
           '/affiliate',
           '/business',
           '/private-email',
-          '/'
+          '/',
+          '/on-premise-create-master-pw'
         ]
         let currentPath = route.path
         if (currentPath.startsWith('/vi')) {

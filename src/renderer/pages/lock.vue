@@ -183,7 +183,7 @@ export default {
       }
     }
 
-    // TODO change masterpass if have account
+    // TODO: change masterpass if have account
   }
 }
 </script>

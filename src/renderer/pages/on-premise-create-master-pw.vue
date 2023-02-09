@@ -330,8 +330,12 @@ export default {
         window.open(process.env.extensionLink, '_blank')
         await this.login()
       } catch (e) {
-        console.log(e)
-        this.notify(this.$t('master_password.create_failed'), 'warning')
+        if (e.response?.status === 401) {
+          this.notify('This link is not valid', 'warning')
+        } else {
+          console.log(e)
+          this.notify(this.$t('master_password.create_failed'), 'warning')
+        }
       } finally {
         this.loading = false
       }

@@ -79,8 +79,8 @@ export const mutations = {
     state.pendingShares = 0
     state.enterpriseInvitations = []
     state.enterprisePolicies = []
-    state.baseApi = ''
-    state.onPremiseBaseApi = false
+    state.onPremiseBaseApi = ''
+    state.isOnPremise = false
     state.isLoggedInOnPremise = false
   },
   UPDATE_USER (state, user) {

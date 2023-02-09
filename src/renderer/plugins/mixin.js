@@ -162,10 +162,13 @@ Vue.mixin({
     changeLocale (value) {
       this.$i18n.setLocale(value)
     },
-    async logout () {
+    async logout (options) {
       console.log('###### LOG OUT')
 
-      if (!this.isOnPremise || this.$store.state.isLoggedInOnPremise) {
+      if (
+        (!this.isOnPremise || this.$store.state.isLoggedInOnPremise) &&
+        !options?.noApiCall
+      ) {
         await this.$axios.$post('/users/logout')
       }
 
@@ -328,7 +331,7 @@ Vue.mixin({
           this.$store.state.currentPath === '/lock'
             ? '/vault'
             : this.$store.state.currentPath
-        if (path === '/on-premise-create-master-pw') {
+        if (path.startsWith('/on-premise-create-master-pw')) {
           path = '/vault'
         }
         this.$router.push(
