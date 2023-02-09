@@ -314,6 +314,7 @@
 
 <script>
 export default {
+  middleware: ['blockProduction'],
   layout: 'landing',
   data () {
     return {
