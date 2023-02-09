@@ -9,9 +9,7 @@
           >
             Tools
           </el-breadcrumb-item> -->
-          <el-breadcrumb-item
-            :to="localeRoute({name: 'relay'})"
-          >
+          <el-breadcrumb-item :to="localeRoute({ name: 'relay' })">
             {{ `${$t('data.tools.relay')}${isPremium ? ' Premium' : ''}` }}
           </el-breadcrumb-item>
         </el-breadcrumb>
@@ -24,7 +22,8 @@
           <!-- Root Email -->
           <div class="setting-section-header">
             <div>
-              {{ $t('data.tools.relay_your_root_email') }} <strong>{{ currentUser.email }}</strong>
+              {{ $t('data.tools.relay_your_root_email') }}
+              <strong>{{ currentUser.email }}</strong>
             </div>
             <div />
           </div>
@@ -36,10 +35,18 @@
                 {{ $t('data.tools.relay_desc_1') }}
               </li>
               <li>
-                {{ isPremium ? $t('data.tools.relay_desc_2_premium') : $t('data.tools.relay_desc_2') }}
+                {{
+                  isPremium
+                    ? $t('data.tools.relay_desc_2_premium')
+                    : $t('data.tools.relay_desc_2')
+                }}
               </li>
               <li>
-                {{ isPremium ? $t('data.tools.relay_desc_3_premium') : $t('data.tools.relay_desc_3') }}
+                {{
+                  isPremium
+                    ? $t('data.tools.relay_desc_3_premium')
+                    : $t('data.tools.relay_desc_3')
+                }}
               </li>
             </ul>
           </div>
@@ -50,7 +57,9 @@
       <!-- Count + add -->
       <div class="flex justify-between items-center mb-5">
         <p>
-          {{ $t('data.tools.relay_your_alias_addresses') }} ({{ `${addresses.length}${!isPremium ? '/' + limit : ''})` }}
+          {{ $t('data.tools.relay_your_alias_addresses') }} ({{
+            `${addresses.length}${!isPremium ? '/' + limit : ''})`
+          }}
         </p>
         <div class="flex items-center">
           <!-- subdomain -->
@@ -107,7 +116,10 @@
                   </p>
 
                   <p class="text-black-500">
-                    {{$t('common.created')}} {{ $moment(item.created_time * 1000).format('MMM DD, YYYY') }}
+                    {{ $t('common.created') }}
+                    {{
+                      $moment(item.created_time * 1000).format('MMM DD, YYYY')
+                    }}
                   </p>
                 </div>
 
@@ -123,14 +135,36 @@
 
             <div class="setting-section-body">
               <div class="flex flex-row items-center">
-                <div class="flex flex-1 justify-center" style="border-right: 1px solid #E8E8E9">
-                  <p><strong>{{ item.num_forwarded }}</strong> <span class="text-black-500">{{ $t('data.tools.relay_address.forwarded') }}</span></p>
+                <div
+                  class="flex flex-1 justify-center"
+                  style="border-right: 1px solid #e8e8e9"
+                >
+                  <p>
+                    <strong>{{ item.num_forwarded }}</strong>
+                    <span class="text-black-500">{{
+                      $t('data.tools.relay_address.forwarded')
+                    }}</span>
+                  </p>
                 </div>
-                <div class="flex flex-1 justify-center" style="border-right: 1px solid #E8E8E9">
-                  <p><strong>{{ item.num_blocked }}</strong> <span class="text-black-500">{{ $t('data.tools.relay_address.blocked') }}</span></p>
+                <div
+                  class="flex flex-1 justify-center"
+                  style="border-right: 1px solid #e8e8e9"
+                >
+                  <p>
+                    <strong>{{ item.num_blocked }}</strong>
+                    <span class="text-black-500">{{
+                      $t('data.tools.relay_address.blocked')
+                    }}</span>
+                  </p>
                 </div>
                 <div class="px-4">
-                  <div style="background-color: #E4F0E699; padding: 6px 16px; border-radius: 100px">
+                  <div
+                    style="
+                      background-color: #e4f0e699;
+                      padding: 6px 16px;
+                      border-radius: 100px;
+                    "
+                  >
                     <p class="text-primary">
                       {{ getBlockingMode(item) }}
                     </p>
@@ -149,7 +183,7 @@
     <!-- Create subdomain -->
     <CreateSubdomainModal
       :is-open="modals.createSubdomain.isVisible"
-      :on-close="() => modals.createSubdomain.isVisible = false"
+      :on-close="() => (modals.createSubdomain.isVisible = false)"
       :on-create="getSubdomains"
     />
     <!-- Create subdomain end -->
@@ -158,7 +192,7 @@
     <ManageSubdomainModal
       :current-subdomain="subdomains[0]"
       :is-open="modals.manageSubdomain.isVisible"
-      :on-close="() => modals.manageSubdomain.isVisible = false"
+      :on-close="() => (modals.manageSubdomain.isVisible = false)"
       :on-edit="onSubdomainEdited"
     />
     <!-- Manage subdomain end -->
@@ -166,7 +200,7 @@
     <!-- Edit address -->
     <EditAddressModal
       :is-open="modals.editAddress.isVisible"
-      :on-close="() => modals.editAddress.isVisible = false"
+      :on-close="() => (modals.editAddress.isVisible = false)"
       :current-address="selectedAddress"
       :on-edit="getAddresses"
     />
@@ -187,6 +221,9 @@ export default {
     ManageSubdomainModal,
     EditAddressModal
   },
+
+  middleware: ['BlockOnPremise'],
+
   data () {
     return {
       limit: 5,
@@ -225,13 +262,15 @@ export default {
     async getAddresses () {
       this.loading = true
       try {
-        this.addresses = await this.$axios.$get('cystack_platform/relay/addresses', {
-          params: {
-            paging: 0
+        this.addresses = await this.$axios.$get(
+          'cystack_platform/relay/addresses',
+          {
+            params: {
+              paging: 0
+            }
           }
-        })
+        )
       } catch {
-
       } finally {
         this.loading = false
       }
@@ -247,7 +286,6 @@ export default {
         this.addresses = [...addresses]
         this.notify(this.$t('data.tools.relay_alias_added'), 'success')
       } catch {
-
       } finally {
         this.loading = false
       }
@@ -258,10 +296,11 @@ export default {
     async getUseSubdomain () {
       this.loading = true
       try {
-        const res = await this.$axios.$get('cystack_platform/relay/subdomains/use_subdomain')
+        const res = await this.$axios.$get(
+          'cystack_platform/relay/subdomains/use_subdomain'
+        )
         this.useSubdomain = res.use_relay_subdomain
       } catch {
-
       } finally {
         this.loading = false
       }
@@ -269,16 +308,18 @@ export default {
     async toggleUseSubdomain (isEnabled) {
       this.loading = true
       try {
-        await this.$axios.$put('cystack_platform/relay/subdomains/use_subdomain', {
-          use_relay_subdomain: isEnabled
-        })
+        await this.$axios.$put(
+          'cystack_platform/relay/subdomains/use_subdomain',
+          {
+            use_relay_subdomain: isEnabled
+          }
+        )
         this.notify('Done', 'success')
         this.useSubdomain = isEnabled
         if (this.subdomains.length === 0) {
           this.modals.createSubdomain.isVisible = true
         }
       } catch {
-
       } finally {
         this.loading = false
       }
@@ -297,13 +338,15 @@ export default {
     async getSubdomains () {
       this.loading = true
       try {
-        this.subdomains = await this.$axios.$get('cystack_platform/relay/subdomains', {
-          params: {
-            paging: 0
+        this.subdomains = await this.$axios.$get(
+          'cystack_platform/relay/subdomains',
+          {
+            params: {
+              paging: 0
+            }
           }
-        })
+        )
       } catch {
-
       } finally {
         this.loading = false
       }
