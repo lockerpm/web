@@ -12,20 +12,20 @@ export default {
     const avatar = this.$cookies.get('on_premise_avatar')
     const baseApi = this.$cookies.get('on_premise_base_url')
 
-    // Clear cookies
-    const baseCookiesDomain = process.env.lockerCookieDomain
-    this.$cookies.remove('on_premise_email', {
-      domain: baseCookiesDomain,
-      path: '/'
-    })
-    this.$cookies.remove('on_premise_avatar', {
-      domain: baseCookiesDomain,
-      path: '/'
-    })
-    this.$cookies.remove('on_premise_base_url', {
-      domain: baseCookiesDomain,
-      path: '/'
-    })
+    // Clear cookies (Disable for now)
+    // const baseCookiesDomain = process.env.lockerCookieDomain
+    // this.$cookies.remove('on_premise_email', {
+    //   domain: baseCookiesDomain,
+    //   path: '/'
+    // })
+    // this.$cookies.remove('on_premise_avatar', {
+    //   domain: baseCookiesDomain,
+    //   path: '/'
+    // })
+    // this.$cookies.remove('on_premise_base_url', {
+    //   domain: baseCookiesDomain,
+    //   path: '/'
+    // })
 
     if (!email || !baseApi) {
       this.$router.push('/')
