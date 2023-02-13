@@ -178,7 +178,7 @@
         </button>
       </div>
     </el-dialog>
-    <PasswordViolationDialog ref="passwordPolicyDialog" />
+    <PasswordViolationDialog ref="passwordPolicyDialog" strict />
   </div>
 </template>
 
