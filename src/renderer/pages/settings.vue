@@ -4,10 +4,14 @@
       <nuxt-link
         v-for="(item, index) in menu"
         :key="index"
-        :to="localeRoute({name: item.routeName})"
+        :to="localeRoute({ name: item.routeName })"
         active-class="!text-black font-semibold border-b-2 border-primary pb-3"
         class="text-black-600 mr-8 last:mr-0 hover:no-underline"
-        :class="item.label!=='manage_member' || currentPlan.alias === 'pm_family' ? '': 'hidden'"
+        :class="
+          item.label !== 'manage_member' || currentPlan.alias === 'pm_family'
+            ? ''
+            : 'hidden'
+        "
         exact
       >
         {{ $t(`sidebar.${item.label}`) }}
@@ -33,7 +37,7 @@
 
 <script>
 export default {
-  components: { },
+  components: {},
   props: {
     isError: {
       type: Boolean,
@@ -83,27 +87,30 @@ export default {
           label: 'security',
           routeName: 'settings-security'
         },
-        ...!this.isEnterpriseMember
-          ? [{
-            label: 'plans_billing',
-            routeName: 'settings-plans-billing'
-          },
-          {
-            label: 'referral',
-            routeName: 'settings-referral'
-          }]
-          : [],
+        ...(!this.isEnterpriseMember
+          ? [
+            {
+              label: 'plans_billing',
+              routeName: 'settings-plans-billing'
+            },
+            {
+              label: 'referral',
+              routeName: 'settings-referral'
+            }
+          ]
+          : []),
         {
           label: 'notifications',
           routeName: 'settings-notifications'
         },
-        ...this.currentPlan.alias === 'pm_family_discount'
-          ? [{
-            label: 'family_members',
-            routeName: 'settings-family-members'
-          }]
-          : []
-
+        ...(this.currentPlan.alias === 'pm_family_discount'
+          ? [
+            {
+              label: 'family_members',
+              routeName: 'settings-family-members'
+            }
+          ]
+          : [])
       ]
     }
   }

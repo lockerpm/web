@@ -264,18 +264,6 @@
 import QRCode from 'qrcode'
 
 export default {
-  async asyncData ({ $axios }) {
-    try {
-      const [factor2] = await Promise.all([$axios.$get('/sso/me/factor2')])
-      console.log(factor2)
-      return {
-        factor2
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  },
-
   data () {
     return {
       qrcode: '',

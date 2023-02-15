@@ -17,10 +17,7 @@
             >
               {{ $t('common.lock') }}
             </button>
-            <button
-              class="btn btn-default !text-danger"
-              @click="logout"
-            >
+            <button class="btn btn-default !text-danger" @click="logout">
               {{ $t('common.logout') }}
             </button>
           </div>
@@ -29,8 +26,12 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
-            <div class="setting-title">{{ $t('data.settings.fingerprint') }}</div>
-            <div class="setting-description !text-danger-400">{{ fingerprint }}</div>
+            <div class="setting-title">
+              {{ $t('data.settings.fingerprint') }}
+            </div>
+            <div class="setting-description !text-danger-400">
+              {{ fingerprint }}
+            </div>
           </div>
         </div>
       </div>
@@ -43,7 +44,7 @@
           <div>
             <nuxt-link
               tag="button"
-              :to="localeRoute({name: 'upgrade'})"
+              :to="localeRoute({ name: 'upgrade' })"
               class="btn btn-primary"
             >
               {{ $t('data.settings.manage_plan') }}
@@ -51,15 +52,32 @@
           </div>
         </div>
         <div class="setting-section-body">
-          <div v-for="item in teams" :key="item.id" class="grid grid-cols-3 max-w-[800px] w-full justify-between">
+          <div
+            v-for="item in teams"
+            :key="item.id"
+            class="grid grid-cols-3 max-w-[800px] w-full justify-between"
+          >
             <div class="font-semibold truncate">{{ item.name }}</div>
             <div>
-              {{ item.role === 'owner' ? $t('data.members.role.owner.title') : item.is_business ? $t(`data.members.role.${item.role}.title`) : $t('data.members.role.family.title') }}
+              {{
+                item.role === 'owner'
+                  ? $t('data.members.role.owner.title')
+                  : item.is_business
+                    ? $t(`data.members.role.${item.role}.title`)
+                    : $t('data.members.role.family.title')
+              }}
             </div>
             <div>
               <nuxt-link
-                v-if="item.is_business && ['owner', 'admin'].includes(item.role)"
-                :to="localeRoute({name: 'admin-teamId', params: {teamId: item.id}})"
+                v-if="
+                  item.is_business && ['owner', 'admin'].includes(item.role)
+                "
+                :to="
+                  localeRoute({
+                    name: 'admin-teamId',
+                    params: { teamId: item.id }
+                  })
+                "
                 class="text-primary cursor-pointer"
               >
                 {{ $t('data.settings.manage') }}
@@ -79,20 +97,16 @@
               placeholder="Select"
               @change="changeLang"
             >
-              <el-option
-                :label=" $t('data.settings.vietnamese')"
-                value="vi"
-              />
-              <el-option
-                :label=" $t('data.settings.english')"
-                value="en"
-              />
+              <el-option :label="$t('data.settings.vietnamese')" value="vi" />
+              <el-option :label="$t('data.settings.english')" value="en" />
             </el-select>
           </div>
         </div>
       </div>
     </div>
-    <div class="text-head-5 font-semibold mb-4">{{ $t('data.settings.options') }}</div>
+    <div class="text-head-5 font-semibold mb-4">
+      {{ $t('data.settings.options') }}
+    </div>
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
@@ -167,9 +181,7 @@
             </div>
           </div>
           <div>
-            <button
-              class="btn btn-icon !text-black-600"
-            >
+            <button class="btn btn-icon !text-black-600">
               <i class="fa fa-chevron-right" />
             </button>
           </div>
@@ -177,7 +189,9 @@
       </div>
       <div
         class="setting-section setting-section--hover"
-        @click="$router.push(localeRoute({name: 'settings-emergency-access'}))"
+        @click="
+          $router.push(localeRoute({ name: 'settings-emergency-access' }))
+        "
       >
         <div class="setting-section-header">
           <div>
@@ -240,9 +254,11 @@ import PurgeVault from '../../components/setting/PurgeVault'
 import DeauthorizeSessions from '../../components/setting/DeauthorizeSessions'
 export default {
   components: {
-    ChangeMasterPassword, PurgeVault, DeauthorizeSessions
+    ChangeMasterPassword,
+    PurgeVault,
+    DeauthorizeSessions
   },
-  asyncData ({ isDev, route, store, env, params, query, req, res, redirect, error }) {
+  asyncData ({ redirect }) {
     redirect(301, '/settings/account')
   },
   data () {
@@ -281,7 +297,9 @@ export default {
   asyncComputed: {
     fingerprint: {
       async get () {
-        const fingerprint = await this.$cryptoService.getFingerprint(await this.$userService.getUserId())
+        const fingerprint = await this.$cryptoService.getFingerprint(
+          await this.$userService.getUserId()
+        )
         if (fingerprint != null) {
           return fingerprint.join('-')
         }
@@ -300,11 +318,20 @@ export default {
         this.loading = true
         await this.$axios.$put('cystack_platform/pm/users/me', this.user)
         this.$store.commit('UPDATE_USER_PW', this.user)
-        this.$vaultTimeoutService.setVaultTimeoutOptions(this.user.timeout, this.user.timeout_action)
-        this.notify(this.$t('data.notifications.update_settings_success'), 'success')
+        this.$vaultTimeoutService.setVaultTimeoutOptions(
+          this.user.timeout,
+          this.user.timeout_action
+        )
+        this.notify(
+          this.$t('data.notifications.update_settings_success'),
+          'success'
+        )
       } catch (e) {
         console.log(e)
-        this.notify(this.$t('data.notifications.update_settings_failed'), 'warning')
+        this.notify(
+          this.$t('data.notifications.update_settings_failed'),
+          'warning'
+        )
       } finally {
         this.loading = false
       }
@@ -313,7 +340,10 @@ export default {
       // default org
       const shareKey = await this.$cryptoService.makeShareKey()
       const orgKey = shareKey[0].encryptedString
-      const collection = await this.$cryptoService.encrypt('defaultCollection' + this.currentUser.email, shareKey[1])
+      const collection = await this.$cryptoService.encrypt(
+        'defaultCollection' + this.currentUser.email,
+        shareKey[1]
+      )
       const collectionName = collection.encryptedString
       this.$axios.$post('/cystack_platform/pm/teams', {
         name: this.currentUser.email + ' team',

@@ -187,10 +187,10 @@ export default {
           extraData: {
             otp: this.otp,
             method: this.selectedMethod,
-            save_device: this.save_device,
-            key: this.cryptoKey
+            save_device: this.save_device
           },
-          isOtp: true
+          isOtp: true,
+          key: this.cryptoKey
         })
         this.loadingOtp = false
       } catch (e) {
