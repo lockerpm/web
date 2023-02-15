@@ -244,7 +244,13 @@ Vue.mixin({
       data.type = CipherType.MasterPassword
       return data
     },
-    async login () {
+    async login (options) {
+      // options?: {
+      //   extraData?: { [key: string]: any }
+      //   isOtp?: boolean
+      //   key?: SymmetricCryptoKey
+      // }
+
       const lockerDeviceId = this.$cookies.get('locker_device_id')
       const deviceIdentifier = lockerDeviceId || this.randomString()
       if (!lockerDeviceId) {
@@ -255,27 +261,43 @@ Vue.mixin({
       }
       try {
         await this.clearKeys()
-        const key = await this.$cryptoService.makeKey(
-          this.masterPassword,
-          this.currentUser.email,
-          0,
-          100000
-        )
+        const key =
+          options?.key ||
+          (await this.$cryptoService.makeKey(
+            this.masterPassword,
+            this.currentUser.email,
+            0,
+            100000
+          ))
         const hashedPassword = await this.$cryptoService.hashPassword(
           this.masterPassword,
           key
         )
+        let payload = {
+          email: this.isOnPremise ? this.currentUser.email : undefined,
+          client_id: 'web',
+          password: hashedPassword,
+          device_name: this.$platformUtilsService.getDeviceString(),
+          device_type: this.$platformUtilsService.getDevice(),
+          device_identifier: deviceIdentifier
+        }
+        if (options?.extraData) {
+          payload = { ...payload, ...options.extraData }
+        }
         const res = await this.$axios.$post(
-          'cystack_platform/pm/users/session',
-          {
-            email: this.isOnPremise ? this.currentUser.email : undefined,
-            client_id: 'web',
-            password: hashedPassword,
-            device_name: this.$platformUtilsService.getDeviceString(),
-            device_type: this.$platformUtilsService.getDevice(),
-            device_identifier: deviceIdentifier
-          }
+          `cystack_platform/pm/users/session${options?.isOtp ? '/otp' : ''}`,
+          payload
         )
+
+        // Is 2FA required
+        if (res.is_factor2) {
+          return {
+            ...res,
+            key
+          }
+        }
+
+        // Else continue
         this.$messagingService.send('loggedIn')
 
         if (this.isOnPremise) {
@@ -340,10 +362,10 @@ Vue.mixin({
           })
         )
       } catch (e) {
+        console.log(e)
         // Wrong master pw
         if (!e.response?.data?.message || e.response?.data?.code === '0004') {
           this.notify(this.$t('errors.invalid_master_password'), 'warning')
-          return
         }
 
         // Force join enterprise

@@ -4,13 +4,19 @@
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
-          <div class="text-head-5 font-semibold">Two-Factor Authentication</div>
+          <div class="text-head-5 font-semibold">
+            {{ $t('data.settings.factor2.title') }}
+          </div>
         </div>
 
         <!-- Current status -->
         <div class="mt-4 block md:flex justify-between items-center">
           <p class="text-black">
-            Two-Factor Authentication is {{ factor2.is_factor2 ? 'On' : 'Off' }}
+            {{
+              factor2.is_factor2
+                ? $t('data.settings.factor2.is_on')
+                : $t('data.settings.factor2.is_off')
+            }}
             <span
               v-if="
                 $moment(factor2.updated_time * 1000).isValid() &&
@@ -18,14 +24,6 @@
               "
             >({{ $moment(factor2.updated_time * 1000).format('LL') }})</span>
           </p>
-
-          <button
-            v-if="factor2.mail_otp.is_activate || factor2.smart_otp.is_activate"
-            class="btn btn-primary btn-sm m-btn m-btn--wide"
-            @click="toggle2Factor"
-          >
-            Turn off
-          </button>
         </div>
         <!-- Current status end -->
 
@@ -39,13 +37,13 @@
                 class="flex justify-between items-center w-full pr-4 text-black"
               >
                 <p>
-                  <i class="fas fa-envelope text-lg" /> &nbsp; Authentication
-                  Email
+                  <i class="fas fa-envelope text-lg w-4 text-center" />
+                  {{ $t('common.authentication_email') }}
                 </p>
                 <i
                   class="fas"
                   :class="
-                    !factor2.is_factor2 || !factor2.smart_otp.is_activate
+                    !factor2.is_factor2 || !factor2.mail_otp.is_activate
                       ? 'fa-minus-circle'
                       : 'fa-check-circle text-primary'
                   "
@@ -91,7 +89,8 @@
                 class="flex justify-between items-center w-full pr-4 text-black"
               >
                 <p>
-                  <i class="fas fa-mobile text-lg" /> &nbsp; Authentication App
+                  <i class="fas fa-mobile text-lg w-4 text-center" />
+                  {{ $t('common.authentication_app') }}
                 </p>
                 <i
                   class="fas"
@@ -203,34 +202,32 @@
         <div v-if="step === 1">
           <el-radio v-model="value" :label="1" border class="w-full">
             <span class="text-black-600">
-              Send code via email
+              {{ $t('data.settings.factor2.send_code_via_email') }}
               <span class="text-black">{{ currentUser.email }}</span>
             </span>
           </el-radio>
 
           <div class="mt-2">
-            <a class="text-primary" @click="step = 3"> Have code </a>
+            <a class="text-primary" @click="step = 3">
+              {{ $t('common.have_code') }}
+            </a>
           </div>
         </div>
         <div v-if="step === 2 || step === 3" class="" role="tablist">
           <p v-if="step === 2">
-            An email has been sent to
+            {{ $t('data.settings.factor2.email_sent') }}
             {{ currentUser.email }}
           </p>
           <div class="form-group m-form__group">
-            <label>Enter verification code here</label>
-            <el-input
-              v-model="code"
-              placeholder="Verification code"
-              size="small"
-            />
+            <label>{{ $t('data.settings.factor2.enter_code') }}</label>
+            <el-input v-model="code" placeholder="******" size="small" />
           </div>
           <a
             v-if="!resent && step === 2"
             class="m-link m-link--primary _clickable m--font-primary"
             @click="sendEmail(true)"
           >
-            Resend email
+            {{ $t('data.settings.factor2.resend_email') }}
           </a>
         </div>
       </div>
