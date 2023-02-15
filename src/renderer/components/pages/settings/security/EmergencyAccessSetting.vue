@@ -416,7 +416,8 @@
                       <el-dropdown-item
                         v-if="
                           scope.row.status === 'recovery_approved' &&
-                            scope.row.type === 'takeover'
+                            scope.row.type === 'takeover' &&
+                            !isOnPremise
                         "
                         @click.native="takeoverGrantorLocker(scope.row)"
                       >
