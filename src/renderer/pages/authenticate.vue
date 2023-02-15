@@ -32,6 +32,7 @@ export default {
         this.$store.commit('UPDATE_LOGIN_EXTENSION', true)
       }
     },
+
     loginByToken () {
       this.$store.commit('UPDATE_LOADING', true)
       setTimeout(async () => {
@@ -58,7 +59,7 @@ export default {
             }
           } catch (error) {}
         } else {
-          const url = 'https://api.locker.io/v3/sso/access_token'
+          const url = `${process.env.baseApiUrl}/sso/access_token`
           this.$axios
             .post(url, {
               SERVICE_URL: '/sso',
@@ -81,6 +82,7 @@ export default {
             .catch(() => {})
         }
         // end sendMessage
+
         if (
           this.$route.query.external_url &&
           isString(this.$route.query.external_url)

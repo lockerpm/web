@@ -10,12 +10,12 @@
         <div class="mb-5">
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item
-              :to="localeRoute({name: 'settings-security'})"
+              :to="localeRoute({ name: 'settings-security' })"
             >
               {{ $t('data.emergency_access.emergency_access') }}
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-              {{ emergencyAccess.full_name }}
+              {{ emergencyAccess ? emergencyAccess.full_name : '' }}
             </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
@@ -25,16 +25,10 @@
           style="width: 100%"
           row-class-name="hover-table-row"
         >
-          <el-table-column
-            prop="name"
-            label=""
-            show-overflow-tooltip
-          >
+          <el-table-column prop="name" label="" show-overflow-tooltip>
             <template slot-scope="scope">
               <div class="flex items-center">
-                <div
-                  class="text-[34px] mr-3 flex-shrink-0"
-                >
+                <div class="text-[34px] mr-3 flex-shrink-0">
                   <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
                 </div>
                 <div class="flex flex-col">
@@ -43,20 +37,26 @@
                     @click="addEdit(scope.row)"
                   >
                     {{ scope.row.name }}
-                    <img v-if="scope.row.organizationId" src="~/assets/images/icons/shares.svg" alt="Shared" :title="$t('common.shared_with_you')" class="inline-block ml-2">
+                    <img
+                      v-if="scope.row.organizationId"
+                      src="~/assets/images/icons/shares.svg"
+                      alt="Shared"
+                      :title="$t('common.shared_with_you')"
+                      class="inline-block ml-2"
+                    >
                   </a>
                   <div>
-                    {{ scope.row.type === 7 && scope.row.cryptoWallet ? scope.row.cryptoWallet.username : scope.row.subTitle }}
+                    {{
+                      scope.row.type === 7 && scope.row.cryptoWallet
+                        ? scope.row.cryptoWallet.username
+                        : scope.row.subTitle
+                    }}
                   </div>
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            label=""
-            align="right"
-            width="200"
-          >
+          <el-table-column label="" align="right" width="200">
             <template slot-scope="scope">
               <div class="col-actions">
                 <button
@@ -72,7 +72,12 @@
                     <i class="fas fa-ellipsis-h" />
                   </button>
                   <el-dropdown-menu slot="dropdown">
-                    <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.Login">
+                    <template
+                      v-if="
+                        !scope.row.isDeleted &&
+                          scope.row.type === CipherType.Login
+                      "
+                    >
                       <el-dropdown-item
                         v-clipboard:copy="scope.row.login.username"
                         v-clipboard:success="clipboardSuccessHandler"
@@ -87,7 +92,12 @@
                         {{ $t('common.copy') }} {{ $t('common.password') }}
                       </el-dropdown-item>
                     </template>
-                    <template v-if="!scope.row.isDeleted && scope.row.type === CipherType.SecureNote">
+                    <template
+                      v-if="
+                        !scope.row.isDeleted &&
+                          scope.row.type === CipherType.SecureNote
+                      "
+                    >
                       <el-dropdown-item
                         v-clipboard:copy="scope.row.notes"
                         v-clipboard:success="clipboardSuccessHandler"
@@ -96,7 +106,9 @@
                         {{ $t('common.copy') }} {{ $t('common.note') }}
                       </el-dropdown-item>
                     </template>
-                    <template v-if="scope.row.type === 7 && scope.row.cryptoWallet">
+                    <template
+                      v-if="scope.row.type === 7 && scope.row.cryptoWallet"
+                    >
                       <el-dropdown-item
                         v-clipboard:copy="scope.row.cryptoWallet.seed"
                         v-clipboard:success="clipboardSuccessHandler"
@@ -107,19 +119,22 @@
                         v-clipboard:copy="scope.row.cryptoWallet.address"
                         v-clipboard:success="clipboardSuccessHandler"
                       >
-                        {{ $t('common.copy') }} {{ $t('data.ciphers.wallet_address') }}
+                        {{ $t('common.copy') }}
+                        {{ $t('data.ciphers.wallet_address') }}
                       </el-dropdown-item>
                       <el-dropdown-item
                         v-clipboard:copy="scope.row.cryptoWallet.privateKey"
                         v-clipboard:success="clipboardSuccessHandler"
                       >
-                        {{ $t('common.copy') }} {{ $t('data.ciphers.private_key') }}
+                        {{ $t('common.copy') }}
+                        {{ $t('data.ciphers.private_key') }}
                       </el-dropdown-item>
                       <el-dropdown-item
                         v-clipboard:copy="scope.row.cryptoWallet.password"
                         v-clipboard:success="clipboardSuccessHandler"
                       >
-                        {{ $t('common.copy') }} {{ $t('data.ciphers.password_pin') }}
+                        {{ $t('common.copy') }}
+                        {{ $t('data.ciphers.password_pin') }}
                       </el-dropdown-item>
                     </template>
                   </el-dropdown-menu>
@@ -163,7 +178,9 @@ export default {
   },
   mounted () {
     if (this.$route.params.id === null) {
-      return this.$router.push(this.localePath('settings/security/emergency-access'))
+      return this.$router.push(
+        this.localePath('settings/security/emergency-access')
+      )
     }
     this.id = this.$route.params.id
     this.load()
@@ -173,19 +190,30 @@ export default {
     async load () {
       try {
         this.loading = true
-        const data = await this.$axios.$post(`/cystack_platform/pm/emergency_access/${this.id}/view`)
+        const data = await this.$axios.$post(
+          `/cystack_platform/pm/emergency_access/${this.id}/view`
+        )
         this.ciphers = await this.getAllCiphers(data)
       } catch (error) {
-
       } finally {
         this.loading = false
       }
     },
     async getAllCiphers (response) {
       let ciphers = response.ciphers
-      ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity, 7].includes(cipher.type))
+      ciphers = ciphers.filter(cipher =>
+        [
+          CipherType.Login,
+          CipherType.SecureNote,
+          CipherType.Card,
+          CipherType.Identity,
+          7
+        ].includes(cipher.type)
+      )
       const decCiphers = []
-      const oldKeyBuffer = await this.$cryptoService.rsaDecrypt(response.key_encrypted)
+      const oldKeyBuffer = await this.$cryptoService.rsaDecrypt(
+        response.key_encrypted
+      )
       const oldEncKey = new SymmetricCryptoKey(oldKeyBuffer)
 
       const promises = []
@@ -217,7 +245,8 @@ export default {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     },
     getListGranted () {
-      this.$axios.$get('cystack_platform/pm/emergency_access/granted')
+      this.$axios
+        .$get('cystack_platform/pm/emergency_access/granted')
         .then(res => {
           this.list_granted = res
         })
@@ -229,5 +258,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
