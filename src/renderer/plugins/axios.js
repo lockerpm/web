@@ -17,10 +17,16 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
     }
 
     // Update base api url
+    const ON_PREMISE_WHITELIST = [
+      '/onpremise/host',
+      '/users/exist',
+      '/payments/trial/enterprise',
+      'sso/users'
+    ]
     if (
       store.state.isOnPremise &&
       store.state.onPremiseBaseApi &&
-      !request.url.endsWith('/onpremise/host')
+      !ON_PREMISE_WHITELIST.some(path => request.url.endsWith(path))
     ) {
       request.baseURL = store.state.onPremiseBaseApi
     }
