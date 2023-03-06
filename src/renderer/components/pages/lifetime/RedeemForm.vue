@@ -8,7 +8,7 @@
       <!-- Need create account? -->
       <el-form-item prop="needCreateAccount">
         <el-checkbox v-model="redeemForm.needCreateAccount">
-          Need create account?
+          {{ $t('lifetime.redeem_page.form.need_create_account') }}
         </el-checkbox>
       </el-form-item>
       <!-- Need create account? end -->
@@ -25,7 +25,12 @@
         :show-message="false"
         :error="errorMessage === 'invalid_code' ? '_' : ''"
       >
-        <el-input v-model="redeemForm.code" placeholder="Code" />
+        <el-input
+          v-model="redeemForm.code"
+          :placeholder="
+            $t('lifetime.redeem_page.form.app_code', { service: 'AppSumo' })
+          "
+        />
       </el-form-item>
       <!-- Code end -->
 
@@ -39,7 +44,7 @@
         >
           <el-input
             v-model="redeemForm.password"
-            placeholder="Password"
+            :placeholder="$('common.password')"
             type="password"
           />
         </el-form-item>
@@ -49,7 +54,7 @@
         <el-form-item prop="confirmPassword" :show-message="false">
           <el-input
             v-model="redeemForm.confirmPassword"
-            placeholder="Confirm Password"
+            :placeholder="$('common.confirm_password')"
             type="password"
           />
         </el-form-item>
@@ -57,13 +62,19 @@
 
         <!-- Fullname -->
         <el-form-item prop="fullName" :show-message="false">
-          <el-input v-model="redeemForm.fullName" placeholder="Full name" />
+          <el-input
+            v-model="redeemForm.fullName"
+            :placeholder="$('common.name')"
+          />
         </el-form-item>
         <!-- Fullname end -->
 
         <!-- Org -->
         <el-form-item prop="org" :show-message="false">
-          <el-input v-model="redeemForm.org" placeholder="Org" />
+          <el-input
+            v-model="redeemForm.org"
+            :placeholder="$('common.company')"
+          />
         </el-form-item>
         <!-- Org end -->
 
@@ -95,7 +106,10 @@
               :show-message="!!errorDetails.phone"
               :error="errorDetails.phone && errorDetails.phone[0]"
             >
-              <el-input v-model="redeemForm.phone" placeholder="Phone">
+              <el-input
+                v-model="redeemForm.phone"
+                :placeholder="$('common.phone')"
+              >
                 <template slot="prepend">
                   {{ redeemForm.countryPhoneCode }}
                 </template>
@@ -108,32 +122,35 @@
 
         <!-- Agree? -->
         <el-form-item prop="agreeTerms">
-          <el-checkbox v-model="redeemForm.agreeTerms"> I agree </el-checkbox>
+          <el-checkbox v-model="redeemForm.agreeTerms">
+            <span v-html="$t('lifetime.redeem_page.form.agree_terms')" />
+          </el-checkbox>
         </el-form-item>
         <!-- Agree? end -->
       </template>
       <!-- Register info end -->
 
       <!-- Error message -->
-      <p v-if="errorMessage" class="text-danger">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="text-danger">
+        {{ $t(`lifetime.redeem_page.error.${errorMessage}`) }}
+      </p>
       <!-- Error message end -->
 
       <!-- Submit -->
       <el-button type="primary" :disabled="!isBtnActive" @click="handleSubmit">
-        Redeem code
+        {{ $t('lifetime.redeem_page.form.submit_btn') }}
       </el-button>
       <!-- Submit end -->
     </el-form>
 
     <!-- Success dialog -->
-    <el-dialog title="Tips" :visible.sync="showSuccessDialog" width="30%">
-      <span>This is a message</span>
+    <el-dialog :visible.sync="showSuccessDialog" width="30%">
+      <span>{{ $t('lifetime.redeem_page.form.success.title') }}</span>
+      <span>{{ $t('lifetime.redeem_page.form.success.desc') }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button
-          type="primary"
-          @click="dialogVisible = false"
-        >Confirm</el-button>
+        <el-button type="primary" @click="showSuccessDialog = false">
+          {{ $t('lifetime.redeem_page.form.success.btn') }}
+        </el-button>
       </span>
     </el-dialog>
     <!-- Success dialog end -->
@@ -191,10 +208,6 @@ export default {
         return false
       }
       if (this.redeemForm.needCreateAccount) {
-        console.log(
-          this.redeemForm.password === this.redeemForm.confirmPassword &&
-            this.redeemForm.agreeTerms
-        )
         return (
           this.redeemForm.password === this.redeemForm.confirmPassword &&
           this.redeemForm.agreeTerms
@@ -277,7 +290,7 @@ export default {
         if (errorData?.code === '1004') {
           this.redeemForm.needCreateAccount = true
           this.$nextTick(() => {
-            this.errorMessage = 'account_not_exists'
+            this.errorMessage = 'account_not_exist'
           })
           return
         }
