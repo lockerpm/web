@@ -7,7 +7,7 @@
     >
       <!-- Need create account? -->
       <el-form-item prop="needCreateAccount">
-        <el-checkbox v-model="redeemForm.needCreateAccount">
+        <el-checkbox v-model="redeemForm.needCreateAccount" class="!text-white">
           {{ $t('lifetime.redeem_page.form.need_create_account') }}
         </el-checkbox>
       </el-form-item>
@@ -44,7 +44,7 @@
         >
           <el-input
             v-model="redeemForm.password"
-            :placeholder="$('common.password')"
+            :placeholder="$t('common.password')"
             type="password"
           />
         </el-form-item>
@@ -54,7 +54,7 @@
         <el-form-item prop="confirmPassword" :show-message="false">
           <el-input
             v-model="redeemForm.confirmPassword"
-            :placeholder="$('common.confirm_password')"
+            :placeholder="$t('common.confirm_password')"
             type="password"
           />
         </el-form-item>
@@ -64,7 +64,7 @@
         <el-form-item prop="fullName" :show-message="false">
           <el-input
             v-model="redeemForm.fullName"
-            :placeholder="$('common.name')"
+            :placeholder="$t('common.name')"
           />
         </el-form-item>
         <!-- Fullname end -->
@@ -73,7 +73,7 @@
         <el-form-item prop="org" :show-message="false">
           <el-input
             v-model="redeemForm.org"
-            :placeholder="$('common.company')"
+            :placeholder="$t('common.company')"
           />
         </el-form-item>
         <!-- Org end -->
@@ -108,7 +108,7 @@
             >
               <el-input
                 v-model="redeemForm.phone"
-                :placeholder="$('common.phone')"
+                :placeholder="$t('common.phone')"
               >
                 <template slot="prepend">
                   {{ redeemForm.countryPhoneCode }}
@@ -137,9 +137,13 @@
       <!-- Error message end -->
 
       <!-- Submit -->
-      <el-button type="primary" :disabled="!isBtnActive" @click="handleSubmit">
+      <button
+        class="bg-black text-white w-full"
+        :disabled="!isBtnActive"
+        @click="handleSubmit"
+      >
         {{ $t('lifetime.redeem_page.form.submit_btn') }}
-      </el-button>
+      </button>
       <!-- Submit end -->
     </el-form>
 

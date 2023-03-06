@@ -1,28 +1,36 @@
 <template>
   <div>
     <!-- Header -->
-    <section class="w-full">
-      <img class="h-8 mx-auto" src="~/assets/images/logo/logo_white.svg">
+    <section class="full-width bg-primary">
+      <img
+        class="h-12 mx-auto my-4"
+        src="~/assets/images/logo/logo_white.svg"
+      >
     </section>
     <!-- Header end -->
 
     <!-- Intro + form -->
-    <section class="w-full">
-      <div class="flex flex-row items-center">
+    <section class="full-width bg-primary py-16">
+      <div class="flex flex-row items-center max-w-6xl mx-auto px-6">
         <!-- Left -->
         <div class="w-full md:w-1/2">
           <!-- Intro -->
           <div>
-            <h1>{{ $t('lifetime.redeem_page.intro.title') }}</h1>
-            <p>
+            <h1
+              class="font-bold text-[48px] leading-[58px] text-[#98FE98] mb-4"
+            >
+              {{ $t('lifetime.redeem_page.intro.title') }}
+            </h1>
+            <p class="font-bold text-[20px] text-white mb-4">
               {{ $t('lifetime.redeem_page.intro.desc') }}
             </p>
-            <ol>
+            <ol class="list-decimal ml-4 mb-4">
               <li
                 v-for="(item, index) in $t(
                   'lifetime.redeem_page.intro.instructions'
                 )"
                 :key="index"
+                class="text-white"
               >
                 {{ item }}
               </li>
@@ -40,22 +48,24 @@
     <!-- Intro + form end -->
 
     <!-- Benefits -->
-    <section class="w-full">
-      <h2>{{ $t('lifetime.redeem_page.benefits.title') }}</h2>
-      <div class="grid grid-cols-4 gap-x-2 gap-y-2">
+    <section class="w-full py-[80px]">
+      <h2 class="text-black font-bold text-center text-[48px] mb-[80px]">
+        {{ $t('lifetime.redeem_page.benefits.title') }}
+      </h2>
+      <div class="grid grid-cols-4 gap-x-6 gap-y-6">
         <div
           v-for="(item, index) in $t('lifetime.redeem_page.benefits.items')"
           :key="index"
         >
           <img
-            class="h-8"
+            class="h-16 mb-6"
             :src="
               require(`~/assets/images/landing/lifetime/benefits/${
                 index + 1
               }.svg`)
             "
           >
-          <p class="text-bold">
+          <p class="font-bold text-[20px] mb-3">
             {{ item.title }}
           </p>
           <p>
@@ -63,12 +73,12 @@
           </p>
         </div>
 
-        <div class="col-span-2">
+        <div class="col-span-2 px-6 flex flex-col items-start justify-center">
           <img
-            class="h-8"
+            class="h-16 mb-6"
             src="~/assets/images/landing/lifetime/benefits/more.svg"
           >
-          <p class="text-bold">
+          <p class="font-bold text-[20px]">
             {{ $t('lifetime.redeem_page.benefits.more_features') }}
           </p>
         </div>
