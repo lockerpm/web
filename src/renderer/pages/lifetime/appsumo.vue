@@ -4,25 +4,25 @@
       class="absolute w-[105vw] bg-warning md:flex hidden items-center justify-center py-4 -rotate-6 z-50 top-[70px] right-2 -left-4"
     >
       <p
-        class="font-bold text-[32px] leading-[38px] text-white w-[320px] text-center"
+        class="font-bold text-[32px] leading-[38px] text-white w-[320px] flex-grow-0 flex-shrink-0 text-center"
       >
         Lifetime Package
       </p>
       <img class="h7" src="~/assets/images/landing/lifetime/star-four.svg">
       <p
-        class="font-bold text-[32px] leading-[38px] text-white w-[320px] text-center"
+        class="font-bold text-[32px] leading-[38px] text-white w-[320px] flex-grow-0 flex-shrink-0 text-center"
       >
         Lifetime Package
       </p>
       <img class="h7" src="~/assets/images/landing/lifetime/star-four.svg">
       <p
-        class="font-bold text-[32px] leading-[38px] text-white w-[320px] text-center"
+        class="font-bold text-[32px] leading-[38px] text-white w-[320px] flex-grow-0 flex-shrink-0 text-center"
       >
         Lifetime Package
       </p>
       <img class="h7" src="~/assets/images/landing/lifetime/star-four.svg">
       <p
-        class="font-bold text-[32px] leading-[38px] text-white w-[320px] text-center"
+        class="font-bold text-[32px] leading-[38px] text-white w-[320px] flex-grow-0 flex-shrink-0 text-center"
       >
         Lifetime Package
       </p>
