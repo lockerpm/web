@@ -29,27 +29,25 @@
     </div>
 
     <!-- Logo -->
-    <section class="full-width bg-primary md:pb-16">
+    <section class="full-width bg-[#EEF4ED] md:pb-16">
       <img
         class="h-12 mx-auto my-4"
-        src="~/assets/images/logo/logo_white.svg"
+        src="~/assets/images/logo/logo_black.svg"
       >
     </section>
     <!-- Logo end -->
 
     <!-- Intro + form -->
-    <section class="full-width bg-primary py-16">
+    <section class="full-width bg-[#EEF4ED] py-16 overflow-hidden">
       <div class="flex flex-row items-start max-w-6xl mx-auto px-6 md:pt-8">
         <!-- Left -->
         <div class="w-full md:w-1/2">
           <!-- Intro -->
           <div>
-            <h1
-              class="font-bold text-[48px] leading-[58px] text-[#98FE98] mb-4"
-            >
+            <h1 class="font-bold text-[48px] leading-[58px] text-primary mb-4">
               {{ $t('lifetime.redeem_page.intro.title') }}
             </h1>
-            <p class="font-bold text-[20px] text-white mb-4">
+            <p class="font-bold text-[20px] mb-4">
               {{ $t('lifetime.redeem_page.intro.desc') }}
             </p>
             <ol class="list-decimal ml-4 mb-4">
@@ -58,7 +56,6 @@
                   'lifetime.redeem_page.intro.instructions'
                 )"
                 :key="index"
-                class="text-white"
               >
                 {{ item }}
               </li>
@@ -73,9 +70,9 @@
         <!-- Left end -->
 
         <!-- Right -->
-        <div class="w-1/2 hidden md:flex">
+        <div class="w-1/2 hidden md:flex relative">
           <img
-            class="w-full"
+            class="w-[80vw] max-w-[80vw] absolute -top-6"
             src="~/assets/images/landing/lifetime/intro.png"
           >
         </div>
@@ -86,9 +83,16 @@
 
     <!-- Benefits -->
     <section class="w-full py-[80px] max-w-6xl mx-auto px-6">
-      <h2 class="text-black font-bold text-center text-[48px] mb-[80px]">
-        {{ $t('lifetime.redeem_page.benefits.title') }}
-      </h2>
+      <div class="w-full flex flex-row items-center justify-center mb-[80px]">
+        <h2 class="text-black font-bold text-[48px] leading-[58px]">
+          {{ $t('lifetime.redeem_page.benefits.title') }}
+        </h2>
+        <img
+          class="h-14 ml-2.5"
+          src="~/assets/images/landing/lifetime/success.png"
+        >
+      </div>
+
       <div
         class="sm:grid md:grid-cols-4 sm:grid-cols-2 flex flex-col gap-x-6 gap-y-6"
       >

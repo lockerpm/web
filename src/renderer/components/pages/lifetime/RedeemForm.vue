@@ -8,9 +8,7 @@
       <!-- Need create account? -->
       <el-form-item prop="needCreateAccount">
         <el-checkbox v-model="redeemForm.needCreateAccount">
-          <span class="!text-white">
-            {{ $t('lifetime.redeem_page.form.need_create_account') }}
-          </span>
+          {{ $t('lifetime.redeem_page.form.need_create_account') }}
         </el-checkbox>
       </el-form-item>
       <!-- Need create account? end -->
@@ -125,10 +123,7 @@
         <!-- Agree? -->
         <el-form-item prop="agreeTerms">
           <el-checkbox v-model="redeemForm.agreeTerms">
-            <span
-              class="!text-white"
-              v-html="$t('lifetime.redeem_page.form.agree_terms')"
-            />
+            <span v-html="$t('lifetime.redeem_page.form.agree_terms')" />
           </el-checkbox>
         </el-form-item>
         <!-- Agree? end -->
@@ -136,29 +131,26 @@
       <!-- Register info end -->
 
       <!-- Error message -->
-      <p v-if="errorMessage" class="text-danger">
-        {{ $t(`lifetime.redeem_page.error.${errorMessage}`) }}
+      <p v-if="errorMessage" class="text-danger mb-5 font-bold">
+        {{ $t(`lifetime.redeem_page.form.error.${errorMessage}`) }}
       </p>
       <!-- Error message end -->
 
       <!-- Submit -->
-      <button
-        class="bg-black text-white w-full rounded-lg py-3 flex justify-center items-center"
-        :class="{
-          'bg-black-500': !isBtnActive,
-          'cursor-not-allowed': !isBtnActive
-        }"
+      <el-button
+        type="primary"
+        class="w-full"
         :disabled="!isBtnActive"
         @click="handleSubmit"
       >
-        <span>
+        <span class="flex flex-row justify-center items-center">
           <img
             class="h-6 mr-2.5"
             src="~/assets/images/landing/lifetime/pointer.png"
           >
+          {{ $t('lifetime.redeem_page.form.submit_btn') }}
         </span>
-        {{ $t('lifetime.redeem_page.form.submit_btn') }}
-      </button>
+      </el-button>
       <!-- Submit end -->
     </el-form>
 
