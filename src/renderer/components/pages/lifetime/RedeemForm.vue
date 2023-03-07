@@ -1,18 +1,16 @@
 <template>
   <div>
+    <!-- Need create account? -->
+    <el-checkbox v-model="needCreateAccount" class="mb-6">
+      {{ $t('lifetime.redeem_page.form.need_create_account') }}
+    </el-checkbox>
+    <!-- Need create account? end -->
+
     <el-form
       ref="redeemForm"
       :model="redeemForm"
-      :rules="redeemForm.needCreateAccount ? createAccountRules : basicRules"
+      :rules="needCreateAccount ? createAccountRules : basicRules"
     >
-      <!-- Need create account? -->
-      <el-form-item prop="needCreateAccount">
-        <el-checkbox v-model="redeemForm.needCreateAccount">
-          {{ $t('lifetime.redeem_page.form.need_create_account') }}
-        </el-checkbox>
-      </el-form-item>
-      <!-- Need create account? end -->
-
       <!-- Email -->
       <el-form-item prop="email" :show-message="false">
         <el-input v-model="redeemForm.email" placeholder="Email" />
@@ -35,7 +33,7 @@
       <!-- Code end -->
 
       <!-- Register info -->
-      <template v-if="redeemForm.needCreateAccount">
+      <template v-if="needCreateAccount">
         <!-- Password -->
         <el-form-item
           prop="password"
@@ -140,10 +138,14 @@
       <el-button
         type="primary"
         class="w-full"
+        :loading="isLoading"
         :disabled="!isBtnActive"
         @click="handleSubmit"
       >
-        <span class="flex flex-row justify-center items-center">
+        <template v-if="isLoading">
+          {{ $t('lifetime.redeem_page.form.submit_btn') }}
+        </template>
+        <span v-else class="flex flex-row justify-center items-center">
           <img
             class="h-6 mr-2.5"
             src="~/assets/images/landing/lifetime/pointer.png"
@@ -193,8 +195,8 @@ export default {
   data () {
     return {
       isLoading: false,
+      needCreateAccount: false,
       redeemForm: {
-        needCreateAccount: false,
         email: '',
         code: '',
         password: '',
@@ -233,7 +235,7 @@ export default {
       ) {
         return false
       }
-      if (this.redeemForm.needCreateAccount) {
+      if (this.needCreateAccount) {
         return (
           this.redeemForm.password === this.redeemForm.confirmPassword &&
           this.redeemForm.agreeTerms
@@ -267,7 +269,7 @@ export default {
       this.errorDetails = {}
       this.$refs.redeemForm.validate(isValid => {
         if (isValid) {
-          if (this.redeemForm.needCreateAccount) {
+          if (this.needCreateAccount) {
             this.redeemCodeAndCreateAccount()
           } else {
             this.redeemCode()
@@ -312,10 +314,14 @@ export default {
         this.showSuccessDialog = true
       } catch (error) {
         const errorData = error.response?.data
+        this.notify(
+          errorData?.message || this.$t('errors.something_went_wrong'),
+          'warning'
+        )
 
         // Account not exists
         if (errorData?.code === '1004') {
-          this.redeemForm.needCreateAccount = true
+          this.needCreateAccount = true
           this.$nextTick(() => {
             this.errorMessage = 'account_not_exist'
           })
