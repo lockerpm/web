@@ -1,17 +1,45 @@
 <template>
-  <div>
-    <!-- Header -->
-    <section class="full-width bg-primary">
+  <div class="relative overflow-hidden">
+    <div
+      class="absolute w-[105vw] bg-warning md:flex hidden items-center justify-center py-4 -rotate-6 z-50 top-[70px] right-2 -left-4"
+    >
+      <p
+        class="font-bold text-[32px] leading-[38px] text-white w-[320px] text-center"
+      >
+        Lifetime Package
+      </p>
+      <img class="h7" src="~/assets/images/landing/lifetime/star-four.svg">
+      <p
+        class="font-bold text-[32px] leading-[38px] text-white w-[320px] text-center"
+      >
+        Lifetime Package
+      </p>
+      <img class="h7" src="~/assets/images/landing/lifetime/star-four.svg">
+      <p
+        class="font-bold text-[32px] leading-[38px] text-white w-[320px] text-center"
+      >
+        Lifetime Package
+      </p>
+      <img class="h7" src="~/assets/images/landing/lifetime/star-four.svg">
+      <p
+        class="font-bold text-[32px] leading-[38px] text-white w-[320px] text-center"
+      >
+        Lifetime Package
+      </p>
+    </div>
+
+    <!-- Logo -->
+    <section class="full-width bg-primary md:pb-16">
       <img
         class="h-12 mx-auto my-4"
         src="~/assets/images/logo/logo_white.svg"
       >
     </section>
-    <!-- Header end -->
+    <!-- Logo end -->
 
     <!-- Intro + form -->
     <section class="full-width bg-primary py-16">
-      <div class="flex flex-row items-center max-w-6xl mx-auto px-6">
+      <div class="flex flex-row items-start max-w-6xl mx-auto px-6 md:pt-8">
         <!-- Left -->
         <div class="w-full md:w-1/2">
           <!-- Intro -->
@@ -43,16 +71,27 @@
           <!-- Form end -->
         </div>
         <!-- Left end -->
+
+        <!-- Right -->
+        <div class="w-1/2 hidden md:flex">
+          <img
+            class="w-full"
+            src="~/assets/images/landing/lifetime/intro.png"
+          >
+        </div>
+        <!-- Right end -->
       </div>
     </section>
     <!-- Intro + form end -->
 
     <!-- Benefits -->
-    <section class="w-full py-[80px]">
+    <section class="w-full py-[80px] max-w-6xl mx-auto px-6">
       <h2 class="text-black font-bold text-center text-[48px] mb-[80px]">
         {{ $t('lifetime.redeem_page.benefits.title') }}
       </h2>
-      <div class="grid grid-cols-4 gap-x-6 gap-y-6">
+      <div
+        class="sm:grid md:grid-cols-4 sm:grid-cols-2 flex flex-col gap-x-6 gap-y-6"
+      >
         <div
           v-for="(item, index) in $t('lifetime.redeem_page.benefits.items')"
           :key="index"
@@ -73,7 +112,9 @@
           </p>
         </div>
 
-        <div class="col-span-2 px-6 flex flex-col items-start justify-center">
+        <div
+          class="col-span-2 md:px-6 flex flex-col items-start justify-center"
+        >
           <img
             class="h-16 mb-6"
             src="~/assets/images/landing/lifetime/benefits/more.svg"
@@ -88,7 +129,7 @@
 
     <!-- Footer -->
     <div
-      class="md:flex md:items-center py-3 border-t border-black-200 landing-font-12 text-black-600"
+      class="md:flex md:items-center py-3 border-t border-black-200 landing-font-12 text-black-600 max-w-6xl mx-auto px-6"
     >
       <div class="flex items-center">
         <div v-if="locale === 'vi'">Một sản phẩm của</div>
@@ -133,7 +174,7 @@ import RedeemForm from '../../components/pages/lifetime/RedeemForm.vue'
 export default {
   components: { RedeemForm },
 
-  layout: 'white',
+  layout: 'authenticate',
 
   asyncData ({ $axios }) {
     return $axios

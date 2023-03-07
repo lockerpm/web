@@ -7,8 +7,10 @@
     >
       <!-- Need create account? -->
       <el-form-item prop="needCreateAccount">
-        <el-checkbox v-model="redeemForm.needCreateAccount" class="!text-white">
-          {{ $t('lifetime.redeem_page.form.need_create_account') }}
+        <el-checkbox v-model="redeemForm.needCreateAccount">
+          <span class="!text-white">
+            {{ $t('lifetime.redeem_page.form.need_create_account') }}
+          </span>
         </el-checkbox>
       </el-form-item>
       <!-- Need create account? end -->
@@ -123,7 +125,10 @@
         <!-- Agree? -->
         <el-form-item prop="agreeTerms">
           <el-checkbox v-model="redeemForm.agreeTerms">
-            <span v-html="$t('lifetime.redeem_page.form.agree_terms')" />
+            <span
+              class="!text-white"
+              v-html="$t('lifetime.redeem_page.form.agree_terms')"
+            />
           </el-checkbox>
         </el-form-item>
         <!-- Agree? end -->
@@ -138,10 +143,18 @@
 
       <!-- Submit -->
       <button
-        class="bg-black text-white w-full"
+        class="bg-black text-white w-full rounded-lg py-3 flex justify-center items-center"
+        :class="{
+          'bg-black-500': !isBtnActive,
+          'cursor-not-allowed': !isBtnActive
+        }"
         :disabled="!isBtnActive"
         @click="handleSubmit"
       >
+        <span><img
+          class="h-6 mr-2.5"
+          src="~/assets/images/landing/lifetime/pointer.png"
+        ></span>
         {{ $t('lifetime.redeem_page.form.submit_btn') }}
       </button>
       <!-- Submit end -->
