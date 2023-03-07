@@ -151,21 +151,37 @@
         :disabled="!isBtnActive"
         @click="handleSubmit"
       >
-        <span><img
-          class="h-6 mr-2.5"
-          src="~/assets/images/landing/lifetime/pointer.png"
-        ></span>
+        <span>
+          <img
+            class="h-6 mr-2.5"
+            src="~/assets/images/landing/lifetime/pointer.png"
+          >
+        </span>
         {{ $t('lifetime.redeem_page.form.submit_btn') }}
       </button>
       <!-- Submit end -->
     </el-form>
 
     <!-- Success dialog -->
-    <el-dialog :visible.sync="showSuccessDialog" width="30%">
-      <span>{{ $t('lifetime.redeem_page.form.success.title') }}</span>
-      <span>{{ $t('lifetime.redeem_page.form.success.desc') }}</span>
+    <el-dialog :visible.sync="showSuccessDialog" width="400px">
+      <img
+        class="h-16 mx-auto mb-6"
+        src="~/assets/images/landing/lifetime/success.png"
+      >
+      <p class="font-bold text-primary text-[32px] mb-6 text-center">
+        {{ $t('lifetime.redeem_page.form.success.title') }}
+      </p>
+      <p class="text-[18px] text-center">
+        {{
+          $t('lifetime.redeem_page.form.success.desc', { email: successEmail })
+        }}
+      </p>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="showSuccessDialog = false">
+        <el-button
+          type="primary"
+          class="w-full !mb-4"
+          @click="showSuccessDialog = false"
+        >
           {{ $t('lifetime.redeem_page.form.success.btn') }}
         </el-button>
       </span>
@@ -211,7 +227,8 @@ export default {
       },
       errorMessage: '',
       errorDetails: {},
-      showSuccessDialog: false
+      showSuccessDialog: false,
+      successEmail: ''
     }
   },
 
@@ -298,6 +315,7 @@ export default {
           ...payload,
           request_code: token
         })
+        this.successEmail = payload.email
         this.$refs.redeemForm.resetFields()
         this.showSuccessDialog = true
       } catch (error) {
