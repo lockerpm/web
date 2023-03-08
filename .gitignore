@@ -7,3 +7,5 @@ node_modules
 src/renderer/jslib
 .DS_Store
 .vscode
+src/renderer/server.key
+src/renderer/.env
