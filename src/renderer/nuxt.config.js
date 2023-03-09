@@ -173,10 +173,12 @@ module.exports = {
       ]
     }
   },
-  recaptcha: {
-    hideBadge: true,
-    siteKey: process.env.RECAPTCHA_KEY,
-    version: 3
+  publicRuntimeConfig: {
+    recaptcha: {
+      hideBadge: true,
+      siteKey: process.env.RECAPTCHA_KEY,
+      version: 3
+    }
   },
   gtm: {
     id: 'GTM-K5Q6595'

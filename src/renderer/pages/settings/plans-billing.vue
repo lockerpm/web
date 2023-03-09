@@ -12,6 +12,7 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div class="text-head-5 font-semibold">{{ currentPlan.name }}</div>
+          <!-- Free plan -->
           <div v-if="currentPlan.alias==='pm_free'">
             <button
               class="btn btn-primary mb-4 md:mb-0"
@@ -27,6 +28,15 @@
               </div>
             </button>
           </div>
+          <!-- Free plan end -->
+
+          <!-- Lifetime plan -->
+          <div v-else-if="currentPlan.alias==='pm_lifetime_premium'">
+            <div />
+          </div>
+          <!-- Lifetime plan end -->
+
+          <!-- Other plans -->
           <div v-else>
             <div class="">
               <div class="text-black-600 mb-1.5">
@@ -46,6 +56,7 @@
               </div>
             </div>
           </div>
+          <!-- Other plans end -->
         </div>
         <!-- <div v-if="currentPlan.is_family" class="mt-4">
           <div class="flex justify-between">
