@@ -1,17 +1,5 @@
 <template>
   <div>
-    <template v-if="isDevOrStaging">
-      <div class="w-full">
-        <el-checkbox v-model="testCheckbox" class="mb-6"> test </el-checkbox>
-        <div v-if="!testCheckbox">
-          <p>off</p>
-        </div>
-        <div v-else>
-          <p>on</p>
-        </div>
-      </div>
-    </template>
-
     <!-- Need create account? -->
     <el-checkbox v-model="needCreateAccount" class="mb-6">
       {{ $t('lifetime.redeem_page.form.need_create_account') }}
@@ -20,10 +8,11 @@
 
     <!-- Redeem only form -->
     <el-form
-      v-if="!needCreateAccount"
       ref="redeemForm"
       :model="redeemForm"
       :rules="basicRules"
+      class="overflow-hidden"
+      :class="{ 'h-0': needCreateAccount }"
     >
       <!-- Email -->
       <el-form-item prop="email" :show-message="false">
@@ -50,8 +39,9 @@
 
     <!-- Create account form -->
     <el-form
-      v-else
       ref="createAccountForm"
+      class="overflow-hidden"
+      :class="{ 'h-0': !needCreateAccount }"
       :model="redeemForm"
       :rules="createAccountRules"
     >
@@ -235,7 +225,6 @@ export default {
 
   data () {
     return {
-      testCheckbox: false,
       isLoading: false,
       needCreateAccount: false,
       redeemForm: {
