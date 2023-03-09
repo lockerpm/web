@@ -6,10 +6,42 @@
     </el-checkbox>
     <!-- Need create account? end -->
 
+    <!-- Redeem only form -->
     <el-form
+      v-if="!needCreateAccount"
       ref="redeemForm"
       :model="redeemForm"
-      :rules="needCreateAccount ? createAccountRules : basicRules"
+      :rules="basicRules"
+    >
+      <!-- Email -->
+      <el-form-item prop="email" :show-message="false">
+        <el-input v-model="redeemForm.email" placeholder="Email" />
+      </el-form-item>
+      <!-- Email end -->
+
+      <!-- Code -->
+      <el-form-item
+        prop="code"
+        :show-message="false"
+        :error="errorMessage === 'invalid_code' ? '_' : ''"
+      >
+        <el-input
+          v-model="redeemForm.code"
+          :placeholder="
+            $t('lifetime.redeem_page.form.app_code', { service: 'AppSumo' })
+          "
+        />
+      </el-form-item>
+      <!-- Code end -->
+    </el-form>
+    <!-- Redeem only form end -->
+
+    <!-- Create account form -->
+    <el-form
+      v-else
+      ref="createAccountForm"
+      :model="redeemForm"
+      :rules="createAccountRules"
     >
       <!-- Email -->
       <el-form-item prop="email" :show-message="false">
@@ -32,129 +64,126 @@
       </el-form-item>
       <!-- Code end -->
 
-      <!-- Register info -->
-      <template v-if="needCreateAccount">
-        <!-- Password -->
-        <el-form-item
-          prop="password"
-          :show-message="!!errorDetails.password"
-          :error="errorDetails.password && errorDetails.password[0]"
-        >
-          <el-input
-            v-model="redeemForm.password"
-            :placeholder="$t('common.password')"
-            type="password"
-          />
-        </el-form-item>
-        <!-- Password end -->
-
-        <!-- Confirm Password -->
-        <el-form-item prop="confirmPassword" :show-message="false">
-          <el-input
-            v-model="redeemForm.confirmPassword"
-            :placeholder="$t('common.confirm_password')"
-            type="password"
-          />
-        </el-form-item>
-        <!-- Confirm Password end -->
-
-        <!-- Fullname -->
-        <el-form-item prop="fullName" :show-message="false">
-          <el-input
-            v-model="redeemForm.fullName"
-            :placeholder="$t('common.name')"
-          />
-        </el-form-item>
-        <!-- Fullname end -->
-
-        <!-- Org -->
-        <el-form-item prop="org" :show-message="false">
-          <el-input
-            v-model="redeemForm.org"
-            :placeholder="$t('common.company')"
-          />
-        </el-form-item>
-        <!-- Org end -->
-
-        <!-- Country + phone -->
-        <div class="flex flex-row items-center">
-          <!-- Country -->
-          <div class="w-1/3">
-            <el-form-item prop="country">
-              <el-select
-                v-model="redeemForm.country"
-                filterable
-                placeholder="Select"
-              >
-                <el-option
-                  v-for="item in countries"
-                  :key="item.country_code"
-                  :label="item.country_name"
-                  :value="item.country_code"
-                />
-              </el-select>
-            </el-form-item>
-          </div>
-          <!-- Country end -->
-
-          <!-- Phone -->
-          <div class="w-2/3 pl-2">
-            <el-form-item
-              prop="phone"
-              :show-message="!!errorDetails.phone"
-              :error="errorDetails.phone && errorDetails.phone[0]"
-            >
-              <el-input
-                v-model="redeemForm.phone"
-                :placeholder="$t('common.phone')"
-              >
-                <template slot="prepend">
-                  {{ redeemForm.countryPhoneCode }}
-                </template>
-              </el-input>
-            </el-form-item>
-          </div>
-          <!-- Phone end -->
-        </div>
-        <!-- Country + phone end -->
-
-        <!-- Agree? -->
-        <el-form-item prop="agreeTerms">
-          <el-checkbox v-model="redeemForm.agreeTerms">
-            <span v-html="$t('lifetime.redeem_page.form.agree_terms')" />
-          </el-checkbox>
-        </el-form-item>
-        <!-- Agree? end -->
-      </template>
-      <!-- Register info end -->
-
-      <!-- Error message -->
-      <p v-if="errorMessage" class="text-danger mb-5 font-bold">
-        {{ $t(`lifetime.redeem_page.form.error.${errorMessage}`) }}
-      </p>
-      <!-- Error message end -->
-
-      <!-- Submit -->
-      <el-button
-        type="primary"
-        class="w-full"
-        :loading="isLoading"
-        :disabled="!isBtnActive"
-        @click="handleSubmit"
+      <!-- Password -->
+      <el-form-item
+        prop="password"
+        :show-message="!!errorDetails.password"
+        :error="errorDetails.password && errorDetails.password[0]"
       >
-        <template v-if="isLoading">
-          {{ $t('lifetime.redeem_page.form.submit_btn') }}
-        </template>
-        <span v-else class="flex flex-row justify-center items-center">
-          <img
-            class="h-6 mr-2.5"
-            src="~/assets/images/landing/lifetime/pointer.png"
+        <el-input
+          v-model="redeemForm.password"
+          :placeholder="$t('common.password')"
+          type="password"
+        />
+      </el-form-item>
+      <!-- Password end -->
+
+      <!-- Confirm Password -->
+      <el-form-item prop="confirmPassword" :show-message="false">
+        <el-input
+          v-model="redeemForm.confirmPassword"
+          :placeholder="$t('common.confirm_password')"
+          type="password"
+        />
+      </el-form-item>
+      <!-- Confirm Password end -->
+
+      <!-- Fullname -->
+      <el-form-item prop="fullName" :show-message="false">
+        <el-input
+          v-model="redeemForm.fullName"
+          :placeholder="$t('common.name')"
+        />
+      </el-form-item>
+      <!-- Fullname end -->
+
+      <!-- Org -->
+      <el-form-item prop="org" :show-message="false">
+        <el-input
+          v-model="redeemForm.org"
+          :placeholder="$t('common.company')"
+        />
+      </el-form-item>
+      <!-- Org end -->
+
+      <!-- Country + phone -->
+      <div class="flex flex-row items-center">
+        <!-- Country -->
+        <div class="w-1/3">
+          <el-form-item prop="country">
+            <el-select
+              v-model="redeemForm.country"
+              filterable
+              placeholder="Select"
+            >
+              <el-option
+                v-for="item in countries"
+                :key="item.country_code"
+                :label="item.country_name"
+                :value="item.country_code"
+              />
+            </el-select>
+          </el-form-item>
+        </div>
+        <!-- Country end -->
+
+        <!-- Phone -->
+        <div class="w-2/3 pl-2">
+          <el-form-item
+            prop="phone"
+            :show-message="!!errorDetails.phone"
+            :error="errorDetails.phone && errorDetails.phone[0]"
           >
-          {{ $t('lifetime.redeem_page.form.submit_btn') }}
-        </span>
-      </el-button>
-      <!-- Submit end -->
+            <el-input
+              v-model="redeemForm.phone"
+              :placeholder="$t('common.phone')"
+            >
+              <template slot="prepend">
+                {{ redeemForm.countryPhoneCode }}
+              </template>
+            </el-input>
+          </el-form-item>
+        </div>
+        <!-- Phone end -->
+      </div>
+      <!-- Country + phone end -->
+
+      <!-- Agree? -->
+      <el-form-item prop="agreeTerms">
+        <el-checkbox v-model="redeemForm.agreeTerms">
+          <span v-html="$t('lifetime.redeem_page.form.agree_terms')" />
+        </el-checkbox>
+      </el-form-item>
+      <!-- Agree? end -->
     </el-form>
+    <!-- Create account form end -->
+
+    <!-- Error message -->
+    <p v-if="errorMessage" class="text-danger mb-5 font-bold">
+      {{ $t(`lifetime.redeem_page.form.error.${errorMessage}`) }}
+    </p>
+    <!-- Error message end -->
+
+    <!-- Submit -->
+    <el-button
+      type="primary"
+      class="w-full"
+      :loading="isLoading"
+      :disabled="!isBtnActive"
+      @click="handleSubmit"
+    >
+      <template v-if="isLoading">
+        {{ $t('lifetime.redeem_page.form.submit_btn') }}
+      </template>
+      <span v-else class="flex flex-row justify-center items-center">
+        <img
+          class="h-6 mr-2.5"
+          src="~/assets/images/landing/lifetime/pointer.png"
+        >
+        {{ $t('lifetime.redeem_page.form.submit_btn') }}
+      </span>
+    </el-button>
+    <!-- Submit end -->
 
     <!-- Success dialog -->
     <el-dialog :visible.sync="showSuccessDialog" width="400px">
@@ -267,15 +296,19 @@ export default {
   methods: {
     handleSubmit () {
       this.errorDetails = {}
-      this.$refs.redeemForm.validate(isValid => {
-        if (isValid) {
-          if (this.needCreateAccount) {
+      if (this.needCreateAccount) {
+        this.$refs.createAccountForm.validate(isValid => {
+          if (isValid) {
             this.redeemCodeAndCreateAccount()
-          } else {
+          }
+        })
+      } else {
+        this.$refs.redeemForm.validate(isValid => {
+          if (isValid) {
             this.redeemCode()
           }
-        }
-      })
+        })
+      }
     },
 
     async redeemCode () {
