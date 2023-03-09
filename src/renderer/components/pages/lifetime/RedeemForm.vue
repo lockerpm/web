@@ -345,6 +345,7 @@ export default {
           request_code: token
         })
         this.successEmail = payload.email
+        this.$refs.createAccountForm.resetFields()
         this.$refs.redeemForm.resetFields()
         this.showSuccessDialog = true
       } catch (error) {
