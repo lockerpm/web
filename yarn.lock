@@ -1592,10 +1592,10 @@
   dependencies:
     http-proxy-middleware "^1.0.6"
 
-"@nuxtjs/recaptcha@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/recaptcha/-/recaptcha-0.5.3.tgz#cc5b8d4603b216edc9c4af573a9d9bd88bed025a"
-  integrity sha512-gn0TQESCT0QzqP/8SUWMODjhatUS9ZwRGz9v3sfTcJONtYhMSOCcKAfd0aOIlpa4fkMLpy0K1Idpbw/mcluhkA==
+"@nuxtjs/recaptcha@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/recaptcha/-/recaptcha-1.1.1.tgz#21f9dcd53d7b869b570ab4829404df1200ed26de"
+  integrity sha512-maHqf6x6EgfRm7lvjK7nTwle/17cRzMkeFDWPGdcdKjDnAjuli7Mei5qPG0CFZX1zG9ohIEv+0QEs7fgudyLrg==
 
 "@nuxtjs/sentry@^5.1.7":
   version "5.1.7"
@@ -4790,9 +4790,9 @@ dotenv@^9.0.2:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-9.0.2.tgz#dacc20160935a37dea6364aa1bef819fb9b6ab05"
   integrity sha512-I9OvvrHp4pIARv4+x9iuewrWycX6CcZtoAu1XrzPxc5UygMJXJZYmBsynku8IkrJwgypE5DGNjDPmPRhDCptUg==
 
-"duo_web_sdk@git+https://github.com/duosecurity/duo_web_sdk.git#5f9a1a8598d2cda494c4f5ee0e38b31474abfee9":
+"duo_web_sdk@github:duosecurity/duo_web_sdk":
   version "2.7.0"
-  resolved "git+https://github.com/duosecurity/duo_web_sdk.git#5f9a1a8598d2cda494c4f5ee0e38b31474abfee9"
+  resolved "https://codeload.github.com/duosecurity/duo_web_sdk/tar.gz/29cad7338eff2cd909a361ecdd525458862938be"
 
 duplexer2@~0.1.4:
   version "0.1.4"
