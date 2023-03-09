@@ -32,7 +32,7 @@ build_production:
   tags:
     - cs_monitoring
   only:
-    - master
+    - main
     - tags
 
 deploy_production:
@@ -42,7 +42,7 @@ deploy_production:
   tags:
     - cs_monitoring
   only:
-    - master
+    - main
     - tags
 
 build_desktop:
