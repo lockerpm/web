@@ -184,8 +184,13 @@ export default {
     return $axios
       .$get('/resources/countries')
       .then(res => {
+        if (typeof res === 'object' && res.length) {
+          return {
+            countries: res
+          }
+        }
         return {
-          countries: res
+          countries: []
         }
       })
       .catch(() => {
