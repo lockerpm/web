@@ -1,0 +1,5 @@
+src/renderer/jslib/*
+jslib/*
+src/renderer/services/*
+src/renderer/plugins/*.ts
+src/core/*

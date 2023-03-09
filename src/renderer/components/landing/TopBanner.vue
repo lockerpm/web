@@ -1,0 +1,75 @@
+<template>
+  <div v-show="visible" class="banner-container">
+    <div class="max-w-6xl mx-auto">
+      <div class="w-full px-6 flex flex-row">
+        <div class="flex-1">
+          <p class="font-normal text-center" style="color: white">
+            <span class="new-container">
+              NEW
+            </span>
+            <span v-html="$t('landing_banner.desc')" /> 🎉
+            <a
+              :href="url"
+              style="color: #15D127; text-decoration: none"
+            >
+              {{ $t('landing_banner.read_more') }} <i class="el-icon-right" />
+            </a>
+          </p>
+        </div>
+        <a class="close-btn" @click.prevent="close()">
+          <i class="el-icon-close" />
+        </a>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'TopBanner',
+  data () {
+    return {
+      visible: true
+    }
+  },
+  computed: {
+    url () {
+      if (this.$store.state.user.language === 'vi') {
+        return 'https://support.locker.io/vi/articles/Nhap-du-lieu-tu-LastPass-3618294835b442168390a6a4def14a12'
+      } else {
+        return 'https://support.locker.io/articles/Import-from-LastPass-e5e86298c03d4eb180d19dec78e3db11'
+      }
+    }
+  },
+  methods: {
+    close () {
+      this.visible = false
+    }
+  }
+}
+</script>
+
+<style scoped>
+.banner-container {
+  background-color: #222222;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.new-container {
+  background-color: #FFC400;
+  color: #222222;
+  padding: 0 1px 0 5px;
+  line-height: 22px;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+.close-btn {
+  color: white;
+  text-decoration: none;
+  padding: 0 10px;
+  margin-right: -10px
+}
+</style>

@@ -1,0 +1,11 @@
+.nuxt
+dist
+build/*
+!build/icons
+node_modules
+.idea
+src/renderer/jslib
+.DS_Store
+.vscode
+src/renderer/server.key
+src/renderer/.env

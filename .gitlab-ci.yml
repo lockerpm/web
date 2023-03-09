@@ -1,0 +1,66 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - build
+  - deploy
+
+build_staging:
+  stage: build
+  script:
+    - cystack-deployer
+  tags:
+    - cs_monitoring
+  only:
+    - dev
+    - tags
+
+deploy_staging:
+  stage: deploy
+  script:
+    - cystack-deployer
+  tags:
+    - cs_monitoring
+  only:
+    - dev
+    - tags
+
+build_production:
+  stage: build
+  script:
+    - cystack-deployer
+  tags:
+    - cs_monitoring
+  only:
+    - master
+    - tags
+
+deploy_production:
+  stage: deploy
+  script:
+    - cystack-deployer
+  tags:
+    - cs_monitoring
+  only:
+    - master
+    - tags
+
+build_desktop:
+  stage: build
+  script:
+    - cystack-deployer
+  tags:
+    - cs_monitoring
+  only:
+    - pwl
+    - tags
+
+deploy_desktop:
+  stage: deploy
+  script:
+    - cystack-deployer
+  tags:
+    - cs_monitoring
+  only:
+    - pwl
+    - tags
