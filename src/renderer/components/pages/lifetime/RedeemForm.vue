@@ -1,5 +1,17 @@
 <template>
   <div>
+    <template v-if="isDevOrStaging">
+      <div class="w-full">
+        <el-checkbox v-model="testCheckbox" class="mb-6"> test </el-checkbox>
+        <div v-if="!testCheckbox">
+          <p>off</p>
+        </div>
+        <div v-else>
+          <p>on</p>
+        </div>
+      </div>
+    </template>
+
     <!-- Need create account? -->
     <el-checkbox v-model="needCreateAccount" class="mb-6">
       {{ $t('lifetime.redeem_page.form.need_create_account') }}
@@ -223,6 +235,7 @@ export default {
 
   data () {
     return {
+      testCheckbox: false,
       isLoading: false,
       needCreateAccount: false,
       redeemForm: {
@@ -358,6 +371,12 @@ export default {
           this.$nextTick(() => {
             this.errorMessage = 'account_not_exist'
           })
+          return
+        }
+
+        // Block business/family
+        if (errorData?.code === '7015') {
+          this.errorMessage = 'only_individual'
           return
         }
 
