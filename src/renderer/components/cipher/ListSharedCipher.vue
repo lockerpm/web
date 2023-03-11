@@ -481,8 +481,6 @@
 
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
 
-    <PremiumDialog ref="premiumDialog" />
-
     <el-dialog
       :visible.sync="dialogConfirmVisible"
       width="435px"
@@ -562,7 +560,6 @@ import { CipherType } from '../../jslib/src/enums'
 import Vnodes from '../../components/Vnodes'
 import { CipherRequest } from '../../jslib/src/models/request'
 import { Utils } from '../../jslib/src/misc/utils.ts'
-import PremiumDialog from '../../components/upgrade/PremiumDialog'
 
 CipherType.TOTP = 5
 CipherType.MasterPassword = 8
@@ -581,7 +578,6 @@ export default {
     ShareNoCipher,
     VueContext: () => import('../../plugins/vue-context'),
     Vnodes,
-    PremiumDialog,
     LazyHydrate
   },
 
@@ -1297,7 +1293,6 @@ export default {
     },
     upgradePlan () {
       this.$refs.shareCipher.closeDialog()
-      this.$refs.premiumDialog.openDialog()
     },
     openAcceptDialog (item) {
       this.selectedCipher = item

@@ -541,7 +541,6 @@
 
       <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
       <MoveFolder ref="moveFolder" />
-      <PremiumDialog ref="premiumDialog" />
 
       <div class="max-w-[585px] mx-auto">
         <AddEditCipher
@@ -565,7 +564,6 @@ import TextHaveCopy from '../../components/cipher/TextHaveCopy'
 import Vnodes from '../../components/Vnodes'
 import ShareCipher from '../../components/cipher/ShareCipher'
 import MoveFolder from '../folder/MoveFolder'
-import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
 import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
 import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 import { FieldType } from '../../jslib/src/enums/fieldType'
@@ -579,7 +577,6 @@ export default {
     Vnodes,
     ShareCipher,
     MoveFolder,
-    PremiumDialog,
     InputSeedPhrase
   },
   props: {
@@ -827,7 +824,6 @@ export default {
     },
     upgradePlan () {
       this.$refs.shareCipher.closeDialog()
-      this.$refs.premiumDialog.openDialog()
     },
     back () {
       this.$router.back()

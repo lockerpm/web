@@ -831,8 +831,6 @@
     <ShareFolder ref="shareFolder" />
 
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
-
-    <PremiumDialog ref="premiumDialog" />
   </div>
 </template>
 
@@ -852,7 +850,6 @@ import NoCipher from '../../components/cipher/NoCipher'
 import { CipherType } from '../../core/enums/cipherType'
 import Vnodes from '../../components/Vnodes'
 import ChooseCipherType from '../../components/cipher/ChooseCipherType'
-import PremiumDialog from '../../components/upgrade/PremiumDialog.vue'
 import { CipherRequest } from '../../jslib/src/models/request'
 
 export default {
@@ -868,8 +865,7 @@ export default {
     AddEditTeamFolderUsers,
     AddEditTeamFolderGroups,
     VueContext: () => import('../../plugins/vue-context'),
-    Vnodes,
-    PremiumDialog
+    Vnodes
   },
   props: {
     deleted: {
@@ -1414,7 +1410,6 @@ export default {
     },
     upgradePlan () {
       this.$refs.shareCipher.closeDialog()
-      this.$refs.premiumDialog.openDialog()
     },
     checkAll () {
       if (this.checkedAll) {

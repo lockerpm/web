@@ -1,16 +1,17 @@
 <template>
   <div>
     <el-dialog
-      :visible.sync="dialogVisible"
+      :visible="dialogVisible"
       width="60%"
       class="premium-dialog header-no-padding body-no-padding"
+      @close="closeDialog"
     >
-      <div
-        slot="title"
-      >
-        <nuxt-link :to="localeRoute({name: 'manage-plans'})">
-          <img width="100%" src="~/assets/images/upgrade_premium.png">
-        </nuxt-link>
+      <div slot="title">
+        <img
+          width="100%"
+          src="~/assets/images/upgrade_premium.png"
+          @click="closeDialog"
+        >
       </div>
     </el-dialog>
   </div>
@@ -20,18 +21,24 @@
 export default {
   data () {
     return {
-      dialogVisible: false,
       bg: '/upgrade_premium.png'
     }
   },
+  computed: {
+    dialogVisible () {
+      return this.$store.state.notice.showPleaseUpgrade
+    }
+  },
   methods: {
-    openDialog () {
-      this.dialogVisible = true
+    closeDialog () {
+      this.$store.commit('UPDATE_NOTICE', { showPleaseUpgrade: false })
+    },
+    upgradePlan () {
+      this.closeDialog()
+      this.$router.push(this.localeRoute({ name: 'manage-plans' }))
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
