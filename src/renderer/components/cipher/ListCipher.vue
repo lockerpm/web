@@ -726,6 +726,17 @@
                 </button>
                 <!-- Share end -->
 
+                <!-- Quick share -->
+                <button
+                  v-if="isCipherShareable(item, organizations)"
+                  class="btn btn-icon btn-xs hover:bg-black-400"
+                  :title="$t('common.quick_share')"
+                  @click="quickShareItem(item)"
+                >
+                  <i class="far fa-share-square" />
+                </button>
+                <!-- Quick share end -->
+
                 <!-- Other actions -->
                 <el-dropdown
                   v-if="!isProtectedCipher(item)"
@@ -828,6 +839,8 @@
 
     <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
 
+    <QuickShareCipher ref="quickShareCipher" />
+
     <ShareFolder ref="shareFolder" />
 
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
@@ -846,6 +859,7 @@ import AddEditTeamFolder from '../folder/AddEditTeamFolder'
 import AddEditTeamFolderUsers from '../folder/AddEditTeamFolderUsers'
 import AddEditTeamFolderGroups from '../folder/AddEditTeamFolderGroups'
 import ShareCipher from '../../components/cipher/ShareCipher'
+import QuickShareCipher from '../../components/cipher/QuickShareCipher'
 import ShareFolder from '../../components/folder/ShareFolder'
 import MoveFolder from '../folder/MoveFolder'
 import NoCipher from '../../components/cipher/NoCipher'
@@ -862,6 +876,7 @@ export default {
     AddEditFolder,
     AddEditTeamFolder,
     ShareCipher,
+    QuickShareCipher,
     ShareFolder,
     MoveFolder,
     NoCipher,
@@ -1377,6 +1392,9 @@ export default {
     },
     shareItem (cipher) {
       this.$refs.shareCipher.openDialog(cipher)
+    },
+    quickShareItem (cipher) {
+      this.$refs.quickShareCipher.openDialog(cipher)
     },
     shareFolder (folder) {
       this.$refs.shareFolder.openDialog(folder)
