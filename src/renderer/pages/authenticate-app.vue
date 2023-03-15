@@ -16,7 +16,7 @@
           </div>
           <div>Locker desktop app will be opened shortly.</div>
           <div class="text-center mt-[20px] mb-[80px]">
-            <a :href="`lockerApp://auth?action=login&status=done&token=${token}`">Open the app manually</a>
+            <a :href="`lockerApp://auth?action=login&status=done&token=${token}&email=${email}&host=${host}&loginType=${loginType}`">Open the app manually</a>
           </div>
         </div>
       </div>
@@ -28,17 +28,22 @@
 export default {
   layout: 'authenticate',
   async mounted () {
-    this.token = this.$route.query.token
+    this.token = encodeURIComponent(this.$route.query.token)
+    this.email = encodeURIComponent(this.$route.query.email)
+    this.host = encodeURIComponent(this.$route.query.host)
+    this.loginType = encodeURIComponent(this.$route.query.loginType)
     await this.$axios.setToken(this.$route.query.token, 'Bearer')
     this.$axios.$get('me').then(res => {
-      console.log(res)
       this.user = res
     })
   },
   data () {
     return {
       token: null,
-      user: null
+      user: null,
+      email: null,
+      host: null,
+      loginType: null
     }
   },
   methods: {}
