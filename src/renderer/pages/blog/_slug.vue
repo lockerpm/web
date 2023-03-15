@@ -24,8 +24,8 @@
     <section class="w-full h-auto">
       <div v-if="post" class="w-full flex flex-wrap relative">
         <div
-          class="w-full md:w-3/12 md:sticky static top-0 md:pt-36"
-          style="height: fit-content; margin-top: -34px"
+          class="w-full static top-0 mt-4 md:w-3/12 md:sticky md:pt-36 md:mt-[-34px]"
+          style="height: fit-content"
         >
           <p
             v-if="post.table_of_contents.length"
