@@ -11,6 +11,7 @@ import axios from 'axios'
 import cheerio from 'cheerio'
 
 const isProd = process.env.NODE_ENV === 'production'
+const isStaging = process.env.CS_ENVIRONMENT === 'staging'
 
 module.exports = {
   ssr: true,
@@ -120,7 +121,6 @@ module.exports = {
     CS_ENV: 'web',
     baseUrl: process.env.BASE_URL || 'https://locker.io',
     idUrl: process.env.BASE_ID_URL || 'https://id.locker.io',
-    stripeKey: isProd ? process.env.STRIPE_KEY : process.env.STRIPE_KEY_STAGING,
     environment: process.env.CS_ENVIRONMENT || '',
     wsUrl: process.env.WS_URL || 'wss://api.locker.io/ws',
     logoUrl: process.env.LOGO_URL || 'https://locker.io/logo/',
@@ -178,7 +178,11 @@ module.exports = {
       hideBadge: true,
       siteKey: process.env.RECAPTCHA_KEY,
       version: 3
-    }
+    },
+    stripeKey:
+      isProd && !isStaging
+        ? process.env.STRIPE_KEY
+        : process.env.STRIPE_KEY_STAGING
   },
   gtm: {
     id: 'GTM-K5Q6595'
