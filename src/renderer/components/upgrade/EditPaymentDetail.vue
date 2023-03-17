@@ -19,12 +19,16 @@
           </div>
         </div>
         <div class="form-group col-span-2">
-          <ValidationProvider v-slot="{ errors }" rules="required|max:250" :name="$t('common.address')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required|max:250"
+            :name="$t('common.address')"
+          >
             <label>* {{ $t('common.address') }}</label>
             <input
               v-model="card.address"
               name="address"
-              :class="errors.length?'is-invalid':''"
+              :class="errors.length ? 'is-invalid' : ''"
               type="text"
               class="form-control form-control-sm"
               :placeholder="$t('common.address_placeholder')"
@@ -33,12 +37,16 @@
           </ValidationProvider>
         </div>
         <div class="form-group">
-          <ValidationProvider v-slot="{ errors }" rules="required|max:100" :name="$t('common.city')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required|max:100"
+            :name="$t('common.city')"
+          >
             <label>* {{ $t('common.city') }}</label>
             <input
               v-model="card.address_city"
               name="city"
-              :class="errors.length?'is-invalid':''"
+              :class="errors.length ? 'is-invalid' : ''"
               type="text"
               class="form-control form-control-sm"
             >
@@ -46,12 +54,16 @@
           </ValidationProvider>
         </div>
         <div class="form-group">
-          <ValidationProvider v-slot="{ errors }" rules="max:100" :name="$t('common.state')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="max:100"
+            :name="$t('common.state')"
+          >
             <label>{{ $t('common.state') }}</label>
             <input
               v-model="card.address_state"
               type="text"
-              :class="errors.length?'is-invalid':''"
+              :class="errors.length ? 'is-invalid' : ''"
               class="form-control form-control-sm"
               name="state"
             >
@@ -71,7 +83,7 @@
               filterable
               class="w-full"
               size="small"
-              :class="errors.length?'is-invalid':''"
+              :class="errors.length ? 'is-invalid' : ''"
               auto-complete="off"
             >
               <el-option
@@ -81,7 +93,10 @@
                 :label="country.country_name"
               >
                 <span>
-                  <span :class="`flag flag-${country.country_code.toLowerCase()}`" class="" />
+                  <span
+                    :class="`flag flag-${country.country_code.toLowerCase()}`"
+                    class=""
+                  />
                   {{ country.country_name }}
                 </span>
               </el-option>
@@ -90,13 +105,17 @@
           </ValidationProvider>
         </div>
         <div class="form-group">
-          <ValidationProvider v-slot="{ errors }" rules="numeric|max:10" :name="$t('common.state')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="numeric|max:10"
+            :name="$t('common.state')"
+          >
             <label>{{ $t('common.zip') }}</label>
             <input
               v-model="card.address_zip"
               type="text"
-              :class="errors.length?'is-invalid':''"
-              class="form-control form-control-sm "
+              :class="errors.length ? 'is-invalid' : ''"
+              class="form-control form-control-sm"
               name="zip"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
@@ -130,7 +149,8 @@ import { ValidationProvider, ValidationObserver } from 'vee-validate'
 
 export default {
   components: {
-    ValidationProvider, ValidationObserver
+    ValidationProvider,
+    ValidationObserver
   },
   props: {
     // card: {
@@ -155,8 +175,7 @@ export default {
   created () {
     this.getCountries()
   },
-  mounted () {
-  },
+  mounted () {},
   methods: {
     openDialog (card) {
       this.visible = true
@@ -165,7 +184,7 @@ export default {
     },
     // beforeOpen () {
     //   // eslint-disable-next-line no-undef
-    //   this.stripe = Stripe(process.env.stripeKey)
+    //   this.stripe = Stripe(this.$config.stripeKey)
     //   this.elements = this.stripe.elements({})
     // },
     // handleOpen () {
@@ -217,13 +236,15 @@ export default {
           address_zip: this.card.address_zip || ''
         }
         const url = `cystack_platform/payments/cards/${this.card.id_card}/detail`
-        this.$axios.$put(url, {
-          ...data
-        }).then(res => {
-          this.notify(this.$t('data.billing.edit_card_success'), 'success')
-          this.$emit('handle-done', res)
-          this.closeDialog()
-        })
+        this.$axios
+          .$put(url, {
+            ...data
+          })
+          .then(res => {
+            this.notify(this.$t('data.billing.edit_card_success'), 'success')
+            this.$emit('handle-done', res)
+            this.closeDialog()
+          })
           .catch(() => {
             this.notify(this.$t('data.billing.edit_card_failed'), 'warning')
           })
@@ -235,15 +256,12 @@ export default {
       }
     },
     getCountries () {
-      this.$axios.$get('resources/countries')
-        .then(res => {
-          this.countries = res
-        })
+      this.$axios.$get('resources/countries').then(res => {
+        this.countries = res
+      })
     }
   }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

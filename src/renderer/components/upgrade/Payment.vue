@@ -7,31 +7,67 @@
       </div>
       <div class="grid grid-cols-2 cloud-card gap-x-4">
         <div class="form-group col-span-2">
-          <ValidationProvider v-slot="{ errors }" rules="required|alpha_spaces|max:100" :name="$t('common.cardholder')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required|alpha_spaces|max:100"
+            :name="$t('common.cardholder')"
+          >
             <label class="">* {{ $t('common.cardholder') }}</label>
             <input
               v-model="user.name"
               type="text"
-              :class="errors.length?'is-invalid':''"
-              class="form-control form-control-sm "
+              :class="errors.length ? 'is-invalid' : ''"
+              class="form-control form-control-sm"
               :placeholder="$t('common.cardholder_placeholder')"
               name="cardholder"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
           </ValidationProvider>
         </div>
-        <div class="form-group col-span-2" :class="eventChangeNumber.error ? 'has-danger':''">
+        <div
+          class="form-group col-span-2"
+          :class="eventChangeNumber.error ? 'has-danger' : ''"
+        >
           <label class="">* {{ $t('data.billing.card_number') }}</label>
           <div class="input-group input-group-sm bg-white">
-            <div class="input-group-prepend bg-black-200  !rounded-r-none">
+            <div class="input-group-prepend bg-black-200 !rounded-r-none">
               <span class="input-group-text">
-                <i v-if="eventChangeNumber.brand === 'visa'" class="fab fa-cc-visa" style="font-size:1.5em" />
-                <i v-else-if="eventChangeNumber.brand === 'amex'" class="fab fa-cc-amex" style="font-size:1.5em" />
-                <i v-else-if="eventChangeNumber.brand === 'jcb'" class="fab fa-cc-jcb" style="font-size:1.5em" />
-                <i v-else-if="eventChangeNumber.brand === 'mastercard'" class="fab fa-cc-mastercard" style="font-size:1.5em" />
-                <i v-else-if="eventChangeNumber.brand === 'diners'" class="fab fa-cc-diners-club" style="font-size:1.5em" />
-                <i v-else-if="eventChangeNumber.brand === 'discover'" class="fab fa-cc-discover" style="font-size:1.5em" />
-                <i v-else class="far fa-credit-card" :class="eventChangeNumber.brand? 'm--font-danger':''" style="font-size:1.5em" />
+                <i
+                  v-if="eventChangeNumber.brand === 'visa'"
+                  class="fab fa-cc-visa"
+                  style="font-size: 1.5em"
+                />
+                <i
+                  v-else-if="eventChangeNumber.brand === 'amex'"
+                  class="fab fa-cc-amex"
+                  style="font-size: 1.5em"
+                />
+                <i
+                  v-else-if="eventChangeNumber.brand === 'jcb'"
+                  class="fab fa-cc-jcb"
+                  style="font-size: 1.5em"
+                />
+                <i
+                  v-else-if="eventChangeNumber.brand === 'mastercard'"
+                  class="fab fa-cc-mastercard"
+                  style="font-size: 1.5em"
+                />
+                <i
+                  v-else-if="eventChangeNumber.brand === 'diners'"
+                  class="fab fa-cc-diners-club"
+                  style="font-size: 1.5em"
+                />
+                <i
+                  v-else-if="eventChangeNumber.brand === 'discover'"
+                  class="fab fa-cc-discover"
+                  style="font-size: 1.5em"
+                />
+                <i
+                  v-else
+                  class="far fa-credit-card"
+                  :class="eventChangeNumber.brand ? 'm--font-danger' : ''"
+                  style="font-size: 1.5em"
+                />
               </span>
             </div>
             <div id="card-number" ref="cardNumber" />
@@ -40,14 +76,20 @@
             {{ $t(`errors.${eventChangeNumber.error.code}`) }}
           </div>
         </div>
-        <div class="form-group" :class="eventChangeExpiry.error ? 'has-danger':''">
+        <div
+          class="form-group"
+          :class="eventChangeExpiry.error ? 'has-danger' : ''"
+        >
           <label class="">* {{ $t('data.billing.expiration') }}</label>
           <div id="card-expiry" ref="cardExpiry" />
           <div v-if="eventChangeExpiry.error" class="invalid-feedback !block">
             {{ $t(`errors.${eventChangeExpiry.error.code}`) }}
           </div>
         </div>
-        <div class="form-group" :class="eventChangeCvc.error ? 'has-danger':''">
+        <div
+          class="form-group"
+          :class="eventChangeCvc.error ? 'has-danger' : ''"
+        >
           <label class="">* {{ $t('data.billing.cvc') }}</label>
           <div id="card-cvc" ref="cardCvc" />
           <div v-if="eventChangeCvc.error" class="invalid-feedback !block">
@@ -55,21 +97,31 @@
           </div>
         </div>
         <div class="form-group col-span-2 text-right">
-          <img src="~assets/images/logo/stripe.svg" alt="" style="height: 30px">
+          <img
+            src="~assets/images/logo/stripe.svg"
+            alt=""
+            style="height: 30px"
+          >
         </div>
       </div>
       <el-divider />
       <div class="row">
         <div class="form-group col-12">
-          <div class="text-lg font-semibold">{{ $t('data.billing.billing_contact') }}</div>
+          <div class="text-lg font-semibold">
+            {{ $t('data.billing.billing_contact') }}
+          </div>
         </div>
         <div class="form-group col-12">
-          <ValidationProvider v-slot="{ errors }" rules="required|alpha_spaces|max:100" :name="$t('common.name')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required|alpha_spaces|max:100"
+            :name="$t('common.name')"
+          >
             <label>* {{ $t('common.name') }}</label>
             <input
               v-model="user.metadata.contact_name"
               name="name"
-              :class="errors.length?'is-invalid':''"
+              :class="errors.length ? 'is-invalid' : ''"
               type="text"
               class="form-control form-control-sm"
             >
@@ -77,26 +129,36 @@
           </ValidationProvider>
         </div>
         <div class="form-group col-12">
-          <ValidationProvider v-slot="{ errors }" rules="email|required|max:100" :name="$t('common.email')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="email|required|max:100"
+            :name="$t('common.email')"
+          >
             <label>* {{ $t('common.email') }}</label>
             <input
               v-model="user.metadata.email"
-              :class="errors.length?'is-invalid':''"
+              :class="errors.length ? 'is-invalid' : ''"
               name="email"
               type="text"
               class="form-control form-control-sm"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
-            <span class="form-text text-muted">{{ $t('data.billing.email_hint') }}</span>
+            <span class="form-text text-muted">{{
+              $t('data.billing.email_hint')
+            }}</span>
           </ValidationProvider>
         </div>
         <div class="form-group col-12">
-          <ValidationProvider v-slot="{ errors }" rules="max:100" :name="$t('common.company')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="max:100"
+            :name="$t('common.company')"
+          >
             <label>{{ $t('common.company') }}</label>
             <input
               v-model="user.metadata.company"
               name="company"
-              :class="errors.length?'is-invalid':''"
+              :class="errors.length ? 'is-invalid' : ''"
               type="text"
               class="form-control form-control-sm"
             >
@@ -112,12 +174,16 @@
           </div>
         </div>
         <div class="form-group col-span-2">
-          <ValidationProvider v-slot="{ errors }" rules="required|max:250" :name="$t('common.address')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required|max:250"
+            :name="$t('common.address')"
+          >
             <label>* {{ $t('common.address') }}</label>
             <input
               v-model="user.address"
               name="address"
-              :class="errors.length?'is-invalid':''"
+              :class="errors.length ? 'is-invalid' : ''"
               type="text"
               class="form-control form-control-sm"
               :placeholder="$t('common.address_placeholder')"
@@ -126,12 +192,16 @@
           </ValidationProvider>
         </div>
         <div class="form-group">
-          <ValidationProvider v-slot="{ errors }" rules="required|max:100" :name="$t('common.city')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="required|max:100"
+            :name="$t('common.city')"
+          >
             <label>* {{ $t('common.city') }}</label>
             <input
               v-model="user.address_city"
               name="city"
-              :class="errors.length?'is-invalid':''"
+              :class="errors.length ? 'is-invalid' : ''"
               type="text"
               class="form-control form-control-sm"
             >
@@ -139,12 +209,16 @@
           </ValidationProvider>
         </div>
         <div class="form-group">
-          <ValidationProvider v-slot="{ errors }" rules="max:100" :name="$t('common.state')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="max:100"
+            :name="$t('common.state')"
+          >
             <label>{{ $t('common.state') }}</label>
             <input
               v-model="user.address_state"
               type="text"
-              :class="errors.length?'is-invalid':''"
+              :class="errors.length ? 'is-invalid' : ''"
               class="form-control form-control-sm"
               name="state"
             >
@@ -164,7 +238,7 @@
               filterable
               class="w-full"
               size="small"
-              :class="errors.length?'is-invalid':''"
+              :class="errors.length ? 'is-invalid' : ''"
               auto-complete="off"
             >
               <el-option
@@ -174,7 +248,10 @@
                 :label="country.country_name"
               >
                 <span>
-                  <span :class="`flag flag-${country.country_code.toLowerCase()}`" class="" />
+                  <span
+                    :class="`flag flag-${country.country_code.toLowerCase()}`"
+                    class=""
+                  />
                   {{ country.country_name }}
                 </span>
               </el-option>
@@ -183,13 +260,17 @@
           </ValidationProvider>
         </div>
         <div class="form-group">
-          <ValidationProvider v-slot="{ errors }" rules="numeric|max:10" :name="$t('common.state')">
+          <ValidationProvider
+            v-slot="{ errors }"
+            rules="numeric|max:10"
+            :name="$t('common.state')"
+          >
             <label>{{ $t('common.zip') }}</label>
             <input
               v-model="user.address_zip"
               type="text"
-              :class="errors.length?'is-invalid':''"
-              class="form-control form-control-sm "
+              :class="errors.length ? 'is-invalid' : ''"
+              class="form-control form-control-sm"
               name="zip"
             >
             <span class="invalid-feedback">{{ errors[0] }}</span>
@@ -223,7 +304,8 @@ import { ValidationProvider, ValidationObserver } from 'vee-validate'
 
 export default {
   components: {
-    ValidationProvider, ValidationObserver
+    ValidationProvider,
+    ValidationObserver
   },
   props: {
     userInfo: {
@@ -247,8 +329,7 @@ export default {
       cardNumber: null,
       cardExpiry: null,
       cardCvc: null,
-      card: {
-      },
+      card: {},
       countries: [],
       loading: false,
       user: {
@@ -262,14 +343,20 @@ export default {
   },
   mounted () {
     // eslint-disable-next-line no-undef
-    this.stripe = Stripe(process.env.stripeKey)
+    this.stripe = Stripe(this.$config.stripeKey)
     this.elements = this.stripe.elements({})
     this.$nextTick(() => {
-      this.cardNumber = this.elements.create('cardNumber', { classes: { base: 'form-control form-control-sm !py-[10px]' } })
+      this.cardNumber = this.elements.create('cardNumber', {
+        classes: { base: 'form-control form-control-sm !py-[10px]' }
+      })
       this.cardNumber.mount(this.$refs.cardNumber)
-      this.cardExpiry = this.elements.create('cardExpiry', { classes: { base: 'form-control form-control-sm bg-white !py-[10px]' } })
+      this.cardExpiry = this.elements.create('cardExpiry', {
+        classes: { base: 'form-control form-control-sm bg-white !py-[10px]' }
+      })
       this.cardExpiry.mount(this.$refs.cardExpiry)
-      this.cardCvc = this.elements.create('cardCvc', { classes: { base: 'form-control form-control-sm bg-white !py-[10px]' } })
+      this.cardCvc = this.elements.create('cardCvc', {
+        classes: { base: 'form-control form-control-sm bg-white !py-[10px]' }
+      })
       this.cardCvc.mount(this.$refs.cardCvc)
       this.cardNumber.on('change', event => {
         this.eventChangeNumber = event
@@ -321,20 +408,25 @@ export default {
           if (result.token) {
             // Handle result.error or result.token
             const url = 'cystack_platform/payments/cards'
-            this.$axios.$post(url, {
-              token_card: result.token.id,
-              metadata: {
-                email: this.user.metadata.email,
-                contact_name: this.user.metadata.contact_name,
-                company: this.user.metadata.company
-              }
-            }).then(res => {
-              this.notify(this.$t('data.billing.add_card_success'), 'success')
-              this.$emit('handle-done', res)
-              this.handleClose()
-            })
+            this.$axios
+              .$post(url, {
+                token_card: result.token.id,
+                metadata: {
+                  email: this.user.metadata.email,
+                  contact_name: this.user.metadata.contact_name,
+                  company: this.user.metadata.company
+                }
+              })
+              .then(res => {
+                this.notify(this.$t('data.billing.add_card_success'), 'success')
+                this.$emit('handle-done', res)
+                this.handleClose()
+              })
               .catch(() => {
-                this.notify(this.$t('data.billing.card_decline.generic_decline'), 'warning')
+                this.notify(
+                  this.$t('data.billing.card_decline.generic_decline'),
+                  'warning'
+                )
               })
               .then(() => {
                 this.loading = false
@@ -346,15 +438,12 @@ export default {
       }
     },
     getCountries () {
-      this.$axios.$get('resources/countries')
-        .then(res => {
-          this.countries = res
-        })
+      this.$axios.$get('resources/countries').then(res => {
+        this.countries = res
+      })
     }
   }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
