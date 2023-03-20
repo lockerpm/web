@@ -66,6 +66,9 @@ Vue.mixin({
     myShares () {
       return this.$store.state.myShares
     },
+    myQuickShares () {
+      return this.$store.state.myShares
+    },
     enterpriseInvitations () {
       return this.$store.state.enterpriseInvitations
     },

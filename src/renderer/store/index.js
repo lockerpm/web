@@ -29,6 +29,7 @@ export const state = () => ({
   pendingShares: 0,
   extensionLoggedIn: false,
   myShares: [],
+  myQuickShares: [],
   enterpriseInvitations: [],
   enterprisePolicies: [],
   notice: {
@@ -126,6 +127,9 @@ export const mutations = {
   },
   UPDATE_MY_SHARES (state, value) {
     state.myShares = value
+  },
+  UPDATE_MY_QUICK_SHARES (state, value) {
+    state.myQuickShares = value
   },
   UPDATE_ENTERPRISE_INVITATIONS (state, value) {
     state.enterpriseInvitations = value
@@ -273,6 +277,14 @@ export const actions = {
       .$get('cystack_platform/pm/sharing/my_share')
       .then(res => {
         commit('UPDATE_MY_SHARES', res)
+        return res
+      })
+  },
+  LoadMyQuickShares ({ commit }) {
+    return this.$axios
+      .$get('cystack_platform/pm/quick_shares')
+      .then(res => {
+        commit('UPDATE_MY_QUICK_SHARES', res)
         return res
       })
   },

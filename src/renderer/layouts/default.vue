@@ -116,6 +116,7 @@ export default {
         this.reconnectSocket()
         this.getShareInvitations()
         this.getMyShares()
+        this.getMyQuickShares()
         this.$store.dispatch('LoadCurrentPlan')
         this.intervalGet = setInterval(() => {
           this.$store.dispatch('LoadNotification')
@@ -191,6 +192,9 @@ export default {
     async getMyShares () {
       this.$store.dispatch('LoadMyShares')
     },
+    async getMyQuickShares () {
+      this.$store.dispatch('LoadMyQuickShares')
+    },
     async recordActivity () {
       const now = new Date().getTime()
       if (this.lastActivity != null && now - this.lastActivity < 250) {
@@ -244,6 +248,7 @@ export default {
           this.getSyncData()
           this.getShareInvitations()
           this.getMyShares()
+          this.getMyQuickShares()
           break
         case 'emergency_access':
           this.$refs.emergencyAccessInvitations.getEmergencyAccessInvitations()
