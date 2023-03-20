@@ -180,6 +180,8 @@ export default {
 
   layout: 'authenticate',
 
+  middleware: ['blockProduction'],
+
   asyncData ({ $axios }) {
     return $axios
       .$get('/resources/countries')
