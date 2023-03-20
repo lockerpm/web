@@ -1,6 +1,6 @@
 <template>
   <div class="content pb-100">
-    <div class="w-full flex mt-28">
+    <div class="w-full flex mt-28 relative z-10">
       <div v-if="post" class="">
         <p class="landing-font-16 text-black">
           <span>
