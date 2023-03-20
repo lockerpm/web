@@ -716,26 +716,29 @@
                 <!-- Copy end -->
 
                 <!-- Share -->
-                <button
+                <el-dropdown
                   v-if="isCipherShareable(item, organizations)"
-                  class="btn btn-icon btn-xs hover:bg-black-400"
-                  :title="$t('common.share')"
-                  @click="shareItem(item)"
+                  trigger="click"
+                  :hide-on-click="false"
                 >
-                  <i class="far fa-share-square" />
-                </button>
-                <!-- Share end -->
+                  <button class="btn btn-icon btn-xs hover:bg-black-400">
+                    <i class="far fa-share-square" />
+                  </button>
+                  <el-dropdown-menu slot="dropdown">
+                    <!-- Normal share -->
+                    <el-dropdown-item @click.native="shareItem(item)">
+                      {{ $t('common.share') }}
+                    </el-dropdown-item>
+                    <!-- Normal share end -->
 
-                <!-- Quick share -->
-                <button
-                  v-if="isCipherShareable(item, organizations)"
-                  class="btn btn-icon btn-xs hover:bg-black-400"
-                  :title="$t('common.quick_share')"
-                  @click="quickShareItem(item)"
-                >
-                  <i class="far fa-share-square" />
-                </button>
-                <!-- Quick share end -->
+                    <!-- Quick share -->
+                    <el-dropdown-item @click.native="quickShareItem(item)">
+                      {{ $t('common.quick_share') }}
+                    </el-dropdown-item>
+                    <!-- Quick share end -->
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <!-- Share end -->
 
                 <!-- Other actions -->
                 <el-dropdown

@@ -18,6 +18,9 @@
     </div>
     <!-- Title end -->
 
+    <!-- Body -->
+    <!-- Body end -->
+
     <!-- Footer -->
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow" />
@@ -30,7 +33,7 @@
           :disabled="loading"
           @click="shareItem(cipher)"
         >
-          {{ isBelongToTeam ? $t('common.update') : $t('common.share') }}
+          {{ $t('common.share') }}
         </button>
       </div>
     </div>
