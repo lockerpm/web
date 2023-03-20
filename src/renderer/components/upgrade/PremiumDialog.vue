@@ -10,7 +10,7 @@
         <img
           width="100%"
           src="~/assets/images/upgrade_premium.png"
-          @click="closeDialog"
+          @click="upgradePlan"
         >
       </div>
     </el-dialog>
