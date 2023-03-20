@@ -33,14 +33,9 @@
     "@angular/core": "9",
     "@angular/router": "9",
     "@fortawesome/fontawesome-free": "5.15.3",
-<<<<<<< Updated upstream
-    "@nuxt/typescript-build": "^2.1.0",
-    "@nuxtjs/eslint-config-typescript": "^8.0.0",
-=======
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "2.1.0",
-    "@nuxtjs/eslint-config-typescript": "6.0.0",
->>>>>>> Stashed changes
+    "@nuxtjs/eslint-config-typescript": "^8.0.0",
     "@nuxtjs/tailwindcss": "^4.1.2",
     "@types/lunr": "^2.3.3",
     "@types/node": "^15.0.2",
