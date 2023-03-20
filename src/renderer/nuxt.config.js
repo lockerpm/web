@@ -55,21 +55,31 @@ module.exports = {
   plugins: [
     { ssr: true, src: '@/plugins/router.js' },
     { ssr: true, src: '@/plugins/axios.js' },
-    { ssr: true, src: '@/plugins/mixin.js' },
     { ssr: false, src: '@/plugins/localStorage.js' },
-    { ssr: true, src: '@/plugins/icons.js' },
-    { ssr: true, src: '@/plugins/element.js' },
     { ssr: false, src: '@/plugins/initJslib.ts' },
     { ssr: false, src: '@/plugins/asyncComputed.js' },
-    { ssr: false, src: '@/plugins/clipboard.js' },
     { ssr: false, src: '@/plugins/vue-native-socket.js' },
-    { ssr: false, src: '@/plugins/vue-virtual-scroller.js' },
-    { ssr: true, src: '@/plugins/vee.js' },
-    { ssr: true, src: '@/plugins/katex.js' },
-    { ssr: false, src: '@/plugins/youtube.js' },
-    { ssr: true, src: '@/plugins/fontawesome.js' },
     { ssr: false, src: '@/plugins/tutorial.js' },
-    { ssr: false, src: '@/plugins/circle-countdown-timer.js' }
+
+    // Mixins
+    { ssr: true, src: '@/plugins/mixins/index.js' },
+    { ssr: true, src: '@/plugins/mixins/onboarding.js' },
+    { ssr: true, src: '@/plugins/mixins/utils.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/index.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/policy.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/sharing.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/sync.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/utils.js' },
+
+    // UI
+    { ssr: false, src: '@/plugins/ui/circle-countdown-timer.js' },
+    { ssr: false, src: '@/plugins/ui/clipboard.js' },
+    { ssr: true, src: '@/plugins/ui/element.js' },
+    { ssr: true, src: '@/plugins/ui/fontawesome.js' },
+    { ssr: true, src: '@/plugins/ui/katex.js' },
+    { ssr: true, src: '@/plugins/ui/vee.js' },
+    { ssr: false, src: '@/plugins/ui/vue-virtual-scroller.js' },
+    { ssr: false, src: '@/plugins/ui/youtube.js' }
   ],
   buildModules: [
     '@nuxt/typescript-build',
