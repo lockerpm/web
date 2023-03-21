@@ -69,7 +69,7 @@
     "@nuxtjs/gtm": "^2.4.0",
     "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/recaptcha": "^1.1.1",
-    "@nuxtjs/sentry": "^7.1.4",
+    "@nuxtjs/sentry": "^5.1.7",
     "@tailwindcss/forms": "^0.3.2",
     "autoprefixer": "10.4.5",
     "axios": "^0.27.2",
