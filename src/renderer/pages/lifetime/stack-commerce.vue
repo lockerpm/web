@@ -46,12 +46,16 @@
           <div>
             <h1 class="font-bold text-[48px] leading-[58px] text-primary mb-4">
               {{
-                $t('lifetime.redeem_page.intro.title', { service: 'AppSumo' })
+                $t('lifetime.redeem_page.intro.title', {
+                  service: 'StackCommerce'
+                })
               }}
             </h1>
             <p class="font-bold text-[20px] mb-4">
               {{
-                $t('lifetime.redeem_page.intro.desc', { service: 'AppSumo' })
+                $t('lifetime.redeem_page.intro.desc', {
+                  service: 'StackCommerce'
+                })
               }}
             </p>
             <ol class="list-decimal ml-4 mb-4">
@@ -61,14 +65,14 @@
                 )"
                 :key="index"
               >
-                {{ item.replaceAll('{service}', 'AppSumo') }}
+                {{ item.replaceAll('{service}', 'StackCommerce') }}
               </li>
             </ol>
           </div>
           <!-- Intro end -->
 
           <!-- Form -->
-          <RedeemForm :countries="countries" service="AppSumo" />
+          <RedeemForm :countries="countries" service="StackCommerce" />
           <!-- Form end -->
         </div>
         <!-- Left end -->
