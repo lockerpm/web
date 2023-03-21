@@ -69,18 +69,8 @@
               <template v-else-if="getRouteBaseName() === 'vault'">
                 <span class="font-medium">{{ $t('common.all_items') }}</span>
               </template>
-              <template v-else-if="getRouteBaseName() === 'shares-index'">
-                <span class="font-medium">{{
-                  $t('sidebar.shared_with_you')
-                }}</span>
-              </template>
               <template v-else-if="getRouteBaseName() === 'trash'">
                 <span class="font-medium">Trash</span>
-              </template>
-              <template
-                v-else-if="getRouteBaseName() === 'shares-index-your-shares'"
-              >
-                <span class="font-medium">{{ $t('type.your_shares') }}</span>
               </template>
               <template v-else>
                 <span class="font-medium">
@@ -833,12 +823,6 @@
 
     <AddEditFolder ref="addEditFolder" />
 
-    <AddEditTeamFolder ref="addEditTeamFolder" />
-
-    <AddEditTeamFolderUsers ref="addEditTeamFolderUsers" />
-
-    <AddEditTeamFolderGroups ref="addEditTeamFolderGroups" />
-
     <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
 
     <QuickShareCipher ref="quickShareCipher" />
@@ -855,9 +839,6 @@ import orderBy from 'lodash/orderBy'
 import find from 'lodash/find'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import AddEditFolder from '../folder/AddEditFolder'
-import AddEditTeamFolder from '../folder/AddEditTeamFolder'
-import AddEditTeamFolderUsers from '../folder/AddEditTeamFolderUsers'
-import AddEditTeamFolderGroups from '../folder/AddEditTeamFolderGroups'
 import ShareCipher from '../../components/cipher/shares/ShareCipher'
 import QuickShareCipher from '../../components/cipher/shares/QuickShareCipher'
 import ShareFolder from '../../components/folder/ShareFolder'
@@ -873,14 +854,11 @@ export default {
     ChooseCipherType,
     AddEditCipher,
     AddEditFolder,
-    AddEditTeamFolder,
     ShareCipher,
     QuickShareCipher,
     ShareFolder,
     MoveFolder,
     NoCipher,
-    AddEditTeamFolderUsers,
-    AddEditTeamFolderGroups,
     // eslint-disable-next-line vue/no-unused-components
     VueContext: () => import('../../plugins/vue-context'),
     Vnodes
@@ -943,16 +921,6 @@ export default {
           label: 'crypto_backups',
           routeName: 'crypto-backups',
           icon: 'passwords'
-        }
-      ],
-      menuShares: [
-        {
-          label: 'shared_with_you',
-          routeName: 'shares-index'
-        },
-        {
-          label: 'your_shares',
-          routeName: 'shares-index-your-shares'
         }
       ],
       dataRendered: [],
@@ -1035,8 +1003,6 @@ export default {
         return 'CryptoBackup'
       case 'vault':
         return 'Vault'
-      case 'shares-index':
-        return 'Shares'
       case 'trash':
         return 'Trash'
       default:
@@ -1054,9 +1020,6 @@ export default {
       if (this.getRouteBaseName() === 'vault') {
         return this.folders && !this.folders.length && !haveCipher
       }
-      if (this.getRouteBaseName() === 'shares-index') {
-        return this.collections && !this.collections.length
-      }
       if (this.getRouteBaseName() === 'vault-folders-folderId') {
         return false
       }
@@ -1065,17 +1028,6 @@ export default {
       }
       return !haveCipher && !this.searchText
       // return true
-    },
-    shouldRenderShare () {
-      return this.getRouteBaseName() === 'shares-index'
-    },
-    canManageTeamFolder () {
-      return this.teams.some(e =>
-        ['owner', 'admin', 'manager'].includes(e.role)
-      )
-    },
-    canCreateTeamFolder () {
-      return this.teams.some(e => ['owner', 'admin'].includes(e.role))
     },
     writeableCollections () {
       if (!this.collections || !this.organizations) {
@@ -1087,7 +1039,7 @@ export default {
       })
     },
     canAddItem () {
-      let res = !['shares-index', 'trash'].includes(this.routeName)
+      let res = !['trash'].includes(this.routeName)
       const collection = find(
         this.collections,
         e => e.id === this.$route.params.folderId
@@ -1341,49 +1293,18 @@ export default {
       this.orderField = orderField
       this.orderDirection = orderDirection
     },
-    routerFolder (item) {
-      this.$router.push(
-        this.localeRoute({
-          name: 'vault-folders-folderId',
-          params: { folderId: item.id }
-        })
-      )
-    },
-    routerCollection (item) {
-      if (item.id === 'unassigned') {
-        this.$router.push(
-          this.localeRoute({
-            name: 'vault-teams-teamId-tfolders-tfolderId',
-            params: { teamId: item.organizationId, tfolderId: item.id }
-          })
-        )
-      } else {
-        this.$router.push(
-          this.localeRoute({
-            name: 'vault-teams-teamId-tfolders-tfolderId',
-            params: { teamId: item.organizationId, tfolderId: item.id }
-          })
-        )
-      }
-    },
-    openContextFolder (event, data) {
+    openContextFolder (_, data) {
       this.selectedFolder = data
     },
-    openContextTeamFolder (event, data) {
+    openContextTeamFolder (_, data) {
       this.selectedFolder = data
       // console.log(this.selectedFolder)
     },
     addEditFolder (folder, shouldRedirect = false) {
       this.$refs.addEditFolder.openDialog(folder, shouldRedirect)
     },
-    addEditTeamFolder (folder, shouldRedirect = false) {
-      this.$refs.addEditTeamFolder.openDialog(folder, shouldRedirect)
-    },
     deleteFolder (folder) {
       this.$refs.addEditFolder.deleteFolder(folder)
-    },
-    deleteTeamFolder (folder) {
-      this.$refs.addEditTeamFolder.deleteFolder(folder)
     },
     shareItem (cipher) {
       this.$refs.shareCipher.openDialog(cipher)
@@ -1394,27 +1315,8 @@ export default {
     shareFolder (folder) {
       this.$refs.shareFolder.openDialog(folder)
     },
-    putTeamFolderGroups (folder) {
-      this.$refs.addEditTeamFolderGroups.openDialog(folder)
-    },
-    putTeamFolderUsers (folder) {
-      this.$refs.addEditTeamFolderUsers.openDialog(folder)
-    },
     chooseCipherType () {
       this.$refs.chooseCipherType.openDialog()
-    },
-    countUnassignedItems (ciphers = [], organizationId) {
-      if (ciphers) {
-        const filteredCipher = ciphers.filter(
-          c =>
-            c.organizationId === organizationId && c.collectionIds.length === 0
-        )
-        return filteredCipher.length
-      }
-      return 0
-    },
-    canDeleteTeamFolder (team) {
-      return ['owner', 'admin'].includes(team.role) && !team.locked
     },
     confirmDialog (type) {
       this.addBtnDropdownVisible = false
