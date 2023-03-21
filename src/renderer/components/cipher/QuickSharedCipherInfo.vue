@@ -21,7 +21,7 @@
     <!-- Body -->
     <div>
       <!-- Emails -->
-      <div v-if="require_otp">
+      <div v-if="shareOptions.require_otp">
         <!-- Email list -->
         <div>
           <div
@@ -65,6 +65,7 @@
 
 <script>
 import Vnodes from '../../components/Vnodes'
+import { Utils } from '../../jslib/src/misc/utils.ts'
 
 export default {
   components: { Vnodes },
@@ -96,7 +97,9 @@ export default {
       if (!this.decryptedKey) {
         return null
       }
-      return `${process.env.baseUrl}/flash-share-item/${this.shareOptions.id}#${encodeURIComponent(this.decryptedKey)}`
+      return `${process.env.baseUrl}/flash-share-item/${
+        this.shareOptions.id
+      }#${encodeURIComponent(this.decryptedKey)}`
     }
   },
 
@@ -117,20 +120,30 @@ export default {
 
     async getShareInfo () {
       this.loading = true
-      const res = await this.$axios.$get(`cystack_platform/pm/quick_shares/${this.shareOptions.id}`)
+      const res = await this.$axios.$get(
+        `cystack_platform/pm/quick_shares/${this.shareOptions.id}`
+      )
       this.shareOptions = { ...res }
       this.loading = false
     },
 
     async decryptShareKey () {
-      this.decryptedKey = await this.$cryptoService.decrypt(this.shareOptions.key)
+      const res = await this.$cryptoService.decryptToBytes(
+        Utils.fromB64ToArray(this.shareOptions.key)
+      )
+      this.decryptedKey = Utils.fromBufferToB64(res)
     },
 
     async removeEmail (email) {
       try {
         this.loading = true
-        this.shareOptions.emails = this.shareOptions.emails.filter(e => e !== email)
-        await this.$axios.$put(`cystack_platform/pm/quick_shares/${this.shareOptions.id}`, payload)
+        this.shareOptions.emails = this.shareOptions.emails.filter(
+          e => e !== email
+        )
+        await this.$axios.$put(
+          `cystack_platform/pm/quick_shares/${this.shareOptions.id}`,
+          payload
+        )
         this.notify(
           this.$t('data.notifications.update_share_success'),
           'success'

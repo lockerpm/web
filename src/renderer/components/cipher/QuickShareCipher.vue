@@ -33,7 +33,7 @@
         <!-- Expire after end -->
 
         <!-- Share with -->
-        <el-select v-model="shareOptions.require_otp" placeholder="Select">
+        <el-select v-model="requireOtp" placeholder="Select">
           <el-option
             v-for="item in shareWithOptions"
             :key="item.value"
@@ -44,10 +44,12 @@
         <!-- Share with end -->
 
         <!-- Emails -->
-        <div v-if="require_otp">
+        <div v-if="shareOptions.require_otp">
           <!-- Input -->
           <el-input v-model="email">
-            <el-button slot="append" :disabled="!email" @click="addEmail">Add</el-button>
+            <el-button slot="append" :disabled="!email" @click="addEmail">
+              Add
+            </el-button>
           </el-input>
           <!-- Input end -->
 
@@ -70,9 +72,9 @@
 
           <!-- View once -->
           <el-checkbox v-model="viewOnce">View once</el-checkbox>
-        <!-- View once end -->
+          <!-- View once end -->
         </div>
-      <!-- Emails end -->
+        <!-- Emails end -->
       </div>
       <!-- Body end -->
 
@@ -92,7 +94,7 @@
           </button>
         </div>
       </div>
-    <!-- Footer end -->
+      <!-- Footer end -->
     </el-dialog>
 
     <!-- Info dialog -->
@@ -130,6 +132,7 @@ export default {
       dialogVisible: false,
       viewOnce: false,
       expireAfter: null,
+      requireOtp: 0,
       email: ''
     }
   },
@@ -177,6 +180,12 @@ export default {
     }
   },
 
+  watch: {
+    requireOtp (newVal) {
+      this.shareOptions.require_otp = !!newVal
+    }
+  },
+
   methods: {
     async openDialog (cipher = {}) {
       this.dialogVisible = true
@@ -197,6 +206,7 @@ export default {
       this.viewOnce = false
       this.expireAfter = null
       this.email = ''
+      this.requireOtp = 0
     },
 
     addEmail () {
@@ -207,7 +217,9 @@ export default {
     },
 
     removeEmail (email) {
-      this.shareOptions.emails = this.shareOptions.emails.filter(e => e !== email)
+      this.shareOptions.emails = this.shareOptions.emails.filter(
+        e => e !== email
+      )
     },
 
     async shareItem (cipher) {
@@ -246,9 +258,11 @@ export default {
           ...data,
           cipher_id: cipher.id,
           key: encryptedSendKey.encryptedString,
-          password: Utils.fromBufferToB64(password),
+          password: password ? Utils.fromBufferToB64(password) : null,
           max_access_count: this.shareOptions.max_access_count,
-          expired_date: this.expireAfter ? Math.floor(Date.now() / 1000) + this.expireAfter : null,
+          expired_date: this.expireAfter
+            ? Math.floor(Date.now() / 1000) + this.expireAfter
+            : null,
           require_otp: this.require_otp,
           emails: this.require_otp ? this.shareOptions.emails : [],
           each_email_access_count: this.require_otp && this.viewOnce ? 1 : null

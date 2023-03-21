@@ -230,8 +230,17 @@ export default {
     },
     reconnectSocket () {
       const token = this.$cookies.get('cs_locker_token')
+      const _sanitizeUrl = connectionUrl => {
+        if (connectionUrl.startsWith('//')) {
+          const scheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
+          connectionUrl = `${scheme}:${connectionUrl}`
+        }
+
+        return connectionUrl
+      }
+
       this.$connect(
-        this.sanitizeUrl(
+        _sanitizeUrl(
           `${process.env.wsUrl}/cystack_platform/pm/sync?token=${token}`
         ),
         {
