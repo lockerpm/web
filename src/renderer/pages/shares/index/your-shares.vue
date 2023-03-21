@@ -1,17 +1,14 @@
 <template>
-  <ListSharedCipher
-    route-name="shares"
+  <ListYourShares
     :filter="c => c.organizationId && isCipherShared(c.organizationId)"
   />
 </template>
 
 <script>
-import ListSharedCipher from '../../components/cipher/ListSharedCipher'
+import ListYourShares from '@/components/cipher/shares/ListYourShares'
 export default {
   components: {
-    ListSharedCipher
-  },
-  mounted () {},
-  methods: {}
+    ListYourShares
+  }
 }
 </script>

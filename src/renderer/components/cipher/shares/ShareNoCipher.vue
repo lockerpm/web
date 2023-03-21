@@ -38,17 +38,11 @@
 </template>
 
 <script>
-import { CipherType } from '../../jslib/src/enums/cipherType.ts'
-import Vnodes from '../../components/Vnodes'
+import { CipherType } from '../../../jslib/src/enums/cipherType.ts'
+import Vnodes from '../../../components/Vnodes'
 
 export default {
   components: { Vnodes },
-  props: {
-    type: {
-      type: String,
-      default: null
-    }
-  },
   data () {
     return {
       CipherType
@@ -57,6 +51,26 @@ export default {
   computed: {
     isFreeUser () {
       return this.currentPlan?.alias === 'pm_free'
+    },
+    type () {
+      switch (this.routeName) {
+      case 'passwords':
+        return 'Login'
+      case 'notes':
+        return 'SecureNote'
+      case 'cards':
+        return 'Card'
+      case 'identities':
+        return 'Identity'
+      case 'vault':
+        return 'Vault'
+      case 'share-index':
+        return 'Shares'
+      case 'trash':
+        return 'Trash'
+      default:
+        return null
+      }
     }
   },
   methods: {

@@ -104,10 +104,10 @@
 </template>
 
 <script>
-import { CipherRequest } from '../../jslib/src/models/request'
-import { CipherType } from '../../jslib/src/enums'
-import Vnodes from '../../components/Vnodes'
-import { Utils } from '../../jslib/src/misc/utils.ts'
+import { CipherRequest } from '../../../jslib/src/models/request'
+import { CipherType } from '../../../jslib/src/enums'
+import Vnodes from '../../../components/Vnodes'
+import { Utils } from '../../../jslib/src/misc/utils.ts'
 import QuickSharedCipherInfo from './QuickSharedCipherInfo'
 
 export default {

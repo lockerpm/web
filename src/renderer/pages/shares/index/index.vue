@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ListSharedWithYou from '../../components/cipher/ListSharedWithYou'
+import ListSharedWithYou from '@/components/cipher/shares/ListSharedWithYou'
 export default {
   components: {
     ListSharedWithYou

@@ -110,6 +110,15 @@ Vue.mixin({
       )
     },
 
+    routerFolder (item) {
+      this.$router.push(
+        this.localeRoute({
+          name: 'vault-folders-folderId',
+          params: { folderId: item.id }
+        })
+      )
+    },
+
     isProtectedCipher (cipher) {
       return cipher.type === CipherType.MasterPassword
     }

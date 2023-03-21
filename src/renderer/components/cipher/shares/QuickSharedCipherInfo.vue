@@ -64,8 +64,8 @@
 </template>
 
 <script>
-import Vnodes from '../../components/Vnodes'
-import { Utils } from '../../jslib/src/misc/utils.ts'
+import Vnodes from '../../../components/Vnodes'
+import { Utils } from '../../../jslib/src/misc/utils.ts'
 
 export default {
   components: { Vnodes },

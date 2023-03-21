@@ -69,7 +69,7 @@
               <template v-else-if="getRouteBaseName() === 'vault'">
                 <span class="font-medium">{{ $t('common.all_items') }}</span>
               </template>
-              <template v-else-if="getRouteBaseName() === 'shares'">
+              <template v-else-if="getRouteBaseName() === 'shares-index'">
                 <span class="font-medium">{{
                   $t('sidebar.shared_with_you')
                 }}</span>
@@ -77,11 +77,10 @@
               <template v-else-if="getRouteBaseName() === 'trash'">
                 <span class="font-medium">Trash</span>
               </template>
-              <template v-else-if="getRouteBaseName() === 'shares-your-shares'">
+              <template
+                v-else-if="getRouteBaseName() === 'shares-index-your-shares'"
+              >
                 <span class="font-medium">{{ $t('type.your_shares') }}</span>
-              </template>
-              <template v-else-if="getRouteBaseName() === 'shares-requests'">
-                <span class="font-medium">{{ $t('type.requests') }}</span>
               </template>
               <template v-else>
                 <span class="font-medium">
@@ -859,8 +858,8 @@ import AddEditFolder from '../folder/AddEditFolder'
 import AddEditTeamFolder from '../folder/AddEditTeamFolder'
 import AddEditTeamFolderUsers from '../folder/AddEditTeamFolderUsers'
 import AddEditTeamFolderGroups from '../folder/AddEditTeamFolderGroups'
-import ShareCipher from '../../components/cipher/ShareCipher'
-import QuickShareCipher from '../../components/cipher/QuickShareCipher'
+import ShareCipher from '../../components/cipher/shares/ShareCipher'
+import QuickShareCipher from '../../components/cipher/shares/QuickShareCipher'
 import ShareFolder from '../../components/folder/ShareFolder'
 import MoveFolder from '../folder/MoveFolder'
 import NoCipher from '../../components/cipher/NoCipher'
@@ -882,6 +881,7 @@ export default {
     NoCipher,
     AddEditTeamFolderUsers,
     AddEditTeamFolderGroups,
+    // eslint-disable-next-line vue/no-unused-components
     VueContext: () => import('../../plugins/vue-context'),
     Vnodes
   },
@@ -948,15 +948,11 @@ export default {
       menuShares: [
         {
           label: 'shared_with_you',
-          routeName: 'shares'
+          routeName: 'shares-index'
         },
         {
           label: 'your_shares',
-          routeName: 'shares-your-shares'
-        },
-        {
-          label: 'requests',
-          routeName: 'shares-requests'
+          routeName: 'shares-index-your-shares'
         }
       ],
       dataRendered: [],
@@ -1039,7 +1035,7 @@ export default {
         return 'CryptoBackup'
       case 'vault':
         return 'Vault'
-      case 'shares':
+      case 'shares-index':
         return 'Shares'
       case 'trash':
         return 'Trash'
@@ -1058,7 +1054,7 @@ export default {
       if (this.getRouteBaseName() === 'vault') {
         return this.folders && !this.folders.length && !haveCipher
       }
-      if (this.getRouteBaseName() === 'shares') {
+      if (this.getRouteBaseName() === 'shares-index') {
         return this.collections && !this.collections.length
       }
       if (this.getRouteBaseName() === 'vault-folders-folderId') {
@@ -1071,7 +1067,7 @@ export default {
       // return true
     },
     shouldRenderShare () {
-      return this.getRouteBaseName() === 'shares'
+      return this.getRouteBaseName() === 'shares-index'
     },
     canManageTeamFolder () {
       return this.teams.some(e =>
@@ -1091,7 +1087,7 @@ export default {
       })
     },
     canAddItem () {
-      let res = !['shares', 'trash'].includes(this.routeName)
+      let res = !['shares-index', 'trash'].includes(this.routeName)
       const collection = find(
         this.collections,
         e => e.id === this.$route.params.folderId

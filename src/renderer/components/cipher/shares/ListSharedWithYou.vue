@@ -65,7 +65,6 @@
                   <div class="flex flex-col">
                     <a
                       class="text-black font-semibold truncate flex items-center"
-                      :class="{ 'opacity-80': scope.row.isDeleted }"
                       @click="
                         scope.row.status === 'invited'
                           ? openAcceptDialog(scope.row)
@@ -147,7 +146,6 @@
               show-overflow-tooltip
             >
               <template slot-scope="scope">
-                <!-- <span>{{ scope.row.status || 'Shared' }}</span> -->
                 <span
                   class="label whitespace-normal"
                   :class="{
@@ -354,9 +352,9 @@
       <!-- List Ciphers end -->
     </div>
 
-    <ShareNoCipher v-else-if="!$store.state.syncing" :type="type" />
+    <ShareNoCipher v-else-if="!$store.state.syncing" />
 
-    <AddEditCipher ref="addEditCipherDialog" :type="type" />
+    <AddEditCipher ref="addEditCipherDialog" />
 
     <AddEditFolder ref="addEditFolder" />
 
@@ -387,13 +385,13 @@
 import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy'
 import LazyHydrate from 'vue-lazy-hydration'
-import AddEditCipher from '../../components/cipher/AddEditCipher'
-import AddEditFolder from '../folder/AddEditFolder'
-import MoveFolder from '../folder/MoveFolder'
-import ShareNoCipher from '../../components/cipher/ShareNoCipher'
-import { CipherType } from '../../jslib/src/enums'
-import Vnodes from '../../components/Vnodes'
-import { AccountRole } from '../../constants'
+import AddEditCipher from '../../../components/cipher/AddEditCipher'
+import AddEditFolder from '../../folder/AddEditFolder'
+import MoveFolder from '../../folder/MoveFolder'
+import { CipherType } from '../../../jslib/src/enums'
+import Vnodes from '../../../components/Vnodes'
+import { AccountRole } from '../../../constants'
+import ShareNoCipher from './ShareNoCipher'
 
 CipherType.TOTP = 5
 CipherType.MasterPassword = 8
@@ -407,7 +405,7 @@ export default {
     MoveFolder,
     ShareNoCipher,
     // eslint-disable-next-line vue/no-unused-components
-    VueContext: () => import('../../plugins/vue-context'),
+    VueContext: () => import('../../../plugins/vue-context'),
     Vnodes,
     LazyHydrate
   },
@@ -439,7 +437,9 @@ export default {
     },
     shouldRenderNoCipher () {
       const haveCipher =
-        this.ciphers.length + this.collections?.length + this.invitations.length
+        this.ciphers?.length +
+        this.collections?.length +
+        this.invitations.length
       return !haveCipher && !this.searchText
     },
     tableData () {
@@ -489,27 +489,6 @@ export default {
   },
 
   asyncComputed: {
-    allCiphers: {
-      async get () {
-        const deletedFilter = c => {
-          return c.isDeleted === false
-        }
-        const nonProtectedCipher = c => {
-          return ![CipherType.MasterPassword, CipherType.TOTP].includes(c.type)
-        }
-        let result = []
-        try {
-          result =
-            (await this.$searchService.searchCiphers(
-              '',
-              [nonProtectedCipher, deletedFilter],
-              null
-            )) || []
-        } catch (error) {}
-        return result
-      },
-      watch: ['$store.state.syncedCiphersToggle']
-    },
     organizations: {
       async get () {
         const result = await this.$userService.getAllOrganizations()
@@ -550,7 +529,7 @@ export default {
             ...item,
             subTitle: item.subTitle,
             share_type:
-              org.type === 1
+              org.type === AccountRole.ADMIN
                 ? this.$t('data.ciphers.editable')
                 : item.viewPassword
                   ? this.$t('data.ciphers.viewable')
@@ -592,7 +571,7 @@ export default {
           return {
             ...item,
             share_type:
-              org.type === 1
+              org.type === AccountRole.ADMIN
                 ? this.$t('data.ciphers.editable')
                 : !item.hidePasswords
                   ? this.$t('data.ciphers.viewable')
@@ -600,12 +579,10 @@ export default {
           }
         })
         collections.forEach(f => {
-          const ciphers =
-            this.allCiphers &&
-            (this.allCiphers.filter(c => c.collectionIds.includes(f.id)) || [])
-          f.ciphersCount = ciphers && ciphers.length
-          f.ciphers = ciphers
+          f.ciphersCount = 0
+          f.ciphers = []
         })
+
         return collections
       },
       watch: ['searchText', 'ciphers']
@@ -621,16 +598,11 @@ export default {
     moveFolders (ids) {
       this.$refs.moveFolder.openDialog(ids)
     },
-    routerFolder (item) {
-      this.$router.push(
-        this.localeRoute({
-          name: 'vault-folders-folderId',
-          params: { folderId: item.id }
-        })
-      )
-    },
     addEditFolder (folder, shouldRedirect = false) {
       this.$refs.addEditFolder.openDialog(folder, shouldRedirect)
+    },
+    addEdit (cipher) {
+      this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     },
     async getShareInvitations () {
       this.invitations =
@@ -721,10 +693,6 @@ export default {
           console.log(error)
         }
       })
-    },
-    async getMyShares () {
-      // this.myShares = await this.$axios.$get('cystack_platform/pm/sharing/my_share') || []
-      this.$store.dispatch('LoadMyShares')
     },
     openAcceptDialog (item) {
       this.selectedCipher = item

@@ -31,12 +31,12 @@ export default {
       return [
         {
           label: 'shared_with_you',
-          routeName: 'shares',
+          routeName: 'shares-index',
           pending: this.pendingShares
         },
         {
           label: 'your_shares',
-          routeName: 'shares-your-shares'
+          routeName: 'shares-index-your-shares'
         }
       ]
     }

@@ -1,7 +1,7 @@
 <template>
   <div
     class="w-60 h-screen bg-aside min-h-500px min-w-60 flex flex-col justify-between overflow-y-scroll"
-    :class="closable?'relative overflow-x-hidden':'fixed'"
+    :class="closable ? 'relative overflow-x-hidden' : 'fixed'"
   >
     <button
       v-if="closable"
@@ -12,14 +12,12 @@
     </button>
     <div>
       <div class="mt-7 px-6">
-        <nuxt-link :to="localeRoute({name: 'vault'})">
+        <nuxt-link :to="localeRoute({ name: 'vault' })">
           <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
         </nuxt-link>
       </div>
       <nav class="mt-7">
-        <template
-          v-for="(item, index) in menu"
-        >
+        <template v-for="(item, index) in menu">
           <!-- Collapse items -->
           <template v-if="item.collapse">
             <div
@@ -27,27 +25,37 @@
               class="flex items-center pt-2 text-black-400 font-semibold hover:no-underline cursor-pointer"
               active-class="bg-white bg-opacity-20 text-white"
             >
-              <el-collapse v-model="activeNames" accordion class="w-full !border-t-0 !border-b-0">
+              <el-collapse
+                v-model="activeNames"
+                accordion
+                class="w-full !border-t-0 !border-b-0"
+              >
                 <el-collapse-item name="1">
                   <template slot="title">
                     <!-- <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span> -->
-                    <div class="mr-2 w-[22px] h-[22px] flex items-center justify-center">
-                      <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+                    <div
+                      class="mr-2 w-[22px] h-[22px] flex items-center justify-center"
+                    >
+                      <img
+                        :src="require(`~/assets/images/icons/${item.icon}.svg`)"
+                        alt=""
+                      >
                     </div>
-                    <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
+                    <span class="text-sm font-medium">{{
+                      $t(`sidebar.${item.label}`)
+                    }}</span>
                   </template>
                   <div>
                     <ul>
-                      <li
-                        v-for="(itemMenu, id) in item.items"
-                        :key="id"
-                      >
+                      <li v-for="(itemMenu, id) in item.items" :key="id">
                         <nuxt-link
-                          :to="localePath({name: itemMenu.routeName})"
+                          :to="localePath({ name: itemMenu.routeName })"
                           class="flex items-center py-2 pl-11 pr-6 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 hover:no-underline border-l-4 border-transparent"
                           active-class="bg-white bg-opacity-20 text-[#3C962D] border-l-4 !border-primary font-semibold"
                         >
-                          <span class="text-sm">{{ $t(`sidebar.${itemMenu.label}`) }}</span>
+                          <span class="text-sm">{{
+                            $t(`sidebar.${itemMenu.label}`)
+                          }}</span>
                         </nuxt-link>
                       </li>
                     </ul>
@@ -62,23 +70,30 @@
             v-else
             :id="`sidebar__${item.label}`"
             :key="index"
-            :to="localePath({name: item.routeName})"
+            :to="localePath({ name: item.routeName })"
             class="flex justify-between items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
             active-class="bg-white bg-opacity-20 !text-white"
           >
             <div class="flex">
               <!-- Icon -->
-              <div class="mr-2 w-[22px] h-[22px] flex items-center justify-center">
-                <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+              <div
+                class="mr-2 w-[22px] h-[22px] flex items-center justify-center"
+              >
+                <img
+                  :src="require(`~/assets/images/icons/${item.icon}.svg`)"
+                  alt=""
+                >
               </div>
               <!-- Icon end -->
 
               <!-- Label -->
-              <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}</span>
+              <span class="text-sm font-medium">{{
+                $t(`sidebar.${item.label}`)
+              }}</span>
               <!-- Label -->
             </div>
 
-            <div v-if="item.routeName==='shares' && pendingShares>0">
+            <div v-if="item.routeName === 'shares' && pendingShares > 0">
               <div class="notification-badge">
                 {{ pendingShares }}
               </div>
@@ -97,24 +112,46 @@
             :href="item.externalLink"
             target="_blank"
           >
-            <div class="mr-2 w-[22px] h-[22px] flex items-center justify-center">
-              <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+            <div
+              class="mr-2 w-[22px] h-[22px] flex items-center justify-center"
+            >
+              <img
+                :src="require(`~/assets/images/icons/${item.icon}.svg`)"
+                alt=""
+              >
             </div>
-            <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
+            <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}
+            </span>
           </a>
           <nuxt-link
             v-else
             :id="`sidebar__${item.label}`"
             :key="index"
-            :to="localePath({name: item.routeName, params: item.params})"
+            :to="localePath({ name: item.routeName, params: item.params })"
             class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
             active-class="bg-white bg-opacity-20 !text-white"
-            :class="item.routeName==='settings-account'&&['settings-account', 'settings-options', 'settings-security', 'settings-plan-billing'].includes(getRouteBaseName())?'bg-white bg-opacity-20 !text-white':''"
+            :class="
+              item.routeName === 'settings-account' &&
+                [
+                  'settings-account',
+                  'settings-options',
+                  'settings-security',
+                  'settings-plan-billing'
+                ].includes(getRouteBaseName())
+                ? 'bg-white bg-opacity-20 !text-white'
+                : ''
+            "
           >
-            <div class="mr-2 w-[22px] h-[22px] flex items-center justify-center">
-              <img :src="require(`~/assets/images/icons/${item.icon}.svg`)" alt="">
+            <div
+              class="mr-2 w-[22px] h-[22px] flex items-center justify-center"
+            >
+              <img
+                :src="require(`~/assets/images/icons/${item.icon}.svg`)"
+                alt=""
+              >
             </div>
-            <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }} </span>
+            <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}
+            </span>
           </nuxt-link>
         </template>
         <a
@@ -123,7 +160,10 @@
           class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
         >
           <div class="mr-2 w-[22px] h-[22px] flex items-center justify-center">
-            <img :src="require('~/assets/images/icons/help.svg')" alt="feedback">
+            <img
+              :src="require('~/assets/images/icons/help.svg')"
+              alt="feedback"
+            >
           </div>
           <span class="text-sm font-medium">{{ $t('sidebar.feedback') }} </span>
         </a>
@@ -193,17 +233,19 @@ export default {
           icon: 'security',
           routeName: 'tools'
         },
-        ...this.isEnterpriseMember
-          ? [{
-            label: 'policies',
-            icon: 'policies',
-            routeName: 'policies'
-          }]
-          : [],
+        ...(this.isEnterpriseMember
+          ? [
+            {
+              label: 'policies',
+              icon: 'policies',
+              routeName: 'policies'
+            }
+          ]
+          : []),
         {
           label: 'shares',
           icon: 'share',
-          routeName: 'shares'
+          routeName: 'shares-index'
         },
         {
           label: 'private_email',
@@ -219,20 +261,24 @@ export default {
     },
     bottomMenu () {
       return [
-        ...(this.currentPlan.alias === 'pm_free' && !this.isEnterpriseMember)
-          ? [{
-            label: 'upgrade',
-            routeName: 'manage-plans',
-            icon: 'upgrade'
-          }]
-          : [],
-        ...this.isEnterpriseAdminOrOwner
-          ? [{
-            label: 'enterprise_dashboard',
-            externalLink: process.env.lockerEnterprise,
-            icon: 'dashboard'
-          }]
-          : [],
+        ...(this.currentPlan.alias === 'pm_free' && !this.isEnterpriseMember
+          ? [
+            {
+              label: 'upgrade',
+              routeName: 'manage-plans',
+              icon: 'upgrade'
+            }
+          ]
+          : []),
+        ...(this.isEnterpriseAdminOrOwner
+          ? [
+            {
+              label: 'enterprise_dashboard',
+              externalLink: process.env.lockerEnterprise,
+              icon: 'dashboard'
+            }
+          ]
+          : []),
         {
           label: 'settings',
           routeName: 'settings-account',
@@ -265,7 +311,7 @@ export default {
 </script>
 
 <style>
-.sidebar-open .sidebar{
+.sidebar-open .sidebar {
   transform: translateX(0);
 }
 .sidebar {
