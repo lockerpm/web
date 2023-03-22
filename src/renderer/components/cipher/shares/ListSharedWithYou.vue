@@ -437,9 +437,9 @@ export default {
     },
     shouldRenderNoCipher () {
       const haveCipher =
-        this.ciphers?.length +
-        this.collections?.length +
-        this.invitations.length
+        this.ciphers?.length ||
+        this.collections?.length ||
+        this.invitations?.length
       return !haveCipher && !this.searchText
     },
     tableData () {

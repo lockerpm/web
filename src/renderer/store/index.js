@@ -282,7 +282,7 @@ export const actions = {
   },
   LoadMyQuickShares ({ commit }) {
     return this.$axios
-      .$get('cystack_platform/pm/quick_shares')
+      .$get('cystack_platform/pm/quick_shares?paging=0')
       .then(res => {
         commit('UPDATE_MY_QUICK_SHARES', res)
         return res

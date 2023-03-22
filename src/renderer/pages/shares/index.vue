@@ -37,6 +37,10 @@ export default {
         {
           label: 'your_shares',
           routeName: 'shares-index-your-shares'
+        },
+        {
+          label: 'quick_shares',
+          routeName: 'shares-index-quick-shares'
         }
       ]
     }

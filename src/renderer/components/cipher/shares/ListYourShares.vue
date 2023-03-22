@@ -296,7 +296,7 @@ export default {
 
   computed: {
     shouldRenderNoCipher () {
-      const haveCipher = this.ciphers?.length + this.collections?.length
+      const haveCipher = this.ciphers?.length || this.collections?.length
       return !haveCipher && !this.searchText
     },
     tableData () {

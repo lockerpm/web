@@ -17,13 +17,13 @@
 
       <div class="text-black-600 mb-8">
         {{
-          isFreeUser && getRouteBaseName() !== 'shares'
+          isFreeUser && getRouteBaseName() === 'shares-index-your-shares'
             ? $t('errors.upgrade_to_use')
             : $t(`data.no_data.${type}.description`)
         }}
       </div>
 
-      <div v-if="getRouteBaseName() !== 'shares'">
+      <div v-if="getRouteBaseName() !== 'shares-index'">
         <button
           class="btn btn-default"
           @click="isFreeUser ? upgradePlan() : $emit('add-share')"
@@ -53,7 +53,7 @@ export default {
       return this.currentPlan?.alias === 'pm_free'
     },
     type () {
-      switch (this.routeName) {
+      switch (this.getRouteBaseName()) {
       case 'passwords':
         return 'Login'
       case 'notes':
@@ -64,7 +64,9 @@ export default {
         return 'Identity'
       case 'vault':
         return 'Vault'
-      case 'share-index':
+      case 'shares-index':
+      case 'shares-index-your-shares':
+      case 'shares-index-quick-shares':
         return 'Shares'
       case 'trash':
         return 'Trash'
