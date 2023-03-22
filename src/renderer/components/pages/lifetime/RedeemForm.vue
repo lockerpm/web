@@ -57,9 +57,7 @@
       >
         <el-input
           v-model="redeemForm.code"
-          :placeholder="
-            $t('lifetime.redeem_page.form.app_code', { service: 'AppSumo' })
-          "
+          :placeholder="$t('lifetime.redeem_page.form.app_code', { service })"
         />
       </el-form-item>
       <!-- Code end -->
