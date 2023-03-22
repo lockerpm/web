@@ -17,6 +17,7 @@ import { FolderData } from '../../jslib/src/models/data/folderData'
 import { OrganizationData } from '../../jslib/src/models/data/organizationData'
 import { PolicyData } from '../../jslib/src/models/data/policyData'
 import { SendData } from '../models/data/sendData'
+import { SendData as OldSendData } from '../../jslib/src/models/data/sendData'
 
 import { CipherResponse } from '../../jslib/src/models/response/cipherResponse'
 import { CollectionDetailsResponse } from '../../core/models/response/collectionResponse'
@@ -280,7 +281,7 @@ export class SyncService implements SyncServiceAbstraction {
           const remoteSend = await this.apiService.getSend(notification.id)
           if (remoteSend != null) {
             const userId = await this.userService.getUserId()
-            await this.sendService.upsert(new SendData(remoteSend, userId))
+            await this.sendService.upsert(new OldSendData(remoteSend, userId))
             this.messagingService.send('syncedUpsertedSend', {
               sendId: notification.id
             })

@@ -94,6 +94,21 @@ Vue.mixin({
           }
         }) || []
       )
+    },
+
+    async syncQuickShares () {
+      try {
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', true)
+        const res = await this.$axios.$get(
+          'cystack_platform/pm/quick_shares?paging=0'
+        )
+        const userId = await this.$userService.getUserId()
+        await this.$syncService.syncSends(userId, res)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', false)
+      }
     }
   }
 })

@@ -23,9 +23,9 @@
             </button>
           </div>
         </div>
-        <div v-if="ciphers" class="uppercase text-head-6">
-          <span class="text-primary font-semibold">{{ ciphers.length }}</span>
-          {{ $tc('type.0', ciphers.length) }}
+        <div v-if="sends" class="uppercase text-head-6">
+          <span class="text-primary font-semibold">{{ sends.length }}</span>
+          {{ $tc('type.0', sends.length) }}
         </div>
       </div>
       <!-- Overview end -->
@@ -50,22 +50,13 @@
                 <div class="flex items-center">
                   <!-- Icon -->
                   <div>
-                    <!-- Item -->
                     <div
-                      v-if="scope.row.type"
                       class="text-[34px] mr-3 flex-shrink-0"
-                      :class="{ 'filter grayscale': scope.row.isDeleted }"
+                      :class="{
+                        'filter grayscale': scope.row.cipher.isDeleted
+                      }"
                     >
-                      <Vnodes :vnodes="getIconCipher(scope.row, 34)" />
-                    </div>
-
-                    <!-- Folder -->
-                    <div v-else>
-                      <img
-                        src="~/assets/images/icons/folderSolidShare.svg"
-                        alt=""
-                        class="select-none mr-2"
-                      >
+                      <Vnodes :vnodes="getIconCipher(scope.row.cipher, 34)" />
                     </div>
                   </div>
                   <!-- Icon end -->
@@ -74,20 +65,13 @@
                   <div class="flex flex-col">
                     <a
                       class="text-black font-semibold truncate flex items-center"
-                      :class="{ 'opacity-80': scope.row.isDeleted }"
-                      @click="routerCipher(scope.row, addEdit)"
+                      :class="{ 'opacity-80': scope.row.cipher.isDeleted }"
+                      @click.prevent="viewCipher(scope.row.cipher)"
                     >
-                      {{ scope.row.name }}
-                      <img
-                        v-if="scope.row.organizationId"
-                        src="~/assets/images/icons/shares.svg"
-                        alt="Shared"
-                        title="Your shares"
-                        class="inline-block ml-2"
-                      >
+                      {{ scope.row.cipher.name }}
                     </a>
-                    <div v-if="scope.row.type === CipherType.Login">
-                      {{ scope.row.subTitle || 'N/A' }}
+                    <div v-if="scope.row.cipher.type === CipherType.Login">
+                      {{ scope.row.cipher.subTitle || 'N/A' }}
                     </div>
                   </div>
                   <!-- Name end -->
@@ -100,8 +84,8 @@
             <el-table-column :label="$t('common.type')" show-overflow-tooltip>
               <template slot-scope="scope">
                 <span>{{
-                  CipherType[scope.row.cipher_type] ||
-                    CipherType[scope.row.type] ||
+                  CipherType[scope.row.cipher.cipher_type] ||
+                    CipherType[scope.row.cipher.type] ||
                     'Folder'
                 }}</span>
               </template>
@@ -118,7 +102,7 @@
                   {{
                     scope.row.revisionDate
                       ? $moment(scope.row.revisionDate).fromNow()
-                      : $moment(scope.row.access_time * 1000).fromNow()
+                      : $moment(scope.row.creationDate * 1000).fromNow()
                   }}
                 </span>
               </template>
@@ -163,7 +147,10 @@
       <!-- List Ciphers end -->
     </div>
 
-    <ShareNoCipher v-else-if="!$store.state.syncing" @add-share="newShare" />
+    <ShareNoCipher
+      v-else-if="!$store.state.syncingQuickShares"
+      @add-share="newShare"
+    />
   </div>
 </template>
 
@@ -188,43 +175,28 @@ export default {
     LazyHydrate
   },
 
-  props: {
-    filter: {
-      type: Function,
-      default: null
-    }
-  },
-
   data () {
     return {
       CipherType,
       loading: false,
       context: '',
-      publicKey: '',
       dataRendered: [],
-      lastIndex: 0,
-      userFingerPrint: '',
-      selectedUser: {},
-      loadingConfirm: false,
-      dialogConfirmVisible: false,
-      selectedCipher: {},
-      isItemInUrlOpened: false
+      lastIndex: 0
     }
   },
 
   computed: {
     shouldRenderNoCipher () {
-      const haveCipher = this.ciphers?.length
-      return !haveCipher && !this.searchText
+      return !this.sends?.length
     },
     tableData () {
-      return this.ciphers || []
+      return this.sends || []
     }
   },
 
   watch: {
-    '$store.state.syncing' () {
-      if (this.$store.state.syncing) {
+    '$store.state.syncingQuickShares' () {
+      if (this.$store.state.syncingQuickShares) {
         this.loading = true
       } else {
         this.loading = false
@@ -258,55 +230,41 @@ export default {
   },
 
   asyncComputed: {
-    ciphers: {
+    sends: {
       async get () {
-        const deletedFilter = c => {
-          return c.isDeleted === false
-        }
         let result = []
         try {
-          result =
-            (await this.$searchService.searchCiphers(
-              this.searchText,
-              [this.filter, deletedFilter],
-              null
-            )) || []
+          result = (await this.$sendService.getAllDecrypted()) || []
         } catch (error) {
           //
         }
-        result = orderBy(result, ['user.status'], ['desc']) || []
+        result = orderBy(result, ['revisionDate'], ['desc']) || []
         this.dataRendered = result.slice(0, 50)
         return result
       },
-      watch: [
-        '$store.state.syncedCiphersToggle',
-        'searchText',
-        'filter',
-        'myQuickShares'
-      ]
+      watch: ['$store.state.syncingQuickShares']
     }
   },
 
   methods: {
-    viewShare (cipher) {
-      this.selectedCipher = cipher
-      this.$refs.shareCipher.openDialog(cipher)
+    viewCipher (cipher) {
+      console.log(cipher)
     },
-    async stopSharing (cipher) {
+    viewShare (send) {
+      console.log(send)
+      // this.$refs.shareCipher.openDialog(cipher)
+    },
+    async stopSharing (send) {
       try {
-        console.log(cipher)
+        console.log(send)
         this.notify(this.$t('data.notifications.stop_share_success'), 'success')
-        await this.getMyShares()
       } catch (error) {
         this.notify(this.$t('errors.something_went_wrong'), 'warning')
         console.log(error)
       }
     },
     newShare () {
-      this.$refs.shareCipher.openDialog({})
-    },
-    async getMyShares () {
-      this.$store.dispatch('LoadMyQuickShares')
+      // this.$refs.shareCipher.openDialog({})
     }
   }
 }
