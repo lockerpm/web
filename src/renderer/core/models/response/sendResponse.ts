@@ -5,6 +5,7 @@ export class SendResponse extends BaseResponse {
   id: string
   accessId: string
   creationDate: number
+  revisionDate: number
   key: string
   password: string
   maxAccessCount?: number
@@ -22,6 +23,7 @@ export class SendResponse extends BaseResponse {
     this.id = this.getResponseProperty('Id')
     this.accessId = this.getResponseProperty('AccessId')
     this.creationDate = this.getResponseProperty('CreationDate')
+    this.revisionDate = this.getResponseProperty('RevisionDate')
     this.key = this.getResponseProperty('Key')
     this.maxAccessCount = this.getResponseProperty('MaxAccessCount')
     this.accessCount = this.getResponseProperty('AccessCount')

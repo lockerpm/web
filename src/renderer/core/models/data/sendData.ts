@@ -4,6 +4,7 @@ import { CipherData } from './cipherData'
 export class SendData {
   id: string
   accessId: string
+  revisionDate: number
   creationDate: number
   key: string
   password: string
@@ -25,6 +26,7 @@ export class SendData {
 
     this.id = response.id
     this.accessId = response.accessId
+    this.revisionDate = response.revisionDate
     this.creationDate = response.creationDate
     this.key = response.key
     this.password = response.password

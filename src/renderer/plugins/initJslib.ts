@@ -130,7 +130,6 @@ const syncService = new SyncService(
   storageService,
   messagingService,
   policyService,
-  // @ts-ignore
   sendService,
   async (expired: boolean) =>
     messagingService.send("logout-11111", { expired: expired })
