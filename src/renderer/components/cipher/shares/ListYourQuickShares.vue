@@ -80,34 +80,58 @@
             </el-table-column>
             <!-- Item name end -->
 
-            <!-- Type -->
-            <el-table-column :label="$t('common.type')" show-overflow-tooltip>
-              <template slot-scope="scope">
-                <span>{{
-                  CipherType[scope.row.cipher.cipher_type] ||
-                    CipherType[scope.row.cipher.type] ||
-                    'Folder'
-                }}</span>
-              </template>
-            </el-table-column>
-            <!-- Type end -->
-
-            <!-- Updated time -->
+            <!-- Shared with -->
             <el-table-column
-              :label="$t('data.ciphers.updated_time')"
+              :label="$t('data.ciphers.shared_with')"
               width="150"
             >
               <template slot-scope="scope">
+                <span>{{
+                  scope.row.requireOtp
+                    ? scope.row.emails.length
+                      ? 'some people'
+                      : 'nobody'
+                    : 'anyone'
+                }}</span>
+              </template>
+            </el-table-column>
+            <!-- Shared with end -->
+
+            <!-- Sharing time -->
+            <el-table-column label="Sharing time" width="150">
+              <template slot-scope="scope">
+                <span class="break-normal">
+                  {{ $moment(scope.row.creationDate).fromNow() }}
+                </span>
+              </template>
+            </el-table-column>
+            <!-- Sharing time end -->
+
+            <!-- Views -->
+            <el-table-column label="Views" width="150">
+              <template slot-scope="scope">
+                <span class="break-normal">
+                  {{ scope.row.accessCount }} view(s)
+                </span>
+              </template>
+            </el-table-column>
+            <!-- Views end -->
+
+            <!-- Expire time -->
+            <el-table-column label="Expiration">
+              <template slot-scope="scope">
                 <span class="break-normal">
                   {{
-                    scope.row.revisionDate
-                      ? $moment(scope.row.revisionDate).fromNow()
-                      : $moment(scope.row.creationDate * 1000).fromNow()
+                    scope.row.expiredDate
+                      ? $moment(scope.row.expiredDate).format(
+                        'DD MMMM, YYYY at hh:mm A'
+                      )
+                      : 'never'
                   }}
                 </span>
               </template>
             </el-table-column>
-            <!-- Updated time end -->
+            <!-- Expire time end -->
 
             <!-- Actions -->
             <el-table-column
@@ -123,11 +147,16 @@
                       <i class="fas fa-ellipsis-h" />
                     </button>
                     <el-dropdown-menu slot="dropdown">
-                      <!-- View share -->
-                      <el-dropdown-item @click.native="viewShare(scope.row)">
-                        {{ $t('data.ciphers.view_share') }}
+                      <!-- Copy link -->
+                      <el-dropdown-item
+                        v-clipboard:copy="
+                          getPublicShareUrl(scope.row.id, scope.row.urlB64Key)
+                        "
+                        v-clipboard:success="clipboardSuccessHandler"
+                      >
+                        Copy link
                       </el-dropdown-item>
-                      <!-- View share end -->
+                      <!-- Copy link end -->
 
                       <!-- Stop share -->
                       <el-dropdown-item @click.native="stopSharing(scope.row)">
@@ -160,11 +189,6 @@ import LazyHydrate from 'vue-lazy-hydration'
 import ShareNoCipher from '../../../components/cipher/shares/ShareNoCipher'
 import { CipherType } from '../../../jslib/src/enums'
 import Vnodes from '../../../components/Vnodes'
-
-CipherType.TOTP = 5
-CipherType.MasterPassword = 8
-CipherType.CryptoBackup = 7
-CipherType[7] = 'Crypto Backup'
 
 export default {
   components: {
@@ -256,7 +280,7 @@ export default {
     },
     async stopSharing (send) {
       try {
-        console.log(send)
+        await this.$axios.$delete(`cystack_platform/pm/quick_shares/${send.id}`)
         this.notify(this.$t('data.notifications.stop_share_success'), 'success')
       } catch (error) {
         this.notify(this.$t('errors.something_went_wrong'), 'warning')

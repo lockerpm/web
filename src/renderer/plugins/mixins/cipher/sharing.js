@@ -109,6 +109,12 @@ Vue.mixin({
       } finally {
         this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', false)
       }
+    },
+
+    getPublicShareUrl (id, key) {
+      return `${
+        process.env.baseUrl
+      }/flash-share-item/${id}#${encodeURIComponent(key)}`
     }
   }
 })
