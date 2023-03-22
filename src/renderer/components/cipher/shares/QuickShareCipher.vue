@@ -255,7 +255,7 @@ export default {
         // Send api
         const url = 'cystack_platform/pm/quick_shares'
         const payload = {
-          ...data,
+          cipher: data,
           cipher_id: cipher.id,
           key: encryptedSendKey.encryptedString,
           password: password ? Utils.fromBufferToB64(password) : null,
