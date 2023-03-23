@@ -21,20 +21,17 @@
     <!-- Body -->
     <div>
       <!-- Emails -->
-      <div v-if="shareOptions.require_otp">
+      <div v-if="send.requireOtp">
         <!-- Email list -->
         <div>
           <div
-            v-for="item in shareOptions.emails"
+            v-for="item in send.emails"
             :key="item"
             class="w-full flex flex-row items-center"
           >
             <p class="flex-1 mr-2">
               {{ item }}
             </p>
-            <a @click.prevent="removeEmail(item)">
-              <i class="fa fa-trash-alt" />
-            </a>
           </div>
         </div>
         <!-- Email list end -->
@@ -46,15 +43,19 @@
     <!-- Footer -->
     <div slot="footer" class="dialog-footer flex items-center justify-between">
       <div>
-        <p v-if="shareOptions.expired_date">
-          Expire on {{ $moment(shareOptions.expired_date * 1000).toString() }}
+        <p v-if="send.expirationDate">
+          Expire on {{ $moment(send.expirationDate).toString() }}
         </p>
       </div>
 
+      <a @click.prevent="stopSharing()">
+        <i class="fa fa-trash-alt" />
+      </a>
+
       <el-button
-        v-clipboard:copy="shareUrl"
+        v-clipboard:copy="url"
         v-clipboard:success="clipboardSuccessHandler"
-        :disabled="!shareUrl"
+        :disabled="!url"
       >
         Copy
       </el-button>
@@ -76,83 +77,40 @@ export default {
         collectionIds: [],
         organizationId: ''
       },
-      shareOptions: {
-        id: null,
-        password: '',
+      send: {
+        id: '',
         emails: [],
-        require_otp: false,
-        max_access_count: null,
-        expired_date: null,
-        key: '',
-        each_email_access_count: null
+        requireOtp: null,
+        expirationDate: null,
+        key: null
       },
       loading: false,
       dialogVisible: false,
-      decryptedKey: null
-    }
-  },
-
-  computed: {
-    shareUrl () {
-      if (!this.decryptedKey) {
-        return null
-      }
-      return `${process.env.baseUrl}/flash-share-item/${
-        this.shareOptions.id
-      }#${encodeURIComponent(this.decryptedKey)}`
+      url: ''
     }
   },
 
   methods: {
-    async openDialog (shareOptions, cipher = {}) {
+    async openDialog (cipher = {}, send = {}) {
       this.dialogVisible = true
       this.cipher = { organizationId: '', ...cipher }
-      if (shareOptions) {
-        this.shareOptions = { ...shareOptions }
-        this.getShareInfo()
-        this.decryptShareKey()
-      }
+      this.send = send
+      this.url = this.getPublicShareUrl(
+        send.id,
+        Utils.fromBufferToUrlB64(send.key)
+      )
     },
 
     closeDialog () {
       this.dialogVisible = false
     },
 
-    async getShareInfo () {
+    async stopSharing () {
       this.loading = true
-      const res = await this.$axios.$get(
-        `cystack_platform/pm/quick_shares/${this.shareOptions.id}`
-      )
-      this.shareOptions = { ...res }
+      const isSuccess = await this.stopQuickSharing(this.send)
       this.loading = false
-    },
-
-    async decryptShareKey () {
-      const res = await this.$cryptoService.decryptToBytes(
-        Utils.fromB64ToArray(this.shareOptions.key)
-      )
-      this.decryptedKey = Utils.fromBufferToB64(res)
-    },
-
-    async removeEmail (email) {
-      try {
-        this.loading = true
-        this.shareOptions.emails = this.shareOptions.emails.filter(
-          e => e !== email
-        )
-        await this.$axios.$put(
-          `cystack_platform/pm/quick_shares/${this.shareOptions.id}`,
-          payload
-        )
-        this.notify(
-          this.$t('data.notifications.update_share_success'),
-          'success'
-        )
-      } catch (error) {
-        this.notify(this.$t('errors.something_went_wrong'), 'warning')
-        console.log(e)
-      } finally {
-        this.loading = false
+      if (isSuccess) {
+        this.closeDialog()
       }
     }
   }

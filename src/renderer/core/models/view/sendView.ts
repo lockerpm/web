@@ -31,8 +31,8 @@ export class SendView implements View {
 
     this.id = s.id
     this.accessId = s.accessId
-    this.creationDate = s.creationDate
     this.revisionDate = s.revisionDate
+    this.creationDate = s.creationDate
 
     this.password = s.password
     this.maxAccessCount = s.maxAccessCount

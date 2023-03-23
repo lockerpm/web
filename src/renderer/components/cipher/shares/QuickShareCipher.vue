@@ -44,7 +44,7 @@
         <!-- Share with end -->
 
         <!-- Emails -->
-        <div v-if="shareOptions.require_otp">
+        <div v-if="requireOtp">
           <!-- Input -->
           <el-input v-model="email">
             <el-button slot="append" :disabled="!email" @click="addEmail">
@@ -56,7 +56,7 @@
           <!-- Email list -->
           <div>
             <div
-              v-for="item in shareOptions.emails"
+              v-for="item in emails"
               :key="item"
               class="w-full flex flex-row items-center"
             >
@@ -104,10 +104,11 @@
 </template>
 
 <script>
-import { CipherRequest } from '../../../jslib/src/models/request'
 import { CipherType } from '../../../jslib/src/enums'
 import Vnodes from '../../../components/Vnodes'
-import { Utils } from '../../../jslib/src/misc/utils.ts'
+import { SendView } from '../../../core/models/view/sendView'
+import { Send } from '../../../core/models/domain/send'
+import { SendRequest } from '../../../core/models/request/sendRequest'
 import QuickSharedCipherInfo from './QuickSharedCipherInfo'
 
 export default {
@@ -119,15 +120,10 @@ export default {
         collectionIds: [],
         organizationId: ''
       },
-      shareOptions: {
-        password: '',
-        emails: [],
-        require_otp: false,
-        max_access_count: null,
-        expired_date: null,
-        key: '',
-        each_email_access_count: null
-      },
+      password: '',
+      emails: [],
+      maxAccessCount: null,
+      eachEmailAccessCount: null,
       loading: false,
       dialogVisible: false,
       viewOnce: false,
@@ -180,12 +176,6 @@ export default {
     }
   },
 
-  watch: {
-    requireOtp (newVal) {
-      this.shareOptions.require_otp = !!newVal
-    }
-  },
-
   methods: {
     async openDialog (cipher = {}) {
       this.dialogVisible = true
@@ -194,32 +184,24 @@ export default {
 
     closeDialog () {
       this.dialogVisible = false
-      this.shareOptions = {
-        password: '',
-        emails: [],
-        require_otp: false,
-        max_access_count: null,
-        expired_date: null,
-        key: '',
-        each_email_access_count: null
-      }
       this.viewOnce = false
       this.expireAfter = null
       this.email = ''
       this.requireOtp = 0
+      this.emails = []
+      this.maxAccessCount = null
+      this.eachEmailAccessCount = null
     },
 
     addEmail () {
-      if (!this.shareOptions.emails.includes(this.email)) {
-        this.shareOptions.emails.push(this.email)
+      if (!this.emails.includes(this.email)) {
+        this.emails.push(this.email)
       }
       this.email = ''
     },
 
     removeEmail (email) {
-      this.shareOptions.emails = this.shareOptions.emails.filter(
-        e => e !== email
-      )
+      this.emails = this.emails.filter(e => e !== email)
     },
 
     async shareItem (cipher) {
@@ -230,44 +212,29 @@ export default {
           cipher.type = CipherType.SecureNote
           cipher.secureNote.type = 0
         }
+        const send = new Send()
+        send.cipher = cipher
+        send.cipherId = cipher.id
+        send.password = this.password
+        send.maxAccessCount = this.maxAccessCount
+        send.expirationDate = new Date(Date.now() + this.expireAfter * 1000)
+        send.requireOtp = !!this.requireOtp
+        send.emails = this.requireOtp ? this.emails : []
+        send.eachEmailAccessCount =
+          !!this.requireOtp && this.viewOnce ? 1 : null
 
-        // Prepare key
-        const sendKey = await this.$cryptoFunctionService.randomBytes(16)
-        const encKey = await this.$cryptoService.makeSendKey(sendKey)
+        const sendView = new SendView(send)
 
-        // Encrypt cipher
-        const cipherEnc = await this.$cipherService.encrypt(cipher, encKey)
-        const data = new CipherRequest(cipherEnc)
-        data.type = type_
-        this.cipher.type = type_
-
-        // Encrypt other things
-        const encryptedSendKey = await this.$cryptoService.encrypt(sendKey)
-        const password = this.password
-          ? await this.$cryptoFunctionService.pbkdf2(
-            this.password,
-            sendKey,
-            'sha256',
-            100000
-          )
-          : ''
+        // TODO: have to put cipherView directly here
+        sendView.cipher = cipher
+        const sendEnc = await this.$sendService.encrypt(sendView)
+        const sendRequest = new SendRequest(sendEnc)
+        sendRequest.cipher.type = type_
+        cipher.type = type_
 
         // Send api
         const url = 'cystack_platform/pm/quick_shares'
-        const payload = {
-          cipher: data,
-          cipher_id: cipher.id,
-          key: encryptedSendKey.encryptedString,
-          password: password ? Utils.fromBufferToB64(password) : null,
-          max_access_count: this.shareOptions.max_access_count,
-          expired_date: this.expireAfter
-            ? Math.floor(Date.now() / 1000) + this.expireAfter
-            : null,
-          require_otp: this.require_otp,
-          emails: this.require_otp ? this.shareOptions.emails : [],
-          each_email_access_count: this.require_otp && this.viewOnce ? 1 : null
-        }
-        const res = await this.$axios.$post(url, payload)
+        const res = await this.$axios.$post(url, sendRequest)
 
         // Done
         this.notify(
@@ -275,7 +242,13 @@ export default {
           'success'
         )
         this.closeDialog()
-        this.$refs.quickSharedCipherInfo.openDialog(res, cipher)
+        this.$refs.quickSharedCipherInfo.openDialog(cipher, {
+          id: res.id,
+          emails: sendRequest.emails,
+          requireOtp: sendRequest.require_otp,
+          expirationDate: sendRequest.expired_date * 1000,
+          key: sendView.key
+        })
       } catch (e) {
         if (e.response && e.response.data && e.response.data.code === '7002') {
           this.notify(e.response.data.message, 'warning')

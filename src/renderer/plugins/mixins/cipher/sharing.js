@@ -115,6 +115,18 @@ Vue.mixin({
       return `${
         process.env.baseUrl
       }/flash-share-item/${id}#${encodeURIComponent(key)}`
+    },
+
+    async stopQuickSharing (send) {
+      try {
+        await this.$axios.$delete(`cystack_platform/pm/quick_shares/${send.id}`)
+        this.notify(this.$t('data.notifications.stop_share_success'), 'success')
+        return true
+      } catch (error) {
+        this.notify(this.$t('errors.something_went_wrong'), 'warning')
+        console.log(error)
+        return false
+      }
     }
   }
 })

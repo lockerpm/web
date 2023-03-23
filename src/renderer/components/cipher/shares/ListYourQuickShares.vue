@@ -279,13 +279,7 @@ export default {
       // this.$refs.shareCipher.openDialog(cipher)
     },
     async stopSharing (send) {
-      try {
-        await this.$axios.$delete(`cystack_platform/pm/quick_shares/${send.id}`)
-        this.notify(this.$t('data.notifications.stop_share_success'), 'success')
-      } catch (error) {
-        this.notify(this.$t('errors.something_went_wrong'), 'warning')
-        console.log(error)
-      }
+      await this.stopQuickSharing(send)
     },
     newShare () {
       // this.$refs.shareCipher.openDialog({})
