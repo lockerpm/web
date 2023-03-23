@@ -149,8 +149,6 @@ module.exports = {
       'https://apps.apple.com/us/app/locker-password-manager/id1586927301',
     androidLink:
       'https://play.google.com/store/apps/details?id=com.cystack.locker',
-    accessClientId: process.env.ACCESS_CLIENT_ID || '',
-    accessClientSecret: process.env.NOTION_API_KEY || '',
     lockerEnterprise:
       process.env.ENTERPRISE_URL || 'https://enterprise.locker.io',
     stripePayment:
@@ -192,7 +190,14 @@ module.exports = {
     stripeKey:
       isProd && !isStaging
         ? process.env.STRIPE_KEY
-        : process.env.STRIPE_KEY_STAGING
+        : process.env.STRIPE_KEY_STAGING,
+    cloudflare:
+      !isProd || isStaging
+        ? {
+          id: process.env.ACCESS_CLIENT_ID,
+          secret: process.env.ACCESS_CLIENT_SECRET
+        }
+        : null
   },
   gtm: {
     id: 'GTM-K5Q6595'

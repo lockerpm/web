@@ -1,5 +1,13 @@
 import https from 'https'
-export default function ({ store, $axios, app, isDev, redirect, route }) {
+export default function ({
+  store,
+  $axios,
+  app,
+  isDev,
+  redirect,
+  route,
+  $config
+}) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.interceptors.request.use(request => {
     // Get token from auth.js store
@@ -14,14 +22,24 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
     if (deviceId) {
       request.headers['device-id'] = deviceId
     }
+    if ($config.cloudflare) {
+      request.headers['CF-Access-Client-Id'] = $config.cloudflare.id
+      request.headers['CF-Access-Client-Secret'] = $config.cloudflare.secret
+    }
     return request
   })
   $axios.onResponse(res => {
     if (res.headers['device-id']) {
       app.$cookies.set('device_id', res.headers['device-id'], {
         path: '/',
-        ...isDev ? { secure: false } : { secure: true },
-        ...res.headers['device-expired-time'] ? { expires: app.$moment.unix(res.headers['device-expired-time']).toDate() } : {},
+        ...(isDev ? { secure: false } : { secure: true }),
+        ...(res.headers['device-expired-time']
+          ? {
+            expires: app.$moment
+              .unix(res.headers['device-expired-time'])
+              .toDate()
+          }
+          : {}),
         domain: 'locker.io'
       })
       $axios.setHeader('device-id', res.headers['device-id'])
@@ -75,7 +93,11 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
         }
         const paths = currentPath.split('/')
         currentPath = '/' + (paths[1] || '')
-        if (!WHITELIST_PATH.includes(currentPath) && currentPath && !route.name.startsWith('all___')) {
+        if (
+          !WHITELIST_PATH.includes(currentPath) &&
+          currentPath &&
+          !route.name.startsWith('all___')
+        ) {
           redirect(302, '/login')
         }
       }
