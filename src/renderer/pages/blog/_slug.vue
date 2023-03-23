@@ -41,6 +41,7 @@
               style="width: 100%"
               active-class="current-content"
               class="table-contents-item landing-transition text-14 font-weight-400"
+              :style="item.heading == 'h3' ? 'padding-left: 30px' : ''"
             >
               {{ item.text }}
             </nuxt-link>
@@ -265,12 +266,25 @@ export default {
         const $_ = cheerio.load(post.excerpt.rendered);
         const desc = $_("p").text();
         const tableOfContents = [];
-        $("h2").each(function (i, e) {
+        $("h2, h3").each(function (i, e) {
           const title = $(e).text();
           const slug = slugify(title, { locale: "vi", lower: true });
+          // let textContent = null
+          // const spaces = "&nbsp;".repeat(3);
+          // console.log(e.name);
+          // if (e.name == "h2") {
+          //   console.log(`H2 title ${title}`);
+          //   textContent = $(e).text();
+          //   console.log(textContent);
+          // } else {
+          //   textContent = spaces + $(e).text();
+          //   console.log(textContent);
+          // }
           tableOfContents[i] = {
             text: $(e).text(),
+            // text: textContent,
             link: slug,
+            heading: e.name
           };
           $(this).attr("id", slug);
         });
@@ -285,7 +299,6 @@ export default {
             $(this).attr("id", slug);
           });
         }
-
         return {
           ...post,
           new_content_rendered: $.html(),
