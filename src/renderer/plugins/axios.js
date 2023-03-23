@@ -1,5 +1,13 @@
 import https from 'https'
-export default function ({ store, $axios, app, isDev, redirect, route }) {
+export default function ({
+  store,
+  $axios,
+  app,
+  isDev,
+  redirect,
+  route,
+  $config
+}) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.interceptors.request.use(request => {
     // Get token from auth.js store
@@ -13,6 +21,10 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
     }
     if (deviceId) {
       request.headers['device-id'] = deviceId
+    }
+    if ($config.cloudflare) {
+      request.headers['CF-Access-Client-Id'] = $config.cloudflare.id
+      request.headers['CF-Access-Client-Secret'] = $config.cloudflare.secret
     }
     return request
   })
