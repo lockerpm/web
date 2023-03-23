@@ -66,7 +66,7 @@
                     <a
                       class="text-black font-semibold truncate flex items-center"
                       :class="{ 'opacity-80': scope.row.cipher.isDeleted }"
-                      @click.prevent="viewCipher(scope.row.cipher)"
+                      @click.prevent="viewCipher(scope.row)"
                     >
                       {{ scope.row.cipher.name }}
                     </a>
@@ -271,12 +271,15 @@ export default {
   },
 
   methods: {
-    viewCipher (cipher) {
-      console.log(cipher)
-    },
-    viewShare (send) {
-      console.log(send)
-      // this.$refs.shareCipher.openDialog(cipher)
+    viewCipher (send) {
+      this.$router.push(
+        this.localePath({
+          name: 'shares-index-quick-shares-id',
+          params: {
+            id: send.id
+          }
+        })
+      )
     },
     async stopSharing (send) {
       await this.stopQuickSharing(send)

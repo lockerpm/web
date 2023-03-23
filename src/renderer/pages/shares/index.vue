@@ -8,7 +8,11 @@
         :to="localeRoute({ name: item.routeName })"
         active-class="navigation-item__active"
         class="navigation-item"
-        exact
+        :class="{
+          'navigation-item__active':
+            index === 2 && getRouteBaseName() === 'shares-index-quick-shares-id'
+        }"
+        exact=""
       >
         {{ $t(`sidebar.${item.label}`) }}
         <span v-if="item.pending && item.pending > 0">
