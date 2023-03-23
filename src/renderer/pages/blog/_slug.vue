@@ -547,6 +547,11 @@ div.post-content > h4 {
   font-size: 20px;
   line-height: 32px;
 }
+div.post-content > h3,
+div.post-content > h2 {
+  padding-top: 150px !important;
+  margin-top: -120px;
+}
 div.post-content a {
   color: #0266f9 !important;
   font-weight: 500 !important;
