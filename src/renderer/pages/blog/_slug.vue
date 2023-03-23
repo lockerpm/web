@@ -269,20 +269,8 @@ export default {
         $("h2, h3").each(function (i, e) {
           const title = $(e).text();
           const slug = slugify(title, { locale: "vi", lower: true });
-          // let textContent = null
-          // const spaces = "&nbsp;".repeat(3);
-          // console.log(e.name);
-          // if (e.name == "h2") {
-          //   console.log(`H2 title ${title}`);
-          //   textContent = $(e).text();
-          //   console.log(textContent);
-          // } else {
-          //   textContent = spaces + $(e).text();
-          //   console.log(textContent);
-          // }
           tableOfContents[i] = {
             text: $(e).text(),
-            // text: textContent,
             link: slug,
             heading: e.name
           };
