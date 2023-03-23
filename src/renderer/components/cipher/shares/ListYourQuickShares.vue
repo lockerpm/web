@@ -180,6 +180,8 @@
       v-else-if="!$store.state.syncingQuickShares"
       @add-share="newShare"
     />
+
+    <QuickShareCipher ref="quickShareCipher" :cipher-options="allCiphers" />
   </div>
 </template>
 
@@ -187,12 +189,14 @@
 import orderBy from 'lodash/orderBy'
 import LazyHydrate from 'vue-lazy-hydration'
 import ShareNoCipher from '../../../components/cipher/shares/ShareNoCipher'
+import QuickShareCipher from '../../../components/cipher/shares/QuickShareCipher'
 import { CipherType } from '../../../jslib/src/enums'
 import Vnodes from '../../../components/Vnodes'
 
 export default {
   components: {
     ShareNoCipher,
+    QuickShareCipher,
     // eslint-disable-next-line vue/no-unused-components
     VueContext: () => import('../../../plugins/vue-context'),
     Vnodes,
@@ -267,6 +271,25 @@ export default {
         return result
       },
       watch: ['$store.state.syncingQuickShares']
+    },
+
+    allCiphers: {
+      async get () {
+        const deletedFilter = c => {
+          return c.isDeleted === false
+        }
+        let result = []
+        try {
+          result =
+            (await this.$searchService.searchCiphers(
+              '',
+              [this.isCipherQuickShareable, deletedFilter],
+              null
+            )) || []
+        } catch (error) {}
+        return result
+      },
+      watch: ['$store.state.syncedCiphersToggle']
     }
   },
 
@@ -285,7 +308,7 @@ export default {
       await this.stopQuickSharing(send)
     },
     newShare () {
-      // this.$refs.shareCipher.openDialog({})
+      this.$refs.quickShareCipher.openDialog({})
     }
   }
 }

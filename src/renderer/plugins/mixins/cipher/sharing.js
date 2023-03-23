@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import find from 'lodash/find'
+import { CipherType } from '../../../core/enums/cipherType'
 
 Vue.mixin({
   computed: {
@@ -73,7 +74,20 @@ Vue.mixin({
         this.isOwner(organizations, cipher) &&
         // Not in any shared folder
         !cipher.collectionIds.length &&
-        !this.isProtectedCipher(cipher)
+        !this.isProtectedCipher(cipher) &&
+        cipher.type !== CipherType.TOTP
+      )
+    },
+
+    isCipherQuickShareable (cipher) {
+      const isBelongToSelf =
+        !cipher.organizationId ||
+        !!this.myShares.find(i => i.organization_id === cipher.organizationId)
+      return (
+        !cipher.isDeleted &&
+        !this.isProtectedCipher(cipher) &&
+        cipher.type !== CipherType.TOTP &&
+        isBelongToSelf
       )
     },
 

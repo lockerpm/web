@@ -706,7 +706,10 @@
 
                 <!-- Share -->
                 <el-dropdown
-                  v-if="isCipherShareable(item, organizations)"
+                  v-if="
+                    isCipherShareable(item, organizations) ||
+                      isCipherQuickShareable(item)
+                  "
                   trigger="click"
                   :hide-on-click="false"
                 >
@@ -715,13 +718,19 @@
                   </button>
                   <el-dropdown-menu slot="dropdown">
                     <!-- Normal share -->
-                    <el-dropdown-item @click.native="shareItem(item)">
+                    <el-dropdown-item
+                      v-if="isCipherShareable(item, organizations)"
+                      @click.native="shareItem(item)"
+                    >
                       {{ $t('common.share') }}
                     </el-dropdown-item>
                     <!-- Normal share end -->
 
                     <!-- Quick share -->
-                    <el-dropdown-item @click.native="quickShareItem(item)">
+                    <el-dropdown-item
+                      v-if="isCipherQuickShareable(item)"
+                      @click.native="quickShareItem(item)"
+                    >
                       {{ $t('common.quick_share') }}
                     </el-dropdown-item>
                     <!-- Quick share end -->

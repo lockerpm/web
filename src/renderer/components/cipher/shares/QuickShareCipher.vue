@@ -10,14 +10,44 @@
     >
       <!-- Title -->
       <div slot="title">
-        <div class="flex items-center">
+        <div v-if="hasInitialCipher" class="flex items-center">
           <div class="text-[34px] mr-3">
             <Vnodes :vnodes="getIconCipher(cipher, 20)" />
           </div>
           <div class="text-black-700 font-semibold">{{ cipher.name }}</div>
         </div>
+
+        <div v-else>
+          <div class="text-black-700 font-semibold">New quick share</div>
+        </div>
       </div>
       <!-- Title end -->
+
+      <!-- Select -->
+      <div class="text-left">
+        <!-- Add cipher -->
+        <div v-if="!hasInitialCipher" class="grid grid-cols-2 gap-x-2 mb-4">
+          <div class="w-full">
+            <div class="text-black-700 text-head-6 font-semibold">
+              Choose item to quick share
+            </div>
+            <div>Pick one that belong to you</div>
+          </div>
+          <InputSelect
+            v-model="selectedCipherId"
+            placeholder="Search Inventory ..."
+            :collapse-tags="true"
+            :filterable="true"
+            class="w-full !mb-4"
+            :options="cipherOptions"
+            :key-label="'name'"
+            :key-value="'id'"
+            @change="v => (selectedCipherId = v)"
+          />
+        </div>
+        <!-- Add cipher end -->
+      </div>
+      <!-- Select end -->
 
       <!-- Body -->
       <div>
@@ -87,7 +117,7 @@
           </button>
           <button
             class="btn btn-primary"
-            :disabled="loading"
+            :disabled="loading || !cipher.id"
             @click="shareItem(cipher)"
           >
             {{ $t('common.share') }}
@@ -104,18 +134,29 @@
 </template>
 
 <script>
+import find from 'lodash/find'
 import { CipherType } from '../../../jslib/src/enums'
 import Vnodes from '../../../components/Vnodes'
 import { SendView } from '../../../core/models/view/sendView'
 import { Send } from '../../../core/models/domain/send'
 import { SendRequest } from '../../../core/models/request/sendRequest'
+import InputSelect from '../../input/InputSelect.vue'
 import QuickSharedCipherInfo from './QuickSharedCipherInfo'
 
 export default {
-  components: { Vnodes, QuickSharedCipherInfo },
+  components: { Vnodes, QuickSharedCipherInfo, InputSelect },
+
+  props: {
+    cipherOptions: {
+      type: Array,
+      default: () => new Array([])
+    }
+  },
 
   data () {
     return {
+      hasInitialCipher: false,
+      selectedCipherId: null,
       cipher: {
         collectionIds: [],
         organizationId: ''
@@ -176,10 +217,26 @@ export default {
     }
   },
 
+  watch: {
+    selectedCipherId (val) {
+      if (val) {
+        this.cipher = find(this.cipherOptions, e => e.id === val)
+      } else {
+        this.cipher = {
+          collectionIds: [],
+          organizationId: ''
+        }
+      }
+    }
+  },
+
   methods: {
     async openDialog (cipher = {}) {
       this.dialogVisible = true
       this.cipher = { organizationId: '', ...cipher }
+      if (cipher.id) {
+        this.hasInitialCipher = true
+      }
     },
 
     closeDialog () {

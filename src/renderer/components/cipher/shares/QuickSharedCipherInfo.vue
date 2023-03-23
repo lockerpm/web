@@ -26,7 +26,7 @@
         <div>
           <div
             v-for="item in send.emails"
-            :key="item"
+            :key="item.email"
             class="w-full flex flex-row items-center"
           >
             <p class="flex-1 mr-2">
