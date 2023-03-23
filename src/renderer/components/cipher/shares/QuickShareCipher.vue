@@ -274,7 +274,9 @@ export default {
         send.cipherId = cipher.id
         send.password = this.password
         send.maxAccessCount = this.maxAccessCount
-        send.expirationDate = new Date(Date.now() + this.expireAfter * 1000)
+        send.expirationDate = this.expireAfter
+          ? new Date(Date.now() + this.expireAfter * 1000)
+          : null
         send.requireOtp = !!this.requireOtp
         send.emails = this.requireOtp ? this.emails : []
         send.eachEmailAccessCount =

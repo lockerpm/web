@@ -426,6 +426,9 @@ export default {
       return item
     },
     passwordStrength () {
+      if (!this.$passwordGenerationService) {
+        return {}
+      }
       if (
         this.cipher.login &&
         [CipherType.Login, CipherType.MasterPassword].includes(this.cipher.type)
