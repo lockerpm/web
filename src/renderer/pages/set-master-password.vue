@@ -95,6 +95,7 @@
       :visible.sync="confirmDialogVisible"
       width="420px"
       :title="$t('set_master_password.confirm_nodal.title')"
+      custom-class="no-pt-dialog"
       center
     >
       <img
@@ -254,7 +255,7 @@ export default {
 </script>
 
 <style>
-  .el-dialog__body {
+  .no-pt-dialog .el-dialog__body {
     padding-top: 0 !important;
   }
 </style>

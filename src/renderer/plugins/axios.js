@@ -20,8 +20,14 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
     if (res.headers['device-id']) {
       app.$cookies.set('device_id', res.headers['device-id'], {
         path: '/',
-        ...isDev ? { secure: false } : { secure: true },
-        ...res.headers['device-expired-time'] ? { expires: app.$moment.unix(res.headers['device-expired-time']).toDate() } : {},
+        ...(isDev ? { secure: false } : { secure: true }),
+        ...(res.headers['device-expired-time']
+          ? {
+            expires: app.$moment
+              .unix(res.headers['device-expired-time'])
+              .toDate()
+          }
+          : {}),
         domain: 'locker.io'
       })
       $axios.setHeader('device-id', res.headers['device-id'])
@@ -32,6 +38,9 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
       if (err.response.status === 400) {
         if (err.response.data.code === '1010') {
           store.commit('UPDATE_NOTICE', { showLocked: true })
+        }
+        if (err.response.data.code === '7002') {
+          store.commit('UPDATE_NOTICE', { showPleaseUpgrade: true })
         }
       }
       if (err.response.status === 401) {
@@ -75,7 +84,11 @@ export default function ({ store, $axios, app, isDev, redirect, route }) {
         }
         const paths = currentPath.split('/')
         currentPath = '/' + (paths[1] || '')
-        if (!WHITELIST_PATH.includes(currentPath) && currentPath && !route.name.startsWith('all___')) {
+        if (
+          !WHITELIST_PATH.includes(currentPath) &&
+          currentPath &&
+          !route.name.startsWith('all___')
+        ) {
           redirect(302, '/login')
         }
       }

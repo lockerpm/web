@@ -8,9 +8,7 @@ export default {
   components: {
     ListSharedCipher
   },
-  mounted () {
-  },
-  methods: {
-  }
+  mounted () {},
+  methods: {}
 }
 </script>
