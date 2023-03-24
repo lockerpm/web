@@ -777,6 +777,7 @@ export default {
             this.$t('errors.5002', { type: this.$tc(`type.${this.type}`, 1) }),
             'error'
           )
+          this.$store.commit('UPDATE_NOTICE', { showPleaseUpgrade: true })
         } else {
           this.notify(
             this.$tc('data.notifications.create_failed', 1, {

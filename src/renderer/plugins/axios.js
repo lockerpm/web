@@ -51,6 +51,9 @@ export default function ({
         if (err.response.data.code === '1010') {
           store.commit('UPDATE_NOTICE', { showLocked: true })
         }
+        if (err.response.data.code === '7002') {
+          store.commit('UPDATE_NOTICE', { showPleaseUpgrade: true })
+        }
       }
       if (err.response.status === 401) {
         app.$cookies.remove('cs_locker_token')

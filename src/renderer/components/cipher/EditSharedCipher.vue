@@ -14,7 +14,11 @@
             <Vnodes :vnodes="getIconCipher(cipher, 20)" />
           </div>
           <div v-else>
-            <img src="~/assets/images/icons/folderSolidShare.svg" alt="" class="select-none mr-2">
+            <img
+              src="~/assets/images/icons/folderSolidShare.svg"
+              alt=""
+              class="select-none mr-2"
+            >
           </div>
           <div class="text-black-700 font-semibold">{{ cipher.name }}</div>
         </template>
@@ -33,20 +37,14 @@
           :initial-value="user.role"
           class="w-full !mb-4"
           :options="roleOptions"
-          @change="(v) => user.role = v"
+          @change="v => (user.role = v)"
         />
       </div>
     </div>
-    <div
-      slot="footer"
-      class="dialog-footer flex items-center text-left"
-    >
+    <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow" />
       <div>
-        <button
-          class="btn btn-default"
-          @click="dialogVisible = false"
-        >
+        <button class="btn btn-default" @click="dialogVisible = false">
           {{ $t('common.cancel') }}
         </button>
         <button
@@ -62,7 +60,6 @@
 </template>
 
 <script>
-
 import InputSelect from '../../components/input/InputSelect.vue'
 import { CipherType } from '../../jslib/src/enums'
 import Vnodes from '../../components/Vnodes'
@@ -119,11 +116,17 @@ export default {
         } else {
           this.user.hide_passwords = false
         }
-        await this.$axios.$put(`cystack_platform/pm/sharing/${this.cipher.organizationId}/members/${this.cipher.user.id}`, {
-          role: this.user.role,
-          hide_passwords: this.user.hide_passwords
-        })
-        this.notify(this.$t('data.notifications.update_share_success'), 'success')
+        await this.$axios.$put(
+          `cystack_platform/pm/sharing/${this.cipher.organizationId}/members/${this.cipher.user.id}`,
+          {
+            role: this.user.role,
+            hide_passwords: this.user.hide_passwords
+          }
+        )
+        this.notify(
+          this.$t('data.notifications.update_share_success'),
+          'success'
+        )
         this.$emit('updated-cipher')
         this.closeDialog()
       } catch (error) {

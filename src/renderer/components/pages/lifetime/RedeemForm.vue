@@ -28,9 +28,7 @@
       >
         <el-input
           v-model="redeemForm.code"
-          :placeholder="
-            $t('lifetime.redeem_page.form.app_code', { service: 'AppSumo' })
-          "
+          :placeholder="$t('lifetime.redeem_page.form.app_code', { service })"
         />
       </el-form-item>
       <!-- Code end -->
@@ -59,9 +57,7 @@
       >
         <el-input
           v-model="redeemForm.code"
-          :placeholder="
-            $t('lifetime.redeem_page.form.app_code', { service: 'AppSumo' })
-          "
+          :placeholder="$t('lifetime.redeem_page.form.app_code', { service })"
         />
       </el-form-item>
       <!-- Code end -->
@@ -162,7 +158,7 @@
 
     <!-- Error message -->
     <p v-if="errorMessage" class="text-danger mb-5 font-bold">
-      {{ $t(`lifetime.redeem_page.form.error.${errorMessage}`) }}
+      {{ $t(`lifetime.redeem_page.form.error.${errorMessage}`, { service }) }}
     </p>
     <!-- Error message end -->
 
@@ -220,6 +216,10 @@ export default {
     countries: {
       type: Array,
       default: () => []
+    },
+    service: {
+      type: String,
+      default: () => ''
     }
   },
 

@@ -37,7 +37,8 @@ export const state = () => ({
     showTutorialStep6: false,
     showWelcome: false,
     allowShowWelcomeBusiness: false,
-    allowShowTutorial: false
+    allowShowTutorial: false,
+    showPleaseUpgrade: false
   },
   ui: {
     closeAllModal: false
@@ -167,7 +168,7 @@ export const actions = {
     commit('UPDATE_IS_LOGGEDIN', state.isLoggedIn)
     commit('UPDATE_USER', state.user)
     commit('UPDATE_USER_PW', state.userPw)
-    const environment = isDev ? 'dev' : (process.env.environment || '')
+    const environment = isDev ? 'dev' : process.env.environment || ''
     commit('UPDATE_DEV', environment)
     commit('UPDATE_PATH', state.currentPath)
     commit('UPDATE_PREVIOUS_PATH', state.previousPath)
@@ -188,7 +189,7 @@ export const actions = {
       commit('UPDATE_IS_LOGGEDIN', state.isLoggedIn)
       commit('UPDATE_USER', state.user)
       commit('UPDATE_USER_PW', state.userPw)
-      const environment = isDev ? 'dev' : (process.env.environment || '')
+      const environment = isDev ? 'dev' : process.env.environment || ''
       commit('UPDATE_DEV', environment)
       commit('UPDATE_PATH', state.currentPath)
       commit('UPDATE_PREVIOUS_PATH', state.previousPath)
@@ -221,18 +222,23 @@ export const actions = {
     return this.$axios.$get('/cystack_platform/pm/users/me').then(res => {
       commit('UPDATE_USER_PW', res)
       if (this.$vaultTimeoutService) {
-        this.$vaultTimeoutService.setVaultTimeoutOptions(res.timeout, res.timeout_action)
+        this.$vaultTimeoutService.setVaultTimeoutOptions(
+          res.timeout,
+          res.timeout_action
+        )
       }
       return res
     })
   },
   LoadCurrentIntercom ({ commit }) {
-    return this.$axios.$get('cystack_platform/pm/users/me/intercom').then(res => {
-      window.intercomSettings = res
-      commit('UPDATE_USER_INTERCOM', res)
-      // eslint-disable-next-line no-undef
-      Intercom('update')
-    })
+    return this.$axios
+      .$get('cystack_platform/pm/users/me/intercom')
+      .then(res => {
+        window.intercomSettings = res
+        commit('UPDATE_USER_INTERCOM', res)
+        // eslint-disable-next-line no-undef
+        Intercom('update')
+      })
   },
   LoadNotification ({ commit }) {
     // const user = context.state.user
@@ -263,15 +269,19 @@ export const actions = {
     })
   },
   LoadMyShares ({ commit }) {
-    return this.$axios.$get('cystack_platform/pm/sharing/my_share').then(res => {
-      commit('UPDATE_MY_SHARES', res)
-      return res
-    })
+    return this.$axios
+      .$get('cystack_platform/pm/sharing/my_share')
+      .then(res => {
+        commit('UPDATE_MY_SHARES', res)
+        return res
+      })
   },
   LoadEnterpriseInvitations ({ commit }) {
-    return this.$axios.$get('cystack_platform/pm/enterprises/members/invitations').then(res => {
-      commit('UPDATE_ENTERPRISE_INVITATIONS', res)
-      return res
-    })
+    return this.$axios
+      .$get('cystack_platform/pm/enterprises/members/invitations')
+      .then(res => {
+        commit('UPDATE_ENTERPRISE_INVITATIONS', res)
+        return res
+      })
   }
 }

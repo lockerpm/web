@@ -35,6 +35,8 @@
 
         <LockedUntilPay />
 
+        <PremiumDialog />
+
         <WelcomeToBusiness />
       </client-only>
     </div>
@@ -52,6 +54,7 @@ import WelcomeToBusiness from '../components/notice/WelcomeToBusiness'
 import Tutorial from '../components/notice/Tutorial'
 import PaymentFailedWarning from '../components/notice/PaymentFailedWarning'
 import TrialAboutToExpireWarning from '../components/notice/TrialAboutToExpireWarning'
+import PremiumDialog from '../components/upgrade/PremiumDialog.vue'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
@@ -70,10 +73,16 @@ export default {
     EnterpriseInvitations,
     EmergencyAccessInvitations,
     WelcomeToBusiness,
+    PremiumDialog,
     Header,
     SideBarMenu
   },
-  middleware: ['LoggedIn', 'UserInfo', 'NotHaveAccountService', 'blockBySource'],
+  middleware: [
+    'LoggedIn',
+    'UserInfo',
+    'NotHaveAccountService',
+    'blockBySource'
+  ],
   data () {
     return {
       locked: true,
@@ -84,9 +93,7 @@ export default {
   },
   head () {
     return {
-      script: [
-        { src: 'https://js.stripe.com/v3/' }
-      ]
+      script: [{ src: 'https://js.stripe.com/v3/' }]
     }
   },
   watch: {
@@ -95,7 +102,7 @@ export default {
         this.$router.push(this.localeRoute({ name: 'set-master-password' }))
       }
     },
-    'locked' (newValue) {
+    locked (newValue) {
       if (newValue === true) {
         clearInterval(this.intervalGet)
         this.$router.push(this.localeRoute({ name: 'lock' }))
@@ -124,36 +131,39 @@ export default {
   },
   mounted () {
     this.$store.dispatch('LoadEnterpriseInvitations')
-    this.$broadcasterService.subscribe(BroadcasterSubscriptionId, async message => {
-      switch (message.command) {
-      case 'loggedIn':
-        break
-      case 'loggedOut':
-      case 'unlocked':
-        break
-      case 'authBlocked':
-      case 'logout':
-        clearInterval(this.intervalGet)
-        this.logout()
-        break
-      case 'lockVault':
-        break
-      case 'locked':
-        clearInterval(this.intervalGet)
-        this.lock()
-        break
-      case 'lockedUrl':
-      case 'syncStarted':
-      case 'syncCompleted':
-      case 'upgradeOrganization':
-      case 'premiumRequired':
-      case 'emailVerificationRequired':
-      case 'showToast':
-      case 'setFullWidth':
-      default:
-        break
+    this.$broadcasterService.subscribe(
+      BroadcasterSubscriptionId,
+      async message => {
+        switch (message.command) {
+        case 'loggedIn':
+          break
+        case 'loggedOut':
+        case 'unlocked':
+          break
+        case 'authBlocked':
+        case 'logout':
+          clearInterval(this.intervalGet)
+          this.logout()
+          break
+        case 'lockVault':
+          break
+        case 'locked':
+          clearInterval(this.intervalGet)
+          this.lock()
+          break
+        case 'lockedUrl':
+        case 'syncStarted':
+        case 'syncCompleted':
+        case 'upgradeOrganization':
+        case 'premiumRequired':
+        case 'emailVerificationRequired':
+        case 'showToast':
+        case 'setFullWidth':
+        default:
+          break
+        }
       }
-    })
+    )
     this.init()
   },
   asyncComputed: {
@@ -169,15 +179,20 @@ export default {
   },
   methods: {
     async getShareInvitations () {
-      const shareInvitations = await this.$axios.$get('cystack_platform/pm/sharing/invitations') || []
-      this.$store.commit('UPDATE_PENDING_SHARES', shareInvitations.filter(item => item.status === 'invited').length)
+      const shareInvitations =
+        (await this.$axios.$get('cystack_platform/pm/sharing/invitations')) ||
+        []
+      this.$store.commit(
+        'UPDATE_PENDING_SHARES',
+        shareInvitations.filter(item => item.status === 'invited').length
+      )
       // this.pendingShares = shareInvitations.filter(item => item.status === 'invited').length
     },
     async getMyShares () {
       this.$store.dispatch('LoadMyShares')
     },
     async recordActivity () {
-      const now = (new Date()).getTime()
+      const now = new Date().getTime()
       if (this.lastActivity != null && now - this.lastActivity < 250) {
         return
       }
@@ -200,8 +215,7 @@ export default {
         }
       }, IdleTimeout)
     },
-    noop () {
-    },
+    noop () {},
     init () {
       window.onmousemove = () => this.recordActivity()
       window.onmousedown = () => this.recordActivity()
@@ -212,12 +226,17 @@ export default {
     },
     reconnectSocket () {
       const token = this.$cookies.get('cs_locker_token')
-      this.$connect(this.sanitizeUrl(`${process.env.wsUrl}/cystack_platform/pm/sync?token=${token}`), {
-        format: 'json',
-        reconnection: true,
-        reconnectionAttempts: 60,
-        reconnectionDelay: 3000
-      })
+      this.$connect(
+        this.sanitizeUrl(
+          `${process.env.wsUrl}/cystack_platform/pm/sync?token=${token}`
+        ),
+        {
+          format: 'json',
+          reconnection: true,
+          reconnectionAttempts: 60,
+          reconnectionDelay: 3000
+        }
+      )
       this.$options.sockets.onmessage = message => {
         const data = JSON.parse(message.data)
         switch (data.event) {
