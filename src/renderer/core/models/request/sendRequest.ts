@@ -7,7 +7,7 @@ export class SendRequest {
   password: string
   max_access_count: number | null
   each_email_access_count: number | null
-  expired_date: number | null
+  expiration_date: number | null
   require_otp: boolean
   cipher_id: string
   cipher: CipherRequest
@@ -18,7 +18,7 @@ export class SendRequest {
     this.password = send.password
     this.max_access_count = send.maxAccessCount || null
     this.each_email_access_count = send.eachEmailAccessCount || null
-    this.expired_date = send.expirationDate
+    this.expiration_date = send.expirationDate
       ? send.expirationDate.getTime() / 1000
       : null
     this.require_otp = send.requireOtp

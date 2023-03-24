@@ -111,20 +111,26 @@
             <el-table-column label="Views" width="150">
               <template slot-scope="scope">
                 <span class="break-normal">
-                  {{ scope.row.accessCount }} view(s)
+                  {{ scope.row.accessCount
+                  }}{{
+                    scope.row.maxAccessCount
+                      ? `/${scope.row.maxAccessCount}`
+                      : ''
+                  }}
+                  view(s)
                 </span>
               </template>
             </el-table-column>
             <!-- Views end -->
 
             <!-- Expire time -->
-            <el-table-column label="Expiration">
+            <el-table-column label="Expiration" width="150">
               <template slot-scope="scope">
                 <span class="break-normal">
                   {{
-                    scope.row.expiredDate
-                      ? $moment(scope.row.expiredDate).format(
-                        'DD MMMM, YYYY at hh:mm A'
+                    scope.row.expirationDate
+                      ? $moment(scope.row.expirationDate).format(
+                        'DD MMMM, YYYY hh:mm A'
                       )
                       : 'never'
                   }}
@@ -264,7 +270,7 @@ export default {
         try {
           result = (await this.$sendService.getAllDecrypted()) || []
         } catch (error) {
-          //
+          console.log(error)
         }
         result = orderBy(result, ['revisionDate'], ['desc']) || []
         this.dataRendered = result.slice(0, 50)

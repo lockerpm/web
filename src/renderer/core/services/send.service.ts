@@ -50,6 +50,7 @@ export class SendService implements SendServiceAbstraction {
     send.expirationDate = model.expirationDate
     send.requireOtp = model.requireOtp
     send.eachEmailAccessCount = model.eachEmailAccessCount
+    send.maxAccessCount = model.maxAccessCount
     send.emails = model.emails
     if (model.key == null) {
       model.key = await this.cryptoFunctionService.randomBytes(16)
@@ -118,7 +119,9 @@ export class SendService implements SendServiceAbstraction {
     })
 
     await Promise.all(promises)
-    decSends.sort(Utils.getSortFunction(this.i18nService, 'expirationDate'))
+
+    // TODO: can only sort string
+    // decSends.sort(Utils.getSortFunction(this.i18nService, 'expirationDate'))
 
     this.decryptedSendCache = decSends
     return this.decryptedSendCache

@@ -10,13 +10,27 @@
     <div v-else-if="requireOtp">
       <template v-if="!isWaitingOtp">
         <el-input v-model="email" placeholder="Email">
-          <el-button slot="append" @click="submitEmail">Send OTP</el-button>
+          <el-button
+            slot="append"
+            :disabled="isLoading"
+            :loading="isLoading"
+            @click="sendOTP"
+          >
+            Send OTP
+          </el-button>
         </el-input>
       </template>
 
       <template v-else>
         <el-input v-model="otp" placeholder="OTP">
-          <el-button slot="append" @click="submitOTP">Get item</el-button>
+          <el-button
+            slot="append"
+            :disabled="isLoading"
+            :loading="isLoading"
+            @click="submitOTP"
+          >
+            Get item
+          </el-button>
         </el-input>
       </template>
 
@@ -112,12 +126,21 @@ export default {
       }
     },
 
-    async submitEmail () {
+    async sendOTP () {
       try {
         this.isLoading = true
+        this.errorMessage = ''
+
+        // Check permission first (will not be throttled)
+        await this.$axios.$post(
+          `cystack_platform/pm/quick_shares/${this.sendId}/access`,
+          { email: this.email }
+        )
+
+        // Send otp (throttled + captcha)
         await this.$axios.$post(
           `cystack_platform/pm/quick_shares/${this.sendId}/otp`,
-          { email: this.email }
+          { email: this.email, language: this.locale }
         )
         this.isWaitingOtp = true
       } catch (error) {
@@ -132,11 +155,13 @@ export default {
     async submitOTP () {
       try {
         this.isLoading = true
+        this.errorMessage = ''
         const res = await this.$axios.$post(
           `cystack_platform/pm/quick_shares/${this.sendId}/public`,
           { email: this.email, code: this.otp }
         )
         this.isWaitingOtp = false
+        this.requireOtp = false
         this.decryptCipher(res.cipher, this.send.key)
       } catch (error) {
         console.log(error)

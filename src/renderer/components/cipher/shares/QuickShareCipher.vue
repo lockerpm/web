@@ -73,6 +73,24 @@
         </el-select>
         <!-- Share with end -->
 
+        <!-- Max access count -->
+        <div>
+          <el-input
+            v-if="countAccess"
+            v-model="maxAccessCount"
+            placeholder="Max access count"
+          />
+          <el-select v-model="countAccess" placeholder="Select">
+            <el-option
+              v-for="item in accessCountOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </div>
+        <!-- Max access count end -->
+
         <!-- Emails -->
         <div v-if="requireOtp">
           <!-- Input -->
@@ -99,10 +117,6 @@
             </div>
           </div>
           <!-- Email list end -->
-
-          <!-- View once -->
-          <el-checkbox v-model="viewOnce">View once</el-checkbox>
-          <!-- View once end -->
         </div>
         <!-- Emails end -->
       </div>
@@ -163,13 +177,14 @@ export default {
       },
       password: '',
       emails: [],
-      maxAccessCount: null,
+      maxAccessCount: 1,
       eachEmailAccessCount: null,
       loading: false,
       dialogVisible: false,
       viewOnce: false,
       expireAfter: null,
       requireOtp: 0,
+      countAccess: 0,
       email: ''
     }
   },
@@ -211,6 +226,18 @@ export default {
         },
         {
           label: 'only some',
+          value: 1
+        }
+      ]
+    },
+    accessCountOptions () {
+      return [
+        {
+          label: 'unlimited',
+          value: 0
+        },
+        {
+          label: 'count',
           value: 1
         }
       ]
@@ -273,7 +300,7 @@ export default {
         send.cipher = cipher
         send.cipherId = cipher.id
         send.password = this.password
-        send.maxAccessCount = this.maxAccessCount
+        send.maxAccessCount = this.countAccess ? this.maxAccessCount : null
         send.expirationDate = this.expireAfter
           ? new Date(Date.now() + this.expireAfter * 1000)
           : null
