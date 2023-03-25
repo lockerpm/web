@@ -1,38 +1,10 @@
 <template>
-  <div class="relative overflow-hidden">
-    <div
-      class="absolute w-[105vw] bg-warning md:flex hidden items-center justify-center py-4 -rotate-6 z-50 top-[70px] right-2 -left-4"
-    >
-      <p
-        class="font-bold text-[32px] leading-[38px] text-white w-[320px] flex-grow-0 flex-shrink-0 text-center"
-      >
-        Lifetime Package
-      </p>
-      <img class="h7" src="~/assets/images/landing/lifetime/star-four.svg">
-      <p
-        class="font-bold text-[32px] leading-[38px] text-white w-[320px] flex-grow-0 flex-shrink-0 text-center"
-      >
-        Lifetime Package
-      </p>
-      <img class="h7" src="~/assets/images/landing/lifetime/star-four.svg">
-      <p
-        class="font-bold text-[32px] leading-[38px] text-white w-[320px] flex-grow-0 flex-shrink-0 text-center"
-      >
-        Lifetime Package
-      </p>
-      <img class="h7" src="~/assets/images/landing/lifetime/star-four.svg">
-      <p
-        class="font-bold text-[32px] leading-[38px] text-white w-[320px] flex-grow-0 flex-shrink-0 text-center"
-      >
-        Lifetime Package
-      </p>
-    </div>
-
+  <div>
     <!-- Logo -->
-    <section class="full-width bg-[#EEF4ED] md:pb-16">
+    <section class="full-width bg-[#EEF4ED]">
       <img
-        class="h-12 mx-auto my-4"
-        src="~/assets/images/logo/logo_black.svg"
+        class="h-12 mx-auto my-4 px-6"
+        src="~/assets/images/logo/logo_black_with_text.svg"
       >
     </section>
     <!-- Logo end -->
