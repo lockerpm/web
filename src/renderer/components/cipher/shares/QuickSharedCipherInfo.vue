@@ -79,6 +79,7 @@ export default {
       },
       send: {
         id: '',
+        accessId: '',
         emails: [],
         requireOtp: null,
         expirationDate: null,
@@ -96,7 +97,7 @@ export default {
       this.cipher = { organizationId: '', ...cipher }
       this.send = send
       this.url = this.getPublicShareUrl(
-        send.id,
+        send.accessId,
         Utils.fromBufferToUrlB64(send.key)
       )
     },

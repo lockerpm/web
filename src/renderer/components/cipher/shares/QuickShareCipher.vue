@@ -330,6 +330,7 @@ export default {
         this.closeDialog()
         this.$refs.quickSharedCipherInfo.openDialog(cipher, {
           id: res.id,
+          accessId: res.access_id,
           emails: sendRequest.emails,
           requireOtp: sendRequest.require_otp,
           expirationDate: sendRequest.expired_date * 1000,

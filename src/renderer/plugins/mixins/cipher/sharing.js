@@ -125,10 +125,10 @@ Vue.mixin({
       }
     },
 
-    getPublicShareUrl (id, key) {
+    getPublicShareUrl (accessId, key) {
       return `${
         process.env.baseUrl
-      }/shares/flash-share-item/${id}#${encodeURIComponent(key)}`
+      }/shares/flash-share-item/${accessId}#${encodeURIComponent(key)}`
     },
 
     async stopQuickSharing (send) {

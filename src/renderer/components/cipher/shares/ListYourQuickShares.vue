@@ -156,7 +156,10 @@
                       <!-- Copy link -->
                       <el-dropdown-item
                         v-clipboard:copy="
-                          getPublicShareUrl(scope.row.id, scope.row.urlB64Key)
+                          getPublicShareUrl(
+                            scope.row.accessId,
+                            scope.row.urlB64Key
+                          )
                         "
                         v-clipboard:success="clipboardSuccessHandler"
                       >
