@@ -44,6 +44,11 @@
           is-password
           @change="errors = {}"
         />
+        <InputText
+          v-model="masterPasswordHint"
+          :label="$t('set_master_password.master_password_hint')"
+          class="w-full"
+        />
       </div>
       <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow" />
@@ -99,6 +104,7 @@ export default {
       oldMasterPassword: '',
       masterPassword: '',
       masterRePassword: '',
+      masterPasswordHint: '',
       key: '',
       showPassword: false
     }
@@ -215,6 +221,7 @@ export default {
           key: encKey[1].encryptedString,
           new_master_password_hash: newMasterPasswordHash,
           master_password_hash: masterPasswordHash,
+          new_master_password_hint: this.masterPasswordHint,
           score: this.passwordStrength.score,
           master_password_cipher: masterPwItem || undefined
         })

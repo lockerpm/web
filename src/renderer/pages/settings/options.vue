@@ -10,7 +10,9 @@
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
-            <div class="text-head-5 font-semibold">{{ $t('data.settings.your_inventory') }}</div>
+            <div class="text-head-5 font-semibold">
+              {{ $t('data.settings.your_inventory') }}
+            </div>
           </div>
           <div>
             <button
@@ -33,21 +35,15 @@
               placeholder="Select"
               @change="changeLang"
             >
-              <el-option
-                :label=" $t('data.settings.vietnamese')"
-                value="vi"
-              />
-              <el-option
-                :label=" $t('data.settings.english')"
-                value="en"
-              />
+              <el-option :label="$t('data.settings.vietnamese')" value="vi" />
+              <el-option :label="$t('data.settings.english')" value="en" />
             </el-select>
           </div>
         </div>
       </div>
       <div class="setting-section">
         <div class="setting-section-header">
-          <div>
+          <div class="pr-4">
             <div class="setting-title">
               {{ $t('data.settings.timeout') }}
             </div>
@@ -74,7 +70,7 @@
       </div>
       <div class="setting-section">
         <div class="setting-section-header">
-          <div>
+          <div class="pr-4">
             <div class="setting-title">
               {{ $t('data.settings.timeout_action') }}
             </div>
@@ -130,6 +126,7 @@ export default {
         { label: this.$t('data.timeouts.thirtyMinutes'), value: 30 },
         { label: this.$t('data.timeouts.oneHour'), value: 60 },
         { label: this.$t('data.timeouts.fourHours'), value: 240 },
+        { label: this.$t('data.timeouts.twoWeeks'), value: 60 * 24 * 14 },
         { label: this.$t('data.timeouts.onRefresh'), value: -1 }
       ]
     },
@@ -156,11 +153,20 @@ export default {
         this.loading = true
         await this.$axios.$put('cystack_platform/pm/users/me', this.user)
         this.$store.commit('UPDATE_USER_PW', this.user)
-        this.$vaultTimeoutService.setVaultTimeoutOptions(this.user.timeout, this.user.timeout_action)
-        this.notify(this.$t('data.notifications.update_settings_success'), 'success')
+        this.$vaultTimeoutService.setVaultTimeoutOptions(
+          this.user.timeout,
+          this.user.timeout_action
+        )
+        this.notify(
+          this.$t('data.notifications.update_settings_success'),
+          'success'
+        )
       } catch (e) {
         console.log(e)
-        this.notify(this.$t('data.notifications.update_settings_failed'), 'warning')
+        this.notify(
+          this.$t('data.notifications.update_settings_failed'),
+          'warning'
+        )
       } finally {
         this.loading = false
       }

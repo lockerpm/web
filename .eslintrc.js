@@ -6,12 +6,8 @@ module.exports = {
   },
   parserOptions: {
     sourceType: 'module'
-
   },
-  extends: [
-
-    '@nuxtjs/eslint-config-typescript'
-  ],
+  extends: ['@nuxtjs/eslint-config-typescript'],
   // add your custom rules here
   rules: {
     // StandardJS — The Rules
@@ -31,6 +27,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
 
     'vue/max-attributes-per-line': 1,
-    'vue/singleline-html-element-content-newline': 0
+    'vue/singleline-html-element-content-newline': 0,
+    'vue/multi-word-component-names': 0
   }
 }

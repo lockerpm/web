@@ -4,6 +4,7 @@
 
 <script>
 import isString from 'lodash/isString'
+
 export default {
   layout: 'authenticate',
   data () {
@@ -42,45 +43,21 @@ export default {
           ...(this.environment === '' ? { secure: true } : { secure: false })
         })
         this.$store.commit('UPDATE_IS_LOGGEDIN', true)
-
-        // sendMessage to Locker extension
-        const lockerExtensionId = process.env.extensionId
         if (this.$route.query.client === 'browser') {
-          // window.postMessage({ command: 'locker-authResult', token: this.$route.query.token }, 'https://locker.io')
           const extensionToken = this.$route.query.token
-          try {
-            for (const id of lockerExtensionId) {
-              // eslint-disable-next-line no-undef
-              chrome.runtime.sendMessage(
-                id,
-                { command: 'cs-authResult', token: extensionToken },
-                response => this.updateLoginExtension(response)
-              )
-            }
-          } catch (error) {}
+          window.postMessage({ command: 'cs-authResult', token: extensionToken })
         } else {
           const url = `${process.env.baseApiUrl}/sso/access_token`
-          this.$axios
-            .post(url, {
-              SERVICE_URL: '/sso',
-              SERVICE_SCOPE: 'pwdmanager',
-              CLIENT: 'browser'
-            })
-            .then(async result => {
-              const extensionToken = result.data ? result.data.access_token : ''
-              try {
-                for (const id of lockerExtensionId) {
-                  // eslint-disable-next-line no-undef
-                  chrome.runtime.sendMessage(
-                    id,
-                    { command: 'cs-authResult', token: extensionToken },
-                    response => this.updateLoginExtension(response)
-                  )
-                }
-              } catch (error) {}
-            })
-            .catch(() => {})
+          this.$axios.post(url, {
+            SERVICE_URL: '/sso',
+            SERVICE_SCOPE: 'pwdmanager',
+            CLIENT: 'browser'
+          }).then(async result => {
+            const extensionToken = result.data ? result.data.access_token : ''
+            window.postMessage({ command: 'cs-authResult', token: extensionToken })
+          }).catch(() => {})
         }
+
         // end sendMessage
 
         if (

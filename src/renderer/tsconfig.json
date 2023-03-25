@@ -4,11 +4,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "skipLibCheck": true,
-    "lib": [
-      "esnext",
-      "esnext.asynciterable",
-      "dom"
-    ],
+    "lib": ["esnext", "esnext.asynciterable", "dom"],
     "noImplicitAny": false,
     "esModuleInterop": false,
     "allowJs": true,
@@ -17,32 +13,15 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": [
-        "./*"
-      ],
-      "@/*": [
-        "./*"
-      ],
-      "tldjs": [
-        "./jslib/src/misc/tldjs.noop"
-      ],
-      "jslib/*": [
-        "./jslib/src/*"
-      ],
-      "@angular/*": [
-        "../../node_modules/@angular/*"
-      ],
-      "node": [
-        "../../node_modules/@types/node"
-      ],
-      "duo_web_sdk": [
-        "../../../node_modules/duo_web_sdk"
-      ]
+      "~/*": ["./*"],
+      "@/*": ["./*"],
+      "tldjs": ["./jslib/src/misc/tldjs.noop"],
+      "jslib/*": ["./jslib/src/*"],
+      "@angular/*": ["../../node_modules/@angular/*"],
+      "node": ["../../node_modules/@types/node"],
+      "duo_web_sdk": ["../../../node_modules/duo_web_sdk"]
     },
-    "types": [
-      "@nuxt/types",
-      "@types/node"
-    ],
+    "types": ["@nuxt/types", "@types/node", "@nuxtjs/sentry"],
     "experimentalDecorators": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true

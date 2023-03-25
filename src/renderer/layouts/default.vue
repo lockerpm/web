@@ -35,6 +35,8 @@
 
         <LockedUntilPay />
 
+        <PremiumDialog />
+
         <WelcomeToBusiness />
       </client-only>
     </div>
@@ -52,6 +54,7 @@ import WelcomeToBusiness from '../components/notice/WelcomeToBusiness'
 import Tutorial from '../components/notice/Tutorial'
 import PaymentFailedWarning from '../components/notice/PaymentFailedWarning'
 import TrialAboutToExpireWarning from '../components/notice/TrialAboutToExpireWarning'
+import PremiumDialog from '../components/upgrade/PremiumDialog.vue'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var, @typescript-eslint/no-unused-vars
@@ -70,6 +73,7 @@ export default {
     EnterpriseInvitations,
     EmergencyAccessInvitations,
     WelcomeToBusiness,
+    PremiumDialog,
     Header,
     SideBarMenu
   },

@@ -37,7 +37,8 @@ export const state = () => ({
     showTutorialStep6: false,
     showWelcome: false,
     allowShowWelcomeBusiness: false,
-    allowShowTutorial: false
+    allowShowTutorial: false,
+    showPleaseUpgrade: false
   },
   ui: {
     closeAllModal: false
