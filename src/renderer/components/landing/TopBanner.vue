@@ -11,6 +11,7 @@
             <a
               :href="url"
               style="color: #15D127; text-decoration: none"
+              target="_blank"
             >
               {{ $t('landing_banner.read_more') }} <i class="el-icon-right" />
             </a>
@@ -34,10 +35,10 @@ export default {
   },
   computed: {
     url () {
-      if (this.$store.state.user.language === 'vi') {
-        return 'https://support.locker.io/vi/articles/Nhap-du-lieu-tu-LastPass-3618294835b442168390a6a4def14a12'
+      if (this.$i18n.locale === 'vi') {
+        return 'https://locker.io/vi/blog/tien-ich-quan-ly-mat-khau'
       } else {
-        return 'https://support.locker.io/articles/Import-from-LastPass-e5e86298c03d4eb180d19dec78e3db11'
+        return 'https://locker.io/blog/introducing-a-new-locker-password-manager-for-firefox'
       }
     }
   },
