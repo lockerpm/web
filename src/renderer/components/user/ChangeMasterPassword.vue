@@ -17,7 +17,9 @@
           v-model="oldMasterPassword"
           :label="$t('master_password.current_password')"
           class="w-full"
-          :error-text="errors.oldMasterPassword && $t('errors.invalid_password')"
+          :error-text="
+            errors.oldMasterPassword && $t('errors.invalid_password')
+          "
           is-password
           @change="errors = {}"
         />
@@ -29,7 +31,11 @@
           is-password
           @change="errors = {}"
         />
-        <PasswordStrengthBar v-if="masterPassword" :score="passwordStrength.score" class="mb-4" />
+        <PasswordStrengthBar
+          v-if="masterPassword"
+          :score="passwordStrength.score"
+          class="mb-4"
+        />
         <InputText
           v-model="masterRePassword"
           :label="$t('master_password.re_password')"
@@ -37,6 +43,11 @@
           :error-text="errors.masterRePassword && $t('errors.confirm_password')"
           is-password
           @change="errors = {}"
+        />
+        <InputText
+          v-model="masterPasswordHint"
+          :label="$t('set_master_password.master_password_hint')"
+          class="w-full"
         />
       </div>
       <div slot="footer" class="dialog-footer flex items-center text-left">
@@ -50,7 +61,13 @@
           </button>
           <button
             class="btn btn-primary"
-            :disabled="loading || !oldMasterPassword || !masterRePassword || !masterPassword || masterPassword !== masterRePassword"
+            :disabled="
+              loading ||
+                !oldMasterPassword ||
+                !masterRePassword ||
+                !masterPassword ||
+                masterPassword !== masterRePassword
+            "
             @click="preparePassword"
           >
             {{ $t('master_password.change_btn') }}
@@ -87,13 +104,18 @@ export default {
       oldMasterPassword: '',
       masterPassword: '',
       masterRePassword: '',
+      masterPasswordHint: '',
       key: '',
       showPassword: false
     }
   },
   computed: {
     passwordStrength () {
-      return this.$passwordGenerationService.passwordStrength(this.masterPassword, ['cystack']) || {}
+      return (
+        this.$passwordGenerationService.passwordStrength(this.masterPassword, [
+          'cystack'
+        ]) || {}
+      )
     }
   },
   watch: {
@@ -105,8 +127,7 @@ export default {
       }
     }
   },
-  mounted () {
-  },
+  mounted () {},
   methods: {
     openDialog (folder = {}, shouldRedirect = false) {
       this.dialogVisible = true
@@ -154,16 +175,26 @@ export default {
 
     async changePass () {
       if (this.masterPassword.length < MIN_MASTER_PW_LEN) {
-        this.notify(this.$t('data.notifications.invalid_master_password'), 'error')
+        this.notify(
+          this.$t('data.notifications.invalid_master_password'),
+          'error'
+        )
         return
       }
       try {
         this.loading = true
         const kdf = 0
         const kdfIterations = 100000
-        const key = await this.$cryptoService.makeKey(this.masterPassword, this.currentUser.email,
-          kdf, kdfIterations)
-        const newMasterPasswordHash = await this.$cryptoService.hashPassword(this.masterPassword, key)
+        const key = await this.$cryptoService.makeKey(
+          this.masterPassword,
+          this.currentUser.email,
+          kdf,
+          kdfIterations
+        )
+        const newMasterPasswordHash = await this.$cryptoService.hashPassword(
+          this.masterPassword,
+          key
+        )
         let encKey = null
         const existingEncKey = await this.$cryptoService.getEncKey()
         if (existingEncKey == null) {
@@ -172,9 +203,15 @@ export default {
           encKey = await this.$cryptoService.remakeEncKey(key)
         }
         const storageKeyHash = await this.$cryptoService.getKeyHash()
-        const masterPasswordHash = await this.$cryptoService.hashPassword(this.oldMasterPassword, null)
+        const masterPasswordHash = await this.$cryptoService.hashPassword(
+          this.oldMasterPassword,
+          null
+        )
         if (storageKeyHash !== masterPasswordHash) {
-          this.notify(this.$t('data.notifications.incorrect_current_master'), 'warning')
+          this.notify(
+            this.$t('data.notifications.incorrect_current_master'),
+            'warning'
+          )
           return
         }
 
@@ -184,18 +221,27 @@ export default {
           key: encKey[1].encryptedString,
           new_master_password_hash: newMasterPasswordHash,
           master_password_hash: masterPasswordHash,
+          new_master_password_hint: this.masterPasswordHint,
           score: this.passwordStrength.score,
           master_password_cipher: masterPwItem || undefined
         })
 
-        this.notify(this.$t('data.notifications.update_master_success'), 'success')
+        this.notify(
+          this.$t('data.notifications.update_master_success'),
+          'success'
+        )
         this.closeDialog()
         await this.$userService.clear()
         await this.$messagingService.send('locked')
       } catch (e) {
         console.log(e)
-        this.notify(this.$t('data.notifications.update_master_failed'), 'warning')
-        this.errors = (e.response && e.response.data && e.response.data.details) || { oldMasterPassword: 1 }
+        this.notify(
+          this.$t('data.notifications.update_master_failed'),
+          'warning'
+        )
+        this.errors = (e.response &&
+          e.response.data &&
+          e.response.data.details) || { oldMasterPassword: 1 }
       } finally {
         this.loading = false
       }
