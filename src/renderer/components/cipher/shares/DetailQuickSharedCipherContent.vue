@@ -27,7 +27,9 @@
             should-hide
           />
           <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">{{ $t('data.ciphers.password_security') }}</div>
+            <p class="mr-4 break-normal">
+              {{ $t('data.ciphers.password_security') }}
+            </p>
             <div class="col-span-4 font-semibold">
               <PasswordStrength :score="passwordStrength.score" />
             </div>
@@ -38,7 +40,9 @@
             :key="index"
             class="grid md:grid-cols-6 cipher-item"
           >
-            <div class="">{{ $t('data.ciphers.website_address') }}</div>
+            <p class="mr-4 break-normal">
+              {{ $t('data.ciphers.website_address') }}
+            </p>
             <div class="col-span-4 font-semibold">
               {{ item.uri }}
             </div>
@@ -66,7 +70,9 @@
             />
           </div>
           <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">{{ $t('data.ciphers.password_security') }}</div>
+            <p class="break-normal mr-4">
+              {{ $t('data.ciphers.password_security') }}
+            </p>
             <div class="col-span-4 font-semibold">
               <PasswordStrength :score="passwordStrength.score" />
             </div>
@@ -77,7 +83,9 @@
             :key="index"
             class="grid md:grid-cols-6 cipher-item"
           >
-            <div class="">{{ $t('data.ciphers.website_address') }}</div>
+            <p class="break-normal mr-4">
+              {{ $t('data.ciphers.website_address') }}
+            </p>
             <div class="col-span-4 font-semibold">
               {{ item.uri }}
             </div>
@@ -194,7 +202,7 @@
           v-if="cipher.type === CipherType.CryptoWallet && cipher.cryptoWallet"
         >
           <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">{{ $t('data.ciphers.wallet_app') }}</div>
+            <p class="break-normal mr-4">{{ $t('data.ciphers.wallet_app') }}</p>
             <div class="col-span-4">
               <div
                 v-if="cipher.cryptoWallet.walletApp"
@@ -231,7 +239,7 @@
             should-hide
           />
           <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">{{ $t('data.ciphers.seed') }}</div>
+            <p class="break-normal mr-4">{{ $t('data.ciphers.seed') }}</p>
             <div class="col-span-4 font-semibold">
               <InputSeedPhrase
                 v-model="cipher.cryptoWallet.seed"
@@ -252,7 +260,7 @@
             </div>
           </div>
           <div class="grid md:grid-cols-6 cipher-item">
-            <div class="">{{ $t('data.ciphers.networks') }}</div>
+            <p class="break-normal mr-4">{{ $t('data.ciphers.networks') }}</p>
             <div class="col-span-4">
               <div
                 v-if="
@@ -319,7 +327,7 @@
 
         <!-- Share with -->
         <div v-if="emails.length > 0" class="grid md:grid-cols-6 cipher-item">
-          <div class="">{{ $t('data.ciphers.shared_with') }}</div>
+          <p class="break-normal mr-4">{{ $t('data.ciphers.shared_with') }}</p>
           <div
             :class="showMember ? 'gap-y-3 py-3' : ''"
             class="col-span-4 flex flex-wrap"

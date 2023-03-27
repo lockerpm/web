@@ -74,6 +74,9 @@ Vue.mixin({
         process.env.environment === 'staging' ||
         process.env.NODE_ENV !== 'production'
       )
+    },
+    currentYear () {
+      return new Date().getFullYear()
     }
   },
   methods: {
