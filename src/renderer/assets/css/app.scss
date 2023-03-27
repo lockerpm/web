@@ -621,6 +621,7 @@ a:hover {
   visibility: hidden;
 }
 
-.el-button {
+.el-button,
+.el-dialog__title {
   font-weight: 600;
 }

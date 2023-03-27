@@ -7,26 +7,40 @@
       top="5vh"
       custom-class="locker-dialog"
       :close-on-click-modal="false"
+      title="Get shareable link"
     >
-      <!-- Title -->
-      <div slot="title">
-        <div v-if="hasInitialCipher" class="flex items-center">
-          <div class="text-[34px] mr-3">
-            <Vnodes :vnodes="getIconCipher(cipher, 20)" />
+      <!-- Cipher info -->
+      <div v-if="hasInitialCipher" class="flex items-center">
+        <!-- Icon -->
+        <div>
+          <div
+            class="text-[34px] mr-3 flex-shrink-0"
+            :class="{
+              'filter grayscale': cipher.isDeleted
+            }"
+          >
+            <Vnodes :vnodes="getIconCipher(cipher, 34)" />
           </div>
-          <div class="text-black-700 font-semibold">{{ cipher.name }}</div>
         </div>
+        <!-- Icon end -->
 
-        <div v-else>
-          <div class="text-black-700 font-semibold">New quick share</div>
+        <!-- Name -->
+        <div class="flex flex-col">
+          <p class="text-black font-semibold truncate flex items-center">
+            {{ cipher.name }}
+          </p>
+          <div v-if="cipher.subTitle">
+            {{ cipher.subTitle || 'N/A' }}
+          </div>
         </div>
+        <!-- Name end -->
       </div>
-      <!-- Title end -->
+      <!-- Cipher info end -->
 
       <!-- Select -->
-      <div class="text-left">
+      <div v-else class="text-left">
         <!-- Add cipher -->
-        <div v-if="!hasInitialCipher" class="grid grid-cols-2 gap-x-2 mb-4">
+        <div class="grid grid-cols-2 gap-x-2 mb-4">
           <div class="w-full">
             <div class="text-black-700 text-head-6 font-semibold">
               Choose item to quick share
@@ -50,93 +64,114 @@
       <!-- Select end -->
 
       <!-- Body -->
-      <div>
-        <!-- Expire after -->
-        <el-select v-model="expireAfter" placeholder="Select">
-          <el-option
-            v-for="item in expirationOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        <!-- Expire after end -->
-
+      <div class="mt-4 border-t border-black-200 pt-6">
         <!-- Share with -->
-        <el-select v-model="requireOtp" placeholder="Select">
-          <el-option
-            v-for="item in shareWithOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        <!-- Share with end -->
-
-        <!-- Max access count -->
         <div>
-          <el-input
-            v-if="countAccess"
-            v-model="maxAccessCount"
-            placeholder="Max access count"
-          />
-          <el-select v-model="countAccess" placeholder="Select">
+          <el-select v-model="requireOtp" placeholder="Select">
             <el-option
-              v-for="item in accessCountOptions"
+              v-for="item in shareWithOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             />
           </el-select>
-        </div>
-        <!-- Max access count end -->
 
-        <!-- Emails -->
-        <div v-if="requireOtp">
-          <!-- Input -->
-          <el-input v-model="email">
-            <el-button slot="append" :disabled="!email" @click="addEmail">
-              Add
-            </el-button>
-          </el-input>
-          <!-- Input end -->
+          <div v-if="requireOtp">
+            <p class="font-semibold mt-6 mb-3 text-black">
+              Email addresses for the people to share this with
+            </p>
 
-          <!-- Email list -->
-          <div>
-            <div
-              v-for="item in emails"
-              :key="item"
-              class="w-full flex flex-row items-center"
+            <!-- Input -->
+            <el-input
+              v-model="email"
+              placeholder="Email"
+              @keyup.enter.native="addEmail"
             >
-              <p class="flex-1 mr-2">
-                {{ item }}
-              </p>
-              <a @click.prevent="removeEmail(item)">
-                <i class="fa fa-trash-alt" />
-              </a>
+              <el-button slot="append" :disabled="!email" @click="addEmail">
+                Add
+              </el-button>
+            </el-input>
+            <!-- Input end -->
+
+            <!-- Email list -->
+            <div class="mt-3">
+              <div
+                v-for="item in emails"
+                :key="item"
+                class="w-full flex flex-row items-center py-2"
+              >
+                <p class="flex-1 mr-2">
+                  {{ item }}
+                </p>
+                <a @click.prevent="removeEmail(item)">
+                  <i class="fa fa-trash-alt h-5 text-black" />
+                </a>
+              </div>
             </div>
+            <!-- Email list end -->
           </div>
-          <!-- Email list end -->
         </div>
-        <!-- Emails end -->
+        <!-- Share with end -->
+
+        <p class="font-semibold mt-6 mb-4 text-black">Link expires after</p>
+
+        <div class="flex items-center flex-wrap">
+          <!-- Expire after -->
+          <el-select
+            v-model="expireAfter"
+            placeholder="Select"
+            class="max-w-[120px]"
+          >
+            <el-option
+              v-for="item in expirationOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+          <!-- Expire after end -->
+
+          <p class="text-black mx-3">or</p>
+
+          <!-- Max access count -->
+          <div class="flex">
+            <el-input
+              v-if="countAccess"
+              v-model="maxAccessCount"
+              placeholder="Max access count"
+              type="number"
+              class="mr-1 max-w-[100px]"
+            />
+            <el-select
+              v-model="countAccess"
+              placeholder="Select"
+              class="max-w-[170px]"
+            >
+              <el-option
+                v-for="item in accessCountOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </div>
+          <!-- Max access count end -->
+        </div>
       </div>
       <!-- Body end -->
 
       <!-- Footer -->
-      <div slot="footer" class="dialog-footer flex items-center text-left">
-        <div class="flex-grow" />
-        <div>
-          <button class="btn btn-default" @click="dialogVisible = false">
-            {{ $t('common.cancel') }}
-          </button>
-          <button
-            class="btn btn-primary"
-            :disabled="loading || !cipher.id"
-            @click="shareItem(cipher)"
-          >
-            {{ $t('common.share') }}
-          </button>
-        </div>
+      <div
+        slot="footer"
+        class="dialog-footer flex items-center border-t border-black-200"
+      >
+        <button
+          class="btn btn-primary mt-4 w-full"
+          :disabled="loading || !cipher.id"
+          @click="shareItem(cipher)"
+        >
+          Get link to Share
+        </button>
       </div>
       <!-- Footer end -->
     </el-dialog>
@@ -182,7 +217,7 @@ export default {
       loading: false,
       dialogVisible: false,
       viewOnce: false,
-      expireAfter: null,
+      expireAfter: 60 * 60 * 24,
       requireOtp: 0,
       countAccess: 0,
       email: ''
@@ -221,11 +256,11 @@ export default {
     shareWithOptions () {
       return [
         {
-          label: 'anyone',
+          label: 'Anyone with the link',
           value: 0
         },
         {
-          label: 'only some',
+          label: 'Only invited people',
           value: 1
         }
       ]
@@ -233,11 +268,11 @@ export default {
     accessCountOptions () {
       return [
         {
-          label: 'unlimited',
+          label: 'Unlimited access',
           value: 0
         },
         {
-          label: 'count',
+          label: 'Time access',
           value: 1
         }
       ]
@@ -278,6 +313,9 @@ export default {
     },
 
     addEmail () {
+      if (!this.email.trim()) {
+        return
+      }
       if (!this.emails.includes(this.email)) {
         this.emails.push(this.email)
       }
