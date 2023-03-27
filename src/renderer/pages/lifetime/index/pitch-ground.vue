@@ -62,8 +62,6 @@ import RedeemForm from '../../../components/pages/lifetime/RedeemForm.vue'
 export default {
   components: { RedeemForm },
 
-  middleware: ['blockProduction'],
-
   asyncData ({ $axios }) {
     return $axios
       .$get('/resources/countries')
