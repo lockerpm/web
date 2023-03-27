@@ -4,13 +4,29 @@
       <!-- Icon + name -->
       <div class="mt-20 mb-9 text-center">
         <div class="mb-4 text-[70px]">
-          <Vnodes :vnodes="getIconCipher(cipher, 34)" />
+          <Vnodes :vnodes="getIconCipher(hideAll ? {} : cipher, 64)" />
         </div>
         <div class="text-head-4 font-medium truncate">
-          {{ cipher.name }}
+          {{ filterPassword(cipher.name, !isPublic || !hideAll) }}
         </div>
       </div>
       <!-- Icon + name end -->
+
+      <!-- Show/hide item -->
+      <div class="w-full flex">
+        <button
+          v-if="isPublic"
+          class="btn mx-auto mb-6"
+          @click="hideAll = !hideAll"
+        >
+          <i
+            class="far mr-2"
+            :class="{ 'fa-eye': !hideAll, 'fa-eye-slash': hideAll }"
+          />
+          {{ hideAll ? 'Reveal information' : 'Hide information' }}
+        </button>
+      </div>
+      <!-- Show/hide item end -->
 
       <!-- Display cipher info -->
       <div class="cipher-items">
@@ -19,12 +35,13 @@
           <TextHaveCopy
             label="Email / Username"
             :text="cipher.login.username"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.password')"
             :text="cipher.login.password"
             :view-password="cipher.viewPassword"
-            should-hide
+            :should-hide="!isPublic || hideAll"
           />
           <div class="grid md:grid-cols-6 cipher-item">
             <p class="mr-4 break-normal">
@@ -44,7 +61,7 @@
               {{ $t('data.ciphers.website_address') }}
             </p>
             <div class="col-span-4 font-semibold">
-              {{ item.uri }}
+              {{ filterPassword(item.uri, !isPublic || !hideAll) }}
             </div>
             <div class="text-right">
               <button
@@ -108,28 +125,33 @@
           <TextHaveCopy
             :label="$t('data.ciphers.card_holder')"
             :text="cipher.card.cardholderName"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.brand')"
             :text="cipher.card.brand"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.card_number')"
             :text="cipher.card.number"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.expiration_month')"
             :text="cipher.card.expMonth"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.expiration_year')"
             :text="cipher.card.expYear"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.cvv')"
             :text="cipher.card.code"
-            should-hide
             :view-password="cipher.viewPassword"
+            :should-hide="!isPublic || hideAll"
           />
         </template>
         <!-- Card end -->
@@ -143,56 +165,77 @@
                 ? $t(`common.${cipher.identity.title}`)
                 : null
             "
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.first_name')"
             :text="cipher.identity.firstName"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.last_name')"
             :text="cipher.identity.lastName"
+            :should-hide="isPublic && hideAll"
           />
-          <TextHaveCopy label="Username" :text="cipher.identity.username" />
-          <TextHaveCopy label="Email" :text="cipher.identity.email" />
+          <TextHaveCopy
+            label="Username"
+            :text="cipher.identity.username"
+            :should-hide="isPublic && hideAll"
+          />
+          <TextHaveCopy
+            label="Email"
+            :text="cipher.identity.email"
+            :should-hide="isPublic && hideAll"
+          />
           <TextHaveCopy
             :label="$t('data.ciphers.company')"
             :text="cipher.identity.company"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.ssn')"
             :text="cipher.identity.ssn"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.passport')"
             :text="cipher.identity.passportNumber"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.license')"
             :text="cipher.identity.licenseNumber"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.address') + '1'"
             :text="cipher.identity.address1"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.address') + '2'"
             :text="cipher.identity.address2"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.city_town')"
             :text="cipher.identity.city"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.state_province')"
             :text="cipher.identity.state"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.zip')"
             :text="cipher.identity.postalCode"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.country')"
             :text="cipher.identity.country"
+            :should-hide="isPublic && hideAll"
           />
         </template>
         <!-- Identity end -->
@@ -209,40 +252,53 @@
                 class="font-semibold flex items-center"
               >
                 <img
+                  v-if="!isPublic || !hideAll"
                   :src="cipher.cryptoWallet.walletApp.logo"
                   alt=""
                   class="mr-3 h-[34px] w-[34px] rounded-full"
                 >
-                {{ cipher.cryptoWallet.walletApp.name }}
+                {{
+                  filterPassword(
+                    cipher.cryptoWallet.walletApp.name,
+                    !isPublic || !hideAll
+                  )
+                }}
               </div>
             </div>
           </div>
           <TextHaveCopy
             :label="$t('data.ciphers.username')"
             :text="cipher.cryptoWallet.username"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.password_pin')"
             :text="cipher.cryptoWallet.password"
             :view-password="cipher.viewPassword"
-            should-hide
+            :should-hide="!isPublic || hideAll"
           />
 
           <TextHaveCopy
             :label="$t('data.ciphers.wallet_address')"
             :text="cipher.cryptoWallet.address"
+            :should-hide="isPublic && hideAll"
           />
           <TextHaveCopy
             :label="$t('data.ciphers.private_key')"
             :text="cipher.cryptoWallet.privateKey"
             :view-password="cipher.viewPassword"
-            should-hide
+            :should-hide="!isPublic || hideAll"
           />
           <div class="grid md:grid-cols-6 cipher-item">
             <p class="break-normal mr-4">{{ $t('data.ciphers.seed') }}</p>
             <div class="col-span-4 font-semibold">
               <InputSeedPhrase
-                v-model="cipher.cryptoWallet.seed"
+                :value="
+                  filterPassword(
+                    cipher.cryptoWallet.seed,
+                    !isPublic || !hideAll
+                  )
+                "
                 :label="$t('data.ciphers.seed')"
                 :edit-mode="false"
                 :disabled="true"
@@ -275,11 +331,12 @@
                   class="font-semibold flex items-center break-normal"
                 >
                   <img
+                    v-if="!isPublic || !hideAll"
                     :src="network.logo"
                     alt=""
                     class="mr-3 h-[34px] w-[34px] rounded-full"
                   >
-                  {{ network.name }}
+                  {{ filterPassword(network.name, !isPublic || !hideAll) }}
                 </div>
               </div>
             </div>
@@ -309,6 +366,7 @@
             :label="$t('data.ciphers.notes')"
             :text="$t('master_pw_item.desc')"
             :text-area="true"
+            :should-hide="isPublic && hideAll"
           />
         </div>
         <!-- Notes end -->
@@ -320,7 +378,9 @@
             :key="index"
             :label="field.name"
             :text="field.value"
-            :should-hide="field.type === FieldType.Hidden"
+            :should-hide="
+              field.type === FieldType.Hidden || (isPublic && hideAll)
+            "
           />
         </template>
         <!-- Custom fields end -->
@@ -395,6 +455,10 @@ export default {
     emails: {
       type: Array,
       default: () => []
+    },
+    isPublic: {
+      type: Boolean,
+      default: () => false
     }
   },
   data () {
@@ -402,7 +466,8 @@ export default {
       showPassword: false,
       CipherType,
       showMember: false,
-      FieldType
+      FieldType,
+      hideAll: true
     }
   },
   computed: {

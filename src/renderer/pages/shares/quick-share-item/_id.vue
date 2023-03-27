@@ -112,7 +112,10 @@
 
         <!-- Cipher detail -->
         <div v-else v-loading="isLoading">
-          <DetailQuickSharedCipherContent :cipher-data="send.cipher" />
+          <DetailQuickSharedCipherContent
+            is-public
+            :cipher-data="send.cipher"
+          />
         </div>
         <!-- Cipher detail end -->
       </div>

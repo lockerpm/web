@@ -62,6 +62,11 @@ export default {
       showPassword: false
     }
   },
+  watch: {
+    shouldHide (val) {
+      this.showPassword = !val
+    }
+  },
   mounted () {
     this.showPassword = !this.shouldHide
   }

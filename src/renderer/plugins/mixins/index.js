@@ -335,6 +335,21 @@ Vue.mixin({
       if (window.Intercom) {
         window.Intercom('show')
       }
+    },
+
+    filterPassword (value, showPassword) {
+      if (value && !showPassword) {
+        let result = ''
+        for (let i = 0; i < value.length; i++) {
+          if (value[i] === ' ') {
+            result += ' '
+          } else {
+            result += '*'
+          }
+        }
+        return result
+      }
+      return value
     }
   }
 })
