@@ -43,7 +43,7 @@
             :view-password="cipher.viewPassword"
             :should-hide="!isPublic || hideAll"
           />
-          <div class="grid md:grid-cols-6 cipher-item">
+          <div class="grid md:grid-cols-6 grid-cols-1 cipher-item">
             <p class="mr-4 break-normal">
               {{ $t('data.ciphers.password_security') }}
             </p>
@@ -55,7 +55,7 @@
             v-for="(item, index) in cipher.login.uris"
             v-show="item.uri"
             :key="index"
-            class="grid md:grid-cols-6 cipher-item"
+            class="grid md:grid-cols-6 grid-cols-1 cipher-item"
           >
             <p class="mr-4 break-normal">
               {{ $t('data.ciphers.website_address') }}
@@ -244,7 +244,7 @@
         <template
           v-if="cipher.type === CipherType.CryptoWallet && cipher.cryptoWallet"
         >
-          <div class="grid md:grid-cols-6 cipher-item">
+          <div class="grid md:grid-cols-6 grid-cols-1 cipher-item">
             <p class="break-normal mr-4">{{ $t('data.ciphers.wallet_app') }}</p>
             <div class="col-span-4">
               <div
@@ -289,7 +289,7 @@
             :view-password="cipher.viewPassword"
             :should-hide="!isPublic || hideAll"
           />
-          <div class="grid md:grid-cols-6 cipher-item">
+          <div class="grid md:grid-cols-6 grid-cols-1 cipher-item">
             <p class="break-normal mr-4">{{ $t('data.ciphers.seed') }}</p>
             <div class="col-span-4 font-semibold">
               <InputSeedPhrase
@@ -315,7 +315,7 @@
               </button>
             </div>
           </div>
-          <div class="grid md:grid-cols-6 cipher-item">
+          <div class="grid md:grid-cols-6 grid-cols-1 cipher-item">
             <p class="break-normal mr-4">{{ $t('data.ciphers.networks') }}</p>
             <div class="col-span-4">
               <div

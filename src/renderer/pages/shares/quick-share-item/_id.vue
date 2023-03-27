@@ -1,7 +1,7 @@
 <template>
   <div class="full-width">
     <!-- Body -->
-    <div class="flex flex-row flex-wrap">
+    <div class="flex flex-row flex-wrap" style="min-height: calc(100vh - 50px)">
       <!-- Left content -->
       <div class="w-full md:w-8/12 max-w-2xl mx-auto px-6 py-6">
         <a @click.prevent="goToLocker">
@@ -122,7 +122,9 @@
       <!-- Left content end -->
 
       <!-- Right content -->
-      <div class="w-full md:w-4/12 border-l border-black-200 py-6">
+      <div
+        class="w-full md:w-4/12 border-t border-b md:border-l md:border-t-0 md:border-b-0 border-black-200 py-6"
+      >
         <img
           src="~/assets/images/pages/quick-share-item/intro.png"
           class="w-full"
