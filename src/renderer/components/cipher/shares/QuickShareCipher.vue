@@ -375,6 +375,7 @@ export default {
           expirationDate: sendRequest.expiration_date * 1000,
           key: sendView.key
         })
+        this.$emit('shared-cipher')
       } catch (e) {
         if (e.response && e.response.data && e.response.data.code === '7002') {
           this.notify(e.response.data.message, 'warning')

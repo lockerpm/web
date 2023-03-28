@@ -31,7 +31,7 @@
         <div>
           <button
             class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold"
-            @click="newShare"
+            @click="showNewShareSelection = true"
           >
             <div class="break-normal">
               {{ $t('data.sharing.new_share') }}
@@ -66,7 +66,64 @@
 
     <!-- Dialogs (your shares) -->
     <div v-if="!isSharedWithYou">
-      <QuickShareCipher ref="quickShareCipher" :cipher-options="allCiphers" />
+      <el-dialog
+        :visible.sync="showNewShareSelection"
+        width="650px"
+        destroy-on-close
+        top="5vh"
+        custom-class="locker-dialog"
+        :close-on-click-modal="false"
+        :title="$t('data.sharing.choose_sharing_option')"
+        @open="setSuitableShareOption"
+      >
+        <!-- Body -->
+        <div>
+          <el-radio-group v-model="newShareOption">
+            <el-radio label="in-app" class="w-full mb-6 !flex items-center">
+              <div class="pl-3">
+                <p class="font-semibold text-[18px] mb-2 text-black">
+                  {{ $t('common.in_app_share') }}
+                </p>
+                <p
+                  class="font-normal text-black whitespace-normal leading-[20px]"
+                >
+                  {{ $t('data.sharing.share_desc') }}
+                </p>
+              </div>
+            </el-radio>
+            <el-radio label="quick" class="w-full !flex items-center">
+              <div class="pl-3">
+                <p class="font-semibold text-[18px] mb-2 text-black">
+                  {{ $t('common.quick_share') }}
+                </p>
+                <p
+                  class="font-normal text-black whitespace-normal leading-[20px]"
+                >
+                  {{ $t('data.sharing.quick_share_desc') }}
+                </p>
+              </div>
+            </el-radio>
+          </el-radio-group>
+        </div>
+        <!-- Body end -->
+
+        <!-- Footer -->
+        <div
+          slot="footer"
+          class="dialog-footer flex items-center border-t border-black-200"
+        >
+          <button class="btn btn-primary mt-4 w-full" @click="newShare">
+            {{ $t('common.continue') }}
+          </button>
+        </div>
+        <!-- Footer end -->
+      </el-dialog>
+
+      <QuickShareCipher
+        ref="quickShareCipher"
+        :cipher-options="allCiphers"
+        @shared-cipher="goToQuickSharesList"
+      />
 
       <ShareCipher
         ref="shareCipher"
@@ -89,6 +146,13 @@ import ShareCipher from '@/components/cipher/shares/ShareCipher'
 
 export default {
   components: { QuickShareCipher, ShareCipher },
+
+  data () {
+    return {
+      showNewShareSelection: false,
+      newShareOption: 'in-app'
+    }
+  },
 
   computed: {
     menuShares () {
@@ -201,14 +265,29 @@ export default {
 
   methods: {
     newShare () {
-      if (this.isYourShares) {
+      this.showNewShareSelection = false
+      if (this.newShareOption === 'in-app') {
         this.$refs.shareCipher.openDialog({})
       } else {
         this.$refs.quickShareCipher.openDialog({})
       }
     },
+
     async getMyShares () {
       this.$store.dispatch('LoadMyShares')
+      this.$router.push(this.localeRoute({ name: 'shares-index-your-shares' }))
+    },
+
+    async goToQuickSharesList () {
+      this.$router.push(this.localeRoute({ name: 'shares-index-quick-shares' }))
+    },
+
+    setSuitableShareOption () {
+      if (this.isYourQuickShares) {
+        this.newShareOption = 'quick'
+      } else {
+        this.newShareOption = 'in-app'
+      }
     }
   }
 }

@@ -160,7 +160,7 @@
                       ? $moment(scope.row.expirationDate).format(
                         'DD MMMM, YYYY hh:mm A'
                       )
-                      : 'never'
+                      : 'N/A'
                   }}
                 </span>
               </template>

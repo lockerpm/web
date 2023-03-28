@@ -160,7 +160,7 @@
           <a
             href="https://id.locker.io/register"
             target="_blank"
-            class="btn btn-primary"
+            class="btn btn-primary py-4 hover:text-white"
           >
             {{ $t('data.sharing.quick_share.view_item.intro.btn') }}
           </a>
