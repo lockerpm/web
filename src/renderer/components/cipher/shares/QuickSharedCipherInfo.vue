@@ -6,7 +6,7 @@
     top="5vh"
     custom-class="locker-dialog"
     :close-on-click-modal="false"
-    title="Share with link"
+    :title="$t('common.get_share_link')"
   >
     <!-- Cipher info -->
     <div class="flex items-center border-t border-black-200 pt-4 mb-3">
@@ -38,13 +38,13 @@
 
     <!-- Body -->
     <div>
-      <p class="mb-2">Receiver</p>
+      <p class="mb-2">{{ $t('data.sharing.quick_share.receiver') }}</p>
 
       <!-- Emails -->
       <div class="border border-black-200 py-3 px-4">
         <!-- No one -->
         <div v-if="!send.requireOtp">
-          <p class="text-black">Anyone</p>
+          <p class="text-black">{{ $t('data.sharing.quick_share.anyone') }}</p>
         </div>
         <!-- No one end -->
 
@@ -67,7 +67,7 @@
       <!-- Expiration date -->
       <div v-if="send.expirationDate" class="text-center mt-7">
         <p>
-          This item's share link expires on
+          {{ $t('data.sharing.quick_share.expire_on') }}
           {{ $moment(send.expirationDate).format('MMMM D, YYYY hh:mm a') }}
         </p>
       </div>
@@ -84,7 +84,7 @@
         type="primary"
         class="w-full"
       >
-        Copy link
+        {{ $t('data.sharing.quick_share.copy_link') }}
       </el-button>
     </div>
     <!-- Footer end -->

@@ -25,7 +25,11 @@
             class="far mr-2"
             :class="{ 'fa-eye': !hideAll, 'fa-eye-slash': hideAll }"
           />
-          {{ hideAll ? 'Reveal information' : 'Hide information' }}
+          {{
+            hideAll
+              ? $t('data.sharing.quick_share.show_info')
+              : $t('data.sharing.quick_share.hide_info')
+          }}
         </button>
       </div>
       <!-- Show/hide item end -->

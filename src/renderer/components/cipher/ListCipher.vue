@@ -722,7 +722,7 @@
                       v-if="isCipherShareable(item, organizations)"
                       @click.native="shareItem(item)"
                     >
-                      {{ $t('common.share') }}
+                      {{ $t('common.in_app_share') }}
                     </el-dropdown-item>
                     <!-- Normal share end -->
 
@@ -731,7 +731,7 @@
                       v-if="isCipherQuickShareable(item)"
                       @click.native="quickShareItem(item)"
                     >
-                      {{ $t('common.quick_share') }}
+                      {{ $t('common.get_share_link') }}
                     </el-dropdown-item>
                     <!-- Quick share end -->
                   </el-dropdown-menu>

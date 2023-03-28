@@ -61,9 +61,13 @@
               width="200"
             >
               <template slot-scope="scope">
-                <span v-if="!scope.row.requireOtp"> anyone </span>
+                <span v-if="!scope.row.requireOtp">
+                  {{ $t('data.sharing.quick_share.anyone') }}
+                </span>
 
-                <span v-else-if="!scope.row.emails.length"> nobody </span>
+                <span v-else-if="!scope.row.emails.length">
+                  {{ $t('data.sharing.quick_share.nobody') }}
+                </span>
 
                 <span v-else>
                   <p
@@ -100,7 +104,7 @@
                     class="text-primary"
                     @click="toggleSendExpansion(scope.row.id)"
                   >
-                    Collapse
+                    {{ $t('common.collapse') }}
                   </a>
                 </span>
               </template>
@@ -108,7 +112,10 @@
             <!-- Shared with end -->
 
             <!-- Sharing time -->
-            <el-table-column label="Sharing time" width="150">
+            <el-table-column
+              :label="$t('data.sharing.quick_share.sharing_time')"
+              width="150"
+            >
               <template slot-scope="scope">
                 <span class="break-normal">
                   {{ $moment(scope.row.creationDate).fromNow() }}
@@ -118,7 +125,10 @@
             <!-- Sharing time end -->
 
             <!-- Views -->
-            <el-table-column label="Views" width="150">
+            <el-table-column
+              :label="$tc('data.sharing.quick_share.view', 2)"
+              width="150"
+            >
               <template slot-scope="scope">
                 <span class="break-normal">
                   {{ scope.row.accessCount
@@ -127,14 +137,22 @@
                       ? `/${scope.row.maxAccessCount}`
                       : ''
                   }}
-                  view(s)
+                  {{
+                    $tc(
+                      'data.sharing.quick_share.view',
+                      scope.row.accessCount
+                    ).toLowerCase()
+                  }}
                 </span>
               </template>
             </el-table-column>
             <!-- Views end -->
 
             <!-- Expire time -->
-            <el-table-column label="Expiration" width="150">
+            <el-table-column
+              :label="$t('data.sharing.quick_share.expiration')"
+              width="150"
+            >
               <template slot-scope="scope">
                 <span class="break-normal">
                   {{
@@ -173,7 +191,7 @@
                         "
                         v-clipboard:success="clipboardSuccessHandler"
                       >
-                        Copy link
+                        {{ $t('data.sharing.quick_share.copy_link') }}
                       </el-dropdown-item>
                       <!-- Copy link end -->
 

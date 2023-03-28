@@ -7,7 +7,7 @@
       top="5vh"
       custom-class="locker-dialog"
       :close-on-click-modal="false"
-      title="Get shareable link"
+      :title="$t('common.get_share_link')"
     >
       <!-- Cipher info -->
       <div v-if="hasInitialCipher" class="flex items-center">
@@ -40,16 +40,15 @@
       <!-- Select -->
       <div v-else class="text-left">
         <!-- Add cipher -->
-        <div class="grid grid-cols-2 gap-x-2 mb-4">
+        <div class="mb-4">
           <div class="w-full">
-            <div class="text-black-700 text-head-6 font-semibold">
-              Choose item to quick share
+            <div class="text-black font-semibold mb-4">
+              {{ $t('data.sharing.quick_share.choose_item') }}
             </div>
-            <div>Pick one that belong to you</div>
           </div>
           <InputSelect
             v-model="selectedCipherId"
-            placeholder="Search Inventory ..."
+            :placeholder="$t('data.sharing.search_inventory')"
             :collapse-tags="true"
             :filterable="true"
             class="w-full !mb-4"
@@ -78,7 +77,7 @@
 
           <div v-if="requireOtp">
             <p class="font-semibold mt-6 mb-3 text-black">
-              Email addresses for the people to share this with
+              {{ $t('data.sharing.quick_share.emails_label') }}
             </p>
 
             <!-- Input -->
@@ -88,7 +87,7 @@
               @keyup.enter.native="addEmail"
             >
               <el-button slot="append" :disabled="!email" @click="addEmail">
-                Add
+                {{ $t('common.add') }}
               </el-button>
             </el-input>
             <!-- Input end -->
@@ -113,7 +112,9 @@
         </div>
         <!-- Share with end -->
 
-        <p class="font-semibold mt-6 mb-4 text-black">Link expires after</p>
+        <p class="font-semibold mt-6 mb-4 text-black">
+          {{ $t('data.sharing.quick_share.expire_after') }}
+        </p>
 
         <div class="flex items-center flex-wrap">
           <!-- Expire after -->
@@ -125,7 +126,11 @@
             <el-option
               v-for="item in expirationOptions"
               :key="item.value"
-              :label="item.label"
+              :label="
+                item.value
+                  ? $moment.duration(item.value * 1000).humanize()
+                  : item.label
+              "
               :value="item.value"
             />
           </el-select>
@@ -170,7 +175,7 @@
           :disabled="loading || !cipher.id"
           @click="shareItem(cipher)"
         >
-          Get link to Share
+          {{ $t('data.sharing.quick_share.get_link') }}
         </button>
       </div>
       <!-- Footer end -->
@@ -228,27 +233,27 @@ export default {
     expirationOptions () {
       return [
         {
-          label: '1 hour',
+          unit: 'hours',
           value: 60 * 60 * 1
         },
         {
-          label: '24 hours',
+          label: 'hours',
           value: 60 * 60 * 24
         },
         {
-          label: '7 days',
+          label: 'days',
           value: 60 * 60 * 24 * 7
         },
         {
-          label: '14 days',
+          label: 'days',
           value: 60 * 60 * 24 * 14
         },
         {
-          label: '30 days',
+          label: 'days',
           value: 60 * 60 * 24 * 30
         },
         {
-          label: 'No expires',
+          label: this.$t('data.sharing.quick_share.no_expires'),
           value: null
         }
       ]
@@ -256,11 +261,11 @@ export default {
     shareWithOptions () {
       return [
         {
-          label: 'Anyone with the link',
+          label: this.$t('data.sharing.quick_share.anyone_with_link'),
           value: 0
         },
         {
-          label: 'Only invited people',
+          label: this.$t('data.sharing.quick_share.only_some'),
           value: 1
         }
       ]
@@ -268,11 +273,11 @@ export default {
     accessCountOptions () {
       return [
         {
-          label: 'Unlimited access',
+          label: this.$t('data.sharing.quick_share.unlimited'),
           value: 0
         },
         {
-          label: 'Time access',
+          label: this.$t('data.sharing.quick_share.times_access'),
           value: 1
         }
       ]
@@ -361,10 +366,6 @@ export default {
         const res = await this.$axios.$post(url, sendRequest)
 
         // Done
-        this.notify(
-          this.$t('data.notifications.update_share_success'),
-          'success'
-        )
         this.closeDialog()
         this.$refs.quickSharedCipherInfo.openDialog(cipher, {
           id: res.id,

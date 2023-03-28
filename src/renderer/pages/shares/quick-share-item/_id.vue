@@ -14,19 +14,22 @@
         <!-- Sorry -->
         <div v-if="isInvalid">
           <h1 class="font-medium text-center text-[28px] leading-[34px]">
-            Sorry, there is no item to view.
+            {{ $t('data.sharing.quick_share.view_item.no_item.title') }}
           </h1>
 
           <div
             class="mt-9 rounded-lg border border-black-200 px-8 py-4 mx-auto"
           >
-            <p>You may find the reason in one of the following cases:</p>
+            <p>{{ $t('data.sharing.quick_share.view_item.no_item.desc') }}</p>
             <ul class="list-disc ml-6">
-              <li>
-                The link to view the item expired or reached limited access.
+              <li
+                v-for="(item, index) in $t(
+                  'data.sharing.quick_share.view_item.no_item.reasons'
+                )"
+                :key="index"
+              >
+                {{ item }}
               </li>
-              <li>The owner stopped sharing the item.</li>
-              <li>The link you've entered is not correct.</li>
             </ul>
           </div>
         </div>
@@ -39,14 +42,17 @@
             class="mx-auto h-14 mb-6"
           >
           <h1 class="font-semibold text-[28px] leading-[38px] mb-6 text-center">
-            You have been shared sensitive data
+            {{ $t('data.sharing.quick_share.view_item.require_email.title') }}
           </h1>
 
           <!-- Enter email -->
           <template v-if="!isWaitingOtp">
             <p class="text-center mb-6">
-              You need to verify yourself before viewing the item. Please enter
-              your email to receive an OTP code.
+              {{
+                $t(
+                  'data.sharing.quick_share.view_item.require_email.desc_email'
+                )
+              }}
             </p>
 
             <div class="mb-6">
@@ -58,7 +64,11 @@
             </div>
 
             <p v-if="errorMessage" class="text-danger text-center mb-6">
-              {{ errorMessage }}
+              {{
+                $t(
+                  `data.sharing.quick_share.view_item.messages.${errorMessage}`
+                )
+              }}
             </p>
 
             <el-button
@@ -68,14 +78,20 @@
               :loading="isLoading"
               @click="sendOTP()"
             >
-              Send code
+              {{
+                $t('data.sharing.quick_share.view_item.require_email.send_code')
+              }}
             </el-button>
           </template>
           <!-- Enter email end -->
 
           <!-- Enter OTP -->
           <template v-else>
-            <p class="text-center mb-6">Please enter your OTP code.</p>
+            <p class="text-center mb-6">
+              {{
+                $t('data.sharing.quick_share.view_item.require_email.desc_otp')
+              }}
+            </p>
 
             <div class="mb-6">
               <el-input
@@ -96,14 +112,15 @@
               :loading="isLoading"
               @click="submitOTP()"
             >
-              Verify
+              {{ $t('common.verify') }}
             </el-button>
 
             <div class="text-center mt-6">
-              <a
-                class="text-primary"
-                @click.prevent="sendOTP(true)"
-              >Resend code</a>
+              <a class="text-primary" @click.prevent="sendOTP(true)">{{
+                $t(
+                  'data.sharing.quick_share.view_item.require_email.resend_code'
+                )
+              }}</a>
             </div>
           </template>
           <!-- Enter OTP end -->
@@ -133,19 +150,20 @@
           <h2
             class="font-semibold text-[24px] leading-[34px] mb-4 text-primary"
           >
-            Simple and Quick
+            {{ $t('data.sharing.quick_share.view_item.intro.title') }}
           </h2>
 
           <p class="text-black mb-4">
-            Locker Quick Share lets you share sensitive information (including
-            passwords, crypto assets,...) with encryption and a link that
-            automatically expires. So you can keep what you share private and
-            make sure your stuff doesn't stay online forever.
+            {{ $t('data.sharing.quick_share.view_item.intro.desc') }}
           </p>
 
-          <el-button type="primary" @click="goToLocker">
-            Try Locker now!
-          </el-button>
+          <a
+            href="https://id.locker.io/register"
+            target="_blank"
+            class="btn btn-primary"
+          >
+            {{ $t('data.sharing.quick_share.view_item.intro.btn') }}
+          </a>
         </div>
       </div>
       <!-- Right content end -->
@@ -298,13 +316,15 @@ export default {
         this.isWaitingOtp = true
 
         if (isRetry) {
-          this.notify('Please check your email', 'success')
+          this.notify(
+            this.$t('data.sharing.quick_share.view_item.messages.check_email'),
+            'success'
+          )
         }
       } catch (error) {
         console.log(error)
         if (error.response?.status === 400) {
-          this.errorMessage =
-            "You don't have access to view this item. Please try with another email."
+          this.errorMessage = 'no_access'
           return
         }
         this.errorMessage =
@@ -331,7 +351,7 @@ export default {
       } catch (error) {
         console.log(error)
         if (error.response?.status === 400) {
-          this.errorMessage = 'OTP wrong. Enter the correct OTP'
+          this.errorMessage = 'wrong_otp'
           return
         }
         this.errorMessage =

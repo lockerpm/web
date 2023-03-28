@@ -25,7 +25,7 @@
     <div v-if="!isSharedWithYou" class="flex-column-fluid lg:px-28 py-10 px-10">
       <div class="flex">
         <div class="text-head-4">
-          <span class="font-medium">{{ $t('type.your_shares') }}</span>
+          <span class="font-medium">{{ $t('sidebar.your_shares') }}</span>
         </div>
         <div class="mx-6 text-head-4">|</div>
         <div>
@@ -107,7 +107,7 @@ export default {
     menuYourShares () {
       return [
         {
-          label: 'your_shares',
+          label: 'in_app_shares',
           routeName: 'shares-index-your-shares',
           itemCount: this.sharedCiphersCount
         },
