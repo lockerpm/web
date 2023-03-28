@@ -3,33 +3,8 @@
     <!-- List Ciphers, Folders, ... -->
     <div
       v-if="!shouldRenderNoCipher"
-      class="flex-column-fluid lg:px-28 py-10 px-10 mb-20"
+      class="flex-column-fluid lg:px-28 px-10 mb-20"
     >
-      <!-- Overview -->
-      <div class="mb-10">
-        <div class="flex">
-          <div class="text-head-4">
-            <span class="font-medium">{{ $t('type.your_shares') }}</span>
-          </div>
-          <div class="mx-6 text-head-4">|</div>
-          <div>
-            <button
-              class="px-4 py-2 flex items-center cursor-pointer btn-outline-primary rounded justify-center font-semibold"
-              @click="newShare"
-            >
-              <div class="break-normal">
-                {{ $t('data.sharing.new_share') }}
-              </div>
-            </button>
-          </div>
-        </div>
-        <div v-if="sends" class="uppercase text-head-6">
-          <span class="text-primary font-semibold">{{ sends.length }}</span>
-          {{ $tc('type.0', sends.length) }}
-        </div>
-      </div>
-      <!-- Overview end -->
-
       <!-- List Ciphers -->
       <client-only>
         <LazyHydrate when-visible>
