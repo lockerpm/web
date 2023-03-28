@@ -4,7 +4,9 @@
       <!-- Icon + name -->
       <div class="mt-20 mb-9 text-center">
         <div class="mb-4 text-[70px]">
-          <Vnodes :vnodes="getIconCipher(hideAll ? {} : cipher, 64)" />
+          <Vnodes
+            :vnodes="getIconCipher(isPublic && hideAll ? {} : cipher, 64)"
+          />
         </div>
         <div class="text-head-4 font-medium truncate">
           {{ filterPassword(cipher.name, !isPublic || !hideAll) }}

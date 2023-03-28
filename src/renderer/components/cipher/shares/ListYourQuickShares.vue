@@ -83,16 +83,51 @@
             <!-- Shared with -->
             <el-table-column
               :label="$t('data.ciphers.shared_with')"
-              width="150"
+              width="200"
             >
               <template slot-scope="scope">
-                <span>{{
-                  scope.row.requireOtp
-                    ? scope.row.emails.length
-                      ? 'some people'
-                      : 'nobody'
-                    : 'anyone'
-                }}</span>
+                <span v-if="!scope.row.requireOtp"> anyone </span>
+
+                <span v-else-if="!scope.row.emails.length"> nobody </span>
+
+                <span v-else>
+                  <p
+                    v-for="item in scope.row.emails.slice(
+                      0,
+                      scope.row.isExpanded
+                        ? scope.row.emails.length + 1
+                        : minLengthToCollapse
+                    )"
+                    :key="item.email"
+                    class="break-normal"
+                  >
+                    {{ item.email }}
+                  </p>
+                  <a
+                    v-if="
+                      !scope.row.isExpanded &&
+                        scope.row.emails.length > minLengthToCollapse
+                    "
+                    @click="toggleSendExpansion(scope.row.id)"
+                  >
+                    <div
+                      class="bg-black-50 h-6 w-6 rounded-full text-center mt-1"
+                    >
+                      {{
+                        scope.row.emails.length >= 100 + minLengthToCollapse
+                          ? '99+'
+                          : `+${scope.row.emails.length - minLengthToCollapse}`
+                      }}
+                    </div>
+                  </a>
+                  <a
+                    v-if="scope.row.isExpanded"
+                    class="text-primary"
+                    @click="toggleSendExpansion(scope.row.id)"
+                  >
+                    Collapse
+                  </a>
+                </span>
               </template>
             </el-table-column>
             <!-- Shared with end -->
@@ -218,7 +253,9 @@ export default {
       loading: false,
       context: '',
       dataRendered: [],
-      lastIndex: 0
+      lastIndex: 0,
+      minLengthToCollapse: 2,
+      expandedSend: []
     }
   },
 
@@ -227,7 +264,10 @@ export default {
       return !this.sends?.length
     },
     tableData () {
-      return this.sends || []
+      return (this.sends || []).map(s => ({
+        ...s,
+        isExpanded: this.expandedSend.includes(s.id)
+      }))
     }
   },
 
@@ -318,6 +358,13 @@ export default {
     },
     newShare () {
       this.$refs.quickShareCipher.openDialog({})
+    },
+    toggleSendExpansion (id) {
+      if (this.expandedSend.includes(id)) {
+        this.expandedSend = this.expandedSend.filter(i => i !== id)
+      } else {
+        this.expandedSend.push(id)
+      }
     }
   }
 }
