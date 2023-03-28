@@ -304,7 +304,7 @@ export default {
     closeDialog () {
       this.dialogVisible = false
       this.viewOnce = false
-      this.expireAfter = null
+      this.expireAfter = 60 * 60 * 24
       this.email = ''
       this.requireOtp = 0
       this.emails = []
@@ -371,7 +371,7 @@ export default {
           accessId: res.access_id,
           emails: sendRequest.emails,
           requireOtp: sendRequest.require_otp,
-          expirationDate: sendRequest.expired_date * 1000,
+          expirationDate: sendRequest.expiration_date * 1000,
           key: sendView.key
         })
       } catch (e) {

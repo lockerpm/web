@@ -6,30 +6,56 @@
     top="5vh"
     custom-class="locker-dialog"
     :close-on-click-modal="false"
+    title="Share with link"
   >
-    <!-- Title -->
-    <div slot="title">
-      <div class="flex items-center">
-        <div class="text-[34px] mr-3">
-          <Vnodes :vnodes="getIconCipher(cipher, 20)" />
+    <!-- Cipher info -->
+    <div class="flex items-center border-t border-black-200 pt-4 mb-3">
+      <!-- Icon -->
+      <div>
+        <div
+          class="text-[34px] mr-3 flex-shrink-0"
+          :class="{
+            'filter grayscale': cipher.isDeleted
+          }"
+        >
+          <Vnodes :vnodes="getIconCipher(cipher, 34)" />
         </div>
-        <div class="text-black-700 font-semibold">{{ cipher.name }}</div>
       </div>
+      <!-- Icon end -->
+
+      <!-- Name -->
+      <div class="flex flex-col">
+        <p class="text-black font-semibold truncate flex items-center">
+          {{ cipher.name }}
+        </p>
+        <div v-if="cipher.subTitle">
+          {{ cipher.subTitle || 'N/A' }}
+        </div>
+      </div>
+      <!-- Name end -->
     </div>
-    <!-- Title end -->
+    <!-- Cipher info end -->
 
     <!-- Body -->
     <div>
+      <p class="mb-2">Receiver</p>
+
       <!-- Emails -->
-      <div v-if="send.requireOtp">
+      <div class="border border-black-200 py-3 px-4">
+        <!-- No one -->
+        <div v-if="!send.requireOtp">
+          <p class="text-black">Anyone</p>
+        </div>
+        <!-- No one end -->
+
         <!-- Email list -->
-        <div>
+        <div v-else class="flex flex-row flex-wrap w-full -mb-2">
           <div
             v-for="item in send.emails"
             :key="item.email"
-            class="w-full flex flex-row items-center"
+            class="bg-success-50 px-2 py-1 mr-2 mb-2"
           >
-            <p class="flex-1 mr-2">
+            <p class="text-primary">
               {{ item }}
             </p>
           </div>
@@ -37,27 +63,28 @@
         <!-- Email list end -->
       </div>
       <!-- Emails end -->
+
+      <!-- Expiration date -->
+      <div v-if="send.expirationDate" class="text-center mt-7">
+        <p>
+          This item's share link expires on
+          {{ $moment(send.expirationDate).format('MMMM D, YYYY hh:mm a') }}
+        </p>
+      </div>
+      <!-- Expiration date end -->
     </div>
     <!-- Body end -->
 
     <!-- Footer -->
     <div slot="footer" class="dialog-footer flex items-center justify-between">
-      <div>
-        <p v-if="send.expirationDate">
-          Expire on {{ $moment(send.expirationDate).toString() }}
-        </p>
-      </div>
-
-      <a @click.prevent="stopSharing()">
-        <i class="fa fa-trash-alt" />
-      </a>
-
       <el-button
         v-clipboard:copy="url"
         v-clipboard:success="clipboardSuccessHandler"
         :disabled="!url"
+        type="primary"
+        class="w-full"
       >
-        Copy
+        Copy link
       </el-button>
     </div>
     <!-- Footer end -->
