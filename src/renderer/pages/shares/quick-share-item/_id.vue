@@ -275,13 +275,16 @@ export default {
       }
     },
 
-    submitEmail () {
+    async submitEmail () {
       if (!this.email.trim()) {
         return
       }
       const token = this.getToken(this.email)
       if (token) {
-        this.submitToken(token)
+        const isSuccess = await this.submitToken(token)
+        if (!isSuccess) {
+          this.sendOTP()
+        }
       } else {
         this.sendOTP()
       }
@@ -414,6 +417,7 @@ export default {
           return token.value
         }
       } catch (error) {
+        this.removeToken(email)
         return null
       }
     },
