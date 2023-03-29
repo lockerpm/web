@@ -248,6 +248,9 @@ export default {
         case 'emergency_access':
           this.$refs.emergencyAccessInvitations.getEmergencyAccessInvitations()
           break
+        case 'members':
+          this.getMyShares()
+          break
         default:
           break
         }

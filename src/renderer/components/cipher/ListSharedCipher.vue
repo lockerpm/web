@@ -759,6 +759,10 @@ export default {
         this.isItemInUrlOpened = true
         this.shareItem(cipher)
       }
+    },
+
+    pendingShares () {
+      this.getShareInvitations()
     }
   },
 
@@ -1278,14 +1282,6 @@ export default {
     },
     newShare () {
       this.$refs.shareCipher.openDialog({})
-    },
-    async getPendingShares () {
-      const invitations =
-        (await this.$axios.$get('cystack_platform/pm/sharing/invitations')) ||
-        []
-      this.pendingShares = invitations.filter(
-        item => item.status === 'invited'
-      ).length
     },
     async getMyShares () {
       // this.myShares = await this.$axios.$get('cystack_platform/pm/sharing/my_share') || []
