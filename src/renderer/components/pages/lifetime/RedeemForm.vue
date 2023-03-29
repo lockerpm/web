@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="!needCreateAccount ? 'md:mb-16 md:pb-16' : ''">
     <!-- Need create account? -->
     <el-checkbox v-model="needCreateAccount" class="mb-6">
       {{ $t('lifetime.redeem_page.form.need_create_account') }}
@@ -57,9 +57,7 @@
       >
         <el-input
           v-model="redeemForm.code"
-          :placeholder="
-            $t('lifetime.redeem_page.form.app_code', { service: 'AppSumo' })
-          "
+          :placeholder="$t('lifetime.redeem_page.form.app_code', { service })"
         />
       </el-form-item>
       <!-- Code end -->
@@ -173,9 +171,14 @@
       @click="handleSubmit"
     >
       <template v-if="isLoading">
-        {{ $t('lifetime.redeem_page.form.submit_btn') }}
+        <span class="font-semibold">
+          {{ $t('lifetime.redeem_page.form.submit_btn') }}
+        </span>
       </template>
-      <span v-else class="flex flex-row justify-center items-center">
+      <span
+        v-else
+        class="flex flex-row justify-center items-center font-semibold"
+      >
         <img
           class="h-6 mr-2.5"
           src="~/assets/images/landing/lifetime/pointer.png"

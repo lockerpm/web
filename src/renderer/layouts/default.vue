@@ -261,6 +261,9 @@ export default {
         case 'quick_share':
           this.syncQuickShares()
           break
+        case 'members':
+          this.getMyShares()
+          break
         default:
           break
         }

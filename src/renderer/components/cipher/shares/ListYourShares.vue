@@ -310,6 +310,10 @@ export default {
         this.isItemInUrlOpened = true
         this.shareItem(cipher)
       }
+    },
+
+    pendingShares () {
+      this.getShareInvitations()
     }
   },
 
