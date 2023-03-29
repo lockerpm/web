@@ -55,21 +55,31 @@ module.exports = {
   plugins: [
     { ssr: true, src: '@/plugins/router.js' },
     { ssr: true, src: '@/plugins/axios.js' },
-    { ssr: true, src: '@/plugins/mixin.js' },
     { ssr: false, src: '@/plugins/localStorage.js' },
-    { ssr: true, src: '@/plugins/icons.js' },
-    { ssr: true, src: '@/plugins/element.js' },
     { ssr: false, src: '@/plugins/initJslib.ts' },
     { ssr: false, src: '@/plugins/asyncComputed.js' },
-    { ssr: false, src: '@/plugins/clipboard.js' },
     { ssr: false, src: '@/plugins/vue-native-socket.js' },
-    { ssr: false, src: '@/plugins/vue-virtual-scroller.js' },
-    { ssr: true, src: '@/plugins/vee.js' },
-    { ssr: true, src: '@/plugins/katex.js' },
-    { ssr: false, src: '@/plugins/youtube.js' },
-    { ssr: true, src: '@/plugins/fontawesome.js' },
     { ssr: false, src: '@/plugins/tutorial.js' },
-    { ssr: false, src: '@/plugins/circle-countdown-timer.js' }
+
+    // Mixins
+    { ssr: true, src: '@/plugins/mixins/index.js' },
+    { ssr: true, src: '@/plugins/mixins/onboarding.js' },
+    { ssr: true, src: '@/plugins/mixins/utils.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/index.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/policy.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/sharing.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/sync.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/utils.js' },
+
+    // UI
+    { ssr: false, src: '@/plugins/ui/circle-countdown-timer.js' },
+    { ssr: false, src: '@/plugins/ui/clipboard.js' },
+    { ssr: true, src: '@/plugins/ui/element.js' },
+    { ssr: true, src: '@/plugins/ui/fontawesome.js' },
+    { ssr: true, src: '@/plugins/ui/katex.js' },
+    { ssr: true, src: '@/plugins/ui/vee.js' },
+    { ssr: false, src: '@/plugins/ui/vue-virtual-scroller.js' },
+    { ssr: false, src: '@/plugins/ui/youtube.js' }
   ],
   buildModules: [
     '@nuxt/typescript-build',
@@ -135,8 +145,6 @@ module.exports = {
       'https://apps.apple.com/us/app/locker-password-manager/id1586927301',
     androidLink:
       'https://play.google.com/store/apps/details?id=com.cystack.locker',
-    accessClientId: process.env.ACCESS_CLIENT_ID || '',
-    accessClientSecret: process.env.NOTION_API_KEY || '',
     lockerEnterprise:
       process.env.ENTERPRISE_URL || 'https://enterprise.locker.io',
     stripePayment:
@@ -178,7 +186,14 @@ module.exports = {
     stripeKey:
       isProd && !isStaging
         ? process.env.STRIPE_KEY
-        : process.env.STRIPE_KEY_STAGING
+        : process.env.STRIPE_KEY_STAGING,
+    cloudflare:
+      !isProd || isStaging
+        ? {
+          id: process.env.ACCESS_CLIENT_ID,
+          secret: process.env.ACCESS_CLIENT_SECRET
+        }
+        : null
   },
   gtm: {
     id: 'GTM-K5Q6595'
