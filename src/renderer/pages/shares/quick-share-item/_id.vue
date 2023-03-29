@@ -224,9 +224,9 @@ export default {
       isInvalid: false,
       isWaitingOtp: false,
       send: {
-        cipher: {},
-        key: null
+        cipher: {}
       },
+      key: '',
       email: '',
       otp: '',
       errorMessage: ''
@@ -252,6 +252,7 @@ export default {
       try {
         this.isLoading = true
         const key = this.$route.hash ? this.$route.hash.replace('#', '') : null
+        this.key = key
         if (!key) {
           this.isInvalid = true
           this.isLoading = false
@@ -261,18 +262,41 @@ export default {
         const res = await this.$axios.$get(
           `cystack_platform/pm/quick_shares/${this.$route.params.id}/access`
         )
-        this.isLoading = false
         if (res.require_otp) {
-          this.requireOtp = true
+          const isSuccess = await this.checkTokensLocal()
+          if (!isSuccess) {
+            this.requireOtp = true
+          }
         } else {
           this.send = res
           this.decryptCipher(res.cipher, key)
         }
-        this.send.key = key
+        this.isLoading = false
       } catch (e) {
         console.log(e)
         this.isInvalid = true
+        this.isLoading = false
       }
+    },
+
+    async checkTokensLocal () {
+      try {
+        for (const key in localStorage) {
+          if (key.startsWith('token_')) {
+            const email = key.split('token_')[1]
+            const token = this.getToken(email)
+            if (token) {
+              const isSuccess = await this.submitToken(token, email)
+              if (isSuccess) {
+                return true
+              }
+            }
+          }
+        }
+      } catch (error) {
+        //
+      }
+      return false
     },
 
     async submitEmail () {
@@ -281,7 +305,7 @@ export default {
       }
       const token = this.getToken(this.email)
       if (token) {
-        const isSuccess = await this.submitToken(token)
+        const isSuccess = await this.submitToken(token, this.email)
         if (!isSuccess) {
           this.sendOTP()
         }
@@ -348,7 +372,7 @@ export default {
       }
     },
 
-    async submitToken (token) {
+    async submitToken (token, email, keepToken = false) {
       if (!token) {
         return false
       }
@@ -357,14 +381,16 @@ export default {
         this.errorMessage = ''
         const res = await this.$axios.$post(
           `cystack_platform/pm/quick_shares/${this.sendId}/public`,
-          { email: this.email, token }
+          { email, token }
         )
         this.isWaitingOtp = false
         this.requireOtp = false
-        this.decryptCipher(res.cipher, this.send.key)
+        this.decryptCipher(res.cipher, this.key)
         return true
       } catch (error) {
-        this.removeToken(this.email)
+        if (!keepToken) {
+          this.removeToken(email)
+        }
         return false
       } finally {
         this.isLoading = false
@@ -384,7 +410,7 @@ export default {
         )
         this.isWaitingOtp = false
         this.requireOtp = false
-        this.decryptCipher(res.cipher, this.send.key)
+        this.decryptCipher(res.cipher, this.key)
         if (res.token) {
           this.storeToken(res.token)
         }

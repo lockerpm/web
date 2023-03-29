@@ -28,7 +28,7 @@
                     <div
                       class="text-[34px] mr-3 flex-shrink-0"
                       :class="{
-                        'filter grayscale': scope.row.cipher.isDeleted
+                        'filter grayscale': isExpired(scope.row)
                       }"
                     >
                       <Vnodes :vnodes="getIconCipher(scope.row.cipher, 34)" />
@@ -193,12 +193,6 @@
                       <!-- Stop share -->
                       <el-dropdown-item @click.native="stopSharing(scope.row)">
                         {{ $t('data.ciphers.stop_sharing') }}
-                      </el-dropdown-item>
-                      <!-- Stop share end -->
-
-                      <!-- Stop share -->
-                      <el-dropdown-item @click.native="test(scope.row)">
-                        test
                       </el-dropdown-item>
                       <!-- Stop share end -->
                     </el-dropdown-menu>
@@ -366,6 +360,12 @@ export default {
         send.accessId,
         Utils.fromBufferToUrlB64(send.key)
       )
+    },
+    isExpired (send) {
+      const expired = send.expirationDate && send.expirationDate <= new Date()
+      const maxAccessReached =
+        send.maxAccessCount && send.accessCount >= send.maxAccessCount
+      return expired || maxAccessReached
     }
   }
 }
