@@ -349,7 +349,9 @@
           </div>
           <TextHaveCopy
             :label="$t('data.ciphers.notes')"
-            :text="cipher.cryptoWallet.notes"
+            :text="
+              filterPassword(cipher.cryptoWallet.notes, !isPublic || !hideAll)
+            "
             :text-area="true"
           />
         </template>
@@ -364,7 +366,7 @@
               )
             "
             :label="$t('data.ciphers.notes')"
-            :text="cipher.notes"
+            :text="filterPassword(cipher.notes, !isPublic || !hideAll)"
             :text-area="true"
           />
           <TextHaveCopy

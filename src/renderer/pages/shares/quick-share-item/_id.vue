@@ -59,16 +59,12 @@
               <el-input
                 v-model="email"
                 placeholder="Email"
-                @keyup.enter.native="sendOTP()"
+                @keyup.enter.native="submitEmail()"
               />
             </div>
 
             <p v-if="errorMessage" class="text-danger text-center mb-6">
-              {{
-                $t(
-                  `data.sharing.quick_share.view_item.messages.${errorMessage}`
-                )
-              }}
+              {{ errorMessage }}
             </p>
 
             <el-button
@@ -76,7 +72,7 @@
               type="primary"
               :disabled="isLoading || !email.trim()"
               :loading="isLoading"
-              @click="sendOTP()"
+              @click="submitEmail()"
             >
               {{
                 $t('data.sharing.quick_share.view_item.require_email.send_code')
@@ -221,27 +217,6 @@ export default {
 
   layout: 'white',
 
-  async asyncData ({ $axios, params }) {
-    try {
-      const res = await $axios.$get(
-        `cystack_platform/pm/quick_shares/${params.id}/access`
-      )
-      if (res.require_otp) {
-        return {
-          requireOtp: true
-        }
-      }
-      return {
-        send: res
-      }
-    } catch (e) {
-      console.log(e)
-      return {
-        isInvalid: true
-      }
-    }
-  },
-
   data () {
     return {
       isLoading: false,
@@ -265,17 +240,51 @@ export default {
   },
 
   mounted () {
-    const key = this.$route.hash ? this.$route.hash.replace('#', '') : null
-    if (!this.requireOtp && !this.isInvalid && key) {
-      this.decryptCipher(this.send.cipher, key)
-    } else {
-      this.send.key = key
-    }
+    this.getCipher()
   },
 
   methods: {
     goToLocker () {
       this.$router.push(this.localeRoute('/'))
+    },
+
+    async getCipher () {
+      try {
+        this.isLoading = true
+        const key = this.$route.hash ? this.$route.hash.replace('#', '') : null
+        if (!key) {
+          this.isInvalid = true
+          this.isLoading = false
+          return
+        }
+
+        const res = await this.$axios.$get(
+          `cystack_platform/pm/quick_shares/${this.$route.params.id}/access`
+        )
+        this.isLoading = false
+        if (res.require_otp) {
+          this.requireOtp = true
+        } else {
+          this.send = res
+          this.decryptCipher(res.cipher, key)
+        }
+        this.send.key = key
+      } catch (e) {
+        console.log(e)
+        this.isInvalid = true
+      }
+    },
+
+    submitEmail () {
+      if (!this.email.trim()) {
+        return
+      }
+      const token = this.getToken(this.email)
+      if (token) {
+        this.submitToken(token)
+      } else {
+        this.sendOTP()
+      }
     },
 
     async decryptCipher (cipher, key) {
@@ -324,11 +333,36 @@ export default {
       } catch (error) {
         console.log(error)
         if (error.response?.status === 400) {
-          this.errorMessage = 'no_access'
+          this.errorMessage = this.$t(
+            'data.sharing.quick_share.view_item.messages.no_access'
+          )
           return
         }
         this.errorMessage =
           error.response?.data?.message || error.response?.data?.detail
+      } finally {
+        this.isLoading = false
+      }
+    },
+
+    async submitToken (token) {
+      if (!token) {
+        return false
+      }
+      try {
+        this.isLoading = true
+        this.errorMessage = ''
+        const res = await this.$axios.$post(
+          `cystack_platform/pm/quick_shares/${this.sendId}/public`,
+          { email: this.email, token }
+        )
+        this.isWaitingOtp = false
+        this.requireOtp = false
+        this.decryptCipher(res.cipher, this.send.key)
+        return true
+      } catch (error) {
+        this.removeToken(this.email)
+        return false
       } finally {
         this.isLoading = false
       }
@@ -348,10 +382,15 @@ export default {
         this.isWaitingOtp = false
         this.requireOtp = false
         this.decryptCipher(res.cipher, this.send.key)
+        if (res.token) {
+          this.storeToken(res.token)
+        }
       } catch (error) {
         console.log(error)
         if (error.response?.status === 400) {
-          this.errorMessage = 'wrong_otp'
+          this.errorMessage = this.$t(
+            'data.sharing.quick_share.view_item.messages.wrong_otp'
+          )
           return
         }
         this.errorMessage =
@@ -359,6 +398,28 @@ export default {
       } finally {
         this.isLoading = false
       }
+    },
+
+    storeToken (token) {
+      localStorage.setItem(`token_${this.email}`, JSON.stringify(token))
+    },
+
+    getToken (email) {
+      try {
+        const token = JSON.parse(localStorage.getItem(`token_${email}`))
+        if (token.expiredTime * 1000 < Date.now()) {
+          this.removeToken(email)
+          return null
+        } else {
+          return token.value
+        }
+      } catch (error) {
+        return null
+      }
+    },
+
+    removeToken (email) {
+      localStorage.removeItem(`token_${email}`)
     }
   }
 }

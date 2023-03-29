@@ -183,12 +183,7 @@
                     <el-dropdown-menu slot="dropdown">
                       <!-- Copy link -->
                       <el-dropdown-item
-                        v-clipboard:copy="
-                          getPublicShareUrl(
-                            scope.row.accessId,
-                            scope.row.urlB64Key
-                          )
-                        "
+                        v-clipboard:copy="getLink(scope.row)"
                         v-clipboard:success="clipboardSuccessHandler"
                       >
                         {{ $t('data.sharing.quick_share.copy_link') }}
@@ -198,6 +193,12 @@
                       <!-- Stop share -->
                       <el-dropdown-item @click.native="stopSharing(scope.row)">
                         {{ $t('data.ciphers.stop_sharing') }}
+                      </el-dropdown-item>
+                      <!-- Stop share end -->
+
+                      <!-- Stop share -->
+                      <el-dropdown-item @click.native="test(scope.row)">
+                        test
                       </el-dropdown-item>
                       <!-- Stop share end -->
                     </el-dropdown-menu>
@@ -229,6 +230,7 @@ import ShareNoCipher from '../../../components/cipher/shares/ShareNoCipher'
 import QuickShareCipher from '../../../components/cipher/shares/QuickShareCipher'
 import { CipherType } from '../../../jslib/src/enums'
 import Vnodes from '../../../components/Vnodes'
+import { Utils } from '../../../jslib/src/misc/utils.ts'
 
 export default {
   components: {
@@ -358,6 +360,12 @@ export default {
       } else {
         this.expandedSend.push(id)
       }
+    },
+    getLink (send) {
+      return this.getPublicShareUrl(
+        send.accessId,
+        Utils.fromBufferToUrlB64(send.key)
+      )
     }
   }
 }
