@@ -19,7 +19,9 @@
         {{
           isFreeUser && getRouteBaseName() === 'shares-index-your-shares'
             ? $t('errors.upgrade_to_use')
-            : $t(`data.no_data.${type}.description`)
+            : getRouteBaseName() === 'shares-index-quick-shares'
+              ? $t('data.sharing.quick_share.empty_desc')
+              : $t(`data.no_data.${type}.description`)
         }}
       </div>
 

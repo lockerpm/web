@@ -718,21 +718,31 @@
                   </button>
                   <el-dropdown-menu slot="dropdown">
                     <!-- Normal share -->
-                    <el-dropdown-item
-                      v-if="isCipherShareable(item, organizations)"
-                      @click.native="shareItem(item)"
+                    <el-tooltip
+                      :content="$t('data.sharing.share_desc')"
+                      placement="top"
                     >
-                      {{ $t('common.in_app_share') }}
-                    </el-dropdown-item>
+                      <el-dropdown-item
+                        v-if="isCipherShareable(item, organizations)"
+                        @click.native="shareItem(item)"
+                      >
+                        {{ $t('common.in_app_share') }}
+                      </el-dropdown-item>
+                    </el-tooltip>
                     <!-- Normal share end -->
 
                     <!-- Quick share -->
-                    <el-dropdown-item
-                      v-if="isCipherQuickShareable(item)"
-                      @click.native="quickShareItem(item)"
+                    <el-tooltip
+                      :content="$t('data.sharing.quick_share_desc')"
+                      placement="bottom"
                     >
-                      {{ $t('common.get_share_link') }}
-                    </el-dropdown-item>
+                      <el-dropdown-item
+                        v-if="isCipherQuickShareable(item)"
+                        @click.native="quickShareItem(item)"
+                      >
+                        {{ $t('common.get_share_link') }}
+                      </el-dropdown-item>
+                    </el-tooltip>
                     <!-- Quick share end -->
                   </el-dropdown-menu>
                 </el-dropdown>

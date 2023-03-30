@@ -65,13 +65,47 @@
           <!-- Edit end -->
 
           <!-- Share -->
-          <button
-            v-if="isCipherShareable(cipher, organizations)"
-            class="btn btn-icon btn-xs btn-action"
-            @click="shareItem(cipher)"
+          <el-dropdown
+            v-if="
+              isCipherShareable(cipher, organizations) ||
+                isCipherQuickShareable(cipher)
+            "
+            trigger="click"
+            :hide-on-click="false"
           >
-            <i class="fas fa-share-square" />
-          </button>
+            <button class="btn btn-icon btn-xs hover:bg-black-400 mr-3">
+              <i class="far fa-share-square" />
+            </button>
+            <el-dropdown-menu slot="dropdown">
+              <!-- Normal share -->
+              <el-tooltip
+                :content="$t('data.sharing.share_desc')"
+                placement="top"
+              >
+                <el-dropdown-item
+                  v-if="isCipherShareable(cipher, organizations)"
+                  @click.native="shareItem(cipher)"
+                >
+                  {{ $t('common.in_app_share') }}
+                </el-dropdown-item>
+              </el-tooltip>
+              <!-- Normal share end -->
+
+              <!-- Quick share -->
+              <el-tooltip
+                :content="$t('data.sharing.quick_share_desc')"
+                placement="bottom"
+              >
+                <el-dropdown-item
+                  v-if="isCipherQuickShareable(cipher)"
+                  @click.native="quickShareItem(cipher)"
+                >
+                  {{ $t('common.get_share_link') }}
+                </el-dropdown-item>
+              </el-tooltip>
+              <!-- Quick share end -->
+            </el-dropdown-menu>
+          </el-dropdown>
           <!-- Share end -->
 
           <!-- More -->
@@ -540,6 +574,7 @@
       </client-only>
 
       <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
+      <QuickShareCipher ref="quickShareCipher" />
       <MoveFolder ref="moveFolder" />
 
       <div class="max-w-[585px] mx-auto">
@@ -563,6 +598,7 @@ import { CipherType } from '../../core/enums/cipherType'
 import TextHaveCopy from '../../components/cipher/TextHaveCopy'
 import Vnodes from '../../components/Vnodes'
 import ShareCipher from '../../components/cipher/shares/ShareCipher'
+import QuickShareCipher from '../../components/cipher/shares/QuickShareCipher'
 import MoveFolder from '../folder/MoveFolder'
 import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
 import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
@@ -576,6 +612,7 @@ export default {
     PasswordStrength,
     Vnodes,
     ShareCipher,
+    QuickShareCipher,
     MoveFolder,
     InputSeedPhrase
   },
@@ -735,6 +772,9 @@ export default {
     },
     shareItem (cipher) {
       this.$refs.shareCipher.openDialog(cipher)
+    },
+    quickShareItem (cipher) {
+      this.$refs.quickShareCipher.openDialog(cipher)
     },
     moveFolders (ids) {
       const cipher = this.ciphers.find(c => c.id === ids[0])

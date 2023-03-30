@@ -92,6 +92,10 @@
             </el-input>
             <!-- Input end -->
 
+            <p class="mt-3">
+              {{ $t('data.sharing.quick_share.emails_desc') }}
+            </p>
+
             <!-- Email list -->
             <div class="mt-3">
               <div
@@ -172,7 +176,7 @@
       >
         <button
           class="btn btn-primary mt-4 w-full"
-          :disabled="loading || !cipher.id"
+          :disabled="loading || !cipher.id || (requireOtp && !emails.length)"
           @click="shareItem(cipher)"
         >
           {{ $t('data.sharing.quick_share.get_link') }}
