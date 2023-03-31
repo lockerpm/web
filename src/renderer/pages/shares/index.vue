@@ -57,7 +57,9 @@
         >
           {{ $t(`sidebar.${item.label}`) }} ({{ item.itemCount }})
           <span v-if="item.pending && item.pending > 0">
-            <div class="notification-badge">{{ item.pending }}</div>
+            <div class="notification-badge translate-y-[-2px]">
+              {{ item.pending }}
+            </div>
           </span>
         </nuxt-link>
       </div>
@@ -164,7 +166,8 @@ export default {
         },
         {
           label: 'your_shares',
-          routeName: 'shares-index-your-shares'
+          routeName: 'shares-index-your-shares',
+          pending: this.pendingMyShares.length
         }
       ]
     },
@@ -173,7 +176,8 @@ export default {
         {
           label: 'in_app_shares',
           routeName: 'shares-index-your-shares',
-          itemCount: this.sharedCiphersCount
+          itemCount: this.sharedCiphersCount,
+          pending: this.pendingMyShares.length
         },
         {
           label: 'quick_shares',

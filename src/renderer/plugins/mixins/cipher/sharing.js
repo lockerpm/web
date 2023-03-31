@@ -4,14 +4,16 @@ import { CipherType } from '../../../core/enums/cipherType'
 
 Vue.mixin({
   computed: {
-    pendingShares () {
-      return this.$store.state.pendingShares
-    },
     myShares () {
       return this.$store.state.myShares
     },
-    myQuickShares () {
-      return this.$store.state.myQuickShares
+    pendingShares () {
+      return this.$store.state.pendingShares
+    },
+    pendingMyShares () {
+      return this.$store.state.myShares.filter(
+        s => !!s.members.find(m => m.status === 'accepted')
+      )
     }
   },
 
@@ -61,11 +63,6 @@ Vue.mixin({
         groups: []
       }
       return share?.members?.length || share?.groups?.length
-    },
-
-    isCipherQuickShared (cipherId) {
-      const share = this.myQuickShares.find(s => s.cipher_id === cipherId)
-      return !!share
     },
 
     isCipherShareable (cipher, organizations) {

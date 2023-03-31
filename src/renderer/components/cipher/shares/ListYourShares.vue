@@ -117,6 +117,16 @@
                     <button class="btn btn-icon btn-xs hover:bg-black-400">
                       <i class="fas fa-ellipsis-h" />
                     </button>
+                    <div
+                      v-if="
+                        !!pendingMyShares.find(
+                          s => s.organization_id === scope.row.organizationId
+                        )
+                      "
+                      class="notification-badge"
+                    >
+                      1
+                    </div>
                     <el-dropdown-menu slot="dropdown">
                       <!-- Edit share -->
                       <el-dropdown-item
@@ -437,6 +447,27 @@ export default {
   },
 
   methods: {
+    async getShareInvitations () {
+      this.invitations =
+        (await this.$axios.$get('cystack_platform/pm/sharing/invitations')) ||
+        []
+      this.invitations = this.invitations.map(item => {
+        const shareType =
+          item.share_type === 'Edit'
+            ? this.$t('data.ciphers.editable')
+            : item.share_type === 'View'
+              ? this.$t('data.ciphers.viewable')
+              : this.$t('data.ciphers.only_use')
+        return {
+          ...item,
+          share_type: shareType
+        }
+      })
+      this.$store.commit(
+        'UPDATE_PENDING_SHARES',
+        this.invitations.filter(item => item.status === 'invited').length
+      )
+    },
     shareItem (cipher) {
       this.selectedCipher = cipher
       this.$refs.shareCipher.openDialog(cipher)

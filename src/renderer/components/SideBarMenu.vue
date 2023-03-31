@@ -93,9 +93,14 @@
               <!-- Label -->
             </div>
 
-            <div v-if="item.routeName === 'shares' && pendingShares > 0">
+            <div
+              v-if="
+                item.routeName === 'shares-index' &&
+                  pendingShares + pendingMyShares.length > 0
+              "
+            >
               <div class="notification-badge">
-                {{ pendingShares }}
+                {{ pendingShares + pendingMyShares.length }}
               </div>
             </div>
           </nuxt-link>

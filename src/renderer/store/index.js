@@ -132,9 +132,6 @@ export const mutations = {
   UPDATE_MY_SHARES (state, value) {
     state.myShares = value
   },
-  UPDATE_MY_QUICK_SHARES (state, value) {
-    state.myQuickShares = value
-  },
   UPDATE_ENTERPRISE_INVITATIONS (state, value) {
     state.enterpriseInvitations = value
   },

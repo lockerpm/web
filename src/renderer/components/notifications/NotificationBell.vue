@@ -137,7 +137,18 @@ export default {
       this.setRead(item.id)
       switch (item.type) {
       case 'item_sharing': {
-        this.$router.push(this.localeRoute({ name: 'shares-index' }))
+        if (item.metadata?.my_share) {
+          this.$router.push(
+            this.localeRoute({
+              path: '/shares/your-shares',
+              query: {
+                id: item.metadata?.cipher_id || item.metadata?.folder_id
+              }
+            })
+          )
+        } else {
+          this.$router.push(this.localeRoute({ path: '/shares' }))
+        }
         break
       }
       case 'emergency_access': {
