@@ -156,7 +156,9 @@
                 <span>{{
                   CipherType[scope.row.cipher_type] ||
                     CipherType[scope.row.type] ||
-                    'Folder'
+                    (scope.row.cipher_type || scope.row.type
+                      ? 'Unknown'
+                      : 'Folder')
                 }}</span>
               </template>
             </el-table-column>
