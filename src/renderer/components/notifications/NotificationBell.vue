@@ -137,12 +137,12 @@ export default {
       this.setRead(item.id)
       switch (item.type) {
       case 'item_sharing': {
-        if (item.metadata?.myShare) {
+        if (item.metadata?.my_share) {
           this.$router.push(
             this.localeRoute({
               path: '/shares/your-shares',
               query: {
-                id: item.metadata?.cipherId || item.metadata?.folderId
+                id: item.metadata?.cipher_id || item.metadata?.folder_id
               }
             })
           )

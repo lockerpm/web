@@ -253,6 +253,16 @@
                     <button class="btn btn-icon btn-xs hover:bg-black-400">
                       <i class="fas fa-ellipsis-h" />
                     </button>
+                    <div
+                      v-if="
+                        !!pendingMyShares.find(
+                          s => s.organization_id === scope.row.organizationId
+                        )
+                      "
+                      class="notification-badge"
+                    >
+                      1
+                    </div>
                     <el-dropdown-menu slot="dropdown">
                       <!-- Actions for item in shared with you -->
                       <template v-if="getRouteBaseName() === 'shares'">
@@ -638,7 +648,8 @@ export default {
         },
         {
           label: 'your_shares',
-          routeName: 'shares-your-shares'
+          routeName: 'shares-your-shares',
+          pending: this.pendingMyShares.length
         }
       ]
     },
