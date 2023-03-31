@@ -44,51 +44,17 @@
         </ValidationProvider>
 
         <!-- LOGIN FIELDS -->
-        <template v-if="cipher.type === CipherType.Login">
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">
-            {{ $t('data.ciphers.login') }}
-          </div>
-          <InputText
-            v-model="cipher.login.username"
-            label="Email / Username"
-            class="w-full"
-            :disabled="isDeleted"
-          />
-          <template>
-            <InputText
-              v-model="cipher.login.password"
-              :label="$t('data.ciphers.password')"
-              class="w-full"
-              :disabled="isDeleted"
-              is-password
-            />
-            <PasswordStrengthBar :score="passwordStrength.score" class="mt-2" />
-            <div v-if="!isDeleted" class="text-right">
-              <el-popover
-                :placement="$store.state.tutorial.isActive ? 'top' : 'right'"
-                width="280"
-                trigger="click"
-                popper-class="locker-pw-generator"
-              >
-                <PasswordGenerator @fill="fillPassword" />
-
-                <button slot="reference" class="btn btn-clean !text-primary">
-                  {{ $t('data.ciphers.generate_random_password') }}
-                </button>
-              </el-popover>
-            </div>
-          </template>
-          <template v-for="(item, index) in cipher.login.uris">
-            <InputText
-              :key="index"
-              v-model="item.uri"
-              :label="$t('data.ciphers.website_address')"
-              class="w-full"
-              :disabled="isDeleted"
-              @onBlue="handleGenNameByUri"
-            />
-          </template>
-        </template>
+        <login-input
+          :is-deleted="isDeleted"
+          :name="cipher.name"
+          :username="cipher.login.username"
+          :password="cipher.login.password"
+          :uris="cipher.login.uris"
+          @update:name="newValue => (cipher.name = newValue)"
+          @update:username="newValue => (cipher.login.username = newValue)"
+          @update:password="newValue => (cipher.login.password = newValue)"
+          @update:uris="newValue => (cipher.login.uris = newValue)"
+        />
 
         <!-- CARD FIELDS -->
         <template v-if="cipher.type === CipherType.Card">
@@ -473,6 +439,7 @@ import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 import { detectCardBrand } from '../../utils/common'
 import InlineEditCipher from './InlineEditCipher'
 import PasswordViolationDialog from './PasswordViolationDialog'
+import LoginInput from './cipher-types/login/LoginInput.vue'
 
 CipherType.CryptoWallet = CipherType.CryptoBackup = 7
 
@@ -493,7 +460,8 @@ export default {
     InputSelectCryptoNetworks,
     InputSeedPhrase,
     InputCustomFields,
-    PasswordViolationDialog
+    PasswordViolationDialog,
+    LoginInput
   },
 
   props: {
@@ -538,68 +506,10 @@ export default {
   },
 
   computed: {
-    cardBrandOptions () {
-      return [
-        { label: '----', value: null, icon: '' },
-        { label: 'Visa', value: 'Visa', icon: 'fab fa-cc-visa' },
-        {
-          label: 'Mastercard',
-          value: 'Mastercard',
-          icon: 'fab fa-cc-mastercard'
-        },
-        { label: 'American Express', value: 'Amex', icon: 'fab fa-cc-amex' },
-        { label: 'Discover', value: 'Discover', icon: 'fab fa-cc-discover' },
-        {
-          label: 'Diners Club',
-          value: 'Diners Club',
-          icon: 'fab fa-cc-diners-club'
-        },
-        { label: 'JCB', value: 'JCB', icon: 'fab fa-cc-jcb' },
-        {
-          label: 'Maestro',
-          value: 'Maestro',
-          icon: require('~/assets/images/icons/cards/meastro.svg'),
-          iconType: 'img'
-        },
-        {
-          label: 'UnionPay',
-          value: 'UnionPay',
-          icon: require('~/assets/images/icons/cards/unionpay.svg'),
-          iconType: 'img'
-        },
-        { label: this.$t('other'), value: 'Other', icon: 'fas fa-credit-card' }
-      ]
-    },
     currentCard () {
       return this.cardBrandOptions.find(
         c => c.value && c.value === this.cipher.card.brand
       )
-    },
-    cardExpMonthOptions () {
-      return [
-        { label: '----', value: null },
-        { label: '01 - ' + this.$t('january'), value: '1' },
-        { label: '02 - ' + this.$t('february'), value: '2' },
-        { label: '03 - ' + this.$t('march'), value: '3' },
-        { label: '04 - ' + this.$t('april'), value: '4' },
-        { label: '05 - ' + this.$t('may'), value: '5' },
-        { label: '06 - ' + this.$t('june'), value: '6' },
-        { label: '07 - ' + this.$t('july'), value: '7' },
-        { label: '08 - ' + this.$t('august'), value: '8' },
-        { label: '09 - ' + this.$t('september'), value: '9' },
-        { label: '10 - ' + this.$t('october'), value: '10' },
-        { label: '11 - ' + this.$t('november'), value: '11' },
-        { label: '12 - ' + this.$t('december'), value: '12' }
-      ]
-    },
-    identityTitleOptions () {
-      return [
-        { label: '-- ' + this.$t('common.select') + ' --', value: null },
-        { label: this.$t('common.mr'), value: 'mr' },
-        { label: this.$t('common.mrs'), value: 'mrs' },
-        { label: this.$t('common.ms'), value: 'ms' },
-        { label: this.$t('common.dr'), value: 'dr' }
-      ]
     },
     isDeleted () {
       return !!this.cipher.deletedDate
