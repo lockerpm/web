@@ -343,13 +343,18 @@ export default {
   },
   head () {
     const getPostDescription = tx => {
+      if (!tx) {
+        return ''
+      }
       let res = tx
-      res = res.replace(/<[^>]*>/g, '') // Remove tags
-      res = res.replaceAll('&amp;', '&') // Remove amp
-      res = res.replaceAll('&#8217;', "'") // Remove '
-      res.replaceAll('’', "'")
-      res = res.replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(dec))
-      res = res.replace('[&hellip;]', '...')
+      try {
+        res = res.replace(/<[^>]*>/g, '') // Remove tags
+        res = res.replaceAll('&amp;', '&') // Remove amp
+        res = res.replaceAll('&#8217;', "'") // Remove '
+        res.replaceAll('’', "'")
+        res = res.replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(dec))
+        res = res.replace('[&hellip;]', '...')
+      } catch (error) {}
       return res
     }
 
