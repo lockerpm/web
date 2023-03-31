@@ -8,7 +8,7 @@
               :to="localePath('/')"
               class="font-semibold text-black hover:no-underline hover:text-primary landing-transition"
             >
-              {{ $t("blog.home") }} &nbsp; • &nbsp;
+              {{ $t('blog.home') }} &nbsp; • &nbsp;
             </nuxt-link>
             <nuxt-link
               :to="localePath('/blog')"
@@ -31,7 +31,7 @@
             v-if="post.table_of_contents.length"
             class="landing-font-14 text-black font-bold"
           >
-            {{ $t("blog.table_of_contents") }}
+            {{ $t('blog.table_of_contents') }}
           </p>
           <div class="w-full flex flex-col pb-2">
             <nuxt-link
@@ -49,7 +49,7 @@
           <div>
             <div class="flex mt-4">
               <p class="landing-font-14 text-black font-bold">
-                {{ $t("blog.subscribe_to_update") }}
+                {{ $t('blog.subscribe_to_update') }}
               </p>
             </div>
             <div class="mt-4">
@@ -68,7 +68,7 @@
                 style="padding-top: 10px; padding-bottom: 10px"
                 @click.prevent="subscribeBlog()"
               >
-                {{ $t("blog.subscription") }}
+                {{ $t('blog.subscription') }}
               </button>
             </div>
             <p class="landing-font-14 text-black font-bold mb-4 mt-7">
@@ -80,7 +80,7 @@
                 @click="fbShare()"
               >
                 <div class="icon-frame">
-                  <img src="~/assets/images/landing/blog/facebook-blue.svg" />
+                  <img src="~/assets/images/landing/blog/facebook-blue.svg">
                 </div>
               </div>
               <div
@@ -88,12 +88,12 @@
                 @click="twitterShare()"
               >
                 <div class="icon-frame">
-                  <img src="~/assets/images/landing/blog/twitter-blue.svg" />
+                  <img src="~/assets/images/landing/blog/twitter-blue.svg">
                 </div>
               </div>
               <div style="cursor: pointer" @click="linkedinShare()">
                 <div class="icon-frame">
-                  <img src="~/assets/images/landing/blog/linkedin-blue.svg" />
+                  <img src="~/assets/images/landing/blog/linkedin-blue.svg">
                 </div>
               </div>
             </div>
@@ -125,15 +125,15 @@
               :src="post.user.avatar_urls[48]"
               class="rounded-full"
               style="margin-right: 5px"
-            />
+            >
             <img
               v-else
               src="~/assets/images/landing/blog/cystack_editor.svg"
               style="margin-right: 5px"
-            />
+            >
             <div>
               <p class="landing-font-14 text-black font-bold mb-0">
-                {{ post.user ? post.user.name : "CyStack Editor" }}
+                {{ post.user ? post.user.name : 'CyStack Editor' }}
               </p>
               <div class="flex">
                 <div v-if="post.user && post.user.description">
@@ -164,7 +164,7 @@
           style="padding-left: 5%"
         >
           <h3 class="landing-font-28 text-black font-bold mb-7">
-            {{ $t("blog.related_posts") }}
+            {{ $t('blog.related_posts') }}
           </h3>
           <div
             class="w-full grid md:grid-cols-2 grid-cols-1"
@@ -185,120 +185,120 @@
 </template>
 
 <script>
-import axios from "axios";
-import moment from "moment";
-import cheerio from "cheerio";
-import slugify from "slugify";
-import Post from "~/components/landing/blog/Post";
+import axios from 'axios'
+import moment from 'moment'
+import cheerio from 'cheerio'
+import slugify from 'slugify'
+import Post from '~/components/landing/blog/Post'
 export default {
   components: { Post },
-  layout: "landing",
+  layout: 'landing',
   scrollToTop: true,
-  async asyncData({ store, params, error }) {
-    const slug = encodeURIComponent(params.slug);
-    const language = store.state.i18n.locale;
+  async asyncData ({ store, params, error }) {
+    const slug = encodeURIComponent(params.slug)
+    const language = store.state.i18n.locale
     const { data } = await axios.get(
       `${process.env.blogUrl}/posts?slug=${slug}&categories=8,13,18,54,25`
-    );
+    )
     if (data.length === 0) {
-      error({ statusCode: 404 });
-      return;
+      error({ statusCode: 404 })
+      return
     }
-    const categoriesId = data[0].categories;
+    const categoriesId = data[0].categories
     const categories = await Promise.all(
-      categoriesId.map(async (id) => {
-        const res = await axios.get(`${process.env.blogUrl}/categories/${id}`);
-        return res.data;
+      categoriesId.map(async id => {
+        const res = await axios.get(`${process.env.blogUrl}/categories/${id}`)
+        return res.data
       })
-    );
+    )
     const languageTag = await axios.get(
       `${process.env.blogUrl}/tags?slug=${language}`
-    );
+    )
     const relateResult = await axios.get(
       `${process.env.blogUrl}/posts?exclude=${
         data[0].id
       }&categories=${categoriesId.toString()}&tags=${
         languageTag.data[0].id
       }&per_page=2`
-    );
-    const users = await axios.get(`${process.env.blogUrl}/users`);
-    const userArray = users.data;
-    const relatedPosts = [];
-    relateResult.data.forEach(async (element) => {
-      let featuredImage = "";
+    )
+    const users = await axios.get(`${process.env.blogUrl}/users`)
+    const userArray = users.data
+    const relatedPosts = []
+    relateResult.data.forEach(async element => {
+      let featuredImage = ''
       try {
-        featuredImage = element._embedded["wp:featuredmedia"]["0"].source_url;
+        featuredImage = element._embedded['wp:featuredmedia']['0'].source_url
       } catch (error) {}
       if (!featuredImage) {
-        const $ = cheerio.load(element.content.rendered);
-        const images = $("img").attr("src");
+        const $ = cheerio.load(element.content.rendered)
+        const images = $('img').attr('src')
         if (images) {
-          featuredImage = images.replace(/-[0-9]+x[0-9]+/g, "");
+          featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
         }
       }
-      const $_ = cheerio.load(element.excerpt.rendered);
-      const desc = $_("p").text();
+      const $_ = cheerio.load(element.excerpt.rendered)
+      const desc = $_('p').text()
 
       // const authorResult = await axios.get(`${process.env.blogUrl}/users/${element.author}`)
       relatedPosts.push({
         ...element,
         // author: authorResult.data.name,
         featured_image: featuredImage,
-        user: userArray.find((user) => user.id === element.author),
-        desc,
-      });
-    });
+        user: userArray.find(user => user.id === element.author),
+        desc
+      })
+    })
     // const authorResult = await axios.get(`${process.env.blogUrl}/users/${data[0].author}`)
     return {
-      post: data.map((post) => {
-        const $ = cheerio.load(post.content.rendered);
-        let featuredImage = "";
+      post: data.map(post => {
+        const $ = cheerio.load(post.content.rendered)
+        let featuredImage = ''
         try {
-          featuredImage = post._embedded["wp:featuredmedia"]["0"].source_url;
+          featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
         } catch (error) {}
         if (!featuredImage) {
-          const $ = cheerio.load(post.content.rendered);
-          const images = $("img").attr("src");
+          const $ = cheerio.load(post.content.rendered)
+          const images = $('img').attr('src')
           if (images) {
-            featuredImage = images.replace(/-[0-9]+x[0-9]+/g, "");
+            featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
           }
         }
-        const $_ = cheerio.load(post.excerpt.rendered);
-        const desc = $_("p").text();
-        const tableOfContents = [];
-        $("h2, h3").each(function (i, e) {
-          const title = $(e).text();
-          const slug = slugify(title, { locale: "vi", lower: true });
+        const $_ = cheerio.load(post.excerpt.rendered)
+        const desc = $_('p').text()
+        const tableOfContents = []
+        $('h2, h3').each(function (i, e) {
+          const title = $(e).text()
+          const slug = slugify(title, { locale: 'vi', lower: true })
           tableOfContents[i] = {
             text: $(e).text(),
             link: slug,
             heading: e.name
-          };
-          $(this).attr("id", slug);
-        });
+          }
+          $(this).attr('id', slug)
+        })
         if (!tableOfContents.length) {
-          $("h1").each(function (i, e) {
-            const title = $(e).text();
-            const slug = slugify(title, { locale: "vi", lower: true });
+          $('h1').each(function (i, e) {
+            const title = $(e).text()
+            const slug = slugify(title, { locale: 'vi', lower: true })
             tableOfContents[i] = {
               text: title,
-              link: slug,
-            };
-            $(this).attr("id", slug);
-          });
+              link: slug
+            }
+            $(this).attr('id', slug)
+          })
         }
         return {
           ...post,
           new_content_rendered: $.html(),
           desc,
           featured_image: featuredImage,
-          user: userArray.find((user) => user.id === post.author),
-          table_of_contents: tableOfContents,
+          user: userArray.find(user => user.id === post.author),
+          table_of_contents: tableOfContents
           // author: authorResult.data.name
-        };
+        }
       })[0],
-      categories: categories.map((item) => item.name),
-      relatedPosts,
+      categories: categories.map(item => item.name),
+      relatedPosts
       // relatedPosts: relateResult.data.map(post => {
       //   let featuredImage = ''
       //   try {
@@ -320,173 +320,181 @@ export default {
       //     desc
       //   }
       // })
-    };
+    }
   },
-  data() {
+  data () {
     return {
       form: {
-        email: "",
+        email: ''
       },
       rules: {
         email: [
-          { required: true, message: "Please input Email", trigger: "blur" },
+          { required: true, message: 'Please input Email', trigger: 'blur' },
           {
-            type: "email",
-            message: "Please input correct email address",
-            trigger: ["blur", "change"],
-          },
-        ],
+            type: 'email',
+            message: 'Please input correct email address',
+            trigger: ['blur', 'change']
+          }
+        ]
       },
       relatedPosts: [],
-      post: null,
-    };
+      post: null
+    }
   },
-  head() {
+  head () {
     return {
-      title: this.post.title.rendered + " | Locker",
+      title: this.post.title.rendered + ' | Locker',
       meta: [
         {
-          hid: "description",
-          name: "description",
-          content: this.post.excerpt.rendered.replace(/<[^>]*>/g, ""),
+          hid: 'description',
+          name: 'description',
+          content: this.getPostDescription(this.post.excerpt.rendered)
         },
         {
-          hid: "og:description",
-          name: "og:description",
-          content: this.post.excerpt.rendered.replace(/<[^>]*>/g, ""),
+          hid: 'og:description',
+          name: 'og:description',
+          content: this.getPostDescription(this.post.excerpt.rendered)
         },
         {
-          hid: "og:title",
-          property: "og:title",
-          content: this.post.title.rendered + " | Locker",
+          hid: 'og:title',
+          property: 'og:title',
+          content: this.post.title.rendered + ' | Locker'
         },
         {
-          hid: "twitter:title",
-          name: "twitter:title",
-          content: this.post.title.rendered + " | Locker",
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: this.post.title.rendered + ' | Locker'
         },
         {
-          hid: "twitter:description",
-          name: "twitter:description",
-          content: this.post.excerpt.rendered.replace(/<[^>]*>/g, ""),
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: this.getPostDescription(this.post.excerpt.rendered)
         },
         {
-          hid: "og:image",
-          property: "og:image",
-          content: this.post.featured_image,
+          hid: 'og:image',
+          property: 'og:image',
+          content: this.post.featured_image
         },
         {
-          hid: "twitter:image",
-          name: "twitter:image",
-          content: this.post.featured_image,
+          hid: 'twitter:image',
+          name: 'twitter:image',
+          content: this.post.featured_image
         },
         {
-          hid: "twitter:card",
-          name: "twitter:card",
-          content: "summary_large_image",
-        },
-      ],
-    };
+          hid: 'twitter:card',
+          name: 'twitter:card',
+          content: 'summary_large_image'
+        }
+      ]
+    }
   },
   computed: {
-    post_categories() {
+    post_categories () {
       return this.blog_categories
         .slice(1)
-        .filter((item) => this.post.categories.includes(parseInt(item.id)));
-    },
+        .filter(item => this.post.categories.includes(parseInt(item.id)))
+    }
   },
-  async mounted() {
+  async mounted () {
     // this.post = await this.loadPost()
   },
   methods: {
-    async subscribeBlog() {
+    getPostDescription (tx) {
+      const strippedFromTags = tx.replace(/<[^>]*>/g, '')
+      const decodedText = strippedFromTags.replace(/&#(\d+);/g, (_, dec) =>
+        String.fromCharCode(dec)
+      )
+      const noHellip = decodedText.replace('[&hellip;]', '...')
+      return noHellip
+    },
+    async subscribeBlog () {
       if (this.$refs.form) {
-        const isValid = await this.$refs.form.validate();
+        const isValid = await this.$refs.form.validate()
         if (!isValid) {
-          return;
+          return
         }
       } else {
-        return;
+        return
       }
       try {
-        await this.subscribe(this.form.email);
+        await this.subscribe(this.form.email)
         this.$message({
-          message: this.$t("landing_contact.messages.request_has_been_sent"),
-          type: "success",
-        });
+          message: this.$t('landing_contact.messages.request_has_been_sent'),
+          type: 'success'
+        })
       } catch (error) {
         this.$message({
-          message: this.$t("landing_contact.messages.error_occurred"),
-          type: "error",
-        });
+          message: this.$t('landing_contact.messages.error_occurred'),
+          type: 'error'
+        })
       }
     },
-    async getTagBySlug(tagSlug) {
+    async getTagBySlug (tagSlug) {
       try {
         const result = await axios.get(
           `${process.env.blogUrl}/tags?slug=${tagSlug}`
-        );
-        return result.data[0];
+        )
+        return result.data[0]
       } catch (error) {
-        return {};
+        return {}
       }
     },
-    dateToFormattedString(date) {
-      return moment(date).format("ll");
+    dateToFormattedString (date) {
+      return moment(date).format('ll')
     },
-    fbShare(winWidth = 520, winHeight = 350) {
-      const url = "https://locker.io/" + this.$route.fullPath;
-      const winTop = screen.height / 2 - winHeight / 2;
-      const winLeft = screen.width / 2 - winWidth / 2;
+    fbShare (winWidth = 520, winHeight = 350) {
+      const url = 'https://locker.io/' + this.$route.fullPath
+      const winTop = screen.height / 2 - winHeight / 2
+      const winLeft = screen.width / 2 - winWidth / 2
       window.open(
-        "http://www.facebook.com/sharer.php?u=" + url,
-        "sharer",
-        "top=" +
+        'http://www.facebook.com/sharer.php?u=' + url,
+        'sharer',
+        'top=' +
           winTop +
-          ",left=" +
+          ',left=' +
           winLeft +
-          ",toolbar=0,status=0,width=" +
+          ',toolbar=0,status=0,width=' +
           winWidth +
-          ",height=" +
+          ',height=' +
           winHeight
-      );
+      )
     },
-    twitterShare(winWidth = 520, winHeight = 400) {
-      const url = "https://locker.io/" + this.$route.fullPath;
-      const winTop = screen.height / 2 - winHeight / 2;
-      const winLeft = screen.width / 2 - winWidth / 2;
+    twitterShare (winWidth = 520, winHeight = 400) {
+      const url = 'https://locker.io/' + this.$route.fullPath
+      const winTop = screen.height / 2 - winHeight / 2
+      const winLeft = screen.width / 2 - winWidth / 2
       window.open(
-        "https://twitter.com/intent/tweet?url=" + url,
-        "sharer",
-        "top=" +
+        'https://twitter.com/intent/tweet?url=' + url,
+        'sharer',
+        'top=' +
           winTop +
-          ",left=" +
+          ',left=' +
           winLeft +
-          ",toolbar=0,status=0,width=" +
+          ',toolbar=0,status=0,width=' +
           winWidth +
-          ",height=" +
+          ',height=' +
           winHeight
-      );
+      )
     },
-    linkedinShare(winWidth = 520, winHeight = 500) {
-      const url = "https://locker.io/" + this.$route.fullPath;
-      const winTop = screen.height / 2 - winHeight / 2;
-      const winLeft = screen.width / 2 - winWidth / 2;
+    linkedinShare (winWidth = 520, winHeight = 500) {
+      const url = 'https://locker.io/' + this.$route.fullPath
+      const winTop = screen.height / 2 - winHeight / 2
+      const winLeft = screen.width / 2 - winWidth / 2
       window.open(
-        "https://www.linkedin.com/sharing/share-offsite/?url=" + url,
-        "sharer",
-        "top=" +
+        'https://www.linkedin.com/sharing/share-offsite/?url=' + url,
+        'sharer',
+        'top=' +
           winTop +
-          ",left=" +
+          ',left=' +
           winLeft +
-          ",toolbar=0,status=0,width=" +
+          ',toolbar=0,status=0,width=' +
           winWidth +
-          ",height=" +
+          ',height=' +
           winHeight
-      );
-    },
-  },
-};
+      )
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -531,8 +539,8 @@ div.post-content > h6 {
   font-weight: 700 !important;
   padding-top: 30px !important;
   margin-bottom: 20px;
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif !important;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif !important;
 }
 div.post-content > h2,
 div.post-content > h1 {
@@ -586,8 +594,8 @@ div.post-content blockquote {
   background-color: #f3f5f8;
 }
 .post-cate-tag {
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif !important;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif !important;
   padding: 6px 8px;
   border-radius: 4px;
   margin-bottom: 0px;
