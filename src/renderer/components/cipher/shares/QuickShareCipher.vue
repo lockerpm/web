@@ -176,7 +176,7 @@
       >
         <button
           class="btn btn-primary mt-4 w-full"
-          :disabled="loading || !cipher.id || (requireOtp && !emails.length)"
+          :disabled="loading || !cipher.id || (!!requireOtp && !emails.length)"
           @click="shareItem(cipher)"
         >
           {{ $t('data.sharing.quick_share.get_link') }}
