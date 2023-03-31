@@ -101,6 +101,8 @@ Vue.mixin({
       case 7:
         name = 'crypto-backups'
         break
+      default:
+        name = 'vault'
       }
       this.$router.push(
         this.localeRoute({
