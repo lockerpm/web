@@ -3,8 +3,16 @@ import find from 'lodash/find'
 
 Vue.mixin({
   computed: {
+    myShares () {
+      return this.$store.state.myShares
+    },
     pendingShares () {
       return this.$store.state.pendingShares
+    },
+    pendingMyShares () {
+      return this.$store.state.myShares.filter(
+        s => !!s.members.find(m => m.status === 'accepted')
+      )
     }
   },
 
