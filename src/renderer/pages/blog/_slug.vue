@@ -342,18 +342,29 @@ export default {
     }
   },
   head () {
+    const getPostDescription = tx => {
+      let res = tx
+      res = res.replace(/<[^>]*>/g, '') // Remove tags
+      res = res.replaceAll('&amp;', '&') // Remove amp
+      res = res.replaceAll('&#8217;', "'") // Remove '
+      res.replaceAll('’', "'")
+      res = res.replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(dec))
+      res = res.replace('[&hellip;]', '...')
+      return res
+    }
+
     return {
       title: this.post.title.rendered + ' | Locker',
       meta: [
         {
           hid: 'description',
           name: 'description',
-          content: this.getPostDescription(this.post.excerpt.rendered)
+          content: getPostDescription(this.post.excerpt.rendered)
         },
         {
           hid: 'og:description',
           name: 'og:description',
-          content: this.getPostDescription(this.post.excerpt.rendered)
+          content: getPostDescription(this.post.excerpt.rendered)
         },
         {
           hid: 'og:title',
@@ -368,7 +379,7 @@ export default {
         {
           hid: 'twitter:description',
           name: 'twitter:description',
-          content: this.getPostDescription(this.post.excerpt.rendered)
+          content: getPostDescription(this.post.excerpt.rendered)
         },
         {
           hid: 'og:image',
@@ -399,14 +410,6 @@ export default {
     // this.post = await this.loadPost()
   },
   methods: {
-    getPostDescription (tx) {
-      const strippedFromTags = tx.replace(/<[^>]*>/g, '')
-      const decodedText = strippedFromTags.replace(/&#(\d+);/g, (_, dec) =>
-        String.fromCharCode(dec)
-      )
-      const noHellip = decodedText.replace('[&hellip;]', '...')
-      return noHellip
-    },
     async subscribeBlog () {
       if (this.$refs.form) {
         const isValid = await this.$refs.form.validate()
