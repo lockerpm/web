@@ -63,9 +63,6 @@ Vue.mixin({
     extensionLoggedIn () {
       return this.$store.state.extensionLoggedIn
     },
-    myShares () {
-      return this.$store.state.myShares
-    },
     enterpriseInvitations () {
       return this.$store.state.enterpriseInvitations
     },
