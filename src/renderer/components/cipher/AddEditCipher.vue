@@ -79,116 +79,48 @@
         />
 
         <!-- IDENTITY FIELDS -->
-        <template v-if="cipher.type === CipherType.Identity">
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">
-            {{ $t('data.ciphers.personal') }}
-          </div>
-          <div class="grid grid-cols-2 gap-x-2 mb-4">
-            <InputSelect
-              :label="$t('data.ciphers.title')"
-              :initial-value="cipher.identity.title"
-              class="w-full"
-              :disabled="isDeleted"
-              :options="identityTitleOptions"
-              @change="v => (cipher.identity.title = v)"
-            />
-            <InputText
-              v-model="cipher.identity.firstName"
-              :label="$t('data.ciphers.first_name')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.lastName"
-              :label="$t('data.ciphers.last_name')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.username"
-              label="Username"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.company"
-              :label="$t('data.ciphers.company')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.email"
-              label="Email"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.phone"
-              :label="$t('data.ciphers.phone')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.ssn"
-              :label="$t('data.ciphers.ssn')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.passportNumber"
-              :label="$t('data.ciphers.passport')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.licenseNumber"
-              :label="$t('data.ciphers.license')"
-              class="w-full !mb-2"
-              :disabled="isDeleted"
-            />
-          </div>
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">
-            {{ $t('data.ciphers.contact_info') }}
-          </div>
-          <div class="grid grid-cols-2 gap-x-2 mb-4">
-            <InputText
-              v-model="cipher.identity.address1"
-              :label="$t('data.ciphers.address') + '1'"
-              class="w-full col-span-2"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.address2"
-              :label="$t('data.ciphers.address') + '2'"
-              class="w-full col-span-2"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.city"
-              :label="$t('data.ciphers.city_town')"
-              class="w-full col-span-2"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.state"
-              :label="$t('data.ciphers.state_province')"
-              class="w-full col-span-2"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.postalCode"
-              :label="$t('data.ciphers.zip')"
-              class="w-full col-span-2"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.country"
-              :label="$t('data.ciphers.country')"
-              class="w-full col-span-2 !mb-2"
-              :disabled="isDeleted"
-            />
-          </div>
-        </template>
+        <identity-input
+          v-if="cipher.type === CipherType.Identity"
+          :is-deleted="isDeleted"
+          :title="cipher.identity.title"
+          :first-name="cipher.identity.firstName"
+          :last-name="cipher.identity.lastName"
+          :username="cipher.identity.username"
+          :company="cipher.identity.company"
+          :email="cipher.identity.email"
+          :phone="cipher.identity.phone"
+          :ssn="cipher.identity.ssn"
+          :passport-number="cipher.identity.passportNumber"
+          :license-number="cipher.identity.licenseNumber"
+          :address1="cipher.identity.address1"
+          :address2="cipher.identity.address2"
+          :city="cipher.identity.city"
+          :state="cipher.identity.state"
+          :postal-code="cipher.identity.postalCode"
+          :country="cipher.identity.country"
+          @update:title="newValue => (cipher.identity.title = newValue)"
+          @update:firstName="newValue => (cipher.identity.firstName = newValue)"
+          @update:lastName="newValue => (cipher.identity.lastName = newValue)"
+          @update:username="newValue => (cipher.identity.username = newValue)"
+          @update:company="newValue => (cipher.identity.company = newValue)"
+          @update:email="newValue => (cipher.identity.email = newValue)"
+          @update:phone="newValue => (cipher.identity.phone = newValue)"
+          @update:ssn="newValue => (cipher.identity.ssn = newValue)"
+          @update:passportNumber="
+            newValue => (cipher.identity.passportNumber = newValue)
+          "
+          @update:licenseNumber="
+            newValue => (cipher.identity.licenseNumber = newValue)
+          "
+          @update:address1="newValue => (cipher.identity.address1 = newValue)"
+          @update:address2="newValue => (cipher.identity.address2 = newValue)"
+          @update:city="newValue => (cipher.identity.city = newValue)"
+          @update:state="newValue => (cipher.identity.state = newValue)"
+          @update:postalCode="
+            newValue => (cipher.identity.postalCode = newValue)
+          "
+          @update:country="newValue => (cipher.identity.country = newValue)"
+        />
 
         <!-- CRYPTO BACKUP FIELDS -->
         <template v-if="cipher.type === CipherType.CryptoWallet">
@@ -266,7 +198,7 @@
         </template>
 
         <!-- NOTES -->
-        <template>
+        <div>
           <!-- Label -->
           <div
             v-if="cipher.type !== CipherType.SecureNote"
@@ -277,7 +209,7 @@
           <!-- Label end -->
 
           <!-- Input -->
-          <template>
+          <div>
             <InputText
               v-if="cipher.type === CipherType.CryptoWallet"
               v-model="cryptoWallet.notes"
@@ -295,13 +227,13 @@
               :disabled="isDeleted"
               is-textarea
             />
-          </template>
+          </div>
           <!-- Input end -->
-        </template>
+        </div>
         <!-- NOTES END -->
 
         <!-- CUSTOM FIELDS -->
-        <template>
+        <div>
           <div class="my-5 text-black-700 text-head-6 font-semibold">
             {{ $t('data.ciphers.custom_fields') }}
           </div>
@@ -311,7 +243,7 @@
             class="w-full !mb-3"
             @set-fields="setFields"
           />
-        </template>
+        </div>
 
         <!-- FOLDER -->
         <InputSelectFolder
@@ -411,6 +343,7 @@ import InlineEditCipher from './InlineEditCipher'
 import PasswordViolationDialog from './PasswordViolationDialog'
 import LoginInput from './cipher-types/login/LoginInput.vue'
 import CardInput from './cipher-types/card/CardInput.vue'
+import IdentityInput from './cipher-types/identity/IdentityInput.vue'
 
 CipherType.CryptoWallet = CipherType.CryptoBackup = 7
 
@@ -433,7 +366,8 @@ export default {
     InputCustomFields,
     PasswordViolationDialog,
     LoginInput,
-    CardInput
+    CardInput,
+    IdentityInput
   },
 
   props: {
