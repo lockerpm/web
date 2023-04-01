@@ -45,6 +45,7 @@
 
         <!-- LOGIN FIELDS -->
         <login-input
+          v-if="cipher.type === CipherType.Login"
           :is-deleted="isDeleted"
           :name="cipher.name"
           :username="cipher.login.username"
@@ -57,56 +58,25 @@
         />
 
         <!-- CARD FIELDS -->
-        <template v-if="cipher.type === CipherType.Card">
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">
-            {{ $t('data.ciphers.card_details') }}
-          </div>
-          <ValidationProvider
-            v-slot="{ errors: err }"
-            rules="required"
-            :name="$t('data.ciphers.card_holder')"
-          >
-            <InputText
-              v-model="cipher.card.cardholderName"
-              :label="$t('data.ciphers.card_holder')"
-              class="w-full !mb-2"
-              :error-text="err && err.length && err[0]"
-              :disabled="isDeleted"
-            />
-          </ValidationProvider>
-          <InputText
-            v-model="cipher.card.number"
-            :label="$t('data.ciphers.card_number')"
-            class="w-full"
-            :disabled="isDeleted"
-            :suffix-icon="currentCard ? currentCard.icon : ''"
-            :icon-type="currentCard ? currentCard.iconType : ''"
-            @input="changeCardNumber"
-          />
-          <div class="grid grid-cols-2 gap-2">
-            <InputSelect
-              :label="$t('data.ciphers.expiration_month')"
-              :initial-value="cipher.card.expMonth"
-              class="w-full"
-              :disabled="isDeleted"
-              :options="cardExpMonthOptions"
-              @change="v => (cipher.card.expMonth = v)"
-            />
-            <InputText
-              v-model="cipher.card.expYear"
-              :label="$t('data.ciphers.expiration_year')"
-              class="w-full !mb-2"
-              :disabled="isDeleted"
-            />
-          </div>
-          <InputText
-            v-model="cipher.card.code"
-            :label="$t('data.ciphers.cvv')"
-            is-password
-            class="w-full"
-            :disabled="isDeleted"
-          />
-        </template>
+        <card-input
+          v-if="cipher.type === CipherType.Card"
+          :is-deleted="isDeleted"
+          :errors="errors"
+          :cardholder-name="cipher.card.cardholderName"
+          :number="cipher.card.number"
+          :brand="cipher.card.brand"
+          :exp-month="cipher.card.expMonth"
+          :exp-year="cipher.card.expYear"
+          :code="cipher.card.code"
+          @update:cardholderName="
+            newValue => (cipher.card.cardholderName = newValue)
+          "
+          @update:number="newValue => (cipher.card.number = newValue)"
+          @update:brand="newValue => (cipher.card.brand = newValue)"
+          @update:expMonth="newValue => (cipher.card.expMonth = newValue)"
+          @update:expYear="newValue => (cipher.card.expYear = newValue)"
+          @update:code="newValue => (cipher.card.code = newValue)"
+        />
 
         <!-- IDENTITY FIELDS -->
         <template v-if="cipher.type === CipherType.Identity">
@@ -440,6 +410,7 @@ import { detectCardBrand } from '../../utils/common'
 import InlineEditCipher from './InlineEditCipher'
 import PasswordViolationDialog from './PasswordViolationDialog'
 import LoginInput from './cipher-types/login/LoginInput.vue'
+import CardInput from './cipher-types/card/CardInput.vue'
 
 CipherType.CryptoWallet = CipherType.CryptoBackup = 7
 
@@ -461,7 +432,8 @@ export default {
     InputSeedPhrase,
     InputCustomFields,
     PasswordViolationDialog,
-    LoginInput
+    LoginInput,
+    CardInput
   },
 
   props: {
