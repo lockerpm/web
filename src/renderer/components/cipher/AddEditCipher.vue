@@ -123,79 +123,14 @@
         />
 
         <!-- CRYPTO BACKUP FIELDS -->
-        <template v-if="cipher.type === CipherType.CryptoWallet">
-          <InputSelectCryptoWallet
-            ref="inputSelectCryptoWallet"
-            :label="$t('data.ciphers.wallet_app')"
-            :disabled="isDeleted"
-            class="w-full"
-            :initial-value="
-              cryptoWallet.walletApp ? cryptoWallet.walletApp.alias : null
-            "
-            @change="handleChangeCryptoWallet"
+        <div :class="cipher.type === CipherType.CryptoWallet ? '' : 'hidden'">
+          <crypto-backup-input
+            ref="cryptoBackupInput"
+            :is-deleted="isDeleted"
+            :cipher-id="cipher.id"
+            @update:cryptoWallet="val => (cipher.cryptoWallet = val)"
           />
-          <InputText
-            v-model="cryptoWallet.username"
-            :label="$t('data.ciphers.username')"
-            class="w-full"
-            :disabled="isDeleted"
-            :is-password="false"
-          />
-          <InputText
-            v-model="cryptoWallet.password"
-            :label="$t('data.ciphers.password_pin')"
-            class="w-full"
-            :disabled="isDeleted"
-            is-password
-          />
-          <InputText
-            v-model="cryptoWallet.address"
-            :label="$t('data.ciphers.wallet_address')"
-            class="w-full"
-            :disabled="isDeleted"
-          />
-          <InputText
-            v-model="cryptoWallet.privateKey"
-            :label="$t('data.ciphers.private_key')"
-            class="w-full"
-            :disabled="isDeleted"
-            is-password
-          />
-          <!-- <InputText
-            v-model="cryptoWallet.seed"
-            :label="$t('data.ciphers.seed')"
-            class="w-full !mb-1"
-            :error-text="err && err.length && err[0]"
-            :disabled="isDeleted"
-            is-textarea=""
-          /> -->
-          <div class="cs-field w-full">
-            <label>
-              {{ $t('data.ciphers.seed') }}
-            </label>
-          </div>
-          <InputSeedPhrase
-            v-model="cryptoWallet.seed"
-            :edit-mode="cipher.id ? true : false"
-            class="w-full !mb-3"
-            @set-seed="setSeed"
-          />
-          <!-- <div class="py-1 px-3 text-xs mb-3" style="background: rgba(242, 232, 135, 0.3);">
-            {{ $t('data.ciphers.seed_phrase_desc') }}
-          </div> -->
-          <InputSelectCryptoNetworks
-            ref="inputSelectCryptoWallet"
-            :label="$t('data.ciphers.networks')"
-            :disabled="isDeleted"
-            class="w-full !pt-6"
-            :initial-value="
-              cryptoWallet.networks
-                ? cryptoWallet.networks.map(n => n.alias)
-                : []
-            "
-            @change="handleChangeCryptoNetworks"
-          />
-        </template>
+        </div>
 
         <!-- NOTES -->
         <div>
@@ -211,16 +146,6 @@
           <!-- Input -->
           <div>
             <InputText
-              v-if="cipher.type === CipherType.CryptoWallet"
-              v-model="cryptoWallet.notes"
-              :label="$t('data.ciphers.notes')"
-              class="w-full"
-              :disabled="isDeleted"
-              is-textarea
-            />
-
-            <InputText
-              v-else
               v-model="cipher.notes"
               :label="$t('data.ciphers.notes')"
               class="w-full"
@@ -326,48 +251,35 @@ import {
   LoginUriView
 } from '../../jslib/src/models/view'
 import AddEditFolder from '../folder/AddEditFolder'
-import PasswordGenerator from '../password/PasswordGenerator'
-import PasswordStrengthBar from '../password/PasswordStrengthBar'
 import InputText from '../input/InputText'
 import InputSelect from '../input/InputSelect'
 import InputSelectFolder from '../input/InputSelectFolder'
-import InputSelectOrg from '../input/InputSelectOrg'
-import InputSelectCryptoWallet from '../input/InputSelectCryptoWallet'
-import InputSelectCryptoNetworks from '../input/InputSelectCryptoNetworks'
-import InputSeedPhrase from '../input/InputSeedPhrase'
 import InputCustomFields from '../input/InputCustomFields.vue'
-import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
-import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
-import { detectCardBrand } from '../../utils/common'
 import InlineEditCipher from './InlineEditCipher'
 import PasswordViolationDialog from './PasswordViolationDialog'
 import LoginInput from './cipher-types/login/LoginInput.vue'
 import CardInput from './cipher-types/card/CardInput.vue'
 import IdentityInput from './cipher-types/identity/IdentityInput.vue'
+import CryptoBackupInput from './cipher-types/crypto-backup/CryptoBackupInput.vue'
 
 CipherType.CryptoWallet = CipherType.CryptoBackup = 7
 
 export default {
   components: {
     AddEditFolder,
-    PasswordGenerator,
     Dialog,
     InlineEditCipher,
     ValidationProvider,
     ValidationObserver,
-    PasswordStrengthBar,
     InputText,
     InputSelect,
     InputSelectFolder,
-    InputSelectOrg,
-    InputSelectCryptoWallet,
-    InputSelectCryptoNetworks,
-    InputSeedPhrase,
     InputCustomFields,
     PasswordViolationDialog,
     LoginInput,
     CardInput,
-    IdentityInput
+    IdentityInput,
+    CryptoBackupInput
   },
 
   props: {
@@ -394,29 +306,11 @@ export default {
       writeableCollections: [],
       nonWriteableCollections: [],
       cloneMode: false,
-      currentComponent: Dialog,
-      cryptoWallet: {
-        walletApp: {
-          name: '',
-          alias: ''
-        },
-        username: '',
-        password: '',
-        address: '',
-        privateKey: '',
-        seed: '',
-        networks: [],
-        notes: ''
-      }
+      currentComponent: Dialog
     }
   },
 
   computed: {
-    currentCard () {
-      return this.cardBrandOptions.find(
-        c => c.value && c.value === this.cipher.card.brand
-      )
-    },
     isDeleted () {
       return !!this.cipher.deletedDate
     },
@@ -438,23 +332,10 @@ export default {
         )
       }
       return {}
-    },
-    ownershipOptions () {
-      const teams = this.teams.filter(e => ['owner', 'admin'].includes(e.role))
-      if (teams.length) {
-        return [
-          { name: this.currentUser.email, organization_id: null },
-          ...teams
-        ]
-      }
-      return []
     }
   },
 
   watch: {
-    cryptoWallet () {
-      this.cipher.cryptoWallet = this.cryptoWallet
-    },
     '$store.state.ui.closeAllModal' (newVal) {
       if (newVal) {
         this.dialogVisible = false
@@ -471,9 +352,6 @@ export default {
       this.dialogVisible = true
       this.cloneMode = cloneMode
       if (data.id || this.cloneMode) {
-        if (data.type === CipherType.CryptoWallet) {
-          this.cryptoWallet = data.cryptoWallet
-        }
         if (
           data.type === CipherType.Login &&
           data.login &&
@@ -483,7 +361,6 @@ export default {
         }
         if (data.fields == null) {
           data.fields = []
-          // data.fields[0].type = FieldType.Text
         }
         this.cipher = new Cipher({ ...data }, true)
         if (this.cloneMode) {
@@ -495,6 +372,9 @@ export default {
         }
         setTimeout(() => {
           this.$refs.inputSelectFolder.value = this.cipher.folderId
+          if (data.type === CipherType.CryptoWallet) {
+            this.$refs.cryptoBackupInput.setInitialData(data.cryptoWallet)
+          }
         }, 0)
       } else if (CipherType[this.type]) {
         this.newCipher(this.type, data)
@@ -507,19 +387,6 @@ export default {
       this.dialogVisible = false
       this.$emit('close')
       this.currentComponent = Dialog
-    },
-
-    // Change card Number
-    changeCardNumber (number) {
-      const cardLabel = detectCardBrand(number)
-      const brandOption = this.cardBrandOptions.find(o => o.label === cardLabel)
-      if (brandOption) {
-        this.cipher.card.brand = brandOption.value
-      } else if (cardLabel) {
-        this.cipher.card.brand = 'Other'
-      } else {
-        this.cipher.card.brand = null
-      }
     },
 
     // Check for password violations
@@ -547,7 +414,10 @@ export default {
         // Change type to Note for new cipher types
         const type_ = this.cipher.type
         if (this.cipher.type === CipherType.CryptoWallet) {
-          this.cipher.notes = JSON.stringify(this.cryptoWallet)
+          this.cipher.notes = JSON.stringify({
+            ...this.cipher.cryptoWallet,
+            notes: this.cipher.notes
+          })
           this.cipher.type = CipherType.SecureNote
         }
 
@@ -614,7 +484,10 @@ export default {
         // Change type to Note for new cipher types
         const type_ = this.cipher.type
         if (this.cipher.type === CipherType.CryptoWallet) {
-          this.cipher.notes = JSON.stringify(this.cryptoWallet)
+          this.cipher.notes = JSON.stringify({
+            ...this.cipher.cryptoWallet,
+            notes: this.cipher.notes
+          })
           this.cipher.type = CipherType.SecureNote
           this.cipher.secureNote = new SecureNote(this.cipher.secureNote, true)
           this.cipher.secureNote.type = 0
@@ -855,13 +728,6 @@ export default {
       }
     },
 
-    // Set item name to url
-    handleGenNameByUri () {
-      if (!this.cipher.name) {
-        this.cipher.name = this.cipher.login.uris[0].uri.replace('https://', '')
-      }
-    },
-
     // Get writable collections
     async getWritableCollections () {
       let collections = []
@@ -888,41 +754,6 @@ export default {
         })
       } catch (error) {}
       return collections
-    },
-
-    // Fill password from generator
-    fillPassword (p) {
-      if (this.cipher.type === CipherType.Login) {
-        this.cipher.login.password = p
-      }
-      if (this.cipher.type === CipherType.CryptoWallet) {
-        this.cryptoWallet.password = p
-      }
-      this.notify('Filled password', 'success')
-    },
-
-    handleChangeCryptoWallet (v) {
-      const selectedApp = WALLET_APP_LIST.find(a => a.alias === v)
-      this.cryptoWallet.walletApp = {
-        name: selectedApp.name,
-        alias: selectedApp.alias
-      }
-    },
-
-    handleChangeCryptoNetworks (v) {
-      const selectedNetworks = v.map(alias =>
-        CHAIN_LIST.find(n => n.alias === alias)
-      )
-      this.cryptoWallet.networks = selectedNetworks.map(selectedNetwork => {
-        return {
-          name: selectedNetwork.name,
-          alias: selectedNetwork.alias
-        }
-      })
-    },
-
-    setSeed (v) {
-      this.cryptoWallet.seed = v
     },
 
     setFields (v) {
