@@ -299,7 +299,7 @@
             :href="'#' + item.link"
             class="py-5 mx-2 min-w-[124px] rounded-sm link-contain"
             :class="chosen == item.link ? 'bg-[#E3EDE6]' : 'hover:bg-[#E3EDE6]'"
-            @click="chosen = item.link"
+            @click="setChosen(item.link)"
           >
             <div class="block w-fit mx-auto h-[40px]">
               <img
@@ -334,7 +334,6 @@ export default {
   },
   mounted () {
     const currentAnchor = this.$route.hash
-    console.log(this.$route)
     switch (currentAnchor) {
     case '#windows':
       this.chosen = 'windows'
@@ -356,6 +355,10 @@ export default {
     }
   },
   methods: {
+    setChosen (link) {
+      this.chosen = link
+      this.listDownload = false
+    },
     toggleList () {
       this.listDownload = !this.listDownload
       const icon = document.querySelector('.rotate-icon')
