@@ -123,14 +123,13 @@
         />
 
         <!-- CRYPTO BACKUP FIELDS -->
-        <div :class="cipher.type === CipherType.CryptoWallet ? '' : 'hidden'">
-          <crypto-backup-input
-            ref="cryptoBackupInput"
-            :is-deleted="isDeleted"
-            :cipher-id="cipher.id"
-            @update:cryptoWallet="val => (cipher.cryptoWallet = val)"
-          />
-        </div>
+        <crypto-backup-input
+          v-if="cipher.type === CipherType.CryptoWallet"
+          ref="cryptoBackupInput"
+          :is-deleted="isDeleted"
+          :cipher-id="cipher.id"
+          @update:cryptoWallet="val => (cipher.cryptoWallet = val)"
+        />
 
         <!-- NOTES -->
         <div>
@@ -187,6 +186,7 @@
 
       <!-- Footer -->
       <div slot="footer" class="dialog-footer flex items-center text-left">
+        <!-- To trash/delete -->
         <div class="flex-grow">
           <button
             v-if="cipher.id"
@@ -200,10 +200,16 @@
             <i class="fa fa-trash-alt" />
           </button>
         </div>
+        <!-- To trash/delete end -->
+
         <div>
+          <!-- Close -->
           <button class="btn btn-default" @click="closeDialog">
             {{ $t('common.cancel') }}
           </button>
+          <!-- Close end -->
+
+          <!-- Restore -->
           <button
             v-if="isDeleted"
             class="btn btn-primary"
@@ -212,14 +218,18 @@
           >
             {{ $t('common.restore') }}
           </button>
+          <!-- Restore end -->
+
+          <!-- Add/update -->
           <button
             v-else
             class="btn btn-primary"
             :disabled="loading || !cipher.name"
-            @click="preparePassword(cipher)"
+            @click="preparePassword()"
           >
             {{ cipher.id ? $t('common.update') : $t('common.add') }}
           </button>
+          <!-- Add/update end -->
         </div>
       </div>
       <!-- Footer end -->
@@ -230,7 +240,7 @@
 
     <PasswordViolationDialog
       ref="passwordPolicyDialog"
-      @confirm="cipher.id ? putCipher(cipher) : postCipher(cipher)"
+      @confirm="cipher.id ? putCipher() : postCipher()"
     />
   </div>
 </template>
@@ -239,9 +249,7 @@
 import { Dialog } from 'element-ui'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { CipherType, SecureNoteType } from '../../jslib/src/enums'
-import { Cipher, SecureNote } from '../../jslib/src/models/domain'
-import { CipherRequest } from '../../jslib/src/models/request'
-// import { CipherRequest } from '../../core/models/request/cipherRequest'
+import { Cipher } from '../../jslib/src/models/domain'
 import {
   CipherView,
   LoginView,
@@ -313,25 +321,6 @@ export default {
   computed: {
     isDeleted () {
       return !!this.cipher.deletedDate
-    },
-    passwordStrength () {
-      if (this.cipher.login) {
-        return (
-          this.$passwordGenerationService.passwordStrength(
-            this.cipher.login.password,
-            ['cystack']
-          ) || {}
-        )
-      }
-      if (this.cipher.cryptoWallet) {
-        return (
-          this.$passwordGenerationService.passwordStrength(
-            this.cipher.cryptoWallet.password,
-            ['cystack']
-          ) || {}
-        )
-      }
-      return {}
     }
   },
 
@@ -351,32 +340,55 @@ export default {
       this.nonWriteableCollections = await this.getNonWritableCollections()
       this.dialogVisible = true
       this.cloneMode = cloneMode
+
+      // Edit/clone
       if (data.id || this.cloneMode) {
+        const cipherData = new Cipher({ ...data }, true)
+
+        // Update login uris
         if (
           data.type === CipherType.Login &&
           data.login &&
           data.login.uris == null
         ) {
-          data.login.uris = [new LoginUriView()]
+          cipherData.login.uris = [new LoginUriView()]
         }
+
+        // Set special types notes
+        if (data.type === CipherType.CryptoWallet) {
+          cipherData.notes = data.cryptoWallet.notes
+          setTimeout(() => {
+            this.$refs.cryptoBackupInput.loadData(data.cryptoWallet)
+          }, 0)
+        }
+
+        // Update custom fields
         if (data.fields == null) {
-          data.fields = []
+          cipherData.fields = []
         }
-        this.cipher = new Cipher({ ...data }, true)
+
+        // Remove org if clone
         if (this.cloneMode) {
           this.cipher.organizationId = null
           this.cipher.collectionIds = []
         }
+
+        // Check if current org is shared folder
         if (this.cipher.collectionIds && this.cipher.collectionIds[0]) {
           this.cipher.folderId = this.cipher.collectionIds[0]
         }
+
+        // Set current folder
         setTimeout(() => {
           this.$refs.inputSelectFolder.value = this.cipher.folderId
-          if (data.type === CipherType.CryptoWallet) {
-            this.$refs.cryptoBackupInput.setInitialData(data.cryptoWallet)
-          }
         }, 0)
-      } else if (CipherType[this.type]) {
+
+        this.cipher = cipherData
+        return
+      }
+
+      // Create new cipher
+      if (CipherType[this.type]) {
         this.newCipher(this.type, data)
       } else {
         this.newCipher('Login', data)
@@ -390,169 +402,77 @@ export default {
     },
 
     // Check for password violations
-    preparePassword (cipher) {
+    preparePassword () {
       const violationItems =
-        cipher.type === CipherType.Login
-          ? this.checkPasswordPolicy(cipher.login.password || '')
+        this.cipher.type === CipherType.Login
+          ? this.checkPasswordPolicy(this.cipher.login.password || '')
           : []
       if (violationItems.length) {
         this.$refs.passwordPolicyDialog.openDialog(violationItems)
       } else {
-        cipher.id ? this.putCipher(cipher) : this.postCipher(cipher)
+        this.cipher.id ? this.putCipher() : this.postCipher()
+      }
+    },
+
+    // Get password strength
+    async getPasswordStrength (cipher) {
+      let pw = ''
+      if (cipher.type === CipherType.CryptoWallet) {
+        pw = cipher.cryptoWallet.password
+      }
+      if (cipher.type === CipherType.Login) {
+        pw = cipher.login.password
+      }
+      if (!pw) {
+        return {}
+      }
+      return (
+        this.$passwordGenerationService.passwordStrength(pw, ['cystack']) || {}
+      )
+    },
+
+    // Load data from components
+    loadCipherDataFromComponents () {
+      if (this.cipher.type === CipherType.CryptoWallet) {
+        this.cipher.cryptoWallet = this.$refs.cryptoBackupInput.getData()
       }
     },
 
     // Create cipher
-    async postCipher (cipher) {
-      if (!cipher.name) {
+    async postCipher () {
+      if (!this.cipher.name) {
         return
       }
-      try {
-        this.loading = true
-        this.errors = {}
-
-        // Change type to Note for new cipher types
-        const type_ = this.cipher.type
-        if (this.cipher.type === CipherType.CryptoWallet) {
-          this.cipher.notes = JSON.stringify({
-            ...this.cipher.cryptoWallet,
-            notes: this.cipher.notes
-          })
-          this.cipher.type = CipherType.SecureNote
-        }
-
-        // Check if current folder is a collection
-        const collection = this.writeableCollections.find(
-          c => c.id === this.cipher.folderId
-        )
-        if (collection) {
-          this.cipher.organizationId = collection.organizationId
-          this.cipher.folderId = null
-          this.cipher.collectionIds = [collection.id]
-        }
-
-        // Remove org in clone mode and not set to any collection
-        if (this.cloneMode && !collection) {
-          this.cipher.organizationId = null
-        }
-
-        // Encrypt cipher
-        const cipherEnc = await this.$cipherService.encrypt(cipher)
-        const data = new CipherRequest(cipherEnc)
-
-        // Change type back after encryption
-        data.type = type_
-        this.cipher.type = type_
-
-        // Send api
-        await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
-          ...data,
-          score: this.passwordStrength.score,
-          collectionIds: cipher.collectionIds
-        })
-        this.notify(
-          this.$tc('data.notifications.create_success', 1, {
-            type: this.$tc(`type.${this.type}`, 1)
-          }),
-          'success'
-        )
+      this.loading = true
+      this.errors = {}
+      this.loadCipherDataFromComponents()
+      const passwordStrength = await this.getPasswordStrength(this.cipher)
+      const isSuccess = await this.handleCreateCipher(this.cipher, {
+        cloneMode: this.cloneMode,
+        score: passwordStrength.score
+      })
+      this.loading = false
+      if (isSuccess) {
         this.closeDialog()
-      } catch (e) {
-        if (e.response && e.response.data && e.response.data.code === '5002') {
-          this.notify(
-            this.$t('errors.5002', { type: this.$tc(`type.${this.type}`, 1) }),
-            'error'
-          )
-          this.$store.commit('UPDATE_NOTICE', { showPleaseUpgrade: true })
-        } else {
-          this.notify(
-            this.$tc('data.notifications.create_failed', 1, {
-              type: this.$tc(`type.${this.type}`, 1)
-            }),
-            'warning'
-          )
-        }
-        // this.errors = (e.response && e.response.data && e.response.data.details) || {}
-      } finally {
-        this.loading = false
       }
     },
 
     // Update cipher
-    async putCipher (cipher) {
-      try {
-        // Change type to Note for new cipher types
-        const type_ = this.cipher.type
-        if (this.cipher.type === CipherType.CryptoWallet) {
-          this.cipher.notes = JSON.stringify({
-            ...this.cipher.cryptoWallet,
-            notes: this.cipher.notes
-          })
-          this.cipher.type = CipherType.SecureNote
-          this.cipher.secureNote = new SecureNote(this.cipher.secureNote, true)
-          this.cipher.secureNote.type = 0
-        }
-
-        // Check if current folder is a collection or remove from old collection if move back to folder
-        if (this.cipher.folderId) {
-          const collection = [
-            ...this.writeableCollections,
-            ...this.nonWriteableCollections
-          ].find(c => c.id === this.cipher.folderId)
-          if (collection) {
-            this.cipher.organizationId = collection.organizationId
-            this.cipher.folderId = null
-            this.cipher.collectionIds = [collection.id]
-          } else {
-            this.cipher.organizationId = null
-            this.cipher.collectionIds = []
-          }
-        } else if (this.cipher.organizationId) {
-          // If move item from folder share back to no folder -> remove orgId
-          const collection = this.writeableCollections.find(
-            c => c.organizationId === this.cipher.organizationId
-          )
-          if (collection) {
-            this.cipher.organizationId = null
-            this.cipher.collectionIds = []
-          }
-        }
-
-        // Encrypt cipher
-        const cipherEnc = await this.$cipherService.encrypt(cipher)
-        const data = new CipherRequest(cipherEnc)
-
-        // Change type back after encryption
-        data.type = type_
-        this.cipher.type = type_
-
-        // Send api
-        await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, {
-          ...data,
-          score: this.passwordStrength.score,
-          collectionIds: cipher.collectionIds
-        })
-        this.notify(
-          this.$tc('data.notifications.update_success', 1, {
-            type: this.$tc(`type.${this.type}`, 1)
-          }),
-          'success'
-        )
+    async putCipher () {
+      if (!this.cipher.name) {
+        return
+      }
+      this.loading = true
+      this.errors = {}
+      this.loadCipherDataFromComponents()
+      const passwordStrength = await this.getPasswordStrength(this.cipher)
+      const isSuccess = await this.handleEditCipher(this.cipher, {
+        score: passwordStrength.score
+      })
+      this.loading = false
+      if (isSuccess) {
         this.closeDialog()
         this.$emit('updated-cipher')
-      } catch (e) {
-        if (e.response && e.response.data && e.response.data.code === '3003') {
-          this.notify(this.$t('errors.3003'), 'error')
-        } else {
-          this.notify(
-            this.$tc('data.notifications.update_failed', 1, {
-              type: this.$tc(`type.${this.type}`, 1)
-            }),
-            'warning'
-          )
-        }
-      } finally {
-        this.loading = false
       }
     },
 
@@ -568,35 +488,12 @@ export default {
         }
       )
         .then(async () => {
-          try {
-            this.loading = true
-            await this.$axios.$put(
-              'cystack_platform/pm/ciphers/permanent_delete',
-              { ids }
-            )
-            await this.$cipherService.delete(ids)
-            this.notify(
-              this.$tc('data.notifications.delete_success', ids.length, {
-                type: this.$tc('type.0', ids.length)
-              }),
-              'success'
-            )
+          this.loading = true
+          const isSuccess = await this.handleDeleteCiphers(ids)
+          this.loading = false
+          if (isSuccess) {
             this.closeDialog()
             this.$emit('reset-selection')
-          } catch (e) {
-            if (e.response && e.response.data && e.response.code === '5001') {
-              this.notify(this.$t('errors.5001'), 'error')
-            } else {
-              this.notify(
-                this.$tc('data.notifications.delete_failed', ids.length, {
-                  type: this.$tc('type.0', ids.length)
-                }),
-                'warning'
-              )
-            }
-            console.log(e)
-          } finally {
-            this.loading = false
           }
         })
         .catch(() => {})
@@ -617,32 +514,13 @@ export default {
         }
       )
         .then(async () => {
-          try {
-            this.loading = true
-            await this.$axios.$put('cystack_platform/pm/ciphers/delete', {
-              ids
-            })
-            this.notify(
-              this.$tc('data.notifications.trash_success', ids.length, {
-                type: this.$tc('type.0', ids.length)
-              }),
-              'success'
-            )
+          this.loading = true
+          const isSuccess = await this.handleMoveTrashCiphers(ids)
+          this.loading = false
+          if (isSuccess) {
             this.$emit('trashed-cipher')
-          } catch (e) {
-            if (e.response && e.response.data && e.response.code === '5001') {
-              this.notify(this.$t('errors.5001'), 'error')
-            } else {
-              this.notify(
-                this.$tc('data.notifications.trash_failed', ids.length, {
-                  type: this.$tc('type.0', ids.length)
-                }),
-                'warning'
-              )
-            }
             this.$emit('reset-selection')
-          } finally {
-            this.loading = false
+            this.closeDialog()
           }
         })
         .catch(() => {})
@@ -660,28 +538,12 @@ export default {
         }
       )
         .then(async () => {
-          try {
-            this.loading = true
-            await this.$axios.$put('cystack_platform/pm/ciphers/restore', {
-              ids
-            })
-            this.notify(
-              this.$tc('data.notifications.restore_success', ids.length, {
-                type: this.$tc('type.0', ids.length)
-              }),
-              'success'
-            )
+          this.loading = true
+          const isSuccess = await this.handleRestoreCiphers(ids)
+          this.loading = false
+          if (isSuccess) {
             this.$emit('reset-selection')
-          } catch (e) {
-            this.notify(
-              this.$tc('data.notifications.restore_failed', ids.length, {
-                type: this.$tc('type.0', ids.length)
-              }),
-              'warning'
-            )
-            console.log(e)
-          } finally {
-            this.loading = false
+            this.closeDialog()
           }
         })
         .catch(() => {})
@@ -718,42 +580,11 @@ export default {
       this.cipher.collectionIds = this.$route.params.tfolderId
         ? [this.$route.params.tfolderId]
         : []
-      if (this.cipher.organizationId) {
-        this.handleChangeOrg(this.cipher.organizationId)
-      }
 
       // Set item name if open from tutorial
       if (this.$tutorial.isActive()) {
         this.cipher.name = 'New password'
       }
-    },
-
-    // Get writable collections
-    async getWritableCollections () {
-      let collections = []
-      try {
-        collections = await this.$collectionService.getAllDecrypted()
-        const organizations = await this.$userService.getAllOrganizations()
-        collections = collections.filter(item => {
-          const _type = this.getTeam(organizations, item.organizationId).type
-          return _type === 0
-        })
-      } catch (error) {}
-      return collections
-    },
-
-    // Get non-writable collections
-    async getNonWritableCollections () {
-      let collections = []
-      try {
-        collections = await this.$collectionService.getAllDecrypted()
-        const organizations = await this.$userService.getAllOrganizations()
-        collections = collections.filter(item => {
-          const _type = this.getTeam(organizations, item.organizationId).type
-          return _type !== 0
-        })
-      } catch (error) {}
-      return collections
     },
 
     setFields (v) {

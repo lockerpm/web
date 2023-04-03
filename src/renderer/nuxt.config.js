@@ -71,6 +71,7 @@ module.exports = {
     { ssr: true, src: '@/plugins/mixins/cipher/sync.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/utils.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/data.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/crud.js' },
 
     // UI
     { ssr: false, src: '@/plugins/ui/circle-countdown-timer.js' },

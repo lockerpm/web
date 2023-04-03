@@ -332,6 +332,34 @@ Vue.mixin({
       if (window.Intercom) {
         window.Intercom('show')
       }
+    },
+
+    handleApiError (response, extraData = {}) {
+      const { type } = extraData
+
+      // Limit reached
+      if (response?.data?.code === '5002') {
+        this.notify(
+          this.$t('errors.5002', { type: this.$tc(`type.${type}`, 1) }),
+          'error'
+        )
+        this.$store.commit('UPDATE_NOTICE', { showPleaseUpgrade: true })
+        return true
+      }
+
+      // Team is locked
+      if (response?.data?.code === '3003') {
+        this.notify(this.$t('errors.3003'), 'error')
+        return true
+      }
+
+      // Delete too much items
+      if (response?.data?.code === '5001') {
+        this.notify(this.$t('errors.5001'), 'error')
+        return true
+      }
+
+      return false
     }
   }
 })

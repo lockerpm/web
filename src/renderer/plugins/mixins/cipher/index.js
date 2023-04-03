@@ -1,8 +1,5 @@
 import Vue from 'vue'
-import { LoginUriView, LoginView } from '../../../jslib/src/models/view'
-import { CipherRequest } from '../../../jslib/src/models/request'
 import { CipherType } from '../../../core/enums/cipherType'
-import { CipherView } from '../../../core/models/view/cipherView'
 
 Vue.mixin({
   computed: {
@@ -16,29 +13,40 @@ Vue.mixin({
       await this.$cryptoService.clearKeys()
     },
 
-    async createEncryptedMasterPwItem (masterPw, encKey) {
-      const cipher = new CipherView()
-      cipher.type = CipherType.Login
-      const loginData = new LoginView()
-      loginData.username = 'locker.io'
-      loginData.password = masterPw
-      const uriView = new LoginUriView()
-      uriView.uri = 'https://locker.io'
-      loginData.uris = [uriView]
-      cipher.login = loginData
-      cipher.name = 'Locker Master Password'
-      const cipherEnc = await this.$cipherService.encrypt(cipher, encKey)
-      const data = new CipherRequest(cipherEnc)
-      data.type = CipherType.MasterPassword
-      return data
-    },
-
     async getFolders () {
       return await this.$folderService.getAllDecrypted()
     },
 
     async getCollections () {
       return await this.$collectionService.getAllDecrypted()
+    },
+
+    // Get writable collections
+    async getWritableCollections () {
+      let collections = []
+      try {
+        collections = await this.$collectionService.getAllDecrypted()
+        const organizations = await this.$userService.getAllOrganizations()
+        collections = collections.filter(item => {
+          const _type = this.getTeam(organizations, item.organizationId).type
+          return _type === 0
+        })
+      } catch (error) {}
+      return collections
+    },
+
+    // Get non-writable collections
+    async getNonWritableCollections () {
+      let collections = []
+      try {
+        collections = await this.$collectionService.getAllDecrypted()
+        const organizations = await this.$userService.getAllOrganizations()
+        collections = collections.filter(item => {
+          const _type = this.getTeam(organizations, item.organizationId).type
+          return _type !== 0
+        })
+      } catch (error) {}
+      return collections
     },
 
     async getOrganizations () {

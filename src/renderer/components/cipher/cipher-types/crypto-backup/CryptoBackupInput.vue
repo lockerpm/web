@@ -36,14 +36,6 @@
       :disabled="isDeleted"
       is-password
     />
-    <!-- <InputText
-            v-model="cryptoWallet.seed"
-            :label="$t('data.ciphers.seed')"
-            class="w-full !mb-1"
-            :error-text="err && err.length && err[0]"
-            :disabled="isDeleted"
-            is-textarea=""
-          /> -->
     <div class="cs-field w-full">
       <label>
         {{ $t('data.ciphers.seed') }}
@@ -55,9 +47,6 @@
       class="w-full !mb-3"
       @set-seed="setSeed"
     />
-    <!-- <div class="py-1 px-3 text-xs mb-3" style="background: rgba(242, 232, 135, 0.3);">
-            {{ $t('data.ciphers.seed_phrase_desc') }}
-          </div> -->
     <InputSelectCryptoNetworks
       :label="$t('data.ciphers.networks')"
       :disabled="isDeleted"
@@ -108,26 +97,12 @@ export default {
         address: '',
         privateKey: '',
         seed: '',
-        networks: [],
-        notes: ''
-      }
-    }
-  },
-
-  watch: {
-    cryptoWallet: {
-      deep: true,
-      handler (val) {
-        this.$emit('update:cryptoWallet', val)
+        networks: []
       }
     }
   },
 
   methods: {
-    setInitialData (data) {
-      this.cryptoWallet = { ...data }
-    },
-
     handleChangeCryptoWallet (v) {
       const selectedApp = WALLET_APP_LIST.find(a => a.alias === v)
       this.cryptoWallet.walletApp = {
@@ -150,6 +125,14 @@ export default {
           alias: selectedNetwork.alias
         }
       })
+    },
+
+    loadData (data) {
+      this.cryptoWallet = { ...data }
+    },
+
+    getData () {
+      return this.cryptoWallet
     }
   }
 }
