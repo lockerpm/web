@@ -169,11 +169,7 @@ export default {
   asyncComputed: {
     ciphers: {
       async get () {
-        // const deletedFilter = c => {
-        //   return c.isDeleted === false
-        // }
         let result = await this.$searchService.searchCiphers(this.searchText, [this.filter, null], null) || []
-        // remove master pw
         result = result.filter(cipher => ![CipherType.MasterPassword].includes(cipher.type))
         return orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
       },
@@ -297,7 +293,6 @@ export default {
       folders = await this.$folderService.getAllDecrypted()
 
       ciphers = await this.$cipherService.getAllDecrypted()
-      // ciphers = ciphers.filter(c => c.organizationId === null)
       ciphers = ciphers.filter(c => c.deletedDate === null)
       // Don't export master pw
       ciphers = ciphers.filter(cipher => ![CipherType.MasterPassword].includes(cipher.type))
@@ -311,10 +306,6 @@ export default {
 
         const exportCiphers = []
         ciphers.forEach(c => {
-          // only export logins and secure notes
-          // if (c.type !== CipherType.Login && c.type !== CipherType.SecureNote) {
-          //   return
-          // }
           if (c.organizationId != null) {
             return
           }
@@ -364,9 +355,7 @@ export default {
 
       folders = await this.$folderService.getAll()
       ciphers = await this.$cipherService.getAll()
-      // ciphers = ciphers.filter(c => c.organizationId === null)
       ciphers = ciphers.filter(c => c.deletedDate === null)
-      // ciphers = ciphers.filter(cipher => [CipherType.Login, CipherType.SecureNote, CipherType.Card, CipherType.Identity].includes(cipher.type))
       const encKeyValidation = await this.$cryptoService.encrypt(Utils.newGuid())
       const jsonDoc = {
         encrypted: true,
@@ -672,21 +661,18 @@ export default {
           finalImportResult.ciphers = importResult.ciphers.map(cipher => {
             return {
               ...cipher
-              // name: this.getCipherImportName(cipher.name, cipher.type)
             }
           })
           if (this.teamId) {
             finalImportResult.collections = importResult.collections.map(collection => {
               return {
                 ...collection
-                // name: this.getCollectionImportName(collection.name)
               }
             })
           } else {
             finalImportResult.folders = importResult.folders.map(folder => {
               return {
                 ...folder
-                // name: this.getFolderImportName(folder.name)
               }
             })
           }
@@ -770,7 +756,6 @@ export default {
             collection.organizationId = model.organizationId
             collection.readOnly = model.readOnly
             collection.name = await this.$cryptoService.encrypt(model.name, key)
-            // const f = await this.$collectionService.encrypt(importResult.collections[i])
             request.collections.push(new CollectionRequest(collection))
           }
         }
@@ -846,12 +831,6 @@ export default {
         foldersCount: request.folders.length,
         totalCipherImport: request.ciphers.length
       }
-      // this.notify(this.$t('data.notifications.import_success'), 'success')
-      // this.loading = false
-
-      // const url = this.teamId ? `cystack_platform/pm/teams/${this.teamId}/import` : 'cystack_platform/pm/ciphers/import'
-      // await this.$axios.$post(url, request)
-      // this.$router.push(this.localeRoute({ name: 'vault' }))
     },
     handleServerError (errorResponse, importResult) {
       if (errorResponse.validationErrors == null) {

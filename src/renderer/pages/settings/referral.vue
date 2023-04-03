@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-2/3 mx-auto">
+  <div class="mx-auto">
     <div class="text-head-4 font-semibold mb-4">
       {{ $t('data.settings.referral') }}
     </div>
@@ -31,18 +31,6 @@
               </button>
             </div>
           </div>
-          <!-- <ShareNetwork
-            network="messenger"
-            :title="title"
-            :url="referrals.referral_link"
-          >
-            <button
-              class="btn btn-icon btn-share bg-[#0082FF] !text-white"
-              type="button"
-            >
-              <i class="fab fa-facebook-messenger text-head-5" />
-            </button>
-          </ShareNetwork> -->
           <ShareNetwork
             network="facebook"
             :title="title"

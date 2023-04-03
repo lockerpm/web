@@ -1,29 +1,23 @@
 <template>
-  <div class="lg:w-2/3 mx-auto">
-    <div class="text-head-4 font-semibold mb-4">
-      {{ $t('data.settings.options') }}
-    </div>
-    <div class="text-lg text-black-600 mb-4">
-      {{ $t('data.settings.setup_vault_options') }}
-    </div>
-    <div class="setting-wrapper">
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div>
-            <div class="text-head-5 font-semibold">
-              {{ $t('data.settings.your_inventory') }}
-            </div>
-          </div>
-          <div>
-            <button
-              class="btn btn-default !text-warning mb-4 md:mb-0"
-              @click="lock"
-            >
-              {{ $t('common.lock') }}
-            </button>
-          </div>
+  <div class="setting-wrapper">
+    <div class="setting-section">
+      <div class="setting-section-header cursor-pointer" @click="collapsed = !collapsed">
+        <div class="text-head-5 font-semibold">
+          {{ $t('data.settings.preferences') }}
+        </div>
+        <div>
+          <button
+            class="btn btn-default !text-warning mr-4 md:mb-0"
+            @click="lock"
+          >
+            {{ $t('common.lock') }}
+          </button>
+          <i v-if="!collapsed" class="el-icon-arrow-right"></i>
+          <i v-else class="el-icon-arrow-down"></i>
         </div>
       </div>
+    </div>
+    <div v-if="collapsed">
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
@@ -99,15 +93,12 @@
         </div>
       </div>
     </div>
-    <ImportExport />
   </div>
 </template>
 
 <script>
-import ImportExport from '../../components/setting/ImportExport'
 export default {
   components: {
-    ImportExport
   },
   data () {
     return {

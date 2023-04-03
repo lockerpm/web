@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-2/3 mx-auto">
+  <div class="mx-auto">
     <div class="text-head-5 font-semibold mb-2">
       {{ $t('data.settings.security') }}
     </div>
@@ -42,116 +42,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="setting-section">
-        <div class="setting-section-header">
-          <div>
-            <div class="setting-title">
-              {{ $t('data.settings.master_password_health') }}
-            </div>
-            <div class="setting-description">
-              {{ $t('data.settings.master_password_health_desc') }}
-            </div>
-          </div>
-          <div>
-            <el-switch />
-          </div>
-        </div>
-      </div>
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div>
-            <div class="setting-title">
-              {{ $t('data.settings.master_password_hint') }}
-            </div>
-            <div class="setting-description">
-              {{ $t('data.settings.master_password_hint_desc') }}
-            </div>
-          </div>
-          <div>
-            <el-switch />
-          </div>
-        </div>
-      </div>
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div>
-            <div class="setting-title flex">
-              <div class="mr-2">
-                {{ $t('data.settings.weak_passwords') }}
-              </div>
-              <div>
-                <img src="~/assets/images/icons/flash.svg" alt="">
-              </div>
-            </div>
-            <div class="setting-description">
-              {{ $t('data.settings.weak_passwords_desc') }}
-            </div>
-          </div>
-          <div>
-            <el-switch />
-          </div>
-        </div>
-      </div>
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div>
-            <div class="setting-title flex">
-              <div class="mr-2">
-                {{ $t('data.settings.data_breach') }}
-              </div>
-              <div>
-                <img src="~/assets/images/icons/flash.svg" alt="">
-              </div>
-            </div>
-            <div class="setting-description">
-              {{ $t('data.settings.data_breach_desc') }}
-            </div>
-          </div>
-          <div>
-            <el-switch />
-          </div>
-        </div>
-      </div>
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div>
-            <div class="setting-title flex">
-              <div class="mr-2">
-                {{ $t('data.settings.password_reusage') }}
-              </div>
-              <div>
-                <img src="~/assets/images/icons/flash.svg" alt="">
-              </div>
-            </div>
-            <div class="setting-description">
-              {{ $t('data.settings.password_reusage_desc') }}
-            </div>
-          </div>
-          <div>
-            <el-switch />
-          </div>
-        </div>
-      </div>
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div>
-            <div class="setting-title flex">
-              <div class="mr-2">
-                {{ $t('data.settings.emergency_access') }}
-              </div>
-              <div>
-                <img src="~/assets/images/icons/flash.svg" alt="">
-              </div>
-            </div>
-            <div class="setting-description">
-              {{ $t('data.settings.emergency_access_desc') }}
-            </div>
-          </div>
-          <div>
-            <el-switch />
-          </div>
-        </div>
-      </div> -->
     </div>
     <div class="setting-wrapper">
       <div class="setting-section">
@@ -294,11 +184,6 @@
                       >
                         <span class="text-success">{{ $t('common.confirm') }}</span>
                       </el-dropdown-item>
-                      <!-- <template v-if="scope.row.status === 'confirmed'">
-                          <el-dropdown-item @click.native="putEmergencyAccess(scope.row)">
-                            {{ $t('common.edit') }}
-                          </el-dropdown-item>
-                        </template> -->
                       <template v-if="scope.row.status === 'recovery_initiated'">
                         <el-dropdown-item @click.native="approveEmergencyAccess(scope.row)">
                           <span class="text-success">
