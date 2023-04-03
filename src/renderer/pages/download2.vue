@@ -1,45 +1,46 @@
 <template>
   <div>
     <section
-      class="full-width pt-28 bg-[#EEF4ED] w-[100%] relative pb-[100px] px-20 overflow-inherit mb-[60px] min-h-[744px]"
+      class="full-width pt-28 bg-[#EEF4ED] w-[100%] relative pb-[100px] px-5 md:px-20 overflow-inherit mb-[60px] min-h-[744px]"
     >
       <transition name="fade" mode="out-in">
         <!-- Macos -->
         <section v-if="chosen == 'macos'" key="1" class="animation">
-          <div class="absolute top-[70px] lg:top-[120px] right-[75%] text-[#FFFFFF] width-comming-soon bg-tag1 landing-font-16 font-semibold">
+          <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag1 landing-font-16 font-semibold">
             {{ $t('download2.section3.coming') }}
           </div>
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
             {{ $t("download2.section1.title") }}
           </h1>
-          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[50px]">
+          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
             {{ $t("download2.section1.subtitle") }}
           </h2>
-          <div class="grid justify-between gap-x-3 items-center max-w-[1010px] mx-auto justify-items-center md:flex">
-            <div class="max-w-[360px] relative">
+          <div class="grid gap-x-3 items-center max-w-[1010px] mx-auto justify-items-center justify-center min-h-[380px] md:flex md:justify-between">
+            <div class="min-w-[310px] max-w-[310px] relative">
               <div>
-                <button class="button-disable" @click="toggleList()">
+                <button class="button-download bg-tag1" @click="toggleList()">
                   <span>
                     {{ $t('download2.section2.button') }}
                   </span>
-                  <img src="~/assets/images/landing/download2/download-disable.svg" alt="" class="opacity-30 rotate-icon">
+                  <img src="~/assets/images/landing/download2/down.svg" alt="" class="rotate-icon">
                 </button>
-                <!-- <div class="grid gap-y-[32px]">
+                <div class="grid gap-y-[12px] dropdown" :class="listDownload ? 'show ' : ''">
                   <div
                     v-for="(item, id) in $t('download2.section2.list')"
                     :key="id"
+                    :class="id == 0 ? 'mt-[32px]' : ''"
                   >
                     <button class="button-disable">
                       <span>
                         {{ item.button }}
                       </span>
-                      <img src="~/assets/images/landing/download2/download-disable.svg" alt="" class="opacity-30">
+                      <img src="~/assets/images/landing/download2/download-disable.svg" alt="">
                     </button>
                     <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
                       {{ item.note }}
                     </p>
                   </div>
-                </div> -->
+                </div>
                 <div class="flex my-[32px]">
                   <a
                     href="https://locker.io/release-notes"
@@ -57,28 +58,28 @@
         </section>
         <!-- Windows -->
         <section v-if="chosen == 'windows'" key="2" class="animation">
-          <div class="absolute top-[70px] lg:top-[120px] right-[75%] text-[#FFFFFF] width-comming-soon bg-tag2 landing-font-16 font-semibold">
+          <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag2 landing-font-16 font-semibold">
             {{ $t('download2.section3.coming') }}
           </div>
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
             {{ $t("download2.section4.title") }}
           </h1>
-          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[50px]">
+          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
             {{ $t("download2.section4.subtitle") }}
           </h2>
-          <div class="grid justify-between gap-x-3 items-center max-w-[1010px] justify-items-center mx-auto md:flex">
-            <div class="max-w-[360px] relative">
+          <div class="grid justify-center md:justify-between gap-x-3 items-center max-w-[1010px] justify-items-center mx-auto min-h-[380px] md:flex">
+            <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <div class="grid gap-y-[32px]">
                   <div
                     v-for="(item, id) in $t('download2.section4.list')"
                     :key="id"
                   >
-                    <button class="button-disable-center">
+                    <button class="button-disable">
                       <span>
                         {{ item.button }}
                       </span>
-                      <!-- <img src="~/assets/images/landing/download2/download-disable.svg" alt="" class="opacity-30"> -->
+                      <img src="~/assets/images/landing/download2/download-disable.svg" alt="">
                     </button>
                     <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
                       {{ item.note }}
@@ -105,11 +106,11 @@
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
             {{ $t("download2.section5.title") }}
           </h1>
-          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[50px]">
+          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
             {{ $t("download2.section5.subtitle") }}
           </h2>
-          <div class="grid justify-center md:justify-between gap-x-3 items-center justify-items-center max-w-[1010px] mx-auto md:flex">
-            <div class="max-w-[360px] relative">
+          <div class="grid justify-center md:justify-between gap-x-3 items-center justify-items-center max-w-[1010px] min-h-[380px] mx-auto md:flex">
+            <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <div class="grid gap-y-[32px]">
                   <a
@@ -122,6 +123,7 @@
                       <span>
                         {{ item.button }}
                       </span>
+                      <img src="~/assets/images/landing/download2/download.svg" alt="">
                     </button>
                     <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
                       {{ item.note }}
@@ -148,11 +150,11 @@
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
             {{ $t("download2.section6.title") }}
           </h1>
-          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[50px]">
+          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
             {{ $t("download2.section6.subtitle") }}
           </h2>
           <div class="grid justify-center md:justify-between gap-x-3 items-center justify-items-center max-w-[1010px] mx-auto md:flex">
-            <div class="max-w-[360px] relative">
+            <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <div class="grid gap-y-[32px]">
                   <a
@@ -165,6 +167,7 @@
                       <span>
                         {{ item.button }}
                       </span>
+                      <img src="~/assets/images/landing/download2/download.svg" alt="">
                     </button>
                     <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
                       {{ item.note }}
@@ -188,25 +191,24 @@
         </section>
         <!-- linux -->
         <section v-if="chosen == 'linux'" key="5" class="animation">
-          <div class="absolute top-[70px] lg:top-[120px] right-[75%] text-[#FFFFFF] width-comming-soon bg-tag3 landing-font-16 font-semibold">
+          <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag3 landing-font-16 font-semibold">
             {{ $t('download2.section3.coming') }}
           </div>
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
             {{ $t("download2.section7.title") }}
           </h1>
-          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[50px]">
+          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
             {{ $t("download2.section7.subtitle") }}
           </h2>
-          <div class="grid justify-between gap-x-3 items-center justify-items-center max-w-[1010px] mx-auto md:flex">
-            <div class="max-w-[360px] relative">
+          <div class="grid justify-between gap-x-3 items-center justify-items-center max-w-[1010px] min-h-[380px] mx-auto md:flex">
+            <div class="min-w-[310px] max-w-[310px] relative">
               <div>
-                <button class="button-disable" @click="toggleList()">
+                <button class="button-download bg-tag3" @click="toggleList()">
                   <span>
                     {{ $t('download2.section7.button') }}
                   </span>
-                  <img src="~/assets/images/landing/download2/download-disable.svg" alt="" class="opacity-30 rotate-icon">
+                  <img src="~/assets/images/landing/download2/down.svg" alt="" class="rotate-icon">
                 </button>
-                <!-- <transition name="fade" mode="in-out"> -->
                 <div class="grid gap-y-[12px] dropdown" :class="listDownload ? 'show ' : ''">
                   <div
                     v-for="(item, id) in $t('download2.section7.list')"
@@ -217,13 +219,13 @@
                       <span>
                         {{ item.button }}
                       </span>
+                      <img src="~/assets/images/landing/download2/download-disable.svg" alt="">
                     </button>
                     <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
                       {{ item.note }}
                     </p>
                   </div>
                 </div>
-                <!-- </transition> -->
                 <div class="flex my-[32px]">
                   <a
                     href="https://locker.io/release-notes"
@@ -387,7 +389,7 @@ export default {
 }
 .button-download {
   width: 298px;
-  justify-content: center;
+  justify-content: space-between;
   display: flex;
   padding: 10px 20px;
   color: #ffffff;
@@ -459,7 +461,7 @@ export default {
   text-align: -webkit-center;
 }
 .width-comming-soon {
-  width: calc(25vw + 50px);
+  width: calc(25vw + 170px);
   direction: rtl;
   padding: 10px 25px;
   border-radius: 75px;
