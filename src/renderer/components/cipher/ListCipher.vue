@@ -582,7 +582,11 @@
                     <img
                       v-if="
                         item.organizationId &&
-                          isCipherShared(item.organizationId)
+                          (isCipherShared(item.organizationId) ||
+                            isCipherSharedWithMe(
+                              item.organizationId,
+                              organizations
+                            ))
                       "
                       src="~/assets/images/icons/shares.svg"
                       alt="Shared"
@@ -894,7 +898,6 @@ export default {
       context: '',
       publicKey: '',
       indexing: false,
-      index: null,
       menuVault: [
         {
           label: 'all',

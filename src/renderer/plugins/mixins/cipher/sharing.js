@@ -64,6 +64,11 @@ Vue.mixin({
       return share?.members?.length || share?.groups?.length
     },
 
+    isCipherSharedWithMe (organizationId, organizations) {
+      const team = this.getTeam(organizations, organizationId)
+      return !!team
+    },
+
     isCipherShareable (cipher, organizations) {
       return (
         !cipher.isDeleted &&
