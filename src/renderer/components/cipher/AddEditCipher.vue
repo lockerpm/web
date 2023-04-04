@@ -292,8 +292,8 @@ export default {
 
   props: {
     type: {
-      type: String,
-      default: 'Login'
+      type: [String, Number],
+      default: 1
     },
     routeName: {
       type: String,
@@ -388,7 +388,7 @@ export default {
       }
 
       // Create new cipher
-      if (CipherType[this.type]) {
+      if (this.type) {
         this.newCipher(this.type, data)
       } else {
         this.newCipher('Login', data)
@@ -566,7 +566,7 @@ export default {
       this.cipher.organizationId = data.organizationId
         ? data.organizationId
         : null
-      this.cipher.type = CipherType[type]
+      this.cipher.type = typeof type === 'string' ? CipherType[type] : type
       this.cipher.login = new LoginView()
       this.cipher.login.uris = [new LoginUriView()]
       this.cipher.login.uris[0].uri = 'https://'

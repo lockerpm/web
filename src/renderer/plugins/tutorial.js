@@ -106,11 +106,11 @@ export default async ({ store, i18n, $axios }, inject) => {
       SKIP_BTN
     ],
     attachTo: {
-      element: '#vault__add-btn__Login',
+      element: '#vault__add-btn__1',
       on: 'right'
     },
     advanceOn: {
-      selector: '#vault__add-btn__Login',
+      selector: '#vault__add-btn__1',
       event: 'click'
     }
   })
@@ -140,7 +140,8 @@ export default async ({ store, i18n, $axios }, inject) => {
       SKIP_BTN
     ],
     attachTo: {
-      element: () => document.querySelectorAll('#add-edit-cipher-dialog > div')[1],
+      element: () =>
+        document.querySelectorAll('#add-edit-cipher-dialog > div')[0],
       on: 'right'
     }
   })

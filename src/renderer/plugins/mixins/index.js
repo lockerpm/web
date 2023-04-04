@@ -2,11 +2,6 @@ import Vue from 'vue'
 import numeral from 'numeral'
 
 Vue.mixin({
-  data () {
-    return {
-      folders: []
-    }
-  },
   computed: {
     language () {
       return this.$store.state.user.language

@@ -5,6 +5,60 @@ Vue.mixin({
   computed: {
     notDeletedCipherCount () {
       return this.$store.state.notDeletedCipherCount
+    },
+
+    cipherMapping () {
+      const res = {}
+      res[CipherType.Login] = {
+        type: CipherType.Login,
+        routeName: 'passwords',
+        label: 'passwords',
+        icon: 'passwords'
+      }
+      res[CipherType.MasterPassword] = {
+        type: CipherType.MasterPassword,
+        routeName: 'passwords',
+        label: 'passwords',
+        icon: 'passwords',
+        noMenu: true,
+        noCreate: true
+      }
+      res[CipherType.SecureNote] = {
+        type: CipherType.SecureNote,
+        routeName: 'notes',
+        label: 'notes',
+        icon: 'notes'
+      }
+      res[CipherType.Card] = {
+        type: CipherType.Card,
+        routeName: 'cards',
+        label: 'cards',
+        icon: 'cards'
+      }
+      res[CipherType.Identity] = {
+        type: CipherType.Identity,
+        routeName: 'identities',
+        label: 'identities',
+        icon: 'identities'
+      }
+      res[CipherType.TOTP] = {
+        type: CipherType.TOTP,
+        noMenu: true,
+        hideFromCipherList: true
+      }
+      res[CipherType.CryptoWallet] = {
+        type: CipherType.CryptoWallet,
+        routeName: 'crypto-backups',
+        label: 'crypto_backups',
+        icon: 'passwords'
+      }
+      return res
+    },
+
+    cipherRoutes () {
+      return Object.values(this.cipherMapping)
+        .filter(v => !!v.routeName)
+        .map(v => v.routeName)
     }
   },
 
@@ -88,30 +142,7 @@ Vue.mixin({
         return
       }
 
-      let name = ''
-      switch (cipher.type) {
-      case CipherType.Login:
-      case CipherType.MasterPassword:
-        name = 'passwords'
-        break
-      case CipherType.SecureNote:
-        name = 'notes'
-        break
-      case CipherType.Card:
-        name = 'cards'
-        break
-      case CipherType.Identity:
-        name = 'identities'
-        break
-      case 6:
-        name = 'crypto-backups'
-        break
-      case 7:
-        name = 'crypto-backups'
-        break
-      default:
-        name = 'vault'
-      }
+      const name = this.cipherMapping[cipher.type].routeName || 'vault'
       this.$router.push(
         this.localeRoute({
           name: name + '-id',
@@ -120,6 +151,16 @@ Vue.mixin({
       )
     },
 
+    routerFolder (item) {
+      this.$router.push(
+        this.localeRoute({
+          name: 'vault-folders-folderId',
+          params: { folderId: item.id }
+        })
+      )
+    },
+
+    // Cannot edit/delete/share
     isProtectedCipher (cipher) {
       return cipher.type === CipherType.MasterPassword
     }

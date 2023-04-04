@@ -73,6 +73,18 @@ Vue.mixin({
   },
 
   methods: {
+    parseNotesOfNewTypes (originalCipher) {
+      const cipher = cloneDeep(originalCipher)
+      try {
+        if (cipher.type === CipherType.CryptoWallet) {
+          cipher.cryptoWallet = JSON.parse(cipher.notes)
+        }
+      } catch (error) {
+        //
+      }
+      return cipher
+    },
+
     async getEncCipherForRequest (originalCipher, extraData = {}) {
       const cipher = cloneDeep(originalCipher)
 
@@ -82,56 +94,62 @@ Vue.mixin({
         writeableCollections,
         nonWriteableCollections,
         cloneMode,
-        isNewCipher
+        isNewCipher,
+        noCheck, // Just need to get an encrypted item without checking collections, etc
+        encKey // Encryption key
       } = extraData
 
       // Change type to Note for new cipher types to encrypt first
       if (cipher.type === CipherType.CryptoWallet) {
-        cipher.notes = JSON.stringify({
-          ...cipher.cryptoWallet,
-          notes: cipher.notes
-        })
+        if (cipher.cryptoWallet) {
+          cipher.notes = JSON.stringify({
+            ...cipher.cryptoWallet,
+            notes: cipher.notes
+          })
+        }
         cipher.type = CipherType.SecureNote
         cipher.secureNote = new SecureNote(cipher.secureNote, true)
         cipher.secureNote.type = 0
       }
 
-      // Check if current folder is a collection (shared folder) or remove from old collection if move back to folder
-      if (cipher.folderId) {
-        const collections = isNewCipher
-          ? writeableCollections
-          : [...writeableCollections, ...nonWriteableCollections]
-        const collection = collections.find(c => c.id === cipher.folderId)
-        if (collection) {
-          cipher.organizationId = collection.organizationId
-          cipher.folderId = null
-          cipher.collectionIds = [collection.id]
-        } else {
-          cipher.collectionIds = []
+      if (!noCheck) {
+        // Check if current folder is a collection (shared folder) or remove from old collection if move back to folder
+        if (cipher.folderId) {
+          const collections = isNewCipher
+            ? writeableCollections
+            : [...writeableCollections, ...nonWriteableCollections]
+          const collection = collections.find(c => c.id === cipher.folderId)
+          if (collection) {
+            cipher.organizationId = collection.organizationId
+            cipher.folderId = null
+            cipher.collectionIds = [collection.id]
+          } else {
+            cipher.collectionIds = []
 
-          // Remove org in clone mode
-          if (cloneMode) {
+            // Remove org in clone mode
+            if (cloneMode) {
+              cipher.organizationId = null
+            }
+          }
+        }
+
+        // Remove orgId if item move out of collection to a folder or no folder
+        if (cipher.organizationId) {
+          const prevCollection = writeableCollections.find(
+            c => c.organizationId === cipher.organizationId
+          )
+          if (
+            prevCollection &&
+            (cipher.folderId || !cipher.collectionIds.length)
+          ) {
             cipher.organizationId = null
+            cipher.collectionIds = []
           }
         }
       }
 
-      // Remove orgId if item move out of collection to a folder or no folder
-      if (cipher.organizationId) {
-        const prevCollection = writeableCollections.find(
-          c => c.organizationId === cipher.organizationId
-        )
-        if (
-          prevCollection &&
-          (cipher.folderId || !cipher.collectionIds.length)
-        ) {
-          cipher.organizationId = null
-          cipher.collectionIds = []
-        }
-      }
-
       // Encrypt cipher
-      const cipherEnc = await this.$cipherService.encrypt(cipher)
+      const cipherEnc = await this.$cipherService.encrypt(cipher, encKey)
       const data = new CipherRequest(cipherEnc)
 
       // Change type back after encryption
@@ -142,6 +160,60 @@ Vue.mixin({
         data,
         collectionIds: cipher.collectionIds
       }
+    },
+
+    getCopyableValues (item) {
+      switch (item.type) {
+      case CipherType.Login:
+        return [
+          {
+            value: item.login.username,
+            label: 'common.username'
+          },
+          {
+            value: item.login.password,
+            label: 'common.password'
+          }
+        ]
+      case CipherType.MasterPassword:
+        return [
+          {
+            value: item.login.password,
+            label: 'common.password'
+          }
+        ]
+      case CipherType.SecureNote:
+        return [
+          {
+            value: item.notes,
+            label: 'common.note'
+          }
+        ]
+      case CipherType.CryptoWallet:
+        if (!item.cryptoWallet) {
+          return []
+        }
+        return [
+          {
+            value: item.cryptoWallet.seed,
+            label: 'data.ciphers.seed'
+          },
+          {
+            value: item.cryptoWallet.address,
+            label: 'data.ciphers.wallet_address'
+          },
+          {
+            value: item.cryptoWallet.privateKey,
+            label: 'data.ciphers.private_key'
+          },
+          {
+            value: item.cryptoWallet.password,
+            label: 'data.ciphers.password_pin'
+          }
+        ]
+      }
+
+      return []
     }
   }
 })
