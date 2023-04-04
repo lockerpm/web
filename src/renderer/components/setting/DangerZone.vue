@@ -5,8 +5,8 @@
         <div class="text-head-5 font-semibold text-danger">
           {{ $t('data.settings.danger_zone') }}
         </div>
-        <i v-if="!collapsed" class="el-icon-arrow-right"></i>
-        <i v-else class="el-icon-arrow-down"></i>
+        <i v-if="!collapsed" class="el-icon-arrow-right" />
+        <i v-else class="el-icon-arrow-down" />
       </div>
     </div>
     <div v-if="collapsed" class="setting-section">

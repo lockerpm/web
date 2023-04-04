@@ -1,17 +1,24 @@
 <template>
-  <div class="mx-auto">
-    <div class="text-head-4 font-semibold mb-4">
+  <div class="lg:w-2/3">
+    <div class="text-head-4 font-semibold mb-2">
       {{ $t('data.settings.import_export') }}
     </div>
-    <ImportExport />
+    <div class="text-lg text-black-600 mb-4">
+      {{ $t('data.settings.account_desc') }}
+    </div>
+    <ImportItems />
+    <ExportItems />
   </div>
 </template>
 
 <script>
-import ImportExport from '../../components/setting/ImportExport'
+import ImportItems from '../../components/setting/ImportItems.vue'
+import ExportItems from '../../components/setting/ExportItems.vue'
+
 export default {
   components: {
-    ImportExport
+    ImportItems,
+    ExportItems
   }
 }
 </script>

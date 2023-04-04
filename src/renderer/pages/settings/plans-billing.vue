@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto">
+  <div class="lg:w-2/3">
     <div class="text-head-5 font-semibold mb-2">
       {{ $t('data.settings.plans_billing') }}
     </div>

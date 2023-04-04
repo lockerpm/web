@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto">
+  <div class="lg:w-2/3">
     <div class="grid grid-cols-5 gap-x-6">
       <div class="setting-wrapper md:col-span-3 col-span-5">
         <div class="setting-section">

@@ -1,91 +1,286 @@
 <template>
-  <div class="mx-auto">
-    <div class="text-head-5 font-semibold mb-2">
-      {{ $t('data.settings.security') }}
-    </div>
-    <div class="text-lg text-black-600 mb-4">
-      {{ $t('data.settings.security_desc') }}
-    </div>
-    <div class="setting-wrapper">
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div class="text-head-5 font-semibold">{{ $t('data.settings.security_control') }}</div>
+  <div class="setting-wrapper">
+    <div class="setting-section">
+      <div class="setting-section-header cursor-pointer" @click="collapsed = !collapsed">
+        <div class="text-head-5 font-semibold">
+          {{ $t('data.settings.emergency_access') }} <span>
+            <el-badge v-if="pendingRequests" :value="pendingRequests" class="item" />
+          </span>
+        </div>
+        <div>
+          <button
+            class="btn btn-default !text-warning mr-4"
+            @click="postEmergencyAccess"
+          >
+            {{ $t('data.emergency_access.add_emergency_contact') }}
+          </button>
+          <i v-if="!collapsed" class="el-icon-arrow-right" />
+          <i v-else class="el-icon-arrow-down" />
+        </div>
+      </div>
+      <EmergencyContact
+        ref="emergencyContact"
+        @done="getEmergencyAccess"
+      />
+      <el-dialog
+        :visible.sync="dialogConfirmVisible"
+        width="435px"
+        destroy-on-close
+        top="15vh"
+        custom-class="locker-dialog"
+        :close-on-click-modal="false"
+      >
+        <div slot="title">
+          <div class="text-head-5 text-black-700 font-semibold truncate">
+            {{ $t('data.notifications.fingerprint_title') }}
+          </div>
+        </div>
+        <div class="text-left">
+          <div class="text-head-6 mb-4">{{ $t('data.notifications.fingerprint_description_1') }}</div>
+          <div class="text-danger-400 bg-black-200 bg-opacity-50 rounded px-4 py-2 mb-4">
+            {{ userFingerPrint }}
+          </div>
+          <div class="text-sm">{{ $t('data.notifications.fingerprint_description_2') }}</div>
+        </div>
+        <div
+          slot="footer"
+          class="dialog-footer flex items-center text-left"
+        >
+          <div class="flex-grow" />
           <div>
             <button
-              class="btn btn-default mb-4 md:mb-0"
-              @click="changeMasterPassword"
+              class="btn btn-default"
+              @click="dialogConfirmVisible = false"
             >
-              <span><i class="fas fa-key" /> &nbsp; {{ $t('data.settings.change_master_password') }}</span>
+              {{ $t('common.cancel') }}
+            </button>
+            <button
+              class="btn btn-primary"
+              :disabled="loadingConfirm"
+              @click="confirmEmergencyAccess(selectedEmergencyAccess)"
+            >
+              {{ $t('common.confirm') }}
             </button>
           </div>
         </div>
-        <div class="bg-[#F0F0F0] mt-8 py-5 pl-5 pr-10">
-          <div class="flex">
-            <div class="px-3 text-lg">
-              <i class="fas fa-lightbulb" />
-            </div>
-            <div class="w-full">
-              <div class="text-head-6 mb-3 w-full">
-                {{ $t('data.settings.learn_about_secure_desc') }}
-              </div>
-              <div>
-                <a
-                  :href="`https://locker.io${locale==='vi'?'/vi':''}/security`"
-                  target="_blank"
+      </el-dialog>
+
+      <el-dialog
+        :visible.sync="dialogTakeoverVisible"
+        width="435px"
+        destroy-on-close
+        top="15vh"
+        custom-class="locker-dialog"
+        :close-on-click-modal="false"
+      >
+        <div slot="title">
+          <div class="text-head-5 text-black-700 font-semibold truncate">
+            {{ $t('common.takeover') }}
+          </div>
+        </div>
+        <div class="text-left">
+          <div class="text-left">
+            <div class="form-group !mb-4">
+              <label for="">{{ $t('master_password.new_password') }}</label>
+              <div class="input-group mb-1.5">
+                <input
+                  v-model="masterPassword"
+                  :type="showPassword ? 'text' : 'password'"
+                  class="form-control"
+                  :name="randomString()"
+                  autocomplete="new-password"
                 >
-                  <button class="btn btn-default !whitespace-normal text-left mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current">
-                    {{ $t('data.settings.learn_about_secure') }}
+                <div class="input-group-append !bg-white">
+                  <button
+                    class="btn btn-icon"
+                    type="button"
+                    tabindex="-1"
+                    @click="showPassword = !showPassword"
+                  >
+                    <i
+                      class="far"
+                      :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+                    />
                   </button>
-                </a>
+                </div>
               </div>
+              <PasswordStrengthBar
+                v-if="masterPassword"
+                :score="passwordStrength.score"
+              />
+            </div>
+            <div class="form-group !mb-4">
+              <label for="">{{ $t('master_password.re_password') }}</label>
+              <div
+                class="input-group"
+                :class="[errors.masterRePassword ? 'is-invalid' :'']"
+              >
+                <input
+                  v-model="masterRePassword"
+                  :type="showRePassword ? 'text' : 'password'"
+                  class="form-control"
+                  name="repassword"
+                  placeholder=""
+                >
+                <div class="input-group-append !bg-white">
+                  <button
+                    class="btn btn-icon"
+                    tabindex="-1"
+                    @click="showRePassword = !showRePassword"
+                  >
+                    <i
+                      class="far"
+                      :class="{'fa-eye': !showRePassword, 'fa-eye-slash': showRePassword}"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div class="invalid-feedback">{{ $t('errors.confirm_password') }}</div>
             </div>
           </div>
         </div>
-      </div>
+
+        <div
+          slot="footer"
+          class="dialog-footer flex items-center text-left"
+        >
+          <div class="flex-grow" />
+          <div>
+            <button
+              class="btn btn-default"
+              @click="dialogTakeoverVisible = false"
+            >
+              {{ $t('common.cancel') }}
+            </button>
+            <button
+              class="btn btn-primary"
+              :disabled="loadingSetPassword || !masterPassword || masterPassword!=masterRePassword"
+              @click="setPasswordForGrantor()"
+            >
+              {{ $t('common.confirm') }}
+            </button>
+          </div>
+        </div>
+      </el-dialog>
+
+      <el-dialog
+        :visible.sync="dialogTakeoverLockerVisible"
+        width="435px"
+        destroy-on-close
+        top="15vh"
+        custom-class="locker-dialog"
+        :close-on-click-modal="false"
+      >
+        <div slot="title">
+          <div class="text-head-5 text-black-700 font-semibold truncate">
+            {{ $t('common.takeover') }}
+          </div>
+        </div>
+        <div class="text-left">
+          <div class="text-left">
+            <div class="form-group !mb-4">
+              <label for="">{{ $t('master_password.id_password') }}</label>
+              <div
+                class="input-group"
+                :class="[bugs.new_password ? 'is-invalid' :'']"
+              >
+                <input
+                  v-model="idPassword"
+                  :type="showIdPassword ? 'text' : 'password'"
+                  class="form-control"
+                  name="repassword"
+                  placeholder=""
+                >
+                <div class="input-group-append !bg-white">
+                  <button
+                    class="btn btn-icon"
+                    tabindex="-1"
+                    @click="showIdPassword = !showIdPassword"
+                  >
+                    <i
+                      class="far"
+                      :class="{'fa-eye': !showIdPassword, 'fa-eye-slash': showIdPassword}"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div class="invalid-feedback">{{ bugs.new_password && bugs.new_password[0] }}</div>
+            </div>
+            <div class="form-group !mb-4">
+              <label for="">{{ $t('master_password.id_password_confirm') }}</label>
+              <div
+                class="input-group"
+                :class="[errors.idRePassword ? 'is-invalid' :'']"
+              >
+                <input
+                  v-model="idRePassword"
+                  :type="showIdRePassword ? 'text' : 'password'"
+                  class="form-control"
+                  name="repassword"
+                  placeholder=""
+                >
+                <div class="input-group-append !bg-white">
+                  <button
+                    class="btn btn-icon"
+                    tabindex="-1"
+                    @click="showIdRePassword = !showIdRePassword"
+                  >
+                    <i
+                      class="far"
+                      :class="{'fa-eye': !showIdRePassword, 'fa-eye-slash': showIdRePassword}"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div class="invalid-feedback">{{ $t('errors.id_confirm_password') }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          slot="footer"
+          class="dialog-footer flex items-center text-left"
+        >
+          <div class="flex-grow" />
+          <div>
+            <button
+              class="btn btn-default"
+              @click="dialogTakeoverLockerVisible = false "
+            >
+              {{ $t('common.cancel') }}
+            </button>
+            <button
+              class="btn btn-primary"
+              :disabled="loadingSetPassword || !idPassword || idPassword !== idRePassword"
+              @click="setLockerPasswordForGrantor()"
+            >
+              {{ $t('common.confirm') }}
+            </button>
+          </div>
+        </div>
+      </el-dialog>
     </div>
-    <div class="setting-wrapper">
+    <div v-if="collapsed">
       <div class="setting-section">
-        <div class="setting-section-header">
-          <div class="text-head-5 font-semibold">
-            {{ $t('data.settings.emergency_access') }} <span><el-badge v-if="pendingRequests" :value="pendingRequests" class="item" /></span>
-          </div>
-        </div>
-        <div class="bg-[#F0F0F0] mt-8 py-5 pl-5 pr-10">
-          <div class="flex">
-            <div class="px-3 text-lg">
-              <i class="fas fa-lightbulb" />
-            </div>
-            <div class="w-full">
-              <div class="text-head-6 mb-3 w-full">
-                {{ $t('data.settings.learn_about_emergency_access_desc') }}
-              </div>
-              <div>
-                <a
-                  :href="locale==='vi'?'https://support.locker.io/vi/articles/Thiet-lap-tinh-nang-Truy-cap-khan-cap-b54c0b4b560a466f92331b940bbc9244':'https://support.locker.io/articles/Set-up-and-use-Emergency-Access-0e169439bb83453298ea430b22262214'"
-                  target="_blank"
-                >
-                  <button class="btn btn-default !whitespace-normal text-left mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current">
-                    {{ $t('data.settings.learn_about_emergency_access') }}
-                  </button>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <el-row type="flex">
+          <el-col :lg="12" :sm="16" :xs="24">
+            <p>{{ $t('data.settings.learn_about_emergency_access_desc') }}</p>
+          </el-col>
+        </el-row>
+        <p class="mt-6">
+          <a
+            :href="locale==='vi'?'https://support.locker.io/vi/articles/Thiet-lap-tinh-nang-Truy-cap-khan-cap-b54c0b4b560a466f92331b940bbc9244':'https://support.locker.io/articles/Set-up-and-use-Emergency-Access-0e169439bb83453298ea430b22262214'"
+            target="_blank"
+          >
+            {{ $t('data.settings.learn_about_emergency_access') }} <i class="ml-1 el-icon-right" />
+          </a>
+        </p>
       </div>
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
             <div class="setting-title">{{ $t('data.emergency_access.trusted_emergency_contacts') }}</div>
             <div v-if="trustedPendingRequests>0" class="text-warning">{{ trustedPendingRequests }} {{ $tc('data.emergency_access.pending_request', trustedPendingRequests) }}</div>
-          </div>
-          <div>
-            <button
-              class="btn btn-default !text-warning"
-              @click="postEmergencyAccess"
-            >
-              {{ $t('data.emergency_access.add_emergency_contact') }}
-            </button>
           </div>
         </div>
         <div class="setting-section-body">
@@ -120,12 +315,13 @@
                 <template slot-scope="scope">
                   <span
                     class="label capitalize"
-                    :class="{'label-primary-light': scope.row.status === 'confirmed',
-                             'label-success-light': scope.row.status === 'accepted',
-                             'label-warning-light': scope.row.status === 'invited',
-                             'label-danger-light': scope.row.status === 'expired',
-                             'label-black': scope.row.status === 'recovery_initiated',
-                             'label-success': scope.row.status === 'recovery_approved',
+                    :class="{
+                      'label-primary-light': scope.row.status === 'confirmed',
+                      'label-success-light': scope.row.status === 'accepted',
+                      'label-warning-light': scope.row.status === 'invited',
+                      'label-danger-light': scope.row.status === 'expired',
+                      'label-black': scope.row.status === 'recovery_initiated',
+                      'label-success': scope.row.status === 'recovery_approved',
                     }"
                   >
                     {{ emergencyAccessStatus[`${scope.row.status}`] }}
@@ -215,8 +411,6 @@
           </client-only>
         </div>
       </div>
-
-      <!-- Contacts trusted you -->
       <div class="setting-section">
         <!-- Header -->
         <div class="setting-section-header">
@@ -261,12 +455,13 @@
                 <template slot-scope="scope">
                   <span
                     class="label capitalize"
-                    :class="{'label-primary-light': scope.row.status === 'confirmed',
-                             'label-success-light': scope.row.status === 'accepted',
-                             'label-warning-light': scope.row.status === 'invited',
-                             'label-danger-light': scope.row.status === 'expired',
-                             'label-black': scope.row.status === 'recovery_initiated',
-                             'label-success': scope.row.status === 'recovery_approved',
+                    :class="{
+                      'label-primary-light': scope.row.status === 'confirmed',
+                      'label-success-light': scope.row.status === 'accepted',
+                      'label-warning-light': scope.row.status === 'invited',
+                      'label-danger-light': scope.row.status === 'expired',
+                      'label-black': scope.row.status === 'recovery_initiated',
+                      'label-success': scope.row.status === 'recovery_approved',
                     }"
                   >
                     {{ emergencyAccessStatus[`${scope.row.status}`] }}
@@ -382,275 +577,11 @@
         </div>
         <!-- Table end -->
       </div>
-      <!-- Contacts trusted you end -->
     </div>
-    <EmergencyContact
-      ref="emergencyContact"
-      @done="getEmergencyAccess"
-    />
-    <el-dialog
-      :visible.sync="dialogConfirmVisible"
-      width="435px"
-      destroy-on-close
-      top="15vh"
-      custom-class="locker-dialog"
-      :close-on-click-modal="false"
-    >
-      <div slot="title">
-        <div class="text-head-5 text-black-700 font-semibold truncate">
-          {{ $t('data.notifications.fingerprint_title') }}
-        </div>
-      </div>
-      <div class="text-left">
-        <div class="text-head-6 mb-4">{{ $t('data.notifications.fingerprint_description_1') }}</div>
-        <div class="text-danger-400 bg-black-200 bg-opacity-50 rounded px-4 py-2 mb-4">
-          {{ userFingerPrint }}
-        </div>
-        <div class="text-sm">{{ $t('data.notifications.fingerprint_description_2') }}</div>
-      </div>
-      <div
-        slot="footer"
-        class="dialog-footer flex items-center text-left"
-      >
-        <div class="flex-grow" />
-        <div>
-          <button
-            class="btn btn-default"
-            @click="dialogConfirmVisible = false"
-          >
-            {{ $t('common.cancel') }}
-          </button>
-          <button
-            class="btn btn-primary"
-            :disabled="loadingConfirm"
-            @click="confirmEmergencyAccess(selectedEmergencyAccess)"
-          >
-            {{ $t('common.confirm') }}
-          </button>
-        </div>
-      </div>
-    </el-dialog>
-
-    <!-- Take over dialog -->
-    <el-dialog
-      :visible.sync="dialogTakeoverVisible"
-      width="435px"
-      destroy-on-close
-      top="15vh"
-      custom-class="locker-dialog"
-      :close-on-click-modal="false"
-    >
-      <!-- Header -->
-      <div slot="title">
-        <div class="text-head-5 text-black-700 font-semibold truncate">
-          {{ $t('common.takeover') }}
-        </div>
-      </div>
-      <!-- Header end -->
-      <div class="text-left">
-        <div class="text-left">
-          <!-- New master pw -->
-          <div class="form-group !mb-4">
-            <label for="">{{ $t('master_password.new_password') }}</label>
-            <div class="input-group mb-1.5">
-              <input
-                v-model="masterPassword"
-                :type="showPassword ? 'text' : 'password'"
-                class="form-control"
-                :name="randomString()"
-                autocomplete="new-password"
-              >
-              <div class="input-group-append !bg-white">
-                <button
-                  class="btn btn-icon"
-                  type="button"
-                  tabindex="-1"
-                  @click="showPassword = !showPassword"
-                >
-                  <i
-                    class="far"
-                    :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
-                  />
-                </button>
-              </div>
-            </div>
-            <PasswordStrengthBar
-              v-if="masterPassword"
-              :score="passwordStrength.score"
-            />
-          </div>
-          <!-- New master pw end -->
-
-          <!-- Re enter new master pw -->
-          <div class="form-group !mb-4">
-            <label for="">{{ $t('master_password.re_password') }}</label>
-            <div
-              class="input-group"
-              :class="[errors.masterRePassword ? 'is-invalid' :'']"
-            >
-              <input
-                v-model="masterRePassword"
-                :type="showRePassword ? 'text' : 'password'"
-                class="form-control"
-                name="repassword"
-                placeholder=""
-              >
-              <div class="input-group-append !bg-white">
-                <button
-                  class="btn btn-icon"
-                  tabindex="-1"
-                  @click="showRePassword = !showRePassword"
-                >
-                  <i
-                    class="far"
-                    :class="{'fa-eye': !showRePassword, 'fa-eye-slash': showRePassword}"
-                  />
-                </button>
-              </div>
-            </div>
-            <div class="invalid-feedback">{{ $t('errors.confirm_password') }}</div>
-          </div>
-          <!-- Re enter new master pw end -->
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div
-        slot="footer"
-        class="dialog-footer flex items-center text-left"
-      >
-        <div class="flex-grow" />
-        <div>
-          <button
-            class="btn btn-default"
-            @click="dialogTakeoverVisible = false"
-          >
-            {{ $t('common.cancel') }}
-          </button>
-          <button
-            class="btn btn-primary"
-            :disabled="loadingSetPassword || !masterPassword || masterPassword!=masterRePassword"
-            @click="setPasswordForGrantor()"
-          >
-            {{ $t('common.confirm') }}
-          </button>
-        </div>
-      </div>
-      <!-- Footer end -->
-    </el-dialog>
-    <!-- Take over dialog end -->
-
-    <!-- Take over Locker Password dialog -->
-    <el-dialog
-      :visible.sync="dialogTakeoverLockerVisible"
-      width="435px"
-      destroy-on-close
-      top="15vh"
-      custom-class="locker-dialog"
-      :close-on-click-modal="false"
-    >
-      <!-- Header -->
-      <div slot="title">
-        <div class="text-head-5 text-black-700 font-semibold truncate">
-          {{ $t('common.takeover') }}
-        </div>
-      </div>
-      <!-- Header end -->
-      <div class="text-left">
-        <div class="text-left">
-          <!-- Step 2 - id pw -->
-          <div class="form-group !mb-4">
-            <label for="">{{ $t('master_password.id_password') }}</label>
-            <div
-              class="input-group"
-              :class="[bugs.new_password ? 'is-invalid' :'']"
-            >
-              <input
-                v-model="idPassword"
-                :type="showIdPassword ? 'text' : 'password'"
-                class="form-control"
-                name="repassword"
-                placeholder=""
-              >
-              <div class="input-group-append !bg-white">
-                <button
-                  class="btn btn-icon"
-                  tabindex="-1"
-                  @click="showIdPassword = !showIdPassword"
-                >
-                  <i
-                    class="far"
-                    :class="{'fa-eye': !showIdPassword, 'fa-eye-slash': showIdPassword}"
-                  />
-                </button>
-              </div>
-            </div>
-            <div class="invalid-feedback">{{ bugs.new_password && bugs.new_password[0] }}</div>
-          </div>
-          <div class="form-group !mb-4">
-            <label for="">{{ $t('master_password.id_password_confirm') }}</label>
-            <div
-              class="input-group"
-              :class="[errors.idRePassword ? 'is-invalid' :'']"
-            >
-              <input
-                v-model="idRePassword"
-                :type="showIdRePassword ? 'text' : 'password'"
-                class="form-control"
-                name="repassword"
-                placeholder=""
-              >
-              <div class="input-group-append !bg-white">
-                <button
-                  class="btn btn-icon"
-                  tabindex="-1"
-                  @click="showIdRePassword = !showIdRePassword"
-                >
-                  <i
-                    class="far"
-                    :class="{'fa-eye': !showIdRePassword, 'fa-eye-slash': showIdRePassword}"
-                  />
-                </button>
-              </div>
-            </div>
-            <div class="invalid-feedback">{{ $t('errors.id_confirm_password') }}</div>
-          </div>
-          <!-- Step 2 - id pw end -->
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div
-        slot="footer"
-        class="dialog-footer flex items-center text-left"
-      >
-        <div class="flex-grow" />
-        <div>
-          <button
-            class="btn btn-default"
-            @click="dialogTakeoverLockerVisible = false "
-          >
-            {{ $t('common.cancel') }}
-          </button>
-          <button
-            class="btn btn-primary"
-            :disabled="loadingSetPassword || !idPassword || idPassword !== idRePassword"
-            @click="setLockerPasswordForGrantor()"
-          >
-            {{ $t('common.confirm') }}
-          </button>
-        </div>
-      </div>
-      <!-- Footer end -->
-    </el-dialog>
-    <!-- Take over dialog end -->
-
-    <ChangeMasterPassword ref="changeMasterPassword" />
   </div>
 </template>
 
 <script>
-import ChangeMasterPassword from '@/components/user/ChangeMasterPassword'
 import { Utils } from '@/jslib/src/misc/utils.ts'
 import PasswordStrengthBar from '@/components/password/PasswordStrengthBar'
 import EmergencyContact from '@/components/setting/EmergencyContact.vue'
@@ -658,7 +589,6 @@ import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey
 import { MIN_MASTER_PW_LEN } from '@/constants'
 export default {
   components: {
-    ChangeMasterPassword,
     EmergencyContact,
     PasswordStrengthBar
   },
@@ -682,8 +612,7 @@ export default {
       masterRePassword: '',
       idPassword: '',
       idRePassword: '',
-      errors: {
-      },
+      errors: {},
       bugs: {},
       showPassword: false,
       showRePassword: false,
@@ -691,13 +620,11 @@ export default {
       showIdRePassword: false,
       loadingSetPassword: false,
       emergencyAccessStatus: this.$t('data.emergency_access.status'),
-      takeoverStep: 1
+      takeoverStep: 1,
+      collapsed: false
     }
   },
   computed: {
-    currentPlan () {
-      return this.$store.state.currentPlan
-    },
     passwordStrength () {
       return this.$passwordGenerationService.passwordStrength(this.masterPassword, ['cystack']) || {}
     },
@@ -744,14 +671,12 @@ export default {
       const user = await this.$store.dispatch('LoadCurrentUserPw')
       this.user = { ...user }
     },
-    changeMasterPassword () {
-      this.$refs.changeMasterPassword.openDialog()
-    },
     getEmergencyAccess () {
       this.getListTrusted()
       this.getListGranted()
     },
     postEmergencyAccess () {
+      this.collapsed = !this.collapsed
       this.$refs.emergencyContact.openDialog({})
     },
     getListTrusted () {
@@ -770,11 +695,11 @@ export default {
           this.loading2 = false
         })
     },
-    putEmergencyAccess (emergency_contact) {
-      this.$refs.emergencyContact.openDialog(emergency_contact)
+    putEmergencyAccess (emergencyContact) {
+      this.$refs.emergencyContact.openDialog(emergencyContact)
     },
-    deleteEmergencyAccess (emergency_contact) {
-      this.$refs.emergencyContact.deleteEmergencyAccess(emergency_contact)
+    deleteEmergencyAccess (emergencyContact) {
+      this.$refs.emergencyContact.deleteEmergencyAccess(emergencyContact)
     },
     async generateAccessKey () {
       const pk = Utils.fromB64ToArray(this.publicKey)
@@ -782,22 +707,22 @@ export default {
       const key = await this.$cryptoService.rsaEncrypt(encKey.key, pk.buffer)
       return key.encryptedString
     },
-    async getPublicKey (emergency_access) {
+    async getPublicKey (emergencyAccess) {
       this.userFingerPrint = ''
-      const { public_key: publicKey } = await this.$axios.$get(`cystack_platform/pm/emergency_access/${emergency_access.id}/public_key`)
+      const { public_key: publicKey } = await this.$axios.$get(`cystack_platform/pm/emergency_access/${emergencyAccess.id}/public_key`)
       return publicKey
     },
-    async promptConfirmEmergencyAccess (emergency_access) {
-      this.selectedEmergencyAccess = emergency_access
-      this.publicKey = await this.getPublicKey(emergency_access)
+    async promptConfirmEmergencyAccess (emergencyAccess) {
+      this.selectedEmergencyAccess = emergencyAccess
+      this.publicKey = await this.getPublicKey(emergencyAccess)
       const publicKey = Utils.fromB64ToArray(this.publicKey)
-      const fingerprint = await this.$cryptoService.getFingerprint(emergency_access.grantee_pwd_user_id, publicKey.buffer)
+      const fingerprint = await this.$cryptoService.getFingerprint(emergencyAccess.grantee_pwd_user_id, publicKey.buffer)
       if (fingerprint) {
         this.userFingerPrint = fingerprint.join('-')
       }
       this.dontAskAgain = await this.$storageService.get('autoConfirmFingerprints')
       // this.openDialogConfirm()
-      this.confirmEmergencyAccess(emergency_access)
+      this.confirmEmergencyAccess(emergencyAccess)
     },
     openDialogConfirm () {
       this.dialogConfirmVisible = true
@@ -805,59 +730,49 @@ export default {
     closeDialogConfirm () {
       this.dialogConfirmVisible = false
     },
-    async confirmEmergencyAccess (emergency_access) {
+    async confirmEmergencyAccess (emergencyAccess) {
       try {
         this.loadingConfirm = true
         const key = await this.generateAccessKey()
-        await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergency_access.id}/confirm`, {
+        await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergencyAccess.id}/confirm`, {
           key
         })
         this.closeDialogConfirm()
         this.getListTrusted()
-        this.notify(this.$t('data.notifications.confirm_emergency_access_success', { user: emergency_access.email }), 'success')
+        this.notify(this.$t('data.notifications.confirm_emergency_access_success', { user: emergencyAccess.email }), 'success')
       } catch (e) {
         console.log(e)
-        this.notify(this.$t('data.notifications.confirm_emergency_access_failed', { user: emergency_access.email }), 'warning')
+        this.notify(this.$t('data.notifications.confirm_emergency_access_failed', { user: emergencyAccess.email }), 'warning')
       } finally {
         this.loadingConfirm = false
       }
     },
-    promptRequestAccess (emergency_access) {
-      this.selectedEmergencyAccess = emergency_access
-      this.openDialogRequest()
-    },
-    openDialogRequest (emergency_access) {
-      this.dialogConfirmVisible = true
-    },
-    closeDialogRequest () {
-      this.dialogConfirmVisible = false
-    },
-    async requestAccess (emergency_access) {
-      this.$confirm(this.$t('data.notifications.request_emergency_access', { day: emergency_access.wait_time_days }), emergency_access.full_name || this.$t('common.warning'), {
+    async requestAccess (emergencyAccess) {
+      this.$confirm(this.$t('data.notifications.request_emergency_access', { day: emergencyAccess.wait_time_days }), emergency_access.full_name || this.$t('common.warning'), {
         confirmButtonText: 'Yes',
         cancelButtonText: 'No',
         type: 'warning'
       }).then(async () => {
         try {
-          await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergency_access.id}/initiate`)
-          this.closeDialogRequest()
+          await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergencyAccess.id}/initiate`)
+          this.dialogConfirmVisible = false
           this.getListGranted()
-          this.notify(this.$t('data.notifications.request_send_success', { user: emergency_access.email }), 'success')
+          this.notify(this.$t('data.notifications.request_send_success', { user: emergencyAccess.email }), 'success')
         } catch (e) {
           console.log(e)
           this.notify(this.$t('data.notifications.request_send_failed'), 'warning')
         }
       }).catch(() => {})
     },
-    async approveEmergencyAccess (emergency_access) {
-      this.$confirm(this.$t('data.notifications.approve_emergency_access', { user: emergency_access.full_name, type: emergency_access.type }), emergency_access.full_name || this.$t('common.warning'), {
+    async approveEmergencyAccess (emergencyAccess) {
+      this.$confirm(this.$t('data.notifications.approve_emergency_access', { user: emergencyAccess.full_name, type: emergency_access.type }), emergency_access.full_name || this.$t('common.warning'), {
         confirmButtonText: 'Approve',
         cancelButtonText: 'No',
         type: 'warning'
       }).then(
         async () => {
           try {
-            await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergency_access.id}/approve`)
+            await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergencyAccess.id}/approve`)
             this.getListTrusted()
             this.notify(this.$t('data.notifications.emergency_access_approved_success'), 'success')
           } catch (e) {
@@ -866,31 +781,31 @@ export default {
         }
       ).catch(() => {})
     },
-    async rejectEmergencyAccess (emergency_access) {
+    async rejectEmergencyAccess (emergencyAccess) {
       try {
-        await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergency_access.id}/reject`)
+        await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergencyAccess.id}/reject`)
         this.getListTrusted()
         this.notify(this.$t('data.notifications.emergency_access_rejected_success'), 'success')
       } catch (e) {
         this.notify(this.$t('data.notifications.emergency_access_rejected_failed'), 'warning')
       }
     },
-    async acceptInvite (emergency_access) {
+    async acceptInvite (emergencyAccess) {
       try {
-        await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergency_access.id}/accept`)
+        await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergencyAccess.id}/accept`)
         this.getListGranted()
         this.notify(this.$t('data.notifications.accept_invitation_success'), 'success')
       } catch (e) {
         this.notify(this.$t('data.notifications.accept_invitation_failed'), 'warning')
       }
     },
-    async reinvite (emergency_access) {
+    async reinvite (emergencyAccess) {
       try {
-        await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergency_access.id}/reinvite`)
+        await this.$axios.$post(`cystack_platform/pm/emergency_access/${emergencyAccess.id}/reinvite`)
         this.getListTrusted()
-        this.notify(this.$t('data.notifications.reinvited_user_success', { user: emergency_access.email }), 'success')
+        this.notify(this.$t('data.notifications.reinvited_user_success', { user: emergencyAccess.email }), 'success')
       } catch (e) {
-        this.notify(this.$t('data.notifications.reinvited_user_failed', { user: emergency_access.email }), 'warning')
+        this.notify(this.$t('data.notifications.reinvited_user_failed', { user: emergencyAccess.email }), 'warning')
       }
     },
     viewGrantorVault (item) {
@@ -907,7 +822,6 @@ export default {
       this.dialogTakeoverLockerVisible = true
       this.selectedEmergencyAccess = item
     },
-    // Change master pw + id pw
     async setPasswordForGrantor () {
       if (this.masterPassword.length < MIN_MASTER_PW_LEN) {
         this.notify(this.$t('data.notifications.invalid_master_password'), 'warning')
@@ -918,11 +832,8 @@ export default {
         this.bugs = {}
         const response = await this.$axios.$post(`/cystack_platform/pm/emergency_access/${this.selectedEmergencyAccess.id}/takeover`)
         const oldKeyBuffer = await this.$cryptoService.rsaDecrypt(response.key_encrypted)
-        // console.log('oldKeyBuffer: ', oldKeyBuffer)
         const oldEncKey = new SymmetricCryptoKey(oldKeyBuffer)
-        // console.log('oldEnKey: ', oldEncKey)
         if (oldEncKey == null) {
-          // console.log('oldEncKey')
           this.notify(this.$t('data.notifications.error_occurred'), 'warning')
           return
         }
@@ -932,7 +843,6 @@ export default {
 
         const encKey = await this.$cryptoService.remakeEncKey(key, oldEncKey)
 
-        // Create master pw item
         const encMasterPwItem = await this.createEncryptedMasterPwItem(this.masterPassword, encKey[0])
 
         const request = {
@@ -953,7 +863,6 @@ export default {
         this.loadingSetPassword = false
       }
     },
-    // Change locker pw (id password)
     async setLockerPasswordForGrantor () {
       if (this.idPassword.length < MIN_MASTER_PW_LEN) {
         this.notify(this.$t('data.notifications.invalid_master_password'), 'warning')

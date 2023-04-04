@@ -5,8 +5,8 @@
         <div class="text-head-5 font-semibold">
           {{ $t('data.settings.your_profile') }}
         </div>
-        <i v-if="!collapsed" class="el-icon-arrow-right"></i>
-        <i v-else class="el-icon-arrow-down"></i>
+        <i v-if="!collapsed" class="el-icon-arrow-right" />
+        <i v-else class="el-icon-arrow-down" />
       </div>
     </div>
     <div v-if="collapsed">
@@ -54,13 +54,6 @@
               class="btn btn-default mb-4 md:mb-0"
             >
               <span>{{ $t('data.settings.edit_profile') }} <i class="fas fa-external-link-alt" /></span>
-            </button>
-          </a>
-          <a href="https://id.locker.io/security/password" target="_blank">
-            <button
-              class="btn btn-default mb-4 md:mb-0"
-            >
-              <span>{{ $t('data.settings.change_password') }} <i class="fas fa-external-link-alt" /></span>
             </button>
           </a>
         </div>

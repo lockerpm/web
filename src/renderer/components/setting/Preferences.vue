@@ -12,8 +12,8 @@
           >
             {{ $t('common.lock') }}
           </button>
-          <i v-if="!collapsed" class="el-icon-arrow-right"></i>
-          <i v-else class="el-icon-arrow-down"></i>
+          <i v-if="!collapsed" class="el-icon-arrow-right" />
+          <i v-else class="el-icon-arrow-down" />
         </div>
       </div>
     </div>
