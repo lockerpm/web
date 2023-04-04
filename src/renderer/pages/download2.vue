@@ -5,7 +5,7 @@
     >
       <transition name="fade" mode="out-in">
         <!-- Macos -->
-        <section v-if="chosen == 'macos'" key="1" class="animation">
+        <section v-if="chosen == 'macos'" id="macos" key="1" class="animation">
           <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag1 landing-font-16 font-semibold">
             {{ $t('download2.section3.coming') }}
           </div>
@@ -57,7 +57,7 @@
           </div>
         </section>
         <!-- Windows -->
-        <section v-if="chosen == 'windows'" key="2" class="animation">
+        <section v-if="chosen == 'windows'" id="windows" key="2" class="animation">
           <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag2 landing-font-16 font-semibold">
             {{ $t('download2.section3.coming') }}
           </div>
@@ -102,7 +102,7 @@
           </div>
         </section>
         <!-- ios -->
-        <section v-if="chosen == 'ios'" key="3" class="animation">
+        <section v-if="chosen == 'ios'" id="ios" key="3" class="animation">
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
             {{ $t("download2.section5.title") }}
           </h1>
@@ -146,7 +146,7 @@
           </div>
         </section>
         <!-- android -->
-        <section v-if="chosen == 'android'" key="4" class="animation">
+        <section v-if="chosen == 'android'" id="android" key="4" class="animation">
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
             {{ $t("download2.section6.title") }}
           </h1>
@@ -190,7 +190,7 @@
           </div>
         </section>
         <!-- linux -->
-        <section v-if="chosen == 'linux'" key="5" class="animation">
+        <section v-if="chosen == 'linux'" id="linux" key="5" class="animation">
           <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag3 landing-font-16 font-semibold">
             {{ $t('download2.section3.coming') }}
           </div>
@@ -242,7 +242,7 @@
           </div>
         </section>
         <!-- web browser -->
-        <section v-if="chosen == 'web-browser'" key="6">
+        <section v-if="chosen == 'web-browser'" id="web-browser" key="6">
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
             {{ $t("download2.section3.title") }}
           </h1>
@@ -358,6 +358,7 @@ export default {
     setChosen (link) {
       this.chosen = link
       this.listDownload = false
+      window.scrollTo(0, 0)
     },
     toggleList () {
       this.listDownload = !this.listDownload
