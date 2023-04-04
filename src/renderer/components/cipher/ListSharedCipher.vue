@@ -1109,6 +1109,7 @@ export default {
     },
     async stopSharing (cipher) {
       try {
+        const personalKey = await this.$cryptoService.getEncKey()
         if (cipher.ciphers) {
           let memberId = null
           if (cipher.user) {
@@ -1119,18 +1120,10 @@ export default {
           folderNameEnc = folderNameEnc.encryptedString
           const ciphers = await Promise.all(
             cipher.ciphers.map(async cipher => {
-              const type_ = cipher.type
-              if (type_ === 7) {
-                cipher.type = CipherType.SecureNote
-                cipher.secureNote.type = 0
-              }
-              const cipherEnc = await this.$cipherService.encrypt(
-                cipher,
-                this.$cryptoService.getEncKey()
-              )
-              const data = new CipherRequest(cipherEnc)
-              data.type = type_
-              cipher.type = type_
+              const { data } = await this.getEncCipherForRequest(cipher, {
+                noCheck: true,
+                encKey: personalKey
+              })
               return {
                 id: cipher.id,
                 ...data
@@ -1159,20 +1152,10 @@ export default {
             memberId = cipher.user.id
             delete cipher.user
           }
-          const type_ = cipher.type
-          if (type_ === 7) {
-            cipher.type = CipherType.SecureNote
-            cipher.secureNote.type = 0
-          }
-          const personalKey = await this.$cryptoService.getEncKey()
-          const cipherEnc = await this.$cipherService.encrypt(
-            cipher,
-            personalKey
-          )
-          const data = new CipherRequest(cipherEnc)
-          // console.log(data)
-          data.type = type_
-          cipher.type = type_
+          const { data } = await this.getEncCipherForRequest(cipher, {
+            noCheck: true,
+            encKey: personalKey
+          })
           memberId
             ? await this.$axios.$post(
               `cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`,

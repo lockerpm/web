@@ -16,7 +16,9 @@
       <div>
         <div class="form-group">
           <label for="">
-            {{ $t('data.notifications.move_selected_desc', {count: ids.length}) }}
+            {{
+              $t('data.notifications.move_selected_desc', { count: ids.length })
+            }}
           </label>
           <InputSelectFolder
             v-if="dialogVisible"
@@ -25,7 +27,7 @@
             :options="collections.concat(folders)"
             :label="$t('data.folders.select_folder')"
             class="w-full !mb-0 mt-4"
-            @change="(v) => folderId = v"
+            @change="v => (folderId = v)"
             @addFolder="addFolder"
           />
         </div>
@@ -33,10 +35,7 @@
       <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow" />
         <div>
-          <button
-            class="btn btn-default"
-            @click="dialogVisible = false"
-          >
+          <button class="btn btn-default" @click="dialogVisible = false">
             {{ $t('common.cancel') }}
           </button>
           <button
@@ -54,9 +53,6 @@
 </template>
 
 <script>
-import { CipherType } from '../../jslib/src/enums'
-import { CipherRequest } from '../../jslib/src/models/request'
-import { CipherView } from '../../jslib/src/models/view'
 import InputSelectFolder from '../input/InputSelectFolder'
 import AddEditFolder from './AddEditFolder'
 export default {
@@ -84,14 +80,16 @@ export default {
       ciphers: []
     }
   },
-  computed: {
-  },
-  mounted () {
-  },
+  computed: {},
+  mounted () {},
   methods: {
     async openDialog (data) {
-      [this.folders, this.collections, this.organizations] = await Promise.all([this.getFolders(), this.getCollections(), this.getOrganizations()])
-      this.collections = this.collections.filter(c => this.isOwner(this.organizations, c))
+      ;[this.folders, this.collections, this.organizations] = await Promise.all(
+        [this.getFolders(), this.getCollections(), this.getOrganizations()]
+      )
+      this.collections = this.collections.filter(c =>
+        this.isOwner(this.organizations, c)
+      )
       this.dialogVisible = true
       this.ids = data
     },
@@ -122,7 +120,9 @@ export default {
             ids: this.ids,
             folderId: null
           })
-          const orgKey = await this.$cryptoService.getOrgKey(collection.organizationId)
+          const orgKey = await this.$cryptoService.getOrgKey(
+            collection.organizationId
+          )
           this.ciphers.forEach(cipher => {
             promises.push(this.addToCollection(cipher, orgKey, collection))
           })
@@ -133,14 +133,20 @@ export default {
             folderId: this.folderId
           })
         }
-        this.notify(this.$tc('data.notifications.move_success', this.ids.length), 'success')
+        this.notify(
+          this.$tc('data.notifications.move_success', this.ids.length),
+          'success'
+        )
         this.closeDialog()
         this.$emit('reset-selection')
       } catch (e) {
         if (e.response && e.response.data && e.response.data.code === '5000') {
           this.notify(this.$tc('errors.5000', 1), 'error')
         } else {
-          this.notify(this.$tc('data.notifications.move_failed', this.ids.length), 'warning')
+          this.notify(
+            this.$tc('data.notifications.move_failed', this.ids.length),
+            'warning'
+          )
         }
       } finally {
         this.loading = false
@@ -157,33 +163,27 @@ export default {
     },
     async removeFromCollection (decCipher, personalKey) {
       if (decCipher.collectionIds && decCipher.collectionIds.length) {
-        const type_ = decCipher.type
-        if (type_ === 7) {
-          decCipher.type = CipherType.SecureNote
-          decCipher.secureNote.type = 0
-        }
-        const cipherEnc = await this.$cipherService.encrypt(decCipher, personalKey)
-        const data = new CipherRequest(cipherEnc)
-        data.type = type_
-        decCipher.type = type_
+        const { data } = await this.getEncCipherForRequest(decCipher, {
+          noCheck: true,
+          encKey: personalKey
+        })
         try {
-          await this.$axios.put(`cystack_platform/pm/sharing/${decCipher.organizationId}/folders/${decCipher.collectionIds[0]}/items`, { cipher: { ...data, id: decCipher.id } })
-        } catch (error) {
-
-        }
+          await this.$axios.put(
+            `cystack_platform/pm/sharing/${decCipher.organizationId}/folders/${decCipher.collectionIds[0]}/items`,
+            { cipher: { ...data, id: decCipher.id } }
+          )
+        } catch (error) {}
       }
     },
     async addToCollection (cipher, orgKey, collection) {
-      const type_ = cipher.type
-      if (type_ === 7) {
-        cipher.type = CipherType.SecureNote
-        cipher.secureNote.type = 0
-      }
-      const cipherEnc = await this.$cipherService.encrypt(cipher, orgKey)
-      const data = new CipherRequest(cipherEnc)
-      data.type = type_
-      cipher.type = type_
-      await this.$axios.$post(`cystack_platform/pm/sharing/${collection.organizationId}/folders/${collection.id}/items`, { cipher: { ...data, id: cipher.id } })
+      const { data } = await this.getEncCipherForRequest(cipher, {
+        noCheck: true,
+        encKey: orgKey
+      })
+      await this.$axios.$post(
+        `cystack_platform/pm/sharing/${collection.organizationId}/folders/${collection.id}/items`,
+        { cipher: { ...data, id: cipher.id } }
+      )
     }
   }
 }

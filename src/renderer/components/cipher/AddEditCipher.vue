@@ -248,7 +248,8 @@
 <script>
 import { Dialog } from 'element-ui'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { CipherType, SecureNoteType } from '../../jslib/src/enums'
+import { SecureNoteType } from '../../jslib/src/enums'
+import { CipherType } from '../../core/enums/cipherType'
 import { Cipher } from '../../jslib/src/models/domain'
 import {
   CipherView,
@@ -269,8 +270,6 @@ import LoginInput from './cipher-types/login/LoginInput.vue'
 import CardInput from './cipher-types/card/CardInput.vue'
 import IdentityInput from './cipher-types/identity/IdentityInput.vue'
 import CryptoBackupInput from './cipher-types/crypto-backup/CryptoBackupInput.vue'
-
-CipherType.CryptoWallet = CipherType.CryptoBackup = 7
 
 export default {
   components: {

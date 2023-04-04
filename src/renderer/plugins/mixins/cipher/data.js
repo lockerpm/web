@@ -100,6 +100,18 @@ Vue.mixin({
       } = extraData
 
       // Change type to Note for new cipher types to encrypt first
+      const newTypes = [
+        CipherType.TOTP,
+        CipherType.CryptoWallet,
+        CipherType.DriverLicense,
+        CipherType.CitizenID,
+        CipherType.Passport,
+        CipherType.SocialSecurityNumber,
+        CipherType.WirelessRouter,
+        CipherType.Server,
+        CipherType.APICipher,
+        CipherType.Database
+      ]
       if (cipher.type === CipherType.CryptoWallet) {
         if (cipher.cryptoWallet) {
           cipher.notes = JSON.stringify({
@@ -107,6 +119,8 @@ Vue.mixin({
             notes: cipher.notes
           })
         }
+      }
+      if (newTypes.includes(cipher.type)) {
         cipher.type = CipherType.SecureNote
         cipher.secureNote = new SecureNote(cipher.secureNote, true)
         cipher.secureNote.type = 0
