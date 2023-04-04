@@ -27,7 +27,7 @@
       </el-row>
       <p class="mt-6">
         <a
-          :href="`https://support.locker.io/${locale==='vi'?'/vi':''}/articles/Set-up-Locker-account-07472a425a1148b5a332bf69c2bb63b0?content=6._Enable_two-factor_authentication_(2FA)`"
+          :href="locale === 'vi' ? 'https://support.locker.io/vi/articles/Thiet-lap-tai-khoan-Locker-e20d25ca704d4b78b8672257bbc1eb96?content=6._Thiet_lap_2FA_%28Xac_thuc_hai_yeu_to%29' : 'https://support.locker.io/articles/Set-up-Locker-account-07472a425a1148b5a332bf69c2bb63b0?content=6._Enable_two-factor_authentication_(2FA)'"
           target="_blank"
         >
           {{ $t('data.settings.learn_two_factor_authentication') }} <i class="ml-1 el-icon-right" />
