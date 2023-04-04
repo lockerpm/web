@@ -1,6 +1,7 @@
 <template>
   <div>
     <section
+      id="anchor"
       class="full-width pt-28 bg-[#EEF4ED] w-[100%] relative pb-[100px] px-5 md:px-20 overflow-inherit mb-[60px] min-h-[744px]"
     >
       <transition name="fade" mode="out-in">
@@ -296,7 +297,8 @@
           <a
             v-for="item in $t('download2.section1.card')"
             :key="item.title"
-            :href="'#' + item.link"
+            href="#anchor"
+            :custom-href="'#' + item.link"
             class="py-5 mx-2 min-w-[124px] rounded-sm link-contain"
             :class="chosen == item.link ? 'bg-[#E3EDE6]' : 'hover:bg-[#E3EDE6]'"
             @click="setChosen(item.link)"
@@ -333,6 +335,18 @@ export default {
     }
   },
   mounted () {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault()
+        const customHref = anchor.getAttribute('custom-href')
+        const target = document.querySelector('#anchor')
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' })
+          const newUrl = window.location.origin + window.location.pathname + customHref
+          history.pushState({}, '', newUrl)
+        }
+      })
+    })
     const currentAnchor = this.$route.hash
     switch (currentAnchor) {
     case '#windows':
@@ -358,7 +372,6 @@ export default {
     setChosen (link) {
       this.chosen = link
       this.listDownload = false
-      window.scrollTo(0, 0)
     },
     toggleList () {
       this.listDownload = !this.listDownload
