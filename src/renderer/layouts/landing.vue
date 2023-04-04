@@ -49,7 +49,7 @@ export default {
   components: {
     Header,
     Footer,
-    TopBanner,
+    TopBanner
   },
   data () {
     return {
