@@ -135,6 +135,8 @@ Vue.mixin({
         return this.getIconDefaultCipher('CitizenId', size)
       case CipherType.Passport:
         return this.getIconDefaultCipher('Passport', size)
+      case CipherType.SocialSecurityNumber:
+        return this.getIconDefaultCipher('ssn', size)
       case 'Shares':
         return this.getIconDefaultCipher('Shares', size)
       case 'Trash':

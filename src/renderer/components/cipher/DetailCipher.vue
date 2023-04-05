@@ -152,6 +152,13 @@
           />
           <!-- Passport end -->
 
+          <!-- SSN -->
+          <ssn-details
+            v-if="cipher.type === CipherType.SocialSecurityNumber && cipher.ssn"
+            :cipher="cipher"
+          />
+          <!-- SSN end -->
+
           <!-- Notes -->
           <div>
             <TextHaveCopy
@@ -331,6 +338,7 @@ import CryptoBackupDetails from './cipher-types/crypto-backup/CryptoBackupDetail
 import DriverLicenseDetails from './cipher-types/driver-license/DriverLicenseDetails.vue'
 import CitizenIdDetails from './cipher-types/citizen-id/CitizenIdDetails.vue'
 import PassportDetails from './cipher-types/passport/PassportDetails.vue'
+import SsnDetails from './cipher-types/ssn/SsnDetails.vue'
 
 export default {
   components: {
@@ -346,7 +354,8 @@ export default {
     CryptoBackupDetails,
     DriverLicenseDetails,
     CitizenIdDetails,
-    PassportDetails
+    PassportDetails,
+    SsnDetails
   },
   props: {
     type: {

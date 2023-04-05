@@ -83,6 +83,11 @@ Vue.mixin({
         routeName: 'passports',
         label: 'passports'
       }
+      res[CipherType.SocialSecurityNumber] = {
+        type: CipherType.SocialSecurityNumber,
+        routeName: 'ssns',
+        label: 'ssns'
+      }
       return res
     },
 

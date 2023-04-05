@@ -151,6 +151,13 @@
           :is-deleted="isDeleted"
         />
 
+        <!-- SSN -->
+        <ssn-input
+          v-if="cipher.type === CipherType.SocialSecurityNumber"
+          ref="ssnInput"
+          :is-deleted="isDeleted"
+        />
+
         <!-- NOTES -->
         <div>
           <!-- Label -->
@@ -293,6 +300,7 @@ import CryptoBackupInput from './cipher-types/crypto-backup/CryptoBackupInput.vu
 import DriverLicenseInput from './cipher-types/driver-license/DriverLicenseInput.vue'
 import CitizenIdInput from './cipher-types/citizen-id/CitizenIdInput.vue'
 import PassportInput from './cipher-types/passport/PassportInput.vue'
+import SsnInput from './cipher-types/ssn/SsnInput.vue'
 
 export default {
   components: {
@@ -312,7 +320,8 @@ export default {
     CryptoBackupInput,
     DriverLicenseInput,
     CitizenIdInput,
-    PassportInput
+    PassportInput,
+    SsnInput
   },
 
   props: {
@@ -404,6 +413,12 @@ export default {
             this.$refs.passportInput.loadData(data.passport)
           }, 0)
         }
+        if (data.type === CipherType.SocialSecurityNumber) {
+          cipherData.notes = data.ssn.notes
+          setTimeout(() => {
+            this.$refs.ssnInput.loadData(data.ssn)
+          }, 0)
+        }
 
         // Update custom fields
         if (data.fields == null) {
@@ -487,6 +502,9 @@ export default {
       }
       if (this.cipher.type === CipherType.Passport) {
         this.cipher.passport = this.$refs.passportInput.getData()
+      }
+      if (this.cipher.type === CipherType.SocialSecurityNumber) {
+        this.cipher.ssn = this.$refs.ssnInput.getData()
       }
     },
 

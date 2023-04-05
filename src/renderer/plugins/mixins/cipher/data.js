@@ -5,6 +5,7 @@ import { toDriverLicenseData } from '../../../utils/new-types/driver-license'
 import { toCryptoWalletData } from '../../../utils/crypto'
 import { toCitizenIdData } from '../../../utils/new-types/citizen-id'
 import { toPassportData } from '../../../utils/new-types/passport'
+import { toSocialSecurityNumberData } from '../../../utils/new-types/ssn'
 import { CipherRequest } from '@/jslib/src/models/request'
 import { SecureNote } from '@/jslib/src/models/domain'
 
@@ -102,6 +103,9 @@ Vue.mixin({
         if (cipher.type === CipherType.Passport) {
           cipher.passport = toPassportData(cipher.notes)
         }
+        if (cipher.type === CipherType.SocialSecurityNumber) {
+          cipher.ssn = toSocialSecurityNumberData(cipher.notes)
+        }
       } catch (error) {
         //
       }
@@ -151,6 +155,14 @@ Vue.mixin({
         if (cipher.passport) {
           cipher.notes = JSON.stringify({
             ...cipher.passport,
+            notes: cipher.notes
+          })
+        }
+      }
+      if (cipher.type === CipherType.SocialSecurityNumber) {
+        if (cipher.ssn) {
+          cipher.notes = JSON.stringify({
+            ...cipher.ssn,
             notes: cipher.notes
           })
         }
@@ -223,6 +235,9 @@ Vue.mixin({
       }
       if (item.type === CipherType.Passport && item.passport) {
         return item.passport.fullName
+      }
+      if (item.type === CipherType.SocialSecurityNumber && item.ssn) {
+        return item.ssn.fullName
       }
       return item.subTitle
     },
@@ -373,6 +388,29 @@ Vue.mixin({
           {
             value: item.passport.placeOfIssue,
             label: 'data.ciphers.passport_type.place_of_issue'
+          }
+        ]
+
+      case CipherType.SocialSecurityNumber:
+        if (!item.ssn) {
+          return []
+        }
+        return [
+          {
+            value: item.ssn.fullName,
+            label: 'common.fullname'
+          },
+          {
+            value: item.ssn.socialSecurityNumber,
+            label: 'data.ciphers.ssn'
+          },
+          {
+            value: item.ssn.dateOfIssue,
+            label: 'data.ciphers.passport_type.date_of_issue'
+          },
+          {
+            value: item.ssn.contry,
+            label: 'common.nationality'
           }
         ]
       }
