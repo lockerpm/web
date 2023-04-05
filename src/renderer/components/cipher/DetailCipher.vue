@@ -166,6 +166,13 @@
           />
           <!-- Router end -->
 
+          <!-- Server -->
+          <server-details
+            v-if="cipher.type === CipherType.Server && cipher.server"
+            :cipher="cipher"
+          />
+          <!-- Server end -->
+
           <!-- Notes -->
           <div>
             <TextHaveCopy
@@ -347,6 +354,7 @@ import CitizenIdDetails from './cipher-types/citizen-id/CitizenIdDetails.vue'
 import PassportDetails from './cipher-types/passport/PassportDetails.vue'
 import SsnDetails from './cipher-types/ssn/SsnDetails.vue'
 import RouterDetails from './cipher-types/router/RouterDetails.vue'
+import ServerDetails from './cipher-types/server/ServerDetails.vue'
 
 export default {
   components: {
@@ -364,7 +372,8 @@ export default {
     CitizenIdDetails,
     PassportDetails,
     SsnDetails,
-    RouterDetails
+    RouterDetails,
+    ServerDetails
   },
   props: {
     type: {

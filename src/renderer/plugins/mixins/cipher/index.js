@@ -93,6 +93,11 @@ Vue.mixin({
         routeName: 'routers',
         label: 'routers'
       }
+      res[CipherType.Server] = {
+        type: CipherType.Server,
+        routeName: 'servers',
+        label: 'servers'
+      }
       return res
     },
 

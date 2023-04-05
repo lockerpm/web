@@ -165,6 +165,13 @@
           :is-deleted="isDeleted"
         />
 
+        <!-- SERVER -->
+        <server-input
+          v-if="cipher.type === CipherType.Server"
+          ref="serverInput"
+          :is-deleted="isDeleted"
+        />
+
         <!-- NOTES -->
         <div>
           <!-- Label -->
@@ -309,6 +316,7 @@ import CitizenIdInput from './cipher-types/citizen-id/CitizenIdInput.vue'
 import PassportInput from './cipher-types/passport/PassportInput.vue'
 import SsnInput from './cipher-types/ssn/SsnInput.vue'
 import RouterInput from './cipher-types/router/RouterInput.vue'
+import ServerInput from './cipher-types/server/ServerInput.vue'
 
 export default {
   components: {
@@ -330,7 +338,8 @@ export default {
     CitizenIdInput,
     PassportInput,
     SsnInput,
-    RouterInput
+    RouterInput,
+    ServerInput
   },
 
   props: {
@@ -434,6 +443,12 @@ export default {
             this.$refs.routerInput.loadData(data.router)
           }, 0)
         }
+        if (data.type === CipherType.Server) {
+          cipherData.notes = data.server.notes
+          setTimeout(() => {
+            this.$refs.serverInput.loadData(data.server)
+          }, 0)
+        }
 
         // Update custom fields
         if (data.fields == null) {
@@ -523,6 +538,9 @@ export default {
       }
       if (this.cipher.type === CipherType.WirelessRouter) {
         this.cipher.router = this.$refs.routerInput.getData()
+      }
+      if (this.cipher.type === CipherType.Server) {
+        this.cipher.server = this.$refs.serverInput.getData()
       }
     },
 

@@ -7,6 +7,7 @@ import { toCitizenIdData } from '../../../utils/new-types/citizen-id'
 import { toPassportData } from '../../../utils/new-types/passport'
 import { toSocialSecurityNumberData } from '../../../utils/new-types/ssn'
 import { toWirelessRouterData } from '../../../utils/new-types/router'
+import { toServerData } from '../../../utils/new-types/server'
 import { CipherRequest } from '@/jslib/src/models/request'
 import { SecureNote } from '@/jslib/src/models/domain'
 
@@ -110,6 +111,9 @@ Vue.mixin({
         if (cipher.type === CipherType.WirelessRouter) {
           cipher.router = toWirelessRouterData(cipher.notes)
         }
+        if (cipher.type === CipherType.Server) {
+          cipher.server = toServerData(cipher.notes)
+        }
       } catch (error) {
         //
       }
@@ -175,6 +179,14 @@ Vue.mixin({
         if (cipher.router) {
           cipher.notes = JSON.stringify({
             ...cipher.router,
+            notes: cipher.notes
+          })
+        }
+      }
+      if (cipher.type === CipherType.Server) {
+        if (cipher.server) {
+          cipher.notes = JSON.stringify({
+            ...cipher.server,
             notes: cipher.notes
           })
         }
@@ -253,6 +265,9 @@ Vue.mixin({
       }
       if (item.type === CipherType.WirelessRouter && item.router) {
         return item.router.deviceName
+      }
+      if (item.type === CipherType.Server && item.server) {
+        return item.server.username
       }
       return item.subTitle
     },
@@ -457,6 +472,33 @@ Vue.mixin({
           {
             value: item.router.wifiPassword,
             label: 'data.ciphers.router.wifi_pw'
+          }
+        ]
+
+      case CipherType.Server:
+        if (!item.server) {
+          return []
+        }
+        return [
+          {
+            value: item.server.host,
+            label: 'data.ciphers.server.host'
+          },
+          {
+            value: item.server.publicKey,
+            label: 'data.ciphers.server.public_key'
+          },
+          {
+            value: item.server.privateKey,
+            label: 'data.ciphers.server.private_key'
+          },
+          {
+            value: item.server.username,
+            label: 'common.username'
+          },
+          {
+            value: item.server.password,
+            label: 'common.password'
           }
         ]
       }
