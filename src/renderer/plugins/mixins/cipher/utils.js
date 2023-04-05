@@ -143,6 +143,8 @@ Vue.mixin({
         return this.getIconDefaultCipher('Server', size)
       case CipherType.APICipher:
         return this.getIconDefaultCipher('Api', size)
+      case CipherType.Database:
+        return this.getIconDefaultCipher('Database', size)
       case 'Shares':
         return this.getIconDefaultCipher('Shares', size)
       case 'Trash':

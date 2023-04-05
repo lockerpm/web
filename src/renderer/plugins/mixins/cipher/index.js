@@ -103,6 +103,11 @@ Vue.mixin({
         routeName: 'apis',
         label: 'apis'
       }
+      res[CipherType.Database] = {
+        type: CipherType.Database,
+        routeName: 'databases',
+        label: 'databases'
+      }
       return res
     },
 

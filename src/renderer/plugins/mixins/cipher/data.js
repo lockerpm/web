@@ -127,6 +127,9 @@ Vue.mixin({
         if (cipher.type === CipherType.APICipher) {
           cipher.api = toApiCipherData(cipher.notes)
         }
+        if (cipher.type === CipherType.Database) {
+          cipher.database = toApiCipherData(cipher.notes)
+        }
       } catch (error) {
         //
       }
@@ -208,6 +211,14 @@ Vue.mixin({
         if (cipher.api) {
           cipher.notes = JSON.stringify({
             ...cipher.api,
+            notes: cipher.notes
+          })
+        }
+      }
+      if (cipher.type === CipherType.Database) {
+        if (cipher.database) {
+          cipher.notes = JSON.stringify({
+            ...cipher.database,
             notes: cipher.notes
           })
         }
@@ -543,6 +554,33 @@ Vue.mixin({
           {
             value: item.api.response,
             label: 'data.ciphers.api.response'
+          }
+        ]
+
+      case CipherType.Database:
+        if (!item.database) {
+          return []
+        }
+        return [
+          {
+            value: item.database.host,
+            label: 'data.ciphers.database.host'
+          },
+          {
+            value: item.database.port,
+            label: 'data.ciphers.database.port'
+          },
+          {
+            value: item.database.username,
+            label: 'common.username'
+          },
+          {
+            value: item.database.password,
+            label: 'common.password'
+          },
+          {
+            value: item.database.default,
+            label: 'data.ciphers.database.default'
           }
         ]
       }
