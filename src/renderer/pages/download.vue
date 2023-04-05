@@ -346,7 +346,6 @@ export default {
         }
       })
     })
-    console.log(this.$ua.os())
     const currentAnchor = this.$route.hash
     if (currentAnchor) {
       switch (currentAnchor) {
