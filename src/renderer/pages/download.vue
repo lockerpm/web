@@ -369,6 +369,7 @@ export default {
       }
     } else {
       const os = this.$ua.os()
+      this.chosen = 'macos'
       if (os.includes('Windows')) this.chosen = 'windows'
       if (os.includes('iPad') || os.includes('iPhone')) this.chosen = 'ios'
       if (os.includes('Android')) this.chosen = 'android'
