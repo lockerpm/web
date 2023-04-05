@@ -1,19 +1,26 @@
 <template>
   <div>
-    <TextHaveCopy :label="$t('data.ciphers.api.url')" :text="api.url" />
-    <TextHaveCopy :label="$t('data.ciphers.api.method')" :text="getMethod()" />
-    <TextHaveCopy :label="$t('data.ciphers.api.header')" :text="api.header" />
     <TextHaveCopy
-      :label="$t('data.ciphers.api.body_data')"
-      :text="api.bodyData"
+      :label="$t('data.ciphers.database.host')"
+      :text="database.host"
     />
     <TextHaveCopy
-      :label="$t('data.ciphers.api.response')"
-      :text="api.response"
+      :label="$t('data.ciphers.database.port')"
+      :text="database.port"
+    />
+    <TextHaveCopy :label="$t('common.username')" :text="database.username" />
+    <TextHaveCopy
+      :label="$t('common.password')"
+      :text="database.password"
+      should-hide
+    />
+    <TextHaveCopy
+      :label="$t('data.ciphers.database.default')"
+      :text="database.default"
     />
     <TextHaveCopy
       :label="$t('data.ciphers.notes')"
-      :text="api.notes"
+      :text="database.notes"
       :text-area="true"
     />
   </div>
@@ -30,23 +37,14 @@ export default {
   props: {
     cipher: {
       type: [CipherView, Object],
-      default: () => ({ api: {} })
+      default: () => ({ database: {} })
     }
   },
 
   computed: {
-    api () {
-      const item = { ...this.cipher.api }
+    database () {
+      const item = { ...this.cipher.database }
       return item
-    }
-  },
-
-  methods: {
-    getMethod () {
-      return (
-        this.apiMethodOptions.find(o => this.api?.method === o.value)?.label ||
-        ''
-      )
     }
   }
 }

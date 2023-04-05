@@ -1,34 +1,33 @@
 <template>
   <div>
     <InputText
-      v-model="api.url"
-      :label="$t('data.ciphers.api.url')"
-      class="w-full"
-      :disabled="isDeleted"
-    />
-    <InputSelect
-      :label="$t('data.ciphers.api.method')"
-      :initial-value="api.method"
-      class="w-full"
-      :disabled="isDeleted"
-      :options="apiMethodOptions"
-      @change="val => (api.method = val)"
-    />
-    <InputText
-      v-model="api.header"
-      :label="$t('data.ciphers.api.header')"
+      v-model="database.host"
+      :label="$t('data.ciphers.database.host')"
       class="w-full"
       :disabled="isDeleted"
     />
     <InputText
-      v-model="api.bodyData"
-      :label="$t('data.ciphers.api.body_data')"
+      v-model="database.port"
+      :label="$t('data.ciphers.database.port')"
       class="w-full"
       :disabled="isDeleted"
     />
     <InputText
-      v-model="api.response"
-      :label="$t('data.ciphers.api.response')"
+      v-model="database.username"
+      :label="$t('common.username')"
+      class="w-full"
+      :disabled="isDeleted"
+    />
+    <InputText
+      v-model="database.password"
+      :label="$t('common.password')"
+      class="w-full"
+      :disabled="isDeleted"
+      is-password
+    />
+    <InputText
+      v-model="database.default"
+      :label="$t('data.ciphers.database.default')"
       class="w-full"
       :disabled="isDeleted"
     />
@@ -36,13 +35,10 @@
 </template>
 <script>
 import InputText from '../../../input/InputText'
-import { API_METHODS } from '../../../../utils/new-types/api'
-import InputSelect from '../../../input/InputSelect'
 
 export default {
   components: {
-    InputText,
-    InputSelect
+    InputText
   },
 
   props: {
@@ -54,12 +50,12 @@ export default {
 
   data () {
     return {
-      api: {
-        url: '',
-        method: API_METHODS.GET,
-        header: '',
-        bodyData: '',
-        response: '',
+      database: {
+        host: '',
+        port: '',
+        username: '',
+        password: '',
+        default: '',
         notes: ''
       }
     }
@@ -67,11 +63,11 @@ export default {
 
   methods: {
     loadData (data) {
-      this.api = { ...data }
+      this.database = { ...data }
     },
 
     getData () {
-      return this.api
+      return this.database
     }
   }
 }

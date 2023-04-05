@@ -180,6 +180,13 @@
           />
           <!-- API end -->
 
+          <!-- Database -->
+          <database-details
+            v-if="cipher.type === CipherType.Database && cipher.database"
+            :cipher="cipher"
+          />
+          <!-- Database end -->
+
           <!-- Notes -->
           <div>
             <TextHaveCopy
@@ -363,6 +370,7 @@ import SsnDetails from './cipher-types/ssn/SsnDetails.vue'
 import RouterDetails from './cipher-types/router/RouterDetails.vue'
 import ServerDetails from './cipher-types/server/ServerDetails.vue'
 import ApiDetails from './cipher-types/api/ApiDetails.vue'
+import DatabaseDetails from './cipher-types/database/DatabaseDetails.vue'
 
 export default {
   components: {
@@ -382,7 +390,8 @@ export default {
     SsnDetails,
     RouterDetails,
     ServerDetails,
-    ApiDetails
+    ApiDetails,
+    DatabaseDetails
   },
   props: {
     type: {
