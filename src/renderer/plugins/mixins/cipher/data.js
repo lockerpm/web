@@ -1,26 +1,13 @@
 import Vue from 'vue'
 import cloneDeep from 'lodash/cloneDeep'
 import { CipherType } from '../../../core/enums/cipherType'
+import { toDriverLicenseData } from '../../../utils/new-types/driver-license'
+import { toCryptoWalletData } from '../../../utils/crypto'
 import { CipherRequest } from '@/jslib/src/models/request'
 import { SecureNote } from '@/jslib/src/models/domain'
 
 Vue.mixin({
   computed: {
-    newCipherTypes () {
-      return [
-        CipherType.TOTP,
-        CipherType.CryptoWallet,
-        CipherType.DriverLicense,
-        CipherType.CitizenID,
-        CipherType.Passport,
-        CipherType.SocialSecurityNumber,
-        CipherType.WirelessRouter,
-        CipherType.Server,
-        CipherType.APICipher,
-        CipherType.Database
-      ]
-    },
-
     // ----------------- CARD -----------------
 
     cardBrandOptions () {
@@ -92,7 +79,10 @@ Vue.mixin({
       const cipher = cloneDeep(originalCipher)
       try {
         if (cipher.type === CipherType.CryptoWallet) {
-          cipher.cryptoWallet = JSON.parse(cipher.notes)
+          cipher.cryptoWallet = toCryptoWalletData(cipher.notes)
+        }
+        if (cipher.type === CipherType.DriverLicense) {
+          cipher.driverLicense = toDriverLicenseData(cipher.notes)
         }
       } catch (error) {
         //
@@ -119,6 +109,14 @@ Vue.mixin({
         if (cipher.cryptoWallet) {
           cipher.notes = JSON.stringify({
             ...cipher.cryptoWallet,
+            notes: cipher.notes
+          })
+        }
+      }
+      if (cipher.type === CipherType.DriverLicense) {
+        if (cipher.driverLicense) {
+          cipher.notes = JSON.stringify({
+            ...cipher.driverLicense,
             notes: cipher.notes
           })
         }
@@ -179,6 +177,16 @@ Vue.mixin({
       }
     },
 
+    getCipherSubtitle (item) {
+      if (item.type === CipherType.CryptoWallet && item.cryptoWallet) {
+        return item.cryptoWallet.username
+      }
+      if (item.type === CipherType.DriverLicense && item.driverLicense) {
+        return item.driverLicense.fullName
+      }
+      return item.subTitle
+    },
+
     getCopyableValues (item) {
       switch (item.type) {
       case CipherType.Login:
@@ -226,6 +234,40 @@ Vue.mixin({
           {
             value: item.cryptoWallet.password,
             label: 'data.ciphers.password_pin'
+          }
+        ]
+      case CipherType.DriverLicense:
+        if (!item.driverLicense) {
+          return []
+        }
+        return [
+          {
+            value: item.driverLicense.idNO,
+            label: 'data.ciphers.drive_license.no'
+          },
+          {
+            value: item.driverLicense.fullName,
+            label: 'common.fullname'
+          },
+          {
+            value: item.driverLicense.class,
+            label: 'data.ciphers.drive_license.class'
+          },
+          {
+            value: item.driverLicense.validUntil,
+            label: 'data.ciphers.drive_license.valid_until'
+          },
+          {
+            value: item.driverLicense.vehicleClass,
+            label: 'data.ciphers.drive_license.vehicle_class'
+          },
+          {
+            value: item.driverLicense.beginningDate,
+            label: 'data.ciphers.drive_license.beginning_date'
+          },
+          {
+            value: item.driverLicense.issuedBy,
+            label: 'data.ciphers.drive_license.issued_by'
           }
         ]
       }

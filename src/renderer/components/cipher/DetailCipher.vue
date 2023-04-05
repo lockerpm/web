@@ -129,6 +129,15 @@
           />
           <!-- Crypto wallet end -->
 
+          <!-- Driver license -->
+          <driver-license-details
+            v-if="
+              cipher.type === CipherType.DriverLicense && cipher.driverLicense
+            "
+            :cipher="cipher"
+          />
+          <!-- Driver license end -->
+
           <!-- Notes -->
           <div>
             <TextHaveCopy
@@ -305,6 +314,7 @@ import MasterPwDetails from './cipher-types/login/MasterPwDetails.vue'
 import CardDetails from './cipher-types/card/CardDetails.vue'
 import IdentityDetails from './cipher-types/identity/IdentityDetails.vue'
 import CryptoBackupDetails from './cipher-types/crypto-backup/CryptoBackupDetails.vue'
+import DriverLicenseDetails from './cipher-types/driver-license/DriverLicenseDetails.vue'
 
 export default {
   components: {
@@ -317,7 +327,8 @@ export default {
     MasterPwDetails,
     CardDetails,
     IdentityDetails,
-    CryptoBackupDetails
+    CryptoBackupDetails,
+    DriverLicenseDetails
   },
   props: {
     type: {

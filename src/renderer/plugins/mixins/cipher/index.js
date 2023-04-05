@@ -7,19 +7,35 @@ Vue.mixin({
       return this.$store.state.notDeletedCipherCount
     },
 
+    newCipherTypes () {
+      return [
+        CipherType.TOTP,
+        CipherType.CryptoWallet,
+        CipherType.DriverLicense,
+        CipherType.CitizenID,
+        CipherType.Passport,
+        CipherType.SocialSecurityNumber,
+        CipherType.WirelessRouter,
+        CipherType.Server,
+        CipherType.APICipher,
+        CipherType.Database
+      ]
+    },
+
     cipherMapping () {
+      // Notes: do not add friendly name for new cipher types
+      // Friendly name only used for translation of old types
       const res = {}
       res[CipherType.Login] = {
         type: CipherType.Login,
         routeName: 'passwords',
         label: 'passwords',
-        icon: 'passwords'
+        friendlyName: 'Password'
       }
       res[CipherType.MasterPassword] = {
         type: CipherType.MasterPassword,
         routeName: 'passwords',
         label: 'passwords',
-        icon: 'passwords',
         noMenu: true,
         noCreate: true
       }
@@ -27,19 +43,19 @@ Vue.mixin({
         type: CipherType.SecureNote,
         routeName: 'notes',
         label: 'notes',
-        icon: 'notes'
+        friendlyName: 'Note'
       }
       res[CipherType.Card] = {
         type: CipherType.Card,
         routeName: 'cards',
         label: 'cards',
-        icon: 'cards'
+        friendlyName: 'Card'
       }
       res[CipherType.Identity] = {
         type: CipherType.Identity,
         routeName: 'identities',
         label: 'identities',
-        icon: 'identities'
+        friendlyName: 'Identity'
       }
       res[CipherType.TOTP] = {
         type: CipherType.TOTP,
@@ -50,7 +66,12 @@ Vue.mixin({
         type: CipherType.CryptoWallet,
         routeName: 'crypto-backups',
         label: 'crypto_backups',
-        icon: 'passwords'
+        friendlyName: 'CryptoBackup'
+      }
+      res[CipherType.DriverLicense] = {
+        type: CipherType.DriverLicense,
+        routeName: 'driver-licenses',
+        label: 'driver_licenses'
       }
       return res
     },

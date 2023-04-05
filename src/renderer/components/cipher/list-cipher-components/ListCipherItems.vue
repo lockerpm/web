@@ -115,11 +115,7 @@
 
               <!-- Subtitle -->
               <div class="overflow-hidden overflow-ellipsis">
-                {{
-                  item.type === CipherType.CryptoWallet && item.cryptoWallet
-                    ? item.cryptoWallet.username
-                    : item.subTitle
-                }}
+                {{ getCipherSubtitle(item) }}
               </div>
               <!-- Subtitle end -->
             </div>

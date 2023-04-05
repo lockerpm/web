@@ -30,8 +30,7 @@ export default {
       return [
         {
           label: 'all',
-          routeName: 'vault',
-          icon: 'all'
+          routeName: 'vault'
         },
         ...Object.values(this.cipherMapping).filter(m => !m.noMenu)
       ]

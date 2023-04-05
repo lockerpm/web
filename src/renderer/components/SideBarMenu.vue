@@ -225,6 +225,10 @@ export default {
             {
               label: 'crypto_backups',
               routeName: 'crypto-backups'
+            },
+            {
+              label: 'driver_licenses',
+              routeName: 'driver-licenses'
             }
           ]
         },

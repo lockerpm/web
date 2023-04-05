@@ -140,17 +140,13 @@ export default {
   },
   computed: {
     type () {
+      const cipherMap = Object.values(this.cipherMapping).find(
+        m => m.routeName === this.routeName
+      )
+      if (cipherMap) {
+        return cipherMap.friendlyName || cipherMap.type
+      }
       switch (this.routeName) {
-      case 'passwords':
-        return 'Login'
-      case 'notes':
-        return 'SecureNote'
-      case 'cards':
-        return 'Card'
-      case 'identities':
-        return 'Identity'
-      case 'crypto-backups':
-        return 'CryptoBackup'
       case 'vault':
         return 'Vault'
       case 'shares':

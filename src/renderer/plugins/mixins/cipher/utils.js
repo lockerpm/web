@@ -98,9 +98,7 @@ Vue.mixin({
         return this.getIconDefaultCipher('Identity', size)
       case CipherType.TOTP:
         return this.getIconDefaultCipher('Authenticator', size)
-      case 6:
-        return this.getIconDefaultCipher('CryptoAccount', size)
-      case 7:
+      case CipherType.CryptoWallet:
         if (!defaultIcon) {
           if (cipher.cryptoWallet && cipher.cryptoWallet.walletApp) {
             try {
@@ -131,6 +129,8 @@ Vue.mixin({
           }
         }
         return this.getIconDefaultCipher('CryptoWallet', size)
+      case CipherType.DriverLicense:
+        return this.getIconDefaultCipher('DriverLicense', size)
       case 'Shares':
         return this.getIconDefaultCipher('Shares', size)
       case 'Trash':

@@ -128,7 +128,13 @@
           ref="cryptoBackupInput"
           :is-deleted="isDeleted"
           :cipher-id="cipher.id"
-          @update:cryptoWallet="val => (cipher.cryptoWallet = val)"
+        />
+
+        <!-- DRIVER LICENSE -->
+        <driver-license-input
+          v-if="cipher.type === CipherType.DriverLicense"
+          ref="driverLicenseInput"
+          :is-deleted="isDeleted"
         />
 
         <!-- NOTES -->
@@ -270,6 +276,7 @@ import LoginInput from './cipher-types/login/LoginInput.vue'
 import CardInput from './cipher-types/card/CardInput.vue'
 import IdentityInput from './cipher-types/identity/IdentityInput.vue'
 import CryptoBackupInput from './cipher-types/crypto-backup/CryptoBackupInput.vue'
+import DriverLicenseInput from './cipher-types/driver-license/DriverLicenseInput.vue'
 
 export default {
   components: {
@@ -286,7 +293,8 @@ export default {
     LoginInput,
     CardInput,
     IdentityInput,
-    CryptoBackupInput
+    CryptoBackupInput,
+    DriverLicenseInput
   },
 
   props: {
@@ -358,6 +366,12 @@ export default {
           cipherData.notes = data.cryptoWallet.notes
           setTimeout(() => {
             this.$refs.cryptoBackupInput.loadData(data.cryptoWallet)
+          }, 0)
+        }
+        if (data.type === CipherType.DriverLicense) {
+          cipherData.notes = data.driverLicense.notes
+          setTimeout(() => {
+            this.$refs.driverLicenseInput.loadData(data.driverLicense)
           }, 0)
         }
 
@@ -434,6 +448,9 @@ export default {
     loadCipherDataFromComponents () {
       if (this.cipher.type === CipherType.CryptoWallet) {
         this.cipher.cryptoWallet = this.$refs.cryptoBackupInput.getData()
+      }
+      if (this.cipher.type === CipherType.DriverLicense) {
+        this.cipher.driverLicense = this.$refs.driverLicenseInput.getData()
       }
     },
 
