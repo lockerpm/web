@@ -29,7 +29,7 @@
         </div>
       </div>
       <div>
-        <button class="btn btn-default" @click="openDeauthorizeSessions()">
+        <button class="btn btn-outline-primary" @click="openDeauthorizeSessions()">
           {{ $t('data.settings.logout_all') }}
         </button>
       </div>

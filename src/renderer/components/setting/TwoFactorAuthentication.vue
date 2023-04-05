@@ -8,7 +8,7 @@
         <div>
           <a href="https://id.locker.io/security/two-step-verification" target="_blank" class="mr-4">
             <button
-              class="btn btn-default md:mb-0"
+              class="btn btn-outline-primary md:mb-0"
               @click="() => collapsed = !collapsed"
             >
               <span>{{ $t('data.settings.two_step_verification') }}</span>

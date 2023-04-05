@@ -21,12 +21,6 @@
           </div>
           <div>
             <button
-              class="btn btn-default !text-warning mb-4 md:mb-0"
-              @click="lock"
-            >
-              {{ $t('common.lock') }}
-            </button>
-            <button
               class="btn btn-default !text-danger"
               @click="logout"
             >

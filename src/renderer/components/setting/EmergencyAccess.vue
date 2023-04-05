@@ -9,9 +9,10 @@
         </div>
         <div>
           <button
-            class="btn btn-default !text-warning mr-4"
+            class="btn btn-outline-primary mr-4"
             @click="postEmergencyAccess"
           >
+            <i class="el-icon-plus" />
             {{ $t('data.emergency_access.add_emergency_contact') }}
           </button>
           <i v-if="!collapsed" class="el-icon-arrow-right" />

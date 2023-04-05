@@ -7,7 +7,7 @@
         </div>
         <div>
           <button
-            class="btn btn-default md:mb-0 mr-4"
+            class="btn btn-outline-primary md:mb-0 mr-4"
             @click="changeMasterPassword"
           >
             <span><i class="fas fa-key mr-2" />{{ $t('data.settings.change_master_password') }}</span>

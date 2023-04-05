@@ -6,12 +6,19 @@
           {{ $t('data.settings.preferences') }}
         </div>
         <div>
-          <button
-            class="btn btn-default !text-warning mr-4 md:mb-0"
-            @click="lock"
+          <el-tooltip
+            class="item"
+            effect="light"
+            :content="$t('data.settings.lock_desc')"
+            placement="bottom-end"
           >
-            {{ $t('common.lock') }}
-          </button>
+            <button
+              class="btn btn-default !text-warning mr-4 md:mb-0"
+              @click="lock"
+            >
+              {{ $t('common.lock') }}
+            </button>
+          </el-tooltip>
           <i v-if="!collapsed" class="el-icon-arrow-right" />
           <i v-else class="el-icon-arrow-down" />
         </div>
