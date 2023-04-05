@@ -112,6 +112,7 @@ export default {
         this.$store.dispatch('LoadNotification')
         this.$store.dispatch('LoadTeams')
         this.getSyncData()
+        this.syncQuickShares()
         this.$refs.emergencyAccessInvitations.getEmergencyAccessInvitations()
         this.reconnectSocket()
         this.getShareInvitations()
@@ -226,8 +227,17 @@ export default {
     },
     reconnectSocket () {
       const token = this.$cookies.get('cs_locker_token')
+      const _sanitizeUrl = connectionUrl => {
+        if (connectionUrl.startsWith('//')) {
+          const scheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
+          connectionUrl = `${scheme}:${connectionUrl}`
+        }
+
+        return connectionUrl
+      }
+
       this.$connect(
-        this.sanitizeUrl(
+        _sanitizeUrl(
           `${process.env.wsUrl}/cystack_platform/pm/sync?token=${token}`
         ),
         {
@@ -247,6 +257,9 @@ export default {
           break
         case 'emergency_access':
           this.$refs.emergencyAccessInvitations.getEmergencyAccessInvitations()
+          break
+        case 'quick_share':
+          this.syncQuickShares()
           break
         case 'members':
           this.getMyShares()

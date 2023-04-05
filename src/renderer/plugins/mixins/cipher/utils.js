@@ -152,7 +152,7 @@ Vue.mixin({
       case 'Vault':
         return this.getIconDefaultCipher('Dashboard', size)
       default:
-        return ''
+        return this.getIconDefaultCipher('any', size)
       }
     },
 

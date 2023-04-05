@@ -620,3 +620,8 @@ a:hover {
   margin-top: -0px; /*same height as header*/
   visibility: hidden;
 }
+
+.el-button,
+.el-dialog__title {
+  font-weight: 600;
+}

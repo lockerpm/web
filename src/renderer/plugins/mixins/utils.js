@@ -26,15 +26,6 @@ Vue.mixin({
         return true
       }
       return false
-    },
-
-    sanitizeUrl (connectionUrl) {
-      if (connectionUrl.startsWith('//')) {
-        const scheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
-        connectionUrl = `${scheme}:${connectionUrl}`
-      }
-
-      return connectionUrl
     }
   }
 })
