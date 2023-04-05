@@ -88,6 +88,11 @@ Vue.mixin({
         routeName: 'ssns',
         label: 'ssns'
       }
+      res[CipherType.WirelessRouter] = {
+        type: CipherType.WirelessRouter,
+        routeName: 'routers',
+        label: 'routers'
+      }
       return res
     },
 

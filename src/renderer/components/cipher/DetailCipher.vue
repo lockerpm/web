@@ -159,6 +159,13 @@
           />
           <!-- SSN end -->
 
+          <!-- Router -->
+          <router-details
+            v-if="cipher.type === CipherType.WirelessRouter && cipher.router"
+            :cipher="cipher"
+          />
+          <!-- Router end -->
+
           <!-- Notes -->
           <div>
             <TextHaveCopy
@@ -339,6 +346,7 @@ import DriverLicenseDetails from './cipher-types/driver-license/DriverLicenseDet
 import CitizenIdDetails from './cipher-types/citizen-id/CitizenIdDetails.vue'
 import PassportDetails from './cipher-types/passport/PassportDetails.vue'
 import SsnDetails from './cipher-types/ssn/SsnDetails.vue'
+import RouterDetails from './cipher-types/router/RouterDetails.vue'
 
 export default {
   components: {
@@ -355,7 +363,8 @@ export default {
     DriverLicenseDetails,
     CitizenIdDetails,
     PassportDetails,
-    SsnDetails
+    SsnDetails,
+    RouterDetails
   },
   props: {
     type: {

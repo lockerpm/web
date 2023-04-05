@@ -6,6 +6,7 @@ import { toCryptoWalletData } from '../../../utils/crypto'
 import { toCitizenIdData } from '../../../utils/new-types/citizen-id'
 import { toPassportData } from '../../../utils/new-types/passport'
 import { toSocialSecurityNumberData } from '../../../utils/new-types/ssn'
+import { toWirelessRouterData } from '../../../utils/new-types/router'
 import { CipherRequest } from '@/jslib/src/models/request'
 import { SecureNote } from '@/jslib/src/models/domain'
 
@@ -106,6 +107,9 @@ Vue.mixin({
         if (cipher.type === CipherType.SocialSecurityNumber) {
           cipher.ssn = toSocialSecurityNumberData(cipher.notes)
         }
+        if (cipher.type === CipherType.WirelessRouter) {
+          cipher.router = toWirelessRouterData(cipher.notes)
+        }
       } catch (error) {
         //
       }
@@ -163,6 +167,14 @@ Vue.mixin({
         if (cipher.ssn) {
           cipher.notes = JSON.stringify({
             ...cipher.ssn,
+            notes: cipher.notes
+          })
+        }
+      }
+      if (cipher.type === CipherType.WirelessRouter) {
+        if (cipher.router) {
+          cipher.notes = JSON.stringify({
+            ...cipher.router,
             notes: cipher.notes
           })
         }
@@ -238,6 +250,9 @@ Vue.mixin({
       }
       if (item.type === CipherType.SocialSecurityNumber && item.ssn) {
         return item.ssn.fullName
+      }
+      if (item.type === CipherType.WirelessRouter && item.router) {
+        return item.router.deviceName
       }
       return item.subTitle
     },
@@ -411,6 +426,37 @@ Vue.mixin({
           {
             value: item.ssn.contry,
             label: 'common.nationality'
+          }
+        ]
+
+      case CipherType.WirelessRouter:
+        if (!item.router) {
+          return []
+        }
+        return [
+          {
+            value: item.router.deviceName,
+            label: 'data.ciphers.router.device_name'
+          },
+          {
+            value: item.router.ipAddress,
+            label: 'data.ciphers.router.router_ip_address'
+          },
+          {
+            value: item.router.adminUsername,
+            label: 'data.ciphers.router.admin_username'
+          },
+          {
+            value: item.router.adminPassword,
+            label: 'data.ciphers.router.admin_password'
+          },
+          {
+            value: item.router.wifiSSID,
+            label: 'data.ciphers.router.wifi_ssid'
+          },
+          {
+            value: item.router.wifiPassword,
+            label: 'data.ciphers.router.wifi_pw'
           }
         ]
       }
