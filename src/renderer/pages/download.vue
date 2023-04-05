@@ -7,26 +7,26 @@
         <!-- Macos -->
         <section v-if="chosen == 'macos'" id="macos" key="1" class="animation">
           <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag1 landing-font-16 font-semibold">
-            {{ $t('download2.section3.coming') }}
+            {{ $t("download.section3.coming") }}
           </div>
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download2.section1.title") }}
+            {{ $t("download.section1.title") }}
           </h1>
           <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
-            {{ $t("download2.section1.subtitle") }}
+            {{ $t("download.section1.subtitle") }}
           </h2>
           <div class="grid gap-x-3 items-center max-w-[1010px] mx-auto justify-items-center justify-center min-h-[380px] md:flex md:justify-between">
             <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <button class="button-download bg-tag1" @click="toggleList()">
                   <span>
-                    {{ $t('download2.section2.button') }}
+                    {{ $t('download.section2.button') }}
                   </span>
                   <img src="~/assets/images/landing/download2/down.svg" alt="" class="rotate-icon">
                 </button>
                 <div class="grid gap-y-[12px] dropdown" :class="listDownload ? 'show ' : ''">
                   <div
-                    v-for="(item, id) in $t('download2.section2.list')"
+                    v-for="(item, id) in $t('download.section2.list')"
                     :key="id"
                     :class="id == 0 ? 'mt-[32px]' : ''"
                   >
@@ -47,7 +47,7 @@
                     class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap "
                     target="_blank"
                   >
-                    {{ $t('download2.section2.link') }}
+                    {{ $t('download.section2.link') }}
                   </a>
                   <img src="~/assets/images/landing/download2/right-blue.svg" alt="">
                 </div>
@@ -59,20 +59,20 @@
         <!-- Windows -->
         <section v-if="chosen == 'windows'" id="windows" key="2" class="animation">
           <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag2 landing-font-16 font-semibold">
-            {{ $t('download2.section3.coming') }}
+            {{ $t('download.section3.coming') }}
           </div>
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download2.section4.title") }}
+            {{ $t("download.section4.title") }}
           </h1>
           <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
-            {{ $t("download2.section4.subtitle") }}
+            {{ $t("download.section4.subtitle") }}
           </h2>
           <div class="grid justify-center md:justify-between gap-x-3 items-center max-w-[1010px] justify-items-center mx-auto min-h-[380px] md:flex">
             <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <div class="grid gap-y-[32px]">
                   <div
-                    v-for="(item, id) in $t('download2.section4.list')"
+                    v-for="(item, id) in $t('download.section4.list')"
                     :key="id"
                   >
                     <button class="button-disable">
@@ -92,7 +92,7 @@
                     class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap "
                     target="_blank"
                   >
-                    {{ $t('download2.section2.link') }}
+                    {{ $t('download.section2.link') }}
                   </a>
                   <img src="~/assets/images/landing/download2/right-blue.svg" alt="">
                 </div>
@@ -104,17 +104,17 @@
         <!-- ios -->
         <section v-if="chosen == 'ios'" id="ios" key="3" class="animation">
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download2.section5.title") }}
+            {{ $t("download.section5.title") }}
           </h1>
           <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
-            {{ $t("download2.section5.subtitle") }}
+            {{ $t("download.section5.subtitle") }}
           </h2>
           <div class="grid justify-center md:justify-between gap-x-3 items-center justify-items-center max-w-[1010px] min-h-[380px] mx-auto md:flex">
             <div class="max-w-[310px] relative">
               <div>
                 <div class="grid gap-y-[32px]">
                   <a
-                    v-for="(item, id) in $t('download2.section5.list')"
+                    v-for="(item, id) in $t('download.section5.list')"
                     :key="id"
                     target="_blank"
                     :href="item.link"
@@ -136,7 +136,7 @@
                     class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap "
                     target="_blank"
                   >
-                    {{ $t('download2.section2.link') }}
+                    {{ $t('download.section2.link') }}
                   </a>
                   <img src="~/assets/images/landing/download2/right-blue.svg" alt="">
                 </div>
@@ -148,17 +148,17 @@
         <!-- android -->
         <section v-if="chosen == 'android'" id="android" key="4" class="animation">
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download2.section6.title") }}
+            {{ $t("download.section6.title") }}
           </h1>
           <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
-            {{ $t("download2.section6.subtitle") }}
+            {{ $t("download.section6.subtitle") }}
           </h2>
           <div class="grid justify-center md:justify-between gap-x-3 items-center justify-items-center max-w-[1010px] mx-auto md:flex">
             <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <div class="grid gap-y-[32px]">
                   <a
-                    v-for="(item, id) in $t('download2.section6.list')"
+                    v-for="(item, id) in $t('download.section6.list')"
                     :key="id"
                     :href="item.link"
                     target="_blank"
@@ -180,7 +180,7 @@
                     class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap "
                     target="_blank"
                   >
-                    {{ $t('download2.section2.link') }}
+                    {{ $t('download.section2.link') }}
                   </a>
                   <img src="~/assets/images/landing/download2/right-blue.svg" alt="">
                 </div>
@@ -192,26 +192,26 @@
         <!-- linux -->
         <section v-if="chosen == 'linux'" id="linux" key="5" class="animation">
           <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag3 landing-font-16 font-semibold">
-            {{ $t('download2.section3.coming') }}
+            {{ $t('download.section3.coming') }}
           </div>
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download2.section7.title") }}
+            {{ $t("download.section7.title") }}
           </h1>
           <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
-            {{ $t("download2.section7.subtitle") }}
+            {{ $t("download.section7.subtitle") }}
           </h2>
           <div class="grid justify-between gap-x-3 items-center justify-items-center max-w-[1010px] min-h-[380px] mx-auto md:flex">
             <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <button class="button-download bg-tag3" @click="toggleList()">
                   <span>
-                    {{ $t('download2.section7.button') }}
+                    {{ $t('download.section7.button') }}
                   </span>
                   <img src="~/assets/images/landing/download2/down.svg" alt="" class="rotate-icon">
                 </button>
                 <div class="grid gap-y-[12px] dropdown" :class="listDownload ? 'show ' : ''">
                   <div
-                    v-for="(item, id) in $t('download2.section7.list')"
+                    v-for="(item, id) in $t('download.section7.list')"
                     :key="id"
                     :class="id == 0 ? 'mt-[32px]' : ''"
                   >
@@ -232,7 +232,7 @@
                     class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap "
                     target="_blank"
                   >
-                    {{ $t('download2.section2.link') }}
+                    {{ $t('download.section2.link') }}
                   </a>
                   <img src="~/assets/images/landing/download2/right-blue.svg" alt="">
                 </div>
@@ -244,16 +244,16 @@
         <!-- web browser -->
         <section v-if="chosen == 'web-browser'" id="web-browser" key="6">
           <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download2.section3.title") }}
+            {{ $t("download.section3.title") }}
           </h1>
           <h2
             class="text-center font-normal text-black-600 landing-font-20 mb-[10px]"
           >
-            {{ $t("download2.section3.subtitle") }}
+            {{ $t("download.section3.subtitle") }}
           </h2>
           <div class="flex flex-wrap justify-center gap-x-3">
             <div
-              v-for="item in $t('download2.section3.list')"
+              v-for="item in $t('download.section3.list')"
               :key="item.name"
               class="w-[135px] mt-6 text-webkit"
             >
@@ -270,14 +270,14 @@
                 <button
                   class="mt-3 py-[3px] px-[20px] font-semibold text-[#FFFFFF] bg-[#62AD56] rounded-sm hover:bg-[#2D702C]"
                 >
-                  {{ $t("download2.section3.install") }}
+                  {{ $t("download.section3.install") }}
                 </button>
               </a>
               <button
                 v-else
                 class="mt-3 py-[3px] px-[20px] font-semibold text-[#606060] bg-[#EBEEF2] rounded-sm box-border border-[1px] border-[#DADEE3] cursor-auto"
               >
-                {{ $t("download2.section3.coming") }}
+                {{ $t("download.section3.coming") }}
               </button>
             </div>
           </div>
@@ -294,7 +294,7 @@
       >
         <div class="flex overflow-x-auto justify-start lg:justify-center">
           <a
-            v-for="item in $t('download2.section1.card')"
+            v-for="item in $t('download.section1.card')"
             :key="item.title"
             href="#anchor"
             :custom-href="'#' + item.link"
