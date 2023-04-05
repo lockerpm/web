@@ -3,24 +3,16 @@
     id="header-default"
     class="lg:px-28 md:px-10 px-4 h-[60px] flex items-center border-0 border-b border-black-200 relative"
   >
-    <div
-      id="nav-content"
-      class="sidebar"
-      style="z-index: 1000"
-    >
-      <SideBarMenu
-        :closable="true"
-        @close="hideNavMenu"
-      />
+    <div id="nav-content" class="sidebar" style="z-index: 1000">
+      <SideBarMenu :closable="true" @close="hideNavMenu" />
     </div>
 
     <!-- Search bar -->
     <div class="flex-grow">
-      <div
-        v-if="shouldShowSearch"
-        class="text-black-600 py-3"
-      >
-        <i class="!hidden sm:!inline-block fa fa-search mr-4 rounded-full shadow-md p-2" />
+      <div v-if="shouldShowSearch" class="text-black-600 py-3">
+        <i
+          class="!hidden sm:!inline-block fa fa-search mr-4 rounded-full shadow-md p-2"
+        />
         <input
           type="text"
           :value="searchText"
@@ -38,7 +30,7 @@
         <div class="mr-3 md:block hidden">
           <button
             class="btn btn-outline-primary"
-            @click="$router.push(localePath({name: 'settings-referral'}))"
+            @click="$router.push(localePath({ name: 'settings-referral' }))"
           >
             {{ $t('sidebar.referral') }}
           </button>
@@ -49,7 +41,7 @@
         <div class="mr-3 md:block hidden">
           <button
             class="btn btn-primary"
-            @click="$router.push(localePath({name: 'manage-plans'}))"
+            @click="$router.push(localePath({ name: 'manage-plans' }))"
           >
             {{ $t('common.manage_plans') }}
           </button>
@@ -66,25 +58,27 @@
       <!-- Dropdown menu -->
       <el-dropdown trigger="click">
         <!-- User info -->
-        <div id="nav__profile" class="flex items-center" @click="showTutorialLastStep">
-          <el-avatar
-            :size="35"
-            :src="currentUser.avatar"
-            class="mr-2"
-          />
+        <div
+          id="nav__profile"
+          class="flex items-center"
+          @click="showTutorialLastStep"
+        >
+          <el-avatar :size="35" :src="currentUser.avatar" class="mr-2" />
           <div>
             <div class="text-sm font-semibold">
-              <nobr>{{ currentUser.full_name }} <i class="el-icon-caret-bottom el-icon--right" /></nobr>
+              <nobr>
+                {{ currentUser.full_name }}
+                <i class="el-icon-caret-bottom el-icon--right" />
+              </nobr>
             </div>
-            <div class="text-xs text-black-600">{{ currentTeam ? currentTeam.name : currentPlan.name }}</div>
+            <div class="text-xs text-black-600">
+              {{ currentTeam ? currentTeam.name : currentPlan.name }}
+            </div>
           </div>
         </div>
         <!-- User info -->
 
-        <el-dropdown-menu
-          slot="dropdown"
-          class="min-w-[200px]"
-        >
+        <el-dropdown-menu slot="dropdown" class="min-w-[200px]">
           <template v-if="!currentTeam">
             <el-dropdown-item
               class="text-warning md:hidden"
@@ -110,23 +104,21 @@
             {{ $t('data.profile_menu.account_settings') }}
           </el-dropdown-item>
 
-          <el-dropdown-item
-            class="text-warning"
-            icon="far fa-life-ring"
-          >
+          <el-dropdown-item class="text-warning" icon="far fa-life-ring">
             <a
               class="hover:no-underline text-current hover:text-current"
-              :href="locale==='vi'?'https://support.locker.io/vi':'https://support.locker.io'"
+              :href="
+                locale === 'vi'
+                  ? 'https://support.locker.io/vi'
+                  : 'https://support.locker.io'
+              "
               target="_blank"
             >
               {{ $t('data.profile_menu.support_center') }}
             </a>
           </el-dropdown-item>
 
-          <el-dropdown-item
-            class="text-warning"
-            icon="far fa-comment"
-          >
+          <el-dropdown-item class="text-warning" icon="far fa-comment">
             <a
               class="hover:no-underline text-current hover:text-current"
               href="https://forum.locker.io"
@@ -144,17 +136,11 @@
             {{ $t('data.profile_menu.tour') }}
           </el-dropdown-item>
 
-          <el-dropdown-item
-            icon="fas fa-lock"
-            @click.native="lock"
-          >
+          <el-dropdown-item icon="fas fa-lock" @click.native="lock">
             {{ $t('data.profile_menu.lock') }}
           </el-dropdown-item>
 
-          <el-dropdown-item
-            icon="fas fa-sign-out-alt"
-            @click.native="logout"
-          >
+          <el-dropdown-item icon="fas fa-sign-out-alt" @click.native="logout">
             {{ $t('data.profile_menu.logout') }}
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -191,9 +177,14 @@ export default {
   computed: {
     shouldShowSearch () {
       return [
-        'vault', 'passwords', 'notes', 'cards', 'identities',
-        'crypto-backups', 'shares', 'trash', 'vault-tfolders-tfolderId',
-        'vault-folders-folderId', 'shares-your-shares', 'authenticator'
+        ...this.cipherRoutes,
+        'vault',
+        'shares',
+        'trash',
+        'vault-tfolders-tfolderId',
+        'vault-folders-folderId',
+        'shares-your-shares',
+        'authenticator'
       ].includes(this.getRouteBaseName())
     },
     currentPlan () {
@@ -211,7 +202,7 @@ export default {
 
     document.onclick = check
     function check (e) {
-      const target = (e && e.target)
+      const target = e && e.target
 
       // Nav Menu
       if (!checkParent(target, navMenuDiv)) {

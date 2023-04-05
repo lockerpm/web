@@ -73,6 +73,11 @@ Vue.mixin({
         routeName: 'driver-licenses',
         label: 'driver_licenses'
       }
+      res[CipherType.CitizenID] = {
+        type: CipherType.CitizenID,
+        routeName: 'citizen-ids',
+        label: 'citizen_ids'
+      }
       return res
     },
 

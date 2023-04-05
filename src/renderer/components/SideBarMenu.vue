@@ -206,30 +206,7 @@ export default {
               label: 'all',
               routeName: 'vault'
             },
-            {
-              label: 'passwords',
-              routeName: 'passwords'
-            },
-            {
-              label: 'notes',
-              routeName: 'notes'
-            },
-            {
-              label: 'cards',
-              routeName: 'cards'
-            },
-            {
-              label: 'identities',
-              routeName: 'identities'
-            },
-            {
-              label: 'crypto_backups',
-              routeName: 'crypto-backups'
-            },
-            {
-              label: 'driver_licenses',
-              routeName: 'driver-licenses'
-            }
+            ...Object.values(this.cipherMapping).filter(v => !!v.routeName)
           ]
         },
         {

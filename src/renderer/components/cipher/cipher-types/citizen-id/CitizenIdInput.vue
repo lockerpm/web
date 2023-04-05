@@ -1,62 +1,68 @@
 <template>
   <div>
     <InputText
-      v-model="driverLicense.idNO"
-      :label="$t('data.ciphers.drive_license.no')"
+      v-model="citizenId.idNo"
+      :label="$t('data.ciphers.citizen_id.id_no')"
       class="w-full"
       :disabled="isDeleted"
     />
     <InputText
-      v-model="driverLicense.fullName"
+      v-model="citizenId.fullName"
       :label="$t('common.fullname')"
       class="w-full"
       :disabled="isDeleted"
     />
     <InputDate
-      v-model="driverLicense.dob"
+      v-model="citizenId.dob"
       :label="$t('common.dob')"
       class="w-full"
       :disabled="isDeleted"
     />
     <InputText
-      v-model="driverLicense.address"
-      :label="$t('common.address')"
+      v-model="citizenId.sex"
+      :label="$t('data.ciphers.citizen_id.sex')"
       class="w-full"
       :disabled="isDeleted"
     />
     <InputText
-      v-model="driverLicense.nationality"
+      v-model="citizenId.nationality"
       :label="$t('common.nationality')"
       class="w-full"
       :disabled="isDeleted"
     />
     <InputText
-      v-model="driverLicense.class"
-      :label="$t('data.ciphers.drive_license.class')"
-      class="w-full"
-      :disabled="isDeleted"
-    />
-    <InputDate
-      v-model="driverLicense.validUntil"
-      :label="$t('data.ciphers.drive_license.valid_until')"
+      v-model="citizenId.placeOfOrigin"
+      :label="$t('data.ciphers.citizen_id.place_of_origin')"
       class="w-full"
       :disabled="isDeleted"
     />
     <InputText
-      v-model="driverLicense.vehicleClass"
-      :label="$t('data.ciphers.drive_license.vehicle_class')"
+      v-model="citizenId.placeOfResidence"
+      :label="$t('data.ciphers.citizen_id.place_of_residence')"
       class="w-full"
       :disabled="isDeleted"
     />
     <InputDate
-      v-model="driverLicense.beginningDate"
-      :label="$t('data.ciphers.drive_license.beginning_date')"
+      v-model="citizenId.expiryDate"
+      :label="$t('data.ciphers.citizen_id.expiry_date')"
       class="w-full"
       :disabled="isDeleted"
     />
     <InputText
-      v-model="driverLicense.issuedBy"
-      :label="$t('data.ciphers.drive_license.issued_by')"
+      v-model="citizenId.personalId"
+      :label="$t('data.ciphers.citizen_id.personal_id')"
+      class="w-full"
+      :disabled="isDeleted"
+    />
+    <InputDate
+      v-model="citizenId.dateOfIssue"
+      :label="$t('data.ciphers.citizen_id.date_of_issue')"
+      class="w-full"
+      :disabled="isDeleted"
+    />
+    <InputText
+      v-model="citizenId.issueBy"
+      :label="$t('data.ciphers.citizen_id.issued_by')"
       class="w-full"
       :disabled="isDeleted"
     />
@@ -81,28 +87,29 @@ export default {
 
   data () {
     return {
-      driverLicense: {
-        idNO: '',
+      citizenId: {
+        idNo: '',
         fullName: '',
         dob: '',
-        address: '',
+        sex: '',
         nationality: '',
-        class: '',
-        validUntil: '',
-        vehicleClass: '',
-        beginningDate: '',
-        issuedBy: ''
+        placeOfOrigin: '',
+        placeOfResidence: '',
+        expiryDate: '',
+        personalId: '',
+        dateOfIssue: '',
+        issueBy: ''
       }
     }
   },
 
   methods: {
     loadData (data) {
-      this.driverLicense = { ...data }
+      this.citizenId = { ...data }
     },
 
     getData () {
-      return this.driverLicense
+      return this.citizenId
     }
   }
 }

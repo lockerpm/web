@@ -160,6 +160,7 @@
                   :key="index"
                   v-clipboard:copy="copyKey.value"
                   v-clipboard:success="clipboardSuccessHandler"
+                  :disabled="!copyKey.value"
                 >
                   {{ $t('common.copy') }} {{ $t(copyKey.label) }}
                 </el-dropdown-item>

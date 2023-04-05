@@ -3,6 +3,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import { CipherType } from '../../../core/enums/cipherType'
 import { toDriverLicenseData } from '../../../utils/new-types/driver-license'
 import { toCryptoWalletData } from '../../../utils/crypto'
+import { toCitizenIdData } from '../../../utils/new-types/citizen-id'
 import { CipherRequest } from '@/jslib/src/models/request'
 import { SecureNote } from '@/jslib/src/models/domain'
 
@@ -84,6 +85,9 @@ Vue.mixin({
         if (cipher.type === CipherType.DriverLicense) {
           cipher.driverLicense = toDriverLicenseData(cipher.notes)
         }
+        if (cipher.type === CipherType.CitizenID) {
+          cipher.driverLicense = toCitizenIdData(cipher.notes)
+        }
       } catch (error) {
         //
       }
@@ -117,6 +121,14 @@ Vue.mixin({
         if (cipher.driverLicense) {
           cipher.notes = JSON.stringify({
             ...cipher.driverLicense,
+            notes: cipher.notes
+          })
+        }
+      }
+      if (cipher.type === CipherType.CitizenID) {
+        if (cipher.citizenId) {
+          cipher.notes = JSON.stringify({
+            ...cipher.citizenId,
             notes: cipher.notes
           })
         }
@@ -184,6 +196,9 @@ Vue.mixin({
       if (item.type === CipherType.DriverLicense && item.driverLicense) {
         return item.driverLicense.fullName
       }
+      if (item.type === CipherType.CitizenID && item.citizenId) {
+        return item.citizenId.fullName
+      }
       return item.subTitle
     },
 
@@ -200,6 +215,7 @@ Vue.mixin({
             label: 'common.password'
           }
         ]
+
       case CipherType.MasterPassword:
         return [
           {
@@ -214,6 +230,7 @@ Vue.mixin({
             label: 'common.note'
           }
         ]
+
       case CipherType.CryptoWallet:
         if (!item.cryptoWallet) {
           return []
@@ -236,6 +253,7 @@ Vue.mixin({
             label: 'data.ciphers.password_pin'
           }
         ]
+
       case CipherType.DriverLicense:
         if (!item.driverLicense) {
           return []
@@ -268,6 +286,41 @@ Vue.mixin({
           {
             value: item.driverLicense.issuedBy,
             label: 'data.ciphers.drive_license.issued_by'
+          }
+        ]
+
+      case CipherType.CitizenID:
+        if (!item.citizenId) {
+          return []
+        }
+        return [
+          {
+            value: item.citizenId.idNo,
+            label: 'data.ciphers.citizen_id.id_no'
+          },
+          {
+            value: item.citizenId.fullName,
+            label: 'common.fullname'
+          },
+          {
+            value: item.citizenId.placeOfOrigin,
+            label: 'data.ciphers.citizen_id.place_of_origin'
+          },
+          {
+            value: item.citizenId.placeOfResidence,
+            label: 'data.ciphers.citizen_id.place_of_residence'
+          },
+          {
+            value: item.citizenId.expiryDate,
+            label: 'data.ciphers.citizen_id.expiry_date'
+          },
+          {
+            value: item.citizenId.dateOfIssue,
+            label: 'data.ciphers.citizen_id.date_of_issue'
+          },
+          {
+            value: item.citizenId.issueBy,
+            label: 'data.ciphers.citizen_id.issued_by'
           }
         ]
       }
