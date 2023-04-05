@@ -173,6 +173,13 @@
           />
           <!-- Server end -->
 
+          <!-- API -->
+          <api-details
+            v-if="cipher.type === CipherType.APICipher && cipher.api"
+            :cipher="cipher"
+          />
+          <!-- API end -->
+
           <!-- Notes -->
           <div>
             <TextHaveCopy
@@ -355,6 +362,7 @@ import PassportDetails from './cipher-types/passport/PassportDetails.vue'
 import SsnDetails from './cipher-types/ssn/SsnDetails.vue'
 import RouterDetails from './cipher-types/router/RouterDetails.vue'
 import ServerDetails from './cipher-types/server/ServerDetails.vue'
+import ApiDetails from './cipher-types/api/ApiDetails.vue'
 
 export default {
   components: {
@@ -373,7 +381,8 @@ export default {
     PassportDetails,
     SsnDetails,
     RouterDetails,
-    ServerDetails
+    ServerDetails,
+    ApiDetails
   },
   props: {
     type: {

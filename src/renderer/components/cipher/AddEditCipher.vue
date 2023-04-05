@@ -172,6 +172,13 @@
           :is-deleted="isDeleted"
         />
 
+        <!-- API -->
+        <api-input
+          v-if="cipher.type === CipherType.APICipher"
+          ref="apiInput"
+          :is-deleted="isDeleted"
+        />
+
         <!-- NOTES -->
         <div>
           <!-- Label -->
@@ -317,6 +324,7 @@ import PassportInput from './cipher-types/passport/PassportInput.vue'
 import SsnInput from './cipher-types/ssn/SsnInput.vue'
 import RouterInput from './cipher-types/router/RouterInput.vue'
 import ServerInput from './cipher-types/server/ServerInput.vue'
+import ApiInput from './cipher-types/api/ApiInput.vue'
 
 export default {
   components: {
@@ -339,7 +347,8 @@ export default {
     PassportInput,
     SsnInput,
     RouterInput,
-    ServerInput
+    ServerInput,
+    ApiInput
   },
 
   props: {
@@ -449,6 +458,12 @@ export default {
             this.$refs.serverInput.loadData(data.server)
           }, 0)
         }
+        if (data.type === CipherType.APICipher) {
+          cipherData.notes = data.api.notes
+          setTimeout(() => {
+            this.$refs.apiInput.loadData(data.api)
+          }, 0)
+        }
 
         // Update custom fields
         if (data.fields == null) {
@@ -541,6 +556,9 @@ export default {
       }
       if (this.cipher.type === CipherType.Server) {
         this.cipher.server = this.$refs.serverInput.getData()
+      }
+      if (this.cipher.type === CipherType.APICipher) {
+        this.cipher.api = this.$refs.apiInput.getData()
       }
     },
 

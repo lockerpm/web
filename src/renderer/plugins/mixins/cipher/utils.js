@@ -141,6 +141,8 @@ Vue.mixin({
         return this.getIconDefaultCipher('Router', size)
       case CipherType.Server:
         return this.getIconDefaultCipher('Server', size)
+      case CipherType.APICipher:
+        return this.getIconDefaultCipher('Api', size)
       case 'Shares':
         return this.getIconDefaultCipher('Shares', size)
       case 'Trash':

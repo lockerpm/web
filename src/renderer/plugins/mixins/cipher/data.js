@@ -8,6 +8,7 @@ import { toPassportData } from '../../../utils/new-types/passport'
 import { toSocialSecurityNumberData } from '../../../utils/new-types/ssn'
 import { toWirelessRouterData } from '../../../utils/new-types/router'
 import { toServerData } from '../../../utils/new-types/server'
+import { toApiCipherData, API_METHODS } from '../../../utils/new-types/api'
 import { CipherRequest } from '@/jslib/src/models/request'
 import { SecureNote } from '@/jslib/src/models/domain'
 
@@ -86,6 +87,15 @@ Vue.mixin({
         { label: this.$t('common.female'), value: 'f' },
         { label: this.$t('common.other'), value: 'o' }
       ]
+    },
+
+    // ----------------- API -----------------
+
+    apiMethodOptions () {
+      return Object.values(API_METHODS).map(m => ({
+        label: m.toUpperCase(),
+        value: m
+      }))
     }
   },
 
@@ -113,6 +123,9 @@ Vue.mixin({
         }
         if (cipher.type === CipherType.Server) {
           cipher.server = toServerData(cipher.notes)
+        }
+        if (cipher.type === CipherType.APICipher) {
+          cipher.api = toApiCipherData(cipher.notes)
         }
       } catch (error) {
         //
@@ -187,6 +200,14 @@ Vue.mixin({
         if (cipher.server) {
           cipher.notes = JSON.stringify({
             ...cipher.server,
+            notes: cipher.notes
+          })
+        }
+      }
+      if (cipher.type === CipherType.APICipher) {
+        if (cipher.api) {
+          cipher.notes = JSON.stringify({
+            ...cipher.api,
             notes: cipher.notes
           })
         }
@@ -499,6 +520,29 @@ Vue.mixin({
           {
             value: item.server.password,
             label: 'common.password'
+          }
+        ]
+
+      case CipherType.APICipher:
+        if (!item.api) {
+          return []
+        }
+        return [
+          {
+            value: item.api.url,
+            label: 'data.ciphers.api.url'
+          },
+          {
+            value: item.api.header,
+            label: 'data.ciphers.api.header'
+          },
+          {
+            value: item.api.bodyData,
+            label: 'data.ciphers.api.body_data'
+          },
+          {
+            value: item.api.response,
+            label: 'data.ciphers.api.response'
           }
         ]
       }

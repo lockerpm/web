@@ -98,6 +98,11 @@ Vue.mixin({
         routeName: 'servers',
         label: 'servers'
       }
+      res[CipherType.APICipher] = {
+        type: CipherType.APICipher,
+        routeName: 'apis',
+        label: 'apis'
+      }
       return res
     },
 
