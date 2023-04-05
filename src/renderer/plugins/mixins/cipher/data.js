@@ -4,6 +4,7 @@ import { CipherType } from '../../../core/enums/cipherType'
 import { toDriverLicenseData } from '../../../utils/new-types/driver-license'
 import { toCryptoWalletData } from '../../../utils/crypto'
 import { toCitizenIdData } from '../../../utils/new-types/citizen-id'
+import { toPassportData } from '../../../utils/new-types/passport'
 import { CipherRequest } from '@/jslib/src/models/request'
 import { SecureNote } from '@/jslib/src/models/domain'
 
@@ -98,6 +99,9 @@ Vue.mixin({
         if (cipher.type === CipherType.CitizenID) {
           cipher.citizenId = toCitizenIdData(cipher.notes)
         }
+        if (cipher.type === CipherType.Passport) {
+          cipher.passport = toPassportData(cipher.notes)
+        }
       } catch (error) {
         //
       }
@@ -139,6 +143,14 @@ Vue.mixin({
         if (cipher.citizenId) {
           cipher.notes = JSON.stringify({
             ...cipher.citizenId,
+            notes: cipher.notes
+          })
+        }
+      }
+      if (cipher.type === CipherType.Passport) {
+        if (cipher.passport) {
+          cipher.notes = JSON.stringify({
+            ...cipher.passport,
             notes: cipher.notes
           })
         }
@@ -208,6 +220,9 @@ Vue.mixin({
       }
       if (item.type === CipherType.CitizenID && item.citizenId) {
         return item.citizenId.fullName
+      }
+      if (item.type === CipherType.Passport && item.passport) {
+        return item.passport.fullName
       }
       return item.subTitle
     },
@@ -331,6 +346,33 @@ Vue.mixin({
           {
             value: item.citizenId.issueBy,
             label: 'data.ciphers.citizen_id.issued_by'
+          }
+        ]
+
+      case CipherType.Passport:
+        if (!item.passport) {
+          return []
+        }
+        return [
+          {
+            value: item.passport.passportID,
+            label: 'data.ciphers.passport_type.passport_id'
+          },
+          {
+            value: item.passport.code,
+            label: 'data.ciphers.passport_type.code'
+          },
+          {
+            value: item.passport.fullName,
+            label: 'common.fullname'
+          },
+          {
+            value: item.passport.idNumber,
+            label: 'data.ciphers.passport_type.id_number'
+          },
+          {
+            value: item.passport.placeOfIssue,
+            label: 'data.ciphers.passport_type.place_of_issue'
           }
         ]
       }

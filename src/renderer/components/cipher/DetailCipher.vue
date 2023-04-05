@@ -145,6 +145,13 @@
           />
           <!-- Citizen id end -->
 
+          <!-- Passport -->
+          <passport-details
+            v-if="cipher.type === CipherType.Passport && cipher.passport"
+            :cipher="cipher"
+          />
+          <!-- Passport end -->
+
           <!-- Notes -->
           <div>
             <TextHaveCopy
@@ -323,6 +330,7 @@ import IdentityDetails from './cipher-types/identity/IdentityDetails.vue'
 import CryptoBackupDetails from './cipher-types/crypto-backup/CryptoBackupDetails.vue'
 import DriverLicenseDetails from './cipher-types/driver-license/DriverLicenseDetails.vue'
 import CitizenIdDetails from './cipher-types/citizen-id/CitizenIdDetails.vue'
+import PassportDetails from './cipher-types/passport/PassportDetails.vue'
 
 export default {
   components: {
@@ -337,7 +345,8 @@ export default {
     IdentityDetails,
     CryptoBackupDetails,
     DriverLicenseDetails,
-    CitizenIdDetails
+    CitizenIdDetails,
+    PassportDetails
   },
   props: {
     type: {

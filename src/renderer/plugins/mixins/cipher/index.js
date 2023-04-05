@@ -78,6 +78,11 @@ Vue.mixin({
         routeName: 'citizen-ids',
         label: 'citizen-ids'
       }
+      res[CipherType.Passport] = {
+        type: CipherType.Passport,
+        routeName: 'passports',
+        label: 'passports'
+      }
       return res
     },
 
