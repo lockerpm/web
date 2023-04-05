@@ -1,7 +1,6 @@
 <template>
-  <div>
+  <div id="anchor">
     <section
-      id="anchor"
       class="full-width pt-28 bg-[#EEF4ED] w-[100%] relative pb-[100px] px-5 md:px-20 overflow-inherit mb-[60px] min-h-[744px]"
     >
       <transition name="fade" mode="out-in">
@@ -347,25 +346,34 @@ export default {
         }
       })
     })
+    console.log(this.$ua.os())
     const currentAnchor = this.$route.hash
-    switch (currentAnchor) {
-    case '#windows':
-      this.chosen = 'windows'
-      break
-    case '#android':
-      this.chosen = 'android'
-      break
-    case '#ios':
-      this.chosen = 'ios'
-      break
-    case '#linux':
-      this.chosen = 'linux'
-      break
-    case '#web-browser':
-      this.chosen = 'web-browser'
-      break
-    default:
-      this.chosen = 'macos'
+    if (currentAnchor) {
+      switch (currentAnchor) {
+      case '#windows':
+        this.chosen = 'windows'
+        break
+      case '#android':
+        this.chosen = 'android'
+        break
+      case '#ios':
+        this.chosen = 'ios'
+        break
+      case '#linux':
+        this.chosen = 'linux'
+        break
+      case '#web-browser':
+        this.chosen = 'web-browser'
+        break
+      default:
+        this.chosen = 'macos'
+      }
+    } else {
+      const os = this.$ua.os()
+      if (os.includes('Windows')) this.chosen = 'windows'
+      if (os.includes('iPad') || os.includes('iPhone')) this.chosen = 'ios'
+      if (os.includes('Android')) this.chosen = 'android'
+      if (os.includes('Linux')) this.chosen = 'linux'
     }
   },
   methods: {
