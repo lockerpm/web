@@ -18,11 +18,13 @@
       class="w-full"
       :disabled="isDeleted"
     />
-    <InputText
-      v-model="citizenId.sex"
+    <InputSelect
       :label="$t('data.ciphers.citizen_id.sex')"
+      :initial-value="citizenId.sex"
       class="w-full"
       :disabled="isDeleted"
+      :options="sexOptions"
+      @change="val => (citizenId.sex = val)"
     />
     <InputText
       v-model="citizenId.nationality"
@@ -71,11 +73,13 @@
 <script>
 import InputText from '../../../input/InputText'
 import InputDate from '../../../input/InputDate'
+import InputSelect from '../../../input/InputSelect'
 
 export default {
   components: {
     InputText,
-    InputDate
+    InputDate,
+    InputSelect
   },
 
   props: {

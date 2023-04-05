@@ -6,10 +6,7 @@
     />
     <TextHaveCopy :label="$t('common.fullname')" :text="citizenId.fullName" />
     <TextHaveCopy :label="$t('common.dob')" :text="citizenId.dob" />
-    <TextHaveCopy
-      :label="$t('data.ciphers.citizen_id.sex')"
-      :text="citizenId.sex"
-    />
+    <TextHaveCopy :label="$t('data.ciphers.citizen_id.sex')" :text="getSex()" />
     <TextHaveCopy
       :label="$t('common.nationality')"
       :text="citizenId.nationality"
@@ -65,6 +62,14 @@ export default {
     citizenId () {
       const item = { ...this.cipher.citizenId }
       return item
+    }
+  },
+
+  methods: {
+    getSex () {
+      return (
+        this.sexOptions.find(o => this.citizenId?.sex === o.value)?.label || ''
+      )
     }
   }
 }

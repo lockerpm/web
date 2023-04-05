@@ -72,6 +72,16 @@ Vue.mixin({
         { label: this.$t('common.ms'), value: 'ms' },
         { label: this.$t('common.dr'), value: 'dr' }
       ]
+    },
+
+    // ----------------- CITIZEN ID -----------------
+
+    sexOptions () {
+      return [
+        { label: this.$t('common.male'), value: 't' },
+        { label: this.$t('common.female'), value: 'f' },
+        { label: this.$t('common.other'), value: 'o' }
+      ]
     }
   },
 
@@ -86,7 +96,7 @@ Vue.mixin({
           cipher.driverLicense = toDriverLicenseData(cipher.notes)
         }
         if (cipher.type === CipherType.CitizenID) {
-          cipher.driverLicense = toCitizenIdData(cipher.notes)
+          cipher.citizenId = toCitizenIdData(cipher.notes)
         }
       } catch (error) {
         //
