@@ -316,7 +316,6 @@ import {
 } from '../../jslib/src/models/view'
 import AddEditFolder from '../folder/AddEditFolder'
 import InputText from '../input/InputText'
-import InputSelect from '../input/InputSelect'
 import InputSelectFolder from '../input/InputSelectFolder'
 import InputCustomFields from '../input/InputCustomFields.vue'
 import InlineEditCipher from './InlineEditCipher'
@@ -342,7 +341,6 @@ export default {
     ValidationProvider,
     ValidationObserver,
     InputText,
-    InputSelect,
     InputSelectFolder,
     InputCustomFields,
     PasswordViolationDialog,
