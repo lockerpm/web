@@ -1,0 +1,14 @@
+<template>
+  <ListYourShares
+    :filter="c => c.organizationId && isCipherShared(c.organizationId)"
+  />
+</template>
+
+<script>
+import ListYourShares from '@/components/cipher/shares/ListYourShares'
+export default {
+  components: {
+    ListYourShares
+  }
+}
+</script>

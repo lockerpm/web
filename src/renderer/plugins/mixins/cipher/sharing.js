@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import find from 'lodash/find'
+import { CipherType } from '../../../core/enums/cipherType'
 
 Vue.mixin({
   computed: {
@@ -70,7 +71,20 @@ Vue.mixin({
         this.isOwner(organizations, cipher) &&
         // Not in any shared folder
         !cipher.collectionIds.length &&
-        !this.isProtectedCipher(cipher)
+        !this.isProtectedCipher(cipher) &&
+        cipher.type !== CipherType.TOTP
+      )
+    },
+
+    isCipherQuickShareable (cipher) {
+      const isBelongToSelf =
+        !cipher.organizationId ||
+        !!this.myShares.find(i => i.organization_id === cipher.organizationId)
+      return (
+        !cipher.isDeleted &&
+        !this.isProtectedCipher(cipher) &&
+        cipher.type !== CipherType.TOTP &&
+        isBelongToSelf
       )
     },
 
@@ -91,6 +105,39 @@ Vue.mixin({
           }
         }) || []
       )
+    },
+
+    async syncQuickShares () {
+      try {
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', true)
+        const res = await this.$axios.$get(
+          'cystack_platform/pm/quick_shares?paging=0'
+        )
+        const userId = await this.$userService.getUserId()
+        await this.$syncService.syncSends(userId, res)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', false)
+      }
+    },
+
+    getPublicShareUrl (accessId, key) {
+      return `${
+        process.env.baseUrl
+      }/shares/quick-share-item/${accessId}#${encodeURIComponent(key)}`
+    },
+
+    async stopQuickSharing (send) {
+      try {
+        await this.$axios.$delete(`cystack_platform/pm/quick_shares/${send.id}`)
+        this.notify(this.$t('data.notifications.stop_share_success'), 'success')
+        return true
+      } catch (error) {
+        this.notify(this.$t('errors.something_went_wrong'), 'warning')
+        console.log(error)
+        return false
+      }
     }
   }
 })

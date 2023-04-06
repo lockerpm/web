@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-2/3">
+  <div class="lg:w-3/4">
     <div class="text-head-4 font-semibold mb-2">
       {{ $t('data.settings.account') }}
     </div>
@@ -24,16 +24,11 @@ export default {
     DangerZone
   },
   data () {
-    return {
-    }
+    return {}
   },
-  computed: {
-  },
-  async mounted () {
-  },
-  asyncComputed: {
-  },
-  methods: {
-  }
+  computed: {},
+  async mounted () {},
+  asyncComputed: {},
+  methods: {}
 }
 </script>

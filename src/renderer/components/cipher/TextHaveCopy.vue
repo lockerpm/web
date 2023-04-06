@@ -1,11 +1,17 @@
 <template>
-  <div class="grid md:grid-cols-6 cipher-item">
-    <div class="">{{ label }}</div>
+  <div class="grid md:grid-cols-6 grid-cols-1 cipher-item">
+    <p class="!break-normal mr-4">{{ label }}</p>
+
     <div class="col-span-4 font-semibold">
-      <div v-if="text&&textArea" class="whitespace-pre-wrap break-normal">{{ text }}</div>
-      <span v-if="text&&!textArea" class="break-normal">{{ text | filterPassword(showPassword) }}</span>
+      <div v-if="text && textArea" class="whitespace-pre-wrap break-normal">
+        {{ text }}
+      </div>
+      <span v-if="text && !textArea" class="break-normal">{{
+        text | filterPassword(showPassword)
+      }}</span>
     </div>
-    <div v-if="text&&viewPassword===true" class="text-right">
+
+    <div v-if="text && viewPassword === true" class="text-right">
       <button
         v-if="shouldHide"
         class="btn btn-icon btn-xs btn-action"
@@ -13,7 +19,7 @@
       >
         <i
           class="far"
-          :class="{'fa-eye': !showPassword, 'fa-eye-slash': showPassword}"
+          :class="{ 'fa-eye': !showPassword, 'fa-eye-slash': showPassword }"
         />
       </button>
       <button
@@ -54,6 +60,11 @@ export default {
   data () {
     return {
       showPassword: false
+    }
+  },
+  watch: {
+    shouldHide (val) {
+      this.showPassword = !val
     }
   },
   mounted () {
