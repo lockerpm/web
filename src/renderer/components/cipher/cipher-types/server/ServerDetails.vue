@@ -1,24 +1,33 @@
 <template>
   <div>
-    <TextHaveCopy :label="$t('data.ciphers.server.host')" :text="server.host" />
+    <TextHaveCopy
+      :label="$t('data.ciphers.server.host')"
+      :text="server.host"
+      :should-hide="isPublic && hideAll"
+    />
     <TextHaveCopy
       :label="$t('data.ciphers.server.public_key')"
       :text="server.publicKey"
+      :should-hide="isPublic && hideAll"
     />
     <TextHaveCopy
       :label="$t('data.ciphers.server.private_key')"
       :text="server.privateKey"
-      should-hide
+      :should-hide="!isPublic || hideAll"
     />
-    <TextHaveCopy :label="$t('common.username')" :text="server.username" />
+    <TextHaveCopy
+      :label="$t('common.username')"
+      :text="server.username"
+      :should-hide="isPublic && hideAll"
+    />
     <TextHaveCopy
       :label="$t('common.password')"
       :text="server.password"
-      should-hide
+      :should-hide="!isPublic || hideAll"
     />
     <TextHaveCopy
       :label="$t('data.ciphers.notes')"
-      :text="server.notes"
+      :text="filterPassword(server.notes, !isPublic || !hideAll)"
       :text-area="true"
     />
   </div>
@@ -36,6 +45,14 @@ export default {
     cipher: {
       type: [CipherView, Object],
       default: () => ({ server: {} })
+    },
+    isPublic: {
+      type: Boolean,
+      default: () => false
+    },
+    hideAll: {
+      type: Boolean,
+      default: () => false
     }
   },
 

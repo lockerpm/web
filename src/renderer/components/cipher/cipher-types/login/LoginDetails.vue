@@ -1,11 +1,15 @@
 <template>
   <div>
-    <TextHaveCopy label="Email / Username" :text="cipher.login.username" />
+    <TextHaveCopy
+      label="Email / Username"
+      :text="cipher.login.username"
+      :should-hide="isPublic && hideAll"
+    />
     <TextHaveCopy
       :label="$t('data.ciphers.password')"
       :text="cipher.login.password"
       :view-password="cipher.viewPassword"
-      should-hide
+      :should-hide="!isPublic || hideAll"
     />
     <div class="grid md:grid-cols-6 cipher-item">
       <div class="">{{ $t('data.ciphers.password_security') }}</div>
@@ -21,7 +25,7 @@
     >
       <div class="">{{ $t('data.ciphers.website_address') }}</div>
       <div class="col-span-4 font-semibold">
-        {{ item.uri }}
+        {{ filterPassword(item.uri, !isPublic || !hideAll) }}
       </div>
       <div class="text-right">
         <button
@@ -51,6 +55,14 @@ export default {
     cipher: {
       type: [CipherView, Object],
       default: () => ({ login: {} })
+    },
+    isPublic: {
+      type: Boolean,
+      default: () => false
+    },
+    hideAll: {
+      type: Boolean,
+      default: () => false
     }
   },
 

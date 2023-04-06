@@ -403,50 +403,7 @@ export default {
     },
 
     async stopSharing (cipher) {
-      try {
-        let memberId = null
-        if (cipher.user) {
-          memberId = cipher.user.id
-          delete cipher.user
-        }
-        const { data } = await this.getEncCipherForRequest(cipher, {
-          noCheck: true,
-          encKey: await this.$cryptoService.getEncKey()
-        })
-
-        if (memberId) {
-          await this.$axios.$post(
-            `cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`,
-            {
-              folder: null,
-              cipher: { ...data, id: cipher.id }
-            }
-          )
-        } else {
-          await this.$axios.$post(
-            `cystack_platform/pm/sharing/${cipher.organizationId}/stop`,
-            {
-              folder: null,
-              cipher: { ...data, id: cipher.id }
-            }
-          )
-        }
-
-        this.notify(
-          this.$tc('data.notifications.update_success', 1, {
-            type: this.$tc(`type.${cipher.type}`, 1)
-          }),
-          'success'
-        )
-        this.$store.dispatch('LoadMyShares')
-      } catch (error) {
-        this.notify(
-          this.$tc('data.notifications.update_failed', 1, {
-            type: this.$tc(`type.${cipher.type}`, 1)
-          }),
-          'warning'
-        )
-      }
+      await this.stopShareCipher(cipher)
     }
   }
 }

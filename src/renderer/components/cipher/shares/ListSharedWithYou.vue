@@ -234,83 +234,37 @@
 
                         <!-- Action for each type of item -->
                         <template v-if="scope.row.type && !scope.row.isDeleted">
-                          <template v-if="scope.row.type === CipherType.Login">
-                            <el-dropdown-item
-                              v-clipboard:copy="scope.row.login.username"
-                              v-clipboard:success="clipboardSuccessHandler"
-                              :divided="canManageItem(organizations, scope.row)"
-                            >
-                              {{ $t('common.copy') }}
-                              {{ $t('common.username') }}
-                            </el-dropdown-item>
-                            <el-dropdown-item
-                              v-clipboard:copy="scope.row.login.password"
-                              v-clipboard:success="clipboardSuccessHandler"
-                              :disabled="!canViewItem(organizations, scope.row)"
-                            >
-                              {{ $t('common.copy') }}
-                              {{ $t('common.password') }}
-                            </el-dropdown-item>
-                          </template>
-                          <template
-                            v-if="scope.row.type === CipherType.SecureNote"
-                          >
-                            <el-dropdown-item
-                              v-clipboard:copy="scope.row.notes"
-                              v-clipboard:success="clipboardSuccessHandler"
-                              divided
-                            >
-                              {{ $t('common.copy') }} {{ $t('common.note') }}
-                            </el-dropdown-item>
-                          </template>
-                          <template
-                            v-if="
-                              scope.row.type === CipherType.CryptoWallet &&
-                                scope.row.cryptoWallet
+                          <!-- Copy -->
+                          <el-dropdown-item
+                            v-for="(copyKey, index) in getCopyableValues(item)"
+                            :key="index"
+                            v-clipboard:copy="copyKey.value"
+                            v-clipboard:success="clipboardSuccessHandler"
+                            :disabled="!copyKey.value"
+                            :divided="
+                              index === getCopyableValues(item).length - 1
                             "
                           >
-                            <el-dropdown-item
-                              v-clipboard:copy="scope.row.cryptoWallet.seed"
-                              v-clipboard:success="clipboardSuccessHandler"
-                            >
-                              {{ $t('common.copy') }}
-                              {{ $t('data.ciphers.seed') }}
-                            </el-dropdown-item>
-                            <el-dropdown-item
-                              v-clipboard:copy="scope.row.cryptoWallet.address"
-                              v-clipboard:success="clipboardSuccessHandler"
-                            >
-                              {{ $t('common.copy') }}
-                              {{ $t('data.ciphers.wallet_address') }}
-                            </el-dropdown-item>
-                            <el-dropdown-item
-                              v-clipboard:copy="
-                                scope.row.cryptoWallet.privateKey
-                              "
-                              v-clipboard:success="clipboardSuccessHandler"
-                            >
-                              {{ $t('common.copy') }}
-                              {{ $t('data.ciphers.private_key') }}
-                            </el-dropdown-item>
-                            <el-dropdown-item
-                              v-clipboard:copy="scope.row.cryptoWallet.password"
-                              v-clipboard:success="clipboardSuccessHandler"
-                            >
-                              {{ $t('common.copy') }}
-                              {{ $t('data.ciphers.password_pin') }}
-                            </el-dropdown-item>
-                          </template>
+                            {{ $t('common.copy') }} {{ $t(copyKey.label) }}
+                          </el-dropdown-item>
+                          <!-- Copy end -->
+
+                          <!-- Clone -->
                           <el-dropdown-item
                             @click.native="cloneCipher(scope.row)"
                           >
                             {{ $t('common.clone') }}
                           </el-dropdown-item>
+                          <!-- Clone end -->
+
+                          <!-- Move to folder -->
                           <el-dropdown-item
                             divided
                             @click.native="moveFolders([scope.row.id])"
                           >
                             {{ $t('common.move_folder') }}
                           </el-dropdown-item>
+                          <!-- Move to folder end -->
                         </template>
                         <!-- Action for each type of item end -->
 
@@ -390,15 +344,10 @@ import LazyHydrate from 'vue-lazy-hydration'
 import AddEditCipher from '../../../components/cipher/AddEditCipher'
 import AddEditFolder from '../../folder/AddEditFolder'
 import MoveFolder from '../../folder/MoveFolder'
-import { CipherType } from '../../../jslib/src/enums'
+import { CipherType } from '../../../core/enums/cipherType'
 import Vnodes from '../../../components/Vnodes'
 import { AccountRole } from '../../../constants'
 import ShareNoCipher from './ShareNoCipher'
-
-CipherType.TOTP = 5
-CipherType.MasterPassword = 8
-CipherType.CryptoBackup = 7
-CipherType[7] = 'Crypto Backup'
 
 export default {
   components: {
@@ -518,17 +467,10 @@ export default {
             this.getTeam(this.organizations, item.organizationId).type !== 0
         )
         result = result.map(item => {
-          if (item.type === 7) {
-            try {
-              item.cryptoWallet = JSON.parse(item.notes)
-              // item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
-            } catch (error) {
-              console.log(error)
-            }
-          }
+          const i = this.parseNotesOfNewTypes(item)
           const org = this.getTeam(this.organizations, item.organizationId)
           return {
-            ...item,
+            ...i,
             subTitle: item.subTitle,
             share_type:
               org.type === AccountRole.ADMIN
