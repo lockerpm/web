@@ -29,20 +29,6 @@
             @keyup.enter.native="confirmInputEmail"
             @input="emailInput"
           >
-            <!-- <div
-              v-if="emails.length"
-              slot="prepend"
-            >
-              <el-tag
-                v-for="(email, index) in emails"
-                :key="email"
-                closable
-                type="info"
-                @close="handleClose(index)"
-              >
-                {{ email }}
-              </el-tag>
-            </div> -->
             <el-button
               slot="append"
               :disabled="!emails.length && !inputEmail"

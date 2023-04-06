@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-2/3 mx-auto">
+  <div class="lg:w-2/3">
     <div class="text-head-5 font-semibold mb-2">
       {{ $t('data.settings.plans_billing') }}
     </div>
@@ -58,28 +58,6 @@
           </div>
           <!-- Other plans end -->
         </div>
-        <!-- <div v-if="currentPlan.is_family" class="mt-4">
-          <div class="flex justify-between">
-            <div class="text-head-6 font-semibold">
-              {{ $t('data.family_member.number_member') }} {{ familyMembers.length }} / 6
-            </div>
-            <div v-if="familyMembers.length<6 && currentPlan.alias === 'pm_family'" class="text-info cursor-pointer" @click="inviteMember">
-              {{ $t('data.family_member.action') }}
-            </div>
-          </div>
-          <div v-for="(member, index) in familyMembers" :key="index" class="py-4 border-b-[1px] border-[#eaeaf5]">
-            <div class="flex items-center">
-              <el-avatar :size="35" :src="member.avatar || require('~/assets/images/icons/Avatar.svg')" class="mr-2" />
-              <div>
-                <div class="text-sm font-semibold" :class="member.id?'':'text-primary'"><nobr>{{ member.full_name }}</nobr></div>
-                <div class="text-xs text-black-600">{{ member.email }}</div>
-              </div>
-              <div v-if="member.id != null && currentPlan.alias === 'pm_family'" class="flex-grow">
-                <button class="btn btn-default !text-danger float-right" @click="removeFamilyMember(member)">{{ $t('common.remove') }}</button>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
       <div class="setting-section">
         <div class="grid grid-cols-2">
@@ -257,31 +235,6 @@
       </div>
     </div>
     <CardDrawer ref="drawer" @handle-done="handleDone" />
-    <!-- <div class="setting-wrapper">
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div class="text-head-5 font-semibold">
-            Billing Details
-          </div>
-        </div>
-      </div>
-      <div class="setting-section">
-        <div class="text-black-600 mb-1.5">
-          {{ currentPlan.cancel_at_period_end ? $t('data.billing.cancel_at_period_end') : $t('data.billing.next_billing') }}
-        </div>
-        <div class="font-semibold">
-          {{ currentPlan.next_billing_time ? $moment(currentPlan.next_billing_time * 1000).format('LLL') : 'N/A' }}
-        </div>
-        <button
-          v-if="currentPlan.next_billing_time && !currentPlan.cancel_at_period_end"
-          class="btn btn-default mt-4"
-          @click="cancelSub"
-        >
-          {{ $t('data.billing.cancel_subscription') }}
-        </button>
-      </div>
-    </div> -->
-
     <!-- SECTION 3: INVOICES -->
     <div class="setting-wrapper">
       <div class="setting-section">

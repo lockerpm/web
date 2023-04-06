@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-2/3 mx-auto">
+  <div class="lg:w-2/3">
     <div class="grid grid-cols-5 gap-x-6">
       <div class="setting-wrapper md:col-span-3 col-span-5">
         <div class="setting-section">
@@ -214,7 +214,6 @@ export default {
         .then(() => {
           this.loading = false
         })
-      // console.log(this.emails)
     },
     handleInputEmail () {
       const emailList = this.inputEmail.split(',')
@@ -242,7 +241,6 @@ export default {
 
 <style lang="scss" scoped>
 .cs-field {
-  //width: 100%;
   min-height: 40px;
   display: flex;
   padding-left: 12px;
