@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { CipherType } from '../../../core/enums/cipherType'
+import { CipherMapper } from '../../../constants'
 
 Vue.mixin({
   computed: {
@@ -23,92 +24,7 @@ Vue.mixin({
     },
 
     cipherMapping () {
-      // Notes: do not add friendly name for new cipher types
-      // Friendly name only used for translation of old types
-      const res = {}
-      res[CipherType.Login] = {
-        type: CipherType.Login,
-        routeName: 'passwords',
-        label: 'passwords',
-        friendlyName: 'Password'
-      }
-      res[CipherType.MasterPassword] = {
-        type: CipherType.MasterPassword,
-        routeName: 'passwords',
-        label: 'passwords',
-        noMenu: true,
-        noCreate: true
-      }
-      res[CipherType.SecureNote] = {
-        type: CipherType.SecureNote,
-        routeName: 'notes',
-        label: 'notes',
-        friendlyName: 'Note'
-      }
-      res[CipherType.Card] = {
-        type: CipherType.Card,
-        routeName: 'cards',
-        label: 'cards',
-        friendlyName: 'Card'
-      }
-      res[CipherType.Identity] = {
-        type: CipherType.Identity,
-        routeName: 'identities',
-        label: 'identities',
-        friendlyName: 'Identity'
-      }
-      res[CipherType.TOTP] = {
-        type: CipherType.TOTP,
-        noMenu: true,
-        hideFromCipherList: true
-      }
-      res[CipherType.CryptoWallet] = {
-        type: CipherType.CryptoWallet,
-        routeName: 'crypto-backups',
-        label: 'crypto_backups',
-        friendlyName: 'CryptoBackup'
-      }
-      res[CipherType.DriverLicense] = {
-        type: CipherType.DriverLicense,
-        routeName: 'driver-licenses',
-        label: 'driver-licenses'
-      }
-      res[CipherType.CitizenID] = {
-        type: CipherType.CitizenID,
-        routeName: 'citizen-ids',
-        label: 'citizen-ids'
-      }
-      res[CipherType.Passport] = {
-        type: CipherType.Passport,
-        routeName: 'passports',
-        label: 'passports'
-      }
-      res[CipherType.SocialSecurityNumber] = {
-        type: CipherType.SocialSecurityNumber,
-        routeName: 'ssns',
-        label: 'ssns'
-      }
-      res[CipherType.WirelessRouter] = {
-        type: CipherType.WirelessRouter,
-        routeName: 'routers',
-        label: 'routers'
-      }
-      res[CipherType.Server] = {
-        type: CipherType.Server,
-        routeName: 'servers',
-        label: 'servers'
-      }
-      res[CipherType.APICipher] = {
-        type: CipherType.APICipher,
-        routeName: 'apis',
-        label: 'apis'
-      }
-      res[CipherType.Database] = {
-        type: CipherType.Database,
-        routeName: 'databases',
-        label: 'databases'
-      }
-      return res
+      return CipherMapper
     },
 
     cipherRoutes () {
@@ -216,7 +132,7 @@ Vue.mixin({
       )
     },
 
-    // Cannot edit/delete/share
+    // Cannot edit/delete/share/export
     isProtectedCipher (cipher) {
       return cipher.type === CipherType.MasterPassword
     }
