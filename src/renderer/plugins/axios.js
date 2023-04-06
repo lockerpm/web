@@ -23,10 +23,10 @@ export default function ({
     if (deviceId) {
       request.headers['device-id'] = deviceId
     }
-    if ($config.cloudflare) {
-      request.headers['CF-Access-Client-Id'] = $config.cloudflare.id
-      request.headers['CF-Access-Client-Secret'] = $config.cloudflare.secret
-    }
+    // if ($config.cloudflare) {
+    //   request.headers['CF-Access-Client-Id'] = $config.cloudflare.id
+    //   request.headers['CF-Access-Client-Secret'] = $config.cloudflare.secret
+    // }
 
     // Update base api url
     const ON_PREMISE_WHITELIST = [

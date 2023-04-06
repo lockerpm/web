@@ -119,6 +119,7 @@ export default {
           master_password_hash: hashedPassword
         })
         await this.getSyncData()
+        await this.syncQuickShares()
         this.closeDialog()
         this.notify(this.$t('data.notifications.purge_success'), 'success')
       } catch (e) {

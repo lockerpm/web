@@ -18,18 +18,6 @@
       </nuxt-link>
     </div>
     <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
-      <!-- <div class="flex mb-5">
-        <nuxt-link
-          v-for="(item, index) in menu"
-          :key="index"
-          :to="localeRoute({name: item.routeName})"
-          active-class="!text-primary"
-          class="text-black-600 font-bold mr-8 last:mr-0"
-          exact
-        >
-          {{ $t(`sidebar.${item.label}`) }}
-        </nuxt-link>
-      </div> -->
       <nuxt-child />
     </div>
   </div>
@@ -55,22 +43,6 @@ export default {
     },
     menu () {
       return [
-        // {
-        //   label: 'general',
-        //   routeName: 'settings'
-        // },
-        // {
-        //   label: 'import_export',
-        //   routeName: 'settings-import-export'
-        // },
-        // {
-        //   label: 'download',
-        //   routeName: 'settings-download'
-        // },
-        // {
-        //   label: 'excluded_domains',
-        //   routeName: 'settings-excluded-domains'
-        // },
         {
           label: 'account',
           routeName: 'settings-account'
@@ -80,8 +52,8 @@ export default {
           routeName: 'settings-manage-member'
         },
         {
-          label: 'options',
-          routeName: 'settings-options'
+          label: 'import_export',
+          routeName: 'settings-import-export'
         },
         {
           label: 'security',

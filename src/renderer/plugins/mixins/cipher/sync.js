@@ -42,7 +42,7 @@ Vue.mixin({
           await this.$syncService.syncFolders(userId, res.folders)
           await this.$syncService.syncCollections(res.collections)
           await this.$syncService.syncSomeCiphers(userId, res.ciphers)
-          await this.$syncService.syncSends(userId, res.sends)
+          // await this.$syncService.syncSends(userId, res.sends)
           await this.$syncService.syncSettings(userId, res.domains)
           await this.$syncService.syncPolicies(res.policies)
           await this.$syncService.setLastSync(new Date())

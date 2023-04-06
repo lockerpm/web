@@ -63,9 +63,6 @@ Vue.mixin({
     extensionLoggedIn () {
       return this.$store.state.extensionLoggedIn
     },
-    myShares () {
-      return this.$store.state.myShares
-    },
     enterpriseInvitations () {
       return this.$store.state.enterpriseInvitations
     },
@@ -77,6 +74,9 @@ Vue.mixin({
         process.env.environment === 'staging' ||
         process.env.NODE_ENV !== 'production'
       )
+    },
+    currentYear () {
+      return new Date().getFullYear()
     },
     isOnPremise () {
       return this.$store.state.isOnPremise
@@ -383,6 +383,21 @@ Vue.mixin({
       if (window.Intercom) {
         window.Intercom('show')
       }
+    },
+
+    filterPassword (value, showPassword) {
+      if (value && !showPassword) {
+        let result = ''
+        for (let i = 0; i < value.length; i++) {
+          if (value[i] === ' ') {
+            result += ' '
+          } else {
+            result += '*'
+          }
+        }
+        return result
+      }
+      return value
     },
 
     async validateOnPremiseBaseApi (baseApi) {

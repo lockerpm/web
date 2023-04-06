@@ -68,9 +68,7 @@
             <div class="text-sm font-semibold">
               <nobr>
                 {{ currentUser.full_name }}
-                <i
-                  class="el-icon-caret-bottom el-icon--right"
-                />
+                <i class="el-icon-caret-bottom el-icon--right" />
               </nobr>
             </div>
             <div class="text-xs text-black-600">
@@ -186,11 +184,11 @@ export default {
         'cards',
         'identities',
         'crypto-backups',
-        'shares',
+        'shares-index',
         'trash',
         'vault-tfolders-tfolderId',
         'vault-folders-folderId',
-        'shares-your-shares',
+        'shares-index-your-shares',
         'authenticator'
       ].includes(this.getRouteBaseName())
     },

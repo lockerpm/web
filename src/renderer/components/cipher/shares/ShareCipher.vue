@@ -238,12 +238,12 @@
 </template>
 
 <script>
-import InputSelect from '../../components/input/InputSelect.vue'
-import InputText from '../../components/input/InputText.vue'
-import { CipherRequest } from '../../jslib/src/models/request'
-import { CipherType } from '../../jslib/src/enums'
-import Vnodes from '../../components/Vnodes'
-import { Utils } from '../../jslib/src/misc/utils.ts'
+import InputSelect from '../../input/InputSelect.vue'
+import InputText from '../../input/InputText.vue'
+import { CipherRequest } from '../../../jslib/src/models/request'
+import { CipherType } from '../../../jslib/src/enums'
+import Vnodes from '../../../components/Vnodes'
+import { Utils } from '../../../jslib/src/misc/utils.ts'
 
 export default {
   components: { Vnodes, InputSelect, InputText },
@@ -511,8 +511,8 @@ export default {
     },
 
     async addMember (email) {
+      this.searchInput = ''
       if (!this.validateEmail(email) || this.isShared({ email })) {
-        this.searchInput = ''
         return
       }
       const emails = [email]
@@ -534,7 +534,6 @@ export default {
           })
         )
         this.newMembers = this.newMembers.concat(members)
-        this.searchInput = ''
       } catch (e) {
         console.log(e)
         this.notify(this.$t('errors.something_went_wrong'), 'error')
@@ -622,7 +621,13 @@ export default {
           }
         )
         this.notify(this.$t('data.notifications.stop_share_success'), 'success')
-        await this.getMyShares()
+
+        // Close dialog if is last member to refresh item orgId
+        if (this.members.length + this.groups.length <= 1) {
+          this.closeDialog()
+        }
+
+        this.getMyShares()
       } catch (error) {
         this.notify(this.$t('errors.something_went_wrong'), 'warning')
       }
@@ -685,6 +690,9 @@ export default {
     },
 
     async searchGroups (query) {
+      if (!this.currentOrg.id) {
+        return
+      }
       const res = await this.$axios.$post(
         `cystack_platform/pm/enterprises/${this.currentOrg.id}/members_groups/search`,
         {
@@ -703,9 +711,15 @@ export default {
 
     isShared (item) {
       if (item.type === 'group') {
-        return !!this.groups.find(g => g.id === item.id)
+        return (
+          !!this.groups.find(g => g.id === item.id) ||
+          !!this.newGroups.find(g => g.id === item.id)
+        )
       }
-      return !!this.members.find(m => m.email === item.email)
+      return (
+        !!this.members.find(m => m.username === item.email) ||
+        !!this.newMembers.find(m => m.username === item.email)
+      )
     },
 
     isSelf (item) {

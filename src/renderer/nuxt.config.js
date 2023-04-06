@@ -138,7 +138,7 @@ module.exports = {
       'hciabnakeampkoldeohkfcbadmgcmebl',
       'iapmepfhjobeehklaegdejhmmejkmhph'
     ],
-    baseApiUrl: process.env.BASE_API_URL || 'https://api.cystack.net/v3',
+    baseApiUrl: process.env.BASE_API_URL || 'https://api.locker.io/v3',
     extensionLink:
       'https://chrome.google.com/webstore/detail/locker-free-password-mana/cmajindocfndlkpkjnmjpjoilibjgmgh',
     iosLink:
@@ -161,7 +161,7 @@ module.exports = {
       : undefined
   },
   axios: {
-    baseURL: process.env.BASE_API_URL || 'https://api.cystack.org/v3'
+    baseURL: process.env.BASE_API_URL || 'https://api.locker.io/v3'
   },
   router: {},
   moment: {
