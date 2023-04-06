@@ -17,13 +17,15 @@
 
       <div class="text-black-600 mb-8">
         {{
-          isFreeUser && getRouteBaseName() !== 'shares'
+          isFreeUser && getRouteBaseName() === 'shares-index-your-shares'
             ? $t('errors.upgrade_to_use')
-            : $t(`data.no_data.${type}.description`)
+            : getRouteBaseName() === 'shares-index-quick-shares'
+              ? $t('data.sharing.quick_share.empty_desc')
+              : $t(`data.no_data.${type}.description`)
         }}
       </div>
 
-      <div v-if="getRouteBaseName() !== 'shares'">
+      <div v-if="getRouteBaseName() !== 'shares-index'">
         <button
           class="btn btn-default"
           @click="isFreeUser ? upgradePlan() : $emit('add-share')"
@@ -38,17 +40,11 @@
 </template>
 
 <script>
-import { CipherType } from '../../jslib/src/enums/cipherType.ts'
-import Vnodes from '../../components/Vnodes'
+import { CipherType } from '../../../jslib/src/enums/cipherType.ts'
+import Vnodes from '../../../components/Vnodes'
 
 export default {
   components: { Vnodes },
-  props: {
-    type: {
-      type: String,
-      default: null
-    }
-  },
   data () {
     return {
       CipherType
@@ -57,6 +53,28 @@ export default {
   computed: {
     isFreeUser () {
       return this.currentPlan?.alias === 'pm_free'
+    },
+    type () {
+      switch (this.getRouteBaseName()) {
+      case 'passwords':
+        return 'Login'
+      case 'notes':
+        return 'SecureNote'
+      case 'cards':
+        return 'Card'
+      case 'identities':
+        return 'Identity'
+      case 'vault':
+        return 'Vault'
+      case 'shares-index':
+      case 'shares-index-your-shares':
+      case 'shares-index-quick-shares':
+        return 'Shares'
+      case 'trash':
+        return 'Trash'
+      default:
+        return null
+      }
     }
   },
   methods: {

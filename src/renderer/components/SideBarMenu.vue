@@ -95,7 +95,7 @@
 
             <div
               v-if="
-                item.routeName === 'shares' &&
+                item.routeName === 'shares-index' &&
                   pendingShares + pendingMyShares.length > 0
               "
             >
@@ -160,7 +160,7 @@
           </nuxt-link>
         </template>
         <a
-          href="https://zo8rr5fc706.typeform.com/to/OotlSyQ7"
+          href="https://cystack.typeform.com/to/YTUaD1sL"
           target="_blank"
           class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
         >
@@ -250,7 +250,7 @@ export default {
         {
           label: 'shares',
           icon: 'share',
-          routeName: 'shares'
+          routeName: 'shares-index'
         },
         {
           label: 'private_email',

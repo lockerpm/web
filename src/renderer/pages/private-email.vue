@@ -139,8 +139,6 @@
       </nuxt-link>
     </div>
     <section class="py-[120px] text-center">
-      <!-- <h2 class="landing-font-48 font-bold mb-8">{{ $t('private_email.feedback.title') }}</h2>
-      <img class="mx-auto" src="~/assets/images/landing/private-email/section-line.svg"> -->
       <h2 class="landing-font-48 font-bold mb-8">{{ $t('private_email.pick_your_plan') }}</h2>
       <p class="text-black-600 landing-font-18 mb-16">{{ $t('private_email.pick_plan_desc') }}</p>
       <div class="mt-16 grid md:grid-cols-2 grid-cols-1 gap-20 text-left">
