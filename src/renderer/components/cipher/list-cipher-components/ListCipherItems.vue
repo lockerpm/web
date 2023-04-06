@@ -169,14 +169,47 @@
             <!-- Copy end -->
 
             <!-- Share -->
-            <button
-              v-if="isCipherShareable(item, organizations)"
-              class="btn btn-icon btn-xs hover:bg-black-400"
-              :title="$t('common.share')"
-              @click="shareItem(item)"
+            <el-dropdown
+              v-if="
+                isCipherShareable(item, organizations) ||
+                  isCipherQuickShareable(item)
+              "
+              trigger="click"
+              :hide-on-click="false"
             >
-              <i class="far fa-share-square" />
-            </button>
+              <button class="btn btn-icon btn-xs hover:bg-black-400">
+                <i class="far fa-share-square" />
+              </button>
+              <el-dropdown-menu slot="dropdown">
+                <!-- Normal share -->
+                <el-tooltip
+                  :content="$t('data.sharing.share_desc')"
+                  placement="top"
+                >
+                  <el-dropdown-item
+                    v-if="isCipherShareable(item, organizations)"
+                    @click.native="shareItem(item)"
+                  >
+                    {{ $t('common.in_app_share') }}
+                  </el-dropdown-item>
+                </el-tooltip>
+                <!-- Normal share end -->
+
+                <!-- Quick share -->
+                <el-tooltip
+                  :content="$t('data.sharing.quick_share_desc')"
+                  placement="bottom"
+                >
+                  <el-dropdown-item
+                    v-if="isCipherQuickShareable(item)"
+                    @click.native="quickShareItem(item)"
+                  >
+                    {{ $t('common.get_share_link') }}
+                  </el-dropdown-item>
+                </el-tooltip>
+                <!-- Quick share end -->
+              </el-dropdown-menu>
+            </el-dropdown>
             <!-- Share end -->
 
             <!-- Other actions -->
@@ -243,17 +276,19 @@
     </RecycleScroller>
 
     <ShareCipher ref="shareCipher" @upgrade-plan="upgradePlan" />
+    <QuickShareCipher ref="quickShareCipher" />
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
   </div>
 </template>
 <script>
 import { CipherType } from '../../../core/enums/cipherType'
 import MoveFolder from '@/components/folder/MoveFolder'
-import ShareCipher from '@/components/cipher/ShareCipher'
+import ShareCipher from '@/components/cipher/shares/ShareCipher'
+import QuickShareCipher from '@/components/cipher/shares/QuickShareCipher'
 import Vnodes from '@/components/Vnodes'
 
 export default {
-  components: { ShareCipher, Vnodes, MoveFolder },
+  components: { ShareCipher, Vnodes, MoveFolder, QuickShareCipher },
 
   props: {
     deleted: {
@@ -343,6 +378,10 @@ export default {
 
     shareItem (cipher) {
       this.$refs.shareCipher.openDialog(cipher)
+    },
+
+    quickShareItem (cipher) {
+      this.$refs.quickShareCipher.openDialog(cipher)
     },
 
     upgradePlan () {
