@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import find from 'lodash/find'
+import { CipherType } from '../../../core/enums/cipherType'
 
 Vue.mixin({
   computed: {
@@ -75,7 +76,20 @@ Vue.mixin({
         this.isOwner(organizations, cipher) &&
         // Not in any shared folder
         !cipher.collectionIds.length &&
-        !this.isProtectedCipher(cipher)
+        !this.isProtectedCipher(cipher) &&
+        cipher.type !== CipherType.TOTP
+      )
+    },
+
+    isCipherQuickShareable (cipher) {
+      const isBelongToSelf =
+        !cipher.organizationId ||
+        !!this.myShares.find(i => i.organization_id === cipher.organizationId)
+      return (
+        !cipher.isDeleted &&
+        !this.isProtectedCipher(cipher) &&
+        cipher.type !== CipherType.TOTP &&
+        isBelongToSelf
       )
     },
 
@@ -96,6 +110,145 @@ Vue.mixin({
           }
         }) || []
       )
+    },
+
+    async syncQuickShares () {
+      try {
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', true)
+        const res = await this.$axios.$get(
+          'cystack_platform/pm/quick_shares?paging=0'
+        )
+        const userId = await this.$userService.getUserId()
+        await this.$syncService.syncSends(userId, res)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', false)
+      }
+    },
+
+    getPublicShareUrl (accessId, key) {
+      return `${
+        process.env.baseUrl
+      }/shares/quick-share-item/${accessId}#${encodeURIComponent(key)}`
+    },
+
+    async stopQuickSharing (send) {
+      try {
+        await this.$axios.$delete(`cystack_platform/pm/quick_shares/${send.id}`)
+        this.notify(this.$t('data.notifications.stop_share_success'), 'success')
+        return true
+      } catch (error) {
+        this.notify(this.$t('errors.something_went_wrong'), 'warning')
+        console.log(error)
+        return false
+      }
+    },
+
+    async stopShareCipher (cipher) {
+      try {
+        let memberId = null
+        if (cipher.user) {
+          memberId = cipher.user.id
+          delete cipher.user
+        }
+        const { data } = await this.getEncCipherForRequest(cipher, {
+          noCheck: true,
+          encKey: await this.$cryptoService.getEncKey()
+        })
+
+        if (memberId) {
+          await this.$axios.$post(
+            `cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`,
+            {
+              folder: null,
+              cipher: { ...data, id: cipher.id }
+            }
+          )
+        } else {
+          await this.$axios.$post(
+            `cystack_platform/pm/sharing/${cipher.organizationId}/stop`,
+            {
+              folder: null,
+              cipher: { ...data, id: cipher.id }
+            }
+          )
+        }
+
+        this.notify(
+          this.$tc('data.notifications.update_success', 1, {
+            type: this.$tc(`type.${cipher.type}`, 1)
+          }),
+          'success'
+        )
+        this.$store.dispatch('LoadMyShares')
+      } catch (error) {
+        this.notify(
+          this.$tc('data.notifications.update_failed', 1, {
+            type: this.$tc(`type.${cipher.type}`, 1)
+          }),
+          'warning'
+        )
+      }
+    },
+
+    async stopShareFolder (folder) {
+      try {
+        let memberId = null
+        if (folder.user) {
+          memberId = folder.user.id
+          delete folder.user
+        }
+        let folderNameEnc = await this.$cryptoService.encrypt(folder.name)
+        folderNameEnc = folderNameEnc.encryptedString
+
+        // Encrypt ciphers with self key
+        const personalKey = await this.$cryptoService.getEncKey()
+        const ciphers = await Promise.all(
+          folder.ciphers.map(async cipher => {
+            const { data } = await this.getEncCipherForRequest(cipher, {
+              noCheck: true,
+              encKey: personalKey
+            })
+            return {
+              id: cipher.id,
+              ...data
+            }
+          })
+        )
+        const payload = {
+          folder: {
+            id: folder.id,
+            name: folderNameEnc,
+            ciphers
+          }
+        }
+        if (memberId) {
+          await this.$axios.$post(
+            `cystack_platform/pm/sharing/${folder.organizationId}/members/${memberId}/stop`,
+            payload
+          )
+        } else {
+          await this.$axios.$post(
+            `cystack_platform/pm/sharing/${folder.organizationId}/stop`,
+            payload
+          )
+        }
+        this.notify(
+          this.$tc('data.notifications.update_success', 1, {
+            type: this.$tc('type.Folder', 1)
+          }),
+          'success'
+        )
+        this.$store.dispatch('LoadMyShares')
+      } catch (error) {
+        this.notify(
+          this.$tc('data.notifications.update_failed', 1, {
+            type: this.$tc('type.Folder', 1)
+          }),
+          'warning'
+        )
+      }
     }
   }
 })

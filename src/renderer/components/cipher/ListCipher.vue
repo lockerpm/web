@@ -149,8 +149,6 @@ export default {
       switch (this.routeName) {
       case 'vault':
         return 'Vault'
-      case 'shares':
-        return 'Shares'
       case 'trash':
         return 'Trash'
       default:
@@ -164,9 +162,6 @@ export default {
       const haveCipher = this.ciphers?.length
       if (this.getRouteBaseName() === 'vault') {
         return this.folders && !this.folders.length && !haveCipher
-      }
-      if (this.getRouteBaseName() === 'shares') {
-        return this.collections && !this.collections.length
       }
       if (this.getRouteBaseName() === 'vault-folders-folderId') {
         return false

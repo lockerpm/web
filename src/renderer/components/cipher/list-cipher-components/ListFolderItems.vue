@@ -190,62 +190,7 @@ export default {
     },
 
     async stopSharing (folder) {
-      try {
-        let memberId = null
-        if (folder.user) {
-          memberId = folder.user.id
-          delete folder.user
-        }
-        let folderNameEnc = await this.$cryptoService.encrypt(folder.name)
-        folderNameEnc = folderNameEnc.encryptedString
-
-        // Encrypt ciphers with self key
-        const personalKey = await this.$cryptoService.getEncKey()
-        const ciphers = await Promise.all(
-          folder.ciphers.map(async cipher => {
-            const { data } = await this.getEncCipherForRequest(cipher, {
-              noCheck: true,
-              encKey: personalKey
-            })
-            return {
-              id: cipher.id,
-              ...data
-            }
-          })
-        )
-        const payload = {
-          folder: {
-            id: folder.id,
-            name: folderNameEnc,
-            ciphers
-          }
-        }
-        if (memberId) {
-          await this.$axios.$post(
-            `cystack_platform/pm/sharing/${folder.organizationId}/members/${memberId}/stop`,
-            payload
-          )
-        } else {
-          await this.$axios.$post(
-            `cystack_platform/pm/sharing/${folder.organizationId}/stop`,
-            payload
-          )
-        }
-        this.notify(
-          this.$tc('data.notifications.update_success', 1, {
-            type: this.$tc('type.Folder', 1)
-          }),
-          'success'
-        )
-        this.$store.dispatch('LoadMyShares')
-      } catch (error) {
-        this.notify(
-          this.$tc('data.notifications.update_failed', 1, {
-            type: this.$tc('type.Folder', 1)
-          }),
-          'warning'
-        )
-      }
+      await this.stopShareFolder(folder)
     }
   }
 }

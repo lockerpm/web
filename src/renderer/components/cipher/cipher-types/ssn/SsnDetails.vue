@@ -1,18 +1,28 @@
 <template>
   <div>
-    <TextHaveCopy :label="$t('common.fullname')" :text="ssn.fullName" />
+    <TextHaveCopy
+      :label="$t('common.fullname')"
+      :text="ssn.fullName"
+      :should-hide="isPublic && hideAll"
+    />
     <TextHaveCopy
       :label="$t('data.ciphers.ssn')"
       :text="ssn.socialSecurityNumber"
+      :should-hide="isPublic && hideAll"
     />
     <TextHaveCopy
       :label="$t('data.ciphers.passport_type.date_of_issue')"
       :text="ssn.dateOfIssue"
+      :should-hide="isPublic && hideAll"
     />
-    <TextHaveCopy :label="$t('common.nationality')" :text="ssn.contry" />
+    <TextHaveCopy
+      :label="$t('common.nationality')"
+      :text="ssn.contry"
+      :should-hide="isPublic && hideAll"
+    />
     <TextHaveCopy
       :label="$t('data.ciphers.notes')"
-      :text="ssn.notes"
+      :text="filterPassword(ssn.notes, !isPublic || !hideAll)"
       :text-area="true"
     />
   </div>
@@ -30,6 +40,14 @@ export default {
     cipher: {
       type: [CipherView, Object],
       default: () => ({ ssn: {} })
+    },
+    isPublic: {
+      type: Boolean,
+      default: () => false
+    },
+    hideAll: {
+      type: Boolean,
+      default: () => false
     }
   },
 

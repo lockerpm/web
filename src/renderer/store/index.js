@@ -46,7 +46,8 @@ export const state = () => ({
   tutorial: {
     isActive: false,
     currentStepId: ''
-  }
+  },
+  syncingQuickShares: false
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -64,6 +65,7 @@ export const mutations = {
     }
     state.teams = []
     state.syncing = false
+    state.syncingQuickShares = false
     state.cipherCount = null
     state.notDeletedCipherCount = {
       total: 0,
@@ -99,6 +101,9 @@ export const mutations = {
   },
   UPDATE_SYNCING (state, syncing) {
     state.syncing = syncing
+  },
+  UPDATE_SYNCING_QUICK_SHARES (state, syncing) {
+    state.syncingQuickShares = syncing
   },
   UPDATE_SYNCED_CIPHERS (state) {
     state.syncedCiphersToggle = !state.syncedCiphersToggle

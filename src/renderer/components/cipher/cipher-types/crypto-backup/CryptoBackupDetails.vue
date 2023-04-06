@@ -8,39 +8,44 @@
           class="font-semibold flex items-center"
         >
           <img
+            v-if="!isPublic || !hideAll"
             :src="cryptoWallet.walletApp.logo"
             alt=""
             class="mr-3 h-[34px] w-[34px] rounded-full"
           >
-          {{ cryptoWallet.walletApp.name }}
+          {{
+            filterPassword(cryptoWallet.walletApp.name, !isPublic || !hideAll)
+          }}
         </div>
       </div>
     </div>
     <TextHaveCopy
       :label="$t('data.ciphers.username')"
       :text="cryptoWallet.username"
+      :should-hide="isPublic && hideAll"
     />
     <TextHaveCopy
       :label="$t('data.ciphers.password_pin')"
       :text="cryptoWallet.password"
       :view-password="cipher.viewPassword"
-      should-hide
+      :should-hide="!isPublic || hideAll"
     />
     <TextHaveCopy
       :label="$t('data.ciphers.wallet_address')"
       :text="cryptoWallet.address"
+      :should-hide="isPublic && hideAll"
     />
     <TextHaveCopy
       :label="$t('data.ciphers.private_key')"
       :text="cryptoWallet.privateKey"
       :view-password="cipher.viewPassword"
-      should-hide
+      :should-hide="!isPublic || hideAll"
     />
     <div class="grid md:grid-cols-6 cipher-item">
       <div class="">{{ $t('data.ciphers.seed') }}</div>
       <div class="col-span-4 font-semibold">
         <InputSeedPhrase
-          :value="cryptoWallet.seed"
+          :value="filterPassword(cryptoWallet.seed, !isPublic || !hideAll)"
           :label="$t('data.ciphers.seed')"
           :edit-mode="false"
           :disabled="true"
@@ -70,18 +75,19 @@
             class="font-semibold flex items-center break-normal"
           >
             <img
+              v-if="!isPublic || !hideAll"
               :src="network.logo"
               alt=""
               class="mr-3 h-[34px] w-[34px] rounded-full"
             >
-            {{ network.name }}
+            {{ filterPassword(network.name, !isPublic || !hideAll) }}
           </div>
         </div>
       </div>
     </div>
     <TextHaveCopy
       :label="$t('data.ciphers.notes')"
-      :text="cryptoWallet.notes"
+      :text="filterPassword(cryptoWallet.notes, !isPublic || !hideAll)"
       :text-area="true"
     />
   </div>
@@ -104,6 +110,14 @@ export default {
     cipher: {
       type: [CipherView, Object],
       default: () => ({ cryptoWallet: {} })
+    },
+    isPublic: {
+      type: Boolean,
+      default: () => false
+    },
+    hideAll: {
+      type: Boolean,
+      default: () => false
     }
   },
 

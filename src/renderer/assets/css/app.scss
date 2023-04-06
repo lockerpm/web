@@ -235,6 +235,9 @@ a {
     }
     .setting-section-header {
       @apply flex items-center justify-between;
+      &.cursor-pointer {
+        cursor: pointer !important;
+      }
     }
     .setting-section-body {
       @apply mt-6;
@@ -619,4 +622,9 @@ a:hover {
   height: 0px; /*same height as header*/
   margin-top: -0px; /*same height as header*/
   visibility: hidden;
+}
+
+.el-button,
+.el-dialog__title {
+  font-weight: 600;
 }

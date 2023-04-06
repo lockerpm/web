@@ -39,10 +39,7 @@
       <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow" />
         <div>
-          <button
-            class="btn btn-default"
-            @click="dialogVisible = false"
-          >
+          <button class="btn btn-default" @click="dialogVisible = false">
             {{ $t('common.cancel') }}
           </button>
           <button
@@ -75,10 +72,8 @@ export default {
       type: 'purge'
     }
   },
-  computed: {
-  },
-  mounted () {
-  },
+  computed: {},
+  mounted () {},
   methods: {
     async openDialog (type) {
       this.dialogVisible = true
@@ -91,10 +86,17 @@ export default {
     },
     async confirmPassword () {
       this.loading = true
-      this.errors = { }
-      const keyHash = await this.$cryptoService.hashPassword(this.password, null)
+      this.errors = {}
+      const keyHash = await this.$cryptoService.hashPassword(
+        this.password,
+        null
+      )
       const storedKeyHash = await this.$cryptoService.getKeyHash()
-      if (storedKeyHash != null && keyHash != null && storedKeyHash === keyHash) {
+      if (
+        storedKeyHash != null &&
+        keyHash != null &&
+        storedKeyHash === keyHash
+      ) {
         if (this.type === 'purge') {
           await this.purgeAccount(keyHash)
         } else {
@@ -117,6 +119,7 @@ export default {
           master_password_hash: hashedPassword
         })
         await this.getSyncData()
+        await this.syncQuickShares()
         this.closeDialog()
         this.notify(this.$t('data.notifications.purge_success'), 'success')
       } catch (e) {
@@ -129,11 +132,17 @@ export default {
         await this.$axios.$post('cystack_platform/pm/users/me/delete', {
           master_password_hash: hashedPassword
         })
-        this.notify(this.$t('data.notifications.delete_account_success'), 'success')
+        this.notify(
+          this.$t('data.notifications.delete_account_success'),
+          'success'
+        )
         this.closeDialog()
         this.logout()
       } catch (e) {
-        this.notify(this.$t('data.notifications.delete_account_failed'), 'warning')
+        this.notify(
+          this.$t('data.notifications.delete_account_failed'),
+          'warning'
+        )
       }
     }
   }

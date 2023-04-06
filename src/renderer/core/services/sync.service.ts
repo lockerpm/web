@@ -5,7 +5,7 @@ import { CryptoService } from '../../jslib/src/abstractions/crypto.service'
 import { FolderService } from '../../jslib/src/abstractions/folder.service'
 import { MessagingService } from '../../jslib/src/abstractions/messaging.service'
 import { PolicyService } from '../../jslib/src/abstractions/policy.service'
-import { SendService } from '../../jslib/src/abstractions/send.service'
+import { SendService } from '../abstractions/send.service'
 import { SettingsService } from '../../jslib/src/abstractions/settings.service'
 import { StorageService } from '../../jslib/src/abstractions/storage.service'
 import { SyncService as SyncServiceAbstraction } from '../../jslib/src/abstractions/sync.service'
@@ -16,7 +16,8 @@ import { CollectionData } from '../../core/models/data/collectionData'
 import { FolderData } from '../../jslib/src/models/data/folderData'
 import { OrganizationData } from '../../jslib/src/models/data/organizationData'
 import { PolicyData } from '../../jslib/src/models/data/policyData'
-import { SendData } from '../../jslib/src/models/data/sendData'
+import { SendData } from '../models/data/sendData'
+import { SendData as OldSendData } from '../../jslib/src/models/data/sendData'
 
 import { CipherResponse } from '../../jslib/src/models/response/cipherResponse'
 import { CollectionDetailsResponse } from '../../core/models/response/collectionResponse'
@@ -29,14 +30,14 @@ import {
 } from '../../jslib/src/models/response/notificationResponse'
 import { PolicyResponse } from '../../jslib/src/models/response/policyResponse'
 import { ProfileResponse } from '../../jslib/src/models/response/profileResponse'
-import { SendResponse } from '../../jslib/src/models/response/sendResponse'
+import { SendResponse } from '../models/response/sendResponse'
 
 const Keys = {
   lastSyncPrefix: 'lastSync_'
 }
 
 export class SyncService implements SyncServiceAbstraction {
-  syncInProgress: boolean = false;
+  syncInProgress: boolean = false
 
   // eslint-disable-next-line no-useless-constructor
   constructor (
@@ -112,7 +113,7 @@ export class SyncService implements SyncServiceAbstraction {
       await this.syncFolders(userId, response.folders)
       await this.syncCollections(response.collections)
       await this.syncCiphers(userId, response.ciphers)
-      await this.syncSends(userId, response.sends)
+      // await this.syncSends(userId, response.sends)
       await this.syncSettings(userId, response.domains)
       await this.syncPolicies(response.policies)
 
@@ -196,7 +197,7 @@ export class SyncService implements SyncServiceAbstraction {
             checkCollections = true
           } else if (
             notification.collectionIds == null ||
-              notification.organizationId == null
+            notification.organizationId == null
           ) {
             shouldUpdate = localCipher == null
           } else {
@@ -280,7 +281,7 @@ export class SyncService implements SyncServiceAbstraction {
           const remoteSend = await this.apiService.getSend(notification.id)
           if (remoteSend != null) {
             const userId = await this.userService.getUserId()
-            await this.sendService.upsert(new SendData(remoteSend, userId))
+            await this.sendService.upsert(new OldSendData(remoteSend, userId))
             this.messagingService.send('syncedUpsertedSend', {
               sendId: notification.id
             })
@@ -383,7 +384,7 @@ export class SyncService implements SyncServiceAbstraction {
   }
 
   private async syncSomeCiphers (userId: string, response: CipherResponse[]) {
-    const ciphers: { [id: string]: CipherData; } = {}
+    const ciphers: { [id: string]: CipherData } = {}
     response.forEach(c => {
       ciphers[c.id] = new CipherData(c, userId)
     })
