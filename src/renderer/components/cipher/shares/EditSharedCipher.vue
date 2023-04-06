@@ -60,9 +60,9 @@
 </template>
 
 <script>
-import InputSelect from '../../components/input/InputSelect.vue'
-import { CipherType } from '../../jslib/src/enums'
-import Vnodes from '../../components/Vnodes'
+import InputSelect from '../../input/InputSelect.vue'
+import { CipherType } from '../../../jslib/src/enums'
+import Vnodes from '../../../components/Vnodes.vue'
 
 export default {
   components: { Vnodes, InputSelect },

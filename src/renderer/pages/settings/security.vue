@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-2/3">
+  <div class="lg:w-3/4">
     <div class="text-head-5 font-semibold mb-2">
       {{ $t('data.settings.security_control') }}
     </div>
@@ -30,16 +30,11 @@ export default {
     ManageSessions
   },
   data () {
-    return {
-    }
+    return {}
   },
-  computed: {
-  },
-  watch: {
-  },
-  async mounted () {
-  },
-  methods: {
-  }
+  computed: {},
+  watch: {},
+  async mounted () {},
+  methods: {}
 }
 </script>

@@ -95,7 +95,7 @@
 
             <div
               v-if="
-                item.routeName === 'shares' &&
+                item.routeName === 'shares-index' &&
                   pendingShares + pendingMyShares.length > 0
               "
             >
@@ -250,7 +250,7 @@ export default {
         {
           label: 'shares',
           icon: 'share',
-          routeName: 'shares'
+          routeName: 'shares-index'
         },
         {
           label: 'private_email',
