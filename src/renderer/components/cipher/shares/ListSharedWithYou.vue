@@ -236,13 +236,15 @@
                         <template v-if="scope.row.type && !scope.row.isDeleted">
                           <!-- Copy -->
                           <el-dropdown-item
-                            v-for="(copyKey, index) in getCopyableValues(item)"
+                            v-for="(copyKey, index) in getCopyableValues(
+                              scope.row
+                            )"
                             :key="index"
                             v-clipboard:copy="copyKey.value"
                             v-clipboard:success="clipboardSuccessHandler"
                             :disabled="!copyKey.value"
                             :divided="
-                              index === getCopyableValues(item).length - 1
+                              index === getCopyableValues(scope.row).length - 1
                             "
                           >
                             {{ $t('common.copy') }} {{ $t(copyKey.label) }}

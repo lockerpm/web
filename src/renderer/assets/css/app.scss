@@ -235,6 +235,9 @@ a {
     }
     .setting-section-header {
       @apply flex items-center justify-between;
+      &.cursor-pointer {
+        cursor: pointer !important;
+      }
     }
     .setting-section-body {
       @apply mt-6;
