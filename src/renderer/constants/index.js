@@ -62,7 +62,6 @@ export const CipherMapper = (() => {
     type: CipherType.CryptoWallet,
     routeName: 'crypto-backups',
     label: 'crypto_backups',
-    friendlyName: 'CryptoBackup',
     freeLimit: 5,
     csvTypeName: 'crypto-wallet'
   }
