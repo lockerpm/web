@@ -17,7 +17,7 @@
         </div>
         <div>
           <button
-            class="btn btn-outline-primary mr-4 hidden lg:inline-block"
+            class="btn btn-outline-primary mr-4 hidden lg:inline-block setting-button"
             @click="postEmergencyAccess"
           >
             <i class="el-icon-plus" />

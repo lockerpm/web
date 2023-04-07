@@ -12,7 +12,7 @@
             class="mr-4 hidden lg:inline-block"
           >
             <button
-              class="btn btn-outline-primary md:mb-0"
+              class="btn btn-outline-primary md:mb-0 setting-button"
               @onclick="() => (collapsed = !collapsed)"
             >
               <span><i class="fas fa-hockey-puck mr-2" />{{
