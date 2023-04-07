@@ -88,6 +88,11 @@ export default function ({
           '/affiliate',
           '/business',
           '/private-email',
+          '/lifetime',
+          '/comparison',
+          '/promotion',
+          '/crypto',
+          '/shares/quick-share-item',
           '/'
         ]
         let currentPath = route.path
