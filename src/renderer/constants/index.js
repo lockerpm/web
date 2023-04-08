@@ -12,6 +12,10 @@ export class AccountRole {
 export const CipherMapper = (() => {
   // Notes: do not add friendly name for new cipher types
   // Friendly name only used for translation of old types
+  // hideFromCipherList: hide from load all ciphers + add new options
+  // noCreate: cannot create new item of this type + hide from add new options
+  // noMenu: hide from sidebar
+
   const res = {}
   res[CipherType.Login] = {
     type: CipherType.Login,

@@ -370,6 +370,13 @@ export default {
               null
             )) || []
         } catch (error) {}
+        // remove hidden ciphers
+        result = result.filter(cipher =>
+          Object.values(this.cipherMapping)
+            .filter(m => !m.hideFromCipherList)
+            .map(m => m.type)
+            .includes(cipher.type)
+        )
         return result
       },
       watch: ['$store.state.syncedCiphersToggle']
