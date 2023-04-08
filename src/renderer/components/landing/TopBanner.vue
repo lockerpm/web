@@ -2,22 +2,63 @@
   <div v-show="visible" class="banner-container">
     <div class="max-w-6xl mx-auto">
       <div class="w-full px-6 flex flex-row">
-        <div class="flex-1">
-          <p class="font-normal text-center" style="color: white">
-            <span class="new-container">
-              NEW
-            </span>
-            <span v-html="$t('landing_banner.desc')" /> 🎉
-            <a
-              :href="url"
-              style="color: #15D127; text-decoration: none"
-              target="_blank"
-            >
-              {{ $t('landing_banner.read_more') }} <i class="el-icon-right" />
-            </a>
-          </p>
+        <div class="mt-[-5px] mr-2 min-w-[20px]">
+          <img
+            src="@/assets/images/landing/CaretUp.svg"
+            alt=""
+            class="mb-[2px] cursor-pointer"
+            @click="Up()"
+          >
+          <img
+            src="@/assets/images/landing/CaretDown.svg"
+            alt=""
+            class="cursor-pointer"
+            @click="Down()"
+          >
         </div>
-        <a class="close-btn" @click.prevent="close()">
+        <div
+          ref="wrapper"
+          class="test-wrapper text0-active"
+        >
+          <div
+            v-for="(item, index) in realData"
+            :key="index"
+            :class="index != 0 ? 'mt-12' : ''"
+          >
+            <p class="font-normal text-center parent" style="color: white">
+              <span class="new-container">
+                NEW
+              </span>
+              <span v-html="item.Text" class="ellipsis" /> 🎉
+              <a
+                :href="item.Link"
+                style="color: #15D127; text-decoration: none; white-space: nowrap"
+                target="_blank"
+              >
+                {{ $t('landing_banner.read_more') }} <i class="el-icon-right" />
+              </a>
+            </p>
+          </div>
+          <div
+            v-if="realData && (realData.length !== 1 && realData.length !== 0)"
+            class="mt-12"
+          >
+            <p class="font-normal text-center parent" style="color: white">
+              <span class="new-container">
+                NEW
+              </span>
+              <span v-html="realData[0].Text" class="ellipsis"/> 🎉
+              <a
+                :href="realData[0].Link"
+                style="color: #15D127; text-decoration: none; white-space: nowrap"
+                target="_blank"
+              >
+                {{ $t('landing_banner.read_more') }} <i class="el-icon-right" />
+              </a>
+            </p>
+          </div>
+        </div>
+        <a class="close-btn min-w-[20px]" @click.prevent="close()">
           <i class="el-icon-close" />
         </a>
       </div>
@@ -30,7 +71,12 @@ export default {
   name: 'TopBanner',
   data () {
     return {
-      visible: true
+      visible: true,
+      notionData: [],
+      delay: 2000,
+      timeoutId: () => {},
+      reverse: false,
+      count: 0
     }
   },
   computed: {
@@ -40,9 +86,86 @@ export default {
       } else {
         return 'https://locker.io/blog/introducing-a-new-locker-password-manager-for-firefox'
       }
+    },
+    realData () {
+      return this.notionData.filter(data =>
+        data?.Status === 'Active' &&
+        ((this.$i18n.locale === 'vi' && data?.Language === 'Vietnamese') || (this.$i18n.locale === 'en' && data?.Language === 'English'))
+      )
     }
   },
+  mounted () {
+    this.myFunction()
+  },
+  created () {
+    this.getNotionData()
+  },
   methods: {
+    getNotionData () {
+      this.$axios.$get('https://notion.cystack.workers.dev/v1/table/49d6e649b29f41d9991ad5cda91329c8')
+        .then(res => {
+          this.notionData = res
+        })
+    },
+    changeTextBaseOnParam () {
+      const wrapper = this.$refs.wrapper
+      wrapper.classList.remove('inactive')
+      const remove = (this.count + this.realData.length) % (this.realData.length + 1)
+      wrapper.classList.remove(`text${remove}-active`)
+      wrapper.classList.add(`text${this.count}-active`)
+      if (this.count === 0) {
+        wrapper.classList.add('inactive')
+      }
+    },
+    myFunction () {
+      this.timeoutId = setTimeout(() => {
+        const length = this.realData.length + 1
+        const newCount = (this.count + 1) % length
+        this.count = newCount
+        if (newCount === 0) this.delay = 0
+        else this.delay = 2000
+        this.changeTextBaseOnParam()
+        this.myFunction()
+      }, this.delay)
+    },
+    Up () {
+      clearTimeout(this.timeoutId)
+      const wrapper = this.$refs.wrapper
+      if (this.reverse) {
+        wrapper.classList.remove('inactive')
+        this.reverse = false
+      }
+      wrapper.classList.remove(`text${this.count}-active`)
+      if (this.count === 0) {
+        wrapper.classList.add('inactive')
+        this.count = this.realData.length
+        wrapper.classList.add(`text${this.count}-active`)
+        this.reverse = true
+        setTimeout(this.Up, 1)
+      } else {
+        this.count = this.count - 1
+        wrapper.classList.add(`text${this.count}-active`)
+      }
+    },
+    Down () {
+      clearTimeout(this.timeoutId)
+      const wrapper = this.$refs.wrapper
+      if (this.reverse) {
+        wrapper.classList.remove('inactive')
+        this.reverse = false
+      }
+      wrapper.classList.remove(`text${this.count}-active`)
+      if (this.count === this.realData.length) {
+        wrapper.classList.add('inactive')
+        this.count = 0
+        wrapper.classList.add(`text${this.count}-active`)
+        this.reverse = true
+        setTimeout(this.Down, 1)
+      } else {
+        this.count = this.count + 1
+        wrapper.classList.add(`text${this.count}-active`)
+      }
+    },
     close () {
       this.visible = false
     }
@@ -57,7 +180,16 @@ export default {
   padding-bottom: 13px;
   position: sticky;
   top: 0;
+  height: 50px;
   z-index: 1000;
+  overflow: hidden;
+}
+.test-wrapper {
+  width: 90%;
+  transition: margin-top 0.75s cubic-bezier(.31,.31,.56,.57);
+}
+.inactive {
+  transition: none
 }
 .new-container {
   background-color: #FFC400;
@@ -72,5 +204,42 @@ export default {
   text-decoration: none;
   padding: 0 10px;
   margin-right: -10px
+}
+.text0-active {
+  margin-top: 0px;
+}
+.text1-active {
+  margin-top: -72px;
+}
+
+.text2-active {
+  margin-top: -144px;
+}
+
+.text3-active {
+  margin-top: -216px;
+}
+
+.text4-active {
+  margin-top: -288px;
+}
+.text5-active {
+  margin-top: -360px;
+}
+.text6-active {
+  margin-top: -432px;
+}
+.parent {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  justify-content: center;
+}
+.parent > span {
+  white-space: nowrap;
+}
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>
