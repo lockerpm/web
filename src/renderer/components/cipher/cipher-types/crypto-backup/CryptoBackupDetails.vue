@@ -25,9 +25,20 @@
       :should-hide="isPublic && hideAll"
     />
     <TextHaveCopy
-      :label="$t('data.ciphers.password_pin')"
+      :label="$t('common.password')"
       :text="cryptoWallet.password"
       :view-password="cipher.viewPassword"
+      :should-hide="!isPublic || hideAll"
+    />
+    <div class="grid md:grid-cols-6 cipher-item">
+      <div class="">{{ $t('data.ciphers.password_security') }}</div>
+      <div class="col-span-4 font-semibold">
+        <PasswordStrength :score="passwordStrength.score" />
+      </div>
+    </div>
+    <TextHaveCopy
+      label="PIN"
+      :text="cryptoWallet.pin"
       :should-hide="!isPublic || hideAll"
     />
     <TextHaveCopy
@@ -99,11 +110,13 @@ import TextHaveCopy from '@/components/cipher/TextHaveCopy'
 import InputSeedPhrase from '@/components/input/InputSeedPhrase'
 import { WALLET_APP_LIST } from '@/utils/crypto/applist/index'
 import { CHAIN_LIST } from '@/utils/crypto/chainlist/index'
+import PasswordStrength from '@/components/password/PasswordStrength'
 
 export default {
   components: {
     TextHaveCopy,
-    InputSeedPhrase
+    InputSeedPhrase,
+    PasswordStrength
   },
 
   props: {
@@ -131,6 +144,15 @@ export default {
         ? item.networks.map(n => CHAIN_LIST.find(c => c.alias === n.alias))
         : []
       return item
+    },
+
+    passwordStrength () {
+      return (
+        this.$passwordGenerationService.passwordStrength(
+          this.cryptoWallet?.password,
+          ['cystack']
+        ) || {}
+      )
     }
   },
 

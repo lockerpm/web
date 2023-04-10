@@ -90,7 +90,6 @@ export default {
   methods: {
     fillPassword (p) {
       this.$emit('update:password', p)
-      this.notify('Filled password', 'success')
     },
 
     handleGenNameByUri () {

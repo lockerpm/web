@@ -18,7 +18,29 @@
     />
     <InputText
       v-model="cryptoWallet.password"
-      :label="$t('data.ciphers.password_pin')"
+      :label="$t('common.password')"
+      class="w-full"
+      :disabled="isDeleted"
+      is-password
+    />
+    <PasswordStrengthBar :score="passwordStrength.score" class="mt-2" />
+    <div v-if="!isDeleted" class="text-right">
+      <el-popover
+        placement="right"
+        width="280"
+        trigger="click"
+        popper-class="locker-pw-generator"
+      >
+        <PasswordGenerator @fill="fillPassword" />
+
+        <button slot="reference" class="btn btn-clean !text-primary">
+          {{ $t('data.ciphers.generate_random_password') }}
+        </button>
+      </el-popover>
+    </div>
+    <InputText
+      v-model="cryptoWallet.pin"
+      label="PIN"
       class="w-full"
       :disabled="isDeleted"
       is-password
@@ -65,13 +87,17 @@ import InputSeedPhrase from '../../../input/InputSeedPhrase'
 import InputSelectCryptoNetworks from '../../../input/InputSelectCryptoNetworks'
 import { WALLET_APP_LIST } from '../../../../utils/crypto/applist/index'
 import { CHAIN_LIST } from '../../../../utils/crypto/chainlist/index'
+import PasswordGenerator from '../../../password/PasswordGenerator'
+import PasswordStrengthBar from '../../../password/PasswordStrengthBar'
 
 export default {
   components: {
     InputSelectCryptoWallet,
     InputText,
     InputSeedPhrase,
-    InputSelectCryptoNetworks
+    InputSelectCryptoNetworks,
+    PasswordStrengthBar,
+    PasswordGenerator
   },
 
   props: {
@@ -94,6 +120,7 @@ export default {
         },
         username: '',
         password: '',
+        pin: '',
         address: '',
         privateKey: '',
         seed: '',
@@ -102,7 +129,22 @@ export default {
     }
   },
 
+  computed: {
+    passwordStrength () {
+      return (
+        this.$passwordGenerationService.passwordStrength(
+          this.cryptoWallet.password,
+          ['cystack']
+        ) || {}
+      )
+    }
+  },
+
   methods: {
+    fillPassword (p) {
+      this.cryptoWallet.password = p
+    },
+
     handleChangeCryptoWallet (v) {
       const selectedApp = WALLET_APP_LIST.find(a => a.alias === v)
       this.cryptoWallet.walletApp = {
