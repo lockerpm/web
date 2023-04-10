@@ -21,7 +21,7 @@ export const CipherMapper = (() => {
     type: CipherType.Login,
     routeName: 'passwords',
     label: 'passwords',
-    friendlyName: 'Password',
+    friendlyName: 'Login',
     freeLimit: 100,
     csvTypeName: 'login'
   }
@@ -36,7 +36,7 @@ export const CipherMapper = (() => {
     type: CipherType.SecureNote,
     routeName: 'notes',
     label: 'notes',
-    friendlyName: 'Note',
+    friendlyName: 'SecureNote',
     freeLimit: 50,
     csvTypeName: 'note'
   }

@@ -6,7 +6,8 @@ export default function ({
   isDev,
   redirect,
   route,
-  $config
+  $config,
+  env
 }) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
   $axios.interceptors.request.use(request => {
@@ -22,7 +23,7 @@ export default function ({
     if (deviceId) {
       request.headers['device-id'] = deviceId
     }
-    if ($config.cloudflare) {
+    if ($config.cloudflare && (env.environment === 'staging' || isDev)) {
       request.headers['CF-Access-Client-Id'] = $config.cloudflare.id
       request.headers['CF-Access-Client-Secret'] = $config.cloudflare.secret
     }
