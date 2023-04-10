@@ -20,6 +20,12 @@
       :text="router.adminPassword"
       :should-hide="!isPublic || hideAll"
     />
+    <div class="grid md:grid-cols-6 cipher-item">
+      <div class="">{{ $t('data.ciphers.password_security') }}</div>
+      <div class="col-span-4 font-semibold">
+        <PasswordStrength :score="adminPasswordStrength.score" />
+      </div>
+    </div>
     <TextHaveCopy
       :label="$t('data.ciphers.router.wifi_ssid')"
       :text="router.wifiSSID"
@@ -30,6 +36,12 @@
       :text="router.wifiPassword"
       :should-hide="!isPublic || hideAll"
     />
+    <div class="grid md:grid-cols-6 cipher-item">
+      <div class="">{{ $t('data.ciphers.password_security') }}</div>
+      <div class="col-span-4 font-semibold">
+        <PasswordStrength :score="wifiPasswordStrength.score" />
+      </div>
+    </div>
     <TextHaveCopy
       :label="$t('data.ciphers.notes')"
       :text="filterPassword(router.notes, !isPublic || !hideAll)"
@@ -40,10 +52,12 @@
 <script>
 import { CipherView } from '../../../../core/models/view/cipherView'
 import TextHaveCopy from '@/components/cipher/TextHaveCopy'
+import PasswordStrength from '@/components/password/PasswordStrength'
 
 export default {
   components: {
-    TextHaveCopy
+    TextHaveCopy,
+    PasswordStrength
   },
 
   props: {
@@ -65,6 +79,22 @@ export default {
     router () {
       const item = { ...this.cipher.router }
       return item
+    },
+    adminPasswordStrength () {
+      return (
+        this.$passwordGenerationService.passwordStrength(
+          this.router?.adminPassword,
+          ['cystack']
+        ) || {}
+      )
+    },
+    wifiPasswordStrength () {
+      return (
+        this.$passwordGenerationService.passwordStrength(
+          this.router?.wifiPassword,
+          ['cystack']
+        ) || {}
+      )
     }
   }
 }

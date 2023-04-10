@@ -25,6 +25,21 @@
       :disabled="isDeleted"
       is-password
     />
+    <PasswordStrengthBar :score="adminPasswordStrength.score" class="mt-2" />
+    <div v-if="!isDeleted" class="text-right">
+      <el-popover
+        placement="right"
+        width="280"
+        trigger="click"
+        popper-class="locker-pw-generator"
+      >
+        <PasswordGenerator @fill="fillAdminPassword" />
+
+        <button slot="reference" class="btn btn-clean !text-primary">
+          {{ $t('data.ciphers.generate_random_password') }}
+        </button>
+      </el-popover>
+    </div>
     <InputText
       v-model="router.wifiSSID"
       :label="$t('data.ciphers.router.wifi_ssid')"
@@ -38,14 +53,33 @@
       :disabled="isDeleted"
       is-password
     />
+    <PasswordStrengthBar :score="wifiPasswordStrength.score" class="mt-2" />
+    <div v-if="!isDeleted" class="text-right">
+      <el-popover
+        placement="right"
+        width="280"
+        trigger="click"
+        popper-class="locker-pw-generator"
+      >
+        <PasswordGenerator @fill="fillWifiPassword" />
+
+        <button slot="reference" class="btn btn-clean !text-primary">
+          {{ $t('data.ciphers.generate_random_password') }}
+        </button>
+      </el-popover>
+    </div>
   </div>
 </template>
 <script>
 import InputText from '../../../input/InputText'
+import PasswordGenerator from '../../../password/PasswordGenerator'
+import PasswordStrengthBar from '../../../password/PasswordStrengthBar'
 
 export default {
   components: {
-    InputText
+    InputText,
+    PasswordGenerator,
+    PasswordStrengthBar
   },
 
   props: {
@@ -68,7 +102,32 @@ export default {
     }
   },
 
+  computed: {
+    adminPasswordStrength () {
+      return (
+        this.$passwordGenerationService.passwordStrength(
+          this.router.adminPassword,
+          ['cystack']
+        ) || {}
+      )
+    },
+    wifiPasswordStrength () {
+      return (
+        this.$passwordGenerationService.passwordStrength(
+          this.router.wifiPassword,
+          ['cystack']
+        ) || {}
+      )
+    }
+  },
+
   methods: {
+    fillAdminPassword (p) {
+      this.router.adminPassword = p
+    },
+    fillWifiPassword (p) {
+      this.router.wifiPassword = p
+    },
     loadData (data) {
       this.router = { ...data }
     },
