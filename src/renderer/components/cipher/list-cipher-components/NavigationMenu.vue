@@ -1,7 +1,8 @@
 <template>
   <div
     v-if="['vault', ...cipherRoutes].includes(getRouteBaseName())"
-    class="navigation-bar overflow-x-scroll"
+    class="navigation-bar"
+    :class="{ 'overflow-x-scroll': menuVault.length > 6 }"
   >
     <nuxt-link
       v-for="(item, index) in menuVault"

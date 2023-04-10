@@ -24,7 +24,25 @@ Vue.mixin({
     },
 
     cipherMapping () {
-      return CipherMapper
+      const res = { ...CipherMapper }
+      if (!this.isDevOrStaging) {
+        const hiddenType = [
+          CipherType.DriverLicense,
+          CipherType.CitizenID,
+          CipherType.Passport,
+          CipherType.SocialSecurityNumber,
+          CipherType.WirelessRouter,
+          CipherType.Server,
+          CipherType.APICipher,
+          CipherType.Database
+        ]
+        hiddenType.forEach(cipherType => {
+          res[cipherType].hideFromCipherList = true
+          res[cipherType].noCreate = true
+          res[cipherType].noMenu = true
+        })
+      }
+      return res
     },
 
     cipherRoutes () {
