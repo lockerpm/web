@@ -1,12 +1,12 @@
 <template>
   <div v-show="visible" class="banner-container">
     <div class="max-w-6xl mx-auto">
-      <div class="w-full px-6 flex flex-row">
+      <div class="w-full pr-6 pl-6 flex flex-row md:pl-36">
         <div class="mt-[-5px] mr-2 min-w-[20px]">
           <img
             src="@/assets/images/landing/CaretUp.svg"
             alt=""
-            class="mb-[2px] cursor-pointer"
+            class="cursor-pointer"
             @click="Up()"
           >
           <img
@@ -18,7 +18,7 @@
         </div>
         <div
           ref="wrapper"
-          class="test-wrapper text0-active"
+          class="test-wrapper text0-active ml-0 md:ml-11"
         >
           <div
             v-for="(item, index) in realData"
@@ -71,6 +71,7 @@ export default {
   name: 'TopBanner',
   data () {
     return {
+      myFunctionRunning: true,
       visible: true,
       notionData: [],
       delay: 2000,
@@ -130,6 +131,8 @@ export default {
     },
     Up () {
       clearTimeout(this.timeoutId)
+      this.timeoutId = setTimeout(this.myFunction, 5000)
+      this.myFunctionRunning = true
       const wrapper = this.$refs.wrapper
       if (this.reverse) {
         wrapper.classList.remove('inactive')
@@ -149,6 +152,7 @@ export default {
     },
     Down () {
       clearTimeout(this.timeoutId)
+      this.timeoutId = setTimeout(this.myFunction, 5000)
       const wrapper = this.$refs.wrapper
       if (this.reverse) {
         wrapper.classList.remove('inactive')
@@ -194,10 +198,11 @@ export default {
 .new-container {
   background-color: #FFC400;
   color: #222222;
-  padding: 0 1px 0 5px;
+  padding: 1px 12px;
   line-height: 22px;
   border-radius: 3px;
   margin-right: 10px;
+  font-weight: 600;
 }
 .close-btn {
   color: white;
@@ -233,7 +238,6 @@ export default {
   display: flex;
   flex-wrap: nowrap;
   overflow: hidden;
-  justify-content: center;
 }
 .parent > span {
   white-space: nowrap;
