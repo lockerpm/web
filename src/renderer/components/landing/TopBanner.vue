@@ -122,7 +122,7 @@ export default {
         const length = this.realData.length + 1
         const newCount = (this.count + 1) % length
         this.count = newCount
-        if (newCount === 0) this.delay = 0
+        if (newCount === 0) this.delay = 100
         else this.delay = 2000
         this.changeTextBaseOnParam()
         this.myFunction()
