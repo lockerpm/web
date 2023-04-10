@@ -71,7 +71,6 @@ export default {
   name: 'TopBanner',
   data () {
     return {
-      myFunctionRunning: true,
       visible: true,
       notionData: [],
       delay: 2000,
@@ -132,7 +131,6 @@ export default {
     Up () {
       clearTimeout(this.timeoutId)
       this.timeoutId = setTimeout(this.myFunction, 5000)
-      this.myFunctionRunning = true
       const wrapper = this.$refs.wrapper
       if (this.reverse) {
         wrapper.classList.remove('inactive')
