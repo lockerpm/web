@@ -20,6 +20,12 @@
       :text="database.password"
       :should-hide="!isPublic || hideAll"
     />
+    <div class="grid md:grid-cols-6 cipher-item">
+      <div class="">{{ $t('data.ciphers.password_security') }}</div>
+      <div class="col-span-4 font-semibold">
+        <PasswordStrength :score="passwordStrength.score" />
+      </div>
+    </div>
     <TextHaveCopy
       :label="$t('data.ciphers.database.default')"
       :text="database.default"
@@ -35,10 +41,12 @@
 <script>
 import { CipherView } from '../../../../core/models/view/cipherView'
 import TextHaveCopy from '@/components/cipher/TextHaveCopy'
+import PasswordStrength from '@/components/password/PasswordStrength'
 
 export default {
   components: {
-    TextHaveCopy
+    TextHaveCopy,
+    PasswordStrength
   },
 
   props: {
@@ -60,6 +68,14 @@ export default {
     database () {
       const item = { ...this.cipher.database }
       return item
+    },
+    passwordStrength () {
+      return (
+        this.$passwordGenerationService.passwordStrength(
+          this.database?.password,
+          ['cystack']
+        ) || {}
+      )
     }
   }
 }

@@ -25,6 +25,21 @@
       :disabled="isDeleted"
       is-password
     />
+    <PasswordStrengthBar :score="passwordStrength.score" class="mt-2" />
+    <div v-if="!isDeleted" class="text-right">
+      <el-popover
+        placement="right"
+        width="280"
+        trigger="click"
+        popper-class="locker-pw-generator"
+      >
+        <PasswordGenerator @fill="fillPassword" />
+
+        <button slot="reference" class="btn btn-clean !text-primary">
+          {{ $t('data.ciphers.generate_random_password') }}
+        </button>
+      </el-popover>
+    </div>
     <InputText
       v-model="database.default"
       :label="$t('data.ciphers.database.default')"
@@ -35,10 +50,14 @@
 </template>
 <script>
 import InputText from '../../../input/InputText'
+import PasswordGenerator from '../../../password/PasswordGenerator'
+import PasswordStrengthBar from '../../../password/PasswordStrengthBar'
 
 export default {
   components: {
-    InputText
+    InputText,
+    PasswordGenerator,
+    PasswordStrengthBar
   },
 
   props: {
@@ -61,7 +80,22 @@ export default {
     }
   },
 
+  computed: {
+    passwordStrength () {
+      return (
+        this.$passwordGenerationService.passwordStrength(
+          this.database.password,
+          ['cystack']
+        ) || {}
+      )
+    }
+  },
+
   methods: {
+    fillPassword (p) {
+      this.database.password = p
+    },
+
     loadData (data) {
       this.database = { ...data }
     },
