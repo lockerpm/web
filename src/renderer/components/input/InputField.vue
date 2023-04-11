@@ -1,12 +1,13 @@
 <template>
   <div
     class="cs-field"
-    :class="{'is-focus': focusing,
-             'have-value': value,
-             'is-hover': hovering,
-             'is-password': isPassword,
-             'is-error': errorText,
-             'is-disabled': disabled,
+    :class="{
+      'is-focus': focusing,
+      'have-value': value,
+      'is-hover': hovering,
+      'is-password': isPassword,
+      'is-error': errorText,
+      'is-disabled': disabled
     }"
   >
     <input
@@ -75,7 +76,10 @@
     >
       <i
         class="far"
-        :class="{'fa-eye': type==='password', 'fa-eye-slash': type==='text'}"
+        :class="{
+          'fa-eye': type === 'password',
+          'fa-eye-slash': type === 'text'
+        }"
       />
     </button>
     <button
@@ -85,9 +89,7 @@
       tabindex="-1"
       @click="add"
     >
-      <i
-        class="fas fa-plus"
-      />
+      <i class="fas fa-plus" />
     </button>
     <div v-if="errorText" class="cs-helper-text">
       {{ errorText }}
@@ -152,10 +154,14 @@ export default {
       return this.placeholder && !this.value
     },
     nativeInputValue () {
-      return this.value === null || this.value === undefined ? '' : String(this.value)
+      return this.value === null || this.value === undefined
+        ? ''
+        : String(this.value)
     },
     nativeInputLabel () {
-      return this.label === null || this.label === undefined ? '' : String(this.label)
+      return this.label === null || this.label === undefined
+        ? ''
+        : String(this.label)
     }
   },
   watch: {
@@ -166,8 +172,7 @@ export default {
       this.setNativeInputLabel()
     }
   },
-  created () {
-  },
+  created () {},
   mounted () {
     if (this.isPassword) {
       this.type = 'password'
@@ -178,7 +183,9 @@ export default {
   },
   methods: {
     togglePassword () {
-      if (this.disabled) { return }
+      if (this.disabled) {
+        return
+      }
       this.type = this.type === 'text' ? 'password' : 'text'
     },
     setNativeInputValue () {
@@ -208,11 +215,15 @@ export default {
       this.$nextTick(this.setNativeInputLabel)
     },
     handleFocus () {
-      if (this.disabled) { return }
+      if (this.disabled) {
+        return
+      }
       this.focusing = true
     },
     handleHover () {
-      if (this.disabled) { return }
+      if (this.disabled) {
+        return
+      }
       this.hovering = true
     },
     add () {
@@ -238,20 +249,23 @@ export default {
   border-radius: 2px;
   border: solid 1px #e6e8f4;
   padding-top: 20px;
-  background-color: #F3F3F3;
-  &.is-hover, &.is-focus {
+  background-color: #f3f3f3;
+  &.is-hover,
+  &.is-focus {
     @apply border-primary bg-white;
     label {
-      @apply text-primary
+      @apply text-primary;
     }
   }
   &.is-error {
     @apply border-danger mb-8 last:mb-8 #{!important};
-    label, .cs-helper-text {
-      @apply text-danger
+    label,
+    .cs-helper-text {
+      @apply text-danger;
     }
   }
-  &.is-password.is-focus, &.is-password.have-value {
+  &.is-password.is-focus,
+  &.is-password.have-value {
     button.btn {
       @apply absolute p-0.5;
       top: 19px;
@@ -261,24 +275,30 @@ export default {
       padding-right: 48px;
     }
   }
-  &.is-focus label, &.have-value label {
+  &.is-focus label,
+  &.have-value label {
     font-size: 12px;
     line-height: 19px;
     top: 5px;
     left: 11px;
   }
-  &.is-focus .cs-textarea, &.have-value .cs-textarea {
+  &.is-focus .cs-textarea,
+  &.have-value .cs-textarea {
     padding-top: 8px;
     margin-top: 8px;
   }
   &.is-disabled {
     cursor: not-allowed;
-    input, button, input:hover, button:hover {
-      cursor: not-allowed!important;
+    input,
+    button,
+    input:hover,
+    button:hover {
+      cursor: not-allowed !important;
       user-select: none;
     }
   }
-  .cs-input, .cs-textarea {
+  .cs-input,
+  .cs-textarea {
     padding-bottom: 0px;
     padding-top: 0px;
     font-size: 14px;
@@ -321,17 +341,17 @@ export default {
     position: absolute;
     bottom: -22px;
     font-size: 12px;
-    transition: .3s cubic-bezier(.4,0,.2,1);
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   label {
     font-size: 14px;
-    color: #90A0C1;
+    color: #90a0c1;
     position: absolute;
     top: 15px;
     left: 13px;
     pointer-events: none;
-    transition: .4s cubic-bezier(.25,.8,.25,1);
-    transition-duration: .3s;
+    transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 0.3s;
     line-height: 19px;
     user-select: none;
   }

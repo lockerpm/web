@@ -101,7 +101,7 @@ select:focus {
     min-height: 57px;
     @apply hover:bg-black-300 cursor-pointer items-center px-5 break-all;
     &:last-child {
-      border-bottom: none;
+      // border-bottom: none;
     }
   }
 }

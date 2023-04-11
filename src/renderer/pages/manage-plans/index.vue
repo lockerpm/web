@@ -232,9 +232,7 @@
                   <div>
                     <div class="setting-title">
                       {{ getPlanName(selectedPlan.name).name }}
-                      <span
-                        v-if="currentPlan.personal_trial_applied === false"
-                      >({{ $t('data.plans.trial_included') }})</span>
+                      <span v-if="currentPlan.personal_trial_applied === false">({{ $t('data.plans.trial_included') }})</span>
                     </div>
                     <div class="setting-description">
                       {{ $t(`data.plans.price.${selectedPeriod.label}`) }}
@@ -308,9 +306,7 @@
                       {{ result.currency }}</span>
                     {{ result.immediate_payment | formatNumber }}
                     {{ result.currency
-                    }}<span
-                      v-if="currentPlan.personal_trial_applied === false"
-                    >*</span>
+                    }}<span v-if="currentPlan.personal_trial_applied === false">*</span>
                   </div>
                 </div>
               </div>
@@ -592,9 +588,7 @@
                   <div>
                     <div class="setting-title">
                       {{ getPlanName(selectedPlan.name).name }}
-                      <span
-                        v-if="currentPlan.personal_trial_applied === false"
-                      >({{ $t('data.plans.trial_included') }})</span>
+                      <span v-if="currentPlan.personal_trial_applied === false">({{ $t('data.plans.trial_included') }})</span>
                     </div>
                     <div class="setting-description">
                       {{ $t(`data.plans.price.${selectedPeriod.label}`) }}
@@ -1021,11 +1015,8 @@ export default {
           this.result = res
         })
         .catch(error => {
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.code === '7009'
-          ) {
+          const isHandled = this.handleApiError(error?.response)
+          if (!isHandled) {
             this.notify(this.$t('data.notifications.error_occurred'), 'warning')
           }
         })

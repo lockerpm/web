@@ -2,9 +2,10 @@ export type CryptoWalletData = {
   walletApp: {
     name: string
     alias: string
-  },
+  }
   username: string
   password: string
+  pin: string
   address: string
   privateKey: string
   seed: string
@@ -18,16 +19,17 @@ export type CryptoWalletData = {
 export const toCryptoWalletData = (str: string) => {
   let res: CryptoWalletData = {
     walletApp: {
-      name: "",
-      alias: ""
+      name: '',
+      alias: ''
     },
-    username: "",
-    password: "",
-    address: "",
-    privateKey: "",
-    seed: "",
+    username: '',
+    password: '',
+    pin: '',
+    address: '',
+    privateKey: '',
+    seed: '',
     networks: [],
-    notes: ""
+    notes: ''
   }
   try {
     const parsed: CryptoWalletData = JSON.parse(str)
@@ -35,7 +37,6 @@ export const toCryptoWalletData = (str: string) => {
       ...res,
       ...parsed
     }
-  } catch (e) {
-  }
+  } catch (e) {}
   return res
 }

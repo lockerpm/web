@@ -44,293 +44,150 @@
         </ValidationProvider>
 
         <!-- LOGIN FIELDS -->
-        <template v-if="cipher.type === CipherType.Login">
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">
-            {{ $t('data.ciphers.login') }}
-          </div>
-          <InputText
-            v-model="cipher.login.username"
-            label="Email / Username"
-            class="w-full"
-            :disabled="isDeleted"
-          />
-          <template>
-            <InputText
-              v-model="cipher.login.password"
-              :label="$t('data.ciphers.password')"
-              class="w-full"
-              :disabled="isDeleted"
-              is-password
-            />
-            <PasswordStrengthBar :score="passwordStrength.score" class="mt-2" />
-            <div v-if="!isDeleted" class="text-right">
-              <el-popover
-                :placement="$store.state.tutorial.isActive ? 'top' : 'right'"
-                width="280"
-                trigger="click"
-                popper-class="locker-pw-generator"
-              >
-                <PasswordGenerator @fill="fillPassword" />
-
-                <button slot="reference" class="btn btn-clean !text-primary">
-                  {{ $t('data.ciphers.generate_random_password') }}
-                </button>
-              </el-popover>
-            </div>
-          </template>
-          <template v-for="(item, index) in cipher.login.uris">
-            <InputText
-              :key="index"
-              v-model="item.uri"
-              :label="$t('data.ciphers.website_address')"
-              class="w-full"
-              :disabled="isDeleted"
-              @onBlue="handleGenNameByUri"
-            />
-          </template>
-        </template>
+        <login-input
+          v-if="cipher.type === CipherType.Login"
+          :is-deleted="isDeleted"
+          :name="cipher.name"
+          :username="cipher.login.username"
+          :password="cipher.login.password"
+          :uris="cipher.login.uris"
+          @update:name="newValue => (cipher.name = newValue)"
+          @update:username="newValue => (cipher.login.username = newValue)"
+          @update:password="newValue => (cipher.login.password = newValue)"
+          @update:uris="newValue => (cipher.login.uris = newValue)"
+        />
 
         <!-- CARD FIELDS -->
-        <template v-if="cipher.type === CipherType.Card">
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">
-            {{ $t('data.ciphers.card_details') }}
-          </div>
-          <ValidationProvider
-            v-slot="{ errors: err }"
-            rules="required"
-            :name="$t('data.ciphers.card_holder')"
-          >
-            <InputText
-              v-model="cipher.card.cardholderName"
-              :label="$t('data.ciphers.card_holder')"
-              class="w-full !mb-2"
-              :error-text="err && err.length && err[0]"
-              :disabled="isDeleted"
-            />
-          </ValidationProvider>
-          <InputText
-            v-model="cipher.card.number"
-            :label="$t('data.ciphers.card_number')"
-            class="w-full"
-            :disabled="isDeleted"
-            :suffix-icon="currentCard ? currentCard.icon : ''"
-            :icon-type="currentCard ? currentCard.iconType : ''"
-            @input="changeCardNumber"
-          />
-          <div class="grid grid-cols-2 gap-2">
-            <InputSelect
-              :label="$t('data.ciphers.expiration_month')"
-              :initial-value="cipher.card.expMonth"
-              class="w-full"
-              :disabled="isDeleted"
-              :options="cardExpMonthOptions"
-              @change="v => (cipher.card.expMonth = v)"
-            />
-            <InputText
-              v-model="cipher.card.expYear"
-              :label="$t('data.ciphers.expiration_year')"
-              class="w-full !mb-2"
-              :disabled="isDeleted"
-            />
-          </div>
-          <InputText
-            v-model="cipher.card.code"
-            :label="$t('data.ciphers.cvv')"
-            is-password
-            class="w-full"
-            :disabled="isDeleted"
-          />
-        </template>
+        <card-input
+          v-if="cipher.type === CipherType.Card"
+          :is-deleted="isDeleted"
+          :errors="errors"
+          :cardholder-name="cipher.card.cardholderName"
+          :number="cipher.card.number"
+          :brand="cipher.card.brand"
+          :exp-month="cipher.card.expMonth"
+          :exp-year="cipher.card.expYear"
+          :code="cipher.card.code"
+          @update:cardholderName="
+            newValue => (cipher.card.cardholderName = newValue)
+          "
+          @update:number="newValue => (cipher.card.number = newValue)"
+          @update:brand="newValue => (cipher.card.brand = newValue)"
+          @update:expMonth="newValue => (cipher.card.expMonth = newValue)"
+          @update:expYear="newValue => (cipher.card.expYear = newValue)"
+          @update:code="newValue => (cipher.card.code = newValue)"
+        />
 
         <!-- IDENTITY FIELDS -->
-        <template v-if="cipher.type === CipherType.Identity">
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">
-            {{ $t('data.ciphers.personal') }}
-          </div>
-          <div class="grid grid-cols-2 gap-x-2 mb-4">
-            <InputSelect
-              :label="$t('data.ciphers.title')"
-              :initial-value="cipher.identity.title"
-              class="w-full"
-              :disabled="isDeleted"
-              :options="identityTitleOptions"
-              @change="v => (cipher.identity.title = v)"
-            />
-            <InputText
-              v-model="cipher.identity.firstName"
-              :label="$t('data.ciphers.first_name')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.lastName"
-              :label="$t('data.ciphers.last_name')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.username"
-              label="Username"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.company"
-              :label="$t('data.ciphers.company')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.email"
-              label="Email"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.phone"
-              :label="$t('data.ciphers.phone')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.ssn"
-              :label="$t('data.ciphers.ssn')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.passportNumber"
-              :label="$t('data.ciphers.passport')"
-              class="w-full"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.licenseNumber"
-              :label="$t('data.ciphers.license')"
-              class="w-full !mb-2"
-              :disabled="isDeleted"
-            />
-          </div>
-          <div class="mb-4 text-black-700 text-head-6 font-semibold">
-            {{ $t('data.ciphers.contact_info') }}
-          </div>
-          <div class="grid grid-cols-2 gap-x-2 mb-4">
-            <InputText
-              v-model="cipher.identity.address1"
-              :label="$t('data.ciphers.address') + '1'"
-              class="w-full col-span-2"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.address2"
-              :label="$t('data.ciphers.address') + '2'"
-              class="w-full col-span-2"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.city"
-              :label="$t('data.ciphers.city_town')"
-              class="w-full col-span-2"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.state"
-              :label="$t('data.ciphers.state_province')"
-              class="w-full col-span-2"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.postalCode"
-              :label="$t('data.ciphers.zip')"
-              class="w-full col-span-2"
-              :disabled="isDeleted"
-            />
-            <InputText
-              v-model="cipher.identity.country"
-              :label="$t('data.ciphers.country')"
-              class="w-full col-span-2 !mb-2"
-              :disabled="isDeleted"
-            />
-          </div>
-        </template>
+        <identity-input
+          v-if="cipher.type === CipherType.Identity"
+          :is-deleted="isDeleted"
+          :title="cipher.identity.title"
+          :first-name="cipher.identity.firstName"
+          :last-name="cipher.identity.lastName"
+          :username="cipher.identity.username"
+          :company="cipher.identity.company"
+          :email="cipher.identity.email"
+          :phone="cipher.identity.phone"
+          :ssn="cipher.identity.ssn"
+          :passport-number="cipher.identity.passportNumber"
+          :license-number="cipher.identity.licenseNumber"
+          :address1="cipher.identity.address1"
+          :address2="cipher.identity.address2"
+          :city="cipher.identity.city"
+          :state="cipher.identity.state"
+          :postal-code="cipher.identity.postalCode"
+          :country="cipher.identity.country"
+          @update:title="newValue => (cipher.identity.title = newValue)"
+          @update:firstName="newValue => (cipher.identity.firstName = newValue)"
+          @update:lastName="newValue => (cipher.identity.lastName = newValue)"
+          @update:username="newValue => (cipher.identity.username = newValue)"
+          @update:company="newValue => (cipher.identity.company = newValue)"
+          @update:email="newValue => (cipher.identity.email = newValue)"
+          @update:phone="newValue => (cipher.identity.phone = newValue)"
+          @update:ssn="newValue => (cipher.identity.ssn = newValue)"
+          @update:passportNumber="
+            newValue => (cipher.identity.passportNumber = newValue)
+          "
+          @update:licenseNumber="
+            newValue => (cipher.identity.licenseNumber = newValue)
+          "
+          @update:address1="newValue => (cipher.identity.address1 = newValue)"
+          @update:address2="newValue => (cipher.identity.address2 = newValue)"
+          @update:city="newValue => (cipher.identity.city = newValue)"
+          @update:state="newValue => (cipher.identity.state = newValue)"
+          @update:postalCode="
+            newValue => (cipher.identity.postalCode = newValue)
+          "
+          @update:country="newValue => (cipher.identity.country = newValue)"
+        />
 
         <!-- CRYPTO BACKUP FIELDS -->
-        <template v-if="cipher.type === CipherType.CryptoWallet">
-          <InputSelectCryptoWallet
-            ref="inputSelectCryptoWallet"
-            :label="$t('data.ciphers.wallet_app')"
-            :disabled="isDeleted"
-            class="w-full"
-            :initial-value="
-              cryptoWallet.walletApp ? cryptoWallet.walletApp.alias : null
-            "
-            @change="handleChangeCryptoWallet"
-          />
-          <InputText
-            v-model="cryptoWallet.username"
-            :label="$t('data.ciphers.username')"
-            class="w-full"
-            :disabled="isDeleted"
-            :is-password="false"
-          />
-          <InputText
-            v-model="cryptoWallet.password"
-            :label="$t('data.ciphers.password_pin')"
-            class="w-full"
-            :disabled="isDeleted"
-            is-password
-          />
-          <InputText
-            v-model="cryptoWallet.address"
-            :label="$t('data.ciphers.wallet_address')"
-            class="w-full"
-            :disabled="isDeleted"
-          />
-          <InputText
-            v-model="cryptoWallet.privateKey"
-            :label="$t('data.ciphers.private_key')"
-            class="w-full"
-            :disabled="isDeleted"
-            is-password
-          />
-          <!-- <InputText
-            v-model="cryptoWallet.seed"
-            :label="$t('data.ciphers.seed')"
-            class="w-full !mb-1"
-            :error-text="err && err.length && err[0]"
-            :disabled="isDeleted"
-            is-textarea=""
-          /> -->
-          <div class="cs-field w-full">
-            <label>
-              {{ $t('data.ciphers.seed') }}
-            </label>
-          </div>
-          <InputSeedPhrase
-            v-model="cryptoWallet.seed"
-            :edit-mode="cipher.id ? true : false"
-            class="w-full !mb-3"
-            @set-seed="setSeed"
-          />
-          <!-- <div class="py-1 px-3 text-xs mb-3" style="background: rgba(242, 232, 135, 0.3);">
-            {{ $t('data.ciphers.seed_phrase_desc') }}
-          </div> -->
-          <InputSelectCryptoNetworks
-            ref="inputSelectCryptoWallet"
-            :label="$t('data.ciphers.networks')"
-            :disabled="isDeleted"
-            class="w-full !pt-6"
-            :initial-value="
-              cryptoWallet.networks
-                ? cryptoWallet.networks.map(n => n.alias)
-                : []
-            "
-            @change="handleChangeCryptoNetworks"
-          />
-        </template>
+        <crypto-backup-input
+          v-if="cipher.type === CipherType.CryptoWallet"
+          ref="cryptoBackupInput"
+          :is-deleted="isDeleted"
+          :cipher-id="cipher.id"
+        />
+
+        <!-- DRIVER LICENSE -->
+        <driver-license-input
+          v-if="cipher.type === CipherType.DriverLicense"
+          ref="driverLicenseInput"
+          :is-deleted="isDeleted"
+        />
+
+        <!-- CITIZEN ID -->
+        <citizen-id-input
+          v-if="cipher.type === CipherType.CitizenID"
+          ref="citizenIdInput"
+          :is-deleted="isDeleted"
+        />
+
+        <!-- PASSPORT -->
+        <passport-input
+          v-if="cipher.type === CipherType.Passport"
+          ref="passportInput"
+          :is-deleted="isDeleted"
+        />
+
+        <!-- SSN -->
+        <ssn-input
+          v-if="cipher.type === CipherType.SocialSecurityNumber"
+          ref="ssnInput"
+          :is-deleted="isDeleted"
+        />
+
+        <!-- ROUTER -->
+        <router-input
+          v-if="cipher.type === CipherType.WirelessRouter"
+          ref="routerInput"
+          :is-deleted="isDeleted"
+        />
+
+        <!-- SERVER -->
+        <server-input
+          v-if="cipher.type === CipherType.Server"
+          ref="serverInput"
+          :is-deleted="isDeleted"
+        />
+
+        <!-- API -->
+        <api-input
+          v-if="cipher.type === CipherType.APICipher"
+          ref="apiInput"
+          :is-deleted="isDeleted"
+        />
+
+        <!-- DATABASE -->
+        <database-input
+          v-if="cipher.type === CipherType.Database"
+          ref="databaseInput"
+          :is-deleted="isDeleted"
+        />
 
         <!-- NOTES -->
-        <template>
+        <div>
           <!-- Label -->
           <div
             v-if="cipher.type !== CipherType.SecureNote"
@@ -341,31 +198,21 @@
           <!-- Label end -->
 
           <!-- Input -->
-          <template>
+          <div>
             <InputText
-              v-if="cipher.type === CipherType.CryptoWallet"
-              v-model="cryptoWallet.notes"
-              :label="$t('data.ciphers.notes')"
-              class="w-full"
-              :disabled="isDeleted"
-              is-textarea
-            />
-
-            <InputText
-              v-else
               v-model="cipher.notes"
               :label="$t('data.ciphers.notes')"
               class="w-full"
               :disabled="isDeleted"
               is-textarea
             />
-          </template>
+          </div>
           <!-- Input end -->
-        </template>
+        </div>
         <!-- NOTES END -->
 
         <!-- CUSTOM FIELDS -->
-        <template>
+        <div>
           <div class="my-5 text-black-700 text-head-6 font-semibold">
             {{ $t('data.ciphers.custom_fields') }}
           </div>
@@ -375,7 +222,7 @@
             class="w-full !mb-3"
             @set-fields="setFields"
           />
-        </template>
+        </div>
 
         <!-- FOLDER -->
         <InputSelectFolder
@@ -394,6 +241,7 @@
 
       <!-- Footer -->
       <div slot="footer" class="dialog-footer flex items-center text-left">
+        <!-- To trash/delete -->
         <div class="flex-grow">
           <button
             v-if="cipher.id"
@@ -407,10 +255,16 @@
             <i class="fa fa-trash-alt" />
           </button>
         </div>
+        <!-- To trash/delete end -->
+
         <div>
+          <!-- Close -->
           <button class="btn btn-default" @click="closeDialog">
             {{ $t('common.cancel') }}
           </button>
+          <!-- Close end -->
+
+          <!-- Restore -->
           <button
             v-if="isDeleted"
             class="btn btn-primary"
@@ -419,14 +273,18 @@
           >
             {{ $t('common.restore') }}
           </button>
+          <!-- Restore end -->
+
+          <!-- Add/update -->
           <button
             v-else
             class="btn btn-primary"
             :disabled="loading || !cipher.name"
-            @click="preparePassword(cipher)"
+            @click="preparePassword()"
           >
             {{ cipher.id ? $t('common.update') : $t('common.add') }}
           </button>
+          <!-- Add/update end -->
         </div>
       </div>
       <!-- Footer end -->
@@ -437,7 +295,7 @@
 
     <PasswordViolationDialog
       ref="passwordPolicyDialog"
-      @confirm="cipher.id ? putCipher(cipher) : postCipher(cipher)"
+      @confirm="cipher.id ? putCipher() : postCipher()"
     />
   </div>
 </template>
@@ -445,10 +303,9 @@
 <script>
 import { Dialog } from 'element-ui'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { CipherType, SecureNoteType } from '../../jslib/src/enums'
-import { Cipher, SecureNote } from '../../jslib/src/models/domain'
-import { CipherRequest } from '../../jslib/src/models/request'
-// import { CipherRequest } from '../../core/models/request/cipherRequest'
+import { SecureNoteType } from '../../jslib/src/enums'
+import { CipherType } from '../../core/enums/cipherType'
+import { Cipher } from '../../jslib/src/models/domain'
 import {
   CipherView,
   LoginView,
@@ -458,48 +315,53 @@ import {
   LoginUriView
 } from '../../jslib/src/models/view'
 import AddEditFolder from '../folder/AddEditFolder'
-import PasswordGenerator from '../password/PasswordGenerator'
-import PasswordStrengthBar from '../password/PasswordStrengthBar'
 import InputText from '../input/InputText'
-import InputSelect from '../input/InputSelect'
 import InputSelectFolder from '../input/InputSelectFolder'
-import InputSelectOrg from '../input/InputSelectOrg'
-import InputSelectCryptoWallet from '../input/InputSelectCryptoWallet'
-import InputSelectCryptoNetworks from '../input/InputSelectCryptoNetworks'
-import InputSeedPhrase from '../input/InputSeedPhrase'
 import InputCustomFields from '../input/InputCustomFields.vue'
-import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
-import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
-import { detectCardBrand } from '../../utils/common'
 import InlineEditCipher from './InlineEditCipher'
 import PasswordViolationDialog from './PasswordViolationDialog'
-
-CipherType.CryptoWallet = CipherType.CryptoBackup = 7
+import LoginInput from './cipher-types/login/LoginInput.vue'
+import CardInput from './cipher-types/card/CardInput.vue'
+import IdentityInput from './cipher-types/identity/IdentityInput.vue'
+import CryptoBackupInput from './cipher-types/crypto-backup/CryptoBackupInput.vue'
+import DriverLicenseInput from './cipher-types/driver-license/DriverLicenseInput.vue'
+import CitizenIdInput from './cipher-types/citizen-id/CitizenIdInput.vue'
+import PassportInput from './cipher-types/passport/PassportInput.vue'
+import SsnInput from './cipher-types/ssn/SsnInput.vue'
+import RouterInput from './cipher-types/router/RouterInput.vue'
+import ServerInput from './cipher-types/server/ServerInput.vue'
+import ApiInput from './cipher-types/api/ApiInput.vue'
+import DatabaseInput from './cipher-types/database/DatabaseInput.vue'
 
 export default {
   components: {
     AddEditFolder,
-    PasswordGenerator,
     Dialog,
     InlineEditCipher,
     ValidationProvider,
     ValidationObserver,
-    PasswordStrengthBar,
     InputText,
-    InputSelect,
     InputSelectFolder,
-    InputSelectOrg,
-    InputSelectCryptoWallet,
-    InputSelectCryptoNetworks,
-    InputSeedPhrase,
     InputCustomFields,
-    PasswordViolationDialog
+    PasswordViolationDialog,
+    LoginInput,
+    CardInput,
+    IdentityInput,
+    CryptoBackupInput,
+    DriverLicenseInput,
+    CitizenIdInput,
+    PassportInput,
+    SsnInput,
+    RouterInput,
+    ServerInput,
+    ApiInput,
+    DatabaseInput
   },
 
   props: {
     type: {
-      type: String,
-      default: 'Login'
+      type: [String, Number],
+      default: 1
     },
     routeName: {
       type: String,
@@ -520,125 +382,17 @@ export default {
       writeableCollections: [],
       nonWriteableCollections: [],
       cloneMode: false,
-      currentComponent: Dialog,
-      cryptoWallet: {
-        walletApp: {
-          name: '',
-          alias: ''
-        },
-        username: '',
-        password: '',
-        address: '',
-        privateKey: '',
-        seed: '',
-        networks: [],
-        notes: ''
-      }
+      currentComponent: Dialog
     }
   },
 
   computed: {
-    cardBrandOptions () {
-      return [
-        { label: '----', value: null, icon: '' },
-        { label: 'Visa', value: 'Visa', icon: 'fab fa-cc-visa' },
-        {
-          label: 'Mastercard',
-          value: 'Mastercard',
-          icon: 'fab fa-cc-mastercard'
-        },
-        { label: 'American Express', value: 'Amex', icon: 'fab fa-cc-amex' },
-        { label: 'Discover', value: 'Discover', icon: 'fab fa-cc-discover' },
-        {
-          label: 'Diners Club',
-          value: 'Diners Club',
-          icon: 'fab fa-cc-diners-club'
-        },
-        { label: 'JCB', value: 'JCB', icon: 'fab fa-cc-jcb' },
-        {
-          label: 'Maestro',
-          value: 'Maestro',
-          icon: require('~/assets/images/icons/cards/meastro.svg'),
-          iconType: 'img'
-        },
-        {
-          label: 'UnionPay',
-          value: 'UnionPay',
-          icon: require('~/assets/images/icons/cards/unionpay.svg'),
-          iconType: 'img'
-        },
-        { label: this.$t('other'), value: 'Other', icon: 'fas fa-credit-card' }
-      ]
-    },
-    currentCard () {
-      return this.cardBrandOptions.find(
-        c => c.value && c.value === this.cipher.card.brand
-      )
-    },
-    cardExpMonthOptions () {
-      return [
-        { label: '----', value: null },
-        { label: '01 - ' + this.$t('january'), value: '1' },
-        { label: '02 - ' + this.$t('february'), value: '2' },
-        { label: '03 - ' + this.$t('march'), value: '3' },
-        { label: '04 - ' + this.$t('april'), value: '4' },
-        { label: '05 - ' + this.$t('may'), value: '5' },
-        { label: '06 - ' + this.$t('june'), value: '6' },
-        { label: '07 - ' + this.$t('july'), value: '7' },
-        { label: '08 - ' + this.$t('august'), value: '8' },
-        { label: '09 - ' + this.$t('september'), value: '9' },
-        { label: '10 - ' + this.$t('october'), value: '10' },
-        { label: '11 - ' + this.$t('november'), value: '11' },
-        { label: '12 - ' + this.$t('december'), value: '12' }
-      ]
-    },
-    identityTitleOptions () {
-      return [
-        { label: '-- ' + this.$t('common.select') + ' --', value: null },
-        { label: this.$t('common.mr'), value: 'mr' },
-        { label: this.$t('common.mrs'), value: 'mrs' },
-        { label: this.$t('common.ms'), value: 'ms' },
-        { label: this.$t('common.dr'), value: 'dr' }
-      ]
-    },
     isDeleted () {
       return !!this.cipher.deletedDate
-    },
-    passwordStrength () {
-      if (this.cipher.login) {
-        return (
-          this.$passwordGenerationService.passwordStrength(
-            this.cipher.login.password,
-            ['cystack']
-          ) || {}
-        )
-      }
-      if (this.cipher.cryptoWallet) {
-        return (
-          this.$passwordGenerationService.passwordStrength(
-            this.cipher.cryptoWallet.password,
-            ['cystack']
-          ) || {}
-        )
-      }
-      return {}
-    },
-    ownershipOptions () {
-      const teams = this.teams.filter(e => ['owner', 'admin'].includes(e.role))
-      if (teams.length) {
-        return [
-          { name: this.currentUser.email, organization_id: null },
-          ...teams
-        ]
-      }
-      return []
     }
   },
 
   watch: {
-    cryptoWallet () {
-      this.cipher.cryptoWallet = this.cryptoWallet
-    },
     '$store.state.ui.closeAllModal' (newVal) {
       if (newVal) {
         this.dialogVisible = false
@@ -654,33 +408,103 @@ export default {
       this.nonWriteableCollections = await this.getNonWritableCollections()
       this.dialogVisible = true
       this.cloneMode = cloneMode
+
+      // Edit/clone
       if (data.id || this.cloneMode) {
-        if (data.type === CipherType.CryptoWallet) {
-          this.cryptoWallet = data.cryptoWallet
-        }
+        const cipherData = new Cipher({ ...data }, true)
+
+        // Update login uris
         if (
           data.type === CipherType.Login &&
           data.login &&
           data.login.uris == null
         ) {
-          data.login.uris = [new LoginUriView()]
+          cipherData.login.uris = [new LoginUriView()]
         }
+
+        // Set special types notes
+        if (data.type === CipherType.CryptoWallet) {
+          cipherData.notes = data.cryptoWallet.notes
+          setTimeout(() => {
+            this.$refs.cryptoBackupInput.loadData(data.cryptoWallet)
+          }, 0)
+        }
+        if (data.type === CipherType.DriverLicense) {
+          cipherData.notes = data.driverLicense.notes
+          setTimeout(() => {
+            this.$refs.driverLicenseInput.loadData(data.driverLicense)
+          }, 0)
+        }
+        if (data.type === CipherType.CitizenID) {
+          cipherData.notes = data.citizenId.notes
+          setTimeout(() => {
+            this.$refs.citizenIdInput.loadData(data.citizenId)
+          }, 0)
+        }
+        if (data.type === CipherType.Passport) {
+          cipherData.notes = data.passport.notes
+          setTimeout(() => {
+            this.$refs.passportInput.loadData(data.passport)
+          }, 0)
+        }
+        if (data.type === CipherType.SocialSecurityNumber) {
+          cipherData.notes = data.ssn.notes
+          setTimeout(() => {
+            this.$refs.ssnInput.loadData(data.ssn)
+          }, 0)
+        }
+        if (data.type === CipherType.WirelessRouter) {
+          cipherData.notes = data.router.notes
+          setTimeout(() => {
+            this.$refs.routerInput.loadData(data.router)
+          }, 0)
+        }
+        if (data.type === CipherType.Server) {
+          cipherData.notes = data.server.notes
+          setTimeout(() => {
+            this.$refs.serverInput.loadData(data.server)
+          }, 0)
+        }
+        if (data.type === CipherType.APICipher) {
+          cipherData.notes = data.api.notes
+          setTimeout(() => {
+            this.$refs.apiInput.loadData(data.api)
+          }, 0)
+        }
+        if (data.type === CipherType.Database) {
+          cipherData.notes = data.database.notes
+          setTimeout(() => {
+            this.$refs.databaseInput.loadData(data.database)
+          }, 0)
+        }
+
+        // Update custom fields
         if (data.fields == null) {
-          data.fields = []
-          // data.fields[0].type = FieldType.Text
+          cipherData.fields = []
         }
-        this.cipher = new Cipher({ ...data }, true)
+
+        // Remove org if clone
         if (this.cloneMode) {
           this.cipher.organizationId = null
           this.cipher.collectionIds = []
         }
+
+        // Check if current org is shared folder
         if (this.cipher.collectionIds && this.cipher.collectionIds[0]) {
           this.cipher.folderId = this.cipher.collectionIds[0]
         }
+
+        // Set current folder
         setTimeout(() => {
           this.$refs.inputSelectFolder.value = this.cipher.folderId
         }, 0)
-      } else if (CipherType[this.type]) {
+
+        this.cipher = cipherData
+        return
+      }
+
+      // Create new cipher
+      if (this.type) {
         this.newCipher(this.type, data)
       } else {
         this.newCipher('Login', data)
@@ -693,177 +517,102 @@ export default {
       this.currentComponent = Dialog
     },
 
-    // Change card Number
-    changeCardNumber (number) {
-      const cardLabel = detectCardBrand(number)
-      const brandOption = this.cardBrandOptions.find(o => o.label === cardLabel)
-      if (brandOption) {
-        this.cipher.card.brand = brandOption.value
-      } else if (cardLabel) {
-        this.cipher.card.brand = 'Other'
-      } else {
-        this.cipher.card.brand = null
-      }
-    },
-
     // Check for password violations
-    preparePassword (cipher) {
+    preparePassword () {
       const violationItems =
-        cipher.type === CipherType.Login
-          ? this.checkPasswordPolicy(cipher.login.password || '')
+        this.cipher.type === CipherType.Login
+          ? this.checkPasswordPolicy(this.cipher.login.password || '')
           : []
       if (violationItems.length) {
         this.$refs.passwordPolicyDialog.openDialog(violationItems)
       } else {
-        cipher.id ? this.putCipher(cipher) : this.postCipher(cipher)
+        this.cipher.id ? this.putCipher() : this.postCipher()
+      }
+    },
+
+    // Get password strength
+    async getPasswordStrength (cipher) {
+      let pw = ''
+      if (cipher.type === CipherType.CryptoWallet) {
+        pw = cipher.cryptoWallet.password
+      }
+      if (cipher.type === CipherType.Login) {
+        pw = cipher.login.password
+      }
+      if (!pw) {
+        return {}
+      }
+      return (
+        this.$passwordGenerationService.passwordStrength(pw, ['cystack']) || {}
+      )
+    },
+
+    // Load data from components
+    loadCipherDataFromComponents () {
+      if (this.cipher.type === CipherType.CryptoWallet) {
+        this.cipher.cryptoWallet = this.$refs.cryptoBackupInput.getData()
+      }
+      if (this.cipher.type === CipherType.DriverLicense) {
+        this.cipher.driverLicense = this.$refs.driverLicenseInput.getData()
+      }
+      if (this.cipher.type === CipherType.CitizenID) {
+        this.cipher.citizenId = this.$refs.citizenIdInput.getData()
+      }
+      if (this.cipher.type === CipherType.Passport) {
+        this.cipher.passport = this.$refs.passportInput.getData()
+      }
+      if (this.cipher.type === CipherType.SocialSecurityNumber) {
+        this.cipher.ssn = this.$refs.ssnInput.getData()
+      }
+      if (this.cipher.type === CipherType.WirelessRouter) {
+        this.cipher.router = this.$refs.routerInput.getData()
+      }
+      if (this.cipher.type === CipherType.Server) {
+        this.cipher.server = this.$refs.serverInput.getData()
+      }
+      if (this.cipher.type === CipherType.APICipher) {
+        this.cipher.api = this.$refs.apiInput.getData()
+      }
+      if (this.cipher.type === CipherType.Database) {
+        this.cipher.database = this.$refs.databaseInput.getData()
       }
     },
 
     // Create cipher
-    async postCipher (cipher) {
-      if (!cipher.name) {
+    async postCipher () {
+      if (!this.cipher.name) {
         return
       }
-      try {
-        this.loading = true
-        this.errors = {}
-
-        // Change type to Note for new cipher types
-        const type_ = this.cipher.type
-        if (this.cipher.type === CipherType.CryptoWallet) {
-          this.cipher.notes = JSON.stringify(this.cryptoWallet)
-          this.cipher.type = CipherType.SecureNote
-        }
-
-        // Check if current folder is a collection
-        const collection = this.writeableCollections.find(
-          c => c.id === this.cipher.folderId
-        )
-        if (collection) {
-          this.cipher.organizationId = collection.organizationId
-          this.cipher.folderId = null
-          this.cipher.collectionIds = [collection.id]
-        }
-
-        // Remove org in clone mode and not set to any collection
-        if (this.cloneMode && !collection) {
-          this.cipher.organizationId = null
-        }
-
-        // Encrypt cipher
-        const cipherEnc = await this.$cipherService.encrypt(cipher)
-        const data = new CipherRequest(cipherEnc)
-
-        // Change type back after encryption
-        data.type = type_
-        this.cipher.type = type_
-
-        // Send api
-        await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
-          ...data,
-          score: this.passwordStrength.score,
-          collectionIds: cipher.collectionIds
-        })
-        this.notify(
-          this.$tc('data.notifications.create_success', 1, {
-            type: this.$tc(`type.${this.type}`, 1)
-          }),
-          'success'
-        )
+      this.loading = true
+      this.errors = {}
+      this.loadCipherDataFromComponents()
+      const passwordStrength = await this.getPasswordStrength(this.cipher)
+      const isSuccess = await this.handleCreateCipher(this.cipher, {
+        cloneMode: this.cloneMode,
+        score: passwordStrength.score
+      })
+      this.loading = false
+      if (isSuccess) {
         this.closeDialog()
-      } catch (e) {
-        if (e.response && e.response.data && e.response.data.code === '5002') {
-          this.notify(
-            this.$t('errors.5002', { type: this.$tc(`type.${this.type}`, 1) }),
-            'error'
-          )
-          this.$store.commit('UPDATE_NOTICE', { showPleaseUpgrade: true })
-        } else {
-          this.notify(
-            this.$tc('data.notifications.create_failed', 1, {
-              type: this.$tc(`type.${this.type}`, 1)
-            }),
-            'warning'
-          )
-        }
-        // this.errors = (e.response && e.response.data && e.response.data.details) || {}
-      } finally {
-        this.loading = false
       }
     },
 
     // Update cipher
-    async putCipher (cipher) {
-      try {
-        // Change type to Note for new cipher types
-        const type_ = this.cipher.type
-        if (this.cipher.type === CipherType.CryptoWallet) {
-          this.cipher.notes = JSON.stringify(this.cryptoWallet)
-          this.cipher.type = CipherType.SecureNote
-          this.cipher.secureNote = new SecureNote(this.cipher.secureNote, true)
-          this.cipher.secureNote.type = 0
-        }
-
-        // Check if current folder is a collection or remove from old collection if move back to folder
-        if (this.cipher.folderId) {
-          const collection = [
-            ...this.writeableCollections,
-            ...this.nonWriteableCollections
-          ].find(c => c.id === this.cipher.folderId)
-          if (collection) {
-            this.cipher.organizationId = collection.organizationId
-            this.cipher.folderId = null
-            this.cipher.collectionIds = [collection.id]
-          } else {
-            this.cipher.organizationId = null
-            this.cipher.collectionIds = []
-          }
-        } else if (this.cipher.organizationId) {
-          // If move item from folder share back to no folder -> remove orgId
-          const collection = this.writeableCollections.find(
-            c => c.organizationId === this.cipher.organizationId
-          )
-          if (collection) {
-            this.cipher.organizationId = null
-            this.cipher.collectionIds = []
-          }
-        }
-
-        // Encrypt cipher
-        const cipherEnc = await this.$cipherService.encrypt(cipher)
-        const data = new CipherRequest(cipherEnc)
-
-        // Change type back after encryption
-        data.type = type_
-        this.cipher.type = type_
-
-        // Send api
-        await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, {
-          ...data,
-          score: this.passwordStrength.score,
-          collectionIds: cipher.collectionIds
-        })
-        this.notify(
-          this.$tc('data.notifications.update_success', 1, {
-            type: this.$tc(`type.${this.type}`, 1)
-          }),
-          'success'
-        )
+    async putCipher () {
+      if (!this.cipher.name) {
+        return
+      }
+      this.loading = true
+      this.errors = {}
+      this.loadCipherDataFromComponents()
+      const passwordStrength = await this.getPasswordStrength(this.cipher)
+      const isSuccess = await this.handleEditCipher(this.cipher, {
+        score: passwordStrength.score
+      })
+      this.loading = false
+      if (isSuccess) {
         this.closeDialog()
         this.$emit('updated-cipher')
-      } catch (e) {
-        if (e.response && e.response.data && e.response.data.code === '3003') {
-          this.notify(this.$t('errors.3003'), 'error')
-        } else {
-          this.notify(
-            this.$tc('data.notifications.update_failed', 1, {
-              type: this.$tc(`type.${this.type}`, 1)
-            }),
-            'warning'
-          )
-        }
-      } finally {
-        this.loading = false
       }
     },
 
@@ -879,35 +628,12 @@ export default {
         }
       )
         .then(async () => {
-          try {
-            this.loading = true
-            await this.$axios.$put(
-              'cystack_platform/pm/ciphers/permanent_delete',
-              { ids }
-            )
-            await this.$cipherService.delete(ids)
-            this.notify(
-              this.$tc('data.notifications.delete_success', ids.length, {
-                type: this.$tc('type.0', ids.length)
-              }),
-              'success'
-            )
+          this.loading = true
+          const isSuccess = await this.handleDeleteCiphers(ids)
+          this.loading = false
+          if (isSuccess) {
             this.closeDialog()
             this.$emit('reset-selection')
-          } catch (e) {
-            if (e.response && e.response.data && e.response.code === '5001') {
-              this.notify(this.$t('errors.5001'), 'error')
-            } else {
-              this.notify(
-                this.$tc('data.notifications.delete_failed', ids.length, {
-                  type: this.$tc('type.0', ids.length)
-                }),
-                'warning'
-              )
-            }
-            console.log(e)
-          } finally {
-            this.loading = false
           }
         })
         .catch(() => {})
@@ -928,32 +654,13 @@ export default {
         }
       )
         .then(async () => {
-          try {
-            this.loading = true
-            await this.$axios.$put('cystack_platform/pm/ciphers/delete', {
-              ids
-            })
-            this.notify(
-              this.$tc('data.notifications.trash_success', ids.length, {
-                type: this.$tc('type.0', ids.length)
-              }),
-              'success'
-            )
+          this.loading = true
+          const isSuccess = await this.handleMoveTrashCiphers(ids)
+          this.loading = false
+          if (isSuccess) {
             this.$emit('trashed-cipher')
-          } catch (e) {
-            if (e.response && e.response.data && e.response.code === '5001') {
-              this.notify(this.$t('errors.5001'), 'error')
-            } else {
-              this.notify(
-                this.$tc('data.notifications.trash_failed', ids.length, {
-                  type: this.$tc('type.0', ids.length)
-                }),
-                'warning'
-              )
-            }
             this.$emit('reset-selection')
-          } finally {
-            this.loading = false
+            this.closeDialog()
           }
         })
         .catch(() => {})
@@ -971,28 +678,12 @@ export default {
         }
       )
         .then(async () => {
-          try {
-            this.loading = true
-            await this.$axios.$put('cystack_platform/pm/ciphers/restore', {
-              ids
-            })
-            this.notify(
-              this.$tc('data.notifications.restore_success', ids.length, {
-                type: this.$tc('type.0', ids.length)
-              }),
-              'success'
-            )
+          this.loading = true
+          const isSuccess = await this.handleRestoreCiphers(ids)
+          this.loading = false
+          if (isSuccess) {
             this.$emit('reset-selection')
-          } catch (e) {
-            this.notify(
-              this.$tc('data.notifications.restore_failed', ids.length, {
-                type: this.$tc('type.0', ids.length)
-              }),
-              'warning'
-            )
-            console.log(e)
-          } finally {
-            this.loading = false
+            this.closeDialog()
           }
         })
         .catch(() => {})
@@ -1015,7 +706,7 @@ export default {
       this.cipher.organizationId = data.organizationId
         ? data.organizationId
         : null
-      this.cipher.type = CipherType[type]
+      this.cipher.type = typeof type === 'string' ? CipherType[type] : type
       this.cipher.login = new LoginView()
       this.cipher.login.uris = [new LoginUriView()]
       this.cipher.login.uris[0].uri = 'https://'
@@ -1029,84 +720,11 @@ export default {
       this.cipher.collectionIds = this.$route.params.tfolderId
         ? [this.$route.params.tfolderId]
         : []
-      if (this.cipher.organizationId) {
-        this.handleChangeOrg(this.cipher.organizationId)
-      }
 
       // Set item name if open from tutorial
       if (this.$tutorial.isActive()) {
         this.cipher.name = 'New password'
       }
-    },
-
-    // Set item name to url
-    handleGenNameByUri () {
-      if (!this.cipher.name) {
-        this.cipher.name = this.cipher.login.uris[0].uri.replace('https://', '')
-      }
-    },
-
-    // Get writable collections
-    async getWritableCollections () {
-      let collections = []
-      try {
-        collections = await this.$collectionService.getAllDecrypted()
-        const organizations = await this.$userService.getAllOrganizations()
-        collections = collections.filter(item => {
-          const _type = this.getTeam(organizations, item.organizationId).type
-          return _type === 0
-        })
-      } catch (error) {}
-      return collections
-    },
-
-    // Get non-writable collections
-    async getNonWritableCollections () {
-      let collections = []
-      try {
-        collections = await this.$collectionService.getAllDecrypted()
-        const organizations = await this.$userService.getAllOrganizations()
-        collections = collections.filter(item => {
-          const _type = this.getTeam(organizations, item.organizationId).type
-          return _type !== 0
-        })
-      } catch (error) {}
-      return collections
-    },
-
-    // Fill password from generator
-    fillPassword (p) {
-      if (this.cipher.type === CipherType.Login) {
-        this.cipher.login.password = p
-      }
-      if (this.cipher.type === CipherType.CryptoWallet) {
-        this.cryptoWallet.password = p
-      }
-      this.notify('Filled password', 'success')
-    },
-
-    handleChangeCryptoWallet (v) {
-      const selectedApp = WALLET_APP_LIST.find(a => a.alias === v)
-      this.cryptoWallet.walletApp = {
-        name: selectedApp.name,
-        alias: selectedApp.alias
-      }
-    },
-
-    handleChangeCryptoNetworks (v) {
-      const selectedNetworks = v.map(alias =>
-        CHAIN_LIST.find(n => n.alias === alias)
-      )
-      this.cryptoWallet.networks = selectedNetworks.map(selectedNetwork => {
-        return {
-          name: selectedNetwork.name,
-          alias: selectedNetwork.alias
-        }
-      })
-    },
-
-    setSeed (v) {
-      this.cryptoWallet.seed = v
     },
 
     setFields (v) {
