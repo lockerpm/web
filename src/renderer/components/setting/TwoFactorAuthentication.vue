@@ -15,7 +15,7 @@
             class="mr-4 hidden lg:inline-block"
           >
             <button
-              class="btn btn-outline-primary md:mb-0"
+              class="btn btn-outline-primary md:mb-0 setting-button"
               @click="() => (collapsed = !collapsed)"
             >
               <span>{{ $t('data.settings.two_step_verification') }}</span>

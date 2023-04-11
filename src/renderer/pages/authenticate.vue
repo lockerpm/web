@@ -17,7 +17,11 @@ export default {
   },
   methods: {
     updateLoginExtension (response) {
-      if (response && response.success && this.$route.query.client === 'browser') {
+      if (
+        response &&
+        response.success &&
+        this.$route.query.client === 'browser'
+      ) {
         this.$store.commit('UPDATE_LOGIN_EXTENSION', true)
       }
     },
@@ -25,25 +29,36 @@ export default {
     loginByToken () {
       this.$store.commit('UPDATE_LOADING', true)
       setTimeout(async () => {
-        await this.$axios.setToken(this.$route.query.token, 'Bearer')
-        await this.$cookies.set('cs_locker_token', this.$route.query.token, {
+        const token =
+          this.$route.query.token || this.$cookies.get('cs_locker_token')
+        await this.$axios.setToken(token, 'Bearer')
+        await this.$cookies.set('cs_locker_token', token, {
           path: '/',
           ...(this.environment === '' ? { secure: true } : { secure: false })
         })
         this.$store.commit('UPDATE_IS_LOGGEDIN', true)
         if (this.$route.query.client === 'browser') {
-          const extensionToken = this.$route.query.token
-          window.postMessage({ command: 'cs-authResult', token: extensionToken })
+          const extensionToken = token
+          window.postMessage({
+            command: 'cs-authResult',
+            token: extensionToken
+          })
         } else {
           const url = 'https://api.locker.io/v3/sso/access_token'
-          this.$axios.post(url, {
-            SERVICE_URL: '/sso',
-            SERVICE_SCOPE: 'pwdmanager',
-            CLIENT: 'browser'
-          }).then(async result => {
-            const extensionToken = result.data ? result.data.access_token : ''
-            window.postMessage({ command: 'cs-authResult', token: extensionToken })
-          }).catch(() => {})
+          this.$axios
+            .post(url, {
+              SERVICE_URL: '/sso',
+              SERVICE_SCOPE: 'pwdmanager',
+              CLIENT: 'browser'
+            })
+            .then(async result => {
+              const extensionToken = result.data ? result.data.access_token : ''
+              window.postMessage({
+                command: 'cs-authResult',
+                token: extensionToken
+              })
+            })
+            .catch(() => {})
         }
 
         // end sendMessage
