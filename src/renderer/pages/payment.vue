@@ -869,7 +869,8 @@ export default {
         this.result = res
       })
         .catch(error => {
-          if (error.response && error.response.data && error.response.code === '7009') {
+          const isHandled = this.handleApiError(error?.response)
+          if (!isHandled) {
             this.notify(this.$t('data.notifications.error_occurred'), 'warning')
           }
         })

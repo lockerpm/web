@@ -177,12 +177,8 @@ export default {
   computed: {
     shouldShowSearch () {
       return [
+        ...this.cipherRoutes,
         'vault',
-        'passwords',
-        'notes',
-        'cards',
-        'identities',
-        'crypto-backups',
         'shares-index',
         'trash',
         'vault-tfolders-tfolderId',

@@ -65,6 +65,11 @@ Vue.mixin({
       return share?.members?.length || share?.groups?.length
     },
 
+    isCipherSharedWithMe (organizationId, organizations) {
+      const team = this.getTeam(organizations, organizationId)
+      return !!team
+    },
+
     isCipherShareable (cipher, organizations) {
       return (
         !cipher.isDeleted &&
@@ -137,6 +142,112 @@ Vue.mixin({
         this.notify(this.$t('errors.something_went_wrong'), 'warning')
         console.log(error)
         return false
+      }
+    },
+
+    async stopShareCipher (cipher) {
+      try {
+        let memberId = null
+        if (cipher.user) {
+          memberId = cipher.user.id
+          delete cipher.user
+        }
+        const { data } = await this.getEncCipherForRequest(cipher, {
+          noCheck: true,
+          encKey: await this.$cryptoService.getEncKey()
+        })
+
+        if (memberId) {
+          await this.$axios.$post(
+            `cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`,
+            {
+              folder: null,
+              cipher: { ...data, id: cipher.id }
+            }
+          )
+        } else {
+          await this.$axios.$post(
+            `cystack_platform/pm/sharing/${cipher.organizationId}/stop`,
+            {
+              folder: null,
+              cipher: { ...data, id: cipher.id }
+            }
+          )
+        }
+
+        this.notify(
+          this.$tc('data.notifications.update_success', 1, {
+            type: this.$tc(`type.${cipher.type}`, 1)
+          }),
+          'success'
+        )
+        this.$store.dispatch('LoadMyShares')
+      } catch (error) {
+        this.notify(
+          this.$tc('data.notifications.update_failed', 1, {
+            type: this.$tc(`type.${cipher.type}`, 1)
+          }),
+          'warning'
+        )
+      }
+    },
+
+    async stopShareFolder (folder) {
+      try {
+        let memberId = null
+        if (folder.user) {
+          memberId = folder.user.id
+          delete folder.user
+        }
+        let folderNameEnc = await this.$cryptoService.encrypt(folder.name)
+        folderNameEnc = folderNameEnc.encryptedString
+
+        // Encrypt ciphers with self key
+        const personalKey = await this.$cryptoService.getEncKey()
+        const ciphers = await Promise.all(
+          folder.ciphers.map(async cipher => {
+            const { data } = await this.getEncCipherForRequest(cipher, {
+              noCheck: true,
+              encKey: personalKey
+            })
+            return {
+              id: cipher.id,
+              ...data
+            }
+          })
+        )
+        const payload = {
+          folder: {
+            id: folder.id,
+            name: folderNameEnc,
+            ciphers
+          }
+        }
+        if (memberId) {
+          await this.$axios.$post(
+            `cystack_platform/pm/sharing/${folder.organizationId}/members/${memberId}/stop`,
+            payload
+          )
+        } else {
+          await this.$axios.$post(
+            `cystack_platform/pm/sharing/${folder.organizationId}/stop`,
+            payload
+          )
+        }
+        this.notify(
+          this.$tc('data.notifications.update_success', 1, {
+            type: this.$tc('type.Folder', 1)
+          }),
+          'success'
+        )
+        this.$store.dispatch('LoadMyShares')
+      } catch (error) {
+        this.notify(
+          this.$tc('data.notifications.update_failed', 1, {
+            type: this.$tc('type.Folder', 1)
+          }),
+          'warning'
+        )
       }
     }
   }

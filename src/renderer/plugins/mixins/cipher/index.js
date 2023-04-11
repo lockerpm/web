@@ -1,13 +1,54 @@
 import Vue from 'vue'
-import { LoginUriView, LoginView } from '../../../jslib/src/models/view'
-import { CipherRequest } from '../../../jslib/src/models/request'
 import { CipherType } from '../../../core/enums/cipherType'
-import { CipherView } from '../../../core/models/view/cipherView'
+import { CipherMapper } from '../../../constants'
 
 Vue.mixin({
   computed: {
     notDeletedCipherCount () {
       return this.$store.state.notDeletedCipherCount
+    },
+
+    newCipherTypes () {
+      return [
+        CipherType.TOTP,
+        CipherType.CryptoWallet,
+        CipherType.DriverLicense,
+        CipherType.CitizenID,
+        CipherType.Passport,
+        CipherType.SocialSecurityNumber,
+        CipherType.WirelessRouter,
+        CipherType.Server,
+        CipherType.APICipher,
+        CipherType.Database
+      ]
+    },
+
+    cipherMapping () {
+      const res = { ...CipherMapper }
+      if (!this.isDevOrStaging) {
+        const hiddenType = [
+          CipherType.DriverLicense,
+          CipherType.CitizenID,
+          CipherType.Passport,
+          CipherType.SocialSecurityNumber,
+          CipherType.WirelessRouter,
+          CipherType.Server,
+          CipherType.APICipher,
+          CipherType.Database
+        ]
+        hiddenType.forEach(cipherType => {
+          res[cipherType].hideFromCipherList = true
+          res[cipherType].noCreate = true
+          res[cipherType].noMenu = true
+        })
+      }
+      return res
+    },
+
+    cipherRoutes () {
+      return Object.values(this.cipherMapping)
+        .filter(v => !!v.routeName)
+        .map(v => v.routeName)
     }
   },
 
@@ -16,29 +57,40 @@ Vue.mixin({
       await this.$cryptoService.clearKeys()
     },
 
-    async createEncryptedMasterPwItem (masterPw, encKey) {
-      const cipher = new CipherView()
-      cipher.type = CipherType.Login
-      const loginData = new LoginView()
-      loginData.username = 'locker.io'
-      loginData.password = masterPw
-      const uriView = new LoginUriView()
-      uriView.uri = 'https://locker.io'
-      loginData.uris = [uriView]
-      cipher.login = loginData
-      cipher.name = 'Locker Master Password'
-      const cipherEnc = await this.$cipherService.encrypt(cipher, encKey)
-      const data = new CipherRequest(cipherEnc)
-      data.type = CipherType.MasterPassword
-      return data
-    },
-
     async getFolders () {
       return await this.$folderService.getAllDecrypted()
     },
 
     async getCollections () {
       return await this.$collectionService.getAllDecrypted()
+    },
+
+    // Get writable collections
+    async getWritableCollections () {
+      let collections = []
+      try {
+        collections = await this.$collectionService.getAllDecrypted()
+        const organizations = await this.$userService.getAllOrganizations()
+        collections = collections.filter(item => {
+          const _type = this.getTeam(organizations, item.organizationId).type
+          return _type === 0
+        })
+      } catch (error) {}
+      return collections
+    },
+
+    // Get non-writable collections
+    async getNonWritableCollections () {
+      let collections = []
+      try {
+        collections = await this.$collectionService.getAllDecrypted()
+        const organizations = await this.$userService.getAllOrganizations()
+        collections = collections.filter(item => {
+          const _type = this.getTeam(organizations, item.organizationId).type
+          return _type !== 0
+        })
+      } catch (error) {}
+      return collections
     },
 
     async getOrganizations () {
@@ -80,30 +132,7 @@ Vue.mixin({
         return
       }
 
-      let name = ''
-      switch (cipher.type) {
-      case CipherType.Login:
-      case CipherType.MasterPassword:
-        name = 'passwords'
-        break
-      case CipherType.SecureNote:
-        name = 'notes'
-        break
-      case CipherType.Card:
-        name = 'cards'
-        break
-      case CipherType.Identity:
-        name = 'identities'
-        break
-      case 6:
-        name = 'crypto-backups'
-        break
-      case 7:
-        name = 'crypto-backups'
-        break
-      default:
-        name = 'vault'
-      }
+      const name = this.cipherMapping[cipher.type].routeName || 'vault'
       this.$router.push(
         this.localeRoute({
           name: name + '-id',
@@ -121,6 +150,7 @@ Vue.mixin({
       )
     },
 
+    // Cannot edit/delete/share/export
     isProtectedCipher (cipher) {
       return cipher.type === CipherType.MasterPassword
     }
