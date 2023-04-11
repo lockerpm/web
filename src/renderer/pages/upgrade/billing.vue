@@ -4,7 +4,9 @@
       <div class="col-span-3 p-6 rounded border border-black-200 flex flex-col">
         <div class="flex justify-between mb-6 flex-grow">
           <div class="flex">
-            <div class="label label-black tracking-[1px] font-semibold uppercase !text-xs">
+            <div
+              class="label label-black tracking-[1px] font-semibold uppercase !text-xs"
+            >
               {{ getPlanName(currentPlan.name).name }}
             </div>
             <div class="text-black-600 ml-2">
@@ -12,19 +14,26 @@
             </div>
           </div>
           <div class="flex">
-            <span v-if="currentPlan.price" class="text-head-1 font-semibold mr-2">
-              <span v-if="language==='vi'">đ{{ currentPlan.price.vnd | formatNumber }}</span>
-              <span v-if="language==='en'">${{ currentPlan.price.usd | formatNumber }}</span>
+            <span
+              v-if="currentPlan.price"
+              class="text-head-1 font-semibold mr-2"
+            >
+              <span v-if="language === 'vi'">đ{{ currentPlan.price.vnd | formatNumber }}</span>
+              <span v-if="language === 'en'">${{ currentPlan.price.usd | formatNumber }}</span>
             </span>
             <span class="text-black-600">/ mo</span>
             <span
               v-if="currentPlan.max_number && currentPlan.max_number > 1"
               class="ml-2 text-black-600"
-            >/ {{ currentPlan.max_number }} {{ $tc('data.plans.members', {count: currentPlan.max_number}) }}</span>
+            >/ {{ currentPlan.max_number }}
+              {{
+                $tc('data.plans.members', { count: currentPlan.max_number })
+              }}</span>
             <span
               v-else-if="currentPlan.alias === 'pm_business_premium'"
               class="ml-2 text-black-600"
-            >/ 1 {{ $tc('data.plans.members', {count: 1}) }} </span>
+            >/ 1 {{ $tc('data.plans.members', { count: 1 }) }}
+            </span>
           </div>
         </div>
         <div v-if="plans" class="flex">
@@ -34,13 +43,23 @@
       </div>
       <div class="col-span-2 p-6 rounded border border-black-200">
         <div class="text-black-600 mb-1.5">
-          {{ currentPlan.cancel_at_period_end ? $t('data.billing.cancel_at_period_end') : $t('data.billing.next_billing') }}
+          {{
+            currentPlan.cancel_at_period_end
+              ? $t('data.billing.cancel_at_period_end')
+              : $t('data.billing.next_billing')
+          }}
         </div>
         <div class="font-semibold">
-          {{ currentPlan.next_billing_time ? $moment(currentPlan.next_billing_time * 1000).format('LLL') : 'N/A' }}
+          {{
+            currentPlan.next_billing_time
+              ? $moment(currentPlan.next_billing_time * 1000).format('LLL')
+              : 'N/A'
+          }}
         </div>
         <button
-          v-if="currentPlan.next_billing_time && !currentPlan.cancel_at_period_end"
+          v-if="
+            currentPlan.next_billing_time && !currentPlan.cancel_at_period_end
+          "
           class="btn btn-default mt-4"
           @click="cancelSub"
         >
@@ -52,52 +71,33 @@
       {{ $t('data.billing.invoices') }}
     </div>
     <div>
-      <el-table
-        :data="invoices.results"
-        style="width: 100%"
-      >
-        <el-table-column
-          label="ID"
-        >
+      <el-table :data="invoices.results" style="width: 100%">
+        <el-table-column label="ID">
           <template slot-scope="scope">
             {{ scope.row.payment_id }}
           </template>
         </el-table-column>
-        <el-table-column
-          :label="$t('common.created_date')"
-        >
+        <el-table-column :label="$t('common.created_date')">
           <template slot-scope="scope">
-            {{ $moment(scope.row.created_time*1000).format('LLL') }}
+            {{ $moment(scope.row.created_time * 1000).format('LLL') }}
           </template>
         </el-table-column>
-        <el-table-column
-          :label="$t('common.plan')"
-        >
+        <el-table-column :label="$t('common.plan')">
           <template slot-scope="scope">
             {{ getPlanByAlias(plans, scope.row.plan).name }}
           </template>
         </el-table-column>
-        <el-table-column
-          label=""
-        >
+        <el-table-column label="">
           <template slot-scope="scope">
             {{ $t(`common.${scope.row.duration}`) }}
           </template>
         </el-table-column>
-        <el-table-column
-          prop="total_price"
-          label=""
-          align="right"
-        >
+        <el-table-column prop="total_price" label="" align="right">
           <template slot-scope="scope">
             {{ scope.row.total_price | formatNumber }}
           </template>
         </el-table-column>
-        <el-table-column
-          prop="status"
-          label=""
-          align="right"
-        >
+        <el-table-column prop="status" label="" align="right">
           <template slot-scope="scope">
             {{ $t(`data.billing.${scope.row.status}`) }}
           </template>
@@ -146,31 +146,27 @@ export default {
     getInvoices (page = 1) {
       this.page = page
       const url = `cystack_platform/pm/payments/invoices?page=${page}`
-      this.$axios.$get(url)
-        .then(res => {
-          this.invoices = res
-        })
+      this.$axios.$get(url).then(res => {
+        this.invoices = res
+      })
     },
     payInvoice (item) {
       this.loadingPay = true
       this.$store.commit('UPDATE_LOADING', true)
       const url = `cystack_platform/pm/payments/invoices/${item.id}`
-      this.$axios.$post(url)
+      this.$axios
+        .$post(url)
         .then(res => {
           this.notify(this.$t('data.billing.pay_success'), 'success')
           item.status = 'paid'
         })
         .catch(error => {
-          if (error.response) {
-            if (error.response.data) {
-              if (error.response.data.code === '7009') {
-                this.notify(this.$t('data.error_code.7009'), 'warning')
-              }
-            }
-          } else {
+          const isHandled = this.handleApiError(error?.response)
+          if (!isHandled) {
             this.notify(this.$t('data.billing.pay_failed'), 'warning')
           }
-        }).then(() => {
+        })
+        .then(() => {
           this.loadingPay = false
           this.$store.commit('UPDATE_LOADING', false)
         })
@@ -185,21 +181,38 @@ export default {
       return find(plans, e => e.alias === alias) || {}
     },
     cancelSub () {
-      this.$confirm(this.$t('data.billing.confirm_unsubscribe', { date: this.$moment(this.currentPlan.next_billing_time * 1000).format('LL') }), this.$t('data.billing.cancel_subscription'), {
-        confirmButtonText: 'OK',
-        cancelButtonText: this.$t('common.cancel'),
-        type: 'warning'
-      }).then(() => {
-        this.$axios.$post('cystack_platform/pm/payments/plan/cancel')
-          .then(res => {
-            this.notify(this.$t('data.billing.unsubscribe_success', { date: this.$moment(this.currentPlan.next_billing_time * 1000).format('LL') }), 'success')
-            this.$store.dispatch('LoadCurrentPlan')
-          })
-          .catch(() => {
-            this.notify(this.$t('data.billing.subscribe_failed'), 'warning')
-          })
-      }).catch(() => {
-      })
+      this.$confirm(
+        this.$t('data.billing.confirm_unsubscribe', {
+          date: this.$moment(this.currentPlan.next_billing_time * 1000).format(
+            'LL'
+          )
+        }),
+        this.$t('data.billing.cancel_subscription'),
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning'
+        }
+      )
+        .then(() => {
+          this.$axios
+            .$post('cystack_platform/pm/payments/plan/cancel')
+            .then(res => {
+              this.notify(
+                this.$t('data.billing.unsubscribe_success', {
+                  date: this.$moment(
+                    this.currentPlan.next_billing_time * 1000
+                  ).format('LL')
+                }),
+                'success'
+              )
+              this.$store.dispatch('LoadCurrentPlan')
+            })
+            .catch(() => {
+              this.notify(this.$t('data.billing.subscribe_failed'), 'warning')
+            })
+        })
+        .catch(() => {})
     }
   }
 }

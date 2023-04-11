@@ -372,6 +372,12 @@ Vue.mixin({
         return true
       }
 
+      // Card declined
+      if (response?.data?.code === '7009') {
+        this.notify(this.$t('errors.7009'), 'error')
+        return true
+      }
+
       return false
     }
   }

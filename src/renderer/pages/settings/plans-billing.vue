@@ -410,13 +410,8 @@ export default {
           item.status = 'paid'
         })
         .catch(error => {
-          if (error.response) {
-            if (error.response.data) {
-              if (error.response.data.code === '7009') {
-                this.notify(this.$t('data.error_code.7009'), 'warning')
-              }
-            }
-          } else {
+          const isHandled = this.handleApiError(error?.response)
+          if (!isHandled) {
             this.notify(this.$t('data.billing.pay_failed'), 'warning')
           }
         })
