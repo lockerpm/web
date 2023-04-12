@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import groupBy from 'lodash/groupBy'
 import { CipherType } from '../../../core/enums/cipherType'
 import { CipherMapper } from '../../../constants'
 
@@ -43,6 +44,16 @@ Vue.mixin({
         })
       }
       return res
+    },
+
+    cipherGroupMapping () {
+      return groupBy(Object.values(CipherMapper), 'group')
+    },
+
+    cipherTypesList () {
+      return Object.values(this.cipherGroupMapping).reduce((list, items) => {
+        return list.concat(items)
+      }, [])
     },
 
     cipherRoutes () {

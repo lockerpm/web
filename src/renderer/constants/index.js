@@ -11,10 +11,11 @@ export class AccountRole {
 
 export const CipherMapper = (() => {
   // Notes: do not add friendly name for new cipher types
-  // Friendly name only used for translation of old types
+  // friendlyName: used for translation of old types
   // hideFromCipherList: hide from load all ciphers + add new options
   // noCreate: cannot create new item of this type + hide from add new options
   // noMenu: hide from sidebar
+  // group: group cipher type to display in side menu or nav menu + its order in menu
 
   const res = {}
   res[CipherType.Login] = {
@@ -23,14 +24,16 @@ export const CipherMapper = (() => {
     label: 'passwords',
     friendlyName: 'Login',
     freeLimit: 100,
-    csvTypeName: 'login'
+    csvTypeName: 'login',
+    group: 'other'
   }
   res[CipherType.MasterPassword] = {
     type: CipherType.MasterPassword,
     routeName: 'passwords',
     label: 'passwords',
     noMenu: true,
-    noCreate: true
+    noCreate: true,
+    group: 'other'
   }
   res[CipherType.SecureNote] = {
     type: CipherType.SecureNote,
@@ -38,7 +41,8 @@ export const CipherMapper = (() => {
     label: 'notes',
     friendlyName: 'SecureNote',
     freeLimit: 50,
-    csvTypeName: 'note'
+    csvTypeName: 'note',
+    group: 'other'
   }
   res[CipherType.Card] = {
     type: CipherType.Card,
@@ -46,7 +50,8 @@ export const CipherMapper = (() => {
     label: 'cards',
     friendlyName: 'Card',
     freeLimit: 5,
-    csvTypeName: 'card'
+    csvTypeName: 'card',
+    group: 'other'
   }
   res[CipherType.Identity] = {
     type: CipherType.Identity,
@@ -54,76 +59,87 @@ export const CipherMapper = (() => {
     label: 'identities',
     friendlyName: 'Identity',
     freeLimit: 10,
-    csvTypeName: 'identity'
+    csvTypeName: 'identity',
+    group: 'identity'
   }
   res[CipherType.TOTP] = {
     type: CipherType.TOTP,
     noMenu: true,
     hideFromCipherList: true,
-    csvTypeName: 'totp'
+    csvTypeName: 'totp',
+    group: 'other'
   }
   res[CipherType.CryptoWallet] = {
     type: CipherType.CryptoWallet,
     routeName: 'crypto-backups',
     label: 'crypto_backups',
     freeLimit: 5,
-    csvTypeName: 'crypto-wallet'
+    csvTypeName: 'crypto-wallet',
+    group: 'other'
   }
   res[CipherType.DriverLicense] = {
     type: CipherType.DriverLicense,
     routeName: 'driver-licenses',
     label: 'driver-licenses',
     freeLimit: 5,
-    csvTypeName: 'driver-license'
+    csvTypeName: 'driver-license',
+    group: 'identity'
   }
   res[CipherType.CitizenID] = {
     type: CipherType.CitizenID,
     routeName: 'citizen-ids',
     label: 'citizen-ids',
     freeLimit: 5,
-    csvTypeName: 'citizen-id'
+    csvTypeName: 'citizen-id',
+    group: 'identity'
   }
   res[CipherType.Passport] = {
     type: CipherType.Passport,
     routeName: 'passports',
     label: 'passports',
     freeLimit: 5,
-    csvTypeName: 'passport'
+    csvTypeName: 'passport',
+    group: 'identity'
   }
   res[CipherType.SocialSecurityNumber] = {
     type: CipherType.SocialSecurityNumber,
     routeName: 'ssns',
     label: 'ssns',
     freeLimit: 5,
-    csvTypeName: 'social-security-number'
+    csvTypeName: 'social-security-number',
+    group: 'identity'
   }
   res[CipherType.WirelessRouter] = {
     type: CipherType.WirelessRouter,
     routeName: 'routers',
     label: 'routers',
     freeLimit: 5,
-    csvTypeName: 'wireless-router'
+    csvTypeName: 'wireless-router',
+    group: 'dev'
   }
   res[CipherType.Server] = {
     type: CipherType.Server,
     routeName: 'servers',
     label: 'servers',
     freeLimit: 5,
-    csvTypeName: 'server'
+    csvTypeName: 'server',
+    group: 'dev'
   }
   res[CipherType.APICipher] = {
     type: CipherType.APICipher,
     routeName: 'apis',
     label: 'apis',
     freeLimit: 5,
-    csvTypeName: 'api-cipher'
+    csvTypeName: 'api-cipher',
+    group: 'dev'
   }
   res[CipherType.Database] = {
     type: CipherType.Database,
     routeName: 'databases',
     label: 'databases',
     freeLimit: 5,
-    csvTypeName: 'database'
+    csvTypeName: 'database',
+    group: 'dev'
   }
   return res
 })()
