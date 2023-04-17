@@ -16,13 +16,6 @@ export default {
     return {
       CipherType
     }
-  },
-  mounted () {
-    if (this.currentUser.email === 'duchm@cystack.net') {
-      console.log(process.env.nodeEnv)
-      console.log(this.$config.stripeKey)
-      console.log(this.$config.cloudflare)
-    }
   }
 }
 </script>
