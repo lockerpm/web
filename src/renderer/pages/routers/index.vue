@@ -22,7 +22,6 @@ export default {
       console.log(process.env.nodeEnv)
       console.log(this.$config.stripeKey)
       console.log(this.$config.cloudflare)
-      this.$sentry.captureException(new Error('example'))
     }
   }
 }
