@@ -16,6 +16,15 @@ export default {
     return {
       CipherType
     }
+  },
+  mounted () {
+    if (this.currentUser.email === 'duchm@cystack.net') {
+      console.log(this.$config.isStaging)
+      console.log(this.$config.isProd)
+      console.log(this.$config.test)
+      console.log(this.$config.test2)
+      console.log(this.$config.test3)
+    }
   }
 }
 </script>

@@ -186,6 +186,11 @@ module.exports = {
       version: 3
     },
     stripeKey: process.env.STRIPE_KEY,
+    isStaging,
+    isProd,
+    test: isStaging ? 1 : 0,
+    test2: !isProd || isStaging,
+    test3: isProd && !isStaging,
     cloudflare:
       !isProd || isStaging
         ? {
