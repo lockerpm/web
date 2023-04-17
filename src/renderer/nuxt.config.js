@@ -10,7 +10,6 @@ import enVee from 'vee-validate/dist/locale/en.json'
 import axios from 'axios'
 import cheerio from 'cheerio'
 
-const isProd = process.env.NODE_ENV === 'production'
 const isStaging = process.env.CS_ENVIRONMENT === 'staging'
 
 module.exports = {
@@ -103,8 +102,8 @@ module.exports = {
   ],
   sentry: {
     dsn: process.env.SENTRY_DSN || '',
-    disabled: !isProd,
-    initialize: isProd
+    disabled: process.env.NODE_ENV === 'development',
+    initialize: process.env.NODE_ENV === 'production'
   },
   tailwindcss: {
     jit: true
@@ -127,6 +126,7 @@ module.exports = {
   },
   env: {
     CS_ENV: 'web',
+    nodeEnv: process.env.NODE_ENV,
     baseUrl: process.env.BASE_URL || 'https://locker.io',
     idUrl: process.env.BASE_ID_URL || 'https://id.locker.io',
     environment: process.env.CS_ENVIRONMENT || '',
@@ -185,9 +185,12 @@ module.exports = {
       siteKey: process.env.RECAPTCHA_KEY,
       version: 3
     },
-    stripeKey: process.env.STRIPE_KEY,
+    stripeKey:
+      isStaging || process.env.nodeEnv === 'development'
+        ? process.env.STRIPE_KEY_STAGING
+        : process.env.STRIPE_KEY,
     cloudflare:
-      !isProd || isStaging
+      process.env.nodeEnv === 'development' || isStaging
         ? {
           id: process.env.ACCESS_CLIENT_ID,
           secret: process.env.ACCESS_CLIENT_SECRET
