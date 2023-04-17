@@ -1,16 +1,14 @@
 <template>
-  <div class="flex flex-col flex-column-fluid relative bg-[#FBFBFC]">
+  <div
+    class="flex flex-col flex-column-fluid relative bg-[#FBFBFC] min-h-screen"
+  >
     <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <div class="mb-5">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item
-            :to="localeRoute({name: 'tools'})"
-          >
+          <el-breadcrumb-item :to="localeRoute({ name: 'tools' })">
             Tools
           </el-breadcrumb-item>
-          <el-breadcrumb-item
-            :to="localeRoute({name: 'tools-breach'})"
-          >
+          <el-breadcrumb-item :to="localeRoute({ name: 'tools-breach' })">
             Data Breach Scanner
           </el-breadcrumb-item>
         </el-breadcrumb>
@@ -65,15 +63,22 @@
               'text-danger': haveData
             }"
           >
-            <span v-if="noData">{{ $t('data.tools.check_breach_button') }}</span>
+            <span v-if="noData">{{
+              $t('data.tools.check_breach_button')
+            }}</span>
             <span v-if="haveData">{{ $t('data.tools.breach_found') }}</span>
           </div>
           <div>
             <span v-if="noData">
-              {{ $t('data.tools.breach_not_found_details', {email: email}) }}
+              {{ $t('data.tools.breach_not_found_details', { email: email }) }}
             </span>
             <span v-if="haveData">
-              {{ $t('data.tools.breach_found_details', {email: email, count: breach.length}) }}
+              {{
+                $t('data.tools.breach_found_details', {
+                  email: email,
+                  count: breach.length
+                })
+              }}
             </span>
           </div>
         </div>
@@ -92,36 +97,36 @@
                   <div class="setting-title mb-2">
                     {{ item.name }}
                   </div>
-                  <div class="setting-description mb-2" v-html="item.description" />
+                  <div
+                    class="setting-description mb-2"
+                    v-html="item.description"
+                  />
                   <div class="setting-description">
                     Compromised data:
                     <ul class="list-disc list-inside">
-                      <li v-for="(data, iData) in item.data_classes" :key="iData">{{ data }}</li>
+                      <li
+                        v-for="(data, iData) in item.data_classes"
+                        :key="iData"
+                      >
+                        {{ data }}
+                      </li>
                     </ul>
                   </div>
                 </div>
                 <div class="col-span-3">
-                  <div class="font-semibold">
-                    Website
-                  </div>
+                  <div class="font-semibold">Website</div>
                   <div class="text-black-600">
                     {{ item.domain }}
                   </div>
-                  <div class="font-semibold">
-                    Affected Users
-                  </div>
+                  <div class="font-semibold">Affected Users</div>
                   <div class="text-black-600">
                     {{ item.pwn_count | formatNumber }}
                   </div>
-                  <div class="font-semibold">
-                    Breach Occurred
-                  </div>
+                  <div class="font-semibold">Breach Occurred</div>
                   <div class="text-black-600">
                     {{ $moment(item.breach_date).format('LL') }}
                   </div>
-                  <div class="font-semibold">
-                    Breach Reported
-                  </div>
+                  <div class="font-semibold">Breach Reported</div>
                   <div class="text-black-600">
                     {{ $moment(item.added_date).format('LL') }}
                   </div>
@@ -170,11 +175,13 @@ export default {
       this.loading = true
       this.checked = false
       try {
-        this.breach = await this.$axios.$post('cystack_platform/pm/tools/breach', {
-          email: this.email
-        })
+        this.breach = await this.$axios.$post(
+          'cystack_platform/pm/tools/breach',
+          {
+            email: this.email
+          }
+        )
       } catch {
-
       } finally {
         this.loading = false
         this.checked = true

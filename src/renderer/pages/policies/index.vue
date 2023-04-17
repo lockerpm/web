@@ -1,24 +1,25 @@
 <template>
-  <div class="flex flex-col flex-column-fluid relative bg-[#FBFBFC]">
+  <div
+    class="flex flex-col flex-column-fluid relative bg-[#FBFBFC] min-h-screen"
+  >
     <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
       <!-- Breadcrumb -->
       <div class="mb-5">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item
-            :to="localeRoute({name: 'policies'})"
-          >
+          <el-breadcrumb-item :to="localeRoute({ name: 'policies' })">
             {{ $t('data.policies.title') }}
           </el-breadcrumb-item>
           <el-breadcrumb-item
             v-if="getRouteBaseName() === 'policies-index-violated'"
-            :to="localeRoute({name: 'policies-index-violated'})"
+            :to="localeRoute({ name: 'policies-index-violated' })"
           >
             {{ $t('data.policies.violated_items') }}
           </el-breadcrumb-item>
         </el-breadcrumb>
 
         <p v-if="getRouteBaseName() === 'policies'" class="text-black mt-2">
-          {{ $t('data.policies.you_are_a_member_of') }} <span class="text-primary">{{ currentOrg.name }}</span>.
+          {{ $t('data.policies.you_are_a_member_of') }}
+          <span class="text-primary">{{ currentOrg.name }}</span>.
           {{ $t('data.policies.rules_being_applied') }}
         </p>
       </div>
@@ -36,7 +37,10 @@
               <!-- Header -->
               <template slot="title">
                 <div class="flex flex-row items-center py-4 w-full">
-                  <img src="~/assets/images/icons/policy_pw-requirements.svg" style="height: 36px">
+                  <img
+                    src="~/assets/images/icons/policy_pw-requirements.svg"
+                    style="height: 36px"
+                  >
 
                   <div class="flex flex-col ml-4 flex-1">
                     <p class="font-semibold text-black mb-1 h-auto line-h-auto">
@@ -47,10 +51,17 @@
                     </p>
                   </div>
 
-                  <div style="border-radius: 100px; margin-right: 16px; overflow: hidden">
+                  <div
+                    style="
+                      border-radius: 100px;
+                      margin-right: 16px;
+                      overflow: hidden;
+                    "
+                  >
                     <div v-if="violatedPasswords.length" class="bg-danger">
                       <p class="font-semibold text-white px-3 py-1">
-                        {{ violatedPasswords.length }} {{ $tc('common.issue', violatedPasswords.length) }}
+                        {{ violatedPasswords.length }}
+                        {{ $tc('common.issue', violatedPasswords.length) }}
                       </p>
                     </div>
 
@@ -78,17 +89,28 @@
                     {{ item }}
                   </li>
                 </ul>
-                <p class="text-black mb-2" v-html="$t('data.policies.password_requirement_note')" />
+                <p
+                  class="text-black mb-2"
+                  v-html="$t('data.policies.password_requirement_note')"
+                />
 
                 <a
                   v-if="violatedPasswords.length"
                   class="text-danger hover:text-danger"
-                  @click.prevent="go({name: 'policies-index-violated'})"
+                  @click.prevent="go({ name: 'policies-index-violated' })"
                 >
-                  <span style="font-size: 22px; vertical-align: middle;" class="mr-1">
+                  <span
+                    style="font-size: 22px; vertical-align: middle"
+                    class="mr-1"
+                  >
                     <i class="el-icon-error" />
                   </span>
-                  <span>{{ $tc('data.policies.you_have_violated_items', violatedPasswords.length) }}</span>
+                  <span>{{
+                    $tc(
+                      'data.policies.you_have_violated_items',
+                      violatedPasswords.length
+                    )
+                  }}</span>
                 </a>
               </div>
               <!-- Body end -->
@@ -96,11 +118,17 @@
             <!-- Password requirements end -->
 
             <!-- Master Password requirements -->
-            <el-collapse-item v-if="isMasterPwPolicyEnabled" class="setting-wrapper">
+            <el-collapse-item
+              v-if="isMasterPwPolicyEnabled"
+              class="setting-wrapper"
+            >
               <!-- Header -->
               <template slot="title">
                 <div class="flex flex-row items-center py-4 w-full">
-                  <img src="~/assets/images/icons/policy_master-pw-requirements.svg" style="height: 36px">
+                  <img
+                    src="~/assets/images/icons/policy_master-pw-requirements.svg"
+                    style="height: 36px"
+                  >
 
                   <div class="flex flex-col ml-4 flex-1">
                     <p class="font-semibold text-black mb-1 h-auto line-h-auto">
@@ -111,7 +139,13 @@
                     </p>
                   </div>
 
-                  <div style="border-radius: 100px; margin-right: 16px; overflow: hidden">
+                  <div
+                    style="
+                      border-radius: 100px;
+                      margin-right: 16px;
+                      overflow: hidden;
+                    "
+                  >
                     <div v-if="isMasterPwViolated" class="bg-danger">
                       <p class="font-semibold text-white px-3 py-1">
                         1 {{ $tc('common.issue', 1) }}
@@ -135,9 +169,16 @@
                   {{ $t('data.policies.policy_details') }}
                 </p>
                 <p class="text-black">
-                  {{ $t('data.policies.master_password_requirement_policy_details') }}
+                  {{
+                    $t(
+                      'data.policies.master_password_requirement_policy_details'
+                    )
+                  }}
                 </p>
-                <ul class="mb-2" style="list-style-type: circle; margin-left: 20px">
+                <ul
+                  class="mb-2"
+                  style="list-style-type: circle; margin-left: 20px"
+                >
                   <li v-for="(item, index) in pwPolicies" :key="index">
                     {{ item }}
                   </li>
@@ -145,12 +186,17 @@
                 <a
                   v-if="isMasterPwViolated"
                   class="text-danger hover:text-danger"
-                  @click.prevent="go({name: 'settings-security'})"
+                  @click.prevent="go({ name: 'settings-security' })"
                 >
-                  <span style="font-size: 22px; vertical-align: middle;" class="mr-1">
+                  <span
+                    style="font-size: 22px; vertical-align: middle"
+                    class="mr-1"
+                  >
                     <i class="el-icon-error" />
                   </span>
-                  <span>{{ $t('data.policies.need_to_change_master_pw') }}</span>
+                  <span>{{
+                    $t('data.policies.need_to_change_master_pw')
+                  }}</span>
                 </a>
               </div>
               <!-- Body end -->
@@ -158,11 +204,17 @@
             <!-- Master Password requirements end -->
 
             <!-- Block failed login -->
-            <el-collapse-item v-if="isBlockFailedLoginEnabled" class="setting-wrapper">
+            <el-collapse-item
+              v-if="isBlockFailedLoginEnabled"
+              class="setting-wrapper"
+            >
               <!-- Header -->
               <template slot="title">
                 <div class="flex flex-row items-center py-4 w-full">
-                  <img src="~/assets/images/icons/policy_block-failed-login.svg" style="height: 36px">
+                  <img
+                    src="~/assets/images/icons/policy_block-failed-login.svg"
+                    style="height: 36px"
+                  >
 
                   <div class="flex flex-col ml-4 flex-1">
                     <p class="font-semibold text-black mb-1 h-auto line-h-auto">
@@ -173,7 +225,13 @@
                     </p>
                   </div>
 
-                  <div style="border-radius: 100px; margin-right: 16px; overflow: hidden">
+                  <div
+                    style="
+                      border-radius: 100px;
+                      margin-right: 16px;
+                      overflow: hidden;
+                    "
+                  >
                     <div v-if="blockedTimes" class="bg-warning">
                       <p class="font-semibold text-white px-3 py-1">
                         1 {{ $tc('common.issue', 1) }}
@@ -199,11 +257,11 @@
                 <p class="text-black">
                   {{ $t('data.policies.block_failed_logins_policy_details') }}
                 </p>
-                <p
-                  v-if="blockedTimes"
-                  class="text-black"
-                >
-                  <span style="font-size: 22px; vertical-align: middle;" class="mr-1">
+                <p v-if="blockedTimes" class="text-black">
+                  <span
+                    style="font-size: 22px; vertical-align: middle"
+                    class="mr-1"
+                  >
                     <i class="el-icon-warning text-warning" />
                   </span>
                   {{ $tc('data.policies.you_have_been_blocked', blockedTimes) }}
@@ -214,11 +272,17 @@
             <!-- Block failed login end -->
 
             <!-- Passwordless login -->
-            <el-collapse-item v-if="isPasswordlessEnabled" class="setting-wrapper">
+            <el-collapse-item
+              v-if="isPasswordlessEnabled"
+              class="setting-wrapper"
+            >
               <!-- Header -->
               <template slot="title">
                 <div class="flex flex-row items-center py-4 w-full">
-                  <img src="~/assets/images/icons/policy_pwless.svg" style="height: 36px">
+                  <img
+                    src="~/assets/images/icons/policy_pwless.svg"
+                    style="height: 36px"
+                  >
 
                   <div class="flex flex-col ml-4 flex-1">
                     <p class="font-semibold text-black mb-1 h-auto line-h-auto">
@@ -251,7 +315,10 @@
               <!-- Header -->
               <template slot="title">
                 <div class="flex flex-row items-center py-4 w-full">
-                  <img src="~/assets/images/icons/policy_pwless.svg" style="height: 36px">
+                  <img
+                    src="~/assets/images/icons/policy_pwless.svg"
+                    style="height: 36px"
+                  >
 
                   <div class="flex flex-col ml-4 flex-1">
                     <p class="font-semibold text-black mb-1 h-auto line-h-auto">
@@ -272,7 +339,11 @@
                   {{ $t('data.policies.policy_details') }}
                 </p>
                 <p class="text-black">
-                  {{ $t('data.policies.2fa_policy_details', { target: login2FATarget }) }}
+                  {{
+                    $t('data.policies.2fa_policy_details', {
+                      target: login2FATarget
+                    })
+                  }}
                 </p>
               </div>
               <!-- Body end -->
@@ -282,7 +353,10 @@
 
           <div v-if="isEmpty && !loading" class="setting-wrapper">
             <div class="px-4 py-8 flex items-center flex flex-col">
-              <img :src="require('~/assets/images/pages/policies/empty-img.svg')" height="61">
+              <img
+                :src="require('~/assets/images/pages/policies/empty-img.svg')"
+                height="61"
+              >
               <p class="mt-4">
                 {{ $t('data.policies.no_active_policies') }}
               </p>
@@ -335,11 +409,13 @@ export default {
       return this.enterprisePolicies['2fa']?.enabled
     },
     isEmpty () {
-      return !this.isPwPolicyEnabled &&
+      return (
+        !this.isPwPolicyEnabled &&
         !this.isMasterPwPolicyEnabled &&
         !this.isBlockFailedLoginEnabled &&
         !this.isPasswordlessEnabled &&
         !this.isLogin2FAEnabled
+      )
     },
     login2FATarget () {
       const onlyAdmin = this.enterprisePolicies['2fa']?.config.onlyAdmin
@@ -401,10 +477,16 @@ export default {
       const violatedCiphers = []
 
       allCiphers.forEach(c => {
-        if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted) {
+        if (
+          c.type !== CipherType.Login ||
+          c.login.password == null ||
+          c.login.password === '' ||
+          c.isDeleted
+        ) {
           return
         }
-        const violations = this.checkPasswordPolicy(c.login.password || '') || []
+        const violations =
+          this.checkPasswordPolicy(c.login.password || '') || []
         if (violations.length) {
           this.violationsMap.set(c.id, violations.length)
           violatedCiphers.push(c)
@@ -418,7 +500,9 @@ export default {
       if (!this.isMasterPwPolicyEnabled) {
         return
       }
-      const cipher = this.ciphers.find(c => c.type === CipherType.MasterPassword)
+      const cipher = this.ciphers.find(
+        c => c.type === CipherType.MasterPassword
+      )
       const violations = this.checkPasswordPolicy(
         cipher.login.password || '',
         'master_password_requirement'
@@ -439,7 +523,9 @@ export default {
         return
       }
       try {
-        const res = await this.$axios.$get('/cystack_platform/pm/users/me/violation')
+        const res = await this.$axios.$get(
+          '/cystack_platform/pm/users/me/violation'
+        )
         this.blockedTimes = res.failed_login
       } catch (e) {
         //

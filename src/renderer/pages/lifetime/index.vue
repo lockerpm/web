@@ -2,10 +2,14 @@
   <div>
     <!-- Logo -->
     <section class="full-width bg-[#EEF4ED]">
-      <img
-        class="h-12 mx-auto my-4 px-6"
-        src="~/assets/images/logo/logo_black_with_text.svg"
-      >
+      <div class="flex justify-center">
+        <a href="/" target="_blank">
+          <img
+            class="h-12 my-4 px-6"
+            src="~/assets/images/logo/logo_black_with_text.svg"
+          >
+        </a>
+      </div>
     </section>
     <!-- Logo end -->
 

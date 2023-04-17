@@ -353,6 +353,7 @@ export default {
         this.$refs.createAccountForm.resetFields()
         this.$refs.redeemForm.resetFields()
         this.showSuccessDialog = true
+        window.open('/', '_blank')
       } catch (error) {
         const errorData = error.response?.data
         this.notify(
