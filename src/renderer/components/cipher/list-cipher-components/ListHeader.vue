@@ -193,7 +193,7 @@ export default {
 
   computed: {
     addNewOptions () {
-      const res = Object.values(this.cipherMapping)
+      const res = this.cipherTypesList
         .filter(m => !m.noCreate && !m.hideFromCipherList)
         .map(m => ({
           label: this.$tc(`type.${m.type}`, 1),

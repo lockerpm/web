@@ -206,9 +206,7 @@ export default {
               label: 'all',
               routeName: 'vault'
             },
-            ...Object.values(this.cipherMapping).filter(
-              v => !!v.routeName && !v.noMenu
-            )
+            ...this.cipherTypesList.filter(v => !!v.routeName && !v.noMenu)
           ]
         },
         {
