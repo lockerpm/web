@@ -185,10 +185,7 @@ module.exports = {
       siteKey: process.env.RECAPTCHA_KEY,
       version: 3
     },
-    stripeKey:
-      isProd && !isStaging
-        ? process.env.STRIPE_KEY
-        : process.env.STRIPE_KEY_STAGING,
+    stripeKey: process.env.STRIPE_KEY,
     cloudflare:
       !isProd || isStaging
         ? {
