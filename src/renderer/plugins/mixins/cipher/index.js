@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import groupBy from 'lodash/groupBy'
 import { CipherType } from '../../../core/enums/cipherType'
 import { CipherMapper } from '../../../constants'
 
@@ -24,25 +25,17 @@ Vue.mixin({
     },
 
     cipherMapping () {
-      const res = { ...CipherMapper }
-      if (!this.isDevOrStaging) {
-        const hiddenType = [
-          CipherType.DriverLicense,
-          CipherType.CitizenID,
-          CipherType.Passport,
-          CipherType.SocialSecurityNumber,
-          CipherType.WirelessRouter,
-          CipherType.Server,
-          CipherType.APICipher,
-          CipherType.Database
-        ]
-        hiddenType.forEach(cipherType => {
-          res[cipherType].hideFromCipherList = true
-          res[cipherType].noCreate = true
-          res[cipherType].noMenu = true
-        })
-      }
-      return res
+      return CipherMapper
+    },
+
+    cipherGroupMapping () {
+      return groupBy(Object.values(CipherMapper), 'group')
+    },
+
+    cipherTypesList () {
+      return Object.values(this.cipherGroupMapping).reduce((list, items) => {
+        return list.concat(items)
+      }, [])
     },
 
     cipherRoutes () {
