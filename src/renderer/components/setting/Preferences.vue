@@ -19,12 +19,12 @@
               {{ $t('common.lock') }}
             </button>
           </el-tooltip>
-          <i v-if="!collapsed" class="el-icon-arrow-right" />
+          <i v-if="collapsed" class="el-icon-arrow-right" />
           <i v-else class="el-icon-arrow-down" />
         </div>
       </div>
     </div>
-    <div v-if="collapsed">
+    <div v-if="!collapsed">
       <div class="setting-section">
         <div class="setting-section-header">
           <div>
