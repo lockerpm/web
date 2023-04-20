@@ -215,7 +215,7 @@ export default {
           routeName: 'authenticator'
         },
         {
-          label: 'security',
+          label: 'security_tools',
           icon: 'security',
           routeName: 'tools'
         },
