@@ -5,11 +5,11 @@
         <div class="text-head-5 font-semibold text-danger">
           {{ $t('data.settings.danger_zone') }}
         </div>
-        <i v-if="!collapsed" class="el-icon-arrow-right" />
+        <i v-if="collapsed" class="el-icon-arrow-right" />
         <i v-else class="el-icon-arrow-down" />
       </div>
     </div>
-    <div v-if="collapsed" class="setting-section">
+    <div v-if="!collapsed" class="setting-section">
       <div class="flex justify-between items-center">
         <div>
           <div class="setting-title"> {{ $t('data.settings.delete_all_items') }}</div>
@@ -51,7 +51,7 @@ export default {
   },
   data () {
     return {
-      collapsed: false
+      collapsed: true
     }
   },
   computed: {

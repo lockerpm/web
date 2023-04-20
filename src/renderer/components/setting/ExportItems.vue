@@ -8,11 +8,11 @@
         <div class="text-head-5 font-semibold">
           {{ $t('data.exportFile.export_items') }}
         </div>
-        <i v-if="!collapsed" class="el-icon-arrow-right" />
+        <i v-if="collapsed" class="el-icon-arrow-right" />
         <i v-else class="el-icon-arrow-down" />
       </div>
     </div>
-    <div v-if="collapsed" class="setting-section">
+    <div v-if="!collapsed" class="setting-section">
       <div class="setting-description mb-2">
         {{ $t('data.exportFile.export_items_desc') }}
       </div>
@@ -55,7 +55,7 @@ export default {
     return {
       selectedType: 'csv',
       exportFormats: ['csv', 'json'],
-      collapsed: false
+      collapsed: true
     }
   },
   methods: {
