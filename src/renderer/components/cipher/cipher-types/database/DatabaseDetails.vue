@@ -21,7 +21,9 @@
       :should-hide="!isPublic || hideAll"
     />
     <div class="grid md:grid-cols-6 cipher-item">
-      <div class="">{{ $t('data.ciphers.password_security') }}</div>
+      <p class="!break-normal mr-4">
+        {{ $t('data.ciphers.password_strength') }}
+      </p>
       <div class="col-span-4 font-semibold">
         <PasswordStrength :score="passwordStrength.score" />
       </div>

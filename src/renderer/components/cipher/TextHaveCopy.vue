@@ -1,5 +1,5 @@
 <template>
-  <div class="grid md:grid-cols-6 grid-cols-1 cipher-item">
+  <div class="grid sm:grid-cols-6 grid-cols-1 cipher-item">
     <p class="!break-normal mr-4">{{ label }}</p>
 
     <div class="col-span-4 font-semibold">

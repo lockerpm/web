@@ -39,7 +39,7 @@
 
           <!-- Other plans -->
           <div v-else>
-            <div class="">
+            <div>
               <div class="text-black-600 mb-1.5">
                 {{
                   currentPlan.cancel_at_period_end
@@ -248,7 +248,7 @@
                 <i class="fa fa-edit" />
               </button>
             </div>
-            <div class="">
+            <div>
               <button
                 class="btn btn-icon !text-danger"
                 @click="deleteCard(item)"

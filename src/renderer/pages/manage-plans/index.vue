@@ -458,7 +458,7 @@
               v-if="paymentMethod === 'card' && cards.length"
               class="border rounded p-5 border-black-200 cursor-pointer mt-2"
             >
-              <div class="">
+              <div>
                 <el-radio-group v-model="selectedCard" class="w-full">
                   <el-radio
                     v-for="item in cards"
@@ -501,7 +501,7 @@
                           alt=""
                         >
                       </div>
-                      <div class="">
+                      <div>
                         <div class="text-black font-bold mb-2">
                           {{ item.card_type }}
                         </div>
@@ -757,7 +757,7 @@
               </div>
             </div>
             <div slot="footer">
-              <div class="">
+              <div>
                 <button
                   class="btn btn-default w-full"
                   @click="dialogThank = false"
@@ -1026,8 +1026,7 @@ export default {
           this.loadingCalc = false
         })
     }, 300),
-    selectPeriod (period) {
-      // this.selectedPeriod = period
+    selectPeriod () {
       if (this.currentPlan.alias !== 'pm_free') {
         this.selectMethod(
           this.currentPlan.payment_method === 'banking'
@@ -1135,7 +1134,7 @@ export default {
         .$post(
           `cystack_platform/pm/payments/invoices/${order.payment_id}/processing`
         )
-        .then(res => {
+        .then(() => {
           this.dialogTransfer = false
           this.dialogThank = true
         })

@@ -121,7 +121,7 @@
     <section class="sale-pitch-hard-sol full-width bg-[#F5F7F9]">
       <div class="max-w-6xl mx-auto mt-16">
         <div class="flex justify-between">
-          <div class="">
+          <div>
             <h2
               v-if="locale==='en'"
               class="font-semibold landing-font-48 mb-10 max-w-[750px]"

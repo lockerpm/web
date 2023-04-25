@@ -6,7 +6,7 @@
         class="border border-black-200 rounded p-5 md:px-5 md:py-7 relative bg-gradient-to-r from-[#05A49F] to-[#1AB0AC] mb-6"
       >
         <div class="flex items-center justify-between text-white">
-          <div class="">
+          <div>
             <div class="text-lg font-semibold mb-2">
               Upgrade to Premium to unlock more features
             </div>
@@ -265,7 +265,7 @@
                 v-if="paymentMethod === 'card'"
                 class="border rounded p-5 border-black-200 cursor-pointer col-span-2"
               >
-                <div class="">
+                <div>
                   <el-radio-group v-model="selectedCard" class="w-full">
                     <el-radio
                       v-for="item in cards"
@@ -308,7 +308,7 @@
                             alt=""
                           >
                         </div>
-                        <div class="">
+                        <div>
                           <div class="text-black font-bold mb-2">
                             {{ item.card_type }}
                           </div>
@@ -546,7 +546,7 @@
               v-if="currentPlan.payment_method === 'card'"
               class="border rounded p-5 border-black-200 cursor-pointer col-span-2"
             >
-              <div class="">
+              <div>
                 <el-radio-group v-model="selectedCard" class="w-full">
                   <el-radio
                     v-for="item in cards"
@@ -589,7 +589,7 @@
                           alt=""
                         >
                       </div>
-                      <div class="">
+                      <div>
                         <div class="text-black font-bold mb-2">
                           {{ item.card_type }}
                         </div>
@@ -756,7 +756,7 @@
           </div>
         </div>
         <div class="flex justify-between mb-3">
-          <div class="">
+          <div>
             {{ $t('data.billing.transfer_account_number') }}
           </div>
           <div class="flex-grow-1 w-1/2 text-right font-semibold text-right">
@@ -769,7 +769,7 @@
           </div>
         </div>
         <div class="flex justify-between mb-3">
-          <div class="">
+          <div>
             {{ $t('data.billing.transfer_amount') }}
           </div>
           <div class="flex-grow-1 w-1/2 text-right font-semibold text-right">
@@ -782,7 +782,7 @@
           </div>
         </div>
         <div class="flex justify-between mb-3">
-          <div class="">
+          <div>
             {{ $t('data.billing.transfer_content') }}
           </div>
           <div class="flex-grow-1 w-1/2 text-right font-semibold text-right">
@@ -799,7 +799,7 @@
         </div>
       </div>
       <div slot="footer">
-        <div class="">
+        <div>
           <button
             v-if="order.status === 'pending'"
             class="btn btn-outline-primary w-full mb-2"
@@ -842,7 +842,7 @@
         </div>
       </div>
       <div slot="footer">
-        <div class="">
+        <div>
           <button class="btn btn-default w-full" @click="dialogThank = false">
             {{ $t('common.close') }}
           </button>
@@ -1157,7 +1157,7 @@ export default {
         .$post(
           `cystack_platform/pm/payments/invoices/${order.payment_id}/processing`
         )
-        .then(res => {
+        .then(() => {
           this.dialogTransfer = false
           this.dialogThank = true
         })
