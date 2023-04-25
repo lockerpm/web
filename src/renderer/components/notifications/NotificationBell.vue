@@ -72,9 +72,9 @@
                     : $t('common.confirm')
                 }}
               </el-button>
-              <div class="">
+              <p class="!break-normal">
                 {{ $moment(item.publish_time * 1000).fromNow() }}
-              </div>
+              </p>
             </div>
             <!-- Body end -->
 

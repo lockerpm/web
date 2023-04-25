@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="grid md:grid-cols-6 cipher-item">
-      <div class="">{{ $t('data.ciphers.wallet_app') }}</div>
+      <p class="!break-normal mr-4">{{ $t('data.ciphers.wallet_app') }}</p>
       <div class="col-span-4">
         <div
           v-if="cryptoWallet.walletApp"
@@ -31,7 +31,9 @@
       :should-hide="!isPublic || hideAll"
     />
     <div class="grid md:grid-cols-6 cipher-item">
-      <div class="">{{ $t('data.ciphers.password_security') }}</div>
+      <p class="!break-normal mr-4">
+        {{ $t('data.ciphers.password_strength') }}
+      </p>
       <div class="col-span-4 font-semibold">
         <PasswordStrength :score="passwordStrength.score" />
       </div>
@@ -53,7 +55,9 @@
       :should-hide="!isPublic || hideAll"
     />
     <div class="grid md:grid-cols-6 cipher-item">
-      <div class="">{{ $t('data.ciphers.seed') }}</div>
+      <p class="!break-normal mr-4">
+        {{ $t('data.ciphers.seed') }}
+      </p>
       <div class="col-span-4 font-semibold">
         <InputSeedPhrase
           :value="filterPassword(cryptoWallet.seed, !isPublic || !hideAll)"
@@ -74,7 +78,7 @@
       </div>
     </div>
     <div class="grid md:grid-cols-6 cipher-item">
-      <div class="">{{ $t('data.ciphers.networks') }}</div>
+      <p class="!break-normal mr-4">{{ $t('data.ciphers.networks') }}</p>
       <div class="col-span-4">
         <div
           v-if="cryptoWallet.networks && cryptoWallet.networks.length"

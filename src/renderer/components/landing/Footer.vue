@@ -11,10 +11,7 @@
               :key="groupIndex"
               class="col-span-6 md:col-span-3"
             >
-              <div
-                v-for="(parent, i) in group"
-                :key="i"
-              >
+              <div v-for="(parent, i) in group" :key="i">
                 <div class="mb-6">
                   <h6 class="font-bold landing-font-16 mb-[20px]">
                     {{ parent.category }}
@@ -126,22 +123,28 @@
             <div class="w-full">
               <!-- Language switcher -->
               <div
-                :class="locale==='vi'?'opacity-06':''"
-                :style="{paddingLeft: locale==='vi'?'22px': '0px'}"
+                :class="locale === 'vi' ? 'opacity-06' : ''"
+                :style="{ paddingLeft: locale === 'vi' ? '22px' : '0px' }"
                 class="text-sm text-black-600 font-normal hover:text-green"
-                style="cursor: pointer;"
+                style="cursor: pointer"
                 @click="setLocale('en')"
               >
-                <span v-show="locale!=='vi'" class="mr-2"><i class="fas fa-location-arrow" /></span>English
+                <span
+                  v-show="locale !== 'vi'"
+                  class="mr-2"
+                ><i class="fas fa-location-arrow" /></span>English
               </div>
               <div
-                :class="locale==='en'?'opacity-06':''"
-                :style="{paddingLeft: locale!=='vi'?'22px': '0px'}"
+                :class="locale === 'en' ? 'opacity-06' : ''"
+                :style="{ paddingLeft: locale !== 'vi' ? '22px' : '0px' }"
                 class="text-sm text-black-600 font-normal hover:text-green"
-                style="margin-top: 11px; cursor: pointer;"
+                style="margin-top: 11px; cursor: pointer"
                 @click="setLocale('vi')"
               >
-                <span v-show="locale==='vi'" class="mr-2"><i class="fas fa-location-arrow" /></span>Vietnamese
+                <span
+                  v-show="locale === 'vi'"
+                  class="mr-2"
+                ><i class="fas fa-location-arrow" /></span>Vietnamese
               </div>
 
               <!-- Language switcher end -->
@@ -153,21 +156,28 @@
       <!-- Menu end -->
 
       <!-- Bottom -->
-      <div class="md:flex md:items-center py-3 border-t border-black-200 landing-font-12 text-black-600">
+      <div
+        class="md:flex md:items-center py-3 border-t border-black-200 landing-font-12 text-black-600"
+      >
         <div class="flex items-center">
-          <div v-if="locale==='vi'">
-            Một sản phẩm của
-          </div>
-          <div v-else>
-            A product of
-          </div>
-          <a :href="locale==='vi'?'https://cystack.net/vi':'https://cystack.net'" target="_blank">
-            <img class="h-4 ml-2 mr-3" src="~/assets/images/logo/CyStack.png" alt="CyStack">
+          <div v-if="locale === 'vi'">Một sản phẩm của</div>
+          <div v-else>A product of</div>
+          <a
+            :href="
+              locale === 'vi' ? 'https://cystack.net/vi' : 'https://cystack.net'
+            "
+            target="_blank"
+          >
+            <img
+              class="h-4 ml-2 mr-3"
+              src="~/assets/images/logo/CyStack.png"
+              alt="CyStack"
+            >
           </a>
         </div>
-        <div class="">
-          Copyright © {{ currentYear }} Locker.io ·  All rights reserved.
-        </div>
+        <p class="!break-normal">
+          Copyright © {{ currentYear }} Locker.io · All rights reserved.
+        </p>
         <div class="flex-grow md:text-right">
           <nuxt-link
             :to="localePath(`/terms`)"
@@ -192,7 +202,9 @@
 import { dom } from '@fortawesome/fontawesome-svg-core'
 export default {
   computed: {
-    currentYear () { return new Date().getFullYear() }
+    currentYear () {
+      return new Date().getFullYear()
+    }
   },
   mounted () {
     dom.i2svg({ node: document.getElementById('footer') })
@@ -218,11 +230,8 @@ export default {
         }
       }, 200)
     }
-
   }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

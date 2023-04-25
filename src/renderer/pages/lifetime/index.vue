@@ -87,9 +87,9 @@
           >
         </a>
       </div>
-      <div class="">
+      <p class="!break-normal">
         Copyright © {{ currentYear }} Locker.io · All rights reserved.
-      </div>
+      </p>
       <div class="flex-grow md:text-right">
         <nuxt-link
           :to="localePath(`/terms`)"

@@ -257,7 +257,9 @@
           <!-- Owner -->
           <template v-if="!isMasterPw">
             <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">{{ $t('data.ciphers.owned_by') }}</div>
+              <p class="!break-normal mr-4">
+                {{ $t('data.ciphers.owned_by') }}
+              </p>
               <div class="col-span-4 font-semibold flex items-center">
                 <span>{{
                   isOwner(organizations, cipher)
@@ -273,7 +275,7 @@
           <!-- Folder -->
           <template v-if="!isMasterPw">
             <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">{{ $t('data.ciphers.folder') }}</div>
+              <p class="!break-normal mr-4">{{ $t('data.ciphers.folder') }}</p>
               <div class="col-span-4">
                 <template
                   v-if="cipher.collectionIds && cipher.collectionIds.length"
@@ -316,7 +318,9 @@
             v-if="shareMember.length > 0"
             class="grid md:grid-cols-6 cipher-item"
           >
-            <div class="">{{ $t('data.ciphers.shared_with') }}</div>
+            <p class="!break-normal mr-4">
+              {{ $t('data.ciphers.shared_with') }}
+            </p>
             <div
               :class="showMember ? 'gap-y-3 py-3' : ''"
               class="col-span-4 flex flex-wrap"

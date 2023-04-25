@@ -11,9 +11,11 @@
       :view-password="cipher.viewPassword"
       :should-hide="!isPublic || hideAll"
     />
-    <div class="grid md:grid-cols-6 cipher-item">
-      <div class="">{{ $t('data.ciphers.password_security') }}</div>
-      <div class="col-span-4 font-semibold">
+    <div class="grid sm:grid-cols-6 cipher-item">
+      <p class="!break-normal mr-4">
+        {{ $t('data.ciphers.password_strength') }}
+      </p>
+      <div class="col-span-4 font-semibold mb-2 sm:mb-0">
         <PasswordStrength :score="passwordStrength.score" />
       </div>
     </div>
@@ -21,9 +23,9 @@
       v-for="(item, index) in cipher.login.uris"
       v-show="item.uri"
       :key="index"
-      class="grid md:grid-cols-6 cipher-item"
+      class="grid md:grid-cols-6 grid-cols-1 cipher-item"
     >
-      <div class="">{{ $t('data.ciphers.website_address') }}</div>
+      <p class="!break-normal mr-4">{{ $t('data.ciphers.website_address') }}</p>
       <div class="col-span-4 font-semibold">
         {{ filterPassword(item.uri, !isPublic || !hideAll) }}
       </div>

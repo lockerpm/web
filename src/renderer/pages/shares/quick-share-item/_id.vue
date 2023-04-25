@@ -3,10 +3,10 @@
     <!-- Body -->
     <div class="flex flex-row flex-wrap" style="min-height: calc(100vh - 50px)">
       <!-- Left content -->
-      <div class="w-full md:w-8/12 max-w-2xl mx-auto px-6 py-6">
+      <div class="w-full md:w-8/12 xl:w-9/12 max-w-2xl mx-auto px-6 py-6">
         <a @click.prevent="goToLocker">
           <img
-            src="~/assets/images/logo/logo_black.svg"
+            src="~/assets/images/logo/logo_black_with_text.svg"
             class="mx-auto h-12 mb-16"
           >
         </a>
@@ -136,10 +136,10 @@
 
       <!-- Right content -->
       <div
-        class="w-full md:w-4/12 border-t border-b md:border-l md:border-t-0 md:border-b-0 border-black-200 py-6"
+        class="w-full md:w-4/12 xl:w-3/12 border-t border-b md:border-l md:border-t-0 md:border-b-0 border-black-200 py-6"
       >
         <img
-          src="~/assets/images/pages/quick-share-item/intro.png"
+          src="~/assets/images/pages/quick-share-item/intro3.png"
           class="w-full"
         >
         <div class="px-6 -translate-y-20">
@@ -186,9 +186,9 @@
           >
         </a>
       </div>
-      <div class="">
+      <p class="!break-normal">
         Copyright © {{ currentYear }} Locker.io · All rights reserved.
-      </div>
+      </p>
       <div class="flex-grow md:text-right">
         <nuxt-link
           :to="localePath(`/terms`)"
