@@ -16,6 +16,7 @@ export const CipherMapper = (() => {
   // noCreate: cannot create new item of this type + hide from add new options
   // noMenu: hide from sidebar
   // group: group cipher type to display in side menu or nav menu + its order in menu
+  // revertToNote: convert back to note
 
   const res = {}
   res[CipherType.Login] = {
@@ -83,7 +84,10 @@ export const CipherMapper = (() => {
     label: 'driver-licenses',
     freeLimit: 5,
     csvTypeName: 'driver-license',
-    group: 'identity'
+    group: 'identity',
+    noMenu: true,
+    noCreate: true,
+    revertToNote: true
   }
   res[CipherType.CitizenID] = {
     type: CipherType.CitizenID,
@@ -91,7 +95,10 @@ export const CipherMapper = (() => {
     label: 'citizen-ids',
     freeLimit: 5,
     csvTypeName: 'citizen-id',
-    group: 'identity'
+    group: 'identity',
+    noMenu: true,
+    noCreate: true,
+    revertToNote: true
   }
   res[CipherType.Passport] = {
     type: CipherType.Passport,
@@ -99,7 +106,10 @@ export const CipherMapper = (() => {
     label: 'passports',
     freeLimit: 5,
     csvTypeName: 'passport',
-    group: 'identity'
+    group: 'identity',
+    noMenu: true,
+    noCreate: true,
+    revertToNote: true
   }
   res[CipherType.SocialSecurityNumber] = {
     type: CipherType.SocialSecurityNumber,
@@ -107,7 +117,10 @@ export const CipherMapper = (() => {
     label: 'ssns',
     freeLimit: 5,
     csvTypeName: 'social-security-number',
-    group: 'identity'
+    group: 'identity',
+    noMenu: true,
+    noCreate: true,
+    revertToNote: true
   }
   res[CipherType.WirelessRouter] = {
     type: CipherType.WirelessRouter,
@@ -115,7 +128,10 @@ export const CipherMapper = (() => {
     label: 'routers',
     freeLimit: 5,
     csvTypeName: 'wireless-router',
-    group: 'dev'
+    group: 'dev',
+    noMenu: true,
+    noCreate: true,
+    revertToNote: true
   }
   res[CipherType.Server] = {
     type: CipherType.Server,
@@ -123,7 +139,10 @@ export const CipherMapper = (() => {
     label: 'servers',
     freeLimit: 5,
     csvTypeName: 'server',
-    group: 'dev'
+    group: 'dev',
+    noMenu: true,
+    noCreate: true,
+    revertToNote: true
   }
   res[CipherType.APICipher] = {
     type: CipherType.APICipher,
@@ -131,7 +150,10 @@ export const CipherMapper = (() => {
     label: 'apis',
     freeLimit: 5,
     csvTypeName: 'api-cipher',
-    group: 'dev'
+    group: 'dev',
+    noMenu: true,
+    noCreate: true,
+    revertToNote: true
   }
   res[CipherType.Database] = {
     type: CipherType.Database,
@@ -139,7 +161,10 @@ export const CipherMapper = (() => {
     label: 'databases',
     freeLimit: 5,
     csvTypeName: 'database',
-    group: 'dev'
+    group: 'dev',
+    noMenu: true,
+    noCreate: true,
+    revertToNote: true
   }
   return res
 })()
