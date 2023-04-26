@@ -33,6 +33,7 @@ export class CipherView implements View {
   fields: FieldView[] = null;
   passwordHistory: PasswordHistoryView[] = null;
   collectionIds: string[] = null;
+  creationDate: Date = null;
   revisionDate: Date = null;
   deletedDate: Date = null;
   reprompt: CipherRepromptType = null;
@@ -52,6 +53,7 @@ export class CipherView implements View {
     this.type = c.type
     this.localData = c.localData
     this.collectionIds = c.collectionIds
+    this.creationDate = c.creationDate
     this.revisionDate = c.revisionDate
     this.deletedDate = c.deletedDate
     this.reprompt = c.reprompt
