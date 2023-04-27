@@ -214,10 +214,21 @@ export default {
             cipher.type = CipherType.SecureNote
             cipher.secureNote.type = 0
             cipher.notes = content.notes
+            function camelCaseToWords (str) {
+              if (!str) {
+                return ''
+              }
+              const newStr = str
+                .replace(/([a-z])([A-Z])/g, '$1 $2')
+                .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+                .replace(/(\b[A-Z]{2,}\b)(?=[a-z])/g, '$1 ')
+                .toLowerCase()
+              return newStr ? newStr[0].toUpperCase() + newStr.slice(1) : newStr
+            }
             const newFields = Object.keys(content)
               .filter(k => k !== 'notes')
               .map(k => ({
-                name: k,
+                name: camelCaseToWords(k),
                 value: content[k],
                 type: FieldType.Text
               }))
