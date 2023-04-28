@@ -128,9 +128,9 @@ Vue.mixin({
     },
 
     getPublicShareUrl (accessId, key) {
-      return `${
-        process.env.baseUrl
-      }/shares/quick-share-item/${accessId}#${encodeURIComponent(key)}`
+      return `${process.env.baseUrl}/shares/${accessId}#${encodeURIComponent(
+        key
+      )}`
     },
 
     async stopQuickSharing (send) {

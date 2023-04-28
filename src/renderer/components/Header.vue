@@ -179,11 +179,11 @@ export default {
       return [
         ...this.cipherRoutes,
         'vault',
-        'shares-index',
+        'shares-index-index',
         'trash',
         'vault-tfolders-tfolderId',
         'vault-folders-folderId',
-        'shares-index-your-shares',
+        'shares-index-index-your-shares',
         'authenticator'
       ].includes(this.getRouteBaseName())
     },

@@ -342,7 +342,7 @@ export default {
     viewCipher (send) {
       this.$router.push(
         this.localePath({
-          name: 'shares-index-quick-shares-id',
+          name: 'shares-index-index-quick-shares-id',
           params: {
             id: send.id
           }

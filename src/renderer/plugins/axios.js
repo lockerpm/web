@@ -71,7 +71,7 @@ export default function ({
         $axios.setToken(false)
         store.commit('UPDATE_IS_LOGGEDIN', false)
 
-        const WHITELIST_PATH = [
+        const WHITELIST_PATHS = [
           '/benefits',
           '/contact',
           '/download',
@@ -96,14 +96,23 @@ export default function ({
           '/shares/quick-share-item',
           '/'
         ]
+        const WHITELIST_ROUTE_NAMES = ['shares-id']
+
         let currentPath = route.path
         if (currentPath.startsWith('/vi')) {
           currentPath = currentPath.slice(3)
         }
         const paths = currentPath.split('/')
         currentPath = '/' + (paths[1] || '')
+
+        let currentRouteName = route.name
+        if (currentRouteName.includes('___')) {
+          currentRouteName = currentRouteName.split('___')[0]
+        }
+
         if (
-          !WHITELIST_PATH.includes(currentPath) &&
+          !WHITELIST_PATHS.includes(currentPath) &&
+          !WHITELIST_ROUTE_NAMES.includes(currentRouteName) &&
           currentPath &&
           !route.name.startsWith('all___')
         ) {
