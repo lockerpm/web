@@ -17,11 +17,11 @@
     <div v-for="(field, index) in value" :key="index">
       <InputField
         v-model="field.value"
-        :label="field.name"
         class="w-full"
+        :label="field.name"
         :is-date="field.type === 7"
-        :placeholder="field.type === 8 ? 'mm/yyyy' : $t('data.ciphers.value')"
         :is-password="field.type === FieldType.Hidden"
+        :option="fieldTypeOptions.find((o) => o.value == field.type)"
         @input-label="(l) => updateField(index, {name: l, value: field.value})"
         @input="(v) => updateField(index, {name: field.name, value: v})"
         @delete="deleteField(index)"
@@ -105,11 +105,15 @@ export default {
       fieldTypeOptions: [
         {
           label: this.$t('data.ciphers.text'),
-          value: FieldType.Text
+          value: FieldType.Text,
+          fieldPlaceholder: this.$t('data.ciphers.field_name'),
+          placeholder: this.$t('data.ciphers.text')
         },
         {
           label: this.$t('data.ciphers.hidden'),
-          value: FieldType.Hidden
+          value: FieldType.Hidden,
+          fieldPlaceholder: this.$t('data.ciphers.field_name'),
+          placeholder: this.$t('data.ciphers.text')
         },
         // {
         //   label: 'Boolean',
@@ -117,11 +121,13 @@ export default {
         // }
         {
           label: 'URL',
-          value: 4
+          value: 4,
+          placeholder: 'https:// '
         },
         {
           label: 'Email',
-          value: 5
+          value: 5,
+          placeholder: 'xxx@xxxx.xx'
         },
         // {
         //   label: this.$t('data.ciphers.address'),
@@ -129,15 +135,18 @@ export default {
         // },
         {
           label: this.$t('data.ciphers.date'),
-          value: 7
+          value: 7,
+          placeholder: 'DD/MM/YYYY'
         },
         {
           label: this.$t('data.ciphers.monthYear'),
-          value: 8
+          value: 8,
+          placeholder: 'MM/YY '
         },
         {
           label: this.$t('data.ciphers.phone'),
-          value: 9
+          value: 9,
+          placeholder: '0123456789'
         }
       ],
       FieldType,

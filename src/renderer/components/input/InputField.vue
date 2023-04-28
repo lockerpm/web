@@ -14,7 +14,7 @@
       <input
         ref="inputLabel"
         type="text"
-        :placeholder="$t('data.ciphers.field_name')"
+        :placeholder="option.fieldPlaceholder || option.label"
         :value="label"
         @input="handleInputLabel"
         @mouseleave="hovering = false"
@@ -30,7 +30,7 @@
         <textarea
           ref="textarea"
           class="cs-textarea"
-          :placeholder="shouldShowPlaceHolder ? placeholder : ''"
+          :placeholder="option.placeholder"
           :disabled="disabled"
           @mouseleave="hovering = false"
           @focus="focusing = true"
@@ -46,7 +46,7 @@
           :default-value="value"
           class="cs-datepicker"
           type="date"
-          placeholder="dd-mm-yyyy"
+          :placeholder="option.placeholder"
           format="dd-MM-yyyy"
           value-format="dd-MM-yyyy"
           @change="handleChangeDate"
@@ -57,7 +57,7 @@
           ref="input"
           class="cs-input"
           :type="type"
-          :placeholder="shouldShowPlaceHolder ? placeholder : ''"
+          :placeholder="option.placeholder"
           :disabled="disabled"
           :value="value"
           tabindex="0"
@@ -119,10 +119,6 @@ export default {
       type: [String, Boolean, Number],
       default: ''
     },
-    placeholder: {
-      type: String,
-      default: ''
-    },
     isTextarea: {
       type: Boolean,
       default: false
@@ -142,6 +138,10 @@ export default {
     required: {
       type: Boolean,
       default: false
+    },
+    option: {
+      type: Object,
+      default: () => {}
     }
   },
   data () {
@@ -153,9 +153,6 @@ export default {
     }
   },
   computed: {
-    shouldShowPlaceHolder () {
-      return this.placeholder && !this.value
-    },
     nativeInputValue () {
       return this.value === null || this.value === undefined
         ? ''
@@ -319,6 +316,9 @@ export default {
       color: #161922;
       background-color: inherit;
     }
+    i {
+      font-size: 18px;
+    }
   }
   .cs-input-value {
     border: solid 1px #e6e8f4;
@@ -349,6 +349,10 @@ export default {
     transition-duration: 0.3s;
     line-height: 19px;
     user-select: none;
+  }
+
+  ::placeholder {
+    color: #90a0c1;
   }
 }
 </style>
