@@ -3,178 +3,12 @@
     <div class="text-head-5 font-semibold mb-2">
       {{ $t('data.settings.plans_billing') }}
     </div>
-    <div class="text-lg text-black-600 mb-4">
+    <div class="text-lg text-black-600 mb-8">
       {{ $t('data.settings.plans_billing_desc') }}
     </div>
 
     <!-- SECTION 1: USER's PLAN -->
-    <div class="setting-wrapper">
-      <!-- Plan info -->
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div class="text-head-5 font-semibold">{{ currentPlan.name }}</div>
-          <!-- Free plan -->
-          <div v-if="currentPlan.alias === 'pm_free'">
-            <button
-              class="btn btn-primary mb-4 md:mb-0"
-              @click="$router.push(localeRoute({ name: 'manage-plans' }))"
-            >
-              <div class="flex">
-                <div class="mr-2">
-                  <img src="~/assets/images/icons/flash_white.svg" alt="">
-                </div>
-                <div>
-                  {{ $t('data.billing.buy_premium') }}
-                </div>
-              </div>
-            </button>
-          </div>
-          <!-- Free plan end -->
-
-          <!-- Lifetime plan -->
-          <div v-else-if="currentPlan.alias === 'pm_lifetime_premium'">
-            <div />
-          </div>
-          <!-- Lifetime plan end -->
-
-          <!-- Other plans -->
-          <div v-else>
-            <div>
-              <div class="text-black-600 mb-1.5">
-                {{
-                  currentPlan.cancel_at_period_end
-                    ? $t('data.billing.cancel_at_period_end')
-                    : $t('data.billing.next_billing')
-                }}:&nbsp;
-                <span class="font-semibold">
-                  {{
-                    currentPlan.next_billing_time
-                      ? $moment(currentPlan.next_billing_time * 1000).format(
-                        'LLL'
-                      )
-                      : 'N/A'
-                  }}
-                </span>
-              </div>
-              <div>
-                <button
-                  v-if="
-                    currentPlan.next_billing_time &&
-                      !currentPlan.cancel_at_period_end
-                  "
-                  class="btn btn-default float-right"
-                  @click="cancelSub"
-                >
-                  {{ $t('data.billing.cancel_subscription') }}
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- Other plans end -->
-        </div>
-      </div>
-      <!-- Plan info end -->
-
-      <!-- Storage -->
-      <div class="setting-section">
-        <div class="grid grid-cols-2">
-          <!-- Left -->
-          <div>
-            <div class="setting-title">
-              {{ $t('data.settings.plan_storage') }}
-            </div>
-            <div class="setting-description">
-              {{ $t('data.settings.plan_storage_desc') }}
-            </div>
-          </div>
-          <!-- Left -->
-
-          <!-- Right limited -->
-          <div v-if="currentPlan.alias === 'pm_free'">
-            <template v-if="cipherStorage">
-              <div v-for="(item, index) in cipherStorage" :key="index">
-                <div
-                  class="flex justify-between"
-                  :class="{ 'mt-4': index !== 0 }"
-                >
-                  <div>
-                    {{ $tc(`type.${item.type}`, 2) }}
-                  </div>
-                  <div>{{ item.total }}/{{ item.limit }}</div>
-                </div>
-                <el-progress
-                  :show-text="false"
-                  :percentage="(item.total * 100) / item.limit"
-                  :status="cipherStatus(item.total / item.limit)"
-                />
-              </div>
-            </template>
-          </div>
-          <!-- Right limited end -->
-
-          <!-- Right unlimited -->
-          <div v-else class="text-center font-semibold">
-            {{ $t('common.unlimited') }}
-          </div>
-          <!-- Right unlimited end -->
-        </div>
-      </div>
-      <!-- Storage end -->
-
-      <!-- Extra security -->
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div>
-            <div class="setting-title">
-              {{ $t('data.settings.extra_security') }}
-            </div>
-            <div class="setting-description">
-              {{ $t('data.settings.extra_security_desc') }}
-            </div>
-          </div>
-        </div>
-        <div class="bg-[#F0F0F0] mt-8 py-5 pl-5 pr-10">
-          <div class="flex">
-            <div class="px-3 text-lg">
-              <i class="fas fa-lightbulb" />
-            </div>
-            <div class="w-full">
-              <div class="text-head-6 mb-3 w-full">
-                {{ $t('data.settings.learn_about_secure_desc') }}
-              </div>
-              <div>
-                <a
-                  :href="`https://locker.io${
-                    locale === 'vi' ? '/vi' : ''
-                  }/security`"
-                  target="_blank"
-                >
-                  <button
-                    class="btn btn-default !whitespace-normal text-left mb-4 md:mb-0 !bg-[#CBCBCB] hover:no-underline hover:text-current"
-                  >
-                    {{ $t('data.settings.learn_about_secure') }}
-                  </button>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Extra security end -->
-
-      <!-- Utilities -->
-      <div class="setting-section">
-        <div class="setting-section-header">
-          <div>
-            <div class="setting-title">{{ $t('data.settings.utilities') }}</div>
-            <div class="setting-description">
-              {{ $t('data.settings.utilities_desc') }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Utilities end -->
-    </div>
+    <plan-info />
 
     <!-- SECTION 2: PAYMENT METHODS -->
     <div class="setting-wrapper">
@@ -332,11 +166,14 @@ import find from 'lodash/find'
 import EditPaymentDialog from '../../components/upgrade/EditPaymentDetail.vue'
 import AddMemberToFamilyPlan from '../../components/setting/AddMemberToFamilyPlan.vue'
 import CardDrawer from '../../components/upgrade/CardDrawer'
+import PlanInfo from '../../components/setting/plans-billing/PlanInfo.vue'
+
 export default {
   components: {
     EditPaymentDialog,
     AddMemberToFamilyPlan,
-    CardDrawer
+    CardDrawer,
+    PlanInfo
   },
   middleware: ['BlockEnterpriseMember'],
   data () {
@@ -347,32 +184,6 @@ export default {
       plans: [],
       familyMembers: [],
       inviteDialogVisible: false
-    }
-  },
-  asyncComputed: {
-    allCiphers: {
-      async get () {
-        this.loading = true
-        let result = await this.$cipherService.getAllDecrypted()
-        result = result.filter(cipher => cipher.organizationId === null)
-        return result
-      },
-      watch: ['$store.state.syncedCiphersToggle']
-    }
-  },
-  computed: {
-    currentPlan () {
-      return this.$store.state.currentPlan
-    },
-    cipherStorage () {
-      const allCiphers = this.allCiphers || []
-      return this.cipherTypesList
-        .filter(c => !!c.freeLimit)
-        .map(c => ({
-          type: c.type,
-          limit: c.freeLimit,
-          total: allCiphers.filter(cipher => cipher.type === c.type).length
-        }))
     }
   },
   mounted () {
@@ -429,40 +240,7 @@ export default {
     getPlanByAlias (plans, alias) {
       return find(plans, e => e.alias === alias) || {}
     },
-    cancelSub () {
-      this.$confirm(
-        this.$t('data.billing.confirm_unsubscribe', {
-          date: this.$moment(this.currentPlan.next_billing_time * 1000).format(
-            'LL'
-          )
-        }),
-        this.$t('data.billing.cancel_subscription'),
-        {
-          confirmButtonText: 'OK',
-          cancelButtonText: this.$t('common.cancel'),
-          type: 'warning'
-        }
-      )
-        .then(() => {
-          this.$axios
-            .$post('cystack_platform/pm/payments/plan/cancel')
-            .then(() => {
-              this.notify(
-                this.$t('data.billing.unsubscribe_success', {
-                  date: this.$moment(
-                    this.currentPlan.next_billing_time * 1000
-                  ).format('LL')
-                }),
-                'success'
-              )
-              this.$store.dispatch('LoadCurrentPlan')
-            })
-            .catch(() => {
-              this.notify(this.$t('data.billing.subscribe_failed'), 'warning')
-            })
-        })
-        .catch(() => {})
-    },
+
     deleteCard (card) {
       this.$confirm(
         this.$t('data.billing.confirm_delete_card_all'),
@@ -494,15 +272,6 @@ export default {
     },
     handleEditDone () {
       this.getCards()
-    },
-    cipherStatus (percentage) {
-      if (percentage > 0.8) {
-        return 'exception'
-      }
-      if (percentage > 0.5) {
-        return 'warning'
-      }
-      return 'success'
     },
     handleDone () {
       this.getCards()
