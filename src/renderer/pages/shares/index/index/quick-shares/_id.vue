@@ -5,7 +5,7 @@
       <div class="flex items-center justify-between">
         <el-breadcrumb class="truncate" separator-class="el-icon-arrow-right">
           <el-breadcrumb-item
-            :to="localeRoute({ name: 'shares-index-quick-shares' })"
+            :to="localeRoute({ name: 'shares-index-index-quick-shares' })"
           >
             {{ $t('sidebar.quick_shares') }}
           </el-breadcrumb-item>

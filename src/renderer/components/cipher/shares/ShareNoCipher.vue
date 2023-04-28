@@ -59,13 +59,13 @@ export default {
       return this.currentPlan?.alias === 'pm_free'
     },
     isSharedWithYou () {
-      return this.getRouteBaseName() === 'shares-index'
+      return this.getRouteBaseName() === 'shares-index-index'
     },
     isYourShares () {
-      return this.getRouteBaseName() === 'shares-index-your-shares'
+      return this.getRouteBaseName() === 'shares-index-index-your-shares'
     },
     isQuickShares () {
-      return this.getRouteBaseName() === 'shares-index-quick-shares'
+      return this.getRouteBaseName() === 'shares-index-index-quick-shares'
     },
     type () {
       switch (this.getRouteBaseName()) {
@@ -79,9 +79,9 @@ export default {
         return 'Identity'
       case 'vault':
         return 'Vault'
-      case 'shares-index':
-      case 'shares-index-your-shares':
-      case 'shares-index-quick-shares':
+      case 'shares-index-index':
+      case 'shares-index-index-your-shares':
+      case 'shares-index-index-quick-shares':
         return 'Shares'
       case 'trash':
         return 'Trash'
