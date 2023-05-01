@@ -143,19 +143,28 @@
                 class="setting-title mb-3"
                 :class="isFreePlan ? '!text-[#A5ABB3]' : ''"
               >
-                {{ item.title }}
+                {{ $t(`data.settings.extra_features.${item.i18nKey}.title`) }}
               </p>
               <p
                 class="mb-4 setting-description"
                 :class="isFreePlan ? '!text-[#A5ABB3]' : ''"
               >
-                {{ item.desc }}
+                {{ $t(`data.settings.extra_features.${item.i18nKey}.desc`) }}
               </p>
               <a
-                :href="item.learnMore.url"
+                :href="
+                  $t(
+                    `data.settings.extra_features.${item.i18nKey}.learn_more.url`
+                  ) || '#'
+                "
                 target="_blank"
                 class="font-semibold"
-              >{{ item.learnMore.text }} <i class="el-icon-right" /></a>
+              >{{
+                 $t(
+                   `data.settings.extra_features.${item.i18nKey}.learn_more.text`
+                 )
+               }}
+                <i class="el-icon-right" /></a>
             </div>
 
             <button
@@ -171,7 +180,9 @@
                   >
                 </div>
                 <div>
-                  {{ item.button.text }}
+                  {{
+                    $t(`data.settings.extra_features.${item.i18nKey}.btn_text`)
+                  }}
                 </div>
               </div>
             </button>
@@ -217,15 +228,9 @@ export default {
       return [
         {
           img: 'feat-1.svg',
-          title: 'Out of space to store your passwords?',
-          desc: 'Upgrade to Premium plan from only $1.29/month for UNLIMITED STORAGE and more.',
-          learnMore: {
-            text: 'Learn more about Premium Plan',
-            url: ''
-          },
+          i18nKey: 'feat1',
           button: {
             icon: '',
-            text: 'Upgrade to Premium',
             action: () => {
               //
             }
@@ -233,95 +238,62 @@ export default {
         },
         {
           img: 'feat-2.svg',
-          title: 'Secure Item Sharing',
-          desc: 'Item sharing is easier and safer with Locker Premium. Share item inside and outside Locker, and customize your shares.',
-          learnMore: {
-            text: 'Learn how to share your item',
-            url: ''
-          },
+          i18nKey: 'feat2',
           button: {
             icon: '',
-            text: 'Share Item Now',
             action: () => {
-              //
+              this.$router.push(this.localeRoute('/shares'))
             }
           }
         },
         {
           img: 'feat-3.svg',
-          title: 'Emergency Access',
-          desc: 'Add your trusted contacts so they can access to your items in Emergency Cases!',
-          learnMore: {
-            text: 'Learn more about Emergency Access',
-            url: ''
-          },
+          i18nKey: 'feat3',
           button: {
             icon: '',
-            text: 'Add Trusted contacts',
             action: () => {
-              //
+              this.$router.push(
+                // TODO: define this params
+                this.localeRoute('/security?tab=emergency-access')
+              )
             }
           }
         },
         {
           img: 'feat-4.svg',
-          title: 'Data Breach Scanner',
-          desc: 'Check and get informed if your data has been leaked in any breach!',
-          learnMore: {
-            text: 'Try scanning your email',
-            url: ''
-          },
+          i18nKey: 'feat4',
           button: {
             icon: '',
-            text: 'Check Breached Data',
             action: () => {
-              //
+              this.$router.push(this.localeRoute('/tools/breach'))
             }
           }
         },
         {
           img: 'feat-5.svg',
-          title: 'Password Health Detection',
-          desc: 'Identify any passwords that are weak, reused or exposed to safeguard your online accounts.',
-          learnMore: {
-            text: 'Learn more about Password Health',
-            url: ''
-          },
+          i18nKey: 'feat5',
           button: {
             icon: '',
-            text: 'Identify Weak Password',
             action: () => {
-              //
+              this.$router.push(this.localeRoute('/tools/password-health'))
             }
           }
         },
         {
           img: 'feat-6.svg',
-          title: 'Private Email',
-          desc: 'Generate aliases and keep your true email private. Come with extra security features!',
-          learnMore: {
-            text: 'Learn more about Private Email',
-            url: ''
-          },
+          i18nKey: 'feat6',
           button: {
             icon: '',
-            text: 'Get Unlimited Aliases',
             action: () => {
-              //
+              this.$router.push(this.localeRoute('/relay'))
             }
           }
         },
         {
           img: 'feat-7.svg',
-          title: 'Logged-on devices',
-          desc: 'Go Premium to unlock unlimited devices support!',
-          learnMore: {
-            text: 'Learn more about supported devices',
-            url: ''
-          },
+          i18nKey: 'feat7',
           button: {
             icon: '',
-            text: 'Upgrade to Premium',
             action: () => {
               //
             }
@@ -329,17 +301,11 @@ export default {
         },
         {
           img: 'feat-8.svg',
-          title: '6 Family Members',
-          desc: 'Keep your family and friends safe online with Locker Family Plan. Pay less, use more!',
-          learnMore: {
-            text: 'Learn more about Family Plan',
-            url: ''
-          },
+          i18nKey: 'feat8',
           button: {
             icon: '',
-            text: 'See How',
             action: () => {
-              //
+              this.$router.push(this.localeRoute('/tools/breach'))
             }
           }
         }
