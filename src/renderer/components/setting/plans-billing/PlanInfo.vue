@@ -305,7 +305,7 @@ export default {
           button: {
             icon: '',
             action: () => {
-              this.$router.push(this.localeRoute('/tools/breach'))
+              this.$router.push(this.localeRoute('/settings/family-members'))
             }
           }
         }
