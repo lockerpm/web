@@ -8,7 +8,6 @@ import {
 } from '../../../jslib/src/models/data'
 import { CipherRepromptType } from '../../../jslib/src/enums/cipherRepromptType'
 import { PasswordHistoryData } from '../../../jslib/src/models/data/passwordHistoryData'
-import { CipherResponse } from '../../../jslib/src/models/response'
 import { CipherType } from '../../../jslib/src/enums'
 
 export class CipherData {
@@ -38,7 +37,7 @@ export class CipherData {
   reprompt: CipherRepromptType
 
   constructor (
-    response?: CipherResponse,
+    response?: any,
     userId?: string,
     collectionIds?: string[]
   ) {
