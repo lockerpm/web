@@ -20,6 +20,7 @@ export class CipherData {
   viewPassword: boolean
   organizationUseTotp: boolean
   favorite: boolean
+  creationDate: string
   revisionDate: string
   type: CipherType
   sizeName: string
@@ -53,6 +54,7 @@ export class CipherData {
     this.viewPassword = response.viewPassword
     this.organizationUseTotp = response.organizationUseTotp
     this.favorite = response.favorite
+    this.creationDate = response.creationDate
     this.revisionDate = response.revisionDate
     this.type = response.type
     this.name = response.name

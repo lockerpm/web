@@ -12,7 +12,7 @@ import {
 // import { CipherType } from '../../enums/cipherType'
 import { CipherRepromptType } from '../../../jslib/src/enums/cipherRepromptType'
 import { CipherData } from '../data/cipherData'
-import { CipherView } from '../../../jslib/src/models/view'
+import { CipherView } from '../view/cipherView'
 import { Password } from '../../../jslib/src/models/domain/password'
 import { CipherType } from '../../../jslib/src/enums'
 
@@ -27,6 +27,7 @@ export class Cipher extends Domain {
   organizationUseTotp: boolean
   edit: boolean
   viewPassword: boolean
+  creationDate: Date
   revisionDate: Date
   localData: any
   login: Login
@@ -74,6 +75,8 @@ export class Cipher extends Domain {
     } else {
       this.viewPassword = true // Default for already synced Ciphers without viewPassword
     }
+    this.creationDate =
+      obj.creationDate != null ? new Date(obj.creationDate) : null
     this.revisionDate =
       obj.revisionDate != null ? new Date(obj.revisionDate) : null
     this.collectionIds = obj.collectionIds

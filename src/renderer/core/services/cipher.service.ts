@@ -37,7 +37,7 @@ import { FieldView } from '../../jslib/src/models/view/fieldView'
 import { PasswordHistoryView } from '../../jslib/src/models/view/passwordHistoryView'
 import { View } from '../../jslib/src/models/view/view'
 
-import { SortedCiphersCache } from '../../jslib/src/models/domain/sortedCiphersCache'
+import { SortedCiphersCache } from '../models/domain/sortedCiphersCache'
 
 import { ApiService } from '../../jslib/src/abstractions/api.service'
 import { CipherService as CipherServiceAbstraction } from '../../jslib/src/abstractions/cipher.service'

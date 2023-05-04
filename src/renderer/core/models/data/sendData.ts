@@ -4,8 +4,8 @@ import { CipherData } from './cipherData'
 export class SendData {
   id: string
   accessId: string
-  revisionDate: number
   creationDate: number
+  revisionDate: number
   key: string
   password: string
   maxAccessCount?: number
@@ -26,8 +26,8 @@ export class SendData {
 
     this.id = response.id
     this.accessId = response.accessId
-    this.revisionDate = response.revisionDate
     this.creationDate = response.creationDate
+    this.revisionDate = response.revisionDate
     this.key = response.key
     this.password = response.password
     this.maxAccessCount = response.maxAccessCount
