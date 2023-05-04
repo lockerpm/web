@@ -1,5 +1,5 @@
 import { BaseResponse } from '../../../jslib/src/models/response/baseResponse'
-import { CipherResponse } from '../../../jslib/src/models/response/cipherResponse'
+import { CipherResponse } from '../response/cipherResponse'
 
 export class SendResponse extends BaseResponse {
   id: string
