@@ -365,8 +365,3 @@ export default {
   }
 }
 </script>
-<style>
-.setting-wrapper .el-collapse-item__header {
-  height: auto !important;
-}
-</style>
