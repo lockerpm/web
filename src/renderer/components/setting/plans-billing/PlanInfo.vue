@@ -13,7 +13,7 @@
             <!-- Free plan -->
             <button
               v-if="currentPlan.alias === 'pm_free'"
-              class="btn btn-primary"
+              class="btn btn-primary my-2 sm:mt-0"
               @click="buyPremium"
             >
               <div class="flex">
@@ -71,13 +71,13 @@
 
         <!-- Storage -->
         <div class="setting-section !border-t">
-          <div class="grid grid-cols-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2">
             <!-- Left -->
             <div>
               <div class="setting-title mb-1">
                 {{ $t('data.settings.plan_storage') }}
               </div>
-              <div class="setting-description">
+              <div class="setting-description mb-3 sm:mb-0">
                 {{ $t('data.settings.plan_storage_desc') }}
               </div>
             </div>
@@ -128,17 +128,17 @@
           <div
             v-for="(item, index) in premiumFeatures"
             :key="index"
-            class="flex items-center w-full border-b border-black-100 py-6"
+            class="flex flex-col sm:flex-row items-center w-full border-b border-black-100 py-6"
           >
             <img
               :src="
                 require(`~/assets/images/pages/settings/plans-billing/${item.img}`)
               "
               alt=""
-              class="mr-4 h-[62px]"
+              class="mr-4 h-[62px] mb-4 sm:mb-0"
             >
 
-            <div class="flex-1">
+            <div class="flex-1 text-center sm:text-left">
               <p
                 class="setting-title mb-3"
                 :class="isFreePlan ? '!text-[#A5ABB3]' : ''"
@@ -168,7 +168,7 @@
             </div>
 
             <button
-              class="btn btn-primary ml-3 min-w-[220px]"
+              class="btn btn-primary ml-0 sm:ml-3 min-w-[220px] mt-4 sm:mt-0"
               @click="isFreePlan ? buyPremium : item.button.action"
             >
               <div class="flex justify-center items-center">
