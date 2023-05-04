@@ -27,7 +27,6 @@ export class Cipher extends Domain {
   organizationUseTotp: boolean
   edit: boolean
   viewPassword: boolean
-  creationDate: Date
   revisionDate: Date
   localData: any
   login: Login
@@ -75,8 +74,6 @@ export class Cipher extends Domain {
     } else {
       this.viewPassword = true // Default for already synced Ciphers without viewPassword
     }
-    this.creationDate =
-    obj.creationDate != null ? new Date(obj.creationDate) : null
     this.revisionDate =
       obj.revisionDate != null ? new Date(obj.revisionDate) : null
     this.collectionIds = obj.collectionIds
@@ -224,7 +221,6 @@ export class Cipher extends Domain {
     c.viewPassword = this.viewPassword
     c.organizationUseTotp = this.organizationUseTotp
     c.favorite = this.favorite
-    c.creationDate = this.creationDate != null ? this.creationDate.toISOString() : null
     c.revisionDate =
       this.revisionDate != null ? this.revisionDate.toISOString() : null
     c.type = this.type
