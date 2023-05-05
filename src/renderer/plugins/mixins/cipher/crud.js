@@ -48,12 +48,11 @@ Vue.mixin({
         )
         return true
       } catch (e) {
-        console.log(e)
         const isHandled = this.handleApiError(e.response)
         if (!isHandled) {
           this.notify(
             this.$tc('data.notifications.create_failed', 1, {
-              type: this.$tc(`type.${this.type}`, 1)
+              type: this.$tc(`type.${cipher.type}`, 1)
             }),
             'warning'
           )
@@ -92,7 +91,7 @@ Vue.mixin({
         if (!isHandled) {
           this.notify(
             this.$tc('data.notifications.update_failed', 1, {
-              type: this.$tc(`type.${this.type}`, 1)
+              type: this.$tc(`type.${cipher.type}`, 1)
             }),
             'warning'
           )
