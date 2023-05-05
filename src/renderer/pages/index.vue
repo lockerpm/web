@@ -197,6 +197,110 @@
     </section>
     <!-- Benefits end -->
 
+    <!-- Ratings -->
+    <section class="mt-24">
+      <div class="flex flex-wrap items-center justify-center">
+        <!-- Trustpilot -->
+        <div style="width: 301px" class="mb-4">
+          <div
+            class="trustpilot-widget"
+            data-locale="en-US"
+            data-template-id="5419b6a8b0d04a076446a9ad"
+            data-businessunit-id="642e5d5bc70cd42f53e01b3e"
+            data-style-height="30px"
+            data-style-width="100%"
+            data-theme="light"
+            data-min-review-count="10"
+            data-without-reviews-preferred-string-id="1"
+            data-style-alignment="center"
+          >
+            <a
+              href="https://www.trustpilot.com/review/locker.io"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                src="~/assets/images/landing/index/Trustpilot.svg"
+                alt=""
+                style="height: 50px"
+                class="mx-auto"
+              >
+            </a>
+          </div>
+        </div>
+        <!-- Trustpilot end -->
+
+        <!-- GetApp -->
+        <div style="width: 160px" class="mb-4">
+          <a
+            href="https://www.getapp.com/security-software/a/locker-password-manager/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/assets/images/landing/index/GetApp.svg"
+              alt=""
+              style="height: 50px"
+              class="mx-auto"
+            >
+          </a>
+        </div>
+        <!-- GetApp end -->
+
+        <!-- G2 -->
+        <div style="width: 160px" class="mb-4">
+          <a
+            href="https://www.g2.com/products/locker-password-manager/reviews?utm_source=Iterable&utm_medium=email&utm_campaign=it_txn_claimedprod_rej_1403101"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/assets/images/landing/index/G2.svg"
+              alt=""
+              style="height: 50px"
+              class="mx-auto"
+            >
+          </a>
+        </div>
+        <!-- G2 end -->
+
+        <!-- Google Play -->
+        <div style="width: 160px" class="mb-4">
+          <a
+            href="https://play.google.com/store/apps/details?id=com.cystack.locker&pli=1"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/assets/images/landing/index/GooglePlay.svg"
+              alt=""
+              style="height: 50px"
+              class="mx-auto"
+            >
+          </a>
+        </div>
+        <!--  Google Play end -->
+
+        <!-- AppStore -->
+        <div style="width: 160px" class="mb-4">
+          <a
+            href="https://apps.apple.com/us/app/locker-password-manager/id1586927301"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/assets/images/landing/index/AppStore.svg"
+              alt=""
+              style="height: 50px"
+              class="mx-auto"
+            >
+          </a>
+        </div>
+        <!-- AppStore end -->
+      </div>
+    </section>
+    <!-- Ratings end -->
+
     <!-- CTA 1 -->
     <section class="md:mt-36 mt-24">
       <div
@@ -204,7 +308,7 @@
         style="background-color: #f5f6f7"
       >
         <p
-          class="md:max-w-[490px] md:text-left md:mb-0 landing-font-28 font-semibold max-w-max text-center mb-6"
+          class="md:max-w-[490px] md:text-left md:mb-0 md:mr-4 mr-0 landing-font-28 font-semibold max-w-max text-center mb-6"
         >
           {{ $t('landing.cta1.title') }}
         </p>
@@ -532,6 +636,17 @@ export default {
       videoId: 'kAutqE2ATfU',
       dialogVisible: false,
       posts: []
+    }
+  },
+
+  head () {
+    return {
+      script: [
+        {
+          src: '//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js',
+          async: true
+        }
+      ]
     }
   }
 }
