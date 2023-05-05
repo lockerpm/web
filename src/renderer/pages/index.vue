@@ -206,15 +206,15 @@
       </div>
 
       <div v-if="testimonials.length">
-        <div>
-          <div v-for="(item, index) in testimonials" :key="index">
+        <carousel>
+          <slide v-for="(item, index) in testimonials" :key="index">
             <div>
               <p>
                 {{ item }}
               </p>
             </div>
-          </div>
-        </div>
+          </slide>
+        </carousel>
       </div>
     </section>
     <!-- Testimonials end -->

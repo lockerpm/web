@@ -80,7 +80,8 @@ module.exports = {
     { ssr: true, src: '@/plugins/ui/katex.js' },
     { ssr: true, src: '@/plugins/ui/vee.js' },
     { ssr: false, src: '@/plugins/ui/vue-virtual-scroller.js' },
-    { ssr: false, src: '@/plugins/ui/youtube.js' }
+    { ssr: false, src: '@/plugins/ui/youtube.js' },
+    { ssr: false, src: '@/plugins/ui/vue-carousel.js' }
   ],
   buildModules: [
     '@nuxt/typescript-build',
