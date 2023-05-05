@@ -1,20 +1,18 @@
 <template>
   <div>
     <!-- Header -->
-    <section
-      class="full-width h-auto"
-      style="background: #fbfaf3"
-    >
+    <section class="full-width h-auto" style="background: #fbfaf3">
       <div class="md:pt-[186px] pt-28 mx-auto pl-6 md:pb-32 pb-20">
         <div class="w-full flex flex-wrap justify-end">
-          <div class="lg:max-w-[570px] max-h-[485px] md:w-1/2 order-1 mb-8 md:mb-0 self-center">
-            <h1 class="text-left font-bold text-black landing-font-50 mb-[24px]">
+          <div
+            class="lg:max-w-[570px] max-h-[485px] md:w-1/2 order-1 mb-8 md:mb-0 self-center"
+          >
+            <h1
+              class="text-left font-bold text-black landing-font-50 mb-[24px]"
+            >
               {{ $t('landing.section1.title') }}
             </h1>
-            <img
-              src="~/assets/images/landing/index/boundary.svg"
-              alt=""
-            >
+            <img src="~/assets/images/landing/index/boundary.svg" alt="">
             <p
               class="text-left font-normal text-black-600 landing-font-20 mx-auto mb-[50px] mt-[18px]"
               v-html="$t('landing.section1.desc')"
@@ -28,32 +26,25 @@
                   {{ $t('landing.section1.btn[0].text') }}
                 </nuxt-link>
               </div>
-              <!-- <div>
-                <nuxt-link
-                  class="landing-btn2 w-full sm:w-auto sm:ml-4"
-                  :to="localeRoute({name: $t('landing.section1.btn[1].link')})"
-                >
-                  {{ $t('landing.section1.btn[1].text') }}
-                </nuxt-link>
-              </div> -->
             </div>
           </div>
           <!-- Right -->
-          <div class="hidden md:block md:w-1/2 order-2 justify-self-end items-center top-[180px] pr-0">
+          <div
+            class="hidden md:block md:w-1/2 order-2 justify-self-end items-center top-[180px] pr-0"
+          >
             <button @click="dialogVisible = true">
               <img
                 :src="require(`~/assets/images/landing/intro-thumbnail.png`)"
                 alt=""
-                style="max-width: 120%; margin-left: 75px; max-height: 485px; margin-top: 15px"
+                style="
+                  max-width: 120%;
+                  margin-left: 75px;
+                  max-height: 485px;
+                  margin-top: 15px;
+                "
               >
             </button>
           </div>
-          <!-- <div class="w-full md:hidden order-2 mt-16">
-            <img
-              :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
-              alt=""
-            >
-          </div> -->
           <!-- Right end -->
         </div>
       </div>
@@ -64,7 +55,12 @@
     <section>
       <div v-if="dialogVisible" class="modal" @click="dialogVisible = false">
         <div class="modal-content">
-          <youtube :video-id="videoId" player-width="960" player-height="540" :player-vars="{autoplay: 0}" />
+          <youtube
+            :video-id="videoId"
+            player-width="960"
+            player-height="540"
+            :player-vars="{ autoplay: 0 }"
+          />
         </div>
       </div>
     </section>
@@ -78,7 +74,9 @@
       <div class="max-w-6xl mx-auto px-6">
         <div class="w-full flex flex-wrap">
           <div class="w-full md:mb-0 md:pt-[115px] pt-20 text-center order-1">
-            <h2 class=" w-full font-bold landing-font-38 text-black mb-[20px] max-w-[650px] mx-auto">
+            <h2
+              class="w-full font-bold landing-font-38 text-black mb-[20px] max-w-[650px] mx-auto"
+            >
               {{ $t('landing.section2.title') }}
             </h2>
             <img
@@ -96,7 +94,7 @@
               class="landing-transition bg-white rounded-lg hover:shadow-xl"
             >
               <div
-                v-if="(!item.link)"
+                v-if="!item.link"
                 :to="localePath(`${item.link}`)"
                 class="block px-[30px] pt-11 h-full"
               >
@@ -113,7 +111,7 @@
                 </p>
               </div>
               <nuxt-link
-                v-if="(item.static === false && item.link)"
+                v-if="item.static === false && item.link"
                 :to="localePath(`${item.link}`)"
                 class="block px-[30px] pt-11 h-full"
               >
@@ -130,7 +128,7 @@
                 </p>
               </nuxt-link>
               <a
-                v-if="(item.static === true && item.link)"
+                v-if="item.static === true && item.link"
                 :href="`${item.link}`"
                 class="block px-[30px] pt-11 h-full"
               >
@@ -147,13 +145,12 @@
                 </p>
               </a>
             </div>
-
           </div>
           <div class="max-w-xs mx-auto sm:max-w-none order-3 mt-[60px]">
             <div class="mb-4 sm:mb-0">
               <nuxt-link
                 class="landing-btn bg-green w-full sm:w-auto mb-1"
-                :to="localeRoute({name: $t('landing.section2.btn.link')})"
+                :to="localeRoute({ name: $t('landing.section2.btn.link') })"
               >
                 {{ $t('landing.section2.btn.text') }}
               </nuxt-link>
@@ -175,9 +172,15 @@
         </div>
         <!-- Left end -->
         <!-- Right -->
-        <div class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2">
+        <div
+          class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2"
+        >
           <img
-            :src="require(`~/assets/images/landing/index/${$t('landing.benefits[0].img')}`)"
+            :src="
+              require(`~/assets/images/landing/index/${$t(
+                'landing.benefits[0].img'
+              )}`)
+            "
             alt=""
             style="align-self: center"
           >
@@ -187,17 +190,25 @@
     </section>
     <section class="mt-[75px]">
       <div class="w-full flex flex-wrap">
-        <div class=" w-full md:mb-0 mt-3 md:w-1/2 md:px-20 self-center md:order-2 order-1">
+        <div
+          class="w-full md:mb-0 mt-3 md:w-1/2 md:px-20 self-center md:order-2 order-1"
+        >
           <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
             {{ $t('landing.benefits[1].title') }}
           </h2>
-          <p class="landing-font-18 md:max-w-[350px]">{{ $t('landing.benefits[1].desc') }}</p>
+          <p class="landing-font-18 md:max-w-[350px]">
+            {{ $t('landing.benefits[1].desc') }}
+          </p>
         </div>
         <!-- Right end -->
         <!-- Left -->
         <div class="w-full md:w-1/2 pl-0 flex order-1">
           <img
-            :src="require(`~/assets/images/landing/index/${$t('landing.benefits[1].img')}`)"
+            :src="
+              require(`~/assets/images/landing/index/${$t(
+                'landing.benefits[1].img'
+              )}`)
+            "
             alt=""
             style="align-self: center"
           >
@@ -215,9 +226,15 @@
         </div>
         <!-- Left end -->
         <!-- Right -->
-        <div class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2">
+        <div
+          class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2"
+        >
           <img
-            :src="require(`~/assets/images/landing/index/${$t('landing.benefits[2].img')}`)"
+            :src="
+              require(`~/assets/images/landing/index/${$t(
+                'landing.benefits[2].img'
+              )}`)
+            "
             alt=""
             style="align-self: center"
           >
@@ -227,17 +244,25 @@
     </section>
     <section class="mt-[75px]">
       <div class="w-full flex flex-wrap">
-        <div class="w-full md:mb-0 mt-3 md:w-1/2 md:px-20 self-center md:order-2 order-1">
+        <div
+          class="w-full md:mb-0 mt-3 md:w-1/2 md:px-20 self-center md:order-2 order-1"
+        >
           <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
             {{ $t('landing.benefits[3].title') }}
           </h2>
-          <p class="landing-font-18 md:max-w-[350px]">{{ $t('landing.benefits[3].desc') }}</p>
+          <p class="landing-font-18 md:max-w-[350px]">
+            {{ $t('landing.benefits[3].desc') }}
+          </p>
         </div>
         <!-- Right end -->
         <!-- Left -->
         <div class="w-full md:w-1/2 pl-0 flex order-1">
           <img
-            :src="require(`~/assets/images/landing/index/${$t('landing.benefits[3].img')}`)"
+            :src="
+              require(`~/assets/images/landing/index/${$t(
+                'landing.benefits[3].img'
+              )}`)
+            "
             alt=""
             style="align-self: center"
           >
@@ -253,13 +278,15 @@
         class="w-full rounded py-[40px] px-[65px] flex justify-between align-middle md:flex-row flex-col"
         style="background-color: #f5f6f7"
       >
-        <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-28 font-semibold max-w-max text-center mb-6 ">
+        <p
+          class="md:max-w-[490px] md:text-left md:mb-0 landing-font-28 font-semibold max-w-max text-center mb-6"
+        >
           {{ $t('landing.cta1.title') }}
         </p>
 
         <nuxt-link
           class="landing-btn"
-          :to="localeRoute({name: $t('landing.cta1.btn.link')})"
+          :to="localeRoute({ name: $t('landing.cta1.btn.link') })"
           style="align-self: center"
         >
           {{ $t('landing.cta1.btn.text') }}
@@ -269,16 +296,19 @@
     <!-- CTA 1 end -->
 
     <!--Devices-->
-    <section
-      class="full-width h-auto"
-      style="background: #ffffff"
-    >
-      <div class="hidden lg:flex w-full h-auto text-center pt-32 mb-24 justify-items-end justify-center gap-x-6 overflow-hidden">
+    <section class="full-width h-auto" style="background: #ffffff">
+      <div
+        class="hidden lg:flex w-full h-auto text-center pt-32 mb-24 justify-items-end justify-center gap-x-6 overflow-hidden"
+      >
         <img
           id="mobile"
-          :src="require(`~/assets/images/landing/index/${$t('landing.section1.image')}`)"
+          :src="
+            require(`~/assets/images/landing/index/${$t(
+              'landing.section1.image'
+            )}`)
+          "
           class="inline self-end"
-          style="width: 40%;"
+          style="width: 40%"
         >
       </div>
     </section>
@@ -289,11 +319,15 @@
         <h2 class="text-center font-bold text-black landing-font-38 mb-[14px]">
           {{ $t('landing.platform.title') }}
         </h2>
-        <p class=" text-center text-black-600 leading-[26px] landing-font-18 mx-auto mb-[42px] md:max-w-[540px]">
+        <p
+          class="text-center text-black-600 leading-[26px] landing-font-18 mx-auto mb-[42px] md:max-w-[540px]"
+        >
           {{ $t('landing.platform.desc') }}
         </p>
       </div>
-      <div class="w-full mx-auto md:justify-between justify-center align-start grid sm:grid-cols-3 grid-cols-2 justify-items-center">
+      <div
+        class="w-full mx-auto md:justify-between justify-center align-start grid sm:grid-cols-3 grid-cols-2 justify-items-center"
+      >
         <div
           v-for="(item, index) in $t('landing.platform.platforms')"
           :key="index"
@@ -302,7 +336,7 @@
           <a
             v-if="!!item.href"
             :href="item.href || '#'"
-            :target="item.href? '_blank' : '_self'"
+            :target="item.href ? '_blank' : '_self'"
             class="sm:flex flex-flex-nowrap text-center"
           >
             <div class="circle sm:mx-5 mx-auto">
@@ -313,7 +347,9 @@
               >
             </div>
 
-            <p class="landing-font-16 font-semibold text-black self-center sm:mt-0 mt-2">
+            <p
+              class="landing-font-16 font-semibold text-black self-center sm:mt-0 mt-2"
+            >
               {{ item.name }}
             </p>
           </a>
@@ -325,7 +361,9 @@
     <!-- Why -->
     <section class="md:mt-36 mt-20">
       <div class="w-full mb-14 text-center">
-        <h2 class="font-bold landing-font-32 text-black mx-auto md:max-w-[950px]">
+        <h2
+          class="font-bold landing-font-32 text-black mx-auto md:max-w-[950px]"
+        >
           {{ $t('landing.why.title') }}
         </h2>
         <img
@@ -341,18 +379,19 @@
             <tbody>
               <tr class="hidden md:table-row">
                 <td />
-                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
+                <td
+                  class="landing-font-22 font-bold text-black px-8 py-4 align-top"
+                >
                   {{ $t('landing.why.column_labels[0]') }}
                 </td>
-                <td class="landing-font-22 font-bold text-black px-8 py-4 align-top">
+                <td
+                  class="landing-font-22 font-bold text-black px-8 py-4 align-top"
+                >
                   {{ $t('landing.why.column_labels[1]') }}
                 </td>
               </tr>
               <template v-for="(label, index) in $t('landing.why.labels')">
-                <tr
-                  :key="index"
-                  class="md:hidden"
-                >
+                <tr :key="index" class="md:hidden">
                   <td
                     colspan="2"
                     class="landing-font-18 font-bold p-4 text-center"
@@ -370,7 +409,9 @@
                   >
                     {{ label }}
                   </td>
-                  <td class="landing-font-16 text-black-600 px-8 py-4 align-top">
+                  <td
+                    class="landing-font-16 text-black-600 px-8 py-4 align-top"
+                  >
                     <div class="flex flex-flex-nowrap items-start">
                       <img
                         class="mt-[6px] mr-3"
@@ -397,7 +438,7 @@
                 <td />
                 <td class="landing-font-18 px-8 py-4 align-top font-semibold">
                   <nuxt-link
-                    :to="localeRoute({name: $t('landing.why.btn.link')})"
+                    :to="localeRoute({ name: $t('landing.why.btn.link') })"
                     class="hover:no-underline text-green"
                   >
                     {{ $t('landing.why.btn.text') }} <i class="el-icon-right" />
@@ -419,15 +460,19 @@
       <section class="max-w-6xl mx-auto px-6">
         <div class="w-full flex flex-wrap">
           <div class="w-full md:mb-0 md:pt-[115px] pt-20 text-center order-1">
-            <h2 class="w-full font-bold landing-font-38 text-black mb-[45px] max-w-[790px] mx-auto">
+            <h2
+              class="w-full font-bold landing-font-38 text-black mb-[45px] max-w-[790px] mx-auto"
+            >
               {{ $t('landing.start.title') }}
             </h2>
           </div>
-          <div class="w-full md:w-10/12 mx-auto flex flex-wrap order-2 gap-x-[30px] gap-y-[45px] justify-center">
+          <div
+            class="w-full md:w-10/12 mx-auto flex flex-wrap order-2 gap-x-[30px] gap-y-[45px] justify-center"
+          >
             <div
               v-for="(item, index) in $t('landing.start.options')"
               :key="index"
-              class=" landing-transition p-12 w-full md:w-[380px] bg-white relative z-10 rounded-xl hover:shadow-xl"
+              class="landing-transition p-12 w-full md:w-[380px] bg-white relative z-10 rounded-xl hover:shadow-xl"
             >
               <img
                 :src="require(`~/assets/images/landing/index/${item.img}`)"
@@ -468,189 +513,7 @@ export default {
   data () {
     return {
       videoId: 'kAutqE2ATfU',
-      dialogVisible: false,
-      section1: {
-        title: 'Tận hưởng trải nghiệm sử dụng internet an toàn và liền mạch',
-        desc: 'Locker giúp bạn lưu trữ dữ liệu quan trọng <span class="text-green">an toàn</span>, quản lý mật khẩu <span class="text-green">trực quan</span>, và tự động đăng nhập trên mọi thiết bị.',
-        btn: [
-          {
-            text: 'Cá nhân',
-            link: '',
-            note: 'Miễn phí vĩnh viễn'
-          },
-          {
-            text: 'Doanh nghiệp',
-            link: '',
-            note: ''
-          }
-        ]
-      },
-      section2: {
-        title: 'Lưu trữ mật khẩu của bạn tại một không gian bảo mật duy nhất',
-        features: [
-          {
-            img: 'icon1.svg',
-            title: 'Mã hóa dữ liệu',
-            desc: 'Locker mã hóa dữ liệu của bạn theo tiêu chuẩn quân đội AES-256, kết hợp thuật toán khởi tạo cặp khóa PBKDF2 và RSA.'
-          },
-          {
-            img: 'icon2.svg',
-            title: 'Zero-knowledge',
-            desc: 'Mã hóa đầu cuối và Zero-knowledge đảm bảo rằng không ai xem được dữ liệu của bạn, kể cả đội ngũ phát triển Locker.'
-          },
-          {
-            img: 'icon3.svg',
-            title: 'Hạ tầng an toàn',
-            desc: 'Chúng tôi sử dụng hạ tầng máy chủ của các nhà cung cấp hàng đầu thế giới như AWS, DigitalOcean.'
-          },
-          {
-            img: 'icon4.svg',
-            title: 'Kiểm thử bảo mật',
-            desc: 'Được kiểm thử an ninh bởi cộng đồng 1500+ chuyên gia bảo mật trên nền tảng WhiteHub Bug Bounty.'
-          }
-        ],
-        btn: {
-          text: 'Xem thêm',
-          link: ''
-        }
-
-      },
-      platform: {
-        title: 'Sử dụng trên mọi thiết bị và nền tảng',
-        desc: 'Locker hoạt động trên mọi thiết bị, hệ điều hành, nền tảng phổ biến mà bạn sử dụng!',
-        platforms: [
-          {
-            name: 'Windows',
-            img: 'windows.png'
-          },
-          {
-            name: 'MacOS',
-            img: 'macos.png'
-          },
-          {
-            name: 'Linux',
-            img: 'linux.png'
-          },
-          {
-            name: 'Ubuntu',
-            img: 'ubuntu.png'
-          },
-          {
-            name: 'Chrome',
-            img: 'chrome.png'
-          },
-          {
-            name: 'Safari',
-            img: 'safari.png'
-          },
-          {
-            name: 'Firefox',
-            img: 'firefox.png'
-          },
-          {
-            name: 'Microsoft Edge',
-            img: 'edge.png'
-          },
-          {
-            name: 'Cốc Cốc',
-            img: 'coccoc.png'
-          },
-          {
-            name: 'Opera',
-            img: 'opera.png'
-          },
-          {
-            name: 'iOS',
-            img: 'ios.png'
-          },
-          {
-            name: 'Android',
-            img: 'android.png'
-          }
-        ]
-      },
-
-      benefits: [
-        {
-          img: 'img1.png',
-          title: 'Đăng nhập dễ dàng',
-          desc: 'Đăng nhập mọi trang web dễ dàng chỉ với vài click chuột, đăng nhập bằng FaceID và TouchID trên smartphone. Bạn không cần phải nhớ hay gõ mật khẩu như trước đây!'
-        },
-        {
-          img: 'img2.png',
-          title: 'Mua sắm online nhanh chóng',
-          desc: 'Tự động điền thông tin thẻ thanh toán vào trang mua sắm trực tuyến. Tiết kiệm công sức đọc và điền số thẻ Visa/Mastercard.'
-        },
-        {
-          img: 'img3.png',
-          title: 'Tiết kiệm thời gian',
-          desc: 'Locker giúp bạn tiết kiệm thời gian nhập mật khẩu, điền thông tin thẻ tín dụng, thông tin cá nhân. Giúp bạn dành thời gian cho những việc có ý nghĩa.'
-        },
-        {
-          img: 'img4.png',
-          title: 'Chia sẻ mật khẩu',
-          desc: 'Chia sẻ mật khẩu với nhóm làm việc của bạn một cách an toàn và bảo mật. Hỗ trợ mã hóa đầu cuối và quản lý các mật khẩu chia sẻ của bạn.'
-        }
-      ],
-      cta1: {
-        title: 'Mang lại trải nghiệm internet an toàn hơn, tốt hơn cho tất cả mọi người.',
-        btn: {
-          text: 'Tìm hiểu lợi ích',
-          link: 'how-it-works'
-        }
-      },
-      why: {
-        title: 'Tại sao sử dụng Locker thay vì công cụ quản lý mật khẩu tích hợp trong trình duyệt?',
-        column_labels: [
-          'Trình quản lý thông thường',
-          'Trình quản lý mật khẩu Locker'
-        ],
-        labels: [
-          'Mức độ bảo mật',
-          'Khả năng quản lý',
-          'Tính năng đa dạng',
-          'Sử dụng đa nền tảng'
-        ],
-        browser: [
-          'Công cụ quản lý mật khẩu của trình duyệt lưu mật khẩu của bạn trên server. Hacker có thể chiếm được mật khẩu của bạn khi chúng hack được tình duyệt.',
-          'Trình quản lý mật khẩu mặc định của trình duyệt không có khả năng quản lý mật khẩu theo thư mục.',
-          'Trình quản lý mật khẩu của trình duyệt không hỗ trợ các tính năng tiện ích.',
-          'Công cụ quản lý mật khẩu của trình duyệt giới hạn bạn trong hệ sinh thái của họ.'
-        ],
-        locker: [
-          'Locker sử dụng mã hóa đầu cuối và Zero-knowledge để bảo vệ dữ liệu của bạn. Ngay cả khi hacker xâm nhập được vào phần mềm, chúng cũng không thể xem được dữ liệu.',
-          'Locker cho phép quản lý theo thư mục, loại tệp, giúp bạn dễ dàng sắp xếp và tìm kiếm mật khẩu của mình.',
-          'Locker cho phép quản lý theo thư mục, loại tệp, giúp bạn dễ dàng sắp xếp và tìm kiếm mật khẩu của mình.',
-          'Bạn có thể sử dụng Locker trên mọi trình duyệt, hệ điều hành, thiết bị phổ biến.'
-        ],
-        btn: {
-          text: 'Khám phá tính năng',
-          link: ''
-        }
-      },
-      start: {
-        title: 'Trải nghiệm internet an toàn hơn, tiện nghi hơn với Locker Password Manager',
-        options: [
-          {
-            img: 'start-personal.png',
-            title: 'Cá nhân',
-            desc: 'Miễn phí vĩnh viễn. Lưu trữ mật khẩu, thẻ tín dụng, ghi chú cá nhân và sử dụng trên mọi thiết bị.',
-            btn: {
-              text: 'Đăng ký miễn phí',
-              link: ''
-            }
-          },
-          {
-            img: 'start-business.png',
-            title: 'Doanh nghiệp',
-            desc: 'Dùng thử 10 ngày. Chia sẻ mật khẩu an toàn, thiết lập chính sách và quản lý bảo mật cho đơn vị của bạn.',
-            btn: {
-              text: 'Bắt đầu dùng thử',
-              link: ''
-            }
-          }
-        ]
-      }
+      dialogVisible: false
     }
   }
 }
@@ -675,8 +538,8 @@ export default {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: hidden; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
 }
 
 /* Modal Content/Box */
