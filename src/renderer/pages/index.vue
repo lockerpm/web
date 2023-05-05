@@ -401,7 +401,7 @@
                   </td>
                 </tr>
                 <tr
-                  :key="index"
+                  :key="`${index}_1`"
                   :style="index % 2 === 0 ? 'background-color: #FBFAF3' : ''"
                 >
                   <td
@@ -504,16 +504,98 @@
       </section>
     </div>
     <!-- Start end -->
+
+    <!-- Blogs -->
+    <section class="mt-20 mb-20">
+      <div class="w-full mb-14">
+        <h2 class="font-bold landing-font-32 text-black">
+          {{ $t('landing.blogs.title') }}
+        </h2>
+      </div>
+
+      <div
+        v-if="posts.length"
+        class="blog-container w-full grid grid-cols-1 md:grid-cols-3 gap-x-[30px] gap-y-[30px]"
+      >
+        <div v-for="(item, index) in posts" :key="index">
+          <Post :post="item" type="blog" />
+        </div>
+      </div>
+
+      <div class="w-full text-center mt-14">
+        <nuxt-link
+          :to="localeRoute('/blog')"
+          class="text-black font-semibold transition-colors text-[16px]"
+        >
+          {{ $t('blog.read_more') }} <i class="el-icon-right" />
+        </nuxt-link>
+      </div>
+    </section>
+    <!-- Blogs end -->
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import cheerio from 'cheerio'
+import Post from '~/components/landing/blog/Post'
+
 export default {
+  components: { Post },
+
   layout: 'landing',
+
+  async asyncData (context) {
+    const language = context.store.state.i18n.locale
+    let tagId
+    try {
+      const posts = []
+      const result = await axios.get(
+        `${process.env.blogUrl}/tags?slug=${language}`
+      )
+      tagId = result.data[0].id
+      const responses = await Promise.all([
+        axios.get(
+          `${process.env.blogUrl}/posts?_embed=1&per_page=3&tags=${tagId}&categories=8,13,18,54,25`
+        ),
+        axios.get(`${process.env.blogUrl}/users`)
+      ])
+      const { data } = responses[0]
+      const userArray = responses[1].data
+      data.forEach(async post => {
+        let featuredImage = ''
+        try {
+          featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
+        } catch (error) {}
+        if (!featuredImage) {
+          const $ = cheerio.load(post.content.rendered)
+          const images = $('img').attr('src')
+          if (images) {
+            featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
+          }
+        }
+        const $_ = cheerio.load(post.excerpt.rendered)
+        const desc = $_('p').text()
+        posts.push({
+          ...post,
+          user: userArray.find(author => author.id === post.author),
+          featured_image: featuredImage,
+          desc
+        })
+      })
+      return {
+        posts
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+
   data () {
     return {
       videoId: 'kAutqE2ATfU',
-      dialogVisible: false
+      dialogVisible: false,
+      posts: []
     }
   }
 }
