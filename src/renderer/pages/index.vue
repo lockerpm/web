@@ -197,6 +197,28 @@
     </section>
     <!-- Benefits end -->
 
+    <!-- Testimonials -->
+    <section class="md:mt-36 mt-24">
+      <div class="mx-auto">
+        <h2 class="text-center font-bold text-black landing-font-38 mb-[14px]">
+          {{ $t('landing.testimonials.title') }}
+        </h2>
+      </div>
+
+      <div v-if="testimonials.length">
+        <div>
+          <div v-for="(item, index) in testimonials" :key="index">
+            <div>
+              <p>
+                {{ item }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Testimonials end -->
+
     <!-- Ratings -->
     <section class="mt-24">
       <div class="flex flex-wrap items-center justify-center">
@@ -430,7 +452,7 @@
                     {{ label }}
                   </td>
                 </tr>
-                <tr :key="index" class="sm:hidden">
+                <tr :key="`${index}_0`" class="sm:hidden">
                   <td
                     class="landing-font-18 font-bold p-4 text-center"
                     style="background-color: #f6f7f8"
@@ -586,48 +608,73 @@ export default {
   layout: 'landing',
 
   async asyncData (context) {
-    const language = context.store.state.i18n.locale
-    let tagId
-    try {
-      const posts = []
-      const result = await axios.get(
-        `${process.env.blogUrl}/tags?slug=${language}`
-      )
-      tagId = result.data[0].id
-      const responses = await Promise.all([
-        axios.get(
-          `${process.env.blogUrl}/posts?_embed=1&per_page=3&tags=${tagId}&categories=8,13,18,54,25`
-        ),
-        axios.get(`${process.env.blogUrl}/users`)
-      ])
-      const { data } = responses[0]
-      const userArray = responses[1].data
-      data.forEach(async post => {
-        let featuredImage = ''
-        try {
-          featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
-        } catch (error) {}
-        if (!featuredImage) {
-          const $ = cheerio.load(post.content.rendered)
-          const images = $('img').attr('src')
-          if (images) {
-            featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
+    // Get blogs
+    const _getBlogs = async () => {
+      const language = context.store.state.i18n.locale
+      let tagId
+      try {
+        const posts = []
+        const result = await axios.get(
+          `${process.env.blogUrl}/tags?slug=${language}`
+        )
+        tagId = result.data[0].id
+        const responses = await Promise.all([
+          axios.get(
+            `${process.env.blogUrl}/posts?_embed=1&per_page=3&tags=${tagId}&categories=8,13,18,54,25`
+          ),
+          axios.get(`${process.env.blogUrl}/users`)
+        ])
+        const { data } = responses[0]
+        const userArray = responses[1].data
+        data.forEach(async post => {
+          let featuredImage = ''
+          try {
+            featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
+          } catch (error) {}
+          if (!featuredImage) {
+            const $ = cheerio.load(post.content.rendered)
+            const images = $('img').attr('src')
+            if (images) {
+              featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
+            }
           }
-        }
-        const $_ = cheerio.load(post.excerpt.rendered)
-        const desc = $_('p').text()
-        posts.push({
-          ...post,
-          user: userArray.find(author => author.id === post.author),
-          featured_image: featuredImage,
-          desc
+          const $_ = cheerio.load(post.excerpt.rendered)
+          const desc = $_('p').text()
+          posts.push({
+            ...post,
+            user: userArray.find(author => author.id === post.author),
+            featured_image: featuredImage,
+            desc
+          })
         })
-      })
-      return {
-        posts
+        return {
+          posts
+        }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
+    }
+
+    // Get testimonials
+    const _getTestimonials = async () => {
+      try {
+        const res = await axios.get(`${process.env.baseUrl}/api/testimonials`)
+        return {
+          testimonials: res.data.data.filter(t => t.Status === 'Active')
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const [blogRes, testimonialRes] = await Promise.all([
+      _getBlogs(),
+      _getTestimonials()
+    ])
+
+    return {
+      ...blogRes,
+      ...testimonialRes
     }
   },
 
@@ -635,7 +682,8 @@ export default {
     return {
       videoId: 'kAutqE2ATfU',
       dialogVisible: false,
-      posts: []
+      posts: [],
+      testimonials: []
     }
   },
 

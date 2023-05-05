@@ -261,6 +261,10 @@ module.exports = {
   serverMiddleware: [
     { path: '/api', handler: '~/server-middleware/rest.js' },
     { path: '/api/content', handler: '~/server-middleware/notion.js' },
-    { path: '/api/top-banner', handler: '~/server-middleware/topBanner.js' }
+    { path: '/api/top-banner', handler: '~/server-middleware/topBanner.js' },
+    {
+      path: '/api/testimonials',
+      handler: '~/server-middleware/testimonials.js'
+    }
   ]
 }
