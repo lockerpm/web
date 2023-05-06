@@ -485,18 +485,18 @@ export default {
 
         // Remove org if clone
         if (this.cloneMode) {
-          this.cipher.organizationId = null
-          this.cipher.collectionIds = []
+          cipherData.organizationId = null
+          cipherData.collectionIds = []
         }
 
         // Check if current org is shared folder
-        if (this.cipher.collectionIds && this.cipher.collectionIds[0]) {
-          this.cipher.folderId = this.cipher.collectionIds[0]
+        if (cipherData.collectionIds && cipherData.collectionIds[0]) {
+          cipherData.folderId = cipherData.collectionIds[0]
         }
 
         // Set current folder
         setTimeout(() => {
-          this.$refs.inputSelectFolder.value = this.cipher.folderId
+          this.$refs.inputSelectFolder.value = cipherData.folderId
         }, 0)
 
         this.cipher = cipherData

@@ -229,6 +229,7 @@ Vue.mixin({
         cipher.secureNote.type = 0
       }
 
+      // Check collections/folders validity
       if (!noCheck) {
         // Check if current folder is a collection (shared folder) or remove from old collection if move back to folder
         if (cipher.folderId) {
@@ -263,6 +264,12 @@ Vue.mixin({
             cipher.collectionIds = []
           }
         }
+      }
+
+      // User can clone an item and add it to a shared folder
+      // but they cannot add the item and share it at the same time
+      if (cloneMode && cipher.organizationId && !cipher.collectionIds?.length) {
+        cipher.organizationId = null
       }
 
       // Encrypt cipher

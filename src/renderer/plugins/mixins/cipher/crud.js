@@ -48,12 +48,11 @@ Vue.mixin({
         )
         return true
       } catch (e) {
-        console.log(e)
         const isHandled = this.handleApiError(e.response)
         if (!isHandled) {
           this.notify(
             this.$tc('data.notifications.create_failed', 1, {
-              type: this.$tc(`type.${this.type}`, 1)
+              type: this.$tc(`type.${cipher.type}`, 1)
             }),
             'warning'
           )
@@ -64,7 +63,7 @@ Vue.mixin({
 
     // Update cipher
     async handleEditCipher (cipher, options = {}) {
-      const { score } = options
+      const { score, silent } = options
       try {
         const { data, collectionIds } = await this.getEncCipherForRequest(
           cipher,
@@ -80,19 +79,24 @@ Vue.mixin({
           score,
           collectionIds
         })
-        this.notify(
-          this.$tc('data.notifications.update_success', 1, {
-            type: this.$tc(`type.${cipher.type}`, 1)
-          }),
-          'success'
-        )
+        if (!silent) {
+          this.notify(
+            this.$tc('data.notifications.update_success', 1, {
+              type: this.$tc(`type.${cipher.type}`, 1)
+            }),
+            'success'
+          )
+        }
         return true
       } catch (e) {
+        if (silent) {
+          return false
+        }
         const isHandled = this.handleApiError(e.response)
         if (!isHandled) {
           this.notify(
             this.$tc('data.notifications.update_failed', 1, {
-              type: this.$tc(`type.${this.type}`, 1)
+              type: this.$tc(`type.${cipher.type}`, 1)
             }),
             'warning'
           )

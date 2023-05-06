@@ -93,6 +93,8 @@ import orderBy from 'lodash/orderBy'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
 import AddEditFolder from '../folder/AddEditFolder'
 import NoCipher from '../../components/cipher/NoCipher'
+import { CipherType } from '../../jslib/src/enums'
+import { FieldType } from '../../jslib/src/enums/fieldType'
 import NavigationMenu from './list-cipher-components/NavigationMenu.vue'
 import ListHeader from './list-cipher-components/ListHeader.vue'
 import SortMenu from './list-cipher-components/SortMenu.vue'
@@ -198,6 +200,45 @@ export default {
               null
             )) || []
         } catch (error) {}
+
+        // revert some cipher types back to bote
+        const revertingCiphers = result.filter(cipher =>
+          Object.values(this.cipherMapping)
+            .filter(m => m.revertToNote)
+            .map(m => m.type)
+            .includes(cipher.type)
+        )
+        revertingCiphers.forEach(cipher => {
+          try {
+            const content = JSON.parse(cipher.notes)
+            cipher.type = CipherType.SecureNote
+            cipher.secureNote.type = 0
+            cipher.notes = content.notes
+            function camelCaseToWords (str) {
+              if (!str) {
+                return ''
+              }
+              const newStr = str
+                .replace(/([a-z])([A-Z])/g, '$1 $2')
+                .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+                .replace(/(\b[A-Z]{2,}\b)(?=[a-z])/g, '$1 ')
+                .toLowerCase()
+              return newStr ? newStr[0].toUpperCase() + newStr.slice(1) : newStr
+            }
+            const newFields = Object.keys(content)
+              .filter(k => k !== 'notes')
+              .map(k => ({
+                name: camelCaseToWords(k),
+                value: content[k],
+                type: FieldType.Text
+              }))
+            cipher.fields = [...(cipher.fields || []), ...newFields]
+            this.handleEditCipher(cipher, { silent: true })
+          } catch (e) {
+            console.log(e)
+          }
+        })
+
         // remove hidden ciphers
         result = result.filter(cipher =>
           Object.values(this.cipherMapping)
