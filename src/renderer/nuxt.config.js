@@ -109,7 +109,11 @@ module.exports = {
   tailwindcss: {
     jit: true
   },
-  css: ['@/assets/css/app.scss', '~/static/assets/css/notion-overwrite.css'],
+  css: [
+    '@/assets/css/app.scss',
+    '~/static/assets/css/notion-overwrite.css',
+    '@/assets/flags/flags.css'
+  ],
   i18n: {
     locales: ['en', 'vi'],
     defaultLocale: 'en',

@@ -200,18 +200,61 @@
     <!-- Testimonials -->
     <section class="md:mt-36 mt-24">
       <div class="mx-auto">
-        <h2 class="text-center font-bold text-black landing-font-38 mb-[14px]">
+        <h2 class="text-center font-bold text-black landing-font-38 mb-20">
           {{ $t('landing.testimonials.title') }}
         </h2>
       </div>
 
       <div v-if="testimonials.length">
-        <carousel>
+        <carousel
+          autoplay
+          loop
+          :autoplay-timeout="5000"
+          :per-page-custom="[
+            [0, 1],
+            [480, 1],
+            [768, 2],
+            [1024, 3],
+            [1280, 4]
+          ]"
+          pagination-active-color="#268334"
+        >
           <slide v-for="(item, index) in testimonials" :key="index">
-            <div>
-              <p>
-                {{ item }}
+            <div
+              class="border rounded border-black-50 p-7 h-full flex flex-col"
+              :class="{ 'ml-6': index !== 0 }"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <p class="text-black-50">
+                  <i
+                    v-for="i in 5"
+                    :key="i"
+                    class="el-icon-star-on"
+                    :class="{ 'text-warning': i < item.Rating }"
+                  />
+                </p>
+                <img
+                  :src="`/img/index/${item.Source.replaceAll(' ', '')}.svg`"
+                  alt="item.Source"
+                  class="h-6"
+                >
+              </div>
+              <p class="font-semibold text-black text-[16px] mb-2">
+                {{ item.Title }}
               </p>
+              <p class="text-black mb-9 flex-1">
+                {{ locale === 'vi' ? item.Vietnamese : item.English }}
+              </p>
+              <div class="flex items-center justify-between">
+                <p class="text-black text-[12px]">
+                  <strong>
+                    {{ item.Reviewer }}
+                  </strong>
+                  &nbsp;
+                  {{ item['Updated time'] }}
+                </p>
+                <span :class="`flag flag-${item.Country.toLowerCase()}`" />
+              </div>
             </div>
           </slide>
         </carousel>
@@ -660,7 +703,20 @@ export default {
       try {
         const res = await axios.get(`${process.env.baseUrl}/api/testimonials`)
         return {
-          testimonials: res.data.data.filter(t => t.Status === 'Active')
+          testimonials: res.data.data
+            .filter(t => t.Status === 'Active')
+            .map(t => {
+              let rating = 5
+              try {
+                rating = parseInt(t.Rating)
+              } catch (error) {
+                //
+              }
+              return {
+                ...t,
+                Rating: rating
+              }
+            })
         }
       } catch (error) {
         console.log(error)
@@ -730,5 +786,14 @@ export default {
   margin: 12% auto; /* 15% from the top and centered */
   border: 1px solid #888;
   width: 960px;
+}
+</style>
+<style>
+.VueCarousel-dot--active {
+  width: 20px !important;
+  border-radius: 16px !important;
+}
+.VueCarousel-dot {
+  transition: all 0.2s ease;
 }
 </style>
