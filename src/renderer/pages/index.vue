@@ -230,7 +230,7 @@
                     v-for="i in 5"
                     :key="i"
                     class="el-icon-star-on"
-                    :class="{ 'text-warning': i < item.Rating }"
+                    :class="{ 'text-warning': i <= item.Rating }"
                   />
                 </p>
                 <img
