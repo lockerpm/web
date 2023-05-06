@@ -16,7 +16,6 @@
             ? ''
             : 'hidden'
         "
-        exact
       >
         {{ $t(`sidebar.${item.label}`) }}
       </nuxt-link>

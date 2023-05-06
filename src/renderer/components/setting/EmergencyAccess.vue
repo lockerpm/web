@@ -1,5 +1,5 @@
 <template>
-  <div class="setting-wrapper">
+  <div id="#emergency-access" class="setting-wrapper">
     <div class="setting-section">
       <div
         class="setting-section-header cursor-pointer"
@@ -798,6 +798,9 @@ export default {
         this.getListTrusted(),
         this.getListGranted()
       ])
+    }
+    if (this.$route.hash === '#emergency-access') {
+      this.collapsed = true
     }
   },
   methods: {

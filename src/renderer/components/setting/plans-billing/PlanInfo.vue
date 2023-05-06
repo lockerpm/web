@@ -8,13 +8,13 @@
             class="flex justify-between w-full mr-6 ml-4 items-center py-8 flex-wrap"
           >
             <div class="text-head-5 font-semibold text-black">
-              {{ currentPlan.name }}
+              {{ $t('common.plan') }}: {{ currentPlan.name }}
             </div>
             <!-- Free plan -->
             <button
               v-if="currentPlan.alias === 'pm_free'"
               class="btn btn-primary my-2 sm:mt-0"
-              @click="buyPremium"
+              @click="buyPremium()"
             >
               <div class="flex">
                 <div class="mr-2">
@@ -126,7 +126,9 @@
           </div>
 
           <div
-            v-for="(item, index) in premiumFeatures"
+            v-for="(item, index) in premiumFeatures.filter(
+              item => !item.hidden
+            )"
             :key="index"
             class="flex flex-col sm:flex-row items-center w-full border-b border-black-100 py-6"
           >
@@ -135,23 +137,41 @@
                 require(`~/assets/images/pages/settings/plans-billing/${item.img}`)
               "
               alt=""
-              class="mr-4 h-[62px] mb-4 sm:mb-0"
+              class="sm:mr-4 mr-0 h-[62px] mb-4 sm:mb-0"
             >
 
             <div class="flex-1 text-center sm:text-left">
-              <p
-                class="setting-title mb-3"
-                :class="isFreePlan ? '!text-[#A5ABB3]' : ''"
+              <div
+                class="flex flex-wrap items-center mb-3 flex-col sm:flex-row"
               >
-                {{ $t(`data.settings.extra_features.${item.i18nKey}.title`) }}
-              </p>
+                <p
+                  class="setting-title"
+                  :class="{
+                    'text-[#A5ABB3]': !item.active,
+                    'mr-0 sm:mr-3 mb-2 sm:mb-0': !!item.label
+                  }"
+                >
+                  {{ $t(`data.settings.extra_features.${item.i18nKey}.title`) }}
+                </p>
+                <div
+                  v-if="!!item.label"
+                  class="text-white font-semibold px-3 bg-black rounded"
+                >
+                  {{ item.label }}
+                </div>
+              </div>
               <p
                 class="mb-4 setting-description"
-                :class="isFreePlan ? '!text-[#A5ABB3]' : ''"
+                :class="!item.active ? '!text-[#A5ABB3]' : ''"
               >
                 {{ $t(`data.settings.extra_features.${item.i18nKey}.desc`) }}
               </p>
               <a
+                v-if="
+                  !!$t(
+                    `data.settings.extra_features.${item.i18nKey}.learn_more.url`
+                  )
+                "
                 :href="
                   $t(
                     `data.settings.extra_features.${item.i18nKey}.learn_more.url`
@@ -169,12 +189,16 @@
 
             <button
               class="btn btn-primary ml-0 sm:ml-3 min-w-[220px] mt-4 sm:mt-0"
-              @click="isFreePlan ? buyPremium : item.button.action"
+              @click="item.button.action"
             >
               <div class="flex justify-center items-center">
                 <div class="mr-2">
                   <img
-                    src="~/assets/images/icons/flash_white.svg"
+                    :src="
+                      require(`~/assets/images/icons/pages/settings/${
+                        item.button.icon || 'flash_white'
+                      }.svg`)
+                    "
                     alt=""
                     class="h-3"
                   >
@@ -214,10 +238,16 @@ export default {
     isFreePlan () {
       return this.currentPlan.alias === 'pm_free'
     },
+    isPremiumPlan () {
+      return this.currentPlan.alias === 'pm_premium'
+    },
+    isFamilyPlan () {
+      return this.currentPlan.alias === 'pm_family'
+    },
     cipherStorage () {
       const allCiphers = this.allCiphers || []
       return this.cipherTypesList
-        .filter(c => !!c.freeLimit)
+        .filter(c => !!c.freeLimit && !c.revertToNote)
         .map(c => ({
           type: c.type,
           limit: c.freeLimit,
@@ -229,32 +259,42 @@ export default {
         {
           img: 'feat-1.svg',
           i18nKey: 'feat1',
+          hidden: !this.isFreePlan,
           button: {
             icon: '',
             action: () => {
-              //
+              this.buyPremium()
             }
           }
         },
         {
           img: 'feat-2.svg',
           i18nKey: 'feat2',
+          active: !this.isFreePlan,
           button: {
-            icon: '',
+            icon: 'share',
             action: () => {
-              this.$router.push(this.localeRoute('/shares'))
+              if (this.isFreePlan) {
+                this.buyPremium()
+                return
+              }
+              this.$router.push(this.localeRoute('/shares/your-shares'))
             }
           }
         },
         {
           img: 'feat-3.svg',
           i18nKey: 'feat3',
+          active: !this.isFreePlan,
           button: {
-            icon: '',
+            icon: 'add',
             action: () => {
+              if (this.isFreePlan) {
+                this.buyPremium()
+                return
+              }
               this.$router.push(
-                // TODO: define this params
-                this.localeRoute('/security?tab=emergency-access')
+                this.localeRoute('/settings/security#emergency-access')
               )
             }
           }
@@ -262,9 +302,14 @@ export default {
         {
           img: 'feat-4.svg',
           i18nKey: 'feat4',
+          active: !this.isFreePlan,
           button: {
-            icon: '',
+            icon: 'check_circle',
             action: () => {
+              if (this.isFreePlan) {
+                this.buyPremium()
+                return
+              }
               this.$router.push(this.localeRoute('/tools/breach'))
             }
           }
@@ -272,9 +317,14 @@ export default {
         {
           img: 'feat-5.svg',
           i18nKey: 'feat5',
+          active: !this.isFreePlan,
           button: {
-            icon: '',
+            icon: 'magnify',
             action: () => {
+              if (this.isFreePlan) {
+                this.buyPremium()
+                return
+              }
               this.$router.push(this.localeRoute('/tools/password-health'))
             }
           }
@@ -282,9 +332,14 @@ export default {
         {
           img: 'feat-6.svg',
           i18nKey: 'feat6',
+          active: !this.isFreePlan,
           button: {
-            icon: '',
+            icon: 'email',
             action: () => {
+              if (this.isFreePlan) {
+                this.buyPremium()
+                return
+              }
               this.$router.push(this.localeRoute('/relay'))
             }
           }
@@ -292,20 +347,27 @@ export default {
         {
           img: 'feat-7.svg',
           i18nKey: 'feat7',
+          hidden: !this.isFreePlan,
           button: {
             icon: '',
             action: () => {
-              //
+              this.buyPremium()
             }
           }
         },
         {
           img: 'feat-8.svg',
           i18nKey: 'feat8',
+          label: 'FAMILY',
+          active: this.isFamilyPlan,
           button: {
-            icon: '',
+            icon: 'users_group',
             action: () => {
-              this.$router.push(this.localeRoute('/settings/family-members'))
+              if (!this.isFamilyPlan) {
+                this.buyPremium('pm_family')
+                return
+              }
+              this.$router.push(this.localeRoute('/settings/manage-member'))
             }
           }
         }
@@ -324,8 +386,15 @@ export default {
       return 'success'
     },
 
-    buyPremium () {
-      this.$router.push(localeRoute({ name: 'manage-plans' }))
+    buyPremium (plan = 'pm_premium') {
+      this.$router.push(
+        this.localeRoute({
+          name: 'manage-plans',
+          query: {
+            plan
+          }
+        })
+      )
     },
 
     cancelSub () {
