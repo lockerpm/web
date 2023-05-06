@@ -641,7 +641,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import cheerio from 'cheerio'
 import Post from '~/components/landing/blog/Post'
 
@@ -650,22 +649,22 @@ export default {
 
   layout: 'landing',
 
-  async asyncData (context) {
+  async asyncData ({ store, $axios }) {
     // Get blogs
     const _getBlogs = async () => {
-      const language = context.store.state.i18n.locale
+      const language = store.state.i18n.locale
       let tagId
       try {
         const posts = []
-        const result = await axios.get(
+        const result = await $axios.get(
           `${process.env.blogUrl}/tags?slug=${language}`
         )
         tagId = result.data[0].id
         const responses = await Promise.all([
-          axios.get(
+          $axios.get(
             `${process.env.blogUrl}/posts?_embed=1&per_page=3&tags=${tagId}&categories=8,13,18,54,25`
           ),
-          axios.get(`${process.env.blogUrl}/users`)
+          $axios.get(`${process.env.blogUrl}/users`)
         ])
         const { data } = responses[0]
         const userArray = responses[1].data
@@ -701,7 +700,13 @@ export default {
     // Get testimonials
     const _getTestimonials = async () => {
       try {
-        const res = await axios.get(`${process.env.baseUrl}/api/testimonials`)
+        const res = await $axios.get(`${process.env.baseUrl}/api/testimonials`)
+        if (!res.data?.data) {
+          console.log(res.data)
+          return {
+            testimonials: []
+          }
+        }
         return {
           testimonials: res.data.data
             .filter(t => t.Status === 'Active')
@@ -751,6 +756,39 @@ export default {
           async: true
         }
       ]
+    }
+  },
+
+  mounted () {
+    if (!this.testimonials.length) {
+      console.log('retry testimonials')
+      this.getTestimonials()
+    }
+  },
+
+  methods: {
+    async getTestimonials () {
+      try {
+        const res = await this.$axios.get(
+          `${process.env.baseUrl}/api/testimonials`
+        )
+        this.testimonials = res.data.data
+          .filter(t => t.Status === 'Active')
+          .map(t => {
+            let rating = 5
+            try {
+              rating = parseInt(t.Rating)
+            } catch (error) {
+              //
+            }
+            return {
+              ...t,
+              Rating: rating
+            }
+          })
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
