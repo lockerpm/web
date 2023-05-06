@@ -757,39 +757,6 @@ export default {
         }
       ]
     }
-  },
-
-  mounted () {
-    if (!this.testimonials.length) {
-      console.log('retry testimonials')
-      this.getTestimonials()
-    }
-  },
-
-  methods: {
-    async getTestimonials () {
-      try {
-        const res = await this.$axios.get(
-          `${process.env.baseUrl}/api/testimonials`
-        )
-        this.testimonials = res.data.data
-          .filter(t => t.Status === 'Active')
-          .map(t => {
-            let rating = 5
-            try {
-              rating = parseInt(t.Rating)
-            } catch (error) {
-              //
-            }
-            return {
-              ...t,
-              Rating: rating
-            }
-          })
-      } catch (error) {
-        console.log(error)
-      }
-    }
   }
 }
 </script>
