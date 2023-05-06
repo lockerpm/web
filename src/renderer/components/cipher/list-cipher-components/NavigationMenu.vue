@@ -66,16 +66,6 @@ export default {
   },
 
   computed: {
-    menuVault () {
-      return [
-        {
-          label: 'all',
-          routeName: 'vault'
-        },
-        ...Object.values(this.cipherMapping).filter(m => !m.noMenu)
-      ]
-    },
-
     groups () {
       const res = Object.values(this.cipherGroupMapping)
       res[0].unshift({
@@ -83,6 +73,13 @@ export default {
         routeName: 'vault'
       })
       return res
+    },
+
+    menuVault () {
+      return this.groups.reduce(
+        (cur, g) => [...cur, ...g.filter(i => !i.noMenu)],
+        []
+      )
     },
 
     currentRoute () {
