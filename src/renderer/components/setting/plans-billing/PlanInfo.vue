@@ -85,8 +85,8 @@
 
             <!-- Right limited -->
             <div v-if="currentPlan.alias === 'pm_free'">
-              <template v-if="cipherStorage">
-                <div v-for="(item, index) in cipherStorage" :key="index">
+              <template v-if="itemsStorage">
+                <div v-for="(item, index) in itemsStorage" :key="index">
                   <div
                     class="flex justify-between"
                     :class="{ 'mt-4': index !== 0 }"
@@ -99,7 +99,7 @@
                   <el-progress
                     :show-text="false"
                     :percentage="(item.total * 100) / item.limit"
-                    :status="cipherStatus(item.total / item.limit)"
+                    :status="getPercentageStatus(item.total / item.limit)"
                   />
                 </div>
               </template>
@@ -219,18 +219,6 @@
 </template>
 <script>
 export default {
-  asyncComputed: {
-    allCiphers: {
-      async get () {
-        this.loading = true
-        let result = await this.$cipherService.getAllDecrypted()
-        result = result.filter(cipher => cipher.organizationId === null)
-        return result
-      },
-      watch: ['$store.state.syncedCiphersToggle']
-    }
-  },
-
   computed: {
     currentPlan () {
       return this.$store.state.currentPlan
@@ -244,15 +232,21 @@ export default {
     isFamilyPlan () {
       return this.currentPlan.alias === 'pm_family'
     },
-    cipherStorage () {
-      const allCiphers = this.allCiphers || []
-      return this.cipherTypesList
+    itemsStorage () {
+      const res = this.cipherTypesList
         .filter(c => !!c.freeLimit && !c.revertToNote)
         .map(c => ({
           type: c.type,
           limit: c.freeLimit,
-          total: allCiphers.filter(cipher => cipher.type === c.type).length
+          total: this.$store.state.itemsCount[c.type] || 0
         }))
+      res.push({
+        type: 'private_email',
+        limit: 5,
+        // TODO: check key name
+        total: this.$store.state.itemsCount.private_email || 0
+      })
+      return res
     },
     premiumFeatures () {
       return [
@@ -376,7 +370,7 @@ export default {
   },
 
   methods: {
-    cipherStatus (percentage) {
+    getPercentageStatus (percentage) {
       if (percentage > 0.8) {
         return 'exception'
       }

@@ -11,11 +11,32 @@
       <i class="el-icon-close text-lg text-white" />
     </button>
     <div>
+      <!-- Logo -->
       <div class="mt-7 px-6">
         <nuxt-link :to="localeRoute({ name: 'vault' })">
           <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
         </nuxt-link>
       </div>
+      <!-- Logo end -->
+
+      <!-- Plan storage -->
+      <div v-if="isFreePlan">
+        <div class="mb-3 flex items-center">
+          <img src="~/assets/images/icons/flash_success.svg">
+          <p class="text-white font-semibold ml-3">
+            {{ $t('data.settings.plan_storage') }}
+          </p>
+        </div>
+        <el-progress
+          :show-text="false"
+          :percentage="storagePercentage * 100"
+          :status="getPercentageStatus(storagePercentage)"
+        />
+        <hr class="border-black-50 mt-6">
+      </div>
+      <!-- Plan storage end -->
+
+      <!-- Menu -->
       <nav class="mt-7">
         <template v-for="(item, index) in menu">
           <!-- Collapse items -->
@@ -106,7 +127,10 @@
           </nuxt-link>
         </template>
       </nav>
+      <!-- Menu end -->
     </div>
+
+    <!-- Bottom menu -->
     <div>
       <nav class="my-10">
         <template v-for="(item, index) in bottomMenu">
@@ -174,6 +198,7 @@
         </a>
       </nav>
     </div>
+    <!-- Bottom menu end -->
   </div>
 </template>
 
@@ -195,6 +220,31 @@ export default {
     }
   },
   computed: {
+    isFreePlan () {
+      return this.$store.state.currentPlan?.alias === 'pm_free'
+    },
+
+    storagePercentage () {
+      const res = this.cipherTypesList
+        .filter(c => !!c.freeLimit && !c.revertToNote)
+        .map(c => ({
+          limit: c.freeLimit,
+          total: this.$store.state.itemsCount[c.type] || 0
+        }))
+
+      // Private email
+      res.push({
+        limit: 5,
+        // TODO: check key name
+        total: this.$store.state.itemsCount.private_email || 0
+      })
+
+      const totalLimit = res.reduce((a, b) => a + b.limit, 0)
+      const totalItems = res.reduce((a, b) => a + b.total, 0)
+
+      return totalItems / totalLimit
+    },
+
     menu () {
       return [
         {
@@ -291,6 +341,15 @@ export default {
   methods: {
     hideNavMenu () {
       this.$emit('close')
+    },
+    getPercentageStatus (percentage) {
+      if (percentage > 0.8) {
+        return 'exception'
+      }
+      if (percentage > 0.5) {
+        return 'warning'
+      }
+      return 'success'
     }
   }
 }

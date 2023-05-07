@@ -22,6 +22,7 @@ export const state = () => ({
   teams: [],
   currentPlan: {},
   cipherCount: null,
+  itemsCount: {},
   notDeletedCipherCount: {
     total: 0,
     ciphers: {}
@@ -67,6 +68,7 @@ export const mutations = {
     state.syncing = false
     state.syncingQuickShares = false
     state.cipherCount = null
+    state.itemsCount = {}
     state.notDeletedCipherCount = {
       total: 0,
       ciphers: {}
@@ -119,6 +121,9 @@ export const mutations = {
   },
   UPDATE_CIPHER_COUNT (state, value) {
     state.cipherCount = value
+  },
+  UPDATE_ITEMS_COUNT (state, value) {
+    state.itemsCount = value
   },
   UPDATE_NOT_DELETED_CIPHER_COUNT (state, value) {
     state.notDeletedCipherCount = value
@@ -288,5 +293,13 @@ export const actions = {
         commit('UPDATE_ENTERPRISE_INVITATIONS', res)
         return res
       })
+  },
+  LoadItemsCount ({ commit }) {
+    // TODO: implement this API
+    // return this.$axios.$get('cystack_platform/pm/').then(res => {
+    //   commit('UPDATE_ITEMS_COUNT', res)
+    //   return res
+    // })
+    commit('UPDATE_ITEMS_COUNT', {})
   }
 }
