@@ -10,89 +10,92 @@
       'is-disabled': disabled
     }"
   >
-    <input
-      ref="inputLabel"
-      class="cs-input-label"
-      type="text"
-      :placeholder="$t('data.ciphers.field_name')"
-      :value="label"
-      @input="handleInputLabel"
-      @mouseleave="hovering = false"
-      @focus="handleFocus"
-      @blur="focusing = false"
-      @mouseenter="handleHover"
-      @keyup.enter="keyupEnter"
-    >
-    <template v-if="isTextarea">
-      <textarea
-        ref="textarea"
-        class="cs-textarea"
-        :placeholder="shouldShowPlaceHolder ? placeholder : ''"
-        :disabled="disabled"
-        @mouseleave="hovering = false"
-        @focus="focusing = true"
-        @blur="focusing = false"
-        @input="handleInput"
-        @mouseenter="hovering = true"
-      />
-    </template>
-    <template v-else-if="isDate">
-      <el-date-picker
-        ref="datetime"
-        v-model="date"
-        :default-value="value"
-        class="cs-datepicker"
-        type="date"
-        placeholder="dd-mm-yyyy"
-        format="dd-MM-yyyy"
-        value-format="dd-MM-yyyy"
-        @change="handleChangeDate"
-      />
-    </template>
-    <template v-else>
+    <div class="cs-input-label flex">
       <input
-        ref="input"
-        class="cs-input"
-        :type="type"
-        :placeholder="shouldShowPlaceHolder ? placeholder : ''"
-        :disabled="disabled"
-        :value="value"
-        tabindex="0"
+        ref="inputLabel"
+        type="text"
+        :placeholder="option.fieldPlaceholder || option.label"
+        :value="label"
+        @input="handleInputLabel"
         @mouseleave="hovering = false"
         @focus="handleFocus"
         @blur="focusing = false"
-        @input="handleInput"
         @mouseenter="handleHover"
         @keyup.enter="keyupEnter"
       >
-    </template>
-
-    <button
-      v-if="isPassword && value"
-      class="btn btn-icon"
-      type="button"
-      tabindex="-1"
-      @click="togglePassword"
-    >
-      <i
-        class="far"
-        :class="{
-          'fa-eye': type === 'password',
-          'fa-eye-slash': type === 'text'
-        }"
-      />
-    </button>
-    <button
-      v-if="addButton"
-      class="btn btn-icon !py-0"
-      type="button"
-      tabindex="-1"
-      @click="add"
-    >
-      <i class="fas fa-plus" />
-    </button>
-    <div v-if="errorText" class="cs-helper-text">
-      {{ errorText }}
+      <i class="el-icon-remove-outline cursor-pointer text-danger-600 text-head-5 " @click="$emit('delete')" />
+    </div>
+    <div class="cs-input-value">
+      <template v-if="isTextarea">
+        <textarea
+          ref="textarea"
+          class="cs-textarea"
+          :placeholder="option.placeholder"
+          :disabled="disabled"
+          @mouseleave="hovering = false"
+          @focus="focusing = true"
+          @blur="focusing = false"
+          @input="handleInput"
+          @mouseenter="hovering = true"
+        />
+      </template>
+      <template v-else-if="isDate">
+        <el-date-picker
+          ref="datetime"
+          v-model="date"
+          :default-value="value"
+          class="cs-datepicker"
+          type="date"
+          :placeholder="option.placeholder"
+          format="dd-MM-yyyy"
+          value-format="dd-MM-yyyy"
+          @change="handleChangeDate"
+        />
+      </template>
+      <template v-else>
+        <input
+          ref="input"
+          class="cs-input"
+          :type="type"
+          :placeholder="option.placeholder"
+          :disabled="disabled"
+          :value="value"
+          tabindex="0"
+          @mouseleave="hovering = false"
+          @focus="handleFocus"
+          @blur="focusing = false"
+          @input="handleInput"
+          @mouseenter="handleHover"
+          @keyup.enter="keyupEnter"
+        >
+      </template>
+      <button
+        v-if="isPassword && value"
+        class="btn btn-icon"
+        type="button"
+        tabindex="-1"
+        @click="togglePassword"
+      >
+        <i
+          class="far"
+          :class="{
+            'fa-eye': type === 'password',
+            'fa-eye-slash': type === 'text'
+          }"
+        />
+      </button>
+      <button
+        v-if="addButton"
+        class="btn btn-icon !py-0"
+        type="button"
+        tabindex="-1"
+        @click="add"
+      >
+        <i class="fas fa-plus" />
+      </button>
+      <div v-if="errorText" class="cs-helper-text">
+        {{ errorText }}
+      </div>
     </div>
   </div>
 </template>
@@ -116,10 +119,6 @@ export default {
       type: [String, Boolean, Number],
       default: ''
     },
-    placeholder: {
-      type: String,
-      default: ''
-    },
     isTextarea: {
       type: Boolean,
       default: false
@@ -139,6 +138,10 @@ export default {
     required: {
       type: Boolean,
       default: false
+    },
+    option: {
+      type: Object,
+      default: () => {}
     }
   },
   data () {
@@ -150,9 +153,6 @@ export default {
     }
   },
   computed: {
-    shouldShowPlaceHolder () {
-      return this.placeholder && !this.value
-    },
     nativeInputValue () {
       return this.value === null || this.value === undefined
         ? ''
@@ -241,15 +241,9 @@ export default {
 
 <style scoped lang="scss">
 .cs-field {
-  //width: 100%;
-  min-height: 48px;
   @apply mb-2.5 last:mb-6;
-  display: flex;
   position: relative;
   border-radius: 2px;
-  border: solid 1px #e6e8f4;
-  padding-top: 20px;
-  background-color: #f3f3f3;
   &.is-hover,
   &.is-focus {
     @apply border-primary bg-white;
@@ -268,7 +262,7 @@ export default {
   &.is-password.have-value {
     button.btn {
       @apply absolute p-0.5;
-      top: 19px;
+      top: 34px;
       right: 13px;
     }
     .cs-input {
@@ -302,32 +296,33 @@ export default {
     padding-bottom: 0px;
     padding-top: 0px;
     font-size: 14px;
-    line-height: 19px;
+    line-height: 20px;
     border: none;
     flex: 1;
     color: #161922;
     height: 32px;
-    background-color: inherit;
+    background-color: #f3f3f3 !important;
+    width: 100%;
   }
   .cs-input-label {
-    padding: 0 0.75rem 0 0;
-    font-size: 12px;
-    line-height: 19px;
-    border: none;
-    flex: 1;
-    color: #161922;
-    position: absolute;
-    top: 5px;
-    left: 11px;
-    background-color: inherit;
-
-    // font-size: 14px;
-    // color: #90A0C1;
-    // pointer-events: none;
-    // transition: .4s cubic-bezier(.25,.8,.25,1);
-    // transition-duration: .3s;
-    // line-height: 19px;
-    // user-select: none;
+    margin: 0 0 8px 0;
+    align-items: center;
+    input {
+      padding: 0 0.75rem 0 0;
+      font-size: 14px;
+      line-height: 20px;
+      border: none;
+      flex: 1;
+      color: #161922;
+      background-color: inherit;
+    }
+    i {
+      font-size: 18px;
+    }
+  }
+  .cs-input-value {
+    border: solid 1px #e6e8f4;
+    background-color: #f3f3f3;
   }
   .cs-textarea {
     min-height: 100px;
@@ -354,6 +349,10 @@ export default {
     transition-duration: 0.3s;
     line-height: 19px;
     user-select: none;
+  }
+
+  ::placeholder {
+    color: #90a0c1;
   }
 }
 </style>

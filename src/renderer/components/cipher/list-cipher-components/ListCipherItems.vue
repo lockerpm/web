@@ -123,6 +123,13 @@
           </div>
         </div>
 
+        <!-- Created time -->
+        <div class="td">
+          <span class="break-normal">{{
+            $moment(item.creationDate).fromNow()
+          }}</span>
+        </div>
+
         <!-- Updated time -->
         <div class="td">
           <span class="break-normal">{{
@@ -335,7 +342,7 @@ export default {
 
   computed: {
     headers () {
-      return [this.$t('data.ciphers.updated_time'), this.$t('common.actions')]
+      return [this.$t('data.ciphers.created_time'), this.$t('data.ciphers.updated_time'), this.$t('common.actions')]
     }
   },
 
