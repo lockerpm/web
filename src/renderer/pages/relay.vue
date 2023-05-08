@@ -269,8 +269,9 @@ export default {
         this.addresses = res
         this.$store.commit('UPDATE_ITEMS_COUNT', {
           ...this.$store.state.itemsCount,
-          // TODO: check key name
-          relay_address: res.length
+          relay_addresses: {
+            total: res.length
+          }
         })
       } catch {
       } finally {

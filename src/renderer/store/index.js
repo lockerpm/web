@@ -295,11 +295,11 @@ export const actions = {
       })
   },
   LoadItemsCount ({ commit }) {
-    // TODO: implement this API
-    // return this.$axios.$get('cystack_platform/pm/').then(res => {
-    //   commit('UPDATE_ITEMS_COUNT', res)
-    //   return res
-    // })
-    commit('UPDATE_ITEMS_COUNT', {})
+    return this.$axios
+      .$get('cystack_platform/pm/payments/plan/limit')
+      .then(res => {
+        commit('UPDATE_ITEMS_COUNT', res)
+        return res
+      })
   }
 }

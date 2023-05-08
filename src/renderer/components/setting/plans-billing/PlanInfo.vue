@@ -233,19 +233,24 @@ export default {
       return this.currentPlan.alias === 'pm_family'
     },
     itemsStorage () {
+      const planLimit = this.$store.state.itemsCount.plan_limit || {}
+      const ciphersCount = this.$store.state.itemsCount.ciphers || {}
+
       const res = this.cipherTypesList
         .filter(c => !!c.freeLimit && !c.revertToNote)
         .map(c => ({
           type: c.type,
-          limit: c.freeLimit,
-          total: this.$store.state.itemsCount[c.type] || 0
+          limit: planLimit[c.type] || c.freeLimit,
+          total: ciphersCount[c.type] || 0
         }))
+
+      // Private email
       res.push({
         type: 'private_email',
-        limit: 5,
-        // TODO: check key name
-        total: this.$store.state.itemsCount.private_email || 0
+        limit: planLimit.relay_addresses || 5,
+        total: this.$store.state.itemsCount.relay_addresses?.total || 0
       })
+
       return res
     },
     premiumFeatures () {

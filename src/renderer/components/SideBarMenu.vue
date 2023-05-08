@@ -20,7 +20,7 @@
       <!-- Logo end -->
 
       <!-- Plan storage -->
-      <div v-if="isFreePlan">
+      <div v-if="isFreePlan" class="mt-4 px-[20px]">
         <div class="mb-3 flex items-center">
           <img src="~/assets/images/icons/flash_success.svg">
           <p class="text-white font-semibold ml-3">
@@ -31,13 +31,14 @@
           :show-text="false"
           :percentage="storagePercentage * 100"
           :status="getPercentageStatus(storagePercentage)"
+          :stroke-width="5"
         />
-        <hr class="border-black-50 mt-6">
+        <hr class="border-[#394452] mt-5">
       </div>
       <!-- Plan storage end -->
 
       <!-- Menu -->
-      <nav class="mt-7">
+      <nav class="mt-5">
         <template v-for="(item, index) in menu">
           <!-- Collapse items -->
           <template v-if="item.collapse">
@@ -225,18 +226,20 @@ export default {
     },
 
     storagePercentage () {
+      const planLimit = this.$store.state.itemsCount.plan_limit || {}
+      const ciphersCount = this.$store.state.itemsCount.ciphers || {}
+
       const res = this.cipherTypesList
         .filter(c => !!c.freeLimit && !c.revertToNote)
         .map(c => ({
-          limit: c.freeLimit,
-          total: this.$store.state.itemsCount[c.type] || 0
+          limit: planLimit[c.type] || c.freeLimit,
+          total: ciphersCount[c.type] || 0
         }))
 
       // Private email
       res.push({
-        limit: 5,
-        // TODO: check key name
-        total: this.$store.state.itemsCount.private_email || 0
+        limit: planLimit.relay_addresses || 5,
+        total: this.$store.state.itemsCount.relay_addresses?.total || 0
       })
 
       const totalLimit = res.reduce((a, b) => a + b.limit, 0)
