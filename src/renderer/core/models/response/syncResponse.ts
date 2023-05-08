@@ -1,5 +1,5 @@
 import { BaseResponse } from '../../../jslib/src/models/response/baseResponse'
-import { CipherResponse } from '../../../jslib/src/models/response/cipherResponse'
+import { CipherResponse } from '../response/cipherResponse'
 import { DomainsResponse } from '../../../jslib/src/models/response/domainsResponse'
 import { FolderResponse } from '../../../jslib/src/models/response/folderResponse'
 import { PolicyResponse } from '../../../jslib/src/models/response/policyResponse'

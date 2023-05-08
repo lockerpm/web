@@ -8,9 +8,8 @@ import {
 } from '../../../jslib/src/models/data'
 import { CipherRepromptType } from '../../../jslib/src/enums/cipherRepromptType'
 import { PasswordHistoryData } from '../../../jslib/src/models/data/passwordHistoryData'
-import { CipherResponse } from '../../../jslib/src/models/response'
+import { CipherResponse } from '../response/cipherResponse'
 import { CipherType } from '../../../jslib/src/enums'
-// import { CipherType } from '../../enums/cipherType'
 
 export class CipherData {
   id: string
@@ -21,6 +20,7 @@ export class CipherData {
   viewPassword: boolean
   organizationUseTotp: boolean
   favorite: boolean
+  creationDate: string
   revisionDate: string
   type: CipherType
   sizeName: string
@@ -54,6 +54,7 @@ export class CipherData {
     this.viewPassword = response.viewPassword
     this.organizationUseTotp = response.organizationUseTotp
     this.favorite = response.favorite
+    this.creationDate = response.creationDate
     this.revisionDate = response.revisionDate
     this.type = response.type
     this.name = response.name

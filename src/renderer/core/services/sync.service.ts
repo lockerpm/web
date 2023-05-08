@@ -19,7 +19,7 @@ import { PolicyData } from '../../jslib/src/models/data/policyData'
 import { SendData } from '../models/data/sendData'
 import { SendData as OldSendData } from '../../jslib/src/models/data/sendData'
 
-import { CipherResponse } from '../../jslib/src/models/response/cipherResponse'
+import { CipherResponse } from '../../core/models/response/cipherResponse'
 import { CollectionDetailsResponse } from '../../core/models/response/collectionResponse'
 import { DomainsResponse } from '../../jslib/src/models/response/domainsResponse'
 import { FolderResponse } from '../../jslib/src/models/response/folderResponse'

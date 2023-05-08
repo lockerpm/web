@@ -367,7 +367,7 @@ export default {
     cipherStorage () {
       const allCiphers = this.allCiphers || []
       return this.cipherTypesList
-        .filter(c => !!c.freeLimit)
+        .filter(c => !!c.freeLimit && !c.revertToNote)
         .map(c => ({
           type: c.type,
           limit: c.freeLimit,

@@ -313,6 +313,36 @@
           </template>
           <!-- Folder end -->
 
+          <!-- Created time -->
+          <template v-if="!isMasterPw">
+            <div class="grid md:grid-cols-6 cipher-item">
+              <p class="!break-normal mr-4">
+                {{ $t('data.ciphers.created_time') }}
+              </p>
+              <div class="col-span-4 font-semibold flex items-center">
+                <span class="break-normal">{{
+                  $moment(cipher.creationDate).fromNow()
+                }}</span>
+              </div>
+            </div>
+          </template>
+          <!-- Created time end -->
+
+          <!-- Updated time -->
+          <template v-if="!isMasterPw">
+            <div class="grid md:grid-cols-6 cipher-item">
+              <p class="!break-normal mr-4">
+                {{ $t('data.ciphers.updated_time') }}
+              </p>
+              <div class="col-span-4 font-semibold flex items-center">
+                <span class="break-normal">{{
+                  $moment(cipher.revisionDate).fromNow()
+                }}</span>
+              </div>
+            </div>
+          </template>
+          <!-- Updated time end -->
+
           <!-- Share with -->
           <div
             v-if="shareMember.length > 0"
