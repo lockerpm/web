@@ -234,7 +234,11 @@
                   />
                 </p>
                 <img
-                  :src="`/img/index/${item.Source.replaceAll(' ', '')}.svg`"
+                  :src="
+                    item.Logo && item.Logo[0]
+                      ? item.Logo[0].url
+                      : `/img/index/${item.Source.replaceAll(' ', '')}.svg`
+                  "
                   alt="item.Source"
                   class="h-6"
                 >
@@ -641,6 +645,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import cheerio from 'cheerio'
 import Post from '~/components/landing/blog/Post'
 
@@ -656,15 +661,15 @@ export default {
       let tagId
       try {
         const posts = []
-        const result = await $axios.get(
+        const result = await axios.get(
           `${process.env.blogUrl}/tags?slug=${language}`
         )
         tagId = result.data[0].id
         const responses = await Promise.all([
-          $axios.get(
+          axios.get(
             `${process.env.blogUrl}/posts?_embed=1&per_page=3&tags=${tagId}&categories=8,13,18,54,25`
           ),
-          $axios.get(`${process.env.blogUrl}/users`)
+          axios.get(`${process.env.blogUrl}/users`)
         ])
         const { data } = responses[0]
         const userArray = responses[1].data
