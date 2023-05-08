@@ -39,6 +39,21 @@
           />
         </ValidationProvider>
       </div>
+      <div v-if="!cipher.id" class="text-left">
+        <ValidationProvider
+          v-slot="{ errors: err }"
+          rules="required"
+          :name="$t('common.secret_key')"
+        >
+          <InputText
+            v-model="cipher.secretKey"
+            :label="$t('common.secret_key')"
+            class="w-full"
+            :error-text="err && err.length && err[0]"
+            required
+          />
+        </ValidationProvider>
+      </div>
       <!-- Body end -->
 
       <!-- Footer -->
@@ -63,11 +78,20 @@
             {{ $t('common.cancel') }}
           </button>
           <button
+            v-if="cipher.id"
             class="btn btn-primary"
             :disabled="loading || !cipher.name"
             @click="putCipher(cipher)"
           >
             {{ $t('common.update') }}
+          </button>
+          <button
+            v-else
+            class="btn btn-primary"
+            :disabled="loading || !cipher.name"
+            @click="createCipher()"
+          >
+            {{ $t('common.add') }}
           </button>
         </div>
       </div>
@@ -132,6 +156,7 @@ export default {
     // Update cipher
     async putCipher (cipher) {
       try {
+        this.loading = true
         // Change type to Note for new cipher types
         const type_ = this.cipher.type
         if (this.cipher.type === CipherType.TOTP) {
@@ -164,6 +189,32 @@ export default {
         }
       } finally {
         this.loading = false
+      }
+    },
+
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    async createCipher () {
+      try {
+        this.loading = true
+        const cipher = new CipherView()
+        cipher.name = this.cipher.name
+        cipher.type = CipherType.SecureNote
+        cipher.secureNote = new SecureNote()
+        cipher.secureNote.type = 0
+        cipher.notes = `otpauth://totp/${encodeURIComponent(this.cipher.name)}?secret=${this.cipher.secretKey}&issuer=${encodeURIComponent(this.cipher.name)}&algorithm=sha1&digits=6&period=30`
+        const cipherEnc = await this.$cipherService.encrypt(cipher)
+        const data = new CipherRequest(cipherEnc)
+        data.type = CipherType.TOTP
+        await this.$axios.post('cystack_platform/pm/ciphers/vaults', {
+          ...data,
+          collectionIds: []
+        })
+        this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$t(`type.${CipherType.TOTP}`, 1) }), 'success')
+        this.closeDialog()
+      } catch (e) {
+        this.notify(this.$tc('data.notifications.create_failed', 1, { type: this.$t(`type.${CipherType.TOTP}`, 1) }), 'warning')
+      } finally {
+        this.callingAPI = false
       }
     },
 
