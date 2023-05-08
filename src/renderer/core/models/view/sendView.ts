@@ -9,8 +9,8 @@ import { CipherView } from './cipherView'
 export class SendView implements View {
   id: string
   accessId: string
-  revisionDate: Date
   creationDate: Date
+  revisionDate: Date
   key: ArrayBuffer
   cryptoKey: SymmetricCryptoKey
   password: string
@@ -31,9 +31,8 @@ export class SendView implements View {
 
     this.id = s.id
     this.accessId = s.accessId
-    this.revisionDate = s.revisionDate
     this.creationDate = s.creationDate
-
+    this.revisionDate = s.revisionDate
     this.password = s.password
     this.maxAccessCount = s.maxAccessCount
     this.accessCount = s.accessCount

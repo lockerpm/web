@@ -28,7 +28,7 @@ import { CipherCreateRequest } from '../../jslib/src/models/request/cipherCreate
 import { CipherRequest } from '../../jslib/src/models/request/cipherRequest'
 import { CipherShareRequest } from '../../jslib/src/models/request/cipherShareRequest'
 
-import { CipherResponse } from '../../jslib/src/models/response/cipherResponse'
+import { CipherResponse } from '../../core/models/response/cipherResponse'
 import { ErrorResponse } from '../../jslib/src/models/response/errorResponse'
 
 import { AttachmentView } from '../../jslib/src/models/view/attachmentView'
@@ -37,9 +37,9 @@ import { FieldView } from '../../jslib/src/models/view/fieldView'
 import { PasswordHistoryView } from '../../jslib/src/models/view/passwordHistoryView'
 import { View } from '../../jslib/src/models/view/view'
 
-import { SortedCiphersCache } from '../../jslib/src/models/domain/sortedCiphersCache'
+import { SortedCiphersCache } from '../models/domain/sortedCiphersCache'
 
-import { ApiService } from '../../jslib/src/abstractions/api.service'
+import { ApiService } from '../abstractions/api.service'
 import { CipherService as CipherServiceAbstraction } from '../../jslib/src/abstractions/cipher.service'
 import { CryptoService } from '../../jslib/src/abstractions/crypto.service'
 import { FileUploadService } from '../../jslib/src/abstractions/fileUpload.service'
