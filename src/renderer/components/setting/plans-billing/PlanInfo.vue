@@ -1,7 +1,7 @@
 <template>
   <div class="mb-6">
     <el-collapse class="setting-wrapper">
-      <el-collapse-item name="1">
+      <el-collapse-item name="1" class="border-black-50 border rounded">
         <template slot="title">
           <!-- Plan info -->
           <div
@@ -12,7 +12,7 @@
             </div>
             <!-- Free plan -->
             <button
-              v-if="currentPlan.alias === 'pm_free'"
+              v-if="isFreePlan"
               class="btn btn-primary my-2 sm:mt-0"
               @click="buyPremium()"
             >
@@ -28,7 +28,7 @@
             <!-- Free plan end -->
 
             <!-- Lifetime plan -->
-            <div v-else-if="currentPlan.alias === 'pm_lifetime_premium'">
+            <div v-else-if="isLifeTime">
               <div />
             </div>
             <!-- Lifetime plan end -->
@@ -84,7 +84,7 @@
             <!-- Left -->
 
             <!-- Right limited -->
-            <div v-if="currentPlan.alias === 'pm_free'">
+            <div v-if="isFreePlan">
               <template v-if="itemsStorage">
                 <div v-for="(item, index) in itemsStorage" :key="index">
                   <div
@@ -107,7 +107,7 @@
             <!-- Right limited end -->
 
             <!-- Right unlimited -->
-            <div v-else class="text-center font-semibold">
+            <div v-else class="sm:text-right font-semibold">
               {{ $t('common.unlimited') }}
             </div>
             <!-- Right unlimited end -->
@@ -231,6 +231,9 @@ export default {
     },
     isFamilyPlan () {
       return this.currentPlan.alias === 'pm_family'
+    },
+    isLifeTime () {
+      return this.currentPlan.alias === 'pm_lifetime_premium'
     },
     itemsStorage () {
       const planLimit = this.$store.state.itemsCount.plan_limit || {}
