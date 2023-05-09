@@ -261,14 +261,18 @@ export default {
     async getAddresses () {
       this.loading = true
       try {
-        this.addresses = await this.$axios.$get(
-          'cystack_platform/relay/addresses',
-          {
-            params: {
-              paging: 0
-            }
+        const res = await this.$axios.$get('cystack_platform/relay/addresses', {
+          params: {
+            paging: 0
           }
-        )
+        })
+        this.addresses = res
+        this.$store.commit('UPDATE_ITEMS_COUNT', {
+          ...this.$store.state.itemsCount,
+          relay_addresses: {
+            total: res.length
+          }
+        })
       } catch {
       } finally {
         this.loading = false

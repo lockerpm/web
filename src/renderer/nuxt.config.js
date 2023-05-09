@@ -80,7 +80,8 @@ module.exports = {
     { ssr: true, src: '@/plugins/ui/katex.js' },
     { ssr: true, src: '@/plugins/ui/vee.js' },
     { ssr: false, src: '@/plugins/ui/vue-virtual-scroller.js' },
-    { ssr: false, src: '@/plugins/ui/youtube.js' }
+    { ssr: false, src: '@/plugins/ui/youtube.js' },
+    { ssr: false, src: '@/plugins/ui/vue-carousel.js' }
   ],
   buildModules: [
     '@nuxt/typescript-build',
@@ -108,7 +109,11 @@ module.exports = {
   tailwindcss: {
     jit: true
   },
-  css: ['@/assets/css/app.scss', '~/static/assets/css/notion-overwrite.css'],
+  css: [
+    '@/assets/css/app.scss',
+    '~/static/assets/css/notion-overwrite.css',
+    '@/assets/flags/flags.css'
+  ],
   i18n: {
     locales: ['en', 'vi'],
     defaultLocale: 'en',
@@ -186,7 +191,9 @@ module.exports = {
       version: 3
     },
     stripeKey:
-      isStaging || process.env.nodeEnv === 'development'
+      isStaging ||
+      process.env.nodeEnv === 'development' ||
+      process.env.NODE_ENV === 'development'
         ? process.env.STRIPE_KEY_STAGING
         : process.env.STRIPE_KEY,
     cloudflare:
@@ -261,6 +268,10 @@ module.exports = {
   serverMiddleware: [
     { path: '/api', handler: '~/server-middleware/rest.js' },
     { path: '/api/content', handler: '~/server-middleware/notion.js' },
-    { path: '/api/top-banner', handler: '~/server-middleware/topBanner.js' }
+    { path: '/api/top-banner', handler: '~/server-middleware/topBanner.js' },
+    {
+      path: '/api/testimonials',
+      handler: '~/server-middleware/testimonials.js'
+    }
   ]
 }
