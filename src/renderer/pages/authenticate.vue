@@ -37,12 +37,12 @@ export default {
           ...(this.environment === '' ? { secure: true } : { secure: false })
         })
         this.$store.commit('UPDATE_IS_LOGGEDIN', true)
-        if (this.$route.query.client === 'browser') {
+        if (this.$route.query.client === 'browser' && token.toString()) {
           const extensionToken = token
           window.postMessage({
             command: 'cs-authResult',
             token: extensionToken
-          })
+          }, window.location.origin)
         } else {
           const url = 'https://api.locker.io/v3/sso/access_token'
           this.$axios
@@ -56,13 +56,12 @@ export default {
               window.postMessage({
                 command: 'cs-authResult',
                 token: extensionToken
-              })
+              }, window.location.origin)
             })
             .catch(() => {})
         }
 
         // end sendMessage
-
         if (
           this.$route.query.external_url &&
           isString(this.$route.query.external_url)
