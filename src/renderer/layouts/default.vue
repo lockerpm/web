@@ -57,7 +57,7 @@ import TrialAboutToExpireWarning from '../components/notice/TrialAboutToExpireWa
 import PremiumDialog from '../components/upgrade/PremiumDialog.vue'
 
 if (process.env.CS_ENV !== 'web') {
-  // eslint-disable-next-line no-var
+  // eslint-disable-next-line no-var, @typescript-eslint/no-unused-vars
   var { remote } = require('electron')
 }
 const BroadcasterSubscriptionId = 'AppComponent'
@@ -117,6 +117,7 @@ export default {
         this.reconnectSocket()
         this.getShareInvitations()
         this.getMyShares()
+        this.getItemsCount()
         this.$store.dispatch('LoadCurrentPlan')
         this.intervalGet = setInterval(() => {
           this.$store.dispatch('LoadNotification')
@@ -192,6 +193,9 @@ export default {
     async getMyShares () {
       this.$store.dispatch('LoadMyShares')
     },
+    async getItemsCount () {
+      this.$store.dispatch('LoadItemsCount')
+    },
     async recordActivity () {
       const now = new Date().getTime()
       if (this.lastActivity != null && now - this.lastActivity < 250) {
@@ -254,6 +258,7 @@ export default {
           this.getSyncData()
           this.getShareInvitations()
           this.getMyShares()
+          this.getItemsCount()
           break
         case 'emergency_access':
           this.$refs.emergencyAccessInvitations.getEmergencyAccessInvitations()

@@ -635,6 +635,11 @@ a:hover {
   width: 224px;
 }
 
-td .cell {
+td .cell,
+th .cell {
   word-break: normal !important;
+}
+
+.setting-wrapper .el-collapse-item__header {
+  height: auto !important;
 }

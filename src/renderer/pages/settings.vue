@@ -2,7 +2,9 @@
   <div
     class="flex flex-col flex-column-fluid relative bg-[#FBFBFC] min-h-screen"
   >
-    <div class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10">
+    <div
+      class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10 sm:overflow-x-hidden overflow-x-auto"
+    >
       <nuxt-link
         v-for="(item, index) in menu"
         :key="index"
@@ -14,7 +16,6 @@
             ? ''
             : 'hidden'
         "
-        exact
       >
         {{ $t(`sidebar.${item.label}`) }}
       </nuxt-link>

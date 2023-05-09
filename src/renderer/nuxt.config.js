@@ -191,7 +191,9 @@ module.exports = {
       version: 3
     },
     stripeKey:
-      isStaging || process.env.nodeEnv === 'development'
+      isStaging ||
+      process.env.nodeEnv === 'development' ||
+      process.env.NODE_ENV === 'development'
         ? process.env.STRIPE_KEY_STAGING
         : process.env.STRIPE_KEY,
     cloudflare:
