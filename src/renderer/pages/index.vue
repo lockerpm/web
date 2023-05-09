@@ -2,19 +2,25 @@
   <div>
     <!-- Header -->
     <section class="full-width h-auto" style="background: #fbfaf3">
-      <div class="md:pt-[186px] pt-28 mx-auto pl-6 md:pb-32 pb-20">
-        <div class="w-full flex flex-wrap justify-end">
-          <div
-            class="lg:max-w-[570px] max-h-[485px] md:w-1/2 order-1 mb-8 md:mb-0 self-center"
-          >
+      <div class="md:pt-[186px] pt-28 max-w-6xl px-6 mx-auto md:pb-32 pb-20">
+        <div class="w-full flex flex-wrap">
+          <!-- Left -->
+          <div class="md:w-1/2 mb-8 md:mb-0 md:pr-4">
             <h1
-              class="text-left font-bold text-black landing-font-50 mb-[24px]"
+              class="text-center sm:text-left font-bold text-black landing-font-50 mb-[24px]"
             >
               {{ $t('landing.section1.title') }}
             </h1>
-            <img src="~/assets/images/landing/index/boundary.svg" alt="">
+            <img
+              src="~/assets/images/landing/index/boundary.svg"
+              class="hidden sm:block"
+            >
+            <img
+              src="~/assets/images/landing/index/boundary2.svg"
+              class="mx-auto block sm:hidden"
+            >
             <p
-              class="text-left font-normal text-black-600 landing-font-20 mx-auto mb-[50px] mt-[18px]"
+              class="text-center sm:text-left font-normal text-black-600 landing-font-20 mx-auto mb-[50px] mt-[18px]"
               v-html="$t('landing.section1.desc')"
             />
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
@@ -28,20 +34,13 @@
               </div>
             </div>
           </div>
+          <!-- Left end -->
+
           <!-- Right -->
-          <div
-            class="hidden md:block md:w-1/2 order-2 justify-self-end items-center top-[180px] pr-0"
-          >
+          <div class="hidden md:block md:w-1/2">
             <button @click="dialogVisible = true">
               <img
                 :src="require(`~/assets/images/landing/intro-thumbnail.png`)"
-                alt=""
-                style="
-                  max-width: 120%;
-                  margin-left: 75px;
-                  max-height: 485px;
-                  margin-top: 15px;
-                "
               >
             </button>
           </div>
@@ -96,7 +95,7 @@
               <div
                 v-if="!item.link"
                 :to="localePath(`${item.link}`)"
-                class="block px-[30px] pt-11 h-full"
+                class="flex flex-col text-center items-center md:items-start md:text-left px-[30px] pt-11 h-full"
               >
                 <img
                   :src="require(`~/assets/images/landing/index/${item.img}`)"
@@ -113,7 +112,7 @@
               <nuxt-link
                 v-if="item.static === false && item.link"
                 :to="localePath(`${item.link}`)"
-                class="block px-[30px] pt-11 h-full"
+                class="flex flex-col text-center items-center md:items-start md:text-left px-[30px] pt-11 h-full"
               >
                 <img
                   :src="require(`~/assets/images/landing/index/${item.img}`)"
@@ -130,7 +129,7 @@
               <a
                 v-if="item.static === true && item.link"
                 :href="`${item.link}`"
-                class="block px-[30px] pt-11 h-full"
+                class="flex flex-col text-center items-center md:items-start md:text-left px-[30px] pt-11 h-full"
               >
                 <img
                   :src="require(`~/assets/images/landing/index/${item.img}`)"
@@ -162,115 +161,214 @@
     <!-- Feature end -->
 
     <!-- Benefits -->
-    <section class="mt-[70px]">
-      <div class="w-full flex flex-wrap">
-        <div class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:px-24 order-1">
-          <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ $t('landing.benefits[0].title') }}
-          </h2>
-          <p class="landing-font-18">{{ $t('landing.benefits[0].desc') }}</p>
-        </div>
-        <!-- Left end -->
-        <!-- Right -->
-        <div
-          class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2"
-        >
-          <img
-            :src="
-              require(`~/assets/images/landing/index/${$t(
-                'landing.benefits[0].img'
-              )}`)
-            "
-            alt=""
-            style="align-self: center"
+    <section>
+      <div
+        v-for="(item, index) in $t('landing.benefits')"
+        :key="index"
+        :class="index % 2 ? 'mt-[75px]' : 'mt-[70px]'"
+      >
+        <div class="w-full flex flex-wrap">
+          <!-- Left -->
+          <div
+            class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:px-10 lg:px-24 order-1"
+            :class="index % 2 ? 'md:order-2' : ''"
           >
-        </div>
-        <!-- Right end -->
-      </div>
-    </section>
-    <section class="mt-[75px]">
-      <div class="w-full flex flex-wrap">
-        <div
-          class="w-full md:mb-0 mt-3 md:w-1/2 md:px-20 self-center md:order-2 order-1"
-        >
-          <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ $t('landing.benefits[1].title') }}
-          </h2>
-          <p class="landing-font-18 md:max-w-[350px]">
-            {{ $t('landing.benefits[1].desc') }}
-          </p>
-        </div>
-        <!-- Right end -->
-        <!-- Left -->
-        <div class="w-full md:w-1/2 pl-0 flex order-1">
-          <img
-            :src="
-              require(`~/assets/images/landing/index/${$t(
-                'landing.benefits[1].img'
-              )}`)
-            "
-            alt=""
-            style="align-self: center"
+            <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
+              {{ item.title }}
+            </h2>
+            <p class="landing-font-18">{{ item.desc }}</p>
+          </div>
+          <!-- Left end -->
+
+          <!-- Right -->
+          <div
+            class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2"
+            :class="index % 2 ? 'md:order-1' : ''"
           >
+            <img
+              :src="require(`~/assets/images/landing/index/${item.img}`)"
+              :alt="item.title"
+              style="align-self: center"
+            >
+          </div>
+          <!-- Right end -->
         </div>
-        <!-- Left end -->
-      </div>
-    </section>
-    <section class="mt-[70px]">
-      <div class="w-full flex flex-wrap">
-        <div class="w-full md:mb-0 mt-3 md:w-1/2 self-center md:px-24 order-1">
-          <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ $t('landing.benefits[2].title') }}
-          </h2>
-          <p class="landing-font-18">{{ $t('landing.benefits[2].desc') }}</p>
-        </div>
-        <!-- Left end -->
-        <!-- Right -->
-        <div
-          class="w-full md:w-1/2 pl-0 md:pl-4 pt-6 md:pt-0 flex align-middle justify-end order-2"
-        >
-          <img
-            :src="
-              require(`~/assets/images/landing/index/${$t(
-                'landing.benefits[2].img'
-              )}`)
-            "
-            alt=""
-            style="align-self: center"
-          >
-        </div>
-        <!-- Right end -->
-      </div>
-    </section>
-    <section class="mt-[75px]">
-      <div class="w-full flex flex-wrap">
-        <div
-          class="w-full md:mb-0 mt-3 md:w-1/2 md:px-20 self-center md:order-2 order-1"
-        >
-          <h2 class="w-full font-bold landing-font-38 text-black mb-[20px]">
-            {{ $t('landing.benefits[3].title') }}
-          </h2>
-          <p class="landing-font-18 md:max-w-[350px]">
-            {{ $t('landing.benefits[3].desc') }}
-          </p>
-        </div>
-        <!-- Right end -->
-        <!-- Left -->
-        <div class="w-full md:w-1/2 pl-0 flex order-1">
-          <img
-            :src="
-              require(`~/assets/images/landing/index/${$t(
-                'landing.benefits[3].img'
-              )}`)
-            "
-            alt=""
-            style="align-self: center"
-          >
-        </div>
-        <!-- Left end -->
       </div>
     </section>
     <!-- Benefits end -->
+
+    <!-- Testimonials -->
+    <section class="md:mt-36 mt-24">
+      <div class="mx-auto">
+        <h2 class="text-center font-bold text-black landing-font-38 mb-20">
+          {{ $t('landing.testimonials.title') }}
+        </h2>
+      </div>
+
+      <div v-if="testimonials.length">
+        <carousel
+          autoplay
+          loop
+          :autoplay-timeout="5000"
+          :per-page-custom="[
+            [0, 1],
+            [480, 1],
+            [768, 2],
+            [1024, 3],
+            [1280, 4]
+          ]"
+          pagination-active-color="#268334"
+        >
+          <slide v-for="(item, index) in testimonials" :key="index">
+            <div
+              class="border rounded border-black-50 p-7 h-full flex flex-col"
+              :class="{ 'ml-6': index !== 0 }"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <p class="text-black-50">
+                  <i
+                    v-for="i in 5"
+                    :key="i"
+                    class="el-icon-star-on"
+                    :class="{ 'text-warning': i <= item.Rating }"
+                  />
+                </p>
+                <img
+                  :src="
+                    item.Logo && item.Logo[0]
+                      ? item.Logo[0].url
+                      : `/img/index/${item.Source.replaceAll(' ', '')}.svg`
+                  "
+                  alt="item.Source"
+                  class="h-6"
+                >
+              </div>
+              <p class="font-semibold text-black text-[16px] mb-2">
+                {{ item.Title }}
+              </p>
+              <p class="text-black mb-9 flex-1">
+                {{ locale === 'vi' ? item.Vietnamese : item.English }}
+              </p>
+              <div class="flex items-center justify-between">
+                <p class="text-black text-[12px]">
+                  <strong>
+                    {{ item.Reviewer }}
+                  </strong>
+                  &nbsp;
+                  {{ item['Updated time'] }}
+                </p>
+                <span :class="`flag flag-${item.Country.toLowerCase()}`" />
+              </div>
+            </div>
+          </slide>
+        </carousel>
+      </div>
+    </section>
+    <!-- Testimonials end -->
+
+    <!-- Ratings -->
+    <section class="mt-24">
+      <div class="flex flex-wrap items-center justify-center">
+        <!-- Trustpilot -->
+        <div style="width: 301px" class="mb-4">
+          <div
+            class="trustpilot-widget"
+            data-locale="en-US"
+            data-template-id="5419b6a8b0d04a076446a9ad"
+            data-businessunit-id="642e5d5bc70cd42f53e01b3e"
+            data-style-height="30px"
+            data-style-width="100%"
+            data-theme="light"
+            data-min-review-count="10"
+            data-without-reviews-preferred-string-id="1"
+            data-style-alignment="center"
+          >
+            <a
+              href="https://www.trustpilot.com/review/locker.io"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                src="~/assets/images/landing/index/Trustpilot.svg"
+                alt=""
+                style="height: 50px"
+                class="mx-auto"
+              >
+            </a>
+          </div>
+        </div>
+        <!-- Trustpilot end -->
+
+        <!-- GetApp -->
+        <div style="width: 160px" class="mb-4">
+          <a
+            href="https://www.getapp.com/security-software/a/locker-password-manager/"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/assets/images/landing/index/GetApp.svg"
+              alt=""
+              style="height: 50px"
+              class="mx-auto"
+            >
+          </a>
+        </div>
+        <!-- GetApp end -->
+
+        <!-- G2 -->
+        <div style="width: 160px" class="mb-4">
+          <a
+            href="https://www.g2.com/products/locker-password-manager/reviews?utm_source=Iterable&utm_medium=email&utm_campaign=it_txn_claimedprod_rej_1403101"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/assets/images/landing/index/G2.svg"
+              alt=""
+              style="height: 50px"
+              class="mx-auto"
+            >
+          </a>
+        </div>
+        <!-- G2 end -->
+
+        <!-- Google Play -->
+        <div style="width: 160px" class="mb-4">
+          <a
+            href="https://play.google.com/store/apps/details?id=com.cystack.locker&pli=1"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/assets/images/landing/index/GooglePlay.svg"
+              alt=""
+              style="height: 50px"
+              class="mx-auto"
+            >
+          </a>
+        </div>
+        <!--  Google Play end -->
+
+        <!-- AppStore -->
+        <div style="width: 160px" class="mb-4">
+          <a
+            href="https://apps.apple.com/us/app/locker-password-manager/id1586927301"
+            target="_blank"
+            rel="noopener"
+          >
+            <img
+              src="~/assets/images/landing/index/AppStore.svg"
+              alt=""
+              style="height: 50px"
+              class="mx-auto"
+            >
+          </a>
+        </div>
+        <!-- AppStore end -->
+      </div>
+    </section>
+    <!-- Ratings end -->
 
     <!-- CTA 1 -->
     <section class="md:mt-36 mt-24">
@@ -279,7 +377,7 @@
         style="background-color: #f5f6f7"
       >
         <p
-          class="md:max-w-[490px] md:text-left md:mb-0 landing-font-28 font-semibold max-w-max text-center mb-6"
+          class="md:max-w-[490px] md:text-left md:mb-0 md:mr-4 mr-0 landing-font-28 font-semibold max-w-max text-center mb-6"
         >
           {{ $t('landing.cta1.title') }}
         </p>
@@ -313,6 +411,7 @@
       </div>
     </section>
     <!-- Devices end -->
+
     <!-- Platforms -->
     <section class="mt-8">
       <div class="w-8/12 mx-auto">
@@ -391,7 +490,7 @@
                 </td>
               </tr>
               <template v-for="(label, index) in $t('landing.why.labels')">
-                <tr :key="index" class="md:hidden">
+                <tr :key="index" class="hidden md:hidden sm:table-row">
                   <td
                     colspan="2"
                     class="landing-font-18 font-bold p-4 text-center"
@@ -400,8 +499,16 @@
                     {{ label }}
                   </td>
                 </tr>
+                <tr :key="`${index}_0`" class="sm:hidden">
+                  <td
+                    class="landing-font-18 font-bold p-4 text-center"
+                    style="background-color: #f6f7f8"
+                  >
+                    {{ label }}
+                  </td>
+                </tr>
                 <tr
-                  :key="index"
+                  :key="`${index}_1`"
                   :style="index % 2 === 0 ? 'background-color: #FBFAF3' : ''"
                 >
                   <td
@@ -410,7 +517,7 @@
                     {{ label }}
                   </td>
                   <td
-                    class="landing-font-16 text-black-600 px-8 py-4 align-top"
+                    class="landing-font-16 text-black-600 px-8 py-4 align-top hidden sm:table-cell"
                   >
                     <div class="flex flex-flex-nowrap items-start">
                       <img
@@ -435,8 +542,10 @@
 
               <tr class="md:border-b-0">
                 <td class="hidden md:table-cell" />
-                <td />
-                <td class="landing-font-18 px-8 py-4 align-top font-semibold">
+                <td class="hidden sm:table-cell" />
+                <td
+                  class="landing-font-18 px-8 py-4 align-top font-semibold text-center sm:text-left"
+                >
                   <nuxt-link
                     :to="localeRoute({ name: $t('landing.why.btn.link') })"
                     class="hover:no-underline text-green"
@@ -453,11 +562,11 @@
     <!-- Why end -->
 
     <!-- Start -->
-    <div
+    <section
       class="full-width w-full h-auto pb-[105px] md:mt-[150px] mt-24"
       style="background-color: #f5f6f7"
     >
-      <section class="max-w-6xl mx-auto px-6">
+      <div class="max-w-6xl mx-auto px-6">
         <div class="w-full flex flex-wrap">
           <div class="w-full md:mb-0 md:pt-[115px] pt-20 text-center order-1">
             <h2
@@ -501,19 +610,157 @@
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
     <!-- Start end -->
+
+    <!-- Blogs -->
+    <section class="mt-20 mb-20">
+      <div class="w-full mb-14">
+        <h2 class="font-bold landing-font-32 text-black">
+          {{ $t('landing.blogs.title') }}
+        </h2>
+      </div>
+
+      <div
+        v-if="posts.length"
+        class="blog-container w-full grid grid-cols-1 md:grid-cols-3 gap-x-[30px] gap-y-[30px]"
+      >
+        <div v-for="(item, index) in posts" :key="index">
+          <Post :post="item" type="blog" />
+        </div>
+      </div>
+
+      <div class="w-full text-center mt-14">
+        <nuxt-link
+          :to="localeRoute('/blog')"
+          class="text-black font-semibold transition-colors text-[16px]"
+        >
+          {{ $t('blog.read_more') }} <i class="el-icon-right" />
+        </nuxt-link>
+      </div>
+    </section>
+    <!-- Blogs end -->
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import cheerio from 'cheerio'
+import Post from '~/components/landing/blog/Post'
+
 export default {
+  components: { Post },
+
   layout: 'landing',
+
+  async asyncData ({ store, $axios }) {
+    // Get blogs
+    const _getBlogs = async () => {
+      const language = store.state.i18n.locale
+      let tagId
+      try {
+        const posts = []
+        const result = await axios.get(
+          `${process.env.blogUrl}/tags?slug=${language}`
+        )
+        tagId = result.data[0].id
+        const responses = await Promise.all([
+          axios.get(
+            `${process.env.blogUrl}/posts?_embed=1&per_page=3&tags=${tagId}&categories=8,13,18,54,25`
+          ),
+          axios.get(`${process.env.blogUrl}/users`)
+        ])
+        const { data } = responses[0]
+        const userArray = responses[1].data
+        data.forEach(async post => {
+          let featuredImage = ''
+          try {
+            featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
+          } catch (error) {}
+          if (!featuredImage) {
+            const $ = cheerio.load(post.content.rendered)
+            const images = $('img').attr('src')
+            if (images) {
+              featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
+            }
+          }
+          const $_ = cheerio.load(post.excerpt.rendered)
+          const desc = $_('p').text()
+          posts.push({
+            ...post,
+            user: userArray.find(author => author.id === post.author),
+            featured_image: featuredImage,
+            desc
+          })
+        })
+        return {
+          posts
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    // Get testimonials
+    const _getTestimonials = async () => {
+      try {
+        const res = await $axios.get(`${process.env.baseUrl}/api/testimonials`)
+        if (!res.data?.data) {
+          console.log(res.data)
+          return {
+            testimonials: []
+          }
+        }
+        return {
+          testimonials: res.data.data
+            .filter(t => t.Status === 'Active')
+            .map(t => {
+              let rating = 5
+              try {
+                rating = parseInt(t.Rating)
+              } catch (error) {
+                //
+              }
+              return {
+                ...t,
+                Rating: rating
+              }
+            })
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const [blogRes, testimonialRes] = await Promise.all([
+      _getBlogs(),
+      _getTestimonials()
+    ])
+
+    return {
+      ...blogRes,
+      ...testimonialRes
+    }
+  },
+
   data () {
     return {
       videoId: 'kAutqE2ATfU',
-      dialogVisible: false
+      dialogVisible: false,
+      posts: [],
+      testimonials: []
+    }
+  },
+
+  head () {
+    return {
+      script: [
+        {
+          src: '//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js',
+          async: true
+        }
+      ]
     }
   }
 }
@@ -549,5 +796,14 @@ export default {
   margin: 12% auto; /* 15% from the top and centered */
   border: 1px solid #888;
   width: 960px;
+}
+</style>
+<style>
+.VueCarousel-dot--active {
+  width: 20px !important;
+  border-radius: 16px !important;
+}
+.VueCarousel-dot {
+  transition: all 0.2s ease;
 }
 </style>
