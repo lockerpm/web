@@ -20,7 +20,7 @@
       <!-- Logo end -->
 
       <!-- Plan storage -->
-      <div v-if="isFreePlan" class="mt-4 px-[20px]">
+      <div v-if="isFreePlan && !isEnterpriseMember" class="mt-4 px-[20px]">
         <div class="mb-3 flex items-center">
           <img src="~/assets/images/icons/flash_success.svg">
           <p class="text-white font-semibold ml-3">
@@ -300,7 +300,7 @@ export default {
     },
     bottomMenu () {
       return [
-        ...(this.currentPlan.alias === 'pm_free' && !this.isEnterpriseMember
+        ...(this.isFreePlan && !this.isEnterpriseMember
           ? [
             {
               label: 'upgrade',
