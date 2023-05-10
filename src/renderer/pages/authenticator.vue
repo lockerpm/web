@@ -326,7 +326,7 @@ export default {
       this.$refs.addEditOTPDialog.openDialog(cloneDeep(cipher))
     },
     handleAddButton () {
-      window.open('/download', '_blank')
+      this.addEdit({})
     },
     handleSelectionChange (val) {
       this.multipleSelection = val
