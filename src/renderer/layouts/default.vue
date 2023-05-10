@@ -132,6 +132,7 @@ export default {
     }
   },
   mounted () {
+    this.setupMomentLocale(this.locale)
     this.$store.dispatch('LoadEnterpriseInvitations')
     this.$broadcasterService.subscribe(
       BroadcasterSubscriptionId,

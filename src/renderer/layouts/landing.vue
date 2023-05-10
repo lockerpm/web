@@ -200,6 +200,7 @@ export default {
   mounted () {
     // this.$store.dispatch('LoadCurrentUser')
     // this.$store.dispatch('LoadCurrentUserPw')
+    this.setupMomentLocale(this.locale)
     this.showCookie = this.checkCookie()
   },
   methods: {
