@@ -65,6 +65,16 @@
                   }}
                 </li>
               </ul>
+              <p class="mt-6">
+                <a
+                  href="https://locker.io/private-email"
+                  target="_blank"
+                  style="color: #216AE2; font-weight: 600;"
+                >
+                  {{ $t('data.tools.learn_more_private_email') }}
+                  <i class="ml-1 el-icon-right" />
+                </a>
+              </p>
             </div>
           </div>
           <!-- Body end -->
