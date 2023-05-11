@@ -16,9 +16,6 @@
             </a>
           </p>
         </div>
-        <!--        <a class="close-btn" @click.prevent="close()">-->
-        <!--          <i class="el-icon-close" />-->
-        <!--        </a>-->
       </div>
     </div>
 
