@@ -20,12 +20,12 @@
 
       <el-collapse class="mb-8">
         <el-collapse-item
-          class="setting-wrapper relay-info"
+          class="setting-wrapper"
         >
           <!-- Header -->
           <template slot="title">
             <div class="py-6">
-              <div style="color: #072245;">
+              <div>
                 {{ $t('data.tools.relay_your_root_email') }}
                 <b>{{ currentUser.email }}</b>
               </div>
@@ -33,7 +33,7 @@
           </template>
           <!-- Header end -->
           <!-- Body -->
-          <div class="px-4">
+          <div class="px-5">
             <div class="setting-section-body">
               <ul class="list-disc ml-5">
                 <li>
@@ -409,10 +409,4 @@ export default {
 }
 </script>
 <style lang="scss">
-.relay-info {
-  .el-collapse-item__header {
-    height: auto !important;
-    line-height: 24px !important;
-  }
-}
 </style>

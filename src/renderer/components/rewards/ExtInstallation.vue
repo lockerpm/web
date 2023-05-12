@@ -1,0 +1,126 @@
+<template>
+  <div class="lg:w-3/4 md:w-full">
+    <el-collapse v-model="collapse" class="mb-8">
+      <el-collapse-item
+        class="setting-wrapper"
+        name="collapse"
+      >
+        <!-- Header -->
+        <template slot="title">
+          <div class="py-5 flex items-center justify-between" style="width: 95%">
+            <div class="flex items-center">
+              <div class="text-head-5 font-semibold">
+                {{ $t('data.rewards.ext_installation.title') }}
+              </div>
+              <span v-if="!collapse.length" class="ml-4 text-black-500">
+                {{ $t('data.rewards.note2', { percent: 5 }) }}
+              </span>
+            </div>
+            <div v-if="!collapse.length" class="flex items-center">
+              <div class="mr-3 font-semibold text-green-600">
+                {{ $t(`data.rewards.ext_installation.header_btn`) }}
+              </div>
+              <img :src="require('~/assets/images/icons/reward-sent.svg')">
+            </div>
+          </div>
+        </template>
+        <!-- Header end -->
+        <!-- Body -->
+        <div class="px-5">
+          <div class="lg:w-1/2 md:w-full mb-4">
+            {{ $t('data.rewards.ext_installation.subtitle') }}
+          </div>
+          <Steps />
+          <div class="flex flex-wrap justify-center gap-x-3 mb-4">
+            <div
+              v-for="item in allBrowsers"
+              :key="item.name"
+              class="w-[135px] mt-6 text-webkit text-center"
+            >
+              <div class="h-[60px] flex justify-center">
+                <img
+                  :src="
+                    require(`~/assets/images/landing/download2/${item.imgSrc}`)
+                  "
+                  alt=""
+                >
+              </div>
+              <p class="mt-3 font-semibold text-[#121212]">{{ item.name }}</p>
+              <a v-if="item.active" :href="item.link" target="_blank">
+                <button
+                  class="mt-3 py-[3px] px-[20px] font-semibold text-[#FFFFFF] bg-[#62AD56] rounded-sm hover:bg-[#2D702C]"
+                >
+                  {{ $t("download.section3.install") }}
+                </button>
+              </a>
+              <button
+                v-else
+                class="mt-3 py-[3px] px-[20px] font-semibold text-[#606060] bg-[#EBEEF2] rounded-sm box-border border-[1px] border-[#DADEE3] cursor-auto"
+              >
+                {{ $t("download.section3.coming") }}
+              </button>
+            </div>
+          </div>
+          <div class="mb-4 text-black-500">
+            <div v-html="$t('data.rewards.ext_installation.subtitle1_desc')"/>
+          </div>
+          <div class="">
+            <el-checkbox-group
+              v-model="browsers"
+              class="mb-3 flex flex-wrap"
+            >
+              <div
+                v-for="browser in allBrowsers"
+                :key="browser.name"
+                class="lg:w-1/2 md:w-full pr-6 mb-3"
+              >
+                <div class="flex items-center">
+                  <div class="w-1/4">
+                    <el-checkbox
+                      :disabled="!browser.active"
+                      :label="browser.name"
+                    />
+                  </div>
+                  <div v-if="browsers.includes(browser.name)" class="w-3/4">
+                    <el-input
+                      v-model="browser.displayName"
+                      size="small"
+                      :placeholder="$t('data.rewards.ext_installation.input_placeholder')"
+                    />
+                  </div>
+                </div>
+              </div>
+            </el-checkbox-group>
+            <el-button type="success">
+              {{ $t('data.rewards.ext_installation.btn') }}
+            </el-button>
+          </div>
+        </div>
+        <!-- Body end -->
+      </el-collapse-item>
+    </el-collapse>
+  </div>
+</template>
+
+<script>
+import Steps from './Steps.vue'
+export default {
+  components: {
+    Steps
+  },
+  props: {
+  },
+  data () {
+    return {
+      collapse: [],
+      step: 1,
+      allBrowsers: this.$t('download.section3.list').map(b => ({ ...b, displayName: null })),
+      browsers: []
+    }
+  },
+  computed: {
+  },
+  methods: {
+  }
+}
+</script>
