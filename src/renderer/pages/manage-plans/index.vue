@@ -544,14 +544,13 @@
             />
 
             <div class="mt-8">
-              ``
               <el-button
                 :disabled="!selectedCard"
                 :loading="loading"
                 class="btn btn-primary w-full hover:!text-white"
                 @click="confirmPlan()"
               >
-                Pay & Upgrade
+                {{ $t('data.billing.pay_and_upgrade') }}
               </el-button>
             </div>
           </template>
@@ -954,7 +953,12 @@ export default {
     clearInterval(this.intervalBalance)
   },
   mounted () {
-    this.getPlans()
+    this.getPlans().then(() => {
+      const selectedPlan = this.$route.query.plan
+      if (selectedPlan && this.plans.find(p => p.alias === selectedPlan)) {
+        this.selectPlan(this.plans.find(p => p.alias === selectedPlan))
+      }
+    })
     this.getCards()
     this.$store.dispatch('LoadCurrentPlan')
   },
@@ -1040,24 +1044,18 @@ export default {
       this.calcPrice()
     },
     selectPlan (plan, purchase = false) {
-      this.$confirm(
-        purchase
-          ? this.$t('data.notifications.purchase_plan', {
-            duration: this.periodSwitch
-              ? `1 ${this.$t('common.year')}`
-              : `1 ${this.$t('common.month')}`
-          })
-          : this.$t('data.notifications.switch_plan', {
-            currentPlan: this.currentPlan.name,
-            chosenPlan: plan.name
-          }),
-        this.$t('common.warning'),
-        {
-          confirmButtonText: this.$t('common.proceed'),
-          cancelButtonText: this.$t('common.cancel'),
-          type: 'warning'
-        }
-      ).then(() => {
+      const confirmMessage = purchase
+        ? this.$t('data.notifications.purchase_plan', {
+          duration: this.periodSwitch
+            ? `1 ${this.$t('common.year')}`
+            : `1 ${this.$t('common.month')}`
+        })
+        : this.$t('data.notifications.switch_plan', {
+          currentPlan: this.currentPlan.name,
+          chosenPlan: plan.name
+        })
+
+      const _selectPlan = () => {
         this.selectedPlan = plan
         if (this.currentPlan.alias !== 'pm_free') {
           this.dialogChange = true
@@ -1070,7 +1068,17 @@ export default {
         this.selectMethod('card')
         this.calcPrice()
         this.step = 2
-      })
+      }
+
+      if (this.currentPlan.alias !== 'pm_free') {
+        this.$confirm(confirmMessage, this.$t('common.warning'), {
+          confirmButtonText: this.$t('common.proceed'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning'
+        }).then(_selectPlan)
+      } else {
+        _selectPlan()
+      }
     },
     selectMethod (method) {
       this.paymentMethod = method

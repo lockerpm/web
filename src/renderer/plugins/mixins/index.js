@@ -76,6 +76,14 @@ Vue.mixin({
   },
   methods: {
     changeLang (value) {
+      this.setupMomentLocale(value)
+      this.$store.dispatch('SetLang', value).then(() => {
+        this.$i18n.setLocale(value)
+        this.$router.push(this.switchLocalePath(value))
+      })
+    },
+
+    setupMomentLocale (value) {
       if (value === 'vi') {
         this.$moment.locale('vi', {
           months:
@@ -120,14 +128,6 @@ Vue.mixin({
       } else {
         this.$moment.locale('en')
       }
-      this.$store.dispatch('SetLang', value).then(() => {
-        this.$i18n.setLocale(value)
-        this.$router.push(this.switchLocalePath(value))
-      })
-    },
-
-    changeLocale (value) {
-      this.$i18n.setLocale(value)
     },
 
     async logout () {
