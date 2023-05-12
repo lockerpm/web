@@ -11,10 +11,23 @@
       <!-- Overview -->
       <div class="mb-10">
         <!-- Breadcrumb -->
-        <div class="text-head-4">
+        <div class="text-head-4 flex items-center">
           <span class="font-medium">
             {{ $t('type.TOTP') }}
           </span>
+          <div class="flex items-center">
+            <div class="mx-6 text-head-4 mb-[5px]">|</div>
+            <div class="self-center">
+              <!-- Add a specific type -->
+              <template>
+                <button class="btn btn-outline-primary" @click="addEdit({})">
+                  <i class="el-icon-plus text-lg" />
+                  <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
+                </button>
+              </template>
+              <!-- Add a specific type end -->
+            </div>
+          </div>
         </div>
         <!-- Breadcrumb end -->
 
@@ -313,7 +326,7 @@ export default {
       this.$refs.addEditOTPDialog.openDialog(cloneDeep(cipher))
     },
     handleAddButton () {
-      window.open('/download', '_blank')
+      this.addEdit({})
     },
     handleSelectionChange (val) {
       this.multipleSelection = val
