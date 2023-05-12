@@ -18,43 +18,68 @@
       </div>
       <!-- Breadcrumb end -->
 
-      <!-- Info -->
-      <div class="setting-wrapper">
-        <div class="setting-section">
-          <!-- Root Email -->
-          <div class="setting-section-header">
-            <div>
-              {{ $t('data.tools.relay_your_root_email') }}
-              <strong>{{ currentUser.email }}</strong>
+      <el-collapse class="mb-8">
+        <el-collapse-item
+          class="setting-wrapper relay-info"
+        >
+          <!-- Header -->
+          <template slot="title">
+            <div class="py-6">
+              <div style="color: #072245;">
+                {{ $t('data.tools.relay_your_root_email') }}
+                <b>{{ currentUser.email }}</b>
+              </div>
             </div>
-            <div />
+          </template>
+          <!-- Header end -->
+          <!-- Body -->
+          <div class="px-4">
+            <div class="setting-section-body">
+              <ul class="list-disc ml-5">
+                <li>
+                  {{
+                    isPremium
+                      ? $t('data.tools.relay_desc_1_premium')
+                      : $t('data.tools.relay_desc_1')
+                  }}
+                </li>
+                <li>
+                  {{
+                    isPremium
+                      ? $t('data.tools.relay_desc_2_premium')
+                      : $t('data.tools.relay_desc_2')
+                  }}
+                </li>
+                <li>
+                  {{
+                    isPremium
+                      ? $t('data.tools.relay_desc_3_premium')
+                      : $t('data.tools.relay_desc_3')
+                  }}
+                </li>
+                <li>
+                  {{
+                    isPremium
+                      ? $t('data.tools.relay_desc_4_premium')
+                      : $t('data.tools.relay_desc_4')
+                  }}
+                </li>
+              </ul>
+              <p class="mt-6">
+                <a
+                  href="https://locker.io/private-email"
+                  target="_blank"
+                  style="color: #216AE2; font-weight: 600;"
+                >
+                  {{ $t('data.tools.learn_more_private_email') }}
+                  <i class="ml-1 el-icon-right" />
+                </a>
+              </p>
+            </div>
           </div>
-          <!-- Root Email end -->
-
-          <div class="setting-section-body">
-            <ul class="list-disc ml-5">
-              <li>
-                {{ $t('data.tools.relay_desc_1') }}
-              </li>
-              <li>
-                {{
-                  isPremium
-                    ? $t('data.tools.relay_desc_2_premium')
-                    : $t('data.tools.relay_desc_2')
-                }}
-              </li>
-              <li>
-                {{
-                  isPremium
-                    ? $t('data.tools.relay_desc_3_premium')
-                    : $t('data.tools.relay_desc_3')
-                }}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!-- Info end -->
+          <!-- Body end -->
+        </el-collapse-item>
+      </el-collapse>
 
       <!-- Count + add -->
       <div class="flex justify-between items-center mb-5">
@@ -383,3 +408,11 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.relay-info {
+  .el-collapse-item__header {
+    height: auto !important;
+    line-height: 24px !important;
+  }
+}
+</style>

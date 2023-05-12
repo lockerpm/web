@@ -272,6 +272,7 @@ module.exports = {
     {
       path: '/api/testimonials',
       handler: '~/server-middleware/testimonials.js'
-    }
+    },
+    { path: '/api/bottom-banner', handler: '~/server-middleware/bottomBanner.js' }
   ]
 }
