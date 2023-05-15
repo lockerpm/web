@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-3/4">
+  <div class="w-full">
     <div class="grid grid-cols-5 gap-x-6">
       <div class="setting-wrapper md:col-span-3 col-span-5">
         <div class="setting-section">
