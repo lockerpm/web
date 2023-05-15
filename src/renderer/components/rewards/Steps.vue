@@ -1,10 +1,10 @@
 <template>
-  <div class="w-full my-3">
+  <div class="w-full my-5">
     <el-steps class="w-full reward-steps" :active="2" align-center>
       <el-step
         v-for="(step, index) in steps"
         :key="index"
-        :title="step.title"
+        :title="step.name"
         :status="step.status"
       >
         <img
@@ -36,26 +36,13 @@
 export default {
   components: {},
   props: {
+    steps: {
+      type: Array,
+      default: () => []
+    }
   },
   data () {
     return {
-      steps: [
-        {
-          key: 1,
-          title: this.$t('data.rewards.steps.step1'),
-          status: 'finish'
-        },
-        {
-          key: 2,
-          title: this.$t('data.rewards.steps.step2'),
-          status: 'finish'
-        },
-        {
-          key: 3,
-          title: this.$t('data.rewards.steps.step3'),
-          status: 'wait'
-        }
-      ]
     }
   },
   computed: {
@@ -96,21 +83,42 @@ export default {
       }
     }
     &:nth-child(1){
-      .el-step__icon {
-        width: 54px;
-        background-image: url(~/assets/images/icons/01.svg);
+      .el-step__head {
+        .el-step__icon {
+          width: 54px;
+          background-image: url(~/assets/images/icons/01.svg);
+        }
+        &.is-finish {
+          .el-step__icon {
+            background-image: url(~/assets/images/icons/01-green.svg);
+          }
+        }
       }
     }
     &:nth-child(2){
-      .el-step__icon {
-        width: 65px;
-        background-image: url(~/assets/images/icons/02.svg);
+      .el-step__head {
+        .el-step__icon {
+          width: 65px;
+          background-image: url(~/assets/images/icons/02.svg);
+        }
+        &.is-finish {
+          .el-step__icon {
+            background-image: url(~/assets/images/icons/02-green.svg);
+          }
+        }
       }
     }
     &:nth-child(3){
-      .el-step__icon {
-        width: 66px;
-        background-image: url(~/assets/images/icons/03.svg);
+      .el-step__head {
+        .el-step__icon {
+          width: 66px;
+          background-image: url(~/assets/images/icons/03.svg);
+        }
+        &.is-finish {
+          .el-step__icon {
+            background-image: url(~/assets/images/icons/03-green.svg);
+          }
+        }
       }
     }
   }

@@ -19,12 +19,34 @@
     </div>
     <div class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4 mb-20">
       <Referral />
-      <ExtInstallation />
-      <DesktopInstallation />
-      <AppStoreRating />
-      <GooglePlayRating />
-      <CapterraRating />
+      <ExtInstallation
+        @send="openVerifiedDialog"
+        @resubmit="openResubmitDialog"
+      />
+      <DesktopInstallation
+        @send="openVerifiedDialog"
+        @resubmit="openResubmitDialog"
+      />
+      <AppStoreRating
+        @send="openVerifiedDialog"
+        @resubmit="openResubmitDialog"
+      />
+      <GooglePlayRating
+        @send="openVerifiedDialog"
+        @resubmit="openResubmitDialog"
+      />
+      <CapterraRating
+        @send="openVerifiedDialog"
+        @resubmit="openResubmitDialog"
+      />
     </div>
+
+    <VerifiedDialog
+      ref="verifiedDialog"
+    />
+    <ResubmitDialog
+      ref="resubmitDialog"
+    />
   </div>
 </template>
 
@@ -37,6 +59,9 @@ import AppStoreRating from '@/components/rewards/AppStoreRating.vue'
 import GooglePlayRating from '@/components/rewards/GooglePlayRating.vue'
 import CapterraRating from '@/components/rewards/CapterraRating.vue'
 
+import VerifiedDialog from '@/components/rewards/dialogs/Verified.vue'
+import ResubmitDialog from '@/components/rewards/dialogs/Resubmit.vue'
+
 export default {
   components: {
     GenerateCode,
@@ -45,7 +70,10 @@ export default {
     DesktopInstallation,
     AppStoreRating,
     GooglePlayRating,
-    CapterraRating
+    CapterraRating,
+
+    VerifiedDialog,
+    ResubmitDialog
   },
   props: {
   },
@@ -55,6 +83,14 @@ export default {
     }
   },
   computed: {
+  },
+  methods: {
+    openVerifiedDialog () {
+      this.$refs.verifiedDialog.openDialog(true)
+    },
+    openResubmitDialog () {
+      this.$refs.resubmitDialog.openDialog(true)
+    }
   }
 }
 </script>

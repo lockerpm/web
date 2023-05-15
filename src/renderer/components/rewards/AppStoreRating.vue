@@ -5,7 +5,6 @@
         class="setting-wrapper"
         name="collapse"
       >
-        <!-- Header -->
         <template slot="title">
           <div class="py-5 flex items-center justify-between" style="width: 95%">
             <div class="flex items-center">
@@ -16,24 +15,17 @@
                 {{ $t('data.rewards.note2', { percent: 5 }) }}
               </span>
             </div>
-            <div v-if="!collapse.length" class="flex items-center">
-              <div class="mr-3 font-semibold text-black-400">
-                {{ $t(`data.rewards.steps.step${step}`) }}
-              </div>
-              <img :src="require('~/assets/images/icons/power.svg')">
-            </div>
+            <CurrentStep v-if="!collapse.length" :steps="steps" :step="step" />
             <el-button v-else type="success" size="small">
               {{ $t('data.rewards.app_store_rating.header_btn') }}
             </el-button>
           </div>
         </template>
-        <!-- Header end -->
-        <!-- Body -->
         <div class="px-5">
           <div class="lg:w-1/2 md:w-full mb-4">
             {{ $t('data.rewards.app_store_rating.subtitle') }}
           </div>
-          <Steps />
+          <Steps :steps="steps" />
           <div class="mb-4 text-black-500">
             <div v-html="$t('data.rewards.app_store_rating.subtitle1_desc')"/>
           </div>
@@ -49,7 +41,6 @@
             </el-button>
           </div>
         </div>
-        <!-- Body end -->
       </el-collapse-item>
     </el-collapse>
   </div>
@@ -57,12 +48,12 @@
 
 <script>
 import Steps from './Steps.vue'
+import CurrentStep from './CurrentStep.vue'
 
 export default {
   components: {
-    Steps
-  },
-  props: {
+    Steps,
+    CurrentStep
   },
   data () {
     return {
@@ -72,6 +63,9 @@ export default {
     }
   },
   computed: {
+    steps () {
+      return this.$t('data.rewards.steps')
+    }
   },
   methods: {
   }

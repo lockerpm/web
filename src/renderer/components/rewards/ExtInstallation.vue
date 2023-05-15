@@ -5,7 +5,6 @@
         class="setting-wrapper"
         name="collapse"
       >
-        <!-- Header -->
         <template slot="title">
           <div class="py-5 flex items-center justify-between" style="width: 95%">
             <div class="flex items-center">
@@ -16,21 +15,14 @@
                 {{ $t('data.rewards.note2', { percent: 5 }) }}
               </span>
             </div>
-            <div v-if="!collapse.length" class="flex items-center">
-              <div class="mr-3 font-semibold text-green-600">
-                {{ $t(`data.rewards.ext_installation.header_btn`) }}
-              </div>
-              <img :src="require('~/assets/images/icons/reward-sent.svg')">
-            </div>
+            <CurrentStep v-if="!collapse.length" :steps="steps" :step="step" />
           </div>
         </template>
-        <!-- Header end -->
-        <!-- Body -->
         <div class="px-5">
           <div class="lg:w-1/2 md:w-full mb-4">
             {{ $t('data.rewards.ext_installation.subtitle') }}
           </div>
-          <Steps />
+          <Steps :steps="steps" />
           <div class="flex flex-wrap justify-center gap-x-3 mb-4">
             <div
               v-for="item in allBrowsers"
@@ -91,12 +83,11 @@
                 </div>
               </div>
             </el-checkbox-group>
-            <el-button type="success">
+            <el-button type="success" @click="handleSend">
               {{ $t('data.rewards.ext_installation.btn') }}
             </el-button>
           </div>
         </div>
-        <!-- Body end -->
       </el-collapse-item>
     </el-collapse>
   </div>
@@ -104,23 +95,39 @@
 
 <script>
 import Steps from './Steps.vue'
+import CurrentStep from './CurrentStep.vue'
+
 export default {
   components: {
-    Steps
+    Steps,
+    CurrentStep
   },
   props: {
   },
   data () {
     return {
       collapse: [],
-      step: 1,
+      step: 2,
       allBrowsers: this.$t('download.section3.list').map(b => ({ ...b, displayName: null })),
       browsers: []
     }
   },
   computed: {
+    steps () {
+      return this.$t('data.rewards.steps').map(s => ({
+        ...s,
+        status: this.step > s.key ? 'finish' : 'await'
+      }))
+    },
+    currentStep () {
+      return this.steps.find(s => s.key === this.step)
+    }
   },
   methods: {
+    handleSend () {
+      // this.$emit('send')
+      this.$emit('resubmit')
+    }
   }
 }
 </script>
