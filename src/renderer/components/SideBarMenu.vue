@@ -308,7 +308,9 @@ export default {
         },
         {
           label: 'enterprise_dashboard',
-          externalLink: process.env.lockerEnterprise,
+          externalLink: `${process.env.lockerEnterprise}${
+            this.isOnPremise ? '/login-on-premise' : ''
+          }`,
           icon: 'dashboard',
           hide: !this.isEnterpriseAdminOrOwner
         },
