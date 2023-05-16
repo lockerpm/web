@@ -134,7 +134,9 @@
     <!-- Bottom menu -->
     <div>
       <nav class="my-10">
-        <template v-for="(item, index) in bottomMenu">
+        <template
+          v-for="(item, index) in bottomMenu.filter(item => !item.hide)"
+        >
           <a
             v-if="item.externalLink"
             :key="index"
@@ -272,15 +274,12 @@ export default {
           icon: 'security',
           routeName: 'tools'
         },
-        ...(this.isEnterpriseMember
-          ? [
-            {
-              label: 'policies',
-              icon: 'policies',
-              routeName: 'policies'
-            }
-          ]
-          : []),
+        {
+          label: 'policies',
+          icon: 'policies',
+          routeName: 'policies',
+          hide: !this.isEnterpriseMember
+        },
         {
           label: 'shares',
           icon: 'share',
@@ -289,7 +288,8 @@ export default {
         {
           label: 'private_email',
           icon: 'private_email',
-          routeName: 'relay'
+          routeName: 'relay',
+          hide: this.isOnPremise
         },
         {
           label: 'trash',
@@ -300,24 +300,18 @@ export default {
     },
     bottomMenu () {
       return [
-        ...(this.isFreePlan && !this.isEnterpriseMember
-          ? [
-            {
-              label: 'upgrade',
-              routeName: 'manage-plans',
-              icon: 'upgrade'
-            }
-          ]
-          : []),
-        ...(this.isEnterpriseAdminOrOwner
-          ? [
-            {
-              label: 'enterprise_dashboard',
-              externalLink: process.env.lockerEnterprise,
-              icon: 'dashboard'
-            }
-          ]
-          : []),
+        {
+          label: 'upgrade',
+          routeName: 'manage-plans',
+          icon: 'upgrade',
+          hide: !this.isFreePlan || this.isEnterpriseMember
+        },
+        {
+          label: 'enterprise_dashboard',
+          externalLink: process.env.lockerEnterprise,
+          icon: 'dashboard',
+          hide: !this.isEnterpriseAdminOrOwner
+        },
         {
           label: 'settings',
           routeName: 'settings-account',

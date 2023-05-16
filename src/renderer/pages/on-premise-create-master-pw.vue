@@ -136,7 +136,6 @@
       :visible.sync="confirmDialogVisible"
       width="420px"
       :title="$t('set_master_password.confirm_nodal.title')"
-      custom-class="no-pt-dialog"
       center
     >
       <img
@@ -191,8 +190,8 @@ import { MIN_MASTER_PW_LEN } from '../constants'
 
 export default {
   components: { PasswordStrengthBar, PasswordViolationDialog },
-  layout: 'blank',
-  middleware: ['HaveAccountService'],
+  layout: 'authenticate',
+
   data () {
     return {
       masterPassword: '',
@@ -205,6 +204,7 @@ export default {
       showRePassword: false
     }
   },
+
   computed: {
     passwordStrength () {
       return (
@@ -214,6 +214,7 @@ export default {
       )
     }
   },
+
   watch: {
     masterRePassword (newValue) {
       if (this.masterPassword && newValue && this.masterPassword !== newValue) {
@@ -223,9 +224,18 @@ export default {
       }
     }
   },
+
   mounted () {
+    const { email, token, host } = this.$route.query
+    this.validateOnPremiseBaseApi(host)
+    this.$store.commit('UPDATE_IS_LOGGEDIN', true)
+    this.$store.commit('UPDATE_IS_LOGGEDIN_ON_PREMISE', false)
+    this.$store.commit('UPDATE_USER', { email })
+    this.$store.commit('UPDATE_ON_PREMISE_INFO', host + '/v3')
+    this.$axios.setToken(token, 'Bearer')
     this.$store.dispatch('LoadTeams')
   },
+
   methods: {
     // Check policy before submit
     async preparePassword () {
@@ -257,14 +267,19 @@ export default {
         this.setMasterPass()
       }
     },
+
     confirmSetMasterPass () {
       this.confirmDialogVisible = false
       this.preparePassword()
     },
+
     // Submit master pw
     async setMasterPass () {
       await this.clearKeys()
-      if (this.masterPassword.length < MIN_MASTER_PW_LEN) {
+      if (
+        !this.isDevOrStaging &&
+        this.masterPassword.length < MIN_MASTER_PW_LEN
+      ) {
         this.notify(
           this.$t('data.notifications.invalid_master_password'),
           'error'
@@ -292,11 +307,6 @@ export default {
         await this.$cryptoService.setKeyHash(hashedPassword)
         await this.$cryptoService.setEncKey(encKey[1].encryptedString)
         await this.$cryptoService.setEncPrivateKey(keys[1].encryptedString)
-        // default org
-        // const shareKey = await this.$cryptoService.makeShareKey()
-        // const orgKey = shareKey[0].encryptedString
-        // const collection = await this.$cryptoService.encrypt('defaultCollection', shareKey[1])
-        // const collectionName = collection.encryptedString
         await this.$axios.$post('cystack_platform/pm/users/register', {
           name: this.currentUser.full_name,
           email: this.currentUser.email,
@@ -310,12 +320,8 @@ export default {
             public_key: keys[0],
             encrypted_private_key: keys[1].encryptedString
           },
-          score: this.passwordStrength.score,
-          trial_plan: localStorage.getItem('trial_plan'),
-          is_trial_promotion: localStorage.getItem('is_trial_promotion')
+          score: this.passwordStrength.score
         })
-        localStorage.removeItem('trial_plan')
-        localStorage.removeItem('is_trial_promotion')
         this.notify(this.$t('master_password.create_success'), 'success')
         this.$store.commit('UPDATE_USER_PW', {
           ...this.$store.state.userPw,
@@ -324,7 +330,12 @@ export default {
         window.open(process.env.extensionLink, '_blank')
         await this.login()
       } catch (e) {
-        this.notify(this.$t('master_password.create_failed'), 'warning')
+        if (e.response?.status === 401) {
+          this.notify('This link is not valid', 'warning')
+        } else {
+          console.log(e)
+          this.notify(this.$t('master_password.create_failed'), 'warning')
+        }
       } finally {
         this.loading = false
       }
@@ -334,7 +345,7 @@ export default {
 </script>
 
 <style>
-  .no-pt-dialog .el-dialog__body {
-    padding-top: 0 !important;
-  }
+.el-dialog__body {
+  padding-top: 0 !important;
+}
 </style>

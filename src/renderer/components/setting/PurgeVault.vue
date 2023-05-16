@@ -137,7 +137,11 @@ export default {
           'success'
         )
         this.closeDialog()
-        this.logout()
+
+        // Token is no longer valid --> no need to send /logout api
+        this.logout({
+          noApiCall: true
+        })
       } catch (e) {
         this.notify(
           this.$t('data.notifications.delete_account_failed'),

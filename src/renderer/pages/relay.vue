@@ -19,13 +19,11 @@
       <!-- Breadcrumb end -->
 
       <el-collapse class="mb-8">
-        <el-collapse-item
-          class="setting-wrapper relay-info"
-        >
+        <el-collapse-item class="setting-wrapper relay-info">
           <!-- Header -->
           <template slot="title">
             <div class="py-6">
-              <div style="color: #072245;">
+              <div style="color: #072245">
                 {{ $t('data.tools.relay_your_root_email') }}
                 <b>{{ currentUser.email }}</b>
               </div>
@@ -69,7 +67,7 @@
                 <a
                   href="https://locker.io/private-email"
                   target="_blank"
-                  style="color: #216AE2; font-weight: 600;"
+                  style="color: #216ae2; font-weight: 600"
                 >
                   {{ $t('data.tools.learn_more_private_email') }}
                   <i class="ml-1 el-icon-right" />
@@ -248,6 +246,9 @@ export default {
     ManageSubdomainModal,
     EditAddressModal
   },
+
+  middleware: ['BlockOnPremise'],
+
   data () {
     return {
       limit: 5,

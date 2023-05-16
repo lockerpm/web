@@ -104,6 +104,10 @@ Vue.mixin({
     },
 
     async checkBlockedBy2FA () {
+      if (this.isOnPremise && !this.$store.state.isLoggedInOnPremise) {
+        console.log('Ignore blocked by 2fa')
+        return
+      }
       try {
         const res = await this.$axios.$get(
           '/cystack_platform/pm/users/me/block_by_2fa'
