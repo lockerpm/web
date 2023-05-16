@@ -6,7 +6,7 @@
     <p>
       {{ $t('data.enterprise.about_to_expire_warning.text', {time: expireTimeText}) }}
       <a
-        href="https://enterprise.locker.io/admin/billing/payment-method"
+        :href="`${process.env.lockerEnterprise}/admin/billing/payment-method`"
         class="font-semibold text-info hover:text-info"
       >
         {{ $t('data.enterprise.about_to_expire_warning.link') }}

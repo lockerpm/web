@@ -11,6 +11,9 @@ export default {
     return {}
   },
   mounted () {
+    // On premise will never go to this page => not on premise
+    this.$store.commit('UPDATE_ON_PREMISE_INFO', '')
+
     this.$nextTick(() => {
       this.loginByToken()
     })
@@ -39,12 +42,15 @@ export default {
         this.$store.commit('UPDATE_IS_LOGGEDIN', true)
         if (this.$route.query.client === 'browser' && token.toString()) {
           const extensionToken = token
-          window.postMessage({
-            command: 'cs-authResult',
-            token: extensionToken
-          }, window.location.origin)
+          window.postMessage(
+            {
+              command: 'cs-authResult',
+              token: extensionToken
+            },
+            window.location.origin
+          )
         } else {
-          const url = 'https://api.locker.io/v3/sso/access_token'
+          const url = `${process.env.baseApiUrl}/sso/access_token`
           this.$axios
             .post(url, {
               SERVICE_URL: '/sso',
@@ -53,10 +59,13 @@ export default {
             })
             .then(async result => {
               const extensionToken = result.data ? result.data.access_token : ''
-              window.postMessage({
-                command: 'cs-authResult',
-                token: extensionToken
-              }, window.location.origin)
+              window.postMessage(
+                {
+                  command: 'cs-authResult',
+                  token: extensionToken
+                },
+                window.location.origin
+              )
             })
             .catch(() => {})
         }

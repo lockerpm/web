@@ -246,11 +246,13 @@ export default {
 
         return connectionUrl
       }
-
+      const socketUrl = this.isOnPremise
+        ? this.$store.state.onPremiseBaseApi
+          .replace('http', 'ws')
+          .replace('/v3', '/ws')
+        : process.env.wsUrl
       this.$connect(
-        _sanitizeUrl(
-          `${process.env.wsUrl}/cystack_platform/pm/sync?token=${token}`
-        ),
+        _sanitizeUrl(`${socketUrl}/cystack_platform/pm/sync?token=${token}`),
         {
           format: 'json',
           reconnection: true,

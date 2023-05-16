@@ -48,7 +48,12 @@ export const state = () => ({
     isActive: false,
     currentStepId: ''
   },
-  syncingQuickShares: false
+  syncingQuickShares: false,
+
+  // On premise
+  isOnPremise: false,
+  onPremiseBaseApi: '',
+  isLoggedInOnPremise: false
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -56,6 +61,9 @@ export const mutations = {
   },
   UPDATE_IS_LOGGEDIN (state, value) {
     state.isLoggedIn = value
+  },
+  UPDATE_IS_LOGGEDIN_ON_PREMISE (state, value) {
+    state.isLoggedInOnPremise = value
   },
   CLEAR_ALL_DATA (state) {
     state.isLoggedIn = false
@@ -76,9 +84,16 @@ export const mutations = {
     state.pendingShares = 0
     state.enterpriseInvitations = []
     state.enterprisePolicies = []
+    state.onPremiseBaseApi = ''
+    state.isOnPremise = false
+    state.isLoggedInOnPremise = false
   },
   UPDATE_USER (state, user) {
     state.user = user
+  },
+  UPDATE_ON_PREMISE_INFO (state, baseApi) {
+    state.isOnPremise = !!baseApi
+    state.onPremiseBaseApi = baseApi
   },
   UPDATE_USER_PW (state, user) {
     state.userPw = user
@@ -177,6 +192,7 @@ export const actions = {
 
     commit('UPDATE_IS_LOGGEDIN', state.isLoggedIn)
     commit('UPDATE_USER', state.user)
+    commit('UPDATE_ON_PREMISE_INFO', state.onPremiseBaseApi)
     commit('UPDATE_USER_PW', state.userPw)
     const environment = isDev ? 'dev' : process.env.environment || ''
     commit('UPDATE_DEV', environment)
@@ -198,6 +214,7 @@ export const actions = {
 
       commit('UPDATE_IS_LOGGEDIN', state.isLoggedIn)
       commit('UPDATE_USER', state.user)
+      commit('UPDATE_ON_PREMISE_INFO', state.onPremiseBaseApi)
       commit('UPDATE_USER_PW', state.userPw)
       const environment = isDev ? 'dev' : process.env.environment || ''
       commit('UPDATE_DEV', environment)
@@ -221,14 +238,24 @@ export const actions = {
       resolve(payload)
     })
   },
-  LoadCurrentUser ({ commit }) {
+  LoadCurrentUser ({ commit, state }) {
+    if (state.isOnPremise && !state.isLoggedInOnPremise) {
+      console.log('Ignore current user')
+      return {
+        language: 'en'
+      }
+    }
     return this.$axios.$get('me').then(res => {
       commit('UPDATE_USER', res)
       commit('SET_LANG', res.language)
       return res
     })
   },
-  LoadCurrentUserPw ({ commit }) {
+  LoadCurrentUserPw ({ commit, state }) {
+    if (state.isOnPremise && !state.isLoggedInOnPremise) {
+      console.log('Ignore user pw')
+      return
+    }
     return this.$axios.$get('/cystack_platform/pm/users/me').then(res => {
       commit('UPDATE_USER_PW', res)
       if (this.$vaultTimeoutService) {
@@ -240,7 +267,11 @@ export const actions = {
       return res
     })
   },
-  LoadCurrentIntercom ({ commit }) {
+  LoadCurrentIntercom ({ commit, state }) {
+    if (state.isOnPremise) {
+      console.log('Ignore Intercom')
+      return
+    }
     return this.$axios
       .$get('cystack_platform/pm/users/me/intercom')
       .then(res => {
@@ -256,8 +287,12 @@ export const actions = {
       commit('UPDATE_NOTIFICATION', res)
     })
   },
-  LoadTeams ({ commit }) {
+  LoadTeams ({ commit, state }) {
     commit('UPDATE_TEAMS', [])
+    if (state.isOnPremise && !state.isLoggedInOnPremise) {
+      console.log('Ignore teams')
+      return []
+    }
     return this.$axios.$get('cystack_platform/pm/enterprises').then(res => {
       commit('UPDATE_TEAMS', res)
       // if (res.length) {
@@ -286,7 +321,11 @@ export const actions = {
         return res
       })
   },
-  LoadEnterpriseInvitations ({ commit }) {
+  LoadEnterpriseInvitations ({ commit, state }) {
+    if (state.isOnPremise && !state.isLoggedInOnPremise) {
+      console.log('Ignore invitations')
+      return
+    }
     return this.$axios
       .$get('cystack_platform/pm/enterprises/members/invitations')
       .then(res => {

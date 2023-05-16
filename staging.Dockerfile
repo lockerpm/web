@@ -18,13 +18,15 @@ ENV CS_ENVIRONMENT=staging
 
 ENV BASE_URL=https://staging.locker.io
 
-ENV BASE_ID_URL=https://id.locker.io
+ENV BASE_ID_URL=https://id-staging.locker.io
 
 ENV BASE_API_URL=https://api.cystack.org/v3
 
 ENV WS_URL=wss://api.cystack.org/ws
 
 ENV LOGO_URL=https://staging.locker.io/logo/
+
+ENV ENTERPRISE_URL=https://enterprise-staging.locker.io
 
 RUN yarn run build-web
 
