@@ -97,7 +97,7 @@ Vue.mixin({
       case CipherType.Identity:
         return this.getIconDefaultCipher('Identity', size)
       case CipherType.TOTP:
-        return this.getIconDefaultCipher('Authenticator', size)
+        return this.getIconDefaultCipher('Authenticator', size, 'png')
       case CipherType.CryptoWallet:
         if (!defaultIcon) {
           if (cipher.cryptoWallet && cipher.cryptoWallet.walletApp) {
@@ -156,10 +156,10 @@ Vue.mixin({
       }
     },
 
-    getIconDefaultCipher (type, size = 70) {
+    getIconDefaultCipher (type, size = 70, extension = 'svg') {
       return this.$createElement('img', {
         attrs: {
-          src: require(`~/assets/images/icons/icon_${type}.svg`),
+          src: require(`~/assets/images/icons/icon_${type}.${extension}`),
           style: `height: ${size}px`,
           class: 'rounded mx-auto'
         }
