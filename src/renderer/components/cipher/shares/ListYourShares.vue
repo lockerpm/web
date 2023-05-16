@@ -231,16 +231,10 @@ import ShareCipher from '../../../components/cipher/shares/ShareCipher'
 import EditSharedCipher from '../../../components/cipher/shares/EditSharedCipher'
 import ShareFolder from '../../../components/folder/ShareFolder'
 import ShareNoCipher from '../../../components/cipher/shares/ShareNoCipher'
-import { CipherType } from '../../../jslib/src/enums'
+import { CipherType } from '../../../core/enums/cipherType'
 import Vnodes from '../../../components/Vnodes'
-import { CipherRequest } from '../../../jslib/src/models/request'
 import { Utils } from '../../../jslib/src/misc/utils.ts'
 import { AccountRole } from '../../../constants'
-
-CipherType.TOTP = 5
-CipherType.MasterPassword = 8
-CipherType.CryptoBackup = 7
-CipherType[7] = 'Crypto Backup'
 
 export default {
   components: {
@@ -376,6 +370,13 @@ export default {
               null
             )) || []
         } catch (error) {}
+        // remove hidden ciphers
+        result = result.filter(cipher =>
+          Object.values(this.cipherMapping)
+            .filter(m => !m.hideFromCipherList)
+            .map(m => m.type)
+            .includes(cipher.type)
+        )
         return result
       },
       watch: ['$store.state.syncedCiphersToggle']
@@ -477,92 +478,10 @@ export default {
       this.$refs.shareFolder.openDialog(folder)
     },
     async stopSharing (cipher) {
-      try {
-        if (cipher.ciphers) {
-          let memberId = null
-          if (cipher.user) {
-            memberId = cipher.user.id
-            delete cipher.user
-          }
-          let folderNameEnc = await this.$cryptoService.encrypt(cipher.name)
-          folderNameEnc = folderNameEnc.encryptedString
-          const ciphers = await Promise.all(
-            cipher.ciphers.map(async cipher => {
-              const type_ = cipher.type
-              if (type_ === 7) {
-                cipher.type = CipherType.SecureNote
-                cipher.secureNote.type = 0
-              }
-              const cipherEnc = await this.$cipherService.encrypt(
-                cipher,
-                this.$cryptoService.getEncKey()
-              )
-              const data = new CipherRequest(cipherEnc)
-              data.type = type_
-              cipher.type = type_
-              return {
-                id: cipher.id,
-                ...data
-              }
-            })
-          )
-          const payload = {
-            folder: {
-              id: cipher.id,
-              name: folderNameEnc,
-              ciphers
-            }
-          }
-          memberId
-            ? await this.$axios.$post(
-              `cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`,
-              payload
-            )
-            : await this.$axios.$post(
-              `cystack_platform/pm/sharing/${cipher.organizationId}/stop`,
-              payload
-            )
-        } else {
-          let memberId = null
-          if (cipher.user) {
-            memberId = cipher.user.id
-            delete cipher.user
-          }
-          const type_ = cipher.type
-          if (type_ === 7) {
-            cipher.type = CipherType.SecureNote
-            cipher.secureNote.type = 0
-          }
-          const personalKey = await this.$cryptoService.getEncKey()
-          const cipherEnc = await this.$cipherService.encrypt(
-            cipher,
-            personalKey
-          )
-          const data = new CipherRequest(cipherEnc)
-          // console.log(data)
-          data.type = type_
-          cipher.type = type_
-          memberId
-            ? await this.$axios.$post(
-              `cystack_platform/pm/sharing/${cipher.organizationId}/members/${memberId}/stop`,
-              {
-                folder: null,
-                cipher: { ...data, id: cipher.id }
-              }
-            )
-            : await this.$axios.$post(
-              `cystack_platform/pm/sharing/${cipher.organizationId}/stop`,
-              {
-                folder: null,
-                cipher: { ...data, id: cipher.id }
-              }
-            )
-        }
-        this.notify(this.$t('data.notifications.stop_share_success'), 'success')
-        await this.getMyShares()
-      } catch (error) {
-        this.notify(this.$t('errors.something_went_wrong'), 'warning')
-        console.log(error)
+      if (cipher.ciphers) {
+        await this.stopShareFolder(cipher)
+      } else {
+        await this.stopShareCipher(cipher)
       }
     },
     async generateOrgKey (orgId) {

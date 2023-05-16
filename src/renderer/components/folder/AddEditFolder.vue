@@ -9,7 +9,11 @@
   >
     <div slot="title">
       <div class="text-head-5 text-black-700 font-semibold truncate">
-        {{ folder.id ? $t('data.folders.edit_folder') : $t('data.folders.add_folder') }}
+        {{
+          folder.id
+            ? $t('data.folders.edit_folder')
+            : $t('data.folders.add_folder')
+        }}
       </div>
     </div>
     <div class="text-left">
@@ -21,7 +25,7 @@
         <InputText
           v-model="folder.name"
           :label="$t('common.folder_name')"
-          class="w-full "
+          class="w-full"
           :error-text="err && err.length && err[0]"
         />
       </ValidationProvider>
@@ -37,16 +41,13 @@
         </button>
       </div>
       <div>
-        <button
-          class="btn btn-default"
-          @click="dialogVisible = false"
-        >
+        <button class="btn btn-default" @click="dialogVisible = false">
           {{ $t('common.cancel') }}
         </button>
         <button
           class="btn btn-primary"
           :disabled="loading || !folder.name"
-          @click="folder.id ?putFolder(folder):postFolder(folder)"
+          @click="folder.id ? putFolder(folder) : postFolder(folder)"
         >
           {{ folder.id ? $t('common.update') : $t('common.add') }}
         </button>
@@ -57,9 +58,8 @@
 
 <script>
 import { ValidationProvider } from 'vee-validate'
-import { CipherRequest, FolderRequest } from '../../jslib/src/models/request'
+import { FolderRequest } from '../../jslib/src/models/request'
 import InputText from '../../components/input/InputText'
-import { CipherType } from '../../jslib/src/enums'
 export default {
   components: {
     InputText,
@@ -104,82 +104,120 @@ export default {
         this.$emit('created-folder', { id: res.id, name: folder.name })
         this.closeDialog()
         if (this.shouldRedirect) {
-          this.$router.push(this.localeRoute({ name: 'vault-folders-folderId', params: { folderId: res.id } }))
+          this.$router.push(
+            this.localeRoute({
+              name: 'vault-folders-folderId',
+              params: { folderId: res.id }
+            })
+          )
         }
       } catch (e) {
-        this.errors = (e.response && e.response.data && e.response.data.details) || {}
+        this.errors =
+          (e.response && e.response.data && e.response.data.details) || {}
       } finally {
         this.loading = false
       }
     },
     async deleteFolder (folder) {
-      this.$confirm(this.$t('data.notifications.deleted_folder'), this.$t('common.warning'), {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(async () => {
-        try {
-          this.loading = true
-          if (folder.organizationId) {
-            let folderNameEnc = await this.$cryptoService.encrypt(folder.name)
-            folderNameEnc = folderNameEnc.encryptedString
-            const ciphers = await Promise.all(folder.ciphers.map(async cipher => {
-              const type_ = cipher.type
-              if (type_ === 7) {
-                cipher.type = CipherType.SecureNote
-                cipher.secureNote.type = 0
-              }
-              const cipherEnc = await this.$cipherService.encrypt(cipher, this.$cryptoService.getEncKey())
-              const data = new CipherRequest(cipherEnc)
-              data.type = type_
-              cipher.type = type_
-              return {
-                id: cipher.id,
-                ...data
-              }
-            }))
-            const payload = {
-              folder: {
-                id: folder.id,
-                name: folderNameEnc,
-                ciphers
-              }
-            }
-            await this.$axios.$post(`cystack_platform/pm/sharing/${folder.organizationId}/folders/${folder.id}/delete`, payload)
-          } else {
-            await this.$axios.$delete(`cystack_platform/pm/folders/${folder.id}`)
-          }
-          this.$emit('done')
-          this.closeDialog()
-          this.notify(this.$tc('data.notifications.delete_success', 1, { type: this.$t('common.folder') }), 'success')
-        } catch (e) {
-          this.errors = (e.response && e.response.data && e.response.data.details) || {}
-          this.notify(this.$tc('data.notifications.delete_failed', 1, { type: this.$t('common.folder') }), 'success')
-        } finally {
-          this.loading = false
+      this.$confirm(
+        this.$t('data.notifications.deleted_folder'),
+        this.$t('common.warning'),
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
         }
-      }).catch(() => {
-
-      })
+      )
+        .then(async () => {
+          try {
+            this.loading = true
+            if (folder.organizationId) {
+              let folderNameEnc = await this.$cryptoService.encrypt(folder.name)
+              folderNameEnc = folderNameEnc.encryptedString
+              const personalKey = await this.$cryptoService.getEncKey()
+              const ciphers = await Promise.all(
+                folder.ciphers.map(async cipher => {
+                  const { data } = await this.getEncCipherForRequest(cipher, {
+                    noCheck: true,
+                    encKey: personalKey
+                  })
+                  return {
+                    id: cipher.id,
+                    ...data
+                  }
+                })
+              )
+              const payload = {
+                folder: {
+                  id: folder.id,
+                  name: folderNameEnc,
+                  ciphers
+                }
+              }
+              await this.$axios.$post(
+                `cystack_platform/pm/sharing/${folder.organizationId}/folders/${folder.id}/delete`,
+                payload
+              )
+            } else {
+              await this.$axios.$delete(
+                `cystack_platform/pm/folders/${folder.id}`
+              )
+            }
+            this.$emit('done')
+            this.closeDialog()
+            this.notify(
+              this.$tc('data.notifications.delete_success', 1, {
+                type: this.$t('common.folder')
+              }),
+              'success'
+            )
+          } catch (e) {
+            this.errors =
+              (e.response && e.response.data && e.response.data.details) || {}
+            this.notify(
+              this.$tc('data.notifications.delete_failed', 1, {
+                type: this.$t('common.folder')
+              }),
+              'success'
+            )
+          } finally {
+            this.loading = false
+          }
+        })
+        .catch(() => {})
     },
     async putFolder (folder) {
       try {
         this.loading = true
         if (folder.organizationId) {
-          const orgKey = await this.$cryptoService.getOrgKey(folder.organizationId)
+          const orgKey = await this.$cryptoService.getOrgKey(
+            folder.organizationId
+          )
           const folderEnc = await this.$folderService.encrypt(folder, orgKey)
           const data = new FolderRequest(folderEnc)
-          await this.$axios.$put(`cystack_platform/pm/sharing/${folder.organizationId}/folders/${folder.id}`, data)
+          await this.$axios.$put(
+            `cystack_platform/pm/sharing/${folder.organizationId}/folders/${folder.id}`,
+            data
+          )
         } else {
           const folderEnc = await this.$folderService.encrypt(folder)
           const data = new FolderRequest(folderEnc)
-          await this.$axios.$put(`cystack_platform/pm/folders/${folder.id}`, data)
+          await this.$axios.$put(
+            `cystack_platform/pm/folders/${folder.id}`,
+            data
+          )
         }
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc('type.Folder', 1) }), 'success')
+        this.notify(
+          this.$tc('data.notifications.update_success', 1, {
+            type: this.$tc('type.Folder', 1)
+          }),
+          'success'
+        )
         this.$emit('done')
         this.closeDialog()
       } catch (e) {
-        this.errors = (e.response && e.response.data && e.response.data.details) || {}
+        this.errors =
+          (e.response && e.response.data && e.response.data.details) || {}
       } finally {
         this.loading = false
       }
@@ -188,9 +226,7 @@ export default {
       let allCollections = []
       try {
         allCollections = await this.$collectionService.getAllDecrypted()
-      } catch (error) {
-
-      }
+      } catch (error) {}
       this.writeableCollections = allCollections.filter(c => !c.readOnly)
     }
   }

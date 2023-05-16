@@ -17,21 +17,25 @@
 
       <div class="text-black-600 mb-8">
         {{
-          isFreeUser && getRouteBaseName() === 'shares-index-your-shares'
+          isFreeUser && isYourShares
             ? $t('errors.upgrade_to_use')
-            : getRouteBaseName() === 'shares-index-quick-shares'
+            : isQuickShares
               ? $t('data.sharing.quick_share.empty_desc')
               : $t(`data.no_data.${type}.description`)
         }}
       </div>
 
-      <div v-if="getRouteBaseName() !== 'shares-index'">
+      <div v-if="!isSharedWithYou">
         <button
           class="btn btn-default"
-          @click="isFreeUser ? upgradePlan() : $emit('add-share')"
+          @click="
+            isFreeUser && isYourShares ? upgradePlan() : $emit('add-share')
+          "
         >
           {{
-            isFreeUser ? $t('common.upgrade') : $t(`data.no_data.${type}.btn`)
+            isFreeUser && isYourShares
+              ? $t('common.upgrade')
+              : $t(`data.no_data.${type}.btn`)
           }}
         </button>
       </div>
@@ -54,6 +58,15 @@ export default {
     isFreeUser () {
       return this.currentPlan?.alias === 'pm_free'
     },
+    isSharedWithYou () {
+      return this.getRouteBaseName() === 'shares-index-index'
+    },
+    isYourShares () {
+      return this.getRouteBaseName() === 'shares-index-index-your-shares'
+    },
+    isQuickShares () {
+      return this.getRouteBaseName() === 'shares-index-index-quick-shares'
+    },
     type () {
       switch (this.getRouteBaseName()) {
       case 'passwords':
@@ -66,9 +79,9 @@ export default {
         return 'Identity'
       case 'vault':
         return 'Vault'
-      case 'shares-index':
-      case 'shares-index-your-shares':
-      case 'shares-index-quick-shares':
+      case 'shares-index-index':
+      case 'shares-index-index-your-shares':
+      case 'shares-index-index-quick-shares':
         return 'Shares'
       case 'trash':
         return 'Trash'

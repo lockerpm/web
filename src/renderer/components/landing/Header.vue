@@ -3,7 +3,9 @@
     id="header"
     class="fixed w-full z-30 transition duration-300 ease-in-out bg-transparent"
   >
-    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-[14px] px-6">
+    <div
+      class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-[14px] px-6"
+    >
       <!-- Logo -->
       <div class="flex items-center order-1">
         <nuxt-link :to="localePath('/')">
@@ -30,7 +32,7 @@
       <!-- Right actions -->
       <div class="hidden sm:flex ml-auto mr-6 lg:order-4 order-2">
         <template v-if="isLoggedIn">
-          <nuxt-link :to="localeRoute({name: 'vault'})" class="landing-btn">
+          <nuxt-link :to="localeRoute({ name: 'vault' })" class="landing-btn">
             My Vault
           </nuxt-link>
         </template>
@@ -61,7 +63,11 @@
             <nuxt-link
               class="inline-block nav-item text-black landing-transition"
               :to="localePath('/')"
-              :active-class="['business', 'business-plans'].includes(getRouteBaseName())?'':'nuxt-link-active'"
+              :active-class="
+                ['business', 'business-plans'].includes(getRouteBaseName())
+                  ? ''
+                  : 'nuxt-link-active'
+              "
             >
               {{ $t('landing_header.personal') }}
             </nuxt-link>
@@ -76,18 +82,31 @@
           </li>
         </ul>
         <!-- Nav items -->
-        <ul class="list-reset lg:flex justify-end flex-1 items-center gap-x-[45px]">
-          <li
-            v-for="(item, index) in $t('landing_header.menu')"
-            :key="index"
-          >
-            <a v-if="item.external" :href="item.link" target="_blank" class="inline-block nav-item text-black landing-transition">
+        <ul
+          class="list-reset lg:flex justify-end flex-1 items-center gap-x-[45px]"
+        >
+          <li v-for="(item, index) in $t('landing_header.menu')" :key="index">
+            <a
+              v-if="item.external"
+              :href="item.link"
+              target="_blank"
+              class="inline-block nav-item text-black landing-transition"
+            >
               {{ item.name }}
             </a>
             <nuxt-link
               v-else
               class="inline-block nav-item text-black landing-transition"
-              :to="localeRoute({name: ['business', 'business-plans'].includes(getRouteBaseName()) && item.link === 'plans' ? `business-${item.link}` : item.link})"
+              :to="
+                localeRoute({
+                  name:
+                    ['business', 'business-plans'].includes(
+                      getRouteBaseName()
+                    ) && item.link === 'plans'
+                      ? `business-${item.link}`
+                      : item.link
+                })
+              "
             >
               {{ item.name }}
             </nuxt-link>
@@ -95,7 +114,10 @@
           <hr class="sm:hidden my-5 opacity-20">
           <template v-if="isLoggedIn">
             <li class="sm:hidden">
-              <nuxt-link :to="localeRoute({name: 'vault'})" class="inline-block nav-item text-black landing-transition">
+              <nuxt-link
+                :to="localeRoute({ name: 'vault' })"
+                class="inline-block nav-item text-black landing-transition"
+              >
                 My Vault
               </nuxt-link>
             </li>
@@ -156,7 +178,7 @@ export default {
 
     document.onclick = check
     function check (e) {
-      const target = (e && e.target)
+      const target = e && e.target
 
       // Nav Menu
       if (!checkParent(target, navMenuDiv)) {
@@ -200,5 +222,4 @@ a,
 a:visited {
   text-decoration: none;
 }
-
 </style>

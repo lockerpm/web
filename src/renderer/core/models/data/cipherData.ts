@@ -8,36 +8,40 @@ import {
 } from '../../../jslib/src/models/data'
 import { CipherRepromptType } from '../../../jslib/src/enums/cipherRepromptType'
 import { PasswordHistoryData } from '../../../jslib/src/models/data/passwordHistoryData'
-import { CipherResponse } from '../../../jslib/src/models/response'
+import { CipherResponse } from '../response/cipherResponse'
 import { CipherType } from '../../../jslib/src/enums'
-// import { CipherType } from '../../enums/cipherType'
 
 export class CipherData {
-  id: string;
-  organizationId: string;
-  folderId: string;
-  userId: string;
-  edit: boolean;
-  viewPassword: boolean;
-  organizationUseTotp: boolean;
-  favorite: boolean;
-  revisionDate: string;
-  type: CipherType;
-  sizeName: string;
-  name: string;
-  notes: string;
-  login?: LoginData;
-  secureNote?: SecureNoteData;
-  card?: CardData;
-  identity?: IdentityData;
-  fields?: FieldData[];
-  attachments?: AttachmentData[];
-  passwordHistory?: PasswordHistoryData[];
-  collectionIds?: string[];
-  deletedDate: string;
-  reprompt: CipherRepromptType;
+  id: string
+  organizationId: string
+  folderId: string
+  userId: string
+  edit: boolean
+  viewPassword: boolean
+  organizationUseTotp: boolean
+  favorite: boolean
+  creationDate: string
+  revisionDate: string
+  type: CipherType
+  sizeName: string
+  name: string
+  notes: string
+  login?: LoginData
+  secureNote?: SecureNoteData
+  card?: CardData
+  identity?: IdentityData
+  fields?: FieldData[]
+  attachments?: AttachmentData[]
+  passwordHistory?: PasswordHistoryData[]
+  collectionIds?: string[]
+  deletedDate: string
+  reprompt: CipherRepromptType
 
-  constructor (response?: CipherResponse, userId?: string, collectionIds?: string[]) {
+  constructor (
+    response?: CipherResponse,
+    userId?: string,
+    collectionIds?: string[]
+  ) {
     if (response == null) {
       return
     }
@@ -50,18 +54,22 @@ export class CipherData {
     this.viewPassword = response.viewPassword
     this.organizationUseTotp = response.organizationUseTotp
     this.favorite = response.favorite
+    this.creationDate = response.creationDate
     this.revisionDate = response.revisionDate
     this.type = response.type
     this.name = response.name
     this.notes = response.notes
-    this.collectionIds = collectionIds != null ? collectionIds : response.collectionIds
+    this.collectionIds =
+      collectionIds != null ? collectionIds : response.collectionIds
     this.deletedDate = response.deletedDate
     this.reprompt = response.reprompt
 
     switch (this.type) {
     case CipherType.Login:
-    // @ts-ignore
+      // @ts-ignore
+      // eslint-disable-next-line no-fallthrough
     case 8:
+      // Master password
       this.login = new LoginData(response.login)
       break
     case CipherType.SecureNote:
@@ -84,7 +92,9 @@ export class CipherData {
       this.attachments = response.attachments.map(a => new AttachmentData(a))
     }
     if (response.passwordHistory != null) {
-      this.passwordHistory = response.passwordHistory.map(ph => new PasswordHistoryData(ph))
+      this.passwordHistory = response.passwordHistory.map(
+        ph => new PasswordHistoryData(ph)
+      )
     }
   }
 }

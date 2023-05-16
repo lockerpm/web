@@ -2,7 +2,7 @@
   <div v-if="shouldWelcome" class="lg:px-28 py-10 px-10">
     <div class="border border-black-200 rounded p-5 md:p-8 relative">
       <div class="flex items-center justify-between">
-        <div class="">
+        <div>
           <div class="text-lg font-semibold mb-2">
             {{ $t('data.welcome.title') }}
           </div>
@@ -46,6 +46,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

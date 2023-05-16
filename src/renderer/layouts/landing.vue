@@ -3,6 +3,8 @@
     <TopBanner />
 
     <Header />
+
+    <!-- Cookies agreement -->
     <div v-if="showCookie != 'false'" id="cookie-bar" class="cookie-bar">
       <div class="cookie-bar__wrap">
         <div class="cookie-bar__msg-wrap">
@@ -29,11 +31,16 @@
         </div>
       </div>
     </div>
+    <!-- Cookies agreement end -->
+
+    <!-- Content -->
     <div class="max-w-6xl mx-auto">
       <div class="w-full px-6">
         <nuxt />
       </div>
     </div>
+    <!-- Content end -->
+
     <Footer id="footer" />
   </div>
 </template>
@@ -191,6 +198,7 @@ export default {
     }
   },
   mounted () {
+    this.setupMomentLocale(this.locale)
     this.showCookie = this.checkCookie()
   },
   methods: {

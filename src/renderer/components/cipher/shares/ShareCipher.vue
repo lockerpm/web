@@ -409,15 +409,10 @@ export default {
       }
       try {
         this.loading = true
-        const type_ = cipher.type
-        if ([7].includes(type_)) {
-          cipher.type = CipherType.SecureNote
-          cipher.secureNote.type = 0
-        }
-        const cipherEnc = await this.$cipherService.encrypt(cipher, this.orgKey)
-        const data = new CipherRequest(cipherEnc)
-        data.type = type_
-        this.cipher.type = type_
+        const { data } = await this.getEncCipherForRequest(cipher, {
+          noCheck: true,
+          encKey: this.orgKey
+        })
         const url = 'cystack_platform/pm/sharing'
         await this.$axios.$put(url, {
           sharing_key: this.sharingKey,
@@ -493,15 +488,10 @@ export default {
         // console.log(cipher.organizationId)
         _orgKey = await this.$cryptoService.getOrgKey(cipher.organizationId)
       }
-      const type_ = cipher.type
-      if (type_ === 7) {
-        cipher.type = CipherType.SecureNote
-        cipher.secureNote.type = 0
-      }
-      const cipherEnc = await this.$cipherService.encrypt(cipher, _orgKey)
-      const data = new CipherRequest(cipherEnc)
-      data.type = type_
-      cipher.type = type_
+      const { data } = await this.getEncCipherForRequest(cipher, {
+        noCheck: true,
+        encKey: _orgKey
+      })
       sharedCiphers.push({
         cipher: { id: cipher.id, ...data },
         members: this.newMembers,
@@ -598,19 +588,11 @@ export default {
         return
       }
       try {
-        const type_ = this.cipher.type
-        if (type_ === 7) {
-          this.cipher.type = CipherType.SecureNote
-          this.cipher.secureNote.type = 0
-        }
         const personalKey = await this.$cryptoService.getEncKey()
-        const cipherEnc = await this.$cipherService.encrypt(
-          this.cipher,
-          personalKey
-        )
-        const data = new CipherRequest(cipherEnc)
-        data.type = type_
-        this.cipher.type = type_
+        const { data } = await this.getEncCipherForRequest(this.cipher, {
+          noCheck: true,
+          encKey: personalKey
+        })
         await this.$axios.$post(
           `cystack_platform/pm/sharing/${this.cipher.organizationId}/${
             row.type === 'group' ? 'groups' : 'members'

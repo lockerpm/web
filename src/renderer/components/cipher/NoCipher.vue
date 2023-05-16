@@ -2,7 +2,7 @@
   <div class="flex-column-fluid flex items-center justify-center">
     <div class="text-center mb-60">
       <div class="mb-5 p-5">
-        <Vnodes :vnodes="getIconCipher({type: CipherType[type] ? CipherType[type] : type}, 70)" />
+        <Vnodes :vnodes="getIconCipher({ type: cipherIconType }, 70)" />
       </div>
       <div class="text-head-5 font-semibold mb-2.5">
         {{ $t(`data.no_data.${type}.title`) }}
@@ -20,7 +20,7 @@
         </button>
         <nuxt-link
           v-if="shouldRenderBtnImport"
-          :to="localeRoute({name: 'settings-import-export'})"
+          :to="localeRoute({ name: 'settings-import-export' })"
           tag="button"
           class="btn btn-default"
           @click="$emit('import-cipher')"
@@ -33,14 +33,13 @@
 </template>
 
 <script>
-import { CipherType } from '../../jslib/src/enums/cipherType.ts'
+import { CipherType } from '../../core/enums/cipherType'
 import Vnodes from '../../components/Vnodes'
-CipherType.CryptoBackup = 7
 export default {
   components: { Vnodes },
   props: {
     type: {
-      type: String,
+      type: [String, Number],
       default: null
     }
   },
@@ -51,10 +50,17 @@ export default {
   },
   computed: {
     shouldRenderBtn () {
+      console.log(CipherType[this.type] ? CipherType[this.type] : this.type)
       return !['Trash'].includes(this.type)
     },
     shouldRenderBtnImport () {
       return this.type === 'Login' || this.type === 'Vault'
+    },
+    cipherIconType () {
+      if (typeof this.type === 'string') {
+        return CipherType[this.type] ? CipherType[this.type] : this.type
+      }
+      return this.type
     }
   }
 }

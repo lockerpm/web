@@ -20,27 +20,6 @@
               {{ folder.name || collection.name }}
             </el-breadcrumb-item>
           </template>
-          <template
-            v-else-if="
-              getRouteBaseName() === 'vault-teams-teamId-tfolders-tfolderId-id'
-            "
-          >
-            <el-breadcrumb-item :to="localeRoute({ name: 'vault' })">
-              {{ $t('sidebar.vault') }}
-            </el-breadcrumb-item>
-            <el-breadcrumb-item
-              class="flex items-center"
-              :to="
-                localeRoute({
-                  name: 'vault-teams-teamId-tfolders-tfolderId',
-                  params: $route.params
-                })
-              "
-            >
-              {{ getTeam(teams, $route.params.teamId).name }} -
-              {{ collection.name }}
-            </el-breadcrumb-item>
-          </template>
           <template v-else>
             <el-breadcrumb-item :to="localeRoute({ name: routeName })">
               {{ $t(`sidebar.${routeName}`) }}
@@ -148,289 +127,105 @@
         <!-- Display cipher info -->
         <div v-show="!editMode" class="cipher-items">
           <!-- Password -->
-          <template v-if="cipher.type === CipherType.Login">
-            <TextHaveCopy
-              label="Email / Username"
-              :text="cipher.login.username"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.password')"
-              :text="cipher.login.password"
-              :view-password="cipher.viewPassword"
-              should-hide
-            />
-            <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">{{ $t('data.ciphers.password_security') }}</div>
-              <div class="col-span-4 font-semibold">
-                <PasswordStrength :score="passwordStrength.score" />
-              </div>
-            </div>
-            <div
-              v-for="(item, index) in cipher.login.uris"
-              v-show="item.uri"
-              :key="index"
-              class="grid md:grid-cols-6 cipher-item"
-            >
-              <div class="">{{ $t('data.ciphers.website_address') }}</div>
-              <div class="col-span-4 font-semibold">
-                {{ item.uri }}
-              </div>
-              <div class="text-right">
-                <button
-                  v-if="item.canLaunch"
-                  class="btn btn-icon btn-xs btn-action"
-                  :title="$t('common.go_to_website')"
-                  @click="openNewTab(item.uri)"
-                >
-                  <i class="fas fa-external-link-square-alt" />
-                </button>
-              </div>
-            </div>
-          </template>
+          <login-details
+            v-if="cipher.type === CipherType.Login"
+            :cipher="cipher"
+          />
           <!-- Password end -->
 
           <!-- Master Password -->
-          <template v-if="cipher.type === CipherType.MasterPassword">
-            <div>
-              <TextHaveCopy
-                should-hide
-                :label="$t('data.ciphers.password')"
-                :text="cipher.login.password"
-              />
-            </div>
-            <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">{{ $t('data.ciphers.password_security') }}</div>
-              <div class="col-span-4 font-semibold">
-                <PasswordStrength :score="passwordStrength.score" />
-              </div>
-            </div>
-            <div
-              v-for="(item, index) in cipher.login.uris"
-              v-show="item.uri"
-              :key="index"
-              class="grid md:grid-cols-6 cipher-item"
-            >
-              <div class="">{{ $t('data.ciphers.website_address') }}</div>
-              <div class="col-span-4 font-semibold">
-                {{ item.uri }}
-              </div>
-              <div class="text-right">
-                <button
-                  v-if="item.canLaunch"
-                  class="btn btn-icon btn-xs btn-action"
-                  :title="$t('common.go_to_website')"
-                  @click="openNewTab(item.uri)"
-                >
-                  <i class="fas fa-external-link-square-alt" />
-                </button>
-              </div>
-            </div>
-          </template>
+          <master-pw-details
+            v-if="cipher.type === CipherType.MasterPassword"
+            :cipher="cipher"
+          />
           <!-- Master Password end -->
 
           <!-- Card -->
-          <template v-if="cipher.type === CipherType.Card">
-            <TextHaveCopy
-              :label="$t('data.ciphers.card_holder')"
-              :text="cipher.card.cardholderName"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.brand')"
-              :text="cipher.card.brand"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.card_number')"
-              :text="cipher.card.number"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.expiration_month')"
-              :text="cipher.card.expMonth"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.expiration_year')"
-              :text="cipher.card.expYear"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.cvv')"
-              :text="cipher.card.code"
-              should-hide
-              :view-password="cipher.viewPassword"
-            />
-          </template>
+          <card-details
+            v-if="cipher.type === CipherType.Card"
+            :cipher="cipher"
+          />
           <!-- Card end -->
 
           <!-- Identity -->
-          <template v-if="cipher.type === CipherType.Identity">
-            <TextHaveCopy
-              :label="$t('data.ciphers.title')"
-              :text="
-                cipher.identity.title
-                  ? $t(`common.${cipher.identity.title}`)
-                  : null
-              "
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.first_name')"
-              :text="cipher.identity.firstName"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.last_name')"
-              :text="cipher.identity.lastName"
-            />
-            <TextHaveCopy label="Username" :text="cipher.identity.username" />
-            <TextHaveCopy label="Email" :text="cipher.identity.email" />
-            <TextHaveCopy
-              :label="$t('data.ciphers.company')"
-              :text="cipher.identity.company"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.ssn')"
-              :text="cipher.identity.ssn"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.passport')"
-              :text="cipher.identity.passportNumber"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.license')"
-              :text="cipher.identity.licenseNumber"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.address') + '1'"
-              :text="cipher.identity.address1"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.address') + '2'"
-              :text="cipher.identity.address2"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.city_town')"
-              :text="cipher.identity.city"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.state_province')"
-              :text="cipher.identity.state"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.zip')"
-              :text="cipher.identity.postalCode"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.country')"
-              :text="cipher.identity.country"
-            />
-          </template>
+          <identity-details
+            v-if="cipher.type === CipherType.Identity"
+            :cipher="cipher"
+          />
           <!-- Identity end -->
 
           <!-- Crypto wallet -->
-          <template
+          <crypto-backup-details
             v-if="
               cipher.type === CipherType.CryptoWallet && cipher.cryptoWallet
             "
-          >
-            <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">{{ $t('data.ciphers.wallet_app') }}</div>
-              <div class="col-span-4">
-                <div
-                  v-if="cipher.cryptoWallet.walletApp"
-                  class="font-semibold flex items-center"
-                >
-                  <img
-                    :src="cipher.cryptoWallet.walletApp.logo"
-                    alt=""
-                    class="mr-3 h-[34px] w-[34px] rounded-full"
-                  >
-                  {{ cipher.cryptoWallet.walletApp.name }}
-                </div>
-              </div>
-            </div>
-            <TextHaveCopy
-              :label="$t('data.ciphers.username')"
-              :text="cipher.cryptoWallet.username"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.password_pin')"
-              :text="cipher.cryptoWallet.password"
-              :view-password="cipher.viewPassword"
-              should-hide
-            />
-
-            <!-- <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">{{ $t('data.ciphers.password_security') }}</div>
-              <div class="col-span-4 font-semibold">
-                <PasswordStrength :score="passwordStrength.score" />
-              </div>
-            </div> -->
-            <TextHaveCopy
-              :label="$t('data.ciphers.wallet_address')"
-              :text="cipher.cryptoWallet.address"
-            />
-            <TextHaveCopy
-              :label="$t('data.ciphers.private_key')"
-              :text="cipher.cryptoWallet.privateKey"
-              :view-password="cipher.viewPassword"
-              should-hide
-            />
-            <!-- <TextHaveCopy :label="$t('data.ciphers.seed')" :text="cipher.cryptoWallet.seed" /> -->
-            <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">{{ $t('data.ciphers.seed') }}</div>
-              <div class="col-span-4 font-semibold">
-                <InputSeedPhrase
-                  v-model="cipher.cryptoWallet.seed"
-                  :label="$t('data.ciphers.seed')"
-                  :edit-mode="false"
-                  :disabled="true"
-                  class="w-full !my-3"
-                />
-              </div>
-              <div class="text-right">
-                <button
-                  v-clipboard:copy="cipher.cryptoWallet.seed"
-                  v-clipboard:success="clipboardSuccessHandler"
-                  class="btn btn-icon btn-xs btn-action"
-                >
-                  <i class="far fa-copy" />
-                </button>
-              </div>
-            </div>
-            <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">{{ $t('data.ciphers.networks') }}</div>
-              <div class="col-span-4">
-                <div
-                  v-if="
-                    cipher.cryptoWallet.networks &&
-                      cipher.cryptoWallet.networks.length
-                  "
-                  class="grid md:grid-cols-3 gap-2"
-                >
-                  <div
-                    v-for="network in cipher.cryptoWallet.networks"
-                    :key="network.alias"
-                    class="font-semibold flex items-center break-normal"
-                  >
-                    <img
-                      :src="network.logo"
-                      alt=""
-                      class="mr-3 h-[34px] w-[34px] rounded-full"
-                    >
-                    {{ network.name }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <TextHaveCopy
-              :label="$t('data.ciphers.notes')"
-              :text="cipher.cryptoWallet.notes"
-              :text-area="true"
-            />
-          </template>
+            :cipher="cipher"
+          />
           <!-- Crypto wallet end -->
 
+          <!-- Driver license -->
+          <driver-license-details
+            v-if="
+              cipher.type === CipherType.DriverLicense && cipher.driverLicense
+            "
+            :cipher="cipher"
+          />
+          <!-- Driver license end -->
+
+          <!-- Citizen id -->
+          <citizen-id-details
+            v-if="cipher.type === CipherType.CitizenID && cipher.citizenId"
+            :cipher="cipher"
+          />
+          <!-- Citizen id end -->
+
+          <!-- Passport -->
+          <passport-details
+            v-if="cipher.type === CipherType.Passport && cipher.passport"
+            :cipher="cipher"
+          />
+          <!-- Passport end -->
+
+          <!-- SSN -->
+          <ssn-details
+            v-if="cipher.type === CipherType.SocialSecurityNumber && cipher.ssn"
+            :cipher="cipher"
+          />
+          <!-- SSN end -->
+
+          <!-- Router -->
+          <router-details
+            v-if="cipher.type === CipherType.WirelessRouter && cipher.router"
+            :cipher="cipher"
+          />
+          <!-- Router end -->
+
+          <!-- Server -->
+          <server-details
+            v-if="cipher.type === CipherType.Server && cipher.server"
+            :cipher="cipher"
+          />
+          <!-- Server end -->
+
+          <!-- API -->
+          <api-details
+            v-if="cipher.type === CipherType.APICipher && cipher.api"
+            :cipher="cipher"
+          />
+          <!-- API end -->
+
+          <!-- Database -->
+          <database-details
+            v-if="cipher.type === CipherType.Database && cipher.database"
+            :cipher="cipher"
+          />
+          <!-- Database end -->
+
           <!-- Notes -->
-          <template>
+          <div>
             <TextHaveCopy
               v-if="
-                ![CipherType.CryptoWallet, CipherType.MasterPassword].includes(
+                ![...newCipherTypes, CipherType.MasterPassword].includes(
                   cipher.type
                 )
               "
@@ -444,7 +239,7 @@
               :text="$t('master_pw_item.desc')"
               :text-area="true"
             />
-          </template>
+          </div>
           <!-- Notes end -->
 
           <!-- Custom fields -->
@@ -462,7 +257,9 @@
           <!-- Owner -->
           <template v-if="!isMasterPw">
             <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">{{ $t('data.ciphers.owned_by') }}</div>
+              <p class="!break-normal mr-4">
+                {{ $t('data.ciphers.owned_by') }}
+              </p>
               <div class="col-span-4 font-semibold flex items-center">
                 <span>{{
                   isOwner(organizations, cipher)
@@ -478,7 +275,7 @@
           <!-- Folder -->
           <template v-if="!isMasterPw">
             <div class="grid md:grid-cols-6 cipher-item">
-              <div class="">{{ $t('data.ciphers.folder') }}</div>
+              <p class="!break-normal mr-4">{{ $t('data.ciphers.folder') }}</p>
               <div class="col-span-4">
                 <template
                   v-if="cipher.collectionIds && cipher.collectionIds.length"
@@ -516,12 +313,44 @@
           </template>
           <!-- Folder end -->
 
+          <!-- Created time -->
+          <template v-if="!isMasterPw">
+            <div class="grid md:grid-cols-6 cipher-item">
+              <p class="!break-normal mr-4">
+                {{ $t('data.ciphers.created_time') }}
+              </p>
+              <div class="col-span-4 font-semibold flex items-center">
+                <span class="break-normal">{{
+                  $moment(cipher.creationDate).fromNow()
+                }}</span>
+              </div>
+            </div>
+          </template>
+          <!-- Created time end -->
+
+          <!-- Updated time -->
+          <template v-if="!isMasterPw">
+            <div class="grid md:grid-cols-6 cipher-item">
+              <p class="!break-normal mr-4">
+                {{ $t('data.ciphers.updated_time') }}
+              </p>
+              <div class="col-span-4 font-semibold flex items-center">
+                <span class="break-normal">{{
+                  $moment(cipher.revisionDate).fromNow()
+                }}</span>
+              </div>
+            </div>
+          </template>
+          <!-- Updated time end -->
+
           <!-- Share with -->
           <div
             v-if="shareMember.length > 0"
             class="grid md:grid-cols-6 cipher-item"
           >
-            <div class="">{{ $t('data.ciphers.shared_with') }}</div>
+            <p class="!break-normal mr-4">
+              {{ $t('data.ciphers.shared_with') }}
+            </p>
             <div
               :class="showMember ? 'gap-y-3 py-3' : ''"
               class="col-span-4 flex flex-wrap"
@@ -590,31 +419,50 @@
 </template>
 
 <script>
-import debounce from 'lodash/debounce'
 import find from 'lodash/find'
 import AddEditCipher from '../../components/cipher/AddEditCipher'
-import PasswordStrength from '../password/PasswordStrength'
 import { CipherType } from '../../core/enums/cipherType'
 import TextHaveCopy from '../../components/cipher/TextHaveCopy'
 import Vnodes from '../../components/Vnodes'
 import ShareCipher from '../../components/cipher/shares/ShareCipher'
 import QuickShareCipher from '../../components/cipher/shares/QuickShareCipher'
 import MoveFolder from '../folder/MoveFolder'
-import { WALLET_APP_LIST } from '../../utils/crypto/applist/index'
-import { CHAIN_LIST } from '../../utils/crypto/chainlist/index'
 import { FieldType } from '../../jslib/src/enums/fieldType'
-import InputSeedPhrase from '../input/InputSeedPhrase'
+import LoginDetails from './cipher-types/login/LoginDetails.vue'
+import MasterPwDetails from './cipher-types/login/MasterPwDetails.vue'
+import CardDetails from './cipher-types/card/CardDetails.vue'
+import IdentityDetails from './cipher-types/identity/IdentityDetails.vue'
+import CryptoBackupDetails from './cipher-types/crypto-backup/CryptoBackupDetails.vue'
+import DriverLicenseDetails from './cipher-types/driver-license/DriverLicenseDetails.vue'
+import CitizenIdDetails from './cipher-types/citizen-id/CitizenIdDetails.vue'
+import PassportDetails from './cipher-types/passport/PassportDetails.vue'
+import SsnDetails from './cipher-types/ssn/SsnDetails.vue'
+import RouterDetails from './cipher-types/router/RouterDetails.vue'
+import ServerDetails from './cipher-types/server/ServerDetails.vue'
+import ApiDetails from './cipher-types/api/ApiDetails.vue'
+import DatabaseDetails from './cipher-types/database/DatabaseDetails.vue'
 
 export default {
   components: {
     TextHaveCopy,
     AddEditCipher,
-    PasswordStrength,
     Vnodes,
     ShareCipher,
     QuickShareCipher,
     MoveFolder,
-    InputSeedPhrase
+    LoginDetails,
+    MasterPwDetails,
+    CardDetails,
+    IdentityDetails,
+    CryptoBackupDetails,
+    DriverLicenseDetails,
+    CitizenIdDetails,
+    PassportDetails,
+    SsnDetails,
+    RouterDetails,
+    ServerDetails,
+    ApiDetails,
+    DatabaseDetails
   },
   props: {
     type: {
@@ -628,7 +476,6 @@ export default {
   },
   data () {
     return {
-      // cipher: {},
       showPassword: false,
       CipherType,
       editMode: false,
@@ -661,70 +508,27 @@ export default {
         }
       )
     },
-    passwordStrength () {
-      if (
-        this.cipher.login &&
-        [CipherType.Login, CipherType.MasterPassword].includes(this.cipher.type)
-      ) {
-        return (
-          this.$passwordGenerationService.passwordStrength(
-            this.cipher.login.password,
-            ['cystack']
-          ) || {}
-        )
-      } else if (this.cipher.cryptoWallet) {
-        return (
-          this.$passwordGenerationService.passwordStrength(
-            this.cipher.cryptoWallet.password,
-            ['cystack']
-          ) || {}
-        )
-      }
-      return {}
-    },
     shareMember () {
       const share =
         this.myShares.find(s => s.id === this.cipher.organizationId) || {}
       return share.members || []
     }
   },
-  created () {},
-  mounted () {},
   asyncComputed: {
     ciphers: {
       async get () {
         const deletedFilter = c => {
           return c.isDeleted === false
         }
-        const result =
+        let result =
           (await this.$searchService.searchCiphers(
             '',
             [null, deletedFilter],
             null
           )) || []
-        result.map(item => {
-          if (item.type === CipherType.CryptoWallet) {
-            try {
-              item.cryptoWallet = JSON.parse(item.notes)
-              if (item.cryptoWallet) {
-                item.cryptoWallet.walletApp = item.cryptoWallet.walletApp
-                  ? this.findWalletApp(
-                    WALLET_APP_LIST,
-                    item.cryptoWallet.walletApp.alias
-                  )
-                  : {}
-                item.cryptoWallet.networks = item.cryptoWallet.networks
-                  ? item.cryptoWallet.networks.map(n =>
-                    CHAIN_LIST.find(c => c.alias === n.alias)
-                  )
-                  : []
-              }
-              // item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
-            } catch (error) {
-              console.log(error)
-            }
-          }
-          return item
+        result = result.map(item => {
+          const i = this.parseNotesOfNewTypes(item)
+          return i
         })
         return result
       },
@@ -784,37 +588,6 @@ export default {
     deleteCiphers (ids) {
       this.$refs.addEditCipherDialog.deleteCiphers(ids)
     },
-    async getCipher () {
-      // this.folders = await this.getFolders()
-      // this.$axios.$get(`cystack_platform/pm/ciphers/${this.$route.params.id}`)
-      //   .then(async res => {
-      //     res = new CipherResponse(res)
-      //     const cipher = new Cipher(res, false)
-      //     this.cipher = await cipher.decrypt()
-      //     if (this.cipher.type === CipherType.Login) {
-      //       this.passwordStrength = this.$passwordGenerationService.passwordStrength(this.cipher.login.password, ['cystack']) || {}
-      //     }
-      //   })
-      //   .catch(e => {
-      //     console.log(e)
-      //     // this.$router.push(this.localeRoute({ name: 'passwords' }))
-      //   })
-    },
-    checkPassword: debounce(function (password) {
-      return (
-        this.$passwordGenerationService.passwordStrength(String(password), [
-          'cystack'
-        ]) || {}
-      )
-    }, 600),
-    findCollection (collections, id) {
-      return (
-        find(collections, e => e.id === id) || {
-          name: 'Unassigned Folder',
-          id: 'unassigned'
-        }
-      )
-    },
     findFolder (folders, id) {
       return (
         find(folders, e => e.id === id) || {
@@ -822,9 +595,6 @@ export default {
           id: 'unassigned'
         }
       )
-    },
-    findWalletApp (walletList, alias) {
-      return find(walletList, a => a.alias === alias)
     },
     async leaveShare (cipher) {
       this.$confirm(

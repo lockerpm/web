@@ -24,7 +24,7 @@
     <!-- Basic lock form -->
     <div
       v-else
-      class="md:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center"
+      class="sm:w-[410px] md:mx-0 mx-5 border border-black-200 rounded py-[2.8125rem] px-6 text-center"
     >
       <!-- Title + info -->
       <div class="text-head-4 font-semibold mb-2.5">

@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-col flex-column-fluid relative bg-[#FBFBFC]">
+  <div
+    class="flex flex-col flex-column-fluid relative bg-[#FBFBFC] min-h-screen"
+  >
     <!-- Steps -->
     <div class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10">
       <template v-for="(item, index) in planMenu">
@@ -232,9 +234,7 @@
                   <div>
                     <div class="setting-title">
                       {{ getPlanName(selectedPlan.name).name }}
-                      <span
-                        v-if="currentPlan.personal_trial_applied === false"
-                      >({{ $t('data.plans.trial_included') }})</span>
+                      <span v-if="currentPlan.personal_trial_applied === false">({{ $t('data.plans.trial_included') }})</span>
                     </div>
                     <div class="setting-description">
                       {{ $t(`data.plans.price.${selectedPeriod.label}`) }}
@@ -308,9 +308,7 @@
                       {{ result.currency }}</span>
                     {{ result.immediate_payment | formatNumber }}
                     {{ result.currency
-                    }}<span
-                      v-if="currentPlan.personal_trial_applied === false"
-                    >*</span>
+                    }}<span v-if="currentPlan.personal_trial_applied === false">*</span>
                   </div>
                 </div>
               </div>
@@ -460,7 +458,7 @@
               v-if="paymentMethod === 'card' && cards.length"
               class="border rounded p-5 border-black-200 cursor-pointer mt-2"
             >
-              <div class="">
+              <div>
                 <el-radio-group v-model="selectedCard" class="w-full">
                   <el-radio
                     v-for="item in cards"
@@ -503,7 +501,7 @@
                           alt=""
                         >
                       </div>
-                      <div class="">
+                      <div>
                         <div class="text-black font-bold mb-2">
                           {{ item.card_type }}
                         </div>
@@ -546,14 +544,13 @@
             />
 
             <div class="mt-8">
-              ``
               <el-button
                 :disabled="!selectedCard"
                 :loading="loading"
                 class="btn btn-primary w-full hover:!text-white"
                 @click="confirmPlan()"
               >
-                Pay & Upgrade
+                {{ $t('data.billing.pay_and_upgrade') }}
               </el-button>
             </div>
           </template>
@@ -592,9 +589,7 @@
                   <div>
                     <div class="setting-title">
                       {{ getPlanName(selectedPlan.name).name }}
-                      <span
-                        v-if="currentPlan.personal_trial_applied === false"
-                      >({{ $t('data.plans.trial_included') }})</span>
+                      <span v-if="currentPlan.personal_trial_applied === false">({{ $t('data.plans.trial_included') }})</span>
                     </div>
                     <div class="setting-description">
                       {{ $t(`data.plans.price.${selectedPeriod.label}`) }}
@@ -761,7 +756,7 @@
               </div>
             </div>
             <div slot="footer">
-              <div class="">
+              <div>
                 <button
                   class="btn btn-default w-full"
                   @click="dialogThank = false"
@@ -958,7 +953,12 @@ export default {
     clearInterval(this.intervalBalance)
   },
   mounted () {
-    this.getPlans()
+    this.getPlans().then(() => {
+      const selectedPlan = this.$route.query.plan
+      if (selectedPlan && this.plans.find(p => p.alias === selectedPlan)) {
+        this.selectPlan(this.plans.find(p => p.alias === selectedPlan))
+      }
+    })
     this.getCards()
     this.$store.dispatch('LoadCurrentPlan')
   },
@@ -1021,11 +1021,8 @@ export default {
           this.result = res
         })
         .catch(error => {
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.code === '7009'
-          ) {
+          const isHandled = this.handleApiError(error?.response)
+          if (!isHandled) {
             this.notify(this.$t('data.notifications.error_occurred'), 'warning')
           }
         })
@@ -1033,8 +1030,7 @@ export default {
           this.loadingCalc = false
         })
     }, 300),
-    selectPeriod (period) {
-      // this.selectedPeriod = period
+    selectPeriod () {
       if (this.currentPlan.alias !== 'pm_free') {
         this.selectMethod(
           this.currentPlan.payment_method === 'banking'
@@ -1048,24 +1044,18 @@ export default {
       this.calcPrice()
     },
     selectPlan (plan, purchase = false) {
-      this.$confirm(
-        purchase
-          ? this.$t('data.notifications.purchase_plan', {
-            duration: this.periodSwitch
-              ? `1 ${this.$t('common.year')}`
-              : `1 ${this.$t('common.month')}`
-          })
-          : this.$t('data.notifications.switch_plan', {
-            currentPlan: this.currentPlan.name,
-            chosenPlan: plan.name
-          }),
-        this.$t('common.warning'),
-        {
-          confirmButtonText: this.$t('common.proceed'),
-          cancelButtonText: this.$t('common.cancel'),
-          type: 'warning'
-        }
-      ).then(() => {
+      const confirmMessage = purchase
+        ? this.$t('data.notifications.purchase_plan', {
+          duration: this.periodSwitch
+            ? `1 ${this.$t('common.year')}`
+            : `1 ${this.$t('common.month')}`
+        })
+        : this.$t('data.notifications.switch_plan', {
+          currentPlan: this.currentPlan.name,
+          chosenPlan: plan.name
+        })
+
+      const _selectPlan = () => {
         this.selectedPlan = plan
         if (this.currentPlan.alias !== 'pm_free') {
           this.dialogChange = true
@@ -1078,7 +1068,17 @@ export default {
         this.selectMethod('card')
         this.calcPrice()
         this.step = 2
-      })
+      }
+
+      if (this.currentPlan.alias !== 'pm_free') {
+        this.$confirm(confirmMessage, this.$t('common.warning'), {
+          confirmButtonText: this.$t('common.proceed'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning'
+        }).then(_selectPlan)
+      } else {
+        _selectPlan()
+      }
     },
     selectMethod (method) {
       this.paymentMethod = method
@@ -1142,7 +1142,7 @@ export default {
         .$post(
           `cystack_platform/pm/payments/invoices/${order.payment_id}/processing`
         )
-        .then(res => {
+        .then(() => {
           this.dialogTransfer = false
           this.dialogThank = true
         })

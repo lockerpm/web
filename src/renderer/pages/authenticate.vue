@@ -20,11 +20,6 @@ export default {
   },
   methods: {
     updateLoginExtension (response) {
-      // console.log(response)
-      // eslint-disable-next-line no-undef
-      if (response && !response.success) {
-        console.log(response)
-      }
       if (
         response &&
         response.success &&
@@ -37,29 +32,45 @@ export default {
     loginByToken () {
       this.$store.commit('UPDATE_LOADING', true)
       setTimeout(async () => {
-        await this.$axios.setToken(this.$route.query.token, 'Bearer')
-        await this.$cookies.set('cs_locker_token', this.$route.query.token, {
+        const token =
+          this.$route.query.token || this.$cookies.get('cs_locker_token')
+        await this.$axios.setToken(token, 'Bearer')
+        await this.$cookies.set('cs_locker_token', token, {
           path: '/',
           ...(this.environment === '' ? { secure: true } : { secure: false })
         })
         this.$store.commit('UPDATE_IS_LOGGEDIN', true)
-        if (this.$route.query.client === 'browser') {
-          const extensionToken = this.$route.query.token
-          window.postMessage({ command: 'cs-authResult', token: extensionToken })
+        if (this.$route.query.client === 'browser' && token.toString()) {
+          const extensionToken = token
+          window.postMessage(
+            {
+              command: 'cs-authResult',
+              token: extensionToken
+            },
+            window.location.origin
+          )
         } else {
           const url = `${process.env.baseApiUrl}/sso/access_token`
-          this.$axios.post(url, {
-            SERVICE_URL: '/sso',
-            SERVICE_SCOPE: 'pwdmanager',
-            CLIENT: 'browser'
-          }).then(async result => {
-            const extensionToken = result.data ? result.data.access_token : ''
-            window.postMessage({ command: 'cs-authResult', token: extensionToken })
-          }).catch(() => {})
+          this.$axios
+            .post(url, {
+              SERVICE_URL: '/sso',
+              SERVICE_SCOPE: 'pwdmanager',
+              CLIENT: 'browser'
+            })
+            .then(async result => {
+              const extensionToken = result.data ? result.data.access_token : ''
+              window.postMessage(
+                {
+                  command: 'cs-authResult',
+                  token: extensionToken
+                },
+                window.location.origin
+              )
+            })
+            .catch(() => {})
         }
 
         // end sendMessage
-
         if (
           this.$route.query.external_url &&
           isString(this.$route.query.external_url)

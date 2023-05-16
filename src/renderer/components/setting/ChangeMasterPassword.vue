@@ -10,7 +10,7 @@
         </div>
         <div>
           <button
-            class="btn btn-outline-primary md:mb-0 mr-4 hidden lg:inline-block"
+            class="btn btn-outline-primary md:mb-0 mr-4 hidden lg:inline-block setting-button"
             @click="changeMasterPassword"
           >
             <span><i class="fas fa-key mr-2" />{{

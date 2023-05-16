@@ -11,13 +11,35 @@
       <i class="el-icon-close text-lg text-white" />
     </button>
     <div>
+      <!-- Logo -->
       <div class="mt-7 px-6">
         <nuxt-link :to="localeRoute({ name: 'vault' })">
           <img class="h-[32px]" src="~assets/images/logo/logo_white.svg">
         </nuxt-link>
       </div>
-      <nav class="mt-7">
-        <template v-for="(item, index) in menu.filter(item => !item.hide)">
+      <!-- Logo end -->
+
+      <!-- Plan storage -->
+      <div v-if="isFreePlan && !isEnterpriseMember" class="mt-4 px-[20px]">
+        <div class="mb-3 flex items-center">
+          <img src="~/assets/images/icons/flash_success.svg">
+          <p class="text-white font-semibold ml-3">
+            {{ $t('data.settings.plan_storage') }}
+          </p>
+        </div>
+        <el-progress
+          :show-text="false"
+          :percentage="storagePercentage * 100"
+          :status="getPercentageStatus(storagePercentage)"
+          :stroke-width="5"
+        />
+        <hr class="border-[#394452] mt-5">
+      </div>
+      <!-- Plan storage end -->
+
+      <!-- Menu -->
+      <nav class="mt-5">
+        <template v-for="(item, index) in menu">
           <!-- Collapse items -->
           <template v-if="item.collapse">
             <div
@@ -95,7 +117,7 @@
 
             <div
               v-if="
-                item.routeName === 'shares-index' &&
+                item.routeName === 'shares-index-index' &&
                   pendingShares + pendingMyShares.length > 0
               "
             >
@@ -106,7 +128,10 @@
           </nuxt-link>
         </template>
       </nav>
+      <!-- Menu end -->
     </div>
+
+    <!-- Bottom menu -->
     <div>
       <nav class="my-10">
         <template
@@ -176,6 +201,7 @@
         </a>
       </nav>
     </div>
+    <!-- Bottom menu end -->
   </div>
 </template>
 
@@ -197,6 +223,33 @@ export default {
     }
   },
   computed: {
+    isFreePlan () {
+      return this.$store.state.currentPlan?.alias === 'pm_free'
+    },
+
+    storagePercentage () {
+      const planLimit = this.$store.state.itemsCount.plan_limit || {}
+      const ciphersCount = this.$store.state.itemsCount.ciphers || {}
+
+      const res = this.cipherTypesList
+        .filter(c => !!c.freeLimit && !c.revertToNote)
+        .map(c => ({
+          limit: planLimit[c.type] || c.freeLimit,
+          total: ciphersCount[c.type] || 0
+        }))
+
+      // Private email
+      res.push({
+        limit: planLimit.relay_addresses || 5,
+        total: this.$store.state.itemsCount.relay_addresses?.total || 0
+      })
+
+      const totalLimit = res.reduce((a, b) => a + b.limit, 0)
+      const totalItems = res.reduce((a, b) => a + b.total, 0)
+
+      return totalItems / totalLimit
+    },
+
     menu () {
       return [
         {
@@ -208,26 +261,7 @@ export default {
               label: 'all',
               routeName: 'vault'
             },
-            {
-              label: 'passwords',
-              routeName: 'passwords'
-            },
-            {
-              label: 'notes',
-              routeName: 'notes'
-            },
-            {
-              label: 'cards',
-              routeName: 'cards'
-            },
-            {
-              label: 'identities',
-              routeName: 'identities'
-            },
-            {
-              label: 'crypto_backups',
-              routeName: 'crypto-backups'
-            }
+            ...this.cipherTypesList.filter(v => !!v.routeName && !v.noMenu)
           ]
         },
         {
@@ -236,7 +270,7 @@ export default {
           routeName: 'authenticator'
         },
         {
-          label: 'security',
+          label: 'security_tools',
           icon: 'security',
           routeName: 'tools'
         },
@@ -249,7 +283,7 @@ export default {
         {
           label: 'shares',
           icon: 'share',
-          routeName: 'shares-index'
+          routeName: 'shares-index-index'
         },
         {
           label: 'private_email',
@@ -270,9 +304,7 @@ export default {
           label: 'upgrade',
           routeName: 'manage-plans',
           icon: 'upgrade',
-          hide: !(
-            this.currentPlan.alias === 'pm_free' && !this.isEnterpriseMember
-          )
+          hide: !this.isFreePlan || this.isEnterpriseMember
         },
         {
           label: 'enterprise_dashboard',
@@ -306,6 +338,15 @@ export default {
   methods: {
     hideNavMenu () {
       this.$emit('close')
+    },
+    getPercentageStatus (percentage) {
+      if (percentage > 0.8) {
+        return 'exception'
+      }
+      if (percentage > 0.5) {
+        return 'warning'
+      }
+      return 'success'
     }
   }
 }

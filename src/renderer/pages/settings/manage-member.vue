@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-3/4">
+  <div class="w-full">
     <div class="grid grid-cols-5 gap-x-6">
       <div class="setting-wrapper md:col-span-3 col-span-5">
         <div class="setting-section">
@@ -54,7 +54,7 @@
       </div>
       <div class="setting-wrapper md:col-span-2 col-span-5">
         <div class="setting-section">
-          <div class="">
+          <div>
             <div class="setting-description mb-1">
               {{ $t('data.billing.next_billing') }}
             </div>
@@ -244,7 +244,7 @@ export default {
       emails: []
     }
   },
-  async fetch ({ redirect, store, isDev }) {
+  async fetch ({ redirect, store }) {
     await store.dispatch('LoadCurrentPlan')
     if (
       store.state.currentPlan &&
@@ -306,7 +306,7 @@ export default {
         .$post('/cystack_platform/pm/family/members', {
           family_members: this.emails
         })
-        .then(res => {
+        .then(() => {
           this.emails = []
           this.notify(
             this.$t('data.notifications.add_member_success'),

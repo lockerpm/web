@@ -10,7 +10,6 @@ import enVee from 'vee-validate/dist/locale/en.json'
 import axios from 'axios'
 import cheerio from 'cheerio'
 
-const isProd = process.env.NODE_ENV === 'production'
 const isStaging = process.env.CS_ENVIRONMENT === 'staging'
 
 module.exports = {
@@ -70,6 +69,8 @@ module.exports = {
     { ssr: true, src: '@/plugins/mixins/cipher/sharing.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/sync.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/utils.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/data.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/crud.js' },
 
     // UI
     { ssr: false, src: '@/plugins/ui/circle-countdown-timer.js' },
@@ -79,7 +80,8 @@ module.exports = {
     { ssr: true, src: '@/plugins/ui/katex.js' },
     { ssr: true, src: '@/plugins/ui/vee.js' },
     { ssr: false, src: '@/plugins/ui/vue-virtual-scroller.js' },
-    { ssr: false, src: '@/plugins/ui/youtube.js' }
+    { ssr: false, src: '@/plugins/ui/youtube.js' },
+    { ssr: false, src: '@/plugins/ui/vue-carousel.js' }
   ],
   buildModules: [
     '@nuxt/typescript-build',
@@ -101,13 +103,17 @@ module.exports = {
   ],
   sentry: {
     dsn: process.env.SENTRY_DSN || '',
-    disabled: !isProd,
-    initialize: isProd
+    disabled: process.env.NODE_ENV === 'development',
+    initialize: process.env.NODE_ENV === 'production'
   },
   tailwindcss: {
     jit: true
   },
-  css: ['@/assets/css/app.scss', '~/static/assets/css/notion-overwrite.css'],
+  css: [
+    '@/assets/css/app.scss',
+    '~/static/assets/css/notion-overwrite.css',
+    '@/assets/flags/flags.css'
+  ],
   i18n: {
     locales: ['en', 'vi'],
     defaultLocale: 'en',
@@ -125,6 +131,7 @@ module.exports = {
   },
   env: {
     CS_ENV: 'web',
+    nodeEnv: process.env.NODE_ENV,
     baseUrl: process.env.BASE_URL || 'https://locker.io',
     idUrl: process.env.BASE_ID_URL || 'https://id.locker.io',
     environment: process.env.CS_ENVIRONMENT || '',
@@ -184,11 +191,13 @@ module.exports = {
       version: 3
     },
     stripeKey:
-      isProd && !isStaging
-        ? process.env.STRIPE_KEY
-        : process.env.STRIPE_KEY_STAGING,
+      isStaging ||
+      process.env.nodeEnv === 'development' ||
+      process.env.NODE_ENV === 'development'
+        ? process.env.STRIPE_KEY_STAGING
+        : process.env.STRIPE_KEY,
     cloudflare:
-      !isProd || isStaging
+      process.env.nodeEnv === 'development' || isStaging
         ? {
           id: process.env.ACCESS_CLIENT_ID,
           secret: process.env.ACCESS_CLIENT_SECRET
@@ -258,6 +267,12 @@ module.exports = {
   ],
   serverMiddleware: [
     { path: '/api', handler: '~/server-middleware/rest.js' },
-    { path: '/api/content', handler: '~/server-middleware/notion.js' }
+    { path: '/api/content', handler: '~/server-middleware/notion.js' },
+    { path: '/api/top-banner', handler: '~/server-middleware/topBanner.js' },
+    {
+      path: '/api/testimonials',
+      handler: '~/server-middleware/testimonials.js'
+    },
+    { path: '/api/bottom-banner', handler: '~/server-middleware/bottomBanner.js' }
   ]
 }

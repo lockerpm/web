@@ -178,17 +178,13 @@ export default {
   computed: {
     shouldShowSearch () {
       return [
+        ...this.cipherRoutes,
         'vault',
-        'passwords',
-        'notes',
-        'cards',
-        'identities',
-        'crypto-backups',
-        'shares-index',
+        'shares-index-index',
         'trash',
         'vault-tfolders-tfolderId',
         'vault-folders-folderId',
-        'shares-index-your-shares',
+        'shares-index-index-your-shares',
         'authenticator'
       ].includes(this.getRouteBaseName())
     },

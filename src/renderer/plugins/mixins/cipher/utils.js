@@ -98,9 +98,7 @@ Vue.mixin({
         return this.getIconDefaultCipher('Identity', size)
       case CipherType.TOTP:
         return this.getIconDefaultCipher('Authenticator', size)
-      case 6:
-        return this.getIconDefaultCipher('CryptoAccount', size)
-      case 7:
+      case CipherType.CryptoWallet:
         if (!defaultIcon) {
           if (cipher.cryptoWallet && cipher.cryptoWallet.walletApp) {
             try {
@@ -131,6 +129,22 @@ Vue.mixin({
           }
         }
         return this.getIconDefaultCipher('CryptoWallet', size)
+      case CipherType.DriverLicense:
+        return this.getIconDefaultCipher('DriverLicense', size)
+      case CipherType.CitizenID:
+        return this.getIconDefaultCipher('CitizenId', size)
+      case CipherType.Passport:
+        return this.getIconDefaultCipher('Passport', size)
+      case CipherType.SocialSecurityNumber:
+        return this.getIconDefaultCipher('ssn', size)
+      case CipherType.WirelessRouter:
+        return this.getIconDefaultCipher('Router', size)
+      case CipherType.Server:
+        return this.getIconDefaultCipher('Server', size)
+      case CipherType.APICipher:
+        return this.getIconDefaultCipher('Api', size)
+      case CipherType.Database:
+        return this.getIconDefaultCipher('Database', size)
       case 'Shares':
         return this.getIconDefaultCipher('Shares', size)
       case 'Trash':

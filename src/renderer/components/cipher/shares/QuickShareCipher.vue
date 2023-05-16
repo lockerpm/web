@@ -339,7 +339,7 @@ export default {
       try {
         this.loading = true
         const type_ = cipher.type
-        if ([7].includes(type_)) {
+        if (this.newCipherTypes.includes(type_)) {
           cipher.type = CipherType.SecureNote
           cipher.secureNote.type = 0
         }

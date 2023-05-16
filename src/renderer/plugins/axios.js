@@ -6,7 +6,8 @@ export default function ({
   isDev,
   redirect,
   route,
-  $config
+  $config,
+  env
 }) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
 
@@ -23,10 +24,10 @@ export default function ({
     if (deviceId) {
       request.headers['device-id'] = deviceId
     }
-    // if ($config.cloudflare) {
-    //   request.headers['CF-Access-Client-Id'] = $config.cloudflare.id
-    //   request.headers['CF-Access-Client-Secret'] = $config.cloudflare.secret
-    // }
+    if ($config.cloudflare && (env.environment === 'staging' || isDev)) {
+      request.headers['CF-Access-Client-Id'] = $config.cloudflare.id
+      request.headers['CF-Access-Client-Secret'] = $config.cloudflare.secret
+    }
 
     // Update base api url
     const ON_PREMISE_WHITELIST = [
@@ -90,7 +91,7 @@ export default function ({
 
         store.commit('UPDATE_IS_LOGGEDIN', false)
 
-        const WHITELIST_PATH = [
+        const WHITELIST_PATHS = [
           '/benefits',
           '/contact',
           '/download',
@@ -108,17 +109,31 @@ export default function ({
           '/affiliate',
           '/business',
           '/private-email',
+          '/lifetime',
+          '/comparison',
+          '/promotion',
+          '/crypto',
+          '/shares/quick-share-item',
           '/',
           '/on-premise-create-master-pw'
         ]
+        const WHITELIST_ROUTE_NAMES = ['shares-id']
+
         let currentPath = route.path
         if (currentPath.startsWith('/vi')) {
           currentPath = currentPath.slice(3)
         }
         const paths = currentPath.split('/')
         currentPath = '/' + (paths[1] || '')
+
+        let currentRouteName = route.name
+        if (currentRouteName.includes('___')) {
+          currentRouteName = currentRouteName.split('___')[0]
+        }
+
         if (
-          !WHITELIST_PATH.includes(currentPath) &&
+          !WHITELIST_PATHS.includes(currentPath) &&
+          !WHITELIST_ROUTE_NAMES.includes(currentRouteName) &&
           currentPath &&
           !route.name.startsWith('all___')
         ) {

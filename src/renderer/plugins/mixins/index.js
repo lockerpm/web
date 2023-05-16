@@ -2,11 +2,6 @@ import Vue from 'vue'
 import numeral from 'numeral'
 
 Vue.mixin({
-  data () {
-    return {
-      folders: []
-    }
-  },
   computed: {
     language () {
       return this.$store.state.user.language
@@ -84,6 +79,14 @@ Vue.mixin({
   },
   methods: {
     changeLang (value) {
+      this.setupMomentLocale(value)
+      this.$store.dispatch('SetLang', value).then(() => {
+        this.$i18n.setLocale(value)
+        this.$router.push(this.switchLocalePath(value))
+      })
+    },
+
+    setupMomentLocale (value) {
       if (value === 'vi') {
         this.$moment.locale('vi', {
           months:
@@ -128,10 +131,6 @@ Vue.mixin({
       } else {
         this.$moment.locale('en')
       }
-      this.$store.dispatch('SetLang', value).then(() => {
-        this.$i18n.setLocale(value)
-        this.$router.push(this.switchLocalePath(value))
-      })
     },
 
     changeLocale (value) {
@@ -398,6 +397,40 @@ Vue.mixin({
         return result
       }
       return value
+    },
+
+    handleApiError (response, extraData = {}) {
+      const { type } = extraData
+
+      // Limit reached
+      if (response?.data?.code === '5002') {
+        this.notify(
+          this.$t('errors.5002', { type: this.$tc(`type.${type}`, 1) }),
+          'error'
+        )
+        this.$store.commit('UPDATE_NOTICE', { showPleaseUpgrade: true })
+        return true
+      }
+
+      // Team is locked
+      if (response?.data?.code === '3003') {
+        this.notify(this.$t('errors.3003'), 'error')
+        return true
+      }
+
+      // Delete too much items
+      if (response?.data?.code === '5001') {
+        this.notify(this.$t('errors.5001'), 'error')
+        return true
+      }
+
+      // Card declined
+      if (response?.data?.code === '7009') {
+        this.notify(this.$t('errors.7009'), 'error')
+        return true
+      }
+
+      return false
     },
 
     async validateOnPremiseBaseApi (baseApi) {

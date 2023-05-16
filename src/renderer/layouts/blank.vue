@@ -23,6 +23,9 @@ export default {
       externalContent: ''
     }
   },
+  mounted () {
+    this.setupMomentLocale(this.locale)
+  },
   methods: {
     openURL (url) {
       if (remote) {

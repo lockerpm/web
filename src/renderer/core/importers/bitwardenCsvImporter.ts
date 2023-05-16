@@ -6,7 +6,6 @@ import { ImportResult } from '../../jslib/src/models/domain/importResult'
 import { CipherView } from '../../jslib/src/models/view/cipherView'
 import { CollectionView } from '../../jslib/src/models/view/collectionView'
 import { FieldView } from '../../jslib/src/models/view/fieldView'
-import { FolderView } from '../../jslib/src/models/view/folderView'
 import { LoginView } from '../../jslib/src/models/view/loginView'
 import { CardView } from '../../jslib/src/models/view/cardView'
 import { IdentityView } from '../../jslib/src/models/view/identityView'
@@ -15,6 +14,7 @@ import { SecureNoteView } from '../../jslib/src/models/view/secureNoteView'
 import { CipherType } from '../../jslib/src/enums/cipherType'
 import { FieldType } from '../../jslib/src/enums/fieldType'
 import { SecureNoteType } from '../../jslib/src/enums/secureNoteType'
+import { CipherMapper } from '../../constants'
 
 export class BitwardenCsvImporter extends BaseImporter implements Importer {
   parse (data: string): Promise<ImportResult> {
@@ -56,9 +56,10 @@ export class BitwardenCsvImporter extends BaseImporter implements Importer {
       }
 
       const cipher = new CipherView()
-      cipher.favorite =
-        !!(!this.organization &&
-        this.getValueOrDefault(value.favorite, '0') !== '0')
+      cipher.favorite = !!(
+        !this.organization &&
+        this.getValueOrDefault(value.favorite, '0') !== '0'
+      )
       cipher.type = CipherType.Login
       cipher.notes = this.getValueOrDefault(value.notes)
       cipher.name = this.getValueOrDefault(value.name, '--')
@@ -97,16 +98,6 @@ export class BitwardenCsvImporter extends BaseImporter implements Importer {
         cipher.secureNote = new SecureNoteView()
         cipher.secureNote.type = SecureNoteType.Generic
         break
-      case 'crypto-wallet':
-        cipher.type = 7
-        cipher.secureNote = new SecureNoteView()
-        cipher.secureNote.type = SecureNoteType.Generic
-        break
-      case 'totp':
-        cipher.type = 5
-        cipher.secureNote = new SecureNoteView()
-        cipher.secureNote.type = SecureNoteType.Generic
-        break
       case 'identity':
         cipher.type = CipherType.Identity
         cipher.identity = new IdentityView()
@@ -139,7 +130,21 @@ export class BitwardenCsvImporter extends BaseImporter implements Importer {
           // Do nothing
         }
         break
-      default:
+      default: {
+        // Check new type
+        if (valueType) {
+          const mappedType = Object.values(CipherMapper).find(
+            m => m.csvTypeName === valueType
+          )
+          if (mappedType) {
+            cipher.type = mappedType.type
+            cipher.secureNote = new SecureNoteView()
+            cipher.secureNote.type = SecureNoteType.Generic
+            break
+          }
+        }
+
+        // Else treated as Login
         cipher.type = CipherType.Login
         cipher.login = new LoginView()
         cipher.login.totp = this.getValueOrDefault(
@@ -154,6 +159,7 @@ export class BitwardenCsvImporter extends BaseImporter implements Importer {
         const uris = this.parseSingleRowCsv(value.login_uri || value.uri)
         cipher.login.uris = this.makeUriArray(uris)
         break
+      }
       }
 
       result.ciphers.push(cipher)

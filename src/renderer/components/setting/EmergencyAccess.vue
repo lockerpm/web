@@ -1,5 +1,5 @@
 <template>
-  <div class="setting-wrapper">
+  <div id="#emergency-access" class="setting-wrapper">
     <div class="setting-section">
       <div
         class="setting-section-header cursor-pointer"
@@ -17,7 +17,7 @@
         </div>
         <div>
           <button
-            class="btn btn-outline-primary mr-4 hidden lg:inline-block"
+            class="btn btn-outline-primary mr-4 hidden lg:inline-block setting-button"
             @click="postEmergencyAccess"
           >
             <i class="el-icon-plus" />
@@ -798,6 +798,9 @@ export default {
         this.getListTrusted(),
         this.getListGranted()
       ])
+    }
+    if (this.$route.hash === '#emergency-access') {
+      this.collapsed = true
     }
   },
   methods: {
