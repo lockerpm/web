@@ -64,6 +64,7 @@
       <template v-else>
         <form class="mb-8" @submit.prevent="checkInvitation">
           <div class="form-group !mb-4">
+            <!-- Master pw -->
             <label for="" class="text-left">
               {{ $t('master_password.enter_password') }}
             </label>
@@ -96,16 +97,40 @@
             <div class="invalid-feedback">
               {{ $t('errors.invalid_password') }}
             </div>
+            <!-- Master pw end -->
+
+            <!-- PWL OTP -->
+            <template v-if="showOTPInput">
+              <label class="text-left"> PWL OTP </label>
+              <div class="input-group mb-1.5">
+                <input v-model="pwlOtp" class="form-control">
+              </div>
+            </template>
+            <!-- PWL OTP end -->
+
+            <!-- Get hint -->
             <div
               class="text-primary text-left cursor-pointer"
               @click="toggleSendHint(true)"
             >
               {{ $t('master_password.get_hint') }}
             </div>
+            <!-- Get hint end -->
           </div>
         </form>
+
+        <!-- Buttons -->
         <div class="form-group">
           <div class="grid lg:grid-cols-2 grid-cols-1 gap-2">
+            <button
+              v-if="showOTPInput"
+              class="btn btn-primary w-full"
+              :disabled="loading"
+              @click="handlePwlOTP"
+            >
+              {{ $t('master_password.unlock') }} using OTP
+            </button>
+
             <button
               class="btn btn-primary w-full"
               :disabled="loading"
@@ -113,6 +138,7 @@
             >
               {{ $t('master_password.unlock') }}
             </button>
+
             <button
               class="btn btn-default w-full"
               :disabled="loading"
@@ -122,6 +148,7 @@
             </button>
           </div>
         </div>
+        <!-- Buttons end -->
       </template>
       <!-- Enter master pw and buttons end -->
     </div>
@@ -139,6 +166,7 @@ export default {
   components: { JoinEnterprise, SendHint, NotEnable2FA, TwoFactor },
   layout: 'blank',
   middleware: ['NotHaveAccountService', 'blockBySource'],
+
   data () {
     return {
       invalidPinAttempts: 0,
@@ -150,9 +178,15 @@ export default {
       showJoinEnterprise: false,
       factor2: false,
       factor2Methods: [],
-      cryptoKey: null
+      cryptoKey: null,
+
+      // Onpremise PWL
+      encPwlData: null,
+      pwlOtp: '',
+      showOTPInput: false
     }
   },
+
   mounted () {
     this.checkBlockedBy2FA()
     if (this.extensionLoggedIn) {
@@ -163,7 +197,20 @@ export default {
     if (this.$route.query?.joinEnterprise === '1') {
       this.showJoinEnterprise = true
     }
+
+    if (this.isOnPremise) {
+      this.reconnectDesktopSocket({
+        onEncryptedDataReceived: data => {
+          this.encPwlData = data
+          this.showOTPInput = true
+        }
+      })
+      setTimeout(() => {
+        this.sendDesktopSocketConnectionMessage(this.currentUser.email)
+      }, 100)
+    }
   },
+
   methods: {
     // Unlock vault
     async setMasterPass () {
@@ -212,9 +259,46 @@ export default {
         this.showJoinEnterprise = false
         this.setMasterPass()
       }
-    }
+    },
 
-    // TODO: change masterpass if have account
+    // Handle pwl login
+    async handlePwlOTP () {
+      if (!this.pwlOtp || !this.encPwlData) {
+        return
+      }
+      this.loading = true
+      this.errors = false
+      this.factor2 = false
+      this.factor2Methods = []
+      try {
+        const decryptData = await this.$cryptoService.decryptData(
+          this.pwlOtp,
+          this.encPwlData
+        )
+        const res = await this.login({
+          key: decryptData.key,
+          hashedPassword: decryptData.keyHash
+        })
+        if (res?.is_factor2) {
+          this.factor2 = true
+          this.factor2Methods = res.methods
+          this.cryptoKey = res.key
+        }
+      } catch (e) {
+        console.log(e)
+        this.errors = true
+      } finally {
+        this.loading = false
+      }
+
+      if (this.errors) {
+        this.invalidPinAttempts++
+        if (this.invalidPinAttempts >= 5) {
+          await this.logout()
+          this.$messagingService.send('logout')
+        }
+      }
+    }
   }
 }
 </script>

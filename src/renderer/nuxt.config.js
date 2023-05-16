@@ -62,6 +62,7 @@ module.exports = {
 
     // Mixins
     { ssr: true, src: '@/plugins/mixins/index.js' },
+    { ssr: true, src: '@/plugins/mixins/onpremise.js' },
     { ssr: true, src: '@/plugins/mixins/onboarding.js' },
     { ssr: true, src: '@/plugins/mixins/utils.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/index.js' },
@@ -136,6 +137,7 @@ module.exports = {
     idUrl: process.env.BASE_ID_URL || 'https://id.locker.io',
     environment: process.env.CS_ENVIRONMENT || '',
     wsUrl: process.env.WS_URL || 'wss://api.locker.io/ws',
+    desktopWsUrl: process.env.DESKTOP_WS_URL || 'ws://localhost:1040',
     logoUrl: process.env.LOGO_URL || 'https://locker.io/logo/',
     blogUrl:
       process.env.BLOG_API_URL ||
@@ -273,6 +275,9 @@ module.exports = {
       path: '/api/testimonials',
       handler: '~/server-middleware/testimonials.js'
     },
-    { path: '/api/bottom-banner', handler: '~/server-middleware/bottomBanner.js' }
+    {
+      path: '/api/bottom-banner',
+      handler: '~/server-middleware/bottomBanner.js'
+    }
   ]
 }
