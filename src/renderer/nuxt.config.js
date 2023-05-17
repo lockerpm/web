@@ -62,7 +62,6 @@ module.exports = {
 
     // Mixins
     { ssr: true, src: '@/plugins/mixins/index.js' },
-    { ssr: true, src: '@/plugins/mixins/onpremise.js' },
     { ssr: true, src: '@/plugins/mixins/onboarding.js' },
     { ssr: true, src: '@/plugins/mixins/utils.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/index.js' },
@@ -72,6 +71,7 @@ module.exports = {
     { ssr: true, src: '@/plugins/mixins/cipher/utils.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/data.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/crud.js' },
+    { ssr: true, src: '@/plugins/onpremise/mixins.js' },
 
     // UI
     { ssr: false, src: '@/plugins/ui/circle-countdown-timer.js' },

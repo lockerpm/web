@@ -21,6 +21,10 @@
     <NotEnable2FA v-else-if="notEnable2FA" />
     <!-- Not enable 2FA end -->
 
+    <!-- PWL -->
+    <Passwordless v-else-if="requirePwl" />
+    <!-- PWL end -->
+
     <!-- Basic lock form -->
     <div
       v-else
@@ -48,16 +52,15 @@
       <!-- Title + info end -->
 
       <!-- 2FA form -->
-      <template v-if="factor2">
-        <TwoFactor
-          :crypto-key="cryptoKey"
-          :user="currentUser"
-          :loading="loading"
-          :methods="factor2Methods"
-          :master-pw="masterPassword"
-          @goBack="factor2 = false"
-        />
-      </template>
+      <TwoFactor
+        v-if="factor2"
+        :crypto-key="cryptoKey"
+        :user="currentUser"
+        :loading="loading"
+        :methods="factor2Methods"
+        :master-pw="masterPassword"
+        @goBack="factor2 = false"
+      />
       <!-- 2FA form end -->
 
       <!-- Enter master pw and buttons -->
@@ -99,15 +102,6 @@
             </div>
             <!-- Master pw end -->
 
-            <!-- PWL OTP -->
-            <template v-if="showOTPInput">
-              <label class="text-left"> PWL OTP </label>
-              <div class="input-group mb-1.5">
-                <input v-model="pwlOtp" class="form-control">
-              </div>
-            </template>
-            <!-- PWL OTP end -->
-
             <!-- Get hint -->
             <div
               class="text-primary text-left cursor-pointer"
@@ -122,15 +116,6 @@
         <!-- Buttons -->
         <div class="form-group">
           <div class="grid lg:grid-cols-2 grid-cols-1 gap-2">
-            <button
-              v-if="showOTPInput"
-              class="btn btn-primary w-full"
-              :disabled="loading"
-              @click="handlePwlOTP"
-            >
-              {{ $t('master_password.unlock') }} using OTP
-            </button>
-
             <button
               class="btn btn-primary w-full"
               :disabled="loading"
@@ -161,9 +146,16 @@ import SendHint from '../components/pages/lock/SendHint'
 import JoinEnterprise from '../components/pages/lock/JoinEnterprise'
 import NotEnable2FA from '../components/pages/lock/NotEnable2FA'
 import TwoFactor from '../components/pages/lock/TwoFactor'
+import Passwordless from '../components/pages/lock/Passwordless'
 
 export default {
-  components: { JoinEnterprise, SendHint, NotEnable2FA, TwoFactor },
+  components: {
+    JoinEnterprise,
+    SendHint,
+    NotEnable2FA,
+    TwoFactor,
+    Passwordless
+  },
   layout: 'blank',
   middleware: ['NotHaveAccountService', 'blockBySource'],
 
@@ -178,12 +170,16 @@ export default {
       showJoinEnterprise: false,
       factor2: false,
       factor2Methods: [],
-      cryptoKey: null,
+      cryptoKey: null
+    }
+  },
 
-      // Onpremise PWL
-      encPwlData: null,
-      pwlOtp: '',
-      showOTPInput: false
+  computed: {
+    requirePwl () {
+      return (
+        this.isOnPremise &&
+        (this.$store.state.requirePwl || this.$store.state.hasPwl)
+      )
     }
   },
 
@@ -196,18 +192,6 @@ export default {
     this.$store.dispatch('LoadEnterpriseInvitations')
     if (this.$route.query?.joinEnterprise === '1') {
       this.showJoinEnterprise = true
-    }
-
-    if (this.isOnPremise) {
-      this.reconnectDesktopSocket({
-        onEncryptedDataReceived: data => {
-          this.encPwlData = data
-          this.showOTPInput = true
-        }
-      })
-      setTimeout(() => {
-        this.sendDesktopSocketConnectionMessage(this.currentUser.email)
-      }, 100)
     }
   },
 
@@ -224,9 +208,7 @@ export default {
       try {
         const res = await this.login()
         if (res?.is_factor2) {
-          this.factor2 = true
-          this.factor2Methods = res.methods
-          this.cryptoKey = res.key
+          this.handle2FARequirement(res.methods, res.key)
         }
       } catch (e) {
         console.log(e)
@@ -261,43 +243,10 @@ export default {
       }
     },
 
-    // Handle pwl login
-    async handlePwlOTP () {
-      if (!this.pwlOtp || !this.encPwlData) {
-        return
-      }
-      this.loading = true
-      this.errors = false
-      this.factor2 = false
-      this.factor2Methods = []
-      try {
-        const decryptData = await this.$cryptoService.decryptData(
-          this.pwlOtp,
-          this.encPwlData
-        )
-        const res = await this.login({
-          key: decryptData.key,
-          hashedPassword: decryptData.keyHash
-        })
-        if (res?.is_factor2) {
-          this.factor2 = true
-          this.factor2Methods = res.methods
-          this.cryptoKey = res.key
-        }
-      } catch (e) {
-        console.log(e)
-        this.errors = true
-      } finally {
-        this.loading = false
-      }
-
-      if (this.errors) {
-        this.invalidPinAttempts++
-        if (this.invalidPinAttempts >= 5) {
-          await this.logout()
-          this.$messagingService.send('logout')
-        }
-      }
+    handle2FARequirement (methods, key) {
+      this.factor2 = true
+      this.factor2Methods = methods
+      this.cryptoKey = key
     }
   }
 }

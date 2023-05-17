@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { SocketMessageType } from './types'
 
 Vue.mixin({
   computed: {
@@ -22,7 +23,14 @@ Vue.mixin({
     },
 
     reconnectDesktopSocket (handlers) {
-      const { onEncryptedDataReceived } = handlers
+      const {
+        onEncryptedDataReceived,
+        onOTPReceived,
+        onDesktopRejected,
+        onSocketError,
+        onSocketClosed,
+        onSocketOpen
+      } = handlers
       const socketUrl = process.env.desktopWsUrl
       this.$connect(socketUrl, {
         format: 'json'
@@ -31,33 +39,45 @@ Vue.mixin({
         const data = JSON.parse(message.data)
         console.log(data)
         switch (data.msgType) {
-        case 3: {
-          // TODO
+        case SocketMessageType.OTP_RESPONSE: {
+          onOTPReceived(data.otp)
           break
         }
-        case 4: {
+        case SocketMessageType.ENC_DATA_RESPONSE: {
           onEncryptedDataReceived(data.data)
           break
         }
-        case 6: {
-          // TODO
+        case SocketMessageType.DESKTOP_REJECTED: {
+          onDesktopRejected()
           break
         }
-        case 7: {
-          // TODO
+        case SocketMessageType.DESKTOP_LOCKED: {
+          // Do nothing
           break
         }
-        case 9: {
-          // TODO
+        case SocketMessageType.DESKTOP_LOGGED_OUT: {
+          // Do nothing
           break
         }
         default:
           break
         }
       }
+      this.$options.sockets.onerror = e => {
+        console.log('socket error')
+        onSocketError && onSocketError(e)
+      }
+      this.$options.sockets.onclose = e => {
+        console.log('socket closed')
+        onSocketClosed && onSocketClosed(e)
+      }
+      this.$options.sockets.onopen = () => {
+        console.log('socket open')
+        onSocketOpen && onSocketOpen()
+      }
     },
 
-    sendDesktopSocketConnectionMessage (email) {
+    async sendDesktopSocketConnectionMessage (email) {
       const lockerDeviceId = this.$cookies.get('device_id')
       const deviceIdentifier = lockerDeviceId || this.randomString()
       if (!lockerDeviceId) {
@@ -68,14 +88,20 @@ Vue.mixin({
         })
       }
       this.$socket.sendObj({
-        msgType: 1,
+        msgType: SocketMessageType.VERIFY_CLIENT_REQUEST,
         clientId: deviceIdentifier,
         email
       })
     },
 
-    disconnectDesktopSocket () {
+    clearDesktopSocketHandlers () {
       delete this.$options.sockets.onmessage
+      delete this.$options.sockets.onerror
+      delete this.$options.sockets.onclose
+    },
+
+    disconnectDesktopSocket () {
+      this.clearDesktopSocketHandlers()
       this.$disconnect()
     }
   }
