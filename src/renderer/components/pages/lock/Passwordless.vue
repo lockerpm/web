@@ -63,6 +63,15 @@
         <i class="el-icon-loading text-[24px] text-primary mt-8" />
       </div>
 
+      <div
+        v-else-if="isDesktopSocketReady"
+        class="flex flex-wrap justify-center mt-10"
+      >
+        <a @click.prevent="requestPwlVerification">{{
+          $t('lock.pwl.get_new_code')
+        }}</a>
+      </div>
+
       <div v-else class="flex flex-wrap justify-center mt-10">
         <a href="/download" target="_blank">{{
           $t('lock.pwl.download_app')

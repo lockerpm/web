@@ -22,6 +22,43 @@ Vue.mixin({
       }
     },
 
+    clearOnPremiseCookies () {
+      const baseCookiesDomain = 'locker.io'
+      const cookies = [
+        'on_premise_email',
+        'on_premise_avatar',
+        'on_premise_base_url',
+        'on_premise_require_pwl',
+        'on_premise_has_pwl'
+      ]
+      cookies.forEach(k => {
+        this.$cookies.remove(k, {
+          domain: baseCookiesDomain,
+          path: '/'
+        })
+      })
+    },
+
+    setOnPremiseCookies () {
+      const baseDomain = 'locker.io'
+      const cookies = {
+        on_premise_base_url: this.$store.state.onPremiseBaseApi?.replace(
+          '/v3',
+          ''
+        ),
+        on_premise_email: this.currentUser.email,
+        on_premise_avatar: this.currentUser.avatar,
+        on_premise_require_pwl: this.$store.state.requirePwl,
+        on_premise_has_pwl: this.$store.state.hasPwl
+      }
+      Object.keys(cookies).forEach(k => {
+        this.$cookies.set(k, cookies[k], {
+          domain: baseDomain,
+          path: '/'
+        })
+      })
+    },
+
     reconnectDesktopSocket (handlers) {
       const {
         onEncryptedDataReceived,
@@ -77,7 +114,7 @@ Vue.mixin({
       }
     },
 
-    async sendDesktopSocketConnectionMessage (email) {
+    sendDesktopSocketConnectionMessage (email) {
       const lockerDeviceId = this.$cookies.get('device_id')
       const deviceIdentifier = lockerDeviceId || this.randomString()
       if (!lockerDeviceId) {

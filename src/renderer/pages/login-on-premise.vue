@@ -15,20 +15,7 @@ export default {
     const hasPwl = this.$cookies.get('on_premise_has_pwl')
 
     // Clear cookies (Disable for now)
-    // const baseCookiesDomain = process.env.lockerCookieDomain
-    // const cookies = [
-    //   'on_premise_email',
-    //   'on_premise_avatar',
-    //   'on_premise_base_url',
-    //   'on_premise_require_pwl',
-    //   'on_premise_has_pwl'
-    // ]
-    // cookies.forEach(k => {
-    //   this.$cookies.remove(k, {
-    //     domain: baseCookiesDomain,
-    //     path: '/'
-    //   })
-    // })
+    // this.clearOnPremiseCookies()
 
     if (!email || !baseApi) {
       this.$router.push('/')

@@ -144,6 +144,10 @@ Vue.mixin({
         await this.$axios.$post('/users/logout')
       }
 
+      if (this.isOnPremise) {
+        this.clearOnPremiseCookies()
+      }
+
       await this.$cryptoService.clearKeys()
       await this.$userService.clear()
       await this.$cookies.remove('cs_locker_token')
