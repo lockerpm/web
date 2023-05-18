@@ -1,19 +1,40 @@
 <template>
   <div class="generate-code">
-    <div class="flex items-center">
-      <el-button type="success" @click="openGetCodeConfirmDialog">
+    <div class="mt-6">
+      <el-progress
+        :percentage="(availablePercent / totalPercent) * 100"
+        :show-text="false"
+        status="success"
+        style="width: 260px;"
+      />
+      <p v-if="availablePercent > 0" class="mt-1">
+        {{ $t('data.rewards.progress', { percent: availablePercent }) }}
+      </p>
+      <p v-else class="mt-1">
+        {{ $t('data.rewards.no_discount', { percent: remainPercent }) }}
+      </p>
+    </div>
+    <div v-if="availablePercent > 0" class="flex items-center mt-6">
+      <el-button
+        type="success"
+        @click="openGetCodeConfirmDialog"
+      >
         {{ $t('data.rewards.get_code.title') }}
       </el-button>
-      <div v-html="$t('data.rewards.get_code.note', { percent: percent })" class="ml-2"/>
+      <div v-html="$t('data.rewards.get_code.note', { percent: remainPercent })" class="ml-2"/>
     </div>
-    <div class="mt-3">
+    <div v-if="discountCodes.length > 0" class="mt-3">
       <p class="mb-2 font-semibold">{{ $t('data.rewards.get_code.your_codes') }}</p>
       <el-card class="w-[300px]" shadow="never">
         <div class="flex items-center justify-between">
           <div class="font-bold flex">
             <span class="mr-2">ANV947NVWd732</span>
-            <span class="flex items-center cursor-pointer">
-              <img :src="require('~/assets/images/icons/copy.svg')">
+            <span
+              v-clipboard:copy="'ANV947NVWd732'"
+              v-clipboard:success="clipboardSuccessHandler"
+              class="flex items-center cursor-pointer"
+            >
+              <i class="far fa-copy" />
             </span>
           </div>
           <p class="font-bold">EXPIRATION</p>
@@ -23,10 +44,10 @@
           <span class="text-black-500">Apr 30, 2023</span>
         </div>
       </el-card>
-    </div>
-    <div class="mt-4 flex items-center text-green font-semibold">
-      {{ $t('data.rewards.get_code.redeem_code') }}
-      <i class="el-icon-right ml-2" />
+      <div class="mt-3 flex items-center text-green font-semibold">
+        {{ $t('data.rewards.get_code.redeem_code') }}
+        <i class="el-icon-right ml-2" />
+      </div>
     </div>
     <GetCodeConfirmDialog
       ref="getCodeConfirmDialog"
@@ -49,13 +70,31 @@ export default {
     GetCodeSuccessDialog
   },
   props: {
+    claimStatus: {
+      type: Object,
+      default: () => {}
+    },
+    missions: {
+      type: Array,
+      default: () => []
+    }
   },
   data () {
     return {
-      percent: 20
+      totalPercent: 25,
+      discountCodes: []
     }
   },
   computed: {
+    availablePercent () {
+      return 10
+    },
+    usedPercent () {
+      return 0
+    },
+    remainPercent () {
+      return this.totalPercent - this.usedPercent
+    }
   },
   methods: {
     handleGetCode () {

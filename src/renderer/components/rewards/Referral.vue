@@ -18,7 +18,7 @@
             </div>
             <div class="flex items-center">
               <div class="mr-3 font-semibold">
-                1/3
+                {{ referrals.referred }}/{{ referrals.referral_limit }}
               </div>
               <img :src="require('~/assets/images/icons/referral.svg')">
             </div>
@@ -39,11 +39,17 @@
           <div class="flex items-center justify-between w-full">
             <div style="width: calc(100% - 142px)">
               <el-input
-                value="https://id.locker.io/register/DR4Y09"
+                :value="referrals.referral_link"
                 readonly
               >
                 <div slot="suffix" class="flex items-center mr-3 cursor-pointer">
-                  <img :src="require('~/assets/images/icons/copy.svg')">
+                  <span
+                    v-clipboard:copy="'referrals.referral_link'"
+                    v-clipboard:success="clipboardSuccessHandler"
+                    class="flex items-center cursor-pointer"
+                  >
+                    <i class="far fa-copy" />
+                  </span>
                 </div>
               </el-input>
             </div>
@@ -67,12 +73,23 @@ export default {
   },
   data () {
     return {
-      collapse: []
+      collapse: [],
+      referrals: {
+        referral_link: ''
+      }
     }
   },
   computed: {
   },
+  created () {
+    this.getReferrals()
+  },
   methods: {
+    getReferrals () {
+      this.$axios.$get('cystack_platform/pm/referrals').then(res => {
+        this.referrals = res
+      })
+    }
   }
 }
 </script>

@@ -14,7 +14,7 @@
           {{ $t('data.rewards.verify_popup.congrats') }}
         </div>
         <div class="mb-5" v-html="$t('data.rewards.verify_popup.congrats_desc')" />
-        <el-button type="success" @click="getCode">
+        <el-button type="success" @click="() => {}">
           {{ $t('data.rewards.verify_popup.continue') }}
         </el-button>
         <a class="mt-3 flex items-center justify-center text-info cursor-pointer">

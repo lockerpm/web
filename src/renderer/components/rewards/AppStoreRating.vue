@@ -15,7 +15,7 @@
                 {{ $t('data.rewards.note2', { percent: 5 }) }}
               </span>
             </div>
-            <CurrentStep v-if="!collapse.length" :steps="steps" :step="step" />
+            <CurrentStep v-if="!collapse.length" :current-step="currentStep" />
             <el-button v-else type="success" size="small">
               {{ $t('data.rewards.app_store_rating.header_btn') }}
             </el-button>
@@ -55,16 +55,31 @@ export default {
     Steps,
     CurrentStep
   },
+  props: {
+    mission: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data () {
     return {
       collapse: [],
-      step: 1,
       displayName: ''
     }
   },
   computed: {
-    steps () {
+    originSteps () {
       return this.$t('data.rewards.steps')
+    },
+    currentStep () {
+      const missionStep = this.originSteps.find(s => s.value === this.mission.status)
+      return missionStep || {}
+    },
+    steps () {
+      return this.originSteps.map(s => ({
+        ...s,
+        status: this.currentStep.key > s.key ? 'finish' : 'await'
+      }))
     }
   },
   methods: {

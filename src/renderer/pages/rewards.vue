@@ -1,41 +1,38 @@
 <template>
-  <div class="rewards">
+  <div v-loading="loading" class="rewards">
     <div class="rewards__generate-code">
       <div class="flex-column-fluid lg:px-28 py-8 md:px-10 px-4">
         <p>{{ $t('data.rewards.subtitle') }}</p>
-        <div class="my-6">
-          <el-progress
-            :percentage="totalPercent"
-            :show-text="false"
-            status="success"
-            style="width: 260px;"
-          />
-          <p class="mt-1">
-            {{ $t('data.rewards.progress', { percent: totalPercent }) }}
-          </p>
-        </div>
-        <GenerateCode />
+        <GenerateCode
+          :claim-status="claimStatus"
+          :missions="missions"
+        />
       </div>
     </div>
     <div class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4 mb-20">
       <Referral />
       <ExtInstallation
+        :mission="getMissionById('extension_installation_and_review')"
         @send="openVerifiedDialog"
         @resubmit="openResubmitDialog"
       />
       <DesktopInstallation
+        :mission="getMissionById('desktop_app_installation')"
         @send="openVerifiedDialog"
         @resubmit="openResubmitDialog"
       />
       <AppStoreRating
+        :mission="getMissionById('app_store_rating_and_review')"
         @send="openVerifiedDialog"
         @resubmit="openResubmitDialog"
       />
       <GooglePlayRating
+        :mission="getMissionById('google_play_rating_and_review')"
         @send="openVerifiedDialog"
         @resubmit="openResubmitDialog"
       />
       <CapterraRating
+        :mission="getMissionById('capterra_rating_and_review')"
         @send="openVerifiedDialog"
         @resubmit="openResubmitDialog"
       />
@@ -79,10 +76,16 @@ export default {
   },
   data () {
     return {
-      totalPercent: 10
+      loading: false,
+      claimStatus: null,
+      missions: []
     }
   },
   computed: {
+  },
+  created () {
+    this.getClaimStatus()
+    this.getMissions()
   },
   methods: {
     openVerifiedDialog () {
@@ -90,6 +93,25 @@ export default {
     },
     openResubmitDialog () {
       this.$refs.resubmitDialog.openDialog(true)
+    },
+    async fetchData () {
+      this.loading = true
+      await this.getClaimStatus()
+      await this.getMissions()
+      this.loading = false
+    },
+    getClaimStatus () {
+      this.$axios.$get('/cystack_platform/pm/reward/claim').then(res => {
+        this.claimStatus = res
+      })
+    },
+    getMissions () {
+      this.$axios.$get('/cystack_platform/pm/reward/missions').then(res => {
+        this.missions = res
+      })
+    },
+    getMissionById (id) {
+      return (this.missions || []).find(m => m.mission.id === id) || {}
     }
   }
 }

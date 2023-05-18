@@ -11,22 +11,16 @@
 
 export default {
   props: {
-    steps: {
-      type: Array,
-      default: () => []
-    },
-    step: {
-      type: Number,
-      default: 1
+    currentStep: {
+      type: Object,
+      default: () => ({
+        class: 'text-black-400',
+        icon: 'power'
+      })
     }
   },
   data () {
     return {
-    }
-  },
-  computed: {
-    currentStep () {
-      return this.steps.find(s => s.key === this.step)
     }
   },
   methods: {

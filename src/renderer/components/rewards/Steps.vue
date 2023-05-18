@@ -8,9 +8,19 @@
         :status="step.status"
       >
         <img
-          v-if="firstProcess.key === step.key && index < steps.length - 1"
+          v-if="index === 0 && step.status !== 'finish'"
           slot="icon"
           :src="require('~/assets/images/icons/step-process-next.svg')"
+        >
+        <img
+          v-else-if="step.status === 'finish' && steps[index + 1] && steps[index + 1].status !== 'finish'"
+          slot="icon"
+          :src="require('~/assets/images/icons/step-finish-next.svg')"
+        >
+        <img
+          v-else-if="step.status === 'finish' && steps[index + 1] && steps[index + 1].status === 'finish'"
+          slot="icon"
+          :src="require('~/assets/images/icons/step-finish.svg')"
         >
         <img
           v-else-if="step.status !== 'finish'"
@@ -18,14 +28,9 @@
           :src="require('~/assets/images/icons/step-process.svg')"
         >
         <img
-          v-else-if="lastFinish.key === step.key && index <= steps.length - 1"
-          slot="icon"
-          :src="require('~/assets/images/icons/step-finish-next.svg')"
-        >
-        <img
           v-else
           slot="icon"
-          :src="require('~/assets/images/icons/step-finish.svg')"
+          :src="require('~/assets/images/icons/steps-finish.svg')"
         >
       </el-step>
     </el-steps>
@@ -46,12 +51,6 @@ export default {
     }
   },
   computed: {
-    firstProcess () {
-      return this.steps.find(s => s.status !== 'finish') || {}
-    },
-    lastFinish () {
-      return this.steps.filter(s => s.status === 'finish').slice(-1)[0] || {}
-    }
   }
 }
 </script>
