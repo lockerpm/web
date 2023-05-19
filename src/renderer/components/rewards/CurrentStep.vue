@@ -3,7 +3,7 @@
     <div class="mr-3 font-semibold" :class="currentStep.class">
       {{ currentStep.name }}
     </div>
-    <img :src="require(`~/assets/images/icons/${currentStep.icon}.svg`)">
+    <img :src="require(`~/assets/images/icons/${currentStep ? currentStep.icon || 'power' : 'power'}.svg`)">
   </div>
 </template>
 

@@ -9,10 +9,15 @@
         <template slot="title">
           <div class="py-5 flex items-center justify-between" style="width: 95%">
             <div class="flex items-center">
-              <div class="text-head-5 font-semibold">
-                {{ $t('data.rewards.referral.title') }}
+              <div>
+                <div class="text-head-5 font-semibold">
+                  {{ $t('data.rewards.referral.title') }}
+                </div>
+                <span v-if="!collapse.length" class="text-black-500 lg:hidden md:block">
+                  {{ $t('data.rewards.note1', { month: 1 }) }}
+                </span>
               </div>
-              <span v-if="!collapse.length" class="ml-4 text-black-500">
+              <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden">
                 {{ $t('data.rewards.note1', { month: 1 }) }}
               </span>
             </div>

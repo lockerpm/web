@@ -81,13 +81,14 @@ export default {
   },
   data () {
     return {
-      totalPercent: 25,
+      totalPercent: 20,
       discountCodes: []
     }
   },
   computed: {
     availablePercent () {
-      return 10
+      const codeOff = this.missions.filter(m => m.status === 'reward_sent' && !['referral', 'extension_installation_and_review'].includes(m.mission.id))
+      return codeOff.length * 5
     },
     usedPercent () {
       return 0

@@ -8,17 +8,31 @@
         <template slot="title">
           <div class="py-5 flex items-center justify-between" style="width: 95%">
             <div class="flex items-center">
-              <div class="text-head-5 font-semibold">
-                {{ $t('data.rewards.app_store_rating.title') }}
+              <div>
+                <div class="text-head-5 font-semibold">
+                  {{ $t('data.rewards.app_store_rating.title') }}
+                </div>
+                <span v-if="!collapse.length" class="text-black-500 lg:hidden md:block">
+                  {{ $t('data.rewards.note2', { percent: 5 }) }}
+                </span>
               </div>
-              <span v-if="!collapse.length" class="ml-4 text-black-500">
+              <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden">
                 {{ $t('data.rewards.note2', { percent: 5 }) }}
               </span>
             </div>
             <CurrentStep v-if="!collapse.length" :current-step="currentStep" />
-            <el-button v-else type="success" size="small">
-              {{ $t('data.rewards.app_store_rating.header_btn') }}
-            </el-button>
+            <a
+              v-else
+              href="https://apps.apple.com/app/locker-password-manager/id1586927301"
+              target="_blank"
+            >
+              <el-button
+                type="success"
+                size="small"
+              >
+                {{ $t('data.rewards.app_store_rating.header_btn') }}
+              </el-button>
+            </a>
           </div>
         </template>
         <div class="px-5">
