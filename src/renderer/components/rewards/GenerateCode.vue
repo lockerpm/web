@@ -23,7 +23,7 @@
       </el-button>
       <div v-html="$t('data.rewards.get_code.note', { percent: remainPercent })" class="ml-2"/>
     </div>
-    <div v-if="discountCodes.length > 0" class="mt-3">
+    <div v-if="promoCodes.length > 0" class="mt-3">
       <p class="mb-2 font-semibold">{{ $t('data.rewards.get_code.your_codes') }}</p>
       <el-card class="w-[300px]" shadow="never">
         <div class="flex items-center justify-between">
@@ -82,7 +82,7 @@ export default {
   data () {
     return {
       totalPercent: 20,
-      discountCodes: []
+      promoCodes: []
     }
   },
   computed: {
@@ -97,7 +97,17 @@ export default {
       return this.totalPercent - this.usedPercent
     }
   },
+  created () {
+    this.getPromosCodes()
+  },
   methods: {
+    getPromosCodes () {
+      this.$axios.$get('/cystack_platform/pm/reward/claim/promo_codes').then(res => {
+        this.promoCodes = res
+      }).catch(() => {
+        this.promoCodes = []
+      })
+    },
     handleGetCode () {
       this.openGetCodeSuccessDialog()
     },

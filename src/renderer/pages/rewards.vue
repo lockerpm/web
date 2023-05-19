@@ -83,9 +83,13 @@ export default {
   },
   computed: {
   },
-  created () {
-    this.getClaimStatus()
-    this.getMissions()
+  mounted () {
+    if (!this.isEnterpriseMember) {
+      this.getClaimStatus()
+      this.getMissions()
+    } else {
+      this.$router.push(this.localePath({ name: 'vault' }))
+    }
   },
   methods: {
     openVerifiedDialog () {

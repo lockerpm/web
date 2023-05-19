@@ -88,7 +88,11 @@
                 </div>
               </div>
             </el-checkbox-group>
-            <el-button type="success" @click="handleSend">
+            <el-button
+              :disabled="selectedBrowsers.length === 0"
+              :type="selectedBrowsers.length === 0 ? 'default' : 'success'"
+              @click="handleSend"
+            >
               {{ $t('data.rewards.ext_installation.btn') }}
             </el-button>
           </div>
@@ -133,12 +137,20 @@ export default {
         ...s,
         status: this.currentStep.key > s.key ? 'finish' : 'await'
       }))
+    },
+    selectedBrowsers () {
+      return this.browsers.map(b => {
+        return this.allBrowsers.find(browser => browser.name === b)
+      }).filter(b => b.displayName)
     }
   },
   methods: {
     handleSend () {
-      // this.$emit('send')
-      this.$emit('resubmit')
+      this.$axios.$get('/cystack_platform/pm/reward/claim/promo_codes').then(res => {
+        this.promoCodes = res
+      }).catch(() => {
+        this.promoCodes = []
+      })
     }
   }
 }

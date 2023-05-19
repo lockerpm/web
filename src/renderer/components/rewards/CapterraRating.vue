@@ -50,7 +50,10 @@
                 :placeholder="$t('data.rewards.capterra_rating.input_placeholder')"
               />
             </div>
-            <el-button type="success">
+            <el-button
+              :type="displayName.trim() ? 'success' : ''"
+              :disabled="!displayName.trim()"
+            >
               {{ $t('data.rewards.capterra_rating.btn') }}
             </el-button>
           </div>

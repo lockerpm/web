@@ -296,11 +296,16 @@ export default {
           icon: 'trashh',
           routeName: 'trash'
         },
-        {
-          label: 'rewards',
-          icon: 'rewards',
-          routeName: 'rewards'
-        }
+        ...(!this.isEnterpriseMember
+          ? [
+            {
+              label: 'rewards',
+              icon: 'rewards',
+              routeName: 'rewards'
+            }
+          ]
+          : []
+        )
       ]
     },
     bottomMenu () {
