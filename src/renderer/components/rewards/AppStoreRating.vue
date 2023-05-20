@@ -16,7 +16,7 @@
                   {{ $t('data.rewards.note2', { percent: 5 }) }}
                 </span>
               </div>
-              <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden">
+              <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden hidden">
                 {{ $t('data.rewards.note2', { percent: 5 }) }}
               </span>
             </div>
@@ -43,16 +43,19 @@
           <div class="mb-4 text-black-500">
             <div v-html="$t('data.rewards.app_store_rating.subtitle1_desc')"/>
           </div>
-          <div class="flex items-center w-full">
+          <div v-if="currentStep.key < 3" class="flex items-center w-full">
             <div style="width: 355px" class="mr-2">
               <el-input
                 v-model="displayName"
                 :placeholder="$t('data.rewards.app_store_rating.input_placeholder')"
+                :disabled="callingAPI"
               />
             </div>
             <el-button
               :type="displayName.trim() ? 'success' : ''"
               :disabled="!displayName.trim()"
+              :loading="callingAPI"
+              @click="handleSend"
             >
               {{ $t('data.rewards.app_store_rating.btn') }}
             </el-button>
@@ -81,7 +84,8 @@ export default {
   data () {
     return {
       collapse: [],
-      displayName: ''
+      displayName: '',
+      callingAPI: false
     }
   },
   computed: {
@@ -95,11 +99,51 @@ export default {
     steps () {
       return this.originSteps.map(s => ({
         ...s,
-        status: this.currentStep.key > s.key ? 'finish' : 'await'
+        status: this.currentStep.key !== 1 && this.currentStep.key >= s.key ? 'finish' : 'await'
       }))
     }
   },
+  watch: {
+    mission: {
+      handler () {
+        this.fetchData()
+      },
+      deep: true
+    }
+  },
+  created () {
+    this.fetchData()
+  },
   methods: {
+    fetchData () {
+      this.displayName = this.mission?.answer?.user_identifier || ''
+    },
+    handleSend () {
+      this.callingAPI = true
+      this.$axios.$post(`/cystack_platform/pm/reward/missions/${this.mission.mission.id}/completed`, { user_identifier: this.displayName }).then(res => {
+        this.callingAPI = false
+        if (res.claim) {
+          this.$emit('send', {
+            type: 'code_off',
+            percent: 5,
+            action: this.$t('data.rewards.app_store_rating.title')
+          })
+        } else {
+          this.$emit('resubmit', {
+            type: 'code_off',
+            store: 'App Store',
+            action: this.$t('data.rewards.app_store_rating.title')
+          })
+        }
+      }).catch(() => {
+        this.callingAPI = false
+        this.$emit('resubmit', {
+          type: 'code_off',
+          store: 'App Store',
+          action: this.$t('data.rewards.app_store_rating.title')
+        })
+      })
+    }
   }
 }
 </script>

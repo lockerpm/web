@@ -74,28 +74,25 @@ export default {
       type: Object,
       default: () => {}
     },
-    missions: {
-      type: Array,
-      default: () => []
+    totalPercent: {
+      type: Number,
+      default: 20
+    },
+    availablePercent: {
+      type: Number,
+      default: 0
+    },
+    remainPercent: {
+      type: Number,
+      default: 0
     }
   },
   data () {
     return {
-      totalPercent: 20,
       promoCodes: []
     }
   },
   computed: {
-    availablePercent () {
-      const codeOff = this.missions.filter(m => m.status === 'reward_sent' && !['referral', 'extension_installation_and_review'].includes(m.mission.id))
-      return codeOff.length * 5
-    },
-    usedPercent () {
-      return 0
-    },
-    remainPercent () {
-      return this.totalPercent - this.usedPercent
-    }
   },
   created () {
     this.getPromosCodes()

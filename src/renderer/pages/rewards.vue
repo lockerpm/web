@@ -5,7 +5,9 @@
         <p>{{ $t('data.rewards.subtitle') }}</p>
         <GenerateCode
           :claim-status="claimStatus"
-          :missions="missions"
+          :available-percent="availablePercent"
+          :total-percent="totalPercent"
+          :remain-percent="remainPercent"
         />
       </div>
     </div>
@@ -40,9 +42,15 @@
 
     <VerifiedDialog
       ref="verifiedDialog"
+      :available-percent="availablePercent"
+      :remain-percent="remainPercent"
+      @reload="fetchData"
     />
     <ResubmitDialog
       ref="resubmitDialog"
+      :available-percent="availablePercent"
+      :remain-percent="remainPercent"
+      @reload="fetchData"
     />
   </div>
 </template>
@@ -77,11 +85,23 @@ export default {
   data () {
     return {
       loading: false,
-      claimStatus: null,
+      claimStatus: {},
       missions: []
     }
   },
   computed: {
+    totalPercent () {
+      return this.claimStatus.total_promo_code_value || 20
+    },
+    availablePercent () {
+      return this.claimStatus.available_promo_code_value || 0
+    },
+    usedPercent () {
+      return this.claimStatus.used_promo_code_value || 0
+    },
+    remainPercent () {
+      return this.totalPercent - this.usedPercent
+    }
   },
   mounted () {
     if (!this.isEnterpriseMember) {
@@ -92,11 +112,11 @@ export default {
     }
   },
   methods: {
-    openVerifiedDialog () {
-      this.$refs.verifiedDialog.openDialog(true)
+    openVerifiedDialog (data) {
+      this.$refs.verifiedDialog.openDialog(data)
     },
-    openResubmitDialog () {
-      this.$refs.resubmitDialog.openDialog(true)
+    openResubmitDialog (data) {
+      this.$refs.resubmitDialog.openDialog(data)
     },
     async fetchData () {
       this.loading = true

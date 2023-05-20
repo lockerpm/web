@@ -16,7 +16,7 @@
                   {{ $t('data.rewards.note2', { percent: 5 }) }}
                 </span>
               </div>
-              <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden">
+              <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden hidden">
                 {{ $t('data.rewards.note2', { percent: 5 }) }}
               </span>
             </div>
@@ -46,10 +46,17 @@
           <div class="mb-4 text-black-500">
             <div v-html="$t('data.rewards.desktop_installation.subtitle1_desc')"/>
           </div>
-          <div class="mb-3 text-black-500">
+          <div class="ext-black-500">
             <div v-html="$t('data.rewards.desktop_installation.subtitle1_desc1')"/>
           </div>
-          <el-button type="success" plain>
+          <el-button
+            v-if="currentStep.key < 3"
+            type="success"
+            plain
+            class="mt-3"
+            :loading="callingAPI"
+            @click="handleSend"
+          >
             {{ $t('data.rewards.desktop_installation.btn') }}
           </el-button>
         </div>
@@ -75,7 +82,8 @@ export default {
   },
   data () {
     return {
-      collapse: []
+      collapse: [],
+      callingAPI: false
     }
   },
   computed: {
@@ -89,11 +97,35 @@ export default {
     steps () {
       return this.originSteps.map(s => ({
         ...s,
-        status: this.currentStep.key > s.key ? 'finish' : 'await'
+        status: this.currentStep.key !== 1 && this.currentStep.key >= s.key ? 'finish' : 'await'
       }))
     }
   },
   methods: {
+    handleSend () {
+      this.callingAPI = true
+      this.$axios.$post(`/cystack_platform/pm/reward/missions/${this.mission.mission.id}/completed`, { user_identifier: null }).then(res => {
+        this.callingAPI = false
+        if (res.claim) {
+          this.$emit('send', {
+            type: 'code_off',
+            percent: 5,
+            action: this.$t('data.rewards.desktop_installation.title')
+          })
+        } else {
+          this.$emit('resubmit', {
+            type: 'code_off',
+            action: this.$t('data.rewards.desktop_installation.title')
+          })
+        }
+      }).catch(() => {
+        this.callingAPI = false
+        this.$emit('resubmit', {
+          type: 'code_off',
+          action: this.$t('data.rewards.desktop_installation.title')
+        })
+      })
+    }
   }
 }
 </script>

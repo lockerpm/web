@@ -13,7 +13,16 @@
         <div class="text-head-5 font-semibold mb-5">
           {{ $t('data.rewards.verify_popup.resubmit.title') }}
         </div>
-        <div v-html="$t('data.rewards.verify_popup.resubmit.desc')" />
+        <div v-if="dialogData.type === 'free_month' || !dialogData.store">
+          <div v-html="$t('data.rewards.verify_popup.resubmit.desc1', { action: dialogData.action })" />
+          <div class="mt-m" v-html="$t('data.rewards.verify_popup.resubmit.desc2')" />
+        </div>
+        <div v-else
+          v-html="$t('data.rewards.verify_popup.resubmit.desc', {
+            action: dialogData.action,
+            store: dialogData.store
+          })"
+        />
       </div>
     </el-dialog>
   </div>
@@ -23,15 +32,19 @@
 export default {
   data () {
     return {
-      dialogVisible: false
+      dialogVisible: false,
+      dialogData: {
+        type: 'free_month',
+        action: '',
+        store: ''
+      }
     }
   },
   methods: {
-    openDialog () {
+    openDialog (data) {
+      this.$emit('reload')
+      this.dialogData = data
       this.dialogVisible = true
-    },
-    closeDialog () {
-      this.dialogVisible = false
     }
   }
 }
