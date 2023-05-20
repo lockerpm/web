@@ -86,6 +86,7 @@
   </div>
 </template>
 <script>
+import { customAlphabet } from 'nanoid'
 import TwoFactor from './TwoFactor'
 
 export default {
@@ -129,8 +130,9 @@ export default {
             this.encPwlData = data
             this.handlePwlOTP()
           },
-          onOTPReceived: otp => {
-            this.pwlOtp = otp.toString()
+          onOTPReceived: () => {
+            // Use web generated otp instead
+            this.pwlOtp = this.generateRandomOTP()
             this.loading = false
           },
           onDesktopRejected: () => {
@@ -151,8 +153,12 @@ export default {
           }
         })
         setTimeout(() => {
-          this.sendDesktopSocketConnectionMessage(this.currentUser.email)
-        }, 500)
+          if (this.isDesktopSocketReady) {
+            this.sendDesktopSocketConnectionMessage(this.currentUser.email)
+          } else {
+            this.loading = false
+          }
+        }, 1000)
       }
     },
 
@@ -163,11 +169,20 @@ export default {
       }
       this.loading = true
       this.errors = false
+      let decryptedData = {}
       try {
-        const decryptedData = await this.$cryptoService.decryptData(
+        decryptedData = await this.$cryptoService.decryptData(
           this.pwlOtp,
           this.encPwlData
         )
+      } catch (error) {
+        this.notify(this.$t('lock.pwl.errors.wrong_otp'), 'error')
+        this.loading = false
+        this.requestPwlVerification()
+        return
+      }
+
+      try {
         const res = await this.login({
           key: decryptedData.key,
           hashedPassword: decryptedData.keyHash
@@ -196,6 +211,11 @@ export default {
       this.factor2Methods = methods
       this.cryptoKey = key
       this.hashedPw = keyHash
+    },
+
+    generateRandomOTP () {
+      const nanoid = customAlphabet('1234567890', 6)
+      return nanoid()
     }
   }
 }

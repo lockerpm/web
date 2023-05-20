@@ -74,7 +74,6 @@ Vue.mixin({
       })
       this.$options.sockets.onmessage = message => {
         const data = JSON.parse(message.data)
-        console.log(data)
         switch (data.msgType) {
         case SocketMessageType.OTP_RESPONSE: {
           onOTPReceived(data.otp)
