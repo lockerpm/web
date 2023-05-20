@@ -298,6 +298,9 @@ Vue.mixin({
           this.$store.state.currentPath === '/lock'
             ? '/vault'
             : this.$store.state.currentPath
+        if (path === '/' && this.isOnPremise) {
+          path = '/vault'
+        }
         if (path.startsWith('/on-premise-create-master-pw')) {
           path = '/vault'
         }
