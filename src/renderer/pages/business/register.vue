@@ -1,18 +1,31 @@
 <template>
-  <div :class="submitted?'full-width bg-[#388337]':'full-width bg-[#DFDFDF]'">
-    <div class="max-w-6xl px-6 mx-auto" :class="submitted?'h-screen flex items-center justify-center':'mt-20 py-[100px]'">
+  <div class="full-width bg-[#F4F5F7]">
+    <div
+      class="max-w-6xl px-6 mx-auto"
+      :class="
+        submitted
+          ? 'h-screen flex items-center justify-center'
+          : 'mt-20 py-[100px]'
+      "
+    >
       <div v-if="submitted">
-        <div class="text-center mb-4">
-          <img src="~/assets/images/img-cs.svg#icon-successful" class="mx-auto" style="height: 100px; background: transparent" alt="success">
+        <div class="text-center mb-12">
+          <img
+            src="~/assets/images/email-success-locker.svg"
+            class="mx-auto"
+            style="height: 100px; background: transparent"
+            alt="success"
+          >
         </div>
         <div class="m-login__signin markdown-body">
           <div class="m-login__head text-center">
-            <h1 class="landing-font-28 font-semibold mb-3">
-              {{ $t("business.register.sigup_guide_l1") }}
+            <h1 class="landing-font-28 font-semibold mb-4">
+              {{ $t('business.register.sigup_guide_l1') }}
             </h1>
             <p class="mb-0">
-              {{ $t("business.register.sigup_guide_l2") }} <strong>{{ newuser.email }}</strong>. <br>
-              {{ $t("business.register.sigup_guide_l3") }}
+              {{ $t('business.register.sigup_guide_l2') }}
+              <strong>{{ newuser.email }}</strong>. <br>
+              {{ $t('business.register.sigup_guide_l3') }}
             </p>
           </div>
         </div>
@@ -23,7 +36,7 @@
             class="landing-font-38 font-semibold"
             v-html="$t('business.register.title')"
           />
-          <div class="mt-8 landing-font-16 ">
+          <div class="mt-8 landing-font-16">
             {{ $t('business.register.desc') }}
           </div>
           <div
@@ -35,14 +48,16 @@
             <div class="landing-font-16">{{ item.text }}</div>
           </div>
           <div class="mt-12 landing-font-16">
-            {{ $t('business.register.support_text') }} <span><a
-              class="text-info"
-              @click.prevent="openIntercom"
-            >{{ locale==='vi'?'Liên hệ':'Contact us' }}</a></span>
+            {{ $t('business.register.support_text') }}
+            <span><a class="text-info" @click.prevent="openIntercom">{{
+              locale === 'vi' ? 'Liên hệ' : 'Contact us'
+            }}</a></span>
           </div>
         </div>
         <div class="w-full md:w-1/2 md:pl-5 pl-0 md:mt-0 mt-8">
-          <div class="shadow-custom rounded-lg h-auto bg-white py-[30px] px-[72px]">
+          <div
+            class="shadow-custom rounded-lg h-auto bg-white py-[30px] px-[72px]"
+          >
             <el-form
               id="business-form"
               ref="inputForm"
@@ -71,10 +86,7 @@
                   </el-form-item>
                 </div>
                 <div class="col-span-1">
-                  <el-form-item
-                    :label="$t('common.last_name')"
-                    prop="lastName"
-                  >
+                  <el-form-item :label="$t('common.last_name')" prop="lastName">
                     <el-input
                       v-model="newuser.lastName"
                       :placeholder="$t('common.last_name_placeholder')"
@@ -85,10 +97,7 @@
                   </el-form-item>
                 </div>
               </div>
-              <el-form-item
-                :label="$t('common.work_email')"
-                prop="email"
-              >
+              <el-form-item :label="$t('common.work_email')" prop="email">
                 <el-input
                   v-model="newuser.email"
                   :placeholder="$t('common.work_email_placeholder')"
@@ -99,10 +108,7 @@
               </el-form-item>
               <div class="w-full grid grid-cols-2 gap-x-4">
                 <div class="col-span-1">
-                  <el-form-item
-                    :label="$t('common.phone')"
-                    prop="phone"
-                  >
+                  <el-form-item :label="$t('common.phone')" prop="phone">
                     <el-input
                       v-model="newuser.phone"
                       :placeholder="$t('common.phone_placeholder')"
@@ -129,7 +135,10 @@
                         :label="country.country_name"
                       >
                         <span>
-                          <span :class="`flag flag-${country.country_code.toLowerCase()}`" class="" />
+                          <span
+                            :class="`flag flag-${country.country_code.toLowerCase()}`"
+                            class=""
+                          />
                           {{ country.country_name }}
                         </span>
                       </el-option>
@@ -137,10 +146,7 @@
                   </el-form-item>
                 </div>
               </div>
-              <el-form-item
-                :label="$t('common.company')"
-                prop="organization"
-              >
+              <el-form-item :label="$t('common.company')" prop="organization">
                 <el-input
                   v-model="newuser.organization"
                   :placeholder="$t('common.company_placeholder')"
@@ -149,10 +155,7 @@
                   {{ bugs.organization[0] }}
                 </div>
               </el-form-item>
-              <el-form-item
-                :label="$t('common.job_title')"
-                prop="title"
-              >
+              <el-form-item :label="$t('common.job_title')" prop="title">
                 <el-input
                   v-model="newuser.title"
                   :placeholder="$t('common.job_title_placeholder')"
@@ -160,7 +163,14 @@
               </el-form-item>
               <div class="flex flex-nowrap mb-2 mt-6">
                 <el-checkbox v-model="agree" class="mt-[2px]" />
-                <p class="ml-[10px] cursor-pointer" @click="()=>{agree=!agree}">
+                <p
+                  class="ml-[10px] cursor-pointer"
+                  @click="
+                    () => {
+                      agree = !agree
+                    }
+                  "
+                >
                   {{ $t('business.register.receive_email') }}
                 </p>
               </div>
@@ -174,7 +184,10 @@
                   {{ $t('landing_contact.send') }}
                 </el-button>
               </el-form-item>
-              <div class="w-1/2 mx-auto text-center text-xs text-black-500" v-html="$t('business.register.agree_policy')" />
+              <div
+                class="w-1/2 mx-auto text-center text-xs text-black-500"
+                v-html="$t('business.register.agree_policy')"
+              />
             </el-form>
           </div>
         </div>
@@ -268,24 +281,23 @@ export default {
       rules: {
         phone: [
           { required: true },
-          { validator: this.phoneNotRequiredValidator, trigger: ['blur', 'change'] }
+          {
+            validator: this.phoneNotRequiredValidator,
+            trigger: ['blur', 'change']
+          }
         ],
-        firstName: [
-          { required: true }
-        ],
-        lastName: [
-          { required: true }
-        ],
+        firstName: [{ required: true }],
+        lastName: [{ required: true }],
         email: [
           { required: true },
-          { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+          {
+            type: 'email',
+            message: 'Please input correct email address',
+            trigger: ['blur', 'change']
+          }
         ],
-        country: [
-          { required: true }
-        ],
-        organization: [
-          { required: true }
-        ]
+        country: [{ required: true }],
+        organization: [{ required: true }]
       },
       countries: [],
       selectedCountryCode: '+84',
@@ -300,7 +312,12 @@ export default {
       return !!this.loading
     },
     setPwBtnDisabled () {
-      return this.loading || !this.newuser.password || !this.newuser.confirm_password || this.newuser.password !== this.newuser.confirm_password
+      return (
+        this.loading ||
+        !this.newuser.password ||
+        !this.newuser.confirm_password ||
+        this.newuser.password !== this.newuser.confirm_password
+      )
     }
   },
   mounted () {
@@ -331,15 +348,32 @@ export default {
         if (res.activated) {
           try {
             const token = await this.$recaptcha.execute('login')
-            await this.$axios.$put('cystack_platform/pm/payments/trial/enterprise', {
-              email: this.newuser.email,
-              request_code: token
-            })
+            await this.$axios.$put(
+              'cystack_platform/pm/payments/trial/enterprise',
+              {
+                email: this.newuser.email,
+                request_code: token
+              }
+            )
             this.submitted = true
           } catch (error) {
-            if (error.response && error.response.data && ['7103', '7015'].includes(error.response.data.code)) {
-              this.notify(this.$t(`errors.${error.response.data.code}`, { email: this.newuser.email }), 'warning')
-            } else if (error.response && error.response.data && error.response.data.code === '7014' && error.response.data.email) {
+            if (
+              error.response &&
+              error.response.data &&
+              ['7103', '7015'].includes(error.response.data.code)
+            ) {
+              this.notify(
+                this.$t(`errors.${error.response.data.code}`, {
+                  email: this.newuser.email
+                }),
+                'warning'
+              )
+            } else if (
+              error.response &&
+              error.response.data &&
+              error.response.data.code === '7014' &&
+              error.response.data.email
+            ) {
               this.$message({
                 message: this.$t('landing_contact.messages.error_existed'),
                 type: 'error'
@@ -380,13 +414,14 @@ export default {
       }
       this.loading = true
       const token = await this.$recaptcha.execute('login')
-      this.$axios.$post('https://api.locker.io/v2/sso/users', {
-        ...this.newuser,
-        phone,
-        full_name: this.fullName,
-        request_code: token
-      })
-        .then(async response => {
+      this.$axios
+        .$post('https://api.locker.io/v2/sso/users', {
+          ...this.newuser,
+          phone,
+          full_name: this.fullName,
+          request_code: token
+        })
+        .then(async () => {
           this.enterPasswordVisible = false
           this.submitted = true
           localStorage.setItem('trial_plan', 'pm_enterprise')
@@ -401,10 +436,9 @@ export default {
         })
     },
     getCountries () {
-      this.$axios.$get('resources/countries')
-        .then(res => {
-          this.countries = res
-        })
+      this.$axios.$get('resources/countries').then(res => {
+        this.countries = res
+      })
     },
     changeDialCode (countryCode) {
       for (let i = 0; i < this.countries.length; i++) {
@@ -414,7 +448,6 @@ export default {
         }
       }
     }
-
   }
 }
 </script>
@@ -436,7 +469,7 @@ export default {
     display: none;
   }
   .form-control-feedback {
-    color: #F54F64;
+    color: #f54f64;
     font-size: 12px;
     line-height: 1;
     padding-top: 4px;

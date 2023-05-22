@@ -77,7 +77,7 @@ export default {
     return {
       visible: true,
       notionData: [],
-      delay: 2000,
+      delay: 4000,
       timeoutId: () => {},
       reverse: false,
       count: 0
@@ -131,15 +131,13 @@ export default {
         const length = this.realData.length + 1
         const newCount = (this.count + 1) % length
         this.count = newCount
-        if (newCount === 0) this.delay = 100
-        else this.delay = 2000
         this.changeTextBaseOnParam()
         this.myFunction()
       }, this.delay)
     },
     Up () {
       clearTimeout(this.timeoutId)
-      this.timeoutId = setTimeout(this.myFunction, 5000)
+      this.timeoutId = setTimeout(this.myFunction, this.delay)
       const wrapper = this.$refs.wrapper
       if (!wrapper) {
         return
@@ -162,7 +160,7 @@ export default {
     },
     Down () {
       clearTimeout(this.timeoutId)
-      this.timeoutId = setTimeout(this.myFunction, 5000)
+      this.timeoutId = setTimeout(this.myFunction, this.delay)
       const wrapper = this.$refs.wrapper
       if (!wrapper) {
         return
