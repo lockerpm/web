@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-3/4 md:w-full">
+  <div>
     <el-collapse v-model="collapse" class="mb-8">
       <el-collapse-item
         class="setting-wrapper"
@@ -13,11 +13,11 @@
                 <div class="text-head-5 font-semibold">
                   {{ $t('data.rewards.referral.title') }}
                 </div>
-                <span v-if="!collapse.length" class="text-black-500 lg:hidden md:block">
+                <span v-if="!collapse.length" class="text-black-500 lg:hidden md:flex">
                   {{ $t('data.rewards.note1', { month: 1 }) }}
                 </span>
               </div>
-              <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden hidden">
+              <span v-if="!collapse.length" class="ml-4 text-black-500 lg:flex md:hidden hidden">
                 {{ $t('data.rewards.note1', { month: 1 }) }}
               </span>
             </div>

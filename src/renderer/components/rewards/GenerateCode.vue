@@ -16,8 +16,9 @@
     </div>
     <div v-if="availablePercent > 0" class="flex items-center mt-6">
       <el-button
-        type="success"
-        @click="openGetCodeConfirmDialog"
+        :type="!(availablePercent - gennedPercent) ? '' : 'success'"
+        :disabled="!(availablePercent - gennedPercent)"
+        @click="$emit('getCode')"
       >
         {{ $t('data.rewards.get_code.title') }}
       </el-button>
@@ -25,50 +26,47 @@
     </div>
     <div v-if="promoCodes.length > 0" class="mt-3">
       <p class="mb-2 font-semibold">{{ $t('data.rewards.get_code.your_codes') }}</p>
-      <el-card class="w-[300px]" shadow="never">
-        <div class="flex items-center justify-between">
-          <div class="font-bold flex">
-            <span class="mr-2">ANV947NVWd732</span>
-            <span
-              v-clipboard:copy="'ANV947NVWd732'"
-              v-clipboard:success="clipboardSuccessHandler"
-              class="flex items-center cursor-pointer"
-            >
-              <i class="far fa-copy" />
-            </span>
+      <div
+        v-for="code in promoCodes"
+        :key="code.id"
+      >
+        <el-card
+          class="w-[300px]"
+          shadow="never"
+        >
+          <div class="flex items-center justify-between">
+            <div class="font-bold flex">
+              <span class="mr-2">{{ code.code }}</span>
+              <span
+                v-clipboard:copy="code.code"
+                v-clipboard:success="clipboardSuccessHandler"
+                class="flex items-center cursor-pointer"
+              >
+                <i class="far fa-copy" />
+              </span>
+            </div>
+            <p class="font-bold">{{ $t('data.billing.expiration').toUpperCase() }}</p>
           </div>
-          <p class="font-bold">EXPIRATION</p>
+          <div class="flex items-center justify-between">
+            <span class="text-warning">{{ $t('data.rewards.note2', { percent: code.value }) }}</span>
+            <span class="text-black-500">{{ $moment(code.expired_time * 1000).format('MMMM Do YYYY') }}</span>
+          </div>
+        </el-card>
+        <div
+          class="mt-3 flex items-center text-green font-semibold cursor-pointer"
+          @click="$emit('redeemCode', code.code)"
+        >
+          {{ $t('data.rewards.get_code.redeem_code') }}
+          <i class="el-icon-right ml-2" />
         </div>
-        <div class="flex items-center justify-between">
-          <span class="text-warning">5% off code</span>
-          <span class="text-black-500">Apr 30, 2023</span>
-        </div>
-      </el-card>
-      <div class="mt-3 flex items-center text-green font-semibold">
-        {{ $t('data.rewards.get_code.redeem_code') }}
-        <i class="el-icon-right ml-2" />
       </div>
     </div>
-    <GetCodeConfirmDialog
-      ref="getCodeConfirmDialog"
-      @getCode="handleGetCode"
-    />
-    <GetCodeSuccessDialog
-      ref="getCodeSuccessDialog"
-      @redeemCOde="handleRedeemCode"
-    />
   </div>
 </template>
 
 <script>
-import GetCodeConfirmDialog from './dialogs/GetCodeConfirm.vue'
-import GetCodeSuccessDialog from './dialogs/GetCodeSuccess.vue'
 
 export default {
-  components: {
-    GetCodeConfirmDialog,
-    GetCodeSuccessDialog
-  },
   props: {
     claimStatus: {
       type: Object,
@@ -83,6 +81,10 @@ export default {
       default: 0
     },
     remainPercent: {
+      type: Number,
+      default: 0
+    },
+    gennedPercent: {
       type: Number,
       default: 0
     }
@@ -104,15 +106,6 @@ export default {
       }).catch(() => {
         this.promoCodes = []
       })
-    },
-    handleGetCode () {
-      this.openGetCodeSuccessDialog()
-    },
-    openGetCodeConfirmDialog () {
-      this.$refs.getCodeConfirmDialog.openDialog(true)
-    },
-    openGetCodeSuccessDialog () {
-      this.$refs.getCodeSuccessDialog.openDialog(true)
     },
     handleRedeemCode () {}
   }

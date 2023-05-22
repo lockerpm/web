@@ -15,7 +15,7 @@
         </div>
         <div v-if="dialogData.type === 'free_month'">
           <div class="mb-5" v-html="$t('data.rewards.verify_popup.congrats_desc', { action: dialogData.action })" />
-          <el-button type="success" @click="() => dialogData = false">
+          <el-button type="success" @click="() => dialogVisible = false">
             {{ $t('data.rewards.verify_popup.continue') }}
           </el-button>
           <a
@@ -36,7 +36,7 @@
               remain_percent: remainPercent
             })"
           />
-          <el-button type="success" @click="() => dialogData = false">
+          <el-button type="success" @click="() => dialogVisible = false">
             {{ $t('data.rewards.verify_popup.continue') }}
           </el-button>
         </div>

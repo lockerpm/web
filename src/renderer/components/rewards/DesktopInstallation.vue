@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-3/4 md:w-full">
+  <div>
     <el-collapse v-model="collapse" class="mb-8">
       <el-collapse-item
         class="setting-wrapper"
@@ -15,6 +15,11 @@
                 <span v-if="!collapse.length" class="text-black-500 lg:hidden md:block">
                   {{ $t('data.rewards.note2', { percent: 5 }) }}
                 </span>
+                <CurrentStep
+                  v-if="!collapse.length"
+                  :current-step="currentStep"
+                  class="lg:hidden md:flex"
+                />
               </div>
               <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden hidden">
                 {{ $t('data.rewards.note2', { percent: 5 }) }}
@@ -23,11 +28,13 @@
             <CurrentStep
               v-if="!collapse.length"
               :current-step="currentStep"
+              class="lg:flex md:hidden hidden"
             />
             <a
               v-else
               href="https://locker.io/download"
               target="_blank"
+              class="lg:block md:hidden hidden"
             >
               <el-button
                 type="success"
@@ -39,6 +46,19 @@
           </div>
         </template>
         <div class="px-5">
+          <div v-if="collapse.length" class="lg:hidden md:block mb-3">
+            <a
+              href="https://locker.io/download"
+              target="_blank"
+            >
+              <el-button
+                type="success"
+                size="small"
+              >
+                {{ $t('data.rewards.desktop_installation.header_btn') }}
+              </el-button>
+            </a>
+          </div>
           <div class="lg:w-1/2 md:w-full mb-4">
             {{ $t('data.rewards.desktop_installation.subtitle') }}
           </div>
@@ -49,16 +69,16 @@
           <div class="ext-black-500">
             <div v-html="$t('data.rewards.desktop_installation.subtitle1_desc1')"/>
           </div>
-          <el-button
-            v-if="currentStep.key < 3"
-            type="success"
-            plain
-            class="mt-3"
-            :loading="callingAPI"
-            @click="handleSend"
-          >
-            {{ $t('data.rewards.desktop_installation.btn') }}
-          </el-button>
+          <div v-if="currentStep.key < 3" class="mt-3">
+            <el-button
+              type="success"
+              plain
+              :loading="callingAPI"
+              @click="handleSend"
+            >
+              {{ $t('data.rewards.desktop_installation.btn') }}
+            </el-button>
+          </div>
         </div>
       </el-collapse-item>
     </el-collapse>

@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-3/4 md:w-full">
+  <div>
     <el-collapse v-model="collapse" class="mb-8">
       <el-collapse-item
         class="setting-wrapper"
@@ -15,16 +15,26 @@
                 <span v-if="!collapse.length" class="text-black-500 lg:hidden md:block">
                   {{ $t('data.rewards.note2', { percent: 5 }) }}
                 </span>
+                <CurrentStep
+                  v-if="!collapse.length"
+                  :current-step="currentStep"
+                  class="lg:hidden md:flex"
+                />
               </div>
               <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden hidden">
                 {{ $t('data.rewards.note2', { percent: 5 }) }}
               </span>
             </div>
-            <CurrentStep v-if="!collapse.length" :current-step="currentStep" />
+            <CurrentStep
+              v-if="!collapse.length"
+              :current-step="currentStep"
+              class="lg:flex md:hidden hidden"
+            />
             <a
               v-else
               href="https://www.capterra.com/p/265084/Locker-Password-Manager/#reviews"
               target="_blank"
+              class="lg:block md:hidden hidden"
             >
               <el-button
                 type="success"
@@ -36,6 +46,19 @@
           </div>
         </template>
         <div class="px-5">
+          <div v-if="collapse.length" class="lg:hidden md:block mb-3">
+            <a
+              href="https://www.capterra.com/p/265084/Locker-Password-Manager/#reviews"
+              target="_blank"
+            >
+              <el-button
+                type="success"
+                size="small"
+              >
+                {{ $t('data.rewards.capterra_rating.header_btn') }}
+              </el-button>
+            </a>
+          </div>
           <div class="lg:w-1/2 md:w-full mb-4">
             {{ $t('data.rewards.capterra_rating.subtitle') }}
           </div>

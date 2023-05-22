@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-3/4 md:w-full">
+  <div>
     <el-collapse v-model="collapse" class="mb-8">
       <el-collapse-item
         class="setting-wrapper"
@@ -15,16 +15,26 @@
                 <span v-if="!collapse.length" class="text-black-500 lg:hidden md:block">
                   {{ $t('data.rewards.note2', { percent: 5 }) }}
                 </span>
+                <CurrentStep
+                  v-if="!collapse.length"
+                  :current-step="currentStep"
+                  class="lg:hidden md:flex"
+                />
               </div>
               <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden hidden">
                 {{ $t('data.rewards.note2', { percent: 5 }) }}
               </span>
             </div>
-            <CurrentStep v-if="!collapse.length" :current-step="currentStep" />
+            <CurrentStep
+              v-if="!collapse.length"
+              :current-step="currentStep"
+              class="lg:flex md:hidden hidden"
+            />
             <a
               v-else
               href="https://apps.apple.com/app/locker-password-manager/id1586927301"
               target="_blank"
+              class="lg:block md:hidden hidden"
             >
               <el-button
                 type="success"
@@ -36,6 +46,19 @@
           </div>
         </template>
         <div class="px-5">
+          <div v-if="collapse.length" class="lg:hidden md:block mb-3">
+            <a
+              href="https://apps.apple.com/app/locker-password-manager/id1586927301"
+              target="_blank"
+            >
+              <el-button
+                type="success"
+                size="small"
+              >
+                {{ $t('data.rewards.app_store_rating.header_btn') }}
+              </el-button>
+            </a>
+          </div>
           <div class="lg:w-1/2 md:w-full mb-4">
             {{ $t('data.rewards.app_store_rating.subtitle') }}
           </div>

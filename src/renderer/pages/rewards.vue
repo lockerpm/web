@@ -8,6 +8,9 @@
           :available-percent="availablePercent"
           :total-percent="totalPercent"
           :remain-percent="remainPercent"
+          :genned-percent="gennedPercent"
+          @getCode="openGetCodeConfirmDialog"
+          @redeemCode="redeemCode"
         />
       </div>
     </div>
@@ -52,10 +55,23 @@
       :remain-percent="remainPercent"
       @reload="fetchData"
     />
+    <GetCodeConfirmDialog
+      ref="getCodeConfirmDialog"
+      :calling-api="callingAPI"
+      :available-percent="availablePercent"
+      :remain-percent="remainPercent"
+      @getCode="handleGetCode"
+    />
+    <GetCodeSuccessDialog
+      ref="getCodeSuccessDialog"
+      @redeemCode="redeemCode"
+    />
   </div>
 </template>
 
 <script>
+import moment from 'moment'
+
 import GenerateCode from '@/components/rewards/GenerateCode.vue'
 import Referral from '@/components/rewards/Referral.vue'
 import ExtInstallation from '@/components/rewards/ExtInstallation.vue'
@@ -66,6 +82,8 @@ import CapterraRating from '@/components/rewards/CapterraRating.vue'
 
 import VerifiedDialog from '@/components/rewards/dialogs/Verified.vue'
 import ResubmitDialog from '@/components/rewards/dialogs/Resubmit.vue'
+import GetCodeConfirmDialog from '@/components/rewards/dialogs/GetCodeConfirm.vue'
+import GetCodeSuccessDialog from '@/components/rewards/dialogs/GetCodeSuccess.vue'
 
 export default {
   components: {
@@ -78,7 +96,9 @@ export default {
     CapterraRating,
 
     VerifiedDialog,
-    ResubmitDialog
+    ResubmitDialog,
+    GetCodeConfirmDialog,
+    GetCodeSuccessDialog
   },
   props: {
   },
@@ -86,12 +106,19 @@ export default {
     return {
       loading: false,
       claimStatus: {},
-      missions: []
+      missions: [],
+      callingAPI: false
     }
   },
   computed: {
     totalPercent () {
       return this.claimStatus.total_promo_code_value || 20
+    },
+    promoCodes () {
+      return this.claimStatus.generated_available_promo_codes || []
+    },
+    gennedPercent () {
+      return this.promoCodes.map(c => c.value).reduce((a, b) => a + b, 0)
     },
     availablePercent () {
       return this.claimStatus.available_promo_code_value || 0
@@ -118,6 +145,12 @@ export default {
     openResubmitDialog (data) {
       this.$refs.resubmitDialog.openDialog(data)
     },
+    openGetCodeConfirmDialog () {
+      this.$refs.getCodeConfirmDialog.openDialog()
+    },
+    openGetCodeSuccessDialog (data) {
+      this.$refs.getCodeSuccessDialog.openDialog(data)
+    },
     async fetchData () {
       this.loading = true
       await this.getClaimStatus()
@@ -133,6 +166,23 @@ export default {
       this.$axios.$get('/cystack_platform/pm/reward/missions').then(res => {
         this.missions = res
       })
+    },
+    handleGetCode () {
+      this.callingAPI = true
+      this.$axios.$post('/cystack_platform/pm/reward/claim/promo_codes').then(res => {
+        this.callingAPI = false
+        this.$refs.getCodeConfirmDialog.closeDialog()
+        this.openGetCodeSuccessDialog({
+          ...res,
+          currentTime: moment().add(7, 'days').format('MMMM Do YYYY')
+        })
+      }).catch(error => {
+        this.callingAPI = false
+        this.notify(error.response?.data?.message || this.$t('errors.something_went_wrong'), 'error')
+      })
+    },
+    redeemCode (code) {
+      this.$router.push(this.localeRoute({ name: 'manage-plans', query: { code } }))
     },
     getMissionById (id) {
       return (this.missions || []).find(m => m.mission.id === id) || {}

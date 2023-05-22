@@ -12,7 +12,7 @@
       <div class="flex justify-center">
         <div class="code-box text-black-600">
           <span class="flex">
-            ANV947NVWd732
+            {{ dialogData.code }}
             <span class="flex items-center cursor-pointer ml-2">
               <img :src="require('~/assets/images/icons/copy.svg')">
             </span>
@@ -21,10 +21,13 @@
       </div>
       <div class="text-center mt-3">
         <div class="mb-4">
-          {{ $t('data.rewards.get_code.popup.note1') }}:
+          {{ $t('data.rewards.get_code.popup.note1', { time: dialogData.currentTime }) }}:
         </div>
-        <div v-html="$t('data.rewards.get_code.popup.redeem_note')" />
-        <div class="mt-6 flex items-center justify-center text-green font-semibold cursor-pointer">
+        <div v-html="$t('data.rewards.get_code.popup.redeem_note', { time: dialogData.currentTime })" />
+        <div
+          class="mt-6 flex items-center justify-center text-green font-semibold cursor-pointer"
+          @click="$emit('redeemCode', dialogData.code)"
+        >
           {{ $t('data.rewards.get_code.redeem_code') }}
           <i class="el-icon-right ml-2" />
         </div>
@@ -38,11 +41,12 @@ export default {
   data () {
     return {
       dialogVisible: false,
-      percent: 20
+      dialogData: {}
     }
   },
   methods: {
-    openDialog () {
+    openDialog (data) {
+      this.dialogData = data
       this.dialogVisible = true
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:w-3/4 md:w-full">
+  <div>
     <el-collapse v-model="collapse" class="mb-8">
       <el-collapse-item
         class="setting-wrapper"
@@ -15,12 +15,21 @@
                 <span v-if="!collapse.length" class="text-black-500 lg:hidden md:block">
                   {{ $t('data.rewards.note1', { month: 1 }) }}
                 </span>
+                <CurrentStep
+                  v-if="!collapse.length"
+                  :current-step="currentStep"
+                  class="lg:hidden md:flex"
+                />
               </div>
               <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden hidden">
                 {{ $t('data.rewards.note1', { month: 1 }) }}
               </span>
             </div>
-            <CurrentStep v-if="!collapse.length" :current-step="currentStep" />
+            <CurrentStep
+              v-if="!collapse.length"
+              :current-step="currentStep"
+              class="lg:flex md:hidden hidden"
+            />
           </div>
         </template>
         <div class="px-5">
