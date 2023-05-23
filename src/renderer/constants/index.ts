@@ -9,6 +9,11 @@ export class AccountRole {
   static MEMBER = 2
 }
 
+export enum PlanPeriod {
+  MONTHLY = 'monthly',
+  YEARLY = 'yearly'
+}
+
 export const CipherMapper = (() => {
   // Notes: do not add friendly name for new cipher types
   // friendlyName: used for translation of old types
