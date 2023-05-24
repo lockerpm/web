@@ -155,6 +155,26 @@
             <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}
             </span>
           </a>
+
+          <a
+            v-else-if="item.action"
+            :key="index"
+            class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+            target="_blank"
+            @click.prevent="item.action()"
+          >
+            <div
+              class="mr-2 w-[22px] h-[22px] flex items-center justify-center"
+            >
+              <img
+                :src="require(`~/assets/images/icons/${item.icon}.svg`)"
+                alt=""
+              >
+            </div>
+            <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}
+            </span>
+          </a>
+
           <nuxt-link
             v-else
             :id="`sidebar__${item.label}`"
@@ -308,11 +328,19 @@ export default {
         },
         {
           label: 'enterprise_dashboard',
-          externalLink: `${process.env.lockerEnterprise}${
-            this.isOnPremise ? '/login-on-premise' : ''
-          }`,
           icon: 'dashboard',
-          hide: !this.isEnterpriseAdminOrOwner
+          hide: !this.isEnterpriseAdminOrOwner,
+          action: () => {
+            if (this.isOnPremise) {
+              this.setOnPremiseCookies()
+              window.open(
+                `${process.env.lockerEnterprise}/login-on-premise`,
+                '_blank'
+              )
+              return
+            }
+            window.open(process.env.lockerEnterprise, '_blank')
+          }
         },
         {
           label: 'settings',

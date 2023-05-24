@@ -21,6 +21,10 @@
     <NotEnable2FA v-else-if="notEnable2FA" />
     <!-- Not enable 2FA end -->
 
+    <!-- PWL -->
+    <Passwordless v-else-if="requirePwl" />
+    <!-- PWL end -->
+
     <!-- Basic lock form -->
     <div
       v-else
@@ -48,22 +52,22 @@
       <!-- Title + info end -->
 
       <!-- 2FA form -->
-      <template v-if="factor2">
-        <TwoFactor
-          :crypto-key="cryptoKey"
-          :user="currentUser"
-          :loading="loading"
-          :methods="factor2Methods"
-          :master-pw="masterPassword"
-          @goBack="factor2 = false"
-        />
-      </template>
+      <TwoFactor
+        v-if="factor2"
+        :crypto-key="cryptoKey"
+        :user="currentUser"
+        :loading="loading"
+        :methods="factor2Methods"
+        :master-pw="masterPassword"
+        @goBack="factor2 = false"
+      />
       <!-- 2FA form end -->
 
       <!-- Enter master pw and buttons -->
       <template v-else>
         <form class="mb-8" @submit.prevent="checkInvitation">
           <div class="form-group !mb-4">
+            <!-- Master pw -->
             <label for="" class="text-left">
               {{ $t('master_password.enter_password') }}
             </label>
@@ -96,14 +100,20 @@
             <div class="invalid-feedback">
               {{ $t('errors.invalid_password') }}
             </div>
+            <!-- Master pw end -->
+
+            <!-- Get hint -->
             <div
               class="text-primary text-left cursor-pointer"
               @click="toggleSendHint(true)"
             >
               {{ $t('master_password.get_hint') }}
             </div>
+            <!-- Get hint end -->
           </div>
         </form>
+
+        <!-- Buttons -->
         <div class="form-group">
           <div class="grid lg:grid-cols-2 grid-cols-1 gap-2">
             <button
@@ -113,6 +123,7 @@
             >
               {{ $t('master_password.unlock') }}
             </button>
+
             <button
               class="btn btn-default w-full"
               :disabled="loading"
@@ -122,6 +133,7 @@
             </button>
           </div>
         </div>
+        <!-- Buttons end -->
       </template>
       <!-- Enter master pw and buttons end -->
     </div>
@@ -134,11 +146,19 @@ import SendHint from '../components/pages/lock/SendHint'
 import JoinEnterprise from '../components/pages/lock/JoinEnterprise'
 import NotEnable2FA from '../components/pages/lock/NotEnable2FA'
 import TwoFactor from '../components/pages/lock/TwoFactor'
+import Passwordless from '../components/pages/lock/Passwordless'
 
 export default {
-  components: { JoinEnterprise, SendHint, NotEnable2FA, TwoFactor },
+  components: {
+    JoinEnterprise,
+    SendHint,
+    NotEnable2FA,
+    TwoFactor,
+    Passwordless
+  },
   layout: 'blank',
   middleware: ['NotHaveAccountService', 'blockBySource'],
+
   data () {
     return {
       invalidPinAttempts: 0,
@@ -153,6 +173,16 @@ export default {
       cryptoKey: null
     }
   },
+
+  computed: {
+    requirePwl () {
+      return (
+        this.isOnPremise &&
+        (this.$store.state.requirePwl || this.$store.state.hasPwl)
+      )
+    }
+  },
+
   mounted () {
     this.checkBlockedBy2FA()
     if (this.extensionLoggedIn) {
@@ -164,6 +194,7 @@ export default {
       this.showJoinEnterprise = true
     }
   },
+
   methods: {
     // Unlock vault
     async setMasterPass () {
@@ -177,9 +208,7 @@ export default {
       try {
         const res = await this.login()
         if (res?.is_factor2) {
-          this.factor2 = true
-          this.factor2Methods = res.methods
-          this.cryptoKey = res.key
+          this.handle2FARequirement(res.methods, res.key)
         }
       } catch (e) {
         console.log(e)
@@ -212,9 +241,13 @@ export default {
         this.showJoinEnterprise = false
         this.setMasterPass()
       }
-    }
+    },
 
-    // TODO: change masterpass if have account
+    handle2FARequirement (methods, key) {
+      this.factor2 = true
+      this.factor2Methods = methods
+      this.cryptoKey = key
+    }
   }
 }
 </script>
