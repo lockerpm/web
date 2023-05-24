@@ -13,29 +13,29 @@ import { Cipher } from '../domain/cipher'
 import { CipherType } from '../../../jslib/src/enums'
 
 export class CipherView implements View {
-  id: string = null;
-  organizationId: string = null;
-  folderId: string = null;
-  name: string = null;
-  notes: string = null;
-  type: CipherType = null;
-  favorite = false;
-  organizationUseTotp = false;
-  edit = false;
-  viewPassword = true;
-  localData: any;
-  login = new LoginView();
-  identity = new IdentityView();
-  card = new CardView();
-  secureNote = new SecureNoteView();
-  attachments: AttachmentView[] = null;
-  fields: FieldView[] = null;
-  passwordHistory: PasswordHistoryView[] = null;
-  collectionIds: string[] = null;
-  creationDate: Date = null;
-  revisionDate: Date = null;
-  deletedDate: Date = null;
-  reprompt: CipherRepromptType = null;
+  id: string = null
+  organizationId: string = null
+  folderId: string = null
+  name: string = null
+  notes: string = null
+  type: CipherType = null
+  favorite = false
+  organizationUseTotp = false
+  edit = false
+  viewPassword = true
+  localData: any
+  login = new LoginView()
+  identity = new IdentityView()
+  card = new CardView()
+  secureNote = new SecureNoteView()
+  attachments: AttachmentView[] = null
+  fields: FieldView[] = null
+  passwordHistory: PasswordHistoryView[] = null
+  collectionIds: string[] = null
+  creationDate: Date = null
+  revisionDate: Date = null
+  deletedDate: Date = null
+  reprompt: CipherRepromptType = null
 
   constructor (c?: Cipher) {
     if (!c) {
