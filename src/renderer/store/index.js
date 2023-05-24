@@ -53,7 +53,9 @@ export const state = () => ({
   // On premise
   isOnPremise: false,
   onPremiseBaseApi: '',
-  isLoggedInOnPremise: false
+  isLoggedInOnPremise: false,
+  requirePwl: false,
+  hasPwl: false
 })
 export const mutations = {
   SET_LANG (state, payload) {
@@ -87,13 +89,17 @@ export const mutations = {
     state.onPremiseBaseApi = ''
     state.isOnPremise = false
     state.isLoggedInOnPremise = false
+    state.hasPwl = false
+    state.requirePwl = false
   },
   UPDATE_USER (state, user) {
     state.user = user
   },
-  UPDATE_ON_PREMISE_INFO (state, baseApi) {
+  UPDATE_ON_PREMISE_INFO (state, { baseApi, hasPwl, requirePwl }) {
     state.isOnPremise = !!baseApi
     state.onPremiseBaseApi = baseApi
+    state.hasPwl = hasPwl
+    state.requirePwl = requirePwl
   },
   UPDATE_USER_PW (state, user) {
     state.userPw = user
@@ -192,7 +198,11 @@ export const actions = {
 
     commit('UPDATE_IS_LOGGEDIN', state.isLoggedIn)
     commit('UPDATE_USER', state.user)
-    commit('UPDATE_ON_PREMISE_INFO', state.onPremiseBaseApi)
+    commit('UPDATE_ON_PREMISE_INFO', {
+      baseApi: state.onPremiseBaseApi,
+      hasPwl: state.hasPwl,
+      requirePwl: state.requirePwl
+    })
     commit('UPDATE_USER_PW', state.userPw)
     const environment = isDev ? 'dev' : process.env.environment || ''
     commit('UPDATE_DEV', environment)
@@ -214,7 +224,11 @@ export const actions = {
 
       commit('UPDATE_IS_LOGGEDIN', state.isLoggedIn)
       commit('UPDATE_USER', state.user)
-      commit('UPDATE_ON_PREMISE_INFO', state.onPremiseBaseApi)
+      commit('UPDATE_ON_PREMISE_INFO', {
+        baseApi: state.onPremiseBaseApi,
+        hasPwl: state.hasPwl,
+        requirePwl: state.requirePwl
+      })
       commit('UPDATE_USER_PW', state.userPw)
       const environment = isDev ? 'dev' : process.env.environment || ''
       commit('UPDATE_DEV', environment)

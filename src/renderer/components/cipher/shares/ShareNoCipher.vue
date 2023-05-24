@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     isFreeUser () {
-      return this.currentPlan?.alias === 'pm_free'
+      return this.currentPlan?.alias === 'pm_free' && !this.isEnterpriseMember
     },
     isSharedWithYou () {
       return this.getRouteBaseName() === 'shares-index-index'

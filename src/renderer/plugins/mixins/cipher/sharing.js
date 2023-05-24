@@ -89,7 +89,8 @@ Vue.mixin({
         !cipher.isDeleted &&
         !this.isProtectedCipher(cipher) &&
         cipher.type !== CipherType.TOTP &&
-        isBelongToSelf
+        isBelongToSelf &&
+        !this.isOnPremise
       )
     },
 

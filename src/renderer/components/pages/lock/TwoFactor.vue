@@ -112,6 +112,10 @@ export default {
       type: String,
       default: () => ''
     },
+    hashedPw: {
+      type: String,
+      default: () => ''
+    },
     loading: {
       type: Boolean,
       default: () => false
@@ -158,10 +162,12 @@ export default {
         this.loadingSendEmail = true
         try {
           const token = await this.$recaptcha.execute('login')
-          const hashedPassword = await this.$cryptoService.hashPassword(
-            this.masterPassword,
-            this.cryptoKey
-          )
+          const hashedPassword =
+            this.hashedPw ||
+            (await this.$cryptoService.hashPassword(
+              this.masterPassword,
+              this.cryptoKey
+            ))
           const payload = {
             username: this.user?.email,
             password: hashedPassword,
@@ -190,7 +196,8 @@ export default {
             save_device: this.save_device
           },
           isOtp: true,
-          key: this.cryptoKey
+          key: this.cryptoKey,
+          hashedPassword: this.hashedPassword
         })
         this.loadingOtp = false
       } catch (e) {
