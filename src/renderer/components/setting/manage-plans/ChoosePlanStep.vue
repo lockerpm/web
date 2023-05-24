@@ -55,7 +55,9 @@
         </div>
 
         <div
-          v-if="item.alias !== 'pm_free'"
+          v-if="
+            item.alias !== 'pm_free' && selectedPeriod.duration === 'yearly'
+          "
           class="bg-warning absolute right-0 top-0 pt-4 w-[50px] text-center overflow-hidden"
         >
           <p class="text-white font-semibold">
