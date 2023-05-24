@@ -31,16 +31,27 @@
       :selected-plan="selectedPlan"
       :switch-plan="handleSwitchPlan"
     />
+
+    <payment-step
+      v-if="step === 2"
+      :selected-period="selectedPeriod"
+      :switch-period="duration => (selectedPlanDuration = duration)"
+      :plans="plans"
+      :selected-plan="selectedPlan"
+      :switch-plan="handleSwitchPlan"
+    />
   </div>
 </template>
 
 <script>
 import { PlanPeriod } from '../../constants'
 import ChoosePlanStep from '~/components/setting/manage-plans/ChoosePlanStep'
+import PaymentStep from '~/components/setting/manage-plans/payment/PaymentStep'
 
 export default {
   components: {
-    ChoosePlanStep
+    ChoosePlanStep,
+    PaymentStep
   },
 
   middleware: ['BlockEnterpriseMember'],
@@ -107,7 +118,7 @@ export default {
       this.loading = false
     },
 
-    handleSwitchPlan (plan) {
+    handleSwitchPlan (plan, silent = false) {
       const confirmMessage = this.$t('data.notifications.switch_plan', {
         currentPlan: this.currentPlan.name,
         chosenPlan: plan.name
@@ -118,7 +129,7 @@ export default {
         this.step = 2
       }
 
-      if (this.currentPlan.alias !== 'pm_free') {
+      if (this.currentPlan.alias !== 'pm_free' && !silent) {
         this.$confirm(confirmMessage, this.$t('common.warning'), {
           confirmButtonText: this.$t('common.proceed'),
           cancelButtonText: this.$t('common.cancel'),

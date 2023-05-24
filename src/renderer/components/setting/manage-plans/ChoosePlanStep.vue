@@ -6,7 +6,9 @@
         {{ $t('data.plans.choose_plan') }}
       </h1>
       <div class="mb-3">{{ $t('data.plans.choose_plan_desc') }}</div>
-      <div class="flex items-center rounded-full border-black-50 border p-1">
+      <div
+        class="flex items-center rounded-full border-black-50 border p-1 bg-white"
+      >
         <button
           class="rounded-full h-12 w-52"
           :class="isMonthly ? 'bg-[#E7F6E9]' : ''"
@@ -43,7 +45,7 @@
           '!border-primary': selectedPlan.alias === item.alias,
           'mt-[38px]': item.alias !== 'pm_premium'
         }"
-        class="border border-black-100 rounded-xl hover:border-primary overflow-hidden relative flex flex-col"
+        class="border border-black-100 rounded-xl hover:border-primary overflow-hidden relative flex flex-col bg-white"
       >
         <div
           v-if="item.alias === 'pm_premium'"
@@ -333,22 +335,7 @@ export default {
     },
 
     selectPlan (plan) {
-      const confirmMessage = this.$t('data.notifications.switch_plan', {
-        currentPlan: this.currentPlan.name,
-        chosenPlan: plan.name
-      })
-
-      if (this.currentPlan.alias !== 'pm_free') {
-        this.$confirm(confirmMessage, this.$t('common.warning'), {
-          confirmButtonText: this.$t('common.proceed'),
-          cancelButtonText: this.$t('common.cancel'),
-          type: 'warning'
-        }).then(() => {
-          this.switchPlan(plan)
-        })
-      } else {
-        this.switchPlan(plan)
-      }
+      this.switchPlan(plan)
     }
   }
 }
