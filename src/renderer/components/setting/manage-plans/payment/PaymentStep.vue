@@ -21,6 +21,14 @@
           :switch-plan="switchPlan"
         />
         <!-- Review plan end -->
+
+        <!-- Family members -->
+        <family-members
+          v-if="selectedPlan.alias === 'pm_family'"
+          :members="familyMembers"
+          :set-members="v => (familyMembers = v)"
+        />
+        <!-- Family members ended -->
       </div>
     </div>
     <!-- Left content end -->
@@ -28,10 +36,12 @@
 </template>
 <script>
 import PlanReview from './PlanReview.vue'
+import FamilyMembers from './FamilyMembers.vue'
 
 export default {
   components: {
-    PlanReview
+    PlanReview,
+    FamilyMembers
   },
 
   props: {
@@ -54,6 +64,12 @@ export default {
     switchPlan: {
       type: Function,
       default: () => {}
+    }
+  },
+
+  data () {
+    return {
+      familyMembers: []
     }
   }
 }

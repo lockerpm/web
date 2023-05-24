@@ -1,165 +1,96 @@
 <template>
-  <div class="setting-wrapper">
-    <div class="setting-section">
-      <div class="setting-section-header">
-        <div class="text-[20px] font-semibold">
-          {{ $t('data.plans.invite_people') }}
-        </div>
-      </div>
+  <div class="mt-8">
+    <h3 class="font-semibold text-[18px] mb-2">
+      {{ $t('data.plans.payment_step.family.invite_member') }}
+    </h3>
+
+    <p class="mb-3">
+      {{ $t('data.plans.payment_step.family.invite_member_desc') }}
+    </p>
+
+    <div class="flex items-center">
+      <el-input
+        v-model="emailInput"
+        class="mr-3"
+        @keyup.enter.native="addMember"
+      />
+      <el-button type="primary" @click="addMember">
+        {{ $t('common.add') }}
+      </el-button>
     </div>
-    <div class="setting-section">
-      <div class="setting-section-header">
-        <div>
-          <div class="setting-title !text-sm">
-            {{ $t('data.plans.type_email') }}
-          </div>
-        </div>
-      </div>
-      <div class="mt-4 mb-8">
-        <div class="cs-field w-full">
-          <div class="input-tags">
-            <el-tag
-              v-for="(email, index) in emails"
-              :key="email"
-              closable
-              type="info"
-              class="my-auto"
-              @close="handleClose(index)"
-            >
-              {{ email }}
-            </el-tag>
 
-            <input
-              ref="inputEmail"
-              class="cs-input"
-              :value="inputEmail"
-              type="text"
-              @input="emailInput($event.target.value)"
-              @keyup.enter="confirmInputEmail"
-            >
-          </div>
-          <div
-            class="text-info cursor-pointer self-end pb-2 font-semibold px-3"
-            @click="confirmInputEmail"
-          >
-            {{ $t('common.add') }}
-          </div>
-        </div>
-      </div>
+    <p class="mt-3 mb-6">
+      {{ $t('data.plans.payment_step.family.invite_member_desc_2') }}
+    </p>
 
-      <div class="setting-section-header">
-        <div>
-          <div class="setting-title !text-sm">
-            {{
-              `${$t('data.plans.list_member')} (${family_members.length + 1}/6)`
-            }}
-          </div>
-        </div>
-      </div>
-      <div class="mt-5 px-4 py-6 bg-[#F6F6F6]">
-        <div class="flex mb-6">
-          <div class="flex items-center">
-            <el-avatar :size="35" :src="currentUser.avatar" class="mr-2" />
-            <div>
-              <p class="text-black">{{ currentUser.email }} (You)</p>
-            </div>
-          </div>
-        </div>
-        <template v-for="(email, index) in family_members">
-          <div :key="index" class="flex justify-between mb-6">
-            <div class="flex items-center">
-              <img src="~/assets/images/icons/Avatar.svg" class="mr-2">
-              <div>
-                <p class="text-black">{{ email }}</p>
-                <p class="text-black-500">Pending</p>
-              </div>
-            </div>
-            <div>
-              <button
-                class="btn btn-default !text-danger mb-4 md:mb-0"
-                @click="removeMember(index)"
-              >
-                {{ $t('common.remove') }}
-              </button>
-            </div>
-          </div>
-        </template>
-      </div>
+    <p class="font-semibold text-[18px] mb-3">
+      {{ $t('data.plans.payment_step.family.list_member') }}
+    </p>
 
-      <div v-if="errors.family_members" class="text-danger">
-        {{ errors.family_members[0] }}
-      </div>
+    <p class="py-1">
+      {{ currentUser.email }}
+    </p>
+
+    <div
+      v-for="(item, index) in members"
+      :key="index"
+      class="flex justify-between py-1"
+    >
+      <p>
+        {{ item }}
+      </p>
+      <a @click.prevent="removeMember(item)">
+        <i class="el-icon-close" />
+      </a>
     </div>
   </div>
 </template>
 <script>
 export default {
+  props: {
+    members: {
+      type: Array,
+      default: () => []
+    },
+    setMembers: {
+      type: Function,
+      default: () => () => {}
+    }
+  },
+
   data () {
     return {
-      emails: [],
-      inputEmail: '',
-      family_members: []
+      emailInput: ''
     }
   },
   methods: {
-    handleClose (index) {
-      this.emails.splice(index, 1)
+    removeMember (email) {
+      this.setMembers(this.members.filter(e => e !== email))
     },
 
-    emailInput (value) {
-      this.inputEmail = value
-      const lastChar = value.substr(value.length - 1)
-      if ([',', ' '].includes(lastChar)) {
-        this.handleInputEmail()
-      }
-    },
+    addMember () {
+      const emails = []
+      const newEmails = []
 
-    handleInputEmail () {
-      const emailList = this.inputEmail.split(',')
-      emailList.forEach(email => {
-        email = email.trim()
-        if (
-          email &&
-          this.validateEmail(email) &&
-          !this.emails.includes(email)
-        ) {
-          this.emails.push(email)
-          this.inputEmail = ''
+      this.emailInput.split(',').forEach(item => {
+        const email = item?.trim()
+        if (email && this.validateEmail(email) && !emails.includes(email)) {
+          emails.push(email)
         }
       })
-    },
+      this.emailInput = ''
 
-    removeMember (index) {
-      this.family_members.splice(index, 1)
-    },
-
-    confirmInputEmail () {
-      this.emails.forEach(email => {
-        if (!this.family_members.includes(email)) {
-          if (this.family_members.length === 5) {
+      emails.forEach(email => {
+        if (!this.members.includes(email)) {
+          if (this.members.length + newEmails.length >= 5) {
             this.notify(this.$t('errors.7012'), 'warning')
             return
           }
-          this.family_members.push(email)
+          newEmails.push(email)
         }
       })
-      const emailList = this.inputEmail.split(',')
-      emailList.forEach(email => {
-        email = email.trim()
-        if (email && this.validateEmail(email)) {
-          if (this.family_members.length === 5) {
-            this.notify(this.$t('errors.7012'), 'warning')
-            return
-          }
-          if (!this.family_members.includes(email)) {
-            this.family_members.push(email)
-          }
-          this.inputEmail = ''
-        } else if (email && !this.validateEmail(email)) {
-          this.notify('Invalid email', 'warning')
-        }
-      })
-      this.emails = []
+
+      this.setMembers([...this.members, ...newEmails])
     }
   }
 }
