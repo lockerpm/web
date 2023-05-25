@@ -11,21 +11,11 @@ export default {
     const email = this.$cookies.get('on_premise_email')
     const avatar = this.$cookies.get('on_premise_avatar')
     const baseApi = this.$cookies.get('on_premise_base_url')
+    const requirePwl = this.$cookies.get('on_premise_require_pwl')
+    const hasPwl = this.$cookies.get('on_premise_has_pwl')
 
     // Clear cookies (Disable for now)
-    // const baseCookiesDomain = process.env.lockerCookieDomain
-    // this.$cookies.remove('on_premise_email', {
-    //   domain: baseCookiesDomain,
-    //   path: '/'
-    // })
-    // this.$cookies.remove('on_premise_avatar', {
-    //   domain: baseCookiesDomain,
-    //   path: '/'
-    // })
-    // this.$cookies.remove('on_premise_base_url', {
-    //   domain: baseCookiesDomain,
-    //   path: '/'
-    // })
+    // this.clearOnPremiseCookies()
 
     if (!email || !baseApi) {
       this.$router.push('/')
@@ -34,12 +24,12 @@ export default {
 
     const isValid = await this.validateOnPremiseBaseApi(baseApi)
     if (isValid) {
-      this.loginWithoutToken(email, baseApi, avatar)
+      this.loginWithoutToken(email, baseApi, avatar, requirePwl, hasPwl)
     }
   },
 
   methods: {
-    async loginWithoutToken (email, baseApi, avatar) {
+    async loginWithoutToken (email, baseApi, avatar, requirePwl, hasPwl) {
       this.$store.commit('UPDATE_IS_LOGGEDIN', true)
       this.$store.commit('UPDATE_IS_LOGGEDIN_ON_PREMISE', false)
       this.$store.commit('UPDATE_USER', { email, avatar })
@@ -47,7 +37,11 @@ export default {
         is_pwd_manager: true,
         pwd_user_type: 'enterprise'
       })
-      this.$store.commit('UPDATE_ON_PREMISE_INFO', baseApi + '/v3')
+      this.$store.commit('UPDATE_ON_PREMISE_INFO', {
+        baseApi: baseApi + '/v3',
+        hasPwl,
+        requirePwl
+      })
 
       if (
         this.$route.query.external_url &&

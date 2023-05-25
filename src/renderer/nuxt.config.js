@@ -78,6 +78,7 @@ module.exports = {
     { ssr: true, src: '@/plugins/mixins/cipher/utils.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/data.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/crud.js' },
+    { ssr: true, src: '@/plugins/onpremise/mixins.js' },
 
     // UI
     { ssr: false, src: '@/plugins/ui/circle-countdown-timer.js' },
@@ -143,6 +144,7 @@ module.exports = {
     idUrl: process.env.BASE_ID_URL || 'https://id.locker.io',
     environment: process.env.CS_ENVIRONMENT || '',
     wsUrl: process.env.WS_URL || 'wss://api.locker.io/ws',
+    desktopWsUrl: process.env.DESKTOP_WS_URL || 'ws://localhost:1040',
     logoUrl: process.env.LOGO_URL || 'https://locker.io/logo/',
     blogUrl:
       process.env.BLOG_API_URL ||

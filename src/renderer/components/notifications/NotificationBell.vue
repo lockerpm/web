@@ -175,9 +175,13 @@ export default {
         }
         break
       }
+      case 'password_tip_trick': {
+        window.open(item.metadata.link[this.locale], '_blank')
+        break
+      }
       default:
         this.$router.push({
-          name: 'vault'
+          path: '/vault'
         })
         break
       }

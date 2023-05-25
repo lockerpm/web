@@ -72,9 +72,6 @@ Vue.mixin({
     },
     currentYear () {
       return new Date().getFullYear()
-    },
-    isOnPremise () {
-      return this.$store.state.isOnPremise
     }
   },
   methods: {
@@ -147,6 +144,10 @@ Vue.mixin({
         await this.$axios.$post('/users/logout')
       }
 
+      if (this.isOnPremise) {
+        this.clearOnPremiseCookies()
+      }
+
       await this.$cryptoService.clearKeys()
       await this.$userService.clear()
       await this.$cookies.remove('cs_locker_token')
@@ -191,14 +192,16 @@ Vue.mixin({
       //   extraData?: { [key: string]: any }
       //   isOtp?: boolean
       //   key?: SymmetricCryptoKey
+      //   hashedPassword?: string
       // }
 
-      const lockerDeviceId = this.$cookies.get('locker_device_id')
+      const lockerDeviceId = this.$cookies.get('device_id')
       const deviceIdentifier = lockerDeviceId || this.randomString()
       if (!lockerDeviceId) {
         const expireTime = 50 * 365 * 24 * 3600
-        this.$cookies.set('locker_device_id', deviceIdentifier, {
-          maxAge: expireTime
+        this.$cookies.set('device_id', deviceIdentifier, {
+          maxAge: expireTime,
+          domain: 'locker.io'
         })
       }
       try {
@@ -211,10 +214,9 @@ Vue.mixin({
             0,
             100000
           ))
-        const hashedPassword = await this.$cryptoService.hashPassword(
-          this.masterPassword,
-          key
-        )
+        const hashedPassword =
+          options?.hashedPassword ||
+          (await this.$cryptoService.hashPassword(this.masterPassword, key))
         let payload = {
           email: this.isOnPremise ? this.currentUser.email : undefined,
           client_id: 'web',
@@ -249,6 +251,7 @@ Vue.mixin({
             ...(this.environment === '' ? { secure: true } : { secure: false })
           })
           this.$store.commit('UPDATE_IS_LOGGEDIN_ON_PREMISE', true)
+          this.disconnectDesktopSocket()
         }
 
         await this.$tokenService.setTokens(res.access_token, res.refresh_token)
@@ -295,6 +298,9 @@ Vue.mixin({
           this.$store.state.currentPath === '/lock'
             ? '/vault'
             : this.$store.state.currentPath
+        if (path === '/' && this.isOnPremise) {
+          path = '/vault'
+        }
         if (path.startsWith('/on-premise-create-master-pw')) {
           path = '/vault'
         }
@@ -431,20 +437,6 @@ Vue.mixin({
       }
 
       return false
-    },
-
-    async validateOnPremiseBaseApi (baseApi) {
-      try {
-        await this.$axios.$post('/cystack_platform/pm/users/onpremise/host', {
-          host: baseApi
-        })
-        return true
-      } catch (e) {
-        this.$store.commit('CLEAR_ALL_DATA')
-        this.$router.push('/')
-        this.$axios.setToken(false)
-        return false
-      }
     }
   }
 })

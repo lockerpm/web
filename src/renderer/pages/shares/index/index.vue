@@ -48,7 +48,7 @@
 
       <div class="flex mt-6">
         <nuxt-link
-          v-for="(item, index) in menuYourShares"
+          v-for="(item, index) in menuYourShares.filter(item => !item.hide)"
           :key="index"
           :to="localeRoute({ name: item.routeName })"
           active-class="border-b-2 border-primary !text-black"
@@ -93,7 +93,11 @@
                 </p>
               </div>
             </el-radio>
-            <el-radio label="quick" class="w-full !flex items-center">
+            <el-radio
+              v-if="!isOnPremise"
+              label="quick"
+              class="w-full !flex items-center"
+            >
               <div class="pl-3">
                 <p class="font-semibold text-[18px] mb-2 text-black">
                   {{ $t('common.quick_share') }}
@@ -182,7 +186,8 @@ export default {
         {
           label: 'quick_shares',
           routeName: 'shares-index-index-quick-shares',
-          itemCount: this.sendsCount
+          itemCount: this.sendsCount,
+          hide: this.isOnPremise
         }
       ]
     },

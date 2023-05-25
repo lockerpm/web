@@ -331,12 +331,7 @@ export default {
 
       allCiphers.forEach(c => {
         // this.passwordStrengthCache = new Map()
-        if (
-          c.type !== CipherType.Login ||
-          c.login.password == null ||
-          c.login.password === '' ||
-          c.isDeleted
-        ) {
+        if (c.type !== CipherType.Login || c.isDeleted) {
           return
         }
         // const hasUserName = isUserNameNotEmpty(c)
@@ -357,7 +352,7 @@ export default {
           const result = this.$passwordGenerationService.passwordStrength(
             c.login.password
           )
-          this.passwordStrengthCache.set(cacheKey, result.score)
+          this.passwordStrengthCache.set(cacheKey, result ? result.score : -1)
         }
         const score = this.passwordStrengthCache.get(cacheKey)
         if (score != null && score <= 2) {
