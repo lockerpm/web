@@ -4,7 +4,7 @@
       {{ $t('data.plans.payment_step.step_1') }}
     </h2>
 
-    <div class="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-3">
+    <div class="grid xl:grid-cols-4 lg:grid-cols-2 grid-cols-1 gap-x-6 gap-y-3">
       <div
         v-for="(plan, index) in allPlans"
         :key="index"
@@ -18,7 +18,7 @@
       >
         <div class="h-6 -ml-6 mb-2">
           <div v-if="plan.popular" class="gradient-bg rounded-r-full">
-            <p class="text-white font-semibold font-[10px]">
+            <p class="text-white font-semibold text-[10px]">
               {{ $t('data.plans.most_popular').toUpperCase() }}
             </p>
           </div>

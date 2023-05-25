@@ -3,7 +3,7 @@
     class="flex flex-col flex-column-fluid relative bg-[#FBFBFC] min-h-screen"
   >
     <!-- Steps -->
-    <div class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10">
+    <div class="flex mb-5 border-b border-black-400 pt-3 px-10">
       <template v-for="(item, index) in planMenu">
         <div
           :key="index"
@@ -39,6 +39,7 @@
       :plans="plans"
       :selected-plan="selectedPlan"
       :switch-plan="handleSwitchPlan"
+      :on-done="() => (step = 3)"
     />
   </div>
 </template>
