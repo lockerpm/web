@@ -1,10 +1,11 @@
 <template>
   <div>
+    <h3 class="font-semibold text-[18px] mb-8">
+      {{ $t('data.plans.payment_step.step_2') }}
+    </h3>
+
     <!-- Select card -->
-    <div
-      v-if="paymentMethod === 'card' && cards.length"
-      class="border rounded p-5 border-black-200 cursor-pointer mt-2"
-    >
+    <div class="border rounded p-5 border-black-200 cursor-pointer mt-2">
       <div>
         <el-radio-group v-model="selectedCard" class="w-full">
           <el-radio
@@ -72,41 +73,52 @@
             </div>
           </el-radio>
         </el-radio-group>
-        <button class="btn btn-default btn-xs" @click="editBilling">
+        <button class="btn btn-default btn-xs" @click="addCard">
           {{ $t('data.billing.add_btn') }}
         </button>
       </div>
     </div>
+    <!-- Select card end -->
 
     <!-- Add card Component -->
-    <Payment
-      v-if="paymentVisible || !cards.length"
-      ref="payment"
-      @handle-done="handleDone"
-      @handle-cancel="handleCancel"
-    />
-
     <div class="mt-8">
-      <el-button
-        :disabled="!selectedCard"
-        :loading="loading"
-        class="btn btn-primary w-full hover:!text-white"
-        @click="confirmPlan()"
-      >
-        {{ $t('data.billing.pay_and_upgrade') }}
-      </el-button>
+      <Payment
+        v-if="addCardVisible"
+        ref="payment"
+        @handle-done="handleAddCardDone"
+        @handle-cancel="handleAddCardCancel"
+      />
     </div>
-    <!-- Payment end -->
+    <!-- Add card end -->
   </div>
 </template>
 <script>
+import Payment from '~/components/upgrade/Payment'
+
 export default {
+  components: {
+    Payment
+  },
+
+  props: {
+    setCardId: {
+      type: Function,
+      default: () => () => {}
+    }
+  },
+
   data () {
     return {
       paymentMethod: 'card',
       selectedCard: '',
       cards: [],
-      paymentVisible: false
+      addCardVisible: false
+    }
+  },
+
+  watch: {
+    selectedCard (val) {
+      this.setCardId(val)
     }
   },
 
@@ -116,19 +128,30 @@ export default {
 
   methods: {
     async getCards () {
-      this.cards = await this.$axios.$get('cystack_platform/payments/cards')
+      const res = await this.$axios.$get('cystack_platform/payments/cards')
+      if (res.length) {
+        this.selectedCard = res[0].id_card
+        this.setCardId(res[0].id_card)
+      } else {
+        this.addCardVisible = true
+      }
+      this.cards = res
     },
-    editBilling () {
-      this.paymentVisible = true
+
+    addCard () {
+      this.addCardVisible = true
     },
-    handleCancel () {
-      this.paymentVisible = false
+
+    handleAddCardCancel () {
+      this.addCardVisible = false
     },
-    handleDone (card) {
-      this.paymentVisible = false
+
+    handleAddCardDone (card) {
+      this.addCardVisible = false
       this.getCards()
       this.$nextTick(() => {
         this.selectedCard = card.id_card
+        this.setCardId(card.id_card)
       })
     }
   }

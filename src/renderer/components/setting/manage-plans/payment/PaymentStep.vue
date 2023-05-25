@@ -29,6 +29,12 @@
           :set-members="v => (familyMembers = v)"
         />
         <!-- Family members ended -->
+
+        <hr class="my-8 border-black-100">
+
+        <!-- Card select -->
+        <card-select :set-card-id="val => (cardId = val)" />
+        <!-- Card select end -->
       </div>
     </div>
     <!-- Left content end -->
@@ -37,11 +43,13 @@
 <script>
 import PlanReview from './PlanReview.vue'
 import FamilyMembers from './FamilyMembers.vue'
+import CardSelect from './CardSelect.vue'
 
 export default {
   components: {
     PlanReview,
-    FamilyMembers
+    FamilyMembers,
+    CardSelect
   },
 
   props: {
@@ -69,7 +77,8 @@ export default {
 
   data () {
     return {
-      familyMembers: []
+      familyMembers: [],
+      cardId: ''
     }
   }
 }
