@@ -109,7 +109,7 @@
 
     <el-button
       type="primary"
-      :disabled="!selectedCardId"
+      :disabled="!selectedCard"
       :loading="loading"
       class="w-full"
       @click="confirmPlan()"
@@ -130,9 +130,9 @@ export default {
       type: Object,
       default: () => ({})
     },
-    selectedCardId: {
-      type: String,
-      default: () => ''
+    selectedCard: {
+      type: Object,
+      default: () => ({})
     },
     familyMembers: {
       type: Array,
@@ -247,7 +247,7 @@ export default {
           plan_alias: this.selectedPlan.alias,
           duration: this.selectedPeriod.duration,
           payment_method: 'card',
-          id_card: this.selectedCardId,
+          id_card: this.selectedCard.id_card,
           promo_code: this.promoCode,
           number_members: numberMembers,
           key: orgKey,
@@ -255,7 +255,7 @@ export default {
           family_members: familyMembers
         })
         this.$store.dispatch('LoadCurrentPlan')
-        this.onDone()
+        this.onDone(this.result)
         this.notify(this.$t('data.notifications.upgrade_success'), 'success')
       } catch {
         this.notify(this.$t('data.notifications.error_occurred'), 'warning')

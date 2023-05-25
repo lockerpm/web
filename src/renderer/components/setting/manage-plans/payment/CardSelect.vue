@@ -101,7 +101,7 @@ export default {
   },
 
   props: {
-    setCardId: {
+    setCard: {
       type: Function,
       default: () => () => {}
     }
@@ -118,7 +118,7 @@ export default {
 
   watch: {
     selectedCard (val) {
-      this.setCardId(val)
+      this.setCard(this.cards.find(c => c.id_card === val))
     }
   },
 
@@ -131,7 +131,7 @@ export default {
       const res = await this.$axios.$get('cystack_platform/payments/cards')
       if (res.length) {
         this.selectedCard = res[0].id_card
-        this.setCardId(res[0].id_card)
+        this.setCard(res[0])
       } else {
         this.addCardVisible = true
       }
@@ -151,7 +151,7 @@ export default {
       this.getCards()
       this.$nextTick(() => {
         this.selectedCard = card.id_card
-        this.setCardId(card.id_card)
+        this.setCard(card)
       })
     }
   }

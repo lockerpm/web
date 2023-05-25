@@ -39,20 +39,30 @@
       :plans="plans"
       :selected-plan="selectedPlan"
       :switch-plan="handleSwitchPlan"
-      :on-done="() => (step = 3)"
+      :on-done="handlePaymentDone"
+    />
+
+    <confirmation-step
+      v-if="step === 3"
+      :selected-period="selectedPeriod"
+      :selected-plan="selectedPlan"
+      :result="result"
+      :selected-card="selectedCard"
     />
   </div>
 </template>
 
 <script>
 import { PlanPeriod } from '../../constants'
+import ConfirmationStep from '../../components/setting/manage-plans/ConfirmationStep.vue'
 import ChoosePlanStep from '~/components/setting/manage-plans/ChoosePlanStep'
 import PaymentStep from '~/components/setting/manage-plans/payment/PaymentStep'
 
 export default {
   components: {
     ChoosePlanStep,
-    PaymentStep
+    PaymentStep,
+    ConfirmationStep
   },
 
   middleware: ['BlockEnterpriseMember'],
@@ -79,7 +89,9 @@ export default {
         {
           label: 'confirmation'
         }
-      ]
+      ],
+      result: {},
+      selectedCard: {}
     }
   },
 
@@ -141,6 +153,12 @@ export default {
       } else {
         _switchPlan()
       }
+    },
+
+    handlePaymentDone (res, card) {
+      this.result = res
+      this.selectedCard = card
+      this.step = 3
     }
   }
 }

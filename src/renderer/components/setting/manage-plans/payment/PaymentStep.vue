@@ -34,7 +34,7 @@
           <hr class="my-8 border-black-100">
 
           <!-- Card select -->
-          <card-select :set-card-id="val => (cardId = val)" />
+          <card-select :set-card="val => (selectedCard = val)" />
           <!-- Card select end -->
         </div>
       </div>
@@ -47,8 +47,8 @@
             :selected-period="selectedPeriod"
             :selected-plan="selectedPlan"
             :family-members="familyMembers"
-            :selected-card-id="cardId"
-            :on-done="onDone"
+            :selected-card="setCard"
+            :on-done="res => onDone(res, selectedCard)"
           />
         </div>
       </div>
@@ -100,7 +100,7 @@ export default {
   data () {
     return {
       familyMembers: [],
-      cardId: ''
+      selectedCard: {}
     }
   }
 }
