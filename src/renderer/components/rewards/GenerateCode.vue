@@ -2,19 +2,33 @@
   <div class="generate-code">
     <div class="mt-6">
       <el-progress
+        v-if="availablePercent > gennedPercent"
         :percentage="(availablePercent / totalPercent) * 100"
         :show-text="false"
         status="success"
         style="width: 260px;"
       />
-      <p v-if="availablePercent > 0" class="mt-1">
-        {{ $t('data.rewards.progress', { percent: availablePercent }) }}
-      </p>
-      <p v-else class="mt-1">
+      <el-progress
+        v-else
+        :percentage="(gennedPercent / totalPercent) * 100"
+        :show-text="false"
+        color="#A5ABB3"
+        style="width: 260px;"
+      />
+      <p v-if="availablePercent <= gennedPercent" class="mt-1">
         {{ $t('data.rewards.no_discount', { percent: remainPercent }) }}
       </p>
+      <p v-else-if="availablePercent > 0 && gennedPercent === 0" class="mt-1">
+        {{ $t('data.rewards.progress', { percent: availablePercent }) }}
+      </p>
+      <p v-else-if="availablePercent > gennedPercent" class="mt-1">
+        {{ $t('data.rewards.progress1', { percent: availablePercent, current_percent: gennedPercent }) }}
+      </p>
+      <p v-else-if="gennedPercent === remainPercent" class="mt-1">
+        {{ $t('data.rewards.progress2') }}
+      </p>
     </div>
-    <div v-if="availablePercent > 0" class="flex items-center mt-6">
+    <div v-if="availablePercent > gennedPercent" class="flex items-center mt-6">
       <el-button
         :type="!(availablePercent - gennedPercent) ? '' : 'success'"
         :disabled="!(availablePercent - gennedPercent)"

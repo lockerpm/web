@@ -42,14 +42,14 @@
             {{ $t('data.rewards.referral.subtitle1_desc') }}
           </div>
           <div class="flex items-center justify-between w-full">
-            <div style="width: calc(100% - 142px)">
+            <div style="width: calc(100% - 160px)">
               <el-input
                 :value="referrals.referral_link"
                 readonly
               >
                 <div slot="suffix" class="flex items-center mr-3 cursor-pointer">
                   <span
-                    v-clipboard:copy="'referrals.referral_link'"
+                    v-clipboard:copy="referrals.referral_link"
                     v-clipboard:success="clipboardSuccessHandler"
                     class="flex items-center cursor-pointer"
                   >
@@ -59,9 +59,44 @@
               </el-input>
             </div>
             <div class="flex items-center">
-              <img :src="require('~/assets/images/icons/facebook.svg')" class="mr-2">
-              <img :src="require('~/assets/images/icons/twitter.svg')" class="mr-2">
-              <img :src="require('~/assets/images/icons/telegram.svg')">
+              <ShareNetwork
+                network="facebook"
+                :title="title"
+                :url="referrals.referral_link"
+                class="mr-2"
+              >
+                <button
+                  class="btn btn-icon btn-share bg-[#34589D] !text-white"
+                  type="button"
+                >
+                  <i class="fab fa-facebook-f text-head-5" />
+                </button>
+              </ShareNetwork>
+              <ShareNetwork
+                network="twitter"
+                :title="title"
+                :url="referrals.referral_link"
+                class="mr-2"
+              >
+                <button
+                  class="btn btn-icon btn-share bg-[#1DA1F2] !text-white"
+                  type="button"
+                >
+                  <i class="fab fa-twitter text-head-5" />
+                </button>
+              </ShareNetwork>
+              <ShareNetwork
+                network="telegram"
+                :url="referrals.referral_link"
+                :title="title"
+              >
+                <button
+                  class="btn btn-icon btn-share bg-[#0088cc] !text-white"
+                  type="button"
+                >
+                  <i class="fab fa-telegram text-head-5" />
+                </button>
+              </ShareNetwork>
             </div>
           </div>
         </div>
@@ -79,6 +114,7 @@ export default {
   data () {
     return {
       collapse: [],
+      title: this.$t('landing.title'),
       referrals: {
         referral_link: ''
       }

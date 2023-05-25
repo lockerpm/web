@@ -190,10 +190,13 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .rewards {
   &__generate-code {
     background-color: #F4F5F7 !important;
+  }
+  .el-collapse-item__header {
+    color: initial !important;
   }
 }
 </style>

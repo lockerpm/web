@@ -69,11 +69,12 @@
           <div class="ext-black-500">
             <div v-html="$t('data.rewards.desktop_installation.subtitle1_desc1')"/>
           </div>
-          <div v-if="currentStep.key < 3" class="mt-3">
+          <div class="mt-3">
             <el-button
-              type="success"
+              :type="currentStep.key == 3 ? '' : 'success'"
               plain
               :loading="callingAPI"
+              :disabled="currentStep.key == 3"
               @click="handleSend"
             >
               {{ $t('data.rewards.desktop_installation.btn') }}
