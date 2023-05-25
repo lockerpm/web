@@ -149,7 +149,7 @@ export default {
       result: {},
       loadingCalc: false,
       loading: false,
-      promoCode: ''
+      promoCode: this.$route.query.code || ''
     }
   },
 
