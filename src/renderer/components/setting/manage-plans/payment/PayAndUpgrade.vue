@@ -43,7 +43,6 @@
         <el-button
           type="primary"
           :disabled="!promoCode || loading"
-          :loading="loading"
           @click="calcPrice"
         >
           {{ $t('common.add') }}
@@ -74,7 +73,7 @@
       </p>
     </div>
 
-    <div class="text-black-600 mb-4 mt-4 text-[12px]">
+    <div class="text-black-600 mb-4 mt-4">
       <ul v-if="!currentPlan.personal_trial_applied">
         <li
           v-html="

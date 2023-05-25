@@ -5,7 +5,10 @@
     </h3>
 
     <!-- Select card -->
-    <div class="border rounded p-5 border-black-200 cursor-pointer mt-2">
+    <div
+      v-if="cards.length"
+      class="border rounded p-5 border-black-200 cursor-pointer mt-2"
+    >
       <div>
         <el-radio-group v-model="selectedCard" class="w-full">
           <el-radio
@@ -128,14 +131,18 @@ export default {
 
   methods: {
     async getCards () {
-      const res = await this.$axios.$get('cystack_platform/payments/cards')
-      if (res.length) {
-        this.selectedCard = res[0].id_card
-        this.setCard(res[0])
-      } else {
+      try {
+        const res = await this.$axios.$get('cystack_platform/payments/cards')
+        if (res.length) {
+          this.selectedCard = res[0].id_card
+          this.setCard(res[0])
+        } else {
+          this.addCardVisible = true
+        }
+        this.cards = res
+      } catch (error) {
         this.addCardVisible = true
       }
-      this.cards = res
     },
 
     addCard () {

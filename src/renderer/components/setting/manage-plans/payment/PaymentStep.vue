@@ -47,7 +47,7 @@
             :selected-period="selectedPeriod"
             :selected-plan="selectedPlan"
             :family-members="familyMembers"
-            :selected-card="setCard"
+            :selected-card="selectedCard"
             :on-done="res => onDone(res, selectedCard)"
           />
         </div>
