@@ -214,7 +214,6 @@ export default {
           this.result = res
           if (res.error_promo) {
             this.notify(this.$t('errors.invalid_code'), 'warning')
-            this.promoCode = ''
           }
         })
         .catch(error => {
@@ -230,6 +229,9 @@ export default {
 
     async confirmPlan () {
       try {
+        if (this.promoCode && this.result.error_promo) {
+          this.promoCode = ''
+        }
         this.loading = true
         const shareKey = await this.$cryptoService.makeShareKey()
         const orgKey = shareKey[0].encryptedString

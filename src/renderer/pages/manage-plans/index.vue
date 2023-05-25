@@ -117,8 +117,17 @@ export default {
   mounted () {
     this.getPlans().then(() => {
       const selectedPlan = this.$route.query.plan
+      const code = this.$route.query.code
       if (selectedPlan && this.plans.find(p => p.alias === selectedPlan)) {
-        this.selectPlan(this.plans.find(p => p.alias === selectedPlan))
+        this.handleSwitchPlan(this.plans.find(p => p.alias === selectedPlan))
+        return
+      }
+      if (code) {
+        this.selectedPlanDuration = PlanPeriod.YEARLY
+        this.handleSwitchPlan(
+          this.plans.find(p => p.alias === 'pm_premium'),
+          true
+        )
       }
     })
     this.$store.dispatch('LoadCurrentPlan')
