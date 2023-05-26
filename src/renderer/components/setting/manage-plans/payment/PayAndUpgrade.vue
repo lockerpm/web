@@ -108,7 +108,7 @@
 
     <el-button
       type="primary"
-      :disabled="!selectedCard"
+      :disabled="!selectedCard || !selectedCard.id_card"
       :loading="loading"
       class="w-full"
       @click="confirmPlan()"
