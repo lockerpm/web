@@ -198,6 +198,10 @@ export default {
 
   methods: {
     calcPrice: debounce(function () {
+      if (!this.selectedPlan.alias || !this.selectedPeriod.duration) {
+        this.result = {}
+        return
+      }
       const currency = 'USD'
       const numberMembers = this.selectedPlan.alias === 'pm_family' ? 6 : 1
       this.loadingCalc = true

@@ -10,14 +10,14 @@
           <template v-for="(item, index) in planMenu">
             <div
               :key="index"
-              :class="[
-                step === index + 1
-                  ? '!text-black font-semibold border-b-2 border-primary pb-3'
-                  : '',
-                index + 1 > step ? 'opacity-60 cursor-not-allowed' : ''
-              ]"
+              :class="{
+                '!text-black font-semibold border-b-2 border-primary pb-3':
+                  step === index + 1,
+                'opacity-60': index + 1 > step,
+                'cursor-not-allowed': index === 2 && index + 1 > step
+              }"
               class="text-black-600 mr-8 last:mr-0 cursor-pointer"
-              @click="index === 0 ? (step = index + 1) : () => {}"
+              @click="handleMenuClick(index)"
             >
               {{ $t(`sidebar.${item.label}`) }}
             </div>
@@ -194,6 +194,21 @@ export default {
       this.result = res
       this.selectedCard = card
       this.step = 3
+    },
+
+    handleMenuClick (index) {
+      if (index === 2) {
+        return
+      }
+      if (index === 1 && !this.selectedPlan.alias) {
+        const defaultPlan = this.plans.find(p => p.alias === 'pm_premium')
+        if (defaultPlan) {
+          this.selectedPlanDuration = PlanPeriod.YEARLY
+          this.handleSwitchPlan(defaultPlan, true)
+          return
+        }
+      }
+      this.step = index + 1
     }
   }
 }
