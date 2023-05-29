@@ -39,7 +39,7 @@
 
       <!-- Menu -->
       <nav class="mt-5">
-        <template v-for="(item, index) in menu">
+        <template v-for="(item, index) in menu.filter(i => !i.hide)">
           <!-- Collapse items -->
           <template v-if="item.collapse">
             <div
