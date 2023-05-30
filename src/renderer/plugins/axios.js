@@ -10,6 +10,7 @@ export default function ({
   env
 }) {
   $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
+
   $axios.interceptors.request.use(request => {
     // Get token from auth.js store
     // const token = store.state.auth.accessToken
@@ -27,8 +28,25 @@ export default function ({
       request.headers['CF-Access-Client-Id'] = $config.cloudflare.id
       request.headers['CF-Access-Client-Secret'] = $config.cloudflare.secret
     }
+
+    // Update base api url
+    const ON_PREMISE_WHITELIST = [
+      '/onpremise/host',
+      '/users/exist',
+      '/payments/trial/enterprise',
+      'sso/users'
+    ]
+    if (
+      store.state.isOnPremise &&
+      store.state.onPremiseBaseApi &&
+      !ON_PREMISE_WHITELIST.some(path => request.url.endsWith(path))
+    ) {
+      request.baseURL = store.state.onPremiseBaseApi
+    }
+
     return request
   })
+
   $axios.onResponse(res => {
     if (res.headers['device-id']) {
       app.$cookies.set('device_id', res.headers['device-id'], {
@@ -46,6 +64,7 @@ export default function ({
       $axios.setHeader('device-id', res.headers['device-id'])
     }
   })
+
   $axios.onError(err => {
     if (err.response) {
       if (err.response.status === 400) {
@@ -69,6 +88,7 @@ export default function ({
           path: '/'
         })
         $axios.setToken(false)
+
         store.commit('UPDATE_IS_LOGGEDIN', false)
 
         const WHITELIST_PATHS = [
@@ -94,7 +114,8 @@ export default function ({
           '/promotion',
           '/crypto',
           '/shares/quick-share-item',
-          '/'
+          '/',
+          '/on-premise-create-master-pw'
         ]
         const WHITELIST_ROUTE_NAMES = ['shares-id']
 

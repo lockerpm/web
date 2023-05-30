@@ -1,14 +1,14 @@
 <template>
-  <div class="lg:w-3/4">
+  <div class="w-full">
     <div class="text-head-5 font-semibold mb-2">
       {{ $t('data.settings.security_control') }}
     </div>
     <div class="text-lg text-black-600 mb-4">
       {{ $t('data.settings.security_desc') }}
     </div>
-    <ChangePassword />
+    <ChangePassword v-if="!isOnPremise" />
     <ChangeMasterPassword />
-    <TwoFactorAuthentication />
+    <TwoFactorAuthentication v-if="!isOnPremise" />
     <EmergencyAccess />
     <ManageSessions />
   </div>

@@ -1,35 +1,35 @@
 <template>
-  <div class="full-width bg-[#DFDFDF]">
+  <div class="full-width bg-[#F4F5F7]">
     <div
       class="max-w-6xl px-6 mx-auto h-screen flex items-center justify-center"
     >
       <div class="m-login__container markdown-body">
-        <div class="text-center mb-4">
+        <div class="text-center mb-6">
           <img
-            v-if="token.valid === true"
-            src="~/assets/images/img-cs.svg#icon-successful"
+            v-if="token.valid"
+            src="~/assets/images/email-success-locker.svg"
             class="mx-auto"
             style="height: 100px; background: transparent"
           >
           <img
-            v-if="token.valid === false"
+            v-else
             src="~/assets/images/img-cs.svg#icon-error_1_"
             class="mx-auto"
             style="height: 100px; background: transparent"
           >
         </div>
         <transition appear appear-active-class="animated flipInY">
-          <div v-if="token.valid === true" class="m-login__signin">
+          <div v-if="token.valid" class="m-login__signin">
             <div class="m-login__head text-center">
               <div class="m-login__desc">
-                <h1 class="landing-font-28 font-semibold mb-3">
+                <h1 class="landing-font-28 font-semibold mb-4">
                   {{ $t('business.register.active_l1') }}
                 </h1>
                 <p class="mb-0">
                   {{ $t('business.register.active_l2') }}
                 </p>
                 <button
-                  class="btn btn-primary m-btn--wide mt-4"
+                  class="btn btn-primary m-btn--wide mt-6"
                   @click="goNext()"
                 >
                   {{ $t('business.register.sign_in_btn') }} ({{ seconds }}s)
@@ -37,17 +37,17 @@
               </div>
             </div>
           </div>
-          <div v-if="token.valid === false" class="m-login__signin">
+          <div v-else class="m-login__signin">
             <div class="m-login__head text-center">
               <div class="m-login__desc">
-                <h1 class="landing-font-28 font-semibold mb-3">
+                <h1 class="landing-font-28 font-semibold mb-4">
                   {{ $t('business.register.active_failed_l1') }}
                 </h1>
                 <p class="mb-0">
                   {{ $t('business.register.active_failed_l2') }}
                 </p>
                 <button
-                  class="btn btn-light m-btn--wide mt-4"
+                  class="btn btn-primary m-btn--wide mt-6"
                   @click="backHome"
                 >
                   {{ $t('business.register.back_btn') }}

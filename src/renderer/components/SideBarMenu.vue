@@ -39,7 +39,7 @@
 
       <!-- Menu -->
       <nav class="mt-5">
-        <template v-for="(item, index) in menu">
+        <template v-for="(item, index) in menu.filter(i => !i.hide)">
           <!-- Collapse items -->
           <template v-if="item.collapse">
             <div
@@ -134,7 +134,9 @@
     <!-- Bottom menu -->
     <div>
       <nav class="my-10">
-        <template v-for="(item, index) in bottomMenu">
+        <template
+          v-for="(item, index) in bottomMenu.filter(item => !item.hide)"
+        >
           <a
             v-if="item.externalLink"
             :key="index"
@@ -153,6 +155,26 @@
             <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}
             </span>
           </a>
+
+          <a
+            v-else-if="item.action"
+            :key="index"
+            class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
+            target="_blank"
+            @click.prevent="item.action()"
+          >
+            <div
+              class="mr-2 w-[22px] h-[22px] flex items-center justify-center"
+            >
+              <img
+                :src="require(`~/assets/images/icons/${item.icon}.svg`)"
+                alt=""
+              >
+            </div>
+            <span class="text-sm font-medium">{{ $t(`sidebar.${item.label}`) }}
+            </span>
+          </a>
+
           <nuxt-link
             v-else
             :id="`sidebar__${item.label}`"
@@ -272,15 +294,12 @@ export default {
           icon: 'security',
           routeName: 'tools'
         },
-        ...(this.isEnterpriseMember
-          ? [
-            {
-              label: 'policies',
-              icon: 'policies',
-              routeName: 'policies'
-            }
-          ]
-          : []),
+        {
+          label: 'policies',
+          icon: 'policies',
+          routeName: 'policies',
+          hide: !this.isEnterpriseMember
+        },
         {
           label: 'shares',
           icon: 'share',
@@ -289,7 +308,8 @@ export default {
         {
           label: 'private_email',
           icon: 'private_email',
-          routeName: 'relay'
+          routeName: 'relay',
+          hide: this.isOnPremise
         },
         {
           label: 'trash',
@@ -310,24 +330,28 @@ export default {
     },
     bottomMenu () {
       return [
-        ...(this.isFreePlan && !this.isEnterpriseMember
-          ? [
-            {
-              label: 'upgrade',
-              routeName: 'manage-plans',
-              icon: 'upgrade'
+        {
+          label: 'upgrade',
+          routeName: 'manage-plans',
+          icon: 'upgrade',
+          hide: !this.isFreePlan || this.isEnterpriseMember
+        },
+        {
+          label: 'enterprise_dashboard',
+          icon: 'dashboard',
+          hide: !this.isEnterpriseAdminOrOwner,
+          action: () => {
+            if (this.isOnPremise) {
+              this.setOnPremiseCookies()
+              window.open(
+                `${process.env.lockerEnterprise}/login-on-premise`,
+                '_blank'
+              )
+              return
             }
-          ]
-          : []),
-        ...(this.isEnterpriseAdminOrOwner
-          ? [
-            {
-              label: 'enterprise_dashboard',
-              externalLink: process.env.lockerEnterprise,
-              icon: 'dashboard'
-            }
-          ]
-          : []),
+            window.open(process.env.lockerEnterprise, '_blank')
+          }
+        },
         {
           label: 'settings',
           routeName: 'settings-account',

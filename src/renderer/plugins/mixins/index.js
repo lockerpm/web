@@ -130,14 +130,29 @@ Vue.mixin({
       }
     },
 
-    async logout () {
+    changeLocale (value) {
+      this.$i18n.setLocale(value)
+    },
+
+    async logout (options) {
       console.log('###### LOG OUT')
-      await this.$axios.$post('/users/logout')
+
+      if (
+        (!this.isOnPremise || this.$store.state.isLoggedInOnPremise) &&
+        !options?.noApiCall
+      ) {
+        await this.$axios.$post('/users/logout')
+      }
+
+      if (this.isOnPremise) {
+        this.clearOnPremiseCookies()
+      }
+
       await this.$cryptoService.clearKeys()
       await this.$userService.clear()
       await this.$cookies.remove('cs_locker_token')
       this.$store.commit('CLEAR_ALL_DATA')
-      this.$router.push(this.localeRoute({ name: 'login' }))
+      this.$router.push(this.localeRoute({ name: 'index' }))
       window.Intercom('shutdown')
       window.intercomSettings = {
         app_id: 'hjus3ol6',
@@ -172,38 +187,73 @@ Vue.mixin({
       })
     },
 
-    async login () {
-      const lockerDeviceId = this.$cookies.get('locker_device_id')
+    async login (options) {
+      // options?: {
+      //   extraData?: { [key: string]: any }
+      //   isOtp?: boolean
+      //   key?: SymmetricCryptoKey
+      //   hashedPassword?: string
+      // }
+
+      const lockerDeviceId = this.$cookies.get('device_id')
       const deviceIdentifier = lockerDeviceId || this.randomString()
       if (!lockerDeviceId) {
         const expireTime = 50 * 365 * 24 * 3600
-        this.$cookies.set('locker_device_id', deviceIdentifier, {
-          maxAge: expireTime
+        this.$cookies.set('device_id', deviceIdentifier, {
+          maxAge: expireTime,
+          domain: 'locker.io'
         })
       }
       try {
         await this.clearKeys()
-        const key = await this.$cryptoService.makeKey(
-          this.masterPassword,
-          this.currentUser.email,
-          0,
-          100000
-        )
-        const hashedPassword = await this.$cryptoService.hashPassword(
-          this.masterPassword,
-          key
-        )
+        const key =
+          options?.key ||
+          (await this.$cryptoService.makeKey(
+            this.masterPassword,
+            this.currentUser.email,
+            0,
+            100000
+          ))
+        const hashedPassword =
+          options?.hashedPassword ||
+          (await this.$cryptoService.hashPassword(this.masterPassword, key))
+        let payload = {
+          email: this.isOnPremise ? this.currentUser.email : undefined,
+          client_id: 'web',
+          password: hashedPassword,
+          device_name: this.$platformUtilsService.getDeviceString(),
+          device_type: this.$platformUtilsService.getDevice(),
+          device_identifier: deviceIdentifier
+        }
+        if (options?.extraData) {
+          payload = { ...payload, ...options.extraData }
+        }
         const res = await this.$axios.$post(
-          'cystack_platform/pm/users/session',
-          {
-            client_id: 'web',
-            password: hashedPassword,
-            device_name: this.$platformUtilsService.getDeviceString(),
-            device_type: this.$platformUtilsService.getDevice(),
-            device_identifier: deviceIdentifier
-          }
+          `cystack_platform/pm/users/session${options?.isOtp ? '/otp' : ''}`,
+          payload
         )
+
+        // Is 2FA required
+        if (res.is_factor2) {
+          return {
+            ...res,
+            key
+          }
+        }
+
+        // Else continue
         this.$messagingService.send('loggedIn')
+
+        if (this.isOnPremise) {
+          this.$axios.setToken(res.access_token, 'Bearer')
+          await this.$cookies.set('cs_locker_token', res.access_token, {
+            path: '/',
+            ...(this.environment === '' ? { secure: true } : { secure: false })
+          })
+          this.$store.commit('UPDATE_IS_LOGGEDIN_ON_PREMISE', true)
+          this.disconnectDesktopSocket()
+        }
+
         await this.$tokenService.setTokens(res.access_token, res.refresh_token)
         await this.$userService.setInformation(
           this.$tokenService.getUserId(),
@@ -244,15 +294,23 @@ Vue.mixin({
         }
 
         this.$store.commit('UPDATE_SYNCING', true)
+        let path =
+          this.$store.state.currentPath === '/lock'
+            ? '/vault'
+            : this.$store.state.currentPath
+        if (path === '/' && this.isOnPremise) {
+          path = '/vault'
+        }
+        if (path.startsWith('/on-premise-create-master-pw')) {
+          path = '/vault'
+        }
         this.$router.push(
           this.localeRoute({
-            path:
-              this.$store.state.currentPath === '/lock'
-                ? '/vault'
-                : this.$store.state.currentPath
+            path
           })
         )
       } catch (e) {
+        console.log(e)
         // Wrong master pw
         if (!e.response?.data?.message || e.response?.data?.code === '0004') {
           this.notify(this.$t('errors.invalid_master_password'), 'warning')

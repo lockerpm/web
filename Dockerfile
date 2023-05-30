@@ -22,6 +22,8 @@ ENV BASE_API_URL=https://api.locker.io/v3
 
 ENV WS_URL=wss://api.locker.io/ws
 
+ENV DESKTOP_WS_URL=ws://localhost:1040
+
 ENV LOGO_URL=https://locker.io/logo/
 
 ENV ENTERPRISE_URL=https://enterprise.locker.io

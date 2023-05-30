@@ -4,9 +4,9 @@
     class="w-full bg-warning text-center py-1 px-4 sticky top-0 z-10"
   >
     <p>
-      {{ $t('data.enterprise.warning.text', { time: nextTimeText } ) }}
+      {{ $t('data.enterprise.warning.text', { time: nextTimeText }) }}
       <a
-        href="https://enterprise.locker.io/admin/billing/payment-method"
+        :href="`${process.env.lockerEnterprise}/admin/billing/payment-method`"
         class="font-semibold text-info hover:text-info"
       >
         {{ $t('data.enterprise.warning.link') }}
@@ -32,11 +32,13 @@ export default {
   },
   methods: {
     async checkNextTime () {
-      if (!this.currentOrg?.id) {
+      if (!this.currentOrg?.id || this.isOnPremise) {
         return
       }
       try {
-        const res = await this.$axios.$get(`cystack_platform/pm/enterprises/${this.currentOrg.id}/payments/next_attempt`)
+        const res = await this.$axios.$get(
+          `cystack_platform/pm/enterprises/${this.currentOrg.id}/payments/next_attempt`
+        )
         this.nextTime = res.next_payment_attempt * 1000
       } catch (e) {
         //
@@ -46,6 +48,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

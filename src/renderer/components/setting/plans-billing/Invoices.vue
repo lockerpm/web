@@ -1,6 +1,6 @@
 <template>
   <div class="mb-6">
-    <el-collapse class="setting-wrapper">
+    <el-collapse v-model="activeNames" class="setting-wrapper">
       <el-collapse-item name="1" class="border-black-50 border rounded">
         <!-- Header -->
         <template slot="title">
@@ -77,7 +77,8 @@ export default {
         count: 0
       },
       page: 1,
-      plans: []
+      plans: [],
+      activeNames: ['1']
     }
   },
 

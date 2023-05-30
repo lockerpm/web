@@ -11,7 +11,6 @@ import { AuditService } from "../jslib/src/services/audit.service";
 import { CollectionService } from "../core/services/collection.service";
 import { ConsoleLogService } from "../jslib/src/services/consoleLog.service";
 import { ContainerService } from "../jslib/src/services/container.service";
-import { CryptoService } from "../jslib/src/services/crypto.service";
 import { ExportService } from "../jslib/src/services/export.service";
 import { FileUploadService } from "../jslib/src/services/fileUpload.service";
 import { FolderService } from "../jslib/src/services/folder.service";
@@ -30,6 +29,7 @@ import { WebCryptoFunctionService } from "../jslib/src/services/webCryptoFunctio
 import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from "../jslib/src/abstractions/cryptoFunction.service";
 import { StorageService as StorageServiceAbstraction } from "../jslib/src/abstractions/storage.service";
 import { CipherService } from "../core/services/cipher.service";
+import { CryptoService } from "../core/services/crypto.service";
 
 const i18nService = new I18nService(window.navigator.language, "locales");
 const stateService = new StateService();

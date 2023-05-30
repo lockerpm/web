@@ -1,6 +1,6 @@
 <template>
   <div class="mb-6">
-    <el-collapse class="setting-wrapper">
+    <el-collapse v-model="activeNames" class="setting-wrapper">
       <el-collapse-item name="1" class="border-black-50 border rounded">
         <template slot="title">
           <!-- Plan info -->
@@ -219,6 +219,11 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      activeNames: ['1']
+    }
+  },
   computed: {
     currentPlan () {
       return this.$store.state.currentPlan

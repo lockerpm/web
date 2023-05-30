@@ -97,6 +97,7 @@
           </template>
 
           <el-dropdown-item
+            v-if="!isOnPremise"
             class="text-warning"
             icon="fa fa-user-circle"
             @click.native="go('settings-account')"

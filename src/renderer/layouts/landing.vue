@@ -198,18 +198,16 @@ export default {
     }
   },
   mounted () {
-    // this.$store.dispatch('LoadCurrentUser')
-    // this.$store.dispatch('LoadCurrentUserPw')
     this.setupMomentLocale(this.locale)
     this.showCookie = this.checkCookie()
   },
   methods: {
     checkCookie () {
-      const deviceId = this.$cookies.get('locker_device_id')
+      const deviceId = this.$cookies.get('device_id')
       return localStorage.getItem(`${deviceId}_cookie`)
     },
     offCookie () {
-      const deviceId = this.$cookies.get('locker_device_id')
+      const deviceId = this.$cookies.get('device_id')
       localStorage.setItem(`${deviceId}_cookie`, 'false')
       this.showCookie = 'false'
     },
