@@ -913,8 +913,8 @@ export default {
         }),
         emergencyAccess.full_name || this.$t('common.warning'),
         {
-          confirmButtonText: 'Yes',
-          cancelButtonText: 'No',
+          confirmButtonText: this.$t('common.yes'),
+          cancelButtonText: this.$t('common.no'),
           type: 'warning'
         }
       )
@@ -949,8 +949,8 @@ export default {
         }),
         emergencyAccess.full_name || this.$t('common.warning'),
         {
-          confirmButtonText: 'Approve',
-          cancelButtonText: 'No',
+          confirmButtonText: this.$t('common.approve'),
+          cancelButtonText: this.$t('common.no'),
           type: 'warning'
         }
       )
