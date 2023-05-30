@@ -12,7 +12,7 @@ export default {
   },
   mounted () {
     // On premise will never go to this page => not on premise
-    this.$store.commit('UPDATE_ON_PREMISE_INFO', '')
+    this.$store.commit('UPDATE_ON_PREMISE_INFO', {})
 
     this.$nextTick(() => {
       this.loginByToken()
