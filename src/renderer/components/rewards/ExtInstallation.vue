@@ -32,7 +32,7 @@
                 class="lg:flex md:hidden hidden"
               />
             </div>
-            <div v-if="currentPlan.alias !== 'pm_free'" class="flex items-center pb-5">
+            <div v-if="currentPlan.alias !== 'pm_free' && currentStep.key === 3" class="flex items-center pb-5">
               <a href="/settings/plans-billing">{{ $t('data.rewards.discontinue') }}</a>
               <span class="ml-1">{{ $t('data.rewards.discontinue_note') }}</span>
             </div>
