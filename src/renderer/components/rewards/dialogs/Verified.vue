@@ -14,15 +14,18 @@
           {{ $t('data.rewards.verify_popup.congrats') }}
         </div>
         <div v-if="dialogData.type === 'free_month'">
-          <div class="mb-5" v-html="$t('data.rewards.verify_popup.congrats_desc', { action: dialogData.action })" />
-          <el-button type="success" @click="() => dialogVisible = false">
-            {{ $t('data.rewards.verify_popup.continue') }}
-          </el-button>
+          <div
+            class="mb-5"
+            v-html="$t('data.rewards.verify_popup.congrats_desc', {
+              plan: dialogData.plan || $t('plan.plans[1].title'),
+              action: dialogData.action
+            })"
+          />
           <a
             class="mt-3 flex items-center justify-center text-info cursor-pointer"
             href="/settings/plans-billing"
           >
-            {{ $t('data.rewards.verify_popup.see_free_month') }}
+            {{ $t('data.rewards.verify_popup.go_to_plan') }}
             <i class="el-icon-right ml-2" />
           </a>
         </div>

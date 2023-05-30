@@ -7,25 +7,31 @@
       >
         <!-- Header -->
         <template slot="title">
-          <div class="py-5 flex items-center justify-between" style="width: 95%">
-            <div class="flex items-center">
-              <div>
-                <div class="text-head-5 font-semibold">
-                  {{ $t('data.rewards.referral.title') }}
+          <div class="w-full">
+            <div class="py-5 flex items-center justify-between" style="width: calc(100% - 24px)">
+              <div class="flex items-center">
+                <div>
+                  <div class="text-head-5 font-semibold">
+                    {{ $t('data.rewards.referral.title') }}
+                  </div>
+                  <span v-if="!collapse.length" class="text-black-500 lg:hidden md:flex">
+                    {{ $t('data.rewards.note1', { month: 1, plan: planText }) }}
+                  </span>
                 </div>
-                <span v-if="!collapse.length" class="text-black-500 lg:hidden md:flex">
-                  {{ $t('data.rewards.note1', { month: 1 }) }}
+                <span v-if="!collapse.length" class="ml-4 text-black-500 lg:flex md:hidden hidden">
+                  {{ $t('data.rewards.note1', { month: 1, plan: planText }) }}
                 </span>
               </div>
-              <span v-if="!collapse.length" class="ml-4 text-black-500 lg:flex md:hidden hidden">
-                {{ $t('data.rewards.note1', { month: 1 }) }}
-              </span>
-            </div>
-            <div class="flex items-center">
-              <div class="mr-3 font-semibold">
-                {{ referrals.referred }}/{{ referrals.referral_limit }}
+              <div class="flex items-center">
+                <div class="mr-3 font-semibold">
+                  {{ referrals.referred }}/{{ referrals.referral_limit }}
+                </div>
+                <img :src="require('~/assets/images/icons/referral.svg')">
               </div>
-              <img :src="require('~/assets/images/icons/referral.svg')">
+            </div>
+            <div v-if="currentPlan.alias !== 'pm_free'" class="flex items-center pb-5">
+              <a href="/settings/plans-billing">{{ $t('data.rewards.discontinue') }}</a>
+              <span class="ml-1">{{ $t('data.rewards.discontinue_note') }}</span>
             </div>
           </div>
         </template>
@@ -110,6 +116,14 @@
 export default {
   components: {},
   props: {
+    planText: {
+      type: String,
+      default: ''
+    },
+    currentPlan: {
+      type: Object,
+      default: () => {}
+    }
   },
   data () {
     return {

@@ -6,30 +6,36 @@
         name="collapse"
       >
         <template slot="title">
-          <div class="py-5 flex items-center justify-between" style="width: 95%">
-            <div class="flex items-center">
-              <div>
-                <div class="text-head-5 font-semibold">
-                  {{ $t('data.rewards.ext_installation.title') }}
+          <div class="w-full">
+            <div class="py-5 flex items-center justify-between" style="width: calc(100% - 24px)">
+              <div class="flex items-center">
+                <div>
+                  <div class="text-head-5 font-semibold">
+                    {{ $t('data.rewards.ext_installation.title') }}
+                  </div>
+                  <span v-if="!collapse.length" class="text-black-500 lg:hidden md:block">
+                    {{ $t('data.rewards.note1', { month: 1, plan: planText }) }}
+                  </span>
+                  <CurrentStep
+                    v-if="!collapse.length"
+                    :current-step="currentStep"
+                    class="lg:hidden md:flex"
+                  />
                 </div>
-                <span v-if="!collapse.length" class="text-black-500 lg:hidden md:block">
-                  {{ $t('data.rewards.note1', { month: 1 }) }}
+                <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden hidden">
+                  {{ $t('data.rewards.note1', { month: 1, plan: planText }) }}
                 </span>
-                <CurrentStep
-                  v-if="!collapse.length"
-                  :current-step="currentStep"
-                  class="lg:hidden md:flex"
-                />
               </div>
-              <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden hidden">
-                {{ $t('data.rewards.note1', { month: 1 }) }}
-              </span>
+              <CurrentStep
+                v-if="!collapse.length"
+                :current-step="currentStep"
+                class="lg:flex md:hidden hidden"
+              />
             </div>
-            <CurrentStep
-              v-if="!collapse.length"
-              :current-step="currentStep"
-              class="lg:flex md:hidden hidden"
-            />
+            <div v-if="currentPlan.alias !== 'pm_free'" class="flex items-center pb-5">
+              <a href="/settings/plans-billing">{{ $t('data.rewards.discontinue') }}</a>
+              <span class="ml-1">{{ $t('data.rewards.discontinue_note') }}</span>
+            </div>
           </div>
         </template>
         <div class="px-5">
@@ -128,6 +134,14 @@ export default {
   },
   props: {
     mission: {
+      type: Object,
+      default: () => {}
+    },
+    planText: {
+      type: String,
+      default: ''
+    },
+    currentPlan: {
       type: Object,
       default: () => {}
     }

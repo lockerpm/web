@@ -2,7 +2,7 @@
   <div v-loading="loading" class="rewards">
     <div class="rewards__generate-code">
       <div class="flex-column-fluid lg:px-28 py-8 md:px-10 px-4">
-        <p>{{ $t('data.rewards.subtitle') }}</p>
+        <div v-html="$t('data.rewards.subtitle')" />
         <GenerateCode
           :claim-status="claimStatus"
           :available-percent="availablePercent"
@@ -15,7 +15,10 @@
       </div>
     </div>
     <div class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4 mb-20">
-      <Referral />
+      <Referral
+        :plan-text="planText"
+        :current-plan="currentPlan"
+      />
       <ExtInstallation
         :mission="getMissionById('extension_installation_and_review')"
         @send="openVerifiedDialog"
@@ -128,6 +131,15 @@ export default {
     },
     remainPercent () {
       return this.totalPercent - this.usedPercent
+    },
+    currentPlan () {
+      return this.$store.state.currentPlan
+    },
+    planText () {
+      if (['pm_free', 'pm_lifetime_premium', 'pm_premium'].includes(this.currentPlan.alias)) {
+        return this.$t('plan.plans[1].title')
+      }
+      return this.$t('plan.plans[2].title')
     }
   },
   mounted () {

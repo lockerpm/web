@@ -6,7 +6,7 @@
         name="collapse"
       >
         <template slot="title">
-          <div class="py-5 flex items-center justify-between" style="width: 95%">
+          <div class="py-5 flex items-center justify-between" style="width: calc(100% - 48px)">
             <div class="flex items-center">
               <div>
                 <div class="text-head-5 font-semibold">
