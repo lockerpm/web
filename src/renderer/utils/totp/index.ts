@@ -30,9 +30,9 @@ export const parseOTPUri = (uri: string) => {
   const res: OTPData = {
     account: undefined,
     secret: undefined,
-    algorithm: undefined,
-    period: undefined,
-    digits: undefined
+    algorithm: 'SHA-1',
+    period: 30,
+    digits: 6
   }
 
   if (!uri) {
@@ -51,10 +51,18 @@ export const parseOTPUri = (uri: string) => {
     return res
   }
 
+  if (data.length === 1) {
+    res.secret = data[0]
+    return res
+  }
+
   const account = decodeURIComponent(data[0])
   const query = _parseQueryString(data[1])
 
-  res.account = (query.issuer && !account.startsWith(query.issuer)) ? `${query.issuer} (${account})` : account
+  res.account =
+    query.issuer && !account.startsWith(query.issuer)
+      ? `${query.issuer} (${account})`
+      : account
   res.secret = query.secret
   res.algorithm = _parseAlgorithm(query.algorithm)
   try {
