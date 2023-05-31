@@ -57,6 +57,27 @@
           @update:uris="newValue => (cipher.login.uris = newValue)"
         />
 
+        <!-- OTP -->
+        <div v-if="cipher.type === CipherType.Login" :key="cipher.id">
+          <!-- Label -->
+          <div
+            class="my-5 text-black-700 text-head-6 font-semibold"
+          >
+            {{ $t('data.ciphers.otp.setup') }}
+          </div>
+          <!-- Label end -->
+          <!-- Input -->
+          <div>
+            <PasswordOTP
+              :value="cipher.login.totp"
+              class="w-full"
+              @change="val => cipher.login.totp = val"
+            />
+          </div>
+          <!-- Input end -->
+        </div>
+        <!-- OTP END -->
+
         <!-- CARD FIELDS -->
         <card-input
           v-if="cipher.type === CipherType.Card"
@@ -321,6 +342,7 @@ import InputCustomFields from '../input/InputCustomFields.vue'
 import InlineEditCipher from './InlineEditCipher'
 import PasswordViolationDialog from './PasswordViolationDialog'
 import LoginInput from './cipher-types/login/LoginInput.vue'
+import PasswordOTP from './cipher-types/login/PasswordOTP.vue'
 import CardInput from './cipher-types/card/CardInput.vue'
 import IdentityInput from './cipher-types/identity/IdentityInput.vue'
 import CryptoBackupInput from './cipher-types/crypto-backup/CryptoBackupInput.vue'
@@ -345,6 +367,7 @@ export default {
     InputCustomFields,
     PasswordViolationDialog,
     LoginInput,
+    PasswordOTP,
     CardInput,
     IdentityInput,
     CryptoBackupInput,

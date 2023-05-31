@@ -138,7 +138,6 @@ Vue.mixin({
 
     async getEncCipherForRequest (originalCipher, extraData = {}) {
       const cipher = cloneDeep(originalCipher)
-
       // user cannot add item to shared folders, but can add item to their sharing folder
       // -> create new = only sharing folders; update = both sharing and shared folders
       const {

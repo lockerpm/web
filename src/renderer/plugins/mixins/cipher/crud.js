@@ -72,7 +72,6 @@ Vue.mixin({
             nonWriteableCollections: await this.getNonWritableCollections()
           }
         )
-
         // Send api
         await this.$axios.$put(`cystack_platform/pm/ciphers/${cipher.id}`, {
           ...data,
