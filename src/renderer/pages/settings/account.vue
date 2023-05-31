@@ -22,13 +22,6 @@ export default {
     YourProfile,
     Preferences,
     DangerZone
-  },
-  data () {
-    return {}
-  },
-  computed: {},
-  async mounted () {},
-  asyncComputed: {},
-  methods: {}
+  }
 }
 </script>

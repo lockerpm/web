@@ -37,6 +37,7 @@ export default {
         await this.$axios.setToken(token, 'Bearer')
         await this.$cookies.set('cs_locker_token', token, {
           path: '/',
+          domain: 'locker.io',
           ...(this.environment === '' ? { secure: true } : { secure: false })
         })
         this.$store.commit('UPDATE_IS_LOGGEDIN', true)
