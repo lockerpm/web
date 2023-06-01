@@ -30,6 +30,7 @@ import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from "../js
 import { StorageService as StorageServiceAbstraction } from "../jslib/src/abstractions/storage.service";
 import { CipherService } from "../core/services/cipher.service";
 import { CryptoService } from "../core/services/crypto.service";
+import { TotpService } from "../jslib/src/services/totp.service";
 
 const i18nService = new I18nService(window.navigator.language, "locales");
 const stateService = new StateService();
@@ -155,6 +156,7 @@ const importService = new ImportService(
 );
 const auditService = new AuditService(cryptoFunctionService, apiService);
 containerService.attachToWindow(window);
+const totpService = new TotpService(storageService, cryptoFunctionService)
 
 export default async ({ app, store }, inject) => {
   await (storageService as HtmlStorageService).init();
@@ -180,4 +182,5 @@ export default async ({ app, store }, inject) => {
   inject("auditService", auditService);
   inject("cryptoFunctionService", cryptoFunctionService);
   inject("sendService", sendService);
+  inject("totpService", totpService);
 };
