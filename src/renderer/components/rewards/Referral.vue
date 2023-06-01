@@ -29,7 +29,7 @@
                 <img :src="require('~/assets/images/icons/referral.svg')">
               </div>
             </div>
-            <div v-if="currentPlan.alias !== 'pm_free' && referrals.referred > 0" class="flex items-center pb-5">
+            <div v-if="currentPlan.alias !== 'pm_free' && currentPlan.extra_time > 0 && referrals.referred > 0" class="flex items-center pb-5">
               <a href="/settings/plans-billing">{{ $t('data.rewards.discontinue') }}</a>
               <span class="ml-1">{{ $t('data.rewards.discontinue_note') }}</span>
             </div>

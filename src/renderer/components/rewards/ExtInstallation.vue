@@ -32,7 +32,7 @@
                 class="lg:flex md:hidden hidden"
               />
             </div>
-            <div v-if="currentPlan.alias !== 'pm_free' && currentStep.key === 3" class="flex items-center pb-5">
+            <div v-if="currentPlan.alias !== 'pm_free' && currentPlan.extra_time > 0 && currentStep.key === 3" class="flex items-center pb-5">
               <a href="/settings/plans-billing">{{ $t('data.rewards.discontinue') }}</a>
               <span class="ml-1">{{ $t('data.rewards.discontinue_note') }}</span>
             </div>
@@ -191,7 +191,9 @@ export default {
   },
   methods: {
     fetchData () {
-      this.browsers = (this.mission?.answer || []).map(a => a.browser)
+      console.log(this.currentPlan)
+      const browsers = this.mission?.answer || []
+      this.browsers = browsers.map(a => a.browser)
       this.allBrowsers = this.allBrowsers.map(b => ({
         ...b,
         displayName: (this.mission?.answer || []).find(a => a.browser === b.value)?.user_identifier || ''

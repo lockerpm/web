@@ -17,6 +17,9 @@
           <div v-html="$t('data.rewards.verify_popup.resubmit.desc1', { action: dialogData.action })" />
           <div class="mt-m" v-html="$t('data.rewards.verify_popup.resubmit.desc2')" />
         </div>
+        <div v-else-if="dialogData.store === 'desktop'">
+          <div v-html="dialogData.message" />
+        </div>
         <div v-else
           v-html="$t('data.rewards.verify_popup.resubmit.desc', {
             action: dialogData.action,

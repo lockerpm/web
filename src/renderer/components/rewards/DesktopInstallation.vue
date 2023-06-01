@@ -136,14 +136,16 @@ export default {
         } else {
           this.$emit('resubmit', {
             type: 'code_off',
-            action: this.$t('data.rewards.desktop_installation.title')
+            store: 'desktop',
+            message: this.$t('data.rewards.verify_popup.resubmit.desc3', { action: this.$t('data.rewards.desktop_installation.title') })
           })
         }
       }).catch(() => {
         this.callingAPI = false
         this.$emit('resubmit', {
           type: 'code_off',
-          action: this.$t('data.rewards.desktop_installation.title')
+          store: 'desktop',
+          message: this.$t('data.rewards.verify_popup.resubmit.desc3', { action: this.$t('data.rewards.desktop_installation.title') })
         })
       })
     }
