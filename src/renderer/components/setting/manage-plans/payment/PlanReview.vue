@@ -16,7 +16,15 @@
         class="border border-black-100 rounded hover:border-primary flex flex-col p-6 text-center cursor-pointer"
         @click="handleChangePlan(plan)"
       >
-        <div class="h-6 -ml-6 mb-2">
+        <input
+          type="radio"
+          class="checked:bg-primary"
+          :checked="
+            plan.alias === selectedPlan.alias &&
+              plan.duration === selectedPeriod.duration
+          "
+        >
+        <div class="h-6 -ml-6 mb-2 mt-3">
           <div v-if="plan.popular" class="gradient-bg rounded-r-full">
             <p class="text-white font-semibold text-[10px]">
               {{ $t('data.plans.most_popular').toUpperCase() }}

@@ -179,9 +179,7 @@
             rules="max:100"
             :name="$t('common.company')"
           >
-            <label>{{ $t('common.company') }}
-              <span class="text-danger">*</span>
-            </label>
+            <label>{{ $t('common.company') }} </label>
             <input
               v-model="user.metadata.company"
               name="company"

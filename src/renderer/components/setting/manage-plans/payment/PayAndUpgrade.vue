@@ -1,5 +1,8 @@
 <template>
-  <div v-loading="loadingCalc" class="min-w-[200px] md:max-w-[200px]">
+  <div
+    v-loading="loadingCalc"
+    class="min-w-[200px] md:max-w-[200px] lg:max-w-[250px]"
+  >
     <h2 class="text-[18px] font-semibold mb-4">
       {{ $t('data.plans.payment_step.step_3') }}
     </h2>

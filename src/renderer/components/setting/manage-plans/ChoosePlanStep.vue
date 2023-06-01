@@ -80,7 +80,7 @@
                 {{ item.name }}
               </p>
               <div
-                v-if="currentPlan.alias === item.alias"
+                v-if="isCurrentPlan(item)"
                 class="bg-black-200 ml-2 px-2 py-1 rounded"
               >
                 <p class="text-[9px] text-black-600 leading-[12px]">
@@ -187,41 +187,13 @@
 
           <!-- Button -->
           <el-button
-            :type="currentPlan.alias === item.alias ? 'default' : 'primary'"
+            :type="isCurrentPlan(item) ? 'default' : 'primary'"
             class="w-full"
-            :disabled="
-              loading[item.alias] ||
-                item.alias === 'pm_free' ||
-                currentPlan.alias === 'pm_lifetime_premium' ||
-                currentPlan.alias === item.alias
-            "
+            :disabled="isPurchaseBtnDisabled(item)"
             :loading="loading[item.alias]"
-            @click="
-              currentPlan.personal_trial_applied === false
-                ? startTrial(item)
-                : item.alias !== 'pm_free' && currentPlan.alias !== item.alias
-                  ? selectPlan(item)
-                  : ''
-            "
+            @click="handleBtnClick(item)"
           >
-            <template v-if="currentPlan.alias === item.alias">
-              {{ $t('data.plans.current_plan') }}
-            </template>
-            <template
-              v-else-if="
-                currentPlan.alias === 'pm_lifetime_premium' &&
-                  item.alias === 'pm_premium'
-              "
-            >
-              {{ $t('data.plans.current_plan') }}
-            </template>
-            <template v-else>
-              {{
-                currentPlan.personal_trial_applied === false
-                  ? $t('data.plans.start_trial')
-                  : $t('data.plans.choose_this_plan')
-              }}
-            </template>
+            {{ getBtnText(item) }}
           </el-button>
           <!-- Button end -->
         </div>
@@ -334,8 +306,76 @@ export default {
       }
     },
 
-    selectPlan (plan) {
-      this.switchPlan(plan)
+    selectPlan (plan, silent) {
+      this.switchPlan(plan, silent)
+    },
+
+    isCurrentPlan (plan) {
+      return (
+        this.currentPlan.alias === plan.alias &&
+        this.currentPlan.duration === this.selectedPeriod.duration
+      )
+    },
+
+    isPurchaseBtnDisabled (plan) {
+      if (this.loading[plan.alias]) {
+        return true
+      }
+      if (
+        plan.alias === 'pm_free' ||
+        this.currentPlan.alias === 'pm_lifetime_premium'
+      ) {
+        return true
+      }
+      if (this.currentPlan.alias === plan.alias) {
+        if (this.currentPlan.duration === this.selectedPeriod.duration) {
+          return !this.currentPlan.is_trialing
+        }
+      }
+      return false
+    },
+
+    handleBtnClick (plan) {
+      if (
+        plan.alias === 'pm_free' ||
+        this.currentPlan.alias === 'pm_lifetime_premium'
+      ) {
+        return
+      }
+      if (this.currentPlan.alias === plan.alias) {
+        if (this.currentPlan.duration === this.selectedPeriod.duration) {
+          if (this.currentPlan.is_trialing) {
+            this.selectPlan(plan, true)
+          }
+          return
+        }
+      }
+      if (!this.currentPlan.personal_trial_applied) {
+        this.startTrial(plan)
+      } else {
+        this.selectPlan(plan)
+      }
+    },
+
+    getBtnText (plan) {
+      if (
+        this.currentPlan.alias === plan.alias &&
+        this.currentPlan.duration === this.selectedPeriod.duration
+      ) {
+        if (this.currentPlan.is_trialing) {
+          return this.$t('data.plans.purchase_now')
+        }
+        return this.$t('data.plans.current_plan')
+      }
+      if (
+        this.currentPlan.alias === 'pm_lifetime_premium' &&
+        plan.alias === 'pm_premium'
+      ) {
+        return this.$t('data.plans.current_plan')
+      }
+      return !this.currentPlan.personal_trial_applied
+        ? this.$t('data.plans.start_trial')
+        : this.$t('data.plans.choose_this_plan')
     }
   }
 }

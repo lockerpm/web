@@ -143,7 +143,9 @@ export default {
     handleSwitchPlan (plan, silent = false) {
       const confirmMessage = this.$t('data.notifications.switch_plan', {
         currentPlan: this.currentPlan.name,
-        chosenPlan: plan.name
+        currentPeriod: this.$t(`common.${this.currentPlan.duration}`),
+        chosenPlan: plan.name,
+        chosenPeriod: this.$t(`common.${this.selectedPeriod.duration}`)
       })
 
       const _switchPlan = () => {

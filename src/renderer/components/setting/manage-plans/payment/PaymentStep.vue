@@ -11,7 +11,7 @@
 
     <div class="flex flex-col md:flex-row">
       <!-- Left content -->
-      <div>
+      <div class="flex-1">
         <div class="setting-wrapper p-8">
           <!-- Review plan -->
           <plan-review
