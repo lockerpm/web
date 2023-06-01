@@ -11,6 +11,7 @@ import { toServerData } from '../../../utils/new-types/server'
 import { toApiCipherData, API_METHODS } from '../../../utils/new-types/api'
 import { CipherRequest } from '@/jslib/src/models/request'
 import { SecureNote } from '@/jslib/src/models/domain'
+import { getTOTP, parseOTPUri } from '@/utils/totp/index.ts'
 
 Vue.mixin({
   computed: {
@@ -321,6 +322,10 @@ Vue.mixin({
           {
             value: item.login.password,
             label: 'common.password'
+          },
+          {
+            value: getTOTP(parseOTPUri(item.login.totp)),
+            label: 'common.totp'
           }
         ]
 
