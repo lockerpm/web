@@ -13,6 +13,7 @@
       :label="$t('data.ciphers.otp.select_placeholder')"
       :required="true"
       :options="otps"
+      :filterable="true"
       @change="changeOtp"
     />
     <InputText
@@ -93,6 +94,7 @@ export default {
       otp: '',
       start: 0,
       initialValue: this.value,
+      otpSearchText: '',
       options: [
         {
           label: this.$t('data.ciphers.otp.no_otp'),
@@ -115,7 +117,7 @@ export default {
         let result = []
         try {
           const filter = c => c.type === CipherType.TOTP
-          result = await this.$searchService.searchCiphers('', [filter], null) || []
+          result = await this.$searchService.searchCiphers(this.otpSearchText, [filter], null) || []
         } catch (error) {
         }
         result = orderBy(result, [c => c.name && c.name.toLowerCase()], []) || []
@@ -125,7 +127,8 @@ export default {
         }))
       },
       watch: [
-        '$store.state.syncedCiphersToggle'
+        '$store.state.syncedCiphersToggle',
+        'otpSearchText'
       ]
     }
   },

@@ -324,7 +324,7 @@ Vue.mixin({
             label: 'common.password'
           },
           {
-            value: getTOTP(parseOTPUri(item.login.totp)),
+            value: item.login.totp ? getTOTP(parseOTPUri(item.login.totp)) : null,
             label: 'common.totp'
           }
         ]

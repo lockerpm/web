@@ -46,6 +46,7 @@
         <!-- LOGIN FIELDS -->
         <login-input
           v-if="cipher.type === CipherType.Login"
+          :key="cipher.id"
           :is-deleted="isDeleted"
           :name="cipher.name"
           :username="cipher.login.username"
