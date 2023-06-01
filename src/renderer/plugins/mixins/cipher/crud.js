@@ -3,6 +3,7 @@ import { LoginUriView, LoginView } from '../../../jslib/src/models/view'
 import { CipherRequest } from '../../../jslib/src/models/request'
 import { CipherType } from '../../../core/enums/cipherType'
 import { CipherView } from '../../../core/models/view/cipherView'
+import { SecureNote } from '../../../jslib/src/models/domain'
 
 Vue.mixin({
   methods: {
@@ -21,6 +22,26 @@ Vue.mixin({
       const data = new CipherRequest(cipherEnc)
       data.type = CipherType.MasterPassword
       return data
+    },
+
+    // Create Authenticator
+    async handleCreateAuthenticator (otpCipher) {
+      const cipher = new CipherView()
+      cipher.name = otpCipher.name
+      cipher.type = CipherType.SecureNote
+      cipher.secureNote = new SecureNote()
+      cipher.secureNote.type = 0
+      cipher.notes = `otpauth://totp/${encodeURIComponent(otpCipher.name
+      )}?secret=${otpCipher.secretKey}&issuer=${encodeURIComponent(
+        otpCipher.name
+      )}&algorithm=sha1&digits=6&period=30`
+      const cipherEnc = await this.$cipherService.encrypt(cipher)
+      const data = new CipherRequest(cipherEnc)
+      data.type = CipherType.TOTP
+      await this.$axios.post('cystack_platform/pm/ciphers/vaults', {
+        ...data,
+        collectionIds: []
+      })
     },
 
     // Create cipher

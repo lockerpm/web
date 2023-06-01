@@ -51,32 +51,14 @@
           :username="cipher.login.username"
           :password="cipher.login.password"
           :uris="cipher.login.uris"
+          :totp="cipher.login.totp"
           @update:name="newValue => (cipher.name = newValue)"
           @update:username="newValue => (cipher.login.username = newValue)"
           @update:password="newValue => (cipher.login.password = newValue)"
           @update:uris="newValue => (cipher.login.uris = newValue)"
+          @update:totp="newValue => (cipher.login.totp = newValue)"
+          @update:isCreateAuthenticator="newValue => (isCreateAuthenticator = newValue)"
         />
-
-        <!-- OTP -->
-        <div v-if="cipher.type === CipherType.Login" :key="cipher.id">
-          <!-- Label -->
-          <div
-            class="my-5 text-black-700 text-head-6 font-semibold"
-          >
-            {{ $t('data.ciphers.otp.setup') }}
-          </div>
-          <!-- Label end -->
-          <!-- Input -->
-          <div>
-            <PasswordOTP
-              :value="cipher.login.totp"
-              class="w-full"
-              @change="val => cipher.login.totp = val"
-            />
-          </div>
-          <!-- Input end -->
-        </div>
-        <!-- OTP END -->
 
         <!-- CARD FIELDS -->
         <card-input
@@ -342,7 +324,6 @@ import InputCustomFields from '../input/InputCustomFields.vue'
 import InlineEditCipher from './InlineEditCipher'
 import PasswordViolationDialog from './PasswordViolationDialog'
 import LoginInput from './cipher-types/login/LoginInput.vue'
-import PasswordOTP from './cipher-types/login/PasswordOTP.vue'
 import CardInput from './cipher-types/card/CardInput.vue'
 import IdentityInput from './cipher-types/identity/IdentityInput.vue'
 import CryptoBackupInput from './cipher-types/crypto-backup/CryptoBackupInput.vue'
@@ -367,7 +348,6 @@ export default {
     InputCustomFields,
     PasswordViolationDialog,
     LoginInput,
-    PasswordOTP,
     CardInput,
     IdentityInput,
     CryptoBackupInput,
@@ -405,7 +385,8 @@ export default {
       writeableCollections: [],
       nonWriteableCollections: [],
       cloneMode: false,
-      currentComponent: Dialog
+      currentComponent: Dialog,
+      isCreateAuthenticator: false
     }
   },
 
@@ -614,6 +595,12 @@ export default {
         cloneMode: this.cloneMode,
         score: passwordStrength.score
       })
+      if (this.isCreateAuthenticator && this.cipher.login.totp) {
+        const otpCipher = new CipherView()
+        otpCipher.name = this.cipher.name
+        otpCipher.secretKey = this.cipher.login.totp
+        await this.handleCreateAuthenticator(otpCipher)
+      }
       this.loading = false
       if (isSuccess) {
         this.closeDialog()
@@ -632,6 +619,12 @@ export default {
       const isSuccess = await this.handleEditCipher(this.cipher, {
         score: passwordStrength.score
       })
+      if (this.isCreateAuthenticator && this.cipher.login.totp) {
+        const otpCipher = new CipherView()
+        otpCipher.name = this.cipher.name
+        otpCipher.secretKey = this.cipher.login.totp
+        await this.handleCreateAuthenticator(otpCipher)
+      }
       this.loading = false
       if (isSuccess) {
         this.closeDialog()

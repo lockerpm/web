@@ -145,9 +145,9 @@ export default {
 
   methods: {
     countdown (val) {
+      this.start = val.main
       if (val.main === 0) {
-        const otpData = parseOTPUri(this.notes)
-        this.start = this.getRemainingTime(otpData.period)
+        this.start = this.getRemainingTime(this.otpData.period)
         setTimeout(() => {
           this.otp = getTOTP(otpData)
         }, 100)
@@ -163,10 +163,10 @@ export default {
     changeOtp (notes) {
       this.notes = notes
       this.$emit('change', notes)
+      this.$emit('createNewOtp', !!notes && this.option === 'new')
       if (this.notes) {
-        const otpData = parseOTPUri(this.notes)
-        this.start = this.getRemainingTime(otpData.period)
-        this.otp = getTOTP(otpData)
+        this.start = this.getRemainingTime(this.otpData.period)
+        this.otp = getTOTP(this.otpData)
       } else {
         this.start = 0
         this.otp = ''
@@ -177,6 +177,7 @@ export default {
       this.notes = null
       this.$emit('change', null)
       this.changeOption(null)
+      this.$emit('createNewOtp', false)
     }
   }
 }
