@@ -911,10 +911,10 @@ export default {
         this.$t('data.notifications.request_emergency_access', {
           day: emergencyAccess.wait_time_days
         }),
-        emergency_access.full_name || this.$t('common.warning'),
+        emergencyAccess.full_name || this.$t('common.warning'),
         {
-          confirmButtonText: 'Yes',
-          cancelButtonText: 'No',
+          confirmButtonText: this.$t('common.yes'),
+          cancelButtonText: this.$t('common.no'),
           type: 'warning'
         }
       )
@@ -945,12 +945,12 @@ export default {
       this.$confirm(
         this.$t('data.notifications.approve_emergency_access', {
           user: emergencyAccess.full_name,
-          type: emergency_access.type
+          type: emergencyAccess.type
         }),
-        emergency_access.full_name || this.$t('common.warning'),
+        emergencyAccess.full_name || this.$t('common.warning'),
         {
-          confirmButtonText: 'Approve',
-          cancelButtonText: 'No',
+          confirmButtonText: this.$t('common.approve'),
+          cancelButtonText: this.$t('common.no'),
           type: 'warning'
         }
       )

@@ -6,10 +6,10 @@
       <div class="mb-5">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="localeRoute({ name: 'tools' })">
-            Tools
+            {{ $t('sidebar.tools') }}
           </el-breadcrumb-item>
           <el-breadcrumb-item :to="localeRoute({ name: 'tools-breach' })">
-            Data Breach Scanner
+            {{ $t('data.tools.data_breach') }}
           </el-breadcrumb-item>
         </el-breadcrumb>
       </div>
@@ -47,7 +47,7 @@
           </div>
         </div>
       </div>
-      <div v-loading="loading" class="min-h-[500px] relative">
+      <div v-if="!isError" v-loading="loading" class="min-h-[500px] relative">
         <div
           v-if="!loading && checked"
           class="locker-callout mb-8"
@@ -102,7 +102,7 @@
                     v-html="item.description"
                   />
                   <div class="setting-description">
-                    Compromised data:
+                    {{ $t('data.tools.breach_compromised_data') }}:
                     <ul class="list-disc list-inside">
                       <li
                         v-for="(data, iData) in item.data_classes"
@@ -118,15 +118,21 @@
                   <div class="text-black-600">
                     {{ item.domain }}
                   </div>
-                  <div class="font-semibold">Affected Users</div>
+                  <div class="font-semibold">
+                    {{ $t('data.tools.breach_affected_users') }}
+                  </div>
                   <div class="text-black-600">
                     {{ item.pwn_count | formatNumber }}
                   </div>
-                  <div class="font-semibold">Breach Occurred</div>
+                  <div class="font-semibold">
+                    {{ $t('data.tools.breach_occurred') }}
+                  </div>
                   <div class="text-black-600">
                     {{ $moment(item.breach_date).format('LL') }}
                   </div>
-                  <div class="font-semibold">Breach Reported</div>
+                  <div class="font-semibold">
+                    {{ $t('data.tools.breach_occurred') }}
+                  </div>
                   <div class="text-black-600">
                     {{ $moment(item.added_date).format('LL') }}
                   </div>
@@ -147,15 +153,16 @@ export default {
       breach: [],
       loading: false,
       checked: false,
+      isError: false,
       email: ''
     }
   },
   computed: {
     haveData () {
-      return !this.loading && this.breach.length
+      return !this.loading && this.breach.length && !this.isError
     },
     noData () {
-      return !this.loading && this.breach.length === 0
+      return !this.loading && this.breach.length === 0 && !this.isError
     }
   },
   watch: {
@@ -174,6 +181,7 @@ export default {
     async checkBreaches () {
       this.loading = true
       this.checked = false
+      this.isError = false
       try {
         this.breach = await this.$axios.$post(
           'cystack_platform/pm/tools/breach',
@@ -181,7 +189,12 @@ export default {
             email: this.email
           }
         )
-      } catch {
+      } catch (e) {
+        this.isError = true
+        this.notify(
+          e.response?.data?.message || this.$t('errors.something_went_wrong'),
+          'warning'
+        )
       } finally {
         this.loading = false
         this.checked = true

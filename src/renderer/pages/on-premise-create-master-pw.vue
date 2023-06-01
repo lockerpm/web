@@ -136,6 +136,7 @@
       :visible.sync="confirmDialogVisible"
       width="420px"
       :title="$t('set_master_password.confirm_nodal.title')"
+      custom-class="no-pt-dialog"
       center
     >
       <img
@@ -231,7 +232,9 @@ export default {
     this.$store.commit('UPDATE_IS_LOGGEDIN', true)
     this.$store.commit('UPDATE_IS_LOGGEDIN_ON_PREMISE', false)
     this.$store.commit('UPDATE_USER', { email })
-    this.$store.commit('UPDATE_ON_PREMISE_INFO', host + '/v3')
+    this.$store.commit('UPDATE_ON_PREMISE_INFO', {
+      baseApi: host + '/v3'
+    })
     this.$axios.setToken(token, 'Bearer')
     this.$store.dispatch('LoadTeams')
   },
@@ -345,7 +348,7 @@ export default {
 </script>
 
 <style>
-.el-dialog__body {
+.no-pt-dialog .el-dialog__body {
   padding-top: 0 !important;
 }
 </style>

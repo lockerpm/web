@@ -6,9 +6,7 @@
 
     <div class="flex flex-1 flex-col overflow-hidden ml-4">
       <!-- Name -->
-      <p
-        class="text-black truncate flex items-center"
-      >
+      <p class="text-black truncate flex items-center">
         <span class="overflow-hidden overflow-ellipsis">{{ name }}</span>
       </p>
       <!-- Name end -->
@@ -22,16 +20,18 @@
 
     <div>
       <circular-count-down-timer
-        :circles="[{
-          id: 'main',
-          steps: otpData.period,
-          size: 24,
-          showValue: false,
-          stepLength: -1,
-          value: start,
-          strokeWidth: 3,
-          strokeColor: '#268334'
-        }]"
+        :circles="[
+          {
+            id: 'main',
+            steps: otpData.period,
+            size: 24,
+            showValue: false,
+            stepLength: -1,
+            value: start,
+            strokeWidth: 3,
+            strokeColor: '#268334'
+          }
+        ]"
         :interval="1000"
         :size="24"
         main-circle-id="main"
@@ -74,8 +74,9 @@ export default {
   },
   methods: {
     countdown (val) {
+      this.start = val.main
       if (val.main === 0) {
-        this.start = this.otpData.period
+        this.start = this.getRemainingTime(this.otpData.period)
         setTimeout(() => {
           this.otp = getTOTP(this.otpData)
         }, 100)
@@ -83,7 +84,7 @@ export default {
     },
     getRemainingTime (period = 30) {
       // Better late 1 sec than early
-      return (period + 1) - Math.floor(new Date().getTime() / 1000) % period
+      return period + 1 - (Math.floor(new Date().getTime() / 1000) % period)
     },
     getAvatarUrl (name) {
       if (!name) {
@@ -95,6 +96,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

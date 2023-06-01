@@ -10,14 +10,11 @@ export interface OTPData {
 
 export const getTOTP = (otp: OTPData) => {
   try {
-    const res = totp(otp.secret, {
+    const res = totp(_removeInvalidBase32Chars(otp.secret), {
       algorithm: otp.algorithm || 'SHA-1',
       period: otp.period || 30,
       digits: otp.digits || 6
     })
-    if (!res) {
-      console.log(otp.account)
-    }
     return res
   } catch (e) {
     console.error(e)
@@ -30,9 +27,9 @@ export const parseOTPUri = (uri: string) => {
   const res: OTPData = {
     account: undefined,
     secret: undefined,
-    algorithm: undefined,
-    period: undefined,
-    digits: undefined
+    algorithm: 'SHA-1',
+    period: 30,
+    digits: 6
   }
 
   if (!uri) {
@@ -51,10 +48,18 @@ export const parseOTPUri = (uri: string) => {
     return res
   }
 
+  if (data.length === 1) {
+    res.secret = data[0]
+    return res
+  }
+
   const account = decodeURIComponent(data[0])
   const query = _parseQueryString(data[1])
 
-  res.account = (query.issuer && !account.startsWith(query.issuer)) ? `${query.issuer} (${account})` : account
+  res.account =
+    query.issuer && !account.startsWith(query.issuer)
+      ? `${query.issuer} (${account})`
+      : account
   res.secret = query.secret
   res.algorithm = _parseAlgorithm(query.algorithm)
   try {
@@ -122,6 +127,17 @@ const _parseAlgorithm = (algo: string) => {
     return 'MD5'
   }
   return 'SHA-1'
+}
+
+const _removeInvalidBase32Chars = (base32String: string) => {
+  if (!base32String) {
+    return ''
+  }
+  const filteredString = base32String
+    .toUpperCase()
+    .trim()
+    .replace(/[^A-Z2-7]/g, '')
+  return filteredString
 }
 
 export const beautifyName = (name: string) => {

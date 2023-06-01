@@ -115,6 +115,10 @@ Vue.mixin({
 
     async syncQuickShares () {
       try {
+        // No quick shares for on premise
+        if (this.isOnPremise) {
+          return
+        }
         this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', true)
         const res = await this.$axios.$get(
           'cystack_platform/pm/quick_shares?paging=0'
