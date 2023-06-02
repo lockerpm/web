@@ -722,7 +722,7 @@ export default {
         : []
 
       // Set item name if open from tutorial
-      if (this.$tutorial.isActive()) {
+      if (this.$store.state.tutorial.isActive) {
         this.cipher.name = 'New password'
       }
     },
@@ -742,11 +742,15 @@ export default {
 
     onClose () {
       if (
-        this.$tutorial.isActive() &&
+        this.$store.state.tutorial.isActive &&
         this.$store.state.tutorial.currentStepId !== 'add-pw-1'
       ) {
+        this.markDoneStep('add_pw')
         this.$tutorial.hide()
-        this.$tutorial.show('view-shares')
+        this.$router.push(this.localePath('/settings/import-export'))
+        setTimeout(() => {
+          this.$tutorial.show('import-1')
+        }, 1000)
       }
     }
   }
