@@ -14,7 +14,9 @@ app.get('/articles', async (req, res) => {
   try {
     const result = []
     const promise = []
-    const categories = await retrieveBlockChildren(language === 'vi' ? ANCESTOR_ID[1] : ANCESTOR_ID[0])
+    const categories = await retrieveBlockChildren(
+      language === 'vi' ? ANCESTOR_ID[1] : ANCESTOR_ID[0]
+    )
     for (const block of categories) {
       promise.push(retrieveBlockChildren(block.id))
     }
@@ -25,7 +27,9 @@ app.get('/articles', async (req, res) => {
     res.send({ data: result })
   } catch (error) {
     if (error.response) {
-      return res.status(error.response.status).json({ statusCode: error.response.status })
+      return res
+        .status(error.response.status)
+        .json({ statusCode: error.response.status })
     }
     return res.status(404).json({ statusCode: 404 })
   }
@@ -36,7 +40,9 @@ app.get('/articles/:id', async (req, res) => {
     res.json({ ...result })
   } catch (error) {
     if (error.response) {
-      return res.status(error.response.status).json({ statusCode: error.response.status })
+      return res
+        .status(error.response.status)
+        .json({ statusCode: error.response.status })
     }
     return res.status(404).json({ statusCode: 404 })
   }
@@ -47,7 +53,9 @@ app.get('/categories/:id', async (req, res) => {
     res.json({ ...result })
   } catch (error) {
     if (error.response) {
-      return res.status(error.response.status).json({ statusCode: error.response.status })
+      return res
+        .status(error.response.status)
+        .json({ statusCode: error.response.status })
     }
     return res.status(404).json({ statusCode: 404 })
   }
@@ -67,7 +75,7 @@ const retrieveBlockChildren = async pageId => {
     }
     return result
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     return []
   }
 }
@@ -82,7 +90,7 @@ const retrievePageInfo = async pageId => {
       parent: data.parent.page_id
     }
   } catch (error) {
-    console.log(error)
+    // console.log(error)
     return {}
   }
 }

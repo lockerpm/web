@@ -353,7 +353,12 @@ Vue.mixin({
       if (!link.match(/^https?:\/\//i)) {
         link = 'http://' + link
       }
-      window.open(link, '_blank')
+      const regex = /^(ftp|http|https):\/\/[^ "]+$/
+      if (regex.test(link)) {
+        window.open(link, '_blank')
+      } else {
+        this.notify(this.$t('errors.invalid_url'), 'warning')
+      }
     },
 
     // Blog subscribe

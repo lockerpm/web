@@ -43,14 +43,11 @@
         :key="item.id"
         :class="{
           '!border-primary': selectedPlan.alias === item.alias,
-          'mt-[38px]': item.alias !== 'pm_premium'
+          'mt-[38px]': !isPopularPlan(item)
         }"
         class="border border-black-100 rounded-xl hover:border-primary overflow-hidden relative flex flex-col bg-white"
       >
-        <div
-          v-if="item.alias === 'pm_premium'"
-          class="text-center gradient-bg py-2"
-        >
+        <div v-if="isPopularPlan(item)" class="text-center gradient-bg py-2">
           <p class="text-white font-semibold tracking-wide">
             {{ $t('data.plans.most_popular').toUpperCase() }}
           </p>
@@ -187,7 +184,7 @@
 
           <!-- Button -->
           <el-button
-            :type="isCurrentPlan(item) ? 'default' : 'primary'"
+            :type="isPurchaseBtnDisabled(item) ? 'default' : 'primary'"
             class="w-full"
             :disabled="isPurchaseBtnDisabled(item)"
             :loading="loading[item.alias]"
@@ -317,6 +314,13 @@ export default {
       )
     },
 
+    isPopularPlan (plan) {
+      return (
+        plan.alias === 'pm_premium' &&
+        this.selectedPeriod.duration === PlanPeriod.YEARLY
+      )
+    },
+
     isPurchaseBtnDisabled (plan) {
       if (this.loading[plan.alias]) {
         return true
@@ -329,7 +333,7 @@ export default {
       }
       if (this.currentPlan.alias === plan.alias) {
         if (this.currentPlan.duration === this.selectedPeriod.duration) {
-          return !this.currentPlan.is_trialing
+          return !this.currentPlan.is_trailing
         }
       }
       return false
@@ -344,7 +348,7 @@ export default {
       }
       if (this.currentPlan.alias === plan.alias) {
         if (this.currentPlan.duration === this.selectedPeriod.duration) {
-          if (this.currentPlan.is_trialing) {
+          if (this.currentPlan.is_trailing) {
             this.selectPlan(plan, true)
           }
           return
@@ -362,7 +366,7 @@ export default {
         this.currentPlan.alias === plan.alias &&
         this.currentPlan.duration === this.selectedPeriod.duration
       ) {
-        if (this.currentPlan.is_trialing) {
+        if (this.currentPlan.is_trailing) {
           return this.$t('data.plans.purchase_now')
         }
         return this.$t('data.plans.current_plan')
