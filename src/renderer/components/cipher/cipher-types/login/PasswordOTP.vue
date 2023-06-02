@@ -152,7 +152,7 @@ export default {
       if (val.main === 0) {
         this.start = this.getRemainingTime(this.otpData.period)
         setTimeout(() => {
-          this.otp = getTOTP(otpData)
+          this.otp = getTOTP(this.otpData)
         }, 100)
       }
     },
