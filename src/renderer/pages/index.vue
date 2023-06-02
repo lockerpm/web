@@ -698,7 +698,7 @@ export default {
           posts
         }
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
 
@@ -707,7 +707,6 @@ export default {
       try {
         const res = await $axios.get(`${process.env.baseUrl}/api/testimonials`)
         if (!res.data?.data) {
-          console.log(res.data)
           return {
             testimonials: []
           }
@@ -729,7 +728,7 @@ export default {
             })
         }
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
 
