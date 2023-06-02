@@ -94,7 +94,6 @@
             >
               <div
                 v-if="!item.link"
-                :to="localePath(`${item.link}`)"
                 class="flex flex-col text-center items-center md:items-start md:text-left px-[30px] pt-11 h-full"
               >
                 <img
@@ -110,7 +109,7 @@
                 </p>
               </div>
               <nuxt-link
-                v-if="item.static === false && item.link"
+                v-if="!item.static && item.link"
                 :to="localePath(`${item.link}`)"
                 class="flex flex-col text-center items-center md:items-start md:text-left px-[30px] pt-11 h-full"
               >
@@ -127,7 +126,7 @@
                 </p>
               </nuxt-link>
               <a
-                v-if="item.static === true && item.link"
+                v-if="item.static && item.link"
                 :href="`${item.link}`"
                 class="flex flex-col text-center items-center md:items-start md:text-left px-[30px] pt-11 h-full"
               >
