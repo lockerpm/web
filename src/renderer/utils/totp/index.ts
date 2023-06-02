@@ -10,14 +10,11 @@ export interface OTPData {
 
 export const getTOTP = (otp: OTPData) => {
   try {
-    const res = totp(otp.secret, {
+    const res = totp(_removeInvalidBase32Chars(otp.secret), {
       algorithm: otp.algorithm || 'SHA-1',
       period: otp.period || 30,
       digits: otp.digits || 6
     })
-    if (!res) {
-      console.log(otp.account)
-    }
     return res
   } catch (e) {
     console.error(e)
@@ -130,6 +127,17 @@ const _parseAlgorithm = (algo: string) => {
     return 'MD5'
   }
   return 'SHA-1'
+}
+
+const _removeInvalidBase32Chars = (base32String: string) => {
+  if (!base32String) {
+    return ''
+  }
+  const filteredString = base32String
+    .toUpperCase()
+    .trim()
+    .replace(/[^A-Z2-7]/g, '')
+  return filteredString
 }
 
 export const beautifyName = (name: string) => {

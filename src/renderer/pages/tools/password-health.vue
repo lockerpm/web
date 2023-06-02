@@ -6,30 +6,33 @@
       <div class="mb-5">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="localeRoute({ name: 'tools' })">
-            Tools
+            {{ $t('sidebar.tools') }}
           </el-breadcrumb-item>
           <el-breadcrumb-item
             :to="localeRoute({ name: 'tools-password-health' })"
           >
-            Password Health
+            {{ $t('data.tools.password_health') }}
           </el-breadcrumb-item>
           <el-breadcrumb-item
             v-if="getRouteBaseName() === 'tools-password-health-weak'"
             :to="localeRoute({ name: 'tools-password-health-weak' })"
+            class="capitalize"
           >
-            Weak Passwords
+            {{ $t('data.tools.weak_passwords') }}
           </el-breadcrumb-item>
           <el-breadcrumb-item
             v-if="getRouteBaseName() === 'tools-password-health-reused'"
             :to="localeRoute({ name: 'tools-password-health-reused' })"
+            class="capitalize"
           >
-            Reused Passwords
+            {{ $t('data.tools.reused_passwords') }}
           </el-breadcrumb-item>
           <el-breadcrumb-item
             v-if="getRouteBaseName() === 'tools-password-health-exposed'"
             :to="localeRoute({ name: 'tools-password-health-exposed' })"
+            class="capitalize"
           >
-            Exposed Passwords
+            {{ $t('data.tools.exposed_passwords') }}
           </el-breadcrumb-item>
         </el-breadcrumb>
       </div>
