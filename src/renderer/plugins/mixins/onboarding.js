@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import uniqBy from 'lodash/uniqBy'
 
 Vue.mixin({
   methods: {
@@ -10,12 +11,16 @@ Vue.mixin({
         const progress = {
           tutorial: res.tutorial,
           welcome: res.welcome,
-          vaultToDashboard: res.vault_to_dashboard
+          vaultToDashboard: res.vault_to_dashboard,
+          tutorialProcess: res.tutorial_process
         }
         this.$store.commit('UPDATE_NOTICE', {
           showWelcome: !progress.welcome,
           allowShowWelcomeBusiness: !progress.vaultToDashboard,
           allowShowTutorial: !progress.tutorial
+        })
+        this.$store.commit('UPDATE_TUTORIAL', {
+          doneSteps: progress.tutorialProcess || []
         })
 
         // Should open tutorial right away or wait after welcome business
@@ -42,6 +47,19 @@ Vue.mixin({
       } catch (e) {
         console.log(e)
         return false
+      }
+    },
+
+    markDoneStep (stepId) {
+      const progress = uniqBy([...this.$store.state.tutorial.doneSteps])
+      if (!progress.includes(stepId)) {
+        progress.push(stepId)
+        this.$store.commit('UPDATE_TUTORIAL', {
+          doneSteps: progress
+        })
+        this.updateOnboardingProgress({
+          tutorial_process: progress
+        })
       }
     }
   }

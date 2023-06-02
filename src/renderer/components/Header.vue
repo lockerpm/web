@@ -257,11 +257,19 @@ export default {
       }
     },
     startTutorial () {
-      this.$store.commit('UPDATE_NOTICE', { showTutorial: true })
+      this.$router.push({ path: '/welcome-tour' })
     },
     showTutorialLastStep () {
-      if (this.$tutorial.isActive()) {
-        this.$tutorial.cancel()
+      if (
+        this.$store.state.tutorial.isActive &&
+        this.$store.state.tutorial.currentStepId === 'view-profile'
+      ) {
+        this.markDoneStep('view_profile')
+        this.$tutorial.hide()
+        this.$store.commit('UPDATE_TUTORIAL', {
+          isActive: false,
+          currentStepId: ''
+        })
         this.$store.commit('UPDATE_NOTICE', { showTutorialStep6: true })
       }
     }
