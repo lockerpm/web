@@ -67,10 +67,6 @@ export default {
             {
               label: 'plans_billing',
               routeName: 'settings-plans-billing'
-            },
-            {
-              label: 'referral',
-              routeName: 'settings-referral'
             }
           ]
           : []),
@@ -87,6 +83,12 @@ export default {
           ]
           : [])
       ]
+    }
+  },
+  mounted () {
+    // Tutorial
+    if (this.$store.state.tutorial.isActive) {
+      this.markDoneStep('view_settings')
     }
   }
 }

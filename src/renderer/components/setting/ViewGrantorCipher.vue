@@ -210,7 +210,6 @@ export default {
     Dialog,
     ValidationProvider,
     ValidationObserver,
-    PasswordStrengtBar,
     InputText,
     LoginInput,
     CardInput,

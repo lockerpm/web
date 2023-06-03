@@ -46,15 +46,19 @@
         <!-- LOGIN FIELDS -->
         <login-input
           v-if="cipher.type === CipherType.Login"
+          :key="cipher.id"
           :is-deleted="isDeleted"
           :name="cipher.name"
           :username="cipher.login.username"
           :password="cipher.login.password"
           :uris="cipher.login.uris"
+          :totp="cipher.login.totp"
           @update:name="newValue => (cipher.name = newValue)"
           @update:username="newValue => (cipher.login.username = newValue)"
           @update:password="newValue => (cipher.login.password = newValue)"
           @update:uris="newValue => (cipher.login.uris = newValue)"
+          @update:totp="newValue => (cipher.login.totp = newValue)"
+          @update:isCreateAuthenticator="newValue => (isCreateAuthenticator = newValue)"
         />
 
         <!-- CARD FIELDS -->
@@ -382,7 +386,8 @@ export default {
       writeableCollections: [],
       nonWriteableCollections: [],
       cloneMode: false,
-      currentComponent: Dialog
+      currentComponent: Dialog,
+      isCreateAuthenticator: false
     }
   },
 
@@ -591,6 +596,12 @@ export default {
         cloneMode: this.cloneMode,
         score: passwordStrength.score
       })
+      if (this.isCreateAuthenticator && this.cipher.login.totp) {
+        const otpCipher = new CipherView()
+        otpCipher.name = this.cipher.name
+        otpCipher.secretKey = this.cipher.login.totp
+        await this.handleCreateAuthenticator(otpCipher)
+      }
       this.loading = false
       if (isSuccess) {
         this.closeDialog()
@@ -609,6 +620,12 @@ export default {
       const isSuccess = await this.handleEditCipher(this.cipher, {
         score: passwordStrength.score
       })
+      if (this.isCreateAuthenticator && this.cipher.login.totp) {
+        const otpCipher = new CipherView()
+        otpCipher.name = this.cipher.name
+        otpCipher.secretKey = this.cipher.login.totp
+        await this.handleCreateAuthenticator(otpCipher)
+      }
       this.loading = false
       if (isSuccess) {
         this.closeDialog()
@@ -722,7 +739,7 @@ export default {
         : []
 
       // Set item name if open from tutorial
-      if (this.$tutorial.isActive()) {
+      if (this.$store.state.tutorial.isActive) {
         this.cipher.name = 'New password'
       }
     },
@@ -742,11 +759,15 @@ export default {
 
     onClose () {
       if (
-        this.$tutorial.isActive() &&
+        this.$store.state.tutorial.isActive &&
         this.$store.state.tutorial.currentStepId !== 'add-pw-1'
       ) {
+        this.markDoneStep('add_pw')
         this.$tutorial.hide()
-        this.$tutorial.show('view-shares')
+        this.$router.push(this.localePath('/settings/import-export'))
+        setTimeout(() => {
+          this.$tutorial.show('import-1')
+        }, 1000)
       }
     }
   }

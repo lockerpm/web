@@ -30,9 +30,9 @@
         <div class="mr-3 md:block hidden">
           <button
             class="btn btn-outline-primary"
-            @click="$router.push(localePath({ name: 'settings-referral' }))"
+            @click="$router.push(localePath({ name: 'rewards' }))"
           >
-            {{ $t('sidebar.referral') }}
+            {{ $t('sidebar.rewards') }}
           </button>
         </div>
         <!-- Referral end -->
@@ -257,11 +257,19 @@ export default {
       }
     },
     startTutorial () {
-      this.$store.commit('UPDATE_NOTICE', { showTutorial: true })
+      this.$router.push({ path: '/welcome-tour' })
     },
     showTutorialLastStep () {
-      if (this.$tutorial.isActive()) {
-        this.$tutorial.cancel()
+      if (
+        this.$store.state.tutorial.isActive &&
+        this.$store.state.tutorial.currentStepId === 'view-profile'
+      ) {
+        this.markDoneStep('view_profile')
+        this.$tutorial.hide()
+        this.$store.commit('UPDATE_TUTORIAL', {
+          isActive: false,
+          currentStepId: ''
+        })
         this.$store.commit('UPDATE_NOTICE', { showTutorialStep6: true })
       }
     }

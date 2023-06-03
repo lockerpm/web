@@ -46,7 +46,8 @@ export const state = () => ({
   },
   tutorial: {
     isActive: false,
-    currentStepId: ''
+    currentStepId: '',
+    doneSteps: []
   },
   syncingQuickShares: false,
 

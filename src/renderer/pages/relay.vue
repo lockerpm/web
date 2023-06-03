@@ -31,7 +31,7 @@
           </template>
           <!-- Header end -->
           <!-- Body -->
-          <div class="px-4">
+          <div class="px-5">
             <div class="setting-section-body">
               <ul class="list-disc ml-5">
                 <li>
@@ -410,10 +410,4 @@ export default {
 }
 </script>
 <style lang="scss">
-.relay-info {
-  .el-collapse-item__header {
-    height: auto !important;
-    line-height: 24px !important;
-  }
-}
 </style>
