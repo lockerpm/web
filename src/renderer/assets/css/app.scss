@@ -374,6 +374,10 @@ input:-webkit-autofill:active {
     padding-left: 35px;
   }
 }
+.el-input__suffix {
+  display: flex;
+  align-items: center;
+}
 .navigation-bar {
   @apply flex mb-5 border-b border-black-400 pt-3 lg:px-28 md:px-10 px-4;
   .navigation-item {
@@ -631,6 +635,17 @@ a:hover {
   font-weight: 600;
 }
 
+.el-button {
+  &--success {
+    background-color: #268334 !important;
+    border-color: #268334 !important;
+    &.is-plain {
+      background-color: #fff !important;
+      color: #268334 !important;
+    }
+  }
+}
+
 .setting-button {
   width: 224px;
 }
@@ -642,4 +657,9 @@ th .cell {
 
 .setting-wrapper .el-collapse-item__header {
   height: auto !important;
+}
+
+.el-collapse-item__header {
+  height: auto !important;
+  line-height: 24px !important;
 }

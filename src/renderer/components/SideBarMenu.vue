@@ -315,6 +315,12 @@ export default {
           label: 'trash',
           icon: 'trashh',
           routeName: 'trash'
+        },
+        {
+          label: 'rewards',
+          icon: 'rewards',
+          routeName: 'rewards',
+          hide: this.isEnterpriseMember
         }
       ]
     },

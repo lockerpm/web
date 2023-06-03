@@ -30,9 +30,9 @@
         <div class="mr-3 md:block hidden">
           <button
             class="btn btn-outline-primary"
-            @click="$router.push(localePath({ name: 'settings-referral' }))"
+            @click="$router.push(localePath({ name: 'rewards' }))"
           >
-            {{ $t('sidebar.referral') }}
+            {{ $t('sidebar.rewards') }}
           </button>
         </div>
         <!-- Referral end -->

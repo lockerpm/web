@@ -67,10 +67,6 @@ export default {
             {
               label: 'plans_billing',
               routeName: 'settings-plans-billing'
-            },
-            {
-              label: 'referral',
-              routeName: 'settings-referral'
             }
           ]
           : []),
