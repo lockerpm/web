@@ -9,6 +9,11 @@ export class AccountRole {
   static MEMBER = 2
 }
 
+export enum PlanPeriod {
+  MONTHLY = 'monthly',
+  YEARLY = 'yearly'
+}
+
 export const CipherMapper = (() => {
   // Notes: do not add friendly name for new cipher types
   // friendlyName: used for translation of old types
@@ -18,7 +23,22 @@ export const CipherMapper = (() => {
   // group: group cipher type to display in side menu or nav menu + its order in menu
   // revertToNote: convert back to note
 
-  const res = {}
+  const res: {
+    [type: number]: {
+      type: CipherType
+      routeName?: string
+      label?: string
+      friendlyName?: string
+      freeLimit?: number
+      csvTypeName?: string
+      group: string
+      hideFromCipherList?: boolean
+      noCreate?: boolean
+      noMenu?: boolean
+      revertToNote?: boolean
+    }
+  } = {}
+
   res[CipherType.Login] = {
     type: CipherType.Login,
     routeName: 'passwords',

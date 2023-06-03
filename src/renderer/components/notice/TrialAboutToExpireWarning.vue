@@ -4,7 +4,11 @@
     class="w-full bg-warning text-center py-1 px-4 sticky top-0 z-10"
   >
     <p>
-      {{ $t('data.enterprise.about_to_expire_warning.text', {time: expireTimeText}) }}
+      {{
+        $t('data.enterprise.about_to_expire_warning.text', {
+          time: expireTimeText
+        })
+      }}
       <a
         :href="`${process.env.lockerEnterprise}/admin/billing/payment-method`"
         class="font-semibold text-info hover:text-info"
@@ -19,7 +23,11 @@
 export default {
   computed: {
     expireTimeText () {
-      if (!this.currentOrg?.id || !this.currentOrg?.is_trialing || !this.currentOrg?.end_period) {
+      if (
+        !this.currentOrg?.id ||
+        !this.currentOrg?.is_trailing ||
+        !this.currentOrg?.end_period
+      ) {
         return ''
       }
       const expiredTime = this.$moment(this.currentOrg.end_period * 1000)
@@ -32,6 +40,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
