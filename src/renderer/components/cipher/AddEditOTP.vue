@@ -201,23 +201,7 @@ export default {
     async createCipher () {
       try {
         this.loading = true
-        const cipher = new CipherView()
-        cipher.name = this.cipher.name
-        cipher.type = CipherType.SecureNote
-        cipher.secureNote = new SecureNote()
-        cipher.secureNote.type = 0
-        cipher.notes = `otpauth://totp/${encodeURIComponent(
-          this.cipher.name
-        )}?secret=${this.cipher.secretKey}&issuer=${encodeURIComponent(
-          this.cipher.name
-        )}&algorithm=sha1&digits=6&period=30`
-        const cipherEnc = await this.$cipherService.encrypt(cipher)
-        const data = new CipherRequest(cipherEnc)
-        data.type = CipherType.TOTP
-        await this.$axios.post('cystack_platform/pm/ciphers/vaults', {
-          ...data,
-          collectionIds: []
-        })
+        await this.handleCreateAuthenticator(this.cipher)
         this.notify(
           this.$tc('data.notifications.create_success', 1, {
             type: this.$t(`type.${CipherType.TOTP}`, 1)
@@ -233,7 +217,7 @@ export default {
           'warning'
         )
       } finally {
-        this.callingAPI = false
+        this.loading = false
       }
     },
 
