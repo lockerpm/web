@@ -316,16 +316,12 @@ export default {
           icon: 'trashh',
           routeName: 'trash'
         },
-        ...(!this.isEnterpriseMember
-          ? [
-            {
-              label: 'rewards',
-              icon: 'rewards',
-              routeName: 'rewards'
-            }
-          ]
-          : []
-        )
+        {
+          label: 'rewards',
+          icon: 'rewards',
+          routeName: 'rewards',
+          hide: this.isEnterpriseMember
+        }
       ]
     },
     bottomMenu () {
