@@ -51,16 +51,14 @@
             class="w-full"
             :error-text="err && err.length && err[0]"
             required
+            is-password
           />
         </ValidationProvider>
       </div>
       <!-- Body end -->
 
       <!-- Footer -->
-      <div
-        slot="footer"
-        class="dialog-footer flex items-center text-left"
-      >
+      <div slot="footer" class="dialog-footer flex items-center text-left">
         <div class="flex-grow">
           <button
             v-if="cipher.id"
@@ -71,10 +69,7 @@
           </button>
         </div>
         <div>
-          <button
-            class="btn btn-default"
-            @click="closeDialog"
-          >
+          <button class="btn btn-default" @click="closeDialog">
             {{ $t('common.cancel') }}
           </button>
           <button
@@ -178,14 +173,24 @@ export default {
           ...data,
           collectionIds: []
         })
-        this.notify(this.$tc('data.notifications.update_success', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'success')
+        this.notify(
+          this.$tc('data.notifications.update_success', 1, {
+            type: this.$tc(`type.${this.type}`, 1)
+          }),
+          'success'
+        )
         this.closeDialog()
         this.$emit('updated-cipher')
       } catch (e) {
         if (e.response && e.response.data && e.response.data.code === '3003') {
           this.notify(this.$t('errors.3003'), 'error')
         } else {
-          this.notify(this.$tc('data.notifications.update_failed', 1, { type: this.$tc(`type.${this.type}`, 1) }), 'warning')
+          this.notify(
+            this.$tc('data.notifications.update_failed', 1, {
+              type: this.$tc(`type.${this.type}`, 1)
+            }),
+            'warning'
+          )
         }
       } finally {
         this.loading = false
@@ -196,55 +201,70 @@ export default {
     async createCipher () {
       try {
         this.loading = true
-        const cipher = new CipherView()
-        cipher.name = this.cipher.name
-        cipher.type = CipherType.SecureNote
-        cipher.secureNote = new SecureNote()
-        cipher.secureNote.type = 0
-        cipher.notes = `otpauth://totp/${encodeURIComponent(this.cipher.name)}?secret=${this.cipher.secretKey}&issuer=${encodeURIComponent(this.cipher.name)}&algorithm=sha1&digits=6&period=30`
-        const cipherEnc = await this.$cipherService.encrypt(cipher)
-        const data = new CipherRequest(cipherEnc)
-        data.type = CipherType.TOTP
-        await this.$axios.post('cystack_platform/pm/ciphers/vaults', {
-          ...data,
-          collectionIds: []
-        })
-        this.notify(this.$tc('data.notifications.create_success', 1, { type: this.$t(`type.${CipherType.TOTP}`, 1) }), 'success')
+        await this.handleCreateAuthenticator(this.cipher)
+        this.notify(
+          this.$tc('data.notifications.create_success', 1, {
+            type: this.$t(`type.${CipherType.TOTP}`, 1)
+          }),
+          'success'
+        )
         this.closeDialog()
       } catch (e) {
-        this.notify(this.$tc('data.notifications.create_failed', 1, { type: this.$t(`type.${CipherType.TOTP}`, 1) }), 'warning')
+        this.notify(
+          this.$tc('data.notifications.create_failed', 1, {
+            type: this.$t(`type.${CipherType.TOTP}`, 1)
+          }),
+          'warning'
+        )
       } finally {
-        this.callingAPI = false
+        this.loading = false
       }
     },
 
     // Delete cipher
     async deleteCiphers (ids) {
-      this.$confirm(this.$tc('data.notifications.delete_selected_desc', ids.length), this.$t('common.warning'), {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
-      }).then(async () => {
-        try {
-          this.loading = true
-          await this.$axios.$put('cystack_platform/pm/ciphers/permanent_delete', { ids })
-          await this.$cipherService.delete(ids)
-          this.notify(this.$tc('data.notifications.delete_success', ids.length, { type: this.$tc('type.0', ids.length) }), 'success')
-          this.closeDialog()
-          this.$emit('reset-selection')
-        } catch (e) {
-          if (e.response && e.response.data && e.response.code === '5001') {
-            this.notify(this.$t('errors.5001'), 'error')
-          } else {
-            this.notify(this.$tc('data.notifications.delete_failed', ids.length, { type: this.$tc('type.0', ids.length) }), 'warning')
-          }
-          console.log(e)
-        } finally {
-          this.loading = false
+      this.$confirm(
+        this.$tc('data.notifications.delete_selected_desc', ids.length),
+        this.$t('common.warning'),
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
         }
-      }).catch(() => {
-
-      })
+      )
+        .then(async () => {
+          try {
+            this.loading = true
+            await this.$axios.$put(
+              'cystack_platform/pm/ciphers/permanent_delete',
+              { ids }
+            )
+            await this.$cipherService.delete(ids)
+            this.notify(
+              this.$tc('data.notifications.delete_success', ids.length, {
+                type: this.$tc('type.0', ids.length)
+              }),
+              'success'
+            )
+            this.closeDialog()
+            this.$emit('reset-selection')
+          } catch (e) {
+            if (e.response && e.response.data && e.response.code === '5001') {
+              this.notify(this.$t('errors.5001'), 'error')
+            } else {
+              this.notify(
+                this.$tc('data.notifications.delete_failed', ids.length, {
+                  type: this.$tc('type.0', ids.length)
+                }),
+                'warning'
+              )
+            }
+            console.log(e)
+          } finally {
+            this.loading = false
+          }
+        })
+        .catch(() => {})
     },
 
     newCipher () {

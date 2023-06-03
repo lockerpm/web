@@ -44,16 +44,33 @@
         @input="val => handleUriInput(index, val)"
       />
     </template>
+    <!-- OTP -->
+    <div
+      class="my-5 text-black-700 text-head-6 font-semibold"
+    >
+      {{ $t('data.ciphers.otp.setup') }}
+    </div>
+    <!-- Input -->
+    <div>
+      <PasswordOTP
+        :value="totp"
+        class="w-full"
+        @change="val => $emit('update:totp', val)"
+        @createNewOtp="val => $emit('update:isCreateAuthenticator', val)"
+      />
+    </div>
+    <!-- Input end -->
+    <!-- OTP END -->
   </div>
 </template>
 <script>
 import InputText from '../../../input/InputText'
 import PasswordStrengthBar from '../../../password/PasswordStrengthBar'
 import PasswordGenerator from '../../../password/PasswordGenerator'
+import PasswordOTP from './PasswordOTP.vue'
 
 export default {
-  components: { InputText, PasswordStrengthBar, PasswordGenerator },
-
+  components: { InputText, PasswordStrengthBar, PasswordGenerator, PasswordOTP },
   props: {
     isDeleted: {
       type: Boolean,
@@ -74,6 +91,10 @@ export default {
     uris: {
       type: Array,
       default: () => []
+    },
+    totp: {
+      type: String,
+      default: () => ''
     }
   },
 

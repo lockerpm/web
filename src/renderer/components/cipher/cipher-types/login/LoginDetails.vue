@@ -11,6 +11,11 @@
       :view-password="cipher.viewPassword"
       :should-hide="!isPublic || hideAll"
     />
+    <OTPHaveCopy
+      v-if="cipher.login.totp"
+      :login-totp="cipher.login.totp"
+      :should-hide="!isPublic || hideAll"
+    />
     <div class="grid sm:grid-cols-6 cipher-item">
       <p class="!break-normal mr-4">
         {{ $t('data.ciphers.password_strength') }}
@@ -44,13 +49,15 @@
 </template>
 <script>
 import { CipherView } from '../../../../core/models/view/cipherView'
+import OTPHaveCopy from '../../OTPHaveCopy.vue'
 import TextHaveCopy from '@/components/cipher/TextHaveCopy'
 import PasswordStrength from '@/components/password/PasswordStrength'
 
 export default {
   components: {
     TextHaveCopy,
-    PasswordStrength
+    PasswordStrength,
+    OTPHaveCopy
   },
 
   props: {

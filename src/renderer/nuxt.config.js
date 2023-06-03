@@ -47,7 +47,14 @@ module.exports = {
     link: [{ rel: 'icon', type: 'shortcut icon', href: '/favicon.ico' }],
     script: [
       { src: '/js/intercom.js' },
-      { src: 'https://whitehub.net/tracking/visitCyStack.js', body: true }
+      ...(process.env.NODE_ENV === 'production'
+        ? [
+          {
+            src: 'https://whitehub.net/tracking/visitCyStack.js',
+            body: true
+          }
+        ]
+        : [])
     ]
   },
   loading: false,

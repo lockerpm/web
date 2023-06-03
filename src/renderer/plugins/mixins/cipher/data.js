@@ -11,6 +11,7 @@ import { toServerData } from '../../../utils/new-types/server'
 import { toApiCipherData, API_METHODS } from '../../../utils/new-types/api'
 import { CipherRequest } from '@/jslib/src/models/request'
 import { SecureNote } from '@/jslib/src/models/domain'
+import { getTOTP, parseOTPUri } from '@/utils/totp/index.ts'
 
 Vue.mixin({
   computed: {
@@ -138,7 +139,6 @@ Vue.mixin({
 
     async getEncCipherForRequest (originalCipher, extraData = {}) {
       const cipher = cloneDeep(originalCipher)
-
       // user cannot add item to shared folders, but can add item to their sharing folder
       // -> create new = only sharing folders; update = both sharing and shared folders
       const {
@@ -322,6 +322,10 @@ Vue.mixin({
           {
             value: item.login.password,
             label: 'common.password'
+          },
+          {
+            value: item.login.totp ? getTOTP(parseOTPUri(item.login.totp)) : null,
+            label: 'common.totp'
           }
         ]
 

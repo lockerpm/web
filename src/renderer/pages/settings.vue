@@ -84,6 +84,12 @@ export default {
           : [])
       ]
     }
+  },
+  mounted () {
+    // Tutorial
+    if (this.$store.state.tutorial.isActive) {
+      this.markDoneStep('view_settings')
+    }
   }
 }
 </script>

@@ -310,10 +310,11 @@ export default {
   },
 
   beforeDestroy () {
-    if (this.$tutorial.isActive()) {
+    if (this.$store.state.tutorial.isActive) {
       const currentStep = this.$tutorial.getCurrentStep()
       if (currentStep.id.startsWith('add-pw')) {
-        this.$tutorial.cancel()
+        this.$tutorial.hide()
+        this.$store.commit('UPDATE_TUTORIAL', { isActive: false })
       }
     }
   },

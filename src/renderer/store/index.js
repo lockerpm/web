@@ -46,7 +46,8 @@ export const state = () => ({
   },
   tutorial: {
     isActive: false,
-    currentStepId: ''
+    currentStepId: '',
+    doneSteps: []
   },
   syncingQuickShares: false,
 
@@ -291,8 +292,12 @@ export const actions = {
       .then(res => {
         window.intercomSettings = res
         commit('UPDATE_USER_INTERCOM', res)
-        // eslint-disable-next-line no-undef
-        Intercom('update')
+        try {
+          // eslint-disable-next-line no-undef
+          Intercom('update')
+        } catch (error) {
+          // Intercom not loaded yet -> ignore
+        }
       })
   },
   LoadNotification ({ commit }) {

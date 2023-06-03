@@ -4,7 +4,6 @@
 <script>
 export default {
   layout: 'authenticate',
-  middleware: 'preventToUser',
   fetch ({ redirect, store, isDev, route }) {
     const environment = isDev ? 'dev_web' : process.env.environment
 

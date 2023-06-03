@@ -137,6 +137,7 @@ export class BitwardenCsvImporter extends BaseImporter implements Importer {
             m => m.csvTypeName === valueType
           )
           if (mappedType) {
+            // @ts-ignore
             cipher.type = mappedType.type
             cipher.secureNote = new SecureNoteView()
             cipher.secureNote.type = SecureNoteType.Generic

@@ -248,6 +248,7 @@ Vue.mixin({
           this.$axios.setToken(res.access_token, 'Bearer')
           await this.$cookies.set('cs_locker_token', res.access_token, {
             path: '/',
+            domain: 'locker.io',
             ...(this.environment === '' ? { secure: true } : { secure: false })
           })
           this.$store.commit('UPDATE_IS_LOGGEDIN_ON_PREMISE', true)
@@ -352,7 +353,12 @@ Vue.mixin({
       if (!link.match(/^https?:\/\//i)) {
         link = 'http://' + link
       }
-      window.open(link, '_blank')
+      const regex = /^(ftp|http|https):\/\/[^ "]+$/
+      if (regex.test(link)) {
+        window.open(link, '_blank')
+      } else {
+        this.notify(this.$t('errors.invalid_url'), 'warning')
+      }
     },
 
     // Blog subscribe

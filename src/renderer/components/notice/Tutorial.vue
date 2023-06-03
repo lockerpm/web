@@ -16,10 +16,7 @@
         <p class="text-lg text-black text-center mb-8" style="max-width: 350px">
           {{ $t('tutorial.welcome.desc') }}
         </p>
-        <el-button
-          type="primary"
-          @click="startTutorial"
-        >
+        <el-button type="primary" @click="startTutorial">
           {{ $t('tutorial.welcome.start') }}
         </el-button>
         <a class="mt-3" @click.prevent="closeDialog(true)">
@@ -53,10 +50,7 @@
           </li>
         </ul>
         <div class="flex flex-row justify-between items-center mt-6">
-          <el-button
-            type="primary"
-            @click="openExtension"
-          >
+          <el-button type="primary" @click="openExtension">
             <span v-html="$t('tutorial.extension.action')" />
           </el-button>
           <a @click.prevent="closeDialog(true)">
@@ -80,7 +74,8 @@ export default {
   },
   beforeDestroy () {
     this.closeDialog()
-    this.$tutorial.cancel()
+    this.$tutorial.hide()
+    this.$store.commit('UPDATE_TUTORIAL', { isActive: false })
   },
   methods: {
     closeDialog (isSkip = false) {
@@ -89,22 +84,21 @@ export default {
           tutorial: true
         })
       }
-      this.$store.commit('UPDATE_NOTICE', { showTutorial: false, showTutorialStep6: false })
+      this.$store.commit('UPDATE_NOTICE', {
+        showTutorial: false,
+        showTutorialStep6: false
+      })
     },
+
     async startTutorial () {
-      const isInVault = this.$route.path === '/vault'
-      if (!isInVault) {
-        await this.$router.push(this.localePath({ name: 'vault' }))
-      }
       this.closeDialog()
-      this.$tutorial.cancel()
-      setTimeout(() => {
-        this.$tutorial.start()
-      }, isInVault ? 0 : 1000)
+      this.$router.push({ path: '/welcome-tour' })
     },
+
     openExtension () {
       this.closeDialog(true)
-      window.open('https://chrome.google.com/webstore/detail/locker-password-manager/cmajindocfndlkpkjnmjpjoilibjgmgh/related', '_blank')
+      this.markDoneStep('view_autofill')
+      window.open('/download#web-browser', '_blank')
     }
   }
 }
@@ -135,7 +129,7 @@ export default {
   }
 
   .tutorial-arrow {
-    padding: 8px 13px
+    padding: 8px 13px;
   }
 }
 </style>
