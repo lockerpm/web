@@ -203,11 +203,7 @@
         }}
       </p>
       <span slot="footer" class="dialog-footer">
-        <el-button
-          type="primary"
-          class="w-full !mb-4"
-          @click="showSuccessDialog = false"
-        >
+        <el-button type="primary" class="w-full !mb-4" @click="yay()">
           {{ $t('lifetime.redeem_page.form.success.btn') }}
         </el-button>
       </span>
@@ -353,7 +349,6 @@ export default {
         this.$refs.createAccountForm.resetFields()
         this.$refs.redeemForm.resetFields()
         this.showSuccessDialog = true
-        window.open('/', '_blank')
       } catch (error) {
         const errorData = error.response?.data
         this.notify(
@@ -391,6 +386,11 @@ export default {
       } finally {
         this.isLoading = false
       }
+    },
+
+    yay () {
+      this.showSuccessDialog = false
+      window.open('/', '_blank')
     }
   }
 }
