@@ -34,6 +34,7 @@
                   color: #15d127;
                   text-decoration: none;
                   white-space: nowrap;
+                  margin-left: 16px;
                 "
                 target="_blank"
               >
@@ -54,6 +55,7 @@
                   color: #15d127;
                   text-decoration: none;
                   white-space: nowrap;
+                  margin-left: 16px;
                 "
                 target="_blank"
               >
