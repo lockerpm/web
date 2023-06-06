@@ -25,21 +25,24 @@
                   <img src="~/assets/images/landing/download2/down.svg" alt="" class="rotate-icon">
                 </button>
                 <div class="grid gap-y-[12px] dropdown" :class="listDownload ? 'show ' : ''">
-                  <div
+                  <a
                     v-for="(item, id) in $t('download.section2.list')"
                     :key="id"
                     :class="id == 0 ? 'mt-[32px]' : ''"
+                    :target="item.link ? '_blank' : ''"
+                    :href="item.link || ':;'"
                   >
-                    <button class="button-disable">
+                    <button :class="item.link ? 'button-download bg-tag1' : 'button-disable'">
                       <span>
                         {{ item.button }}
                       </span>
-                      <img src="~/assets/images/landing/download2/download-disable.svg" alt="">
+                      <img v-if="item.link" src="~/assets/images/landing/download2/download.svg" alt="">
+                      <img v-else src="~/assets/images/landing/download2/download-disable.svg" alt="">
                     </button>
                     <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
                       {{ item.note }}
                     </p>
-                  </div>
+                  </a>
                 </div>
                 <div class="flex my-[32px]">
                   <a
@@ -71,20 +74,23 @@
             <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <div class="grid gap-y-[32px]">
-                  <div
+                  <a
                     v-for="(item, id) in $t('download.section4.list')"
                     :key="id"
+                    :target="item.link ? '_blank' : ''"
+                    :href="item.link || ':;'"
                   >
-                    <button class="button-disable">
+                    <button :class="item.link ? 'button-download bg-tag2': 'button-disable'">
                       <span>
                         {{ item.button }}
                       </span>
-                      <img src="~/assets/images/landing/download2/download-disable.svg" alt="">
+                      <img v-if="item.link" src="~/assets/images/landing/download2/download.svg" alt="">
+                      <img v-else src="~/assets/images/landing/download2/download-disable.svg" alt="">
                     </button>
                     <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
                       {{ item.note }}
                     </p>
-                  </div>
+                  </a>
                 </div>
                 <div class="flex my-[32px]">
                   <a
@@ -116,14 +122,15 @@
                   <a
                     v-for="(item, id) in $t('download.section5.list')"
                     :key="id"
-                    target="_blank"
-                    :href="item.link"
+                    :target="item.link ? '_blank' : ''"
+                    :href="item.link || ':;'"
                   >
-                    <button class="button-download button-ios">
+                    <button :class="item.link ? 'button-download button-ios' : 'button-disable'">
                       <span>
                         {{ item.button }}
                       </span>
-                      <img src="~/assets/images/landing/download2/download.svg" alt="">
+                      <img v-if="item.link" src="~/assets/images/landing/download2/download.svg" alt="">
+                      <img v-else src="~/assets/images/landing/download2/download-disable.svg" alt="">
                     </button>
                     <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
                       {{ item.note }}
@@ -160,14 +167,15 @@
                   <a
                     v-for="(item, id) in $t('download.section6.list')"
                     :key="id"
-                    :href="item.link"
-                    target="_blank"
+                    :target="item.link ? '_blank' : ''"
+                    :href="item.link || ':;'"
                   >
-                    <button class="button-download button-android">
+                    <button :class="item.link ? 'button-download button-android' : 'button-disable'">
                       <span>
                         {{ item.button }}
                       </span>
-                      <img src="~/assets/images/landing/download2/download.svg" alt="">
+                      <img v-if="item.link" src="~/assets/images/landing/download2/download.svg" alt="">
+                      <img v-else src="~/assets/images/landing/download2/download-disable.svg" alt="">
                     </button>
                     <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
                       {{ item.note }}
@@ -210,21 +218,24 @@
                   <img src="~/assets/images/landing/download2/down.svg" alt="" class="rotate-icon">
                 </button>
                 <div class="grid gap-y-[12px] dropdown" :class="listDownload ? 'show ' : ''">
-                  <div
+                  <a
                     v-for="(item, id) in $t('download.section7.list')"
                     :key="id"
                     :class="id == 0 ? 'mt-[32px]' : ''"
+                    :target="item.link ? '_blank' : ''"
+                    :href="item.link || ':;'"
                   >
-                    <button class="button-disable">
+                    <button :class="item.link ? 'button-download bg-tag3' : 'button-disable'">
                       <span>
                         {{ item.button }}
                       </span>
-                      <img src="~/assets/images/landing/download2/download-disable.svg" alt="">
+                      <img v-if="item.link" src="~/assets/images/landing/download2/download.svg" alt="">
+                      <img v-else src="~/assets/images/landing/download2/download-disable.svg" alt="">
                     </button>
                     <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
                       {{ item.note }}
                     </p>
-                  </div>
+                  </a>
                 </div>
                 <div class="flex my-[32px]">
                   <a
