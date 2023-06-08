@@ -31,17 +31,17 @@ export default {
     }
   },
 
-  fetch ({ route, $axios }) {
-    const { eid, service } = route.query
+  mounted () {
+    const { eid, service } = this.$route.query
     if (eid) {
-      $axios
+      this.$axios
         .put('https://tracking.cystack.net/v1/email/subscription', {
           eid,
           service,
           subscribed: false
         })
-        .catch(e => {
-          console.log(e)
+        .catch(() => {
+          //
         })
     }
   },
