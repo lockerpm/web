@@ -98,6 +98,7 @@ export default function ({
           '/features',
           '/how-it-works',
           '/plans',
+          '/pricing',
           '/security',
           '/blog',
           '/terms',

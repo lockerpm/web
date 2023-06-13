@@ -64,7 +64,7 @@
               class="inline-block nav-item text-black landing-transition"
               :to="localePath('/')"
               :active-class="
-                ['business', 'business-plans'].includes(getRouteBaseName())
+                ['business', 'business-pricing'].includes(getRouteBaseName())
                   ? ''
                   : 'nuxt-link-active'
               "
@@ -100,9 +100,9 @@
               :to="
                 localeRoute({
                   name:
-                    ['business', 'business-plans'].includes(
+                    ['business', 'business-pricing'].includes(
                       getRouteBaseName()
-                    ) && item.link === 'plans'
+                    ) && item.link === 'pricing'
                       ? `business-${item.link}`
                       : item.link
                 })

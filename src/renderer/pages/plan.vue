@@ -5,11 +5,9 @@
 <script>
 export default {
   fetch ({ redirect }) {
-    redirect(301, 'plans')
+    redirect(301, 'pricing')
   }
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

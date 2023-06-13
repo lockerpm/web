@@ -34,7 +34,11 @@ export default {
       },
       title: this.$t(`${this.mappings}.head_title`),
       meta: [
-        { hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        {
+          hid: 'viewport',
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1'
+        },
         {
           hid: 'og:title',
           property: 'og:title',
@@ -82,7 +86,11 @@ export default {
         }
       ],
       link: [
-        { rel: 'alternate', hreflang: this.locale, href: this.getAlternatePath(this.locale) }
+        {
+          rel: 'alternate',
+          hreflang: this.locale,
+          href: this.getAlternatePath(this.locale)
+        }
         // { rel: 'alternate', hreflang: 'vi', href: this.getAlternatePath('vi') }
       ]
     }
@@ -90,20 +98,57 @@ export default {
   computed: {
     mappings () {
       const path = this.$route.path
-      if (path === '/benefits' || path === `/${this.locale}/benefits`) { return 'how_it_works' }
-      if (path === '/features' || path === `/${this.locale}/features`) { return 'features' }
-      if (path === '/plans' || path === `/${this.locale}/plans`) { return 'plan' }
-      if (path === '/download' || path === `/${this.locale}/download`) { return 'download' }
-      if (path === '/contact' || path === `/${this.locale}/contact`) { return 'landing_contact' }
-      if (path === '/blog' || path === `/${this.locale}/blog`) { return 'blog' }
-      if (path === '/password-generator' || path === `/${this.locale}/password-generator`) { return 'password_generator' }
-      if (path === '/security' || path === `/${this.locale}/security`) { return 'security' }
-      if (path === '/password-health-checker' || path === `/${this.locale}/password-health-checker`) { return 'password_health_checker' }
-      if (path === '/comparison' || path === `/${this.locale}/comparison`) { return 'comparison' }
-      if (path === '/refer-friend' || path === `/${this.locale}/refer-friend`) { return 'refer_friend' }
-      if (path === '/about-us' || path === `/${this.locale}/about-us`) { return 'about_us' }
-      if (path === '/master-password' || path === `/${this.locale}/master-password`) { return 'landing_master_password' }
-      if (path === '/affiliate' || path === `/${this.locale}/affiliate`) { return 'landing_affiliate' }
+      if (path === '/benefits' || path === `/${this.locale}/benefits`) {
+        return 'how_it_works'
+      }
+      if (path === '/features' || path === `/${this.locale}/features`) {
+        return 'features'
+      }
+      if (path === '/pricing' || path === `/${this.locale}/pricing`) {
+        return 'plan'
+      }
+      if (path === '/download' || path === `/${this.locale}/download`) {
+        return 'download'
+      }
+      if (path === '/contact' || path === `/${this.locale}/contact`) {
+        return 'landing_contact'
+      }
+      if (path === '/blog' || path === `/${this.locale}/blog`) {
+        return 'blog'
+      }
+      if (
+        path === '/password-generator' ||
+        path === `/${this.locale}/password-generator`
+      ) {
+        return 'password_generator'
+      }
+      if (path === '/security' || path === `/${this.locale}/security`) {
+        return 'security'
+      }
+      if (
+        path === '/password-health-checker' ||
+        path === `/${this.locale}/password-health-checker`
+      ) {
+        return 'password_health_checker'
+      }
+      if (path === '/comparison' || path === `/${this.locale}/comparison`) {
+        return 'comparison'
+      }
+      if (path === '/refer-friend' || path === `/${this.locale}/refer-friend`) {
+        return 'refer_friend'
+      }
+      if (path === '/about-us' || path === `/${this.locale}/about-us`) {
+        return 'about_us'
+      }
+      if (
+        path === '/master-password' ||
+        path === `/${this.locale}/master-password`
+      ) {
+        return 'landing_master_password'
+      }
+      if (path === '/affiliate' || path === `/${this.locale}/affiliate`) {
+        return 'landing_affiliate'
+      }
       return 'landing'
     }
   },
@@ -178,11 +223,11 @@ export default {
 .landing-transition {
   @apply transition duration-200 ease-in-out;
 }
-.landing-font-72{
+.landing-font-72 {
   font-size: 72px;
   line-height: 66px;
 }
-.landing-font-60{
+.landing-font-60 {
   font-size: 60px;
   line-height: 72px;
 }
@@ -194,7 +239,7 @@ export default {
   font-size: 50px;
   line-height: 66px;
 }
-.landing-font-52{
+.landing-font-52 {
   font-size: 52px;
   line-height: 66px;
 }
@@ -226,7 +271,7 @@ export default {
   font-size: 28px;
   line-height: 32px;
 }
-.landing-font-24{
+.landing-font-24 {
   font-size: 24px;
   line-height: 29px;
 }

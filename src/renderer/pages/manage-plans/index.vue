@@ -117,7 +117,11 @@ export default {
   mounted () {
     this.getPlans().then(() => {
       const selectedPlan = this.$route.query.plan
+      const period = this.$route.query.period
       const code = this.$route.query.code
+      if (period) {
+        this.selectedPlanDuration = period
+      }
       if (selectedPlan && this.plans.find(p => p.alias === selectedPlan)) {
         this.handleSwitchPlan(this.plans.find(p => p.alias === selectedPlan))
         return
@@ -153,7 +157,13 @@ export default {
         this.step = 2
       }
 
-      if (this.currentPlan.alias !== 'pm_free' && !silent) {
+      const shouldShowConfirmation =
+        this.currentPlan.alias &&
+        (this.currentPlan.alias !== plan.alias ||
+          this.currentPlan.duration !== this.selectedPeriod.duration) &&
+        !silent
+
+      if (shouldShowConfirmation) {
         this.$confirm(confirmMessage, this.$t('common.warning'), {
           confirmButtonText: this.$t('common.proceed'),
           cancelButtonText: this.$t('common.cancel'),
