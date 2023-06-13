@@ -149,7 +149,7 @@ export default {
       if (path === '/features' || path === `/${this.locale}/features`) {
         return 'features'
       }
-      if (path === '/plans' || path === `/${this.locale}/plans`) {
+      if (path === '/pricing' || path === `/${this.locale}/pricing`) {
         return 'plan'
       }
       if (path === '/download' || path === `/${this.locale}/download`) {

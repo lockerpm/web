@@ -196,7 +196,7 @@
           </h2>
         </div>
         <div class="md:w-1/2 w-full md:text-right text-center self-center">
-          <nuxt-link :to="localePath('/business/plans')" class="landing-btn">
+          <nuxt-link :to="localePath('/business/pricing')" class="landing-btn">
             {{ $t('business.plans.learn_more') }}
           </nuxt-link>
         </div>
