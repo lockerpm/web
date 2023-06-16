@@ -33,7 +33,10 @@
             <tr :key="index">
               <td colspan="100%" class="pb-5" />
             </tr>
-            <tr v-for="(item, idx) in feature.features" :key="idx">
+            <tr
+              v-for="(item, idx) in feature.features"
+              :key="`${index}_${idx}`"
+            >
               <td class="pl-6 landing-font-16 pb-5" style="color: #5a6176">
                 {{ item.label }}
               </td>
