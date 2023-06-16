@@ -219,16 +219,16 @@ a {
 
 .setting-wrapper {
   @apply border border-transparent rounded mb-6 last:mb-0;
-  border: 1px solid #EBEEF2;
+  border: 1px solid #ebeef2;
   border-radius: 4px;
-  background: #FFFFFF;
+  background: #ffffff;
   .setting-section {
     @apply px-8 py-6 last:border-b-0 border-0 border-b;
     &.setting-section--hover:hover {
       cursor: pointer;
       background: #f6f8f9;
     }
-    border-color: #EBEEF2;
+    border-color: #ebeef2;
     .setting-title {
       @apply text-lg font-semibold;
     }
@@ -657,9 +657,4 @@ th .cell {
 
 .setting-wrapper .el-collapse-item__header {
   height: auto !important;
-}
-
-.el-collapse-item__header {
-  height: auto !important;
-  line-height: 24px !important;
 }
