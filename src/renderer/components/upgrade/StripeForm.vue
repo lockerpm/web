@@ -204,7 +204,6 @@ export default {
   },
 
   mounted () {
-    // eslint-disable-next-line no-undef
     this.stripe = Stripe(this.$config.stripeKey)
     this.elements = this.stripe.elements({})
     this.$nextTick(() => {

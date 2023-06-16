@@ -3,26 +3,26 @@
     <!-- Payment dialog -->
     <el-dialog :visible.sync="isOpen" width="90%" custom-class="payment-dialog">
       <!-- Title -->
-      <div slot="title">
+      <div slot="title" class="flex md:items-end flex-col md:flex-row">
         <h2 class="landing-font-38 font-semibold">
           {{ $t('promo.buy13.form.title') }}
         </h2>
-      </div>
-      <!-- Title end -->
-
-      <div>
-        <!-- Price -->
-        <p class="text-primary font-semibold mb-6">
+        <p
+          class="text-primary font-semibold md:pl-6 md:ml-6 md:border-l mt-4 md:mt-0 border-black-100"
+        >
           <span class="landing-font-34"> $4.99 </span>
           <span class="landing-font-16">
             / 3 {{ $tc('common.month', 3) }}
           </span>
         </p>
+      </div>
+      <!-- Title end -->
 
+      <div>
         <div class="flex flex-wrap">
           <!-- Left -->
           <div
-            class="w-full md:w-7/12 flex flex-col pr-0 md:pr-12 mb-12 md:mb-0"
+            class="w-full md:w-6/12 flex flex-col pr-0 md:pr-12 mb-12 md:mb-0"
           >
             <!-- Logo -->
             <div class="flex items-center mb-8">
@@ -97,7 +97,7 @@
           <!-- Left end -->
 
           <!-- Right -->
-          <div class="w-full md:w-5/12 rounded border border-black-100 p-8">
+          <div class="w-full md:w-6/12 rounded border border-black-100 p-8">
             <!-- Need create account? -->
             <el-checkbox v-model="needCreateAccount" class="mb-6 w-full">
               {{ $t('promo.buy13.form.need_create_account') }}

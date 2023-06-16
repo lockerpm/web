@@ -1,5 +1,18 @@
 <template>
   <div class="max-w-6xl mx-auto px-6">
+    <!-- Logo -->
+    <section class="full-width bg-white">
+      <div class="flex justify-center">
+        <a href="/" target="_blank">
+          <img
+            class="h-12 my-4 px-6"
+            src="~/assets/images/logo/logo_black_with_text.svg"
+          >
+        </a>
+      </div>
+    </section>
+    <!-- Logo end -->
+
     <!-- Header -->
     <section id="promo-header" class="full-width py-14">
       <div class="max-w-6xl mx-auto px-6">
@@ -580,7 +593,37 @@ export default {
   },
 
   head () {
+    const title = this.$t('promo.buy13.title')
+    const desc = this.$t('promo.buy13.desc')
     return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: title
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: title
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: desc
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: desc
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: desc
+        }
+      ],
       script: [
         {
           src: '//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js',
