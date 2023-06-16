@@ -198,12 +198,24 @@
         <p class="landing-font-28 font-semibold mb-6">
           {{ $t('promo.buy13.form.success.title') }}
         </p>
-        <p>
-          {{ $t('promo.buy13.form.success.desc_1') }}
-        </p>
-        <p class="mb-6">
-          {{ $t('promo.buy13.form.success.desc_2') }}
-        </p>
+
+        <template v-if="needCreateAccount">
+          <p>
+            {{ $t('promo.buy13.form.success.desc_1_new') }}
+          </p>
+          <p class="mb-6">
+            {{ $t('promo.buy13.form.success.desc_2_new') }}
+          </p>
+        </template>
+        <template v-else>
+          <p>
+            {{ $t('promo.buy13.form.success.desc_1') }}
+          </p>
+          <p class="mb-6">
+            {{ $t('promo.buy13.form.success.desc_2') }}
+          </p>
+        </template>
+
         <el-button
           v-if="!needCreateAccount"
           type="primary"
