@@ -4,7 +4,7 @@
 
     <div class="col-span-4 font-semibold">
       <div v-if="text && textArea" class="whitespace-pre-wrap break-normal">
-        {{ text }}
+        {{ text | filterPassword(showPassword) }}
       </div>
       <span v-if="text && !textArea" class="break-normal">{{
         text | filterPassword(showPassword)
