@@ -9579,13 +9579,6 @@ nuxt-client-init-module@^0.3.0:
   resolved "https://registry.yarnpkg.com/nuxt-client-init-module/-/nuxt-client-init-module-0.3.0.tgz#e11cb2c4a0dc103a45af33fc8a0d520693c43b44"
   integrity sha512-blPr3zPRdu89WQVt/B38nhFAcNkxL68mM0POmmg6u5s3wUVmwKM1ARMl3xcQSGS//6JbGFV7fgBSQfj0t+cdPw==
 
-nuxt-facebook-pixel-module@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/nuxt-facebook-pixel-module/-/nuxt-facebook-pixel-module-1.6.0.tgz#bee3417a7a965638a216038b5216f57700cf522c"
-  integrity sha512-+9JGTzf6aXp5sIAsW/oPSP/HTZR0a+2FpFHYGFjvOrwp81mx7i10mt3C1XPcHakUH48kHEQSkB8PH4MD7SPLvQ==
-  dependencies:
-    minimatch "^3.0.4"
-
 nuxt-i18n@^6.26.0:
   version "6.28.1"
   resolved "https://registry.yarnpkg.com/nuxt-i18n/-/nuxt-i18n-6.28.1.tgz#63e3e809fa41d855c5c7c443c0074eecaa97d273"

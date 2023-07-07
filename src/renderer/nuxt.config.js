@@ -107,8 +107,7 @@ module.exports = {
     '@nuxtjs/feed',
     'vue-social-sharing/nuxt',
     '@nuxtjs/sentry',
-    'nuxt-user-agent',
-    'nuxt-facebook-pixel-module'
+    'nuxt-user-agent'
   ],
   sentry: {
     dsn: process.env.SENTRY_DSN || '',
@@ -214,11 +213,6 @@ module.exports = {
   },
   gtm: {
     id: 'GTM-K5Q6595'
-  },
-  facebook: {
-    pixelId: '588962943412090',
-    autoPageView: true,
-    disabled: isStaging
   },
   feed: [
     // A default feed configuration object

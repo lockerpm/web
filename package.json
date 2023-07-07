@@ -94,7 +94,6 @@
     "numeral": "^2.0.6",
     "nuxt": "2.15.8",
     "nuxt-client-init-module": "^0.3.0",
-    "nuxt-facebook-pixel-module": "^1.6.0",
     "nuxt-i18n": "^6.26.0",
     "nuxt-user-agent": "^1.2.2",
     "papaparse": "^5.3.1",
