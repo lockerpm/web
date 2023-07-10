@@ -10,7 +10,7 @@ build_staging:
   script:
     - cystack-deployer
   tags:
-    - cs_monitoring
+    - cs_newgen
   only:
     - dev
     - tags
@@ -20,7 +20,7 @@ deploy_staging:
   script:
     - cystack-deployer
   tags:
-    - cs_monitoring
+    - cs_newgen
   only:
     - dev
     - tags
@@ -30,7 +30,7 @@ build_production:
   script:
     - cystack-deployer
   tags:
-    - cs_monitoring
+    - cs_newgen
   only:
     - main
     - tags
@@ -40,7 +40,7 @@ deploy_production:
   script:
     - cystack-deployer
   tags:
-    - cs_monitoring
+    - cs_newgen
   only:
     - main
     - tags
@@ -50,7 +50,7 @@ build_desktop:
   script:
     - cystack-deployer
   tags:
-    - cs_monitoring
+    - cs_newgen
   only:
     - pwl
     - tags
@@ -60,7 +60,7 @@ deploy_desktop:
   script:
     - cystack-deployer
   tags:
-    - cs_monitoring
+    - cs_newgen
   only:
     - pwl
     - tags
