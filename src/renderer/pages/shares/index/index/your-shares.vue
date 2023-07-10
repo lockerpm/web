@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ListYourShares from '@/components/cipher/shares/ListYourShares'
+import ListYourShares from '@/components/cipher/shares/your-shares/ListYourShares'
 export default {
   components: {
     ListYourShares

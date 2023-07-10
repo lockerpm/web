@@ -26,7 +26,7 @@
 <script>
 import find from 'lodash/find'
 import orderBy from 'lodash/orderBy'
-import DetailQuickSharedCipherContent from '@/components/cipher/shares/DetailQuickSharedCipherContent.vue'
+import DetailQuickSharedCipherContent from '@/components/cipher/shares/quick-shares/DetailQuickSharedCipherContent.vue'
 
 export default {
   components: { DetailQuickSharedCipherContent },

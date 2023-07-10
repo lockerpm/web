@@ -216,22 +216,22 @@
 </template>
 
 <script>
-import { CipherType } from '../../../core/enums/cipherType'
-import TextHaveCopy from '../../../components/cipher/TextHaveCopy'
-import Vnodes from '../../../components/Vnodes'
-import { FieldType } from '../../../jslib/src/enums/fieldType'
-import LoginDetails from '../cipher-types/login/LoginDetails.vue'
-import CardDetails from '../cipher-types/card/CardDetails.vue'
-import IdentityDetails from '../cipher-types/identity/IdentityDetails.vue'
-import CryptoBackupDetails from '../cipher-types/crypto-backup/CryptoBackupDetails.vue'
-import DriverLicenseDetails from '../cipher-types/driver-license/DriverLicenseDetails.vue'
-import CitizenIdDetails from '../cipher-types/citizen-id/CitizenIdDetails.vue'
-import PassportDetails from '../cipher-types/passport/PassportDetails.vue'
-import SsnDetails from '../cipher-types/ssn/SsnDetails.vue'
-import RouterDetails from '../cipher-types/router/RouterDetails.vue'
-import ServerDetails from '../cipher-types/server/ServerDetails.vue'
-import ApiDetails from '../cipher-types/api/ApiDetails.vue'
-import DatabaseDetails from '../cipher-types/database/DatabaseDetails.vue'
+import { CipherType } from '~/core/enums/cipherType'
+import TextHaveCopy from '~/components/cipher/TextHaveCopy'
+import Vnodes from '~/components/Vnodes'
+import { FieldType } from '~/jslib/src/enums/fieldType'
+import LoginDetails from '~/components/cipher/cipher-types/login/LoginDetails.vue'
+import CardDetails from '~/components/cipher/cipher-types/card/CardDetails.vue'
+import IdentityDetails from '~/components/cipher/cipher-types/identity/IdentityDetails.vue'
+import CryptoBackupDetails from '~/components/cipher/cipher-types/crypto-backup/CryptoBackupDetails.vue'
+import DriverLicenseDetails from '~/components/cipher/cipher-types/driver-license/DriverLicenseDetails.vue'
+import CitizenIdDetails from '~/components/cipher/cipher-types/citizen-id/CitizenIdDetails.vue'
+import PassportDetails from '~/components/cipher/cipher-types/passport/PassportDetails.vue'
+import SsnDetails from '~/components/cipher/cipher-types/ssn/SsnDetails.vue'
+import RouterDetails from '~/components/cipher/cipher-types/router/RouterDetails.vue'
+import ServerDetails from '~/components/cipher/cipher-types/server/ServerDetails.vue'
+import ApiDetails from '~/components/cipher/cipher-types/api/ApiDetails.vue'
+import DatabaseDetails from '~/components/cipher/cipher-types/database/DatabaseDetails.vue'
 
 export default {
   components: {

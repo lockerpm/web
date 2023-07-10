@@ -227,14 +227,14 @@
 <script>
 import orderBy from 'lodash/orderBy'
 import LazyHydrate from 'vue-lazy-hydration'
-import ShareCipher from '../../../components/cipher/shares/ShareCipher'
-import EditSharedCipher from '../../../components/cipher/shares/EditSharedCipher'
-import ShareFolder from '../../../components/folder/ShareFolder'
-import ShareNoCipher from '../../../components/cipher/shares/ShareNoCipher'
-import { CipherType } from '../../../core/enums/cipherType'
-import Vnodes from '../../../components/Vnodes'
-import { Utils } from '../../../jslib/src/misc/utils.ts'
-import { AccountRole } from '../../../constants'
+import ShareCipher from './ShareCipher'
+import EditSharedCipher from './EditSharedCipher'
+import ShareFolder from '~/components/folder/ShareFolder'
+import ShareNoCipher from '~/components/cipher/shares/ShareNoCipher'
+import { CipherType } from '~/core/enums/cipherType'
+import Vnodes from '~/components/Vnodes'
+import { Utils } from '~/jslib/src/misc/utils.ts'
+import { AccountRole } from '~/constants'
 
 export default {
   components: {
@@ -243,7 +243,7 @@ export default {
     ShareFolder,
     ShareNoCipher,
     // eslint-disable-next-line vue/no-unused-components
-    VueContext: () => import('../../../plugins/vue-context'),
+    VueContext: () => import('../../../../plugins/vue-context'),
     Vnodes,
     LazyHydrate
   },
@@ -437,6 +437,7 @@ export default {
             this.getTeam(this.organizations, item.organizationId).type ===
             AccountRole.OWNER
         )
+
         collections.forEach(f => {
           f.ciphersCount = 0
           f.ciphers = []
