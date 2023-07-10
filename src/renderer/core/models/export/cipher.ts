@@ -30,6 +30,7 @@ export class Cipher {
   }
 
   static toView (req: Cipher, view = new CipherView()) {
+    // @ts-ignore
     view.type = req.type
     view.folderId = req.folderId
     if (view.organizationId == null) {
@@ -68,6 +69,7 @@ export class Cipher {
   }
 
   static toDomain (req: Cipher, domain = new CipherDomain()) {
+    // @ts-ignore
     domain.type = req.type
     domain.folderId = req.folderId
     if (domain.organizationId == null) {
