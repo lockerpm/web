@@ -238,12 +238,11 @@
 </template>
 
 <script>
-import InputSelect from '../../input/InputSelect.vue'
-import InputText from '../../input/InputText.vue'
-import { CipherRequest } from '../../../jslib/src/models/request'
-import { CipherType } from '../../../jslib/src/enums'
-import Vnodes from '../../../components/Vnodes'
-import { Utils } from '../../../jslib/src/misc/utils.ts'
+import InputSelect from '~/components/input/InputSelect.vue'
+import InputText from '~/components/input/InputText.vue'
+import { CipherType } from '~/jslib/src/enums'
+import Vnodes from '~/components/Vnodes'
+import { Utils } from '~/jslib/src/misc/utils.ts'
 
 export default {
   components: { Vnodes, InputSelect, InputText },

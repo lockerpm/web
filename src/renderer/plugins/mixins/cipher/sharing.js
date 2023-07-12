@@ -209,8 +209,14 @@ Vue.mixin({
 
         // Encrypt ciphers with self key
         const personalKey = await this.$cryptoService.getEncKey()
+        const cipherInsideFolder =
+          (await this.$searchService.searchCiphers(
+            this.searchText,
+            [c => c.collectionIds.includes(folder.id)],
+            null
+          )) || []
         const ciphers = await Promise.all(
-          folder.ciphers.map(async cipher => {
+          cipherInsideFolder.map(async cipher => {
             const { data } = await this.getEncCipherForRequest(cipher, {
               noCheck: true,
               encKey: personalKey
