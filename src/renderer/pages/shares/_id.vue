@@ -210,7 +210,7 @@
 <script>
 import { Utils } from '../../jslib/src/misc/utils'
 import { Cipher } from '../../core/models/domain/cipher'
-import DetailQuickSharedCipherContent from '@/components/cipher/shares/DetailQuickSharedCipherContent.vue'
+import DetailQuickSharedCipherContent from '@/components/cipher/shares/quick-shares/DetailQuickSharedCipherContent.vue'
 
 export default {
   components: { DetailQuickSharedCipherContent },

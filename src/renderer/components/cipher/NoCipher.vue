@@ -50,7 +50,6 @@ export default {
   },
   computed: {
     shouldRenderBtn () {
-      console.log(CipherType[this.type] ? CipherType[this.type] : this.type)
       return !['Trash'].includes(this.type)
     },
     shouldRenderBtnImport () {

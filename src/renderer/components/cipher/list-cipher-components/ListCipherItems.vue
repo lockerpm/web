@@ -290,8 +290,8 @@
 <script>
 import { CipherType } from '../../../core/enums/cipherType'
 import MoveFolder from '@/components/folder/MoveFolder'
-import ShareCipher from '@/components/cipher/shares/ShareCipher'
-import QuickShareCipher from '@/components/cipher/shares/QuickShareCipher'
+import ShareCipher from '@/components/cipher/shares/your-shares/ShareCipher'
+import QuickShareCipher from '@/components/cipher/shares/quick-shares/QuickShareCipher'
 import Vnodes from '@/components/Vnodes'
 
 export default {
@@ -342,7 +342,11 @@ export default {
 
   computed: {
     headers () {
-      return [this.$t('data.ciphers.created_time'), this.$t('data.ciphers.updated_time'), this.$t('common.actions')]
+      return [
+        this.$t('data.ciphers.created_time'),
+        this.$t('data.ciphers.updated_time'),
+        this.$t('common.actions')
+      ]
     }
   },
 

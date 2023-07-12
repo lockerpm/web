@@ -45,8 +45,9 @@ import * as papa from 'papaparse'
 import ReConfirmMasterPassword from '../../components/password/ReConfirmMasterPassword'
 import { CipherType } from '../../core/enums/cipherType'
 import { Utils } from '../../jslib/src/misc/utils'
-import { CipherWithIds as CipherExport } from '../../jslib/src/models/export/cipherWithIds'
+import { CipherWithIds as CipherExport } from '../../core/models/export/cipherWithIds'
 import { FolderWithId as FolderExport } from '../../jslib/src/models/export/folderWithId'
+import { FolderView } from '../../jslib/src/models/view/folderView'
 export default {
   components: {
     ReConfirmMasterPassword
@@ -63,29 +64,54 @@ export default {
       this.selectedType = type
       this.$refs.reConfirmMasterPassword.openDialog()
     },
+
     async exportData (type) {
       const data = await this.getExport(type)
       this.downloadFile(data)
     },
+
     getExport (format) {
       if (format === 'encrypted_json') {
+        // Not used now
         return this.getEncryptedExport()
       } else {
         return this.getDecryptedExport(format)
       }
     },
+
+    // Decrypted export
     async getDecryptedExport (format) {
       let folders = []
       let ciphers = []
 
-      folders = await this.$folderService.getAllDecrypted()
-      ciphers = await this.$cipherService.getAllDecrypted()
+      folders = [...(await this.$folderService.getAllDecrypted())]
+      ciphers = [...(await this.$cipherService.getAllDecrypted())]
+
+      // Convert collections to folders
+      const collections = await this.$collectionService.getAllDecrypted()
+      collections.forEach(c => {
+        const f = new FolderView()
+        f.name = c.name
+        f.id = `collection_${c.id}`
+        folders.push(f)
+      })
+      ciphers.forEach(c => {
+        if (!c.organizationId) {
+          return
+        }
+        c.folderId = c.collectionIds.length
+          ? `collection_${c.collectionIds[0]}`
+          : c.folderId
+        c.organizationId = null
+        c.collectionIds = null
+      })
 
       // Don't export protected or deleted cipher
       ciphers = ciphers.filter(
         cipher => !this.isProtectedCipher(cipher) && cipher.deletedDate === null
       )
 
+      // CSV export
       if (format === 'csv') {
         const foldersMap = new Map()
         folders.forEach(f => {
@@ -96,10 +122,6 @@ export default {
 
         const exportCiphers = []
         ciphers.forEach(c => {
-          if (c.organizationId != null) {
-            return
-          }
-
           const cipher = {}
           cipher.folder =
             c.folderId != null && foldersMap.has(c.folderId)
@@ -111,7 +133,10 @@ export default {
         })
 
         return papa.unparse(exportCiphers)
-      } else {
+      }
+
+      // JSON
+      if (format === 'json') {
         const jsonDoc = {
           encrypted: false,
           folders: [],
@@ -128,9 +153,6 @@ export default {
         })
 
         ciphers.forEach(c => {
-          if (c.organizationId != null) {
-            return
-          }
           const cipher = new CipherExport()
           cipher.build(c)
           cipher.collectionIds = null
@@ -140,6 +162,9 @@ export default {
         return JSON.stringify(jsonDoc, null, '  ')
       }
     },
+
+    // Not used
+    // But if used again, please handle organizationId, collectionIds and protected ciphers cases
     async getEncryptedExport () {
       let folders = []
       let ciphers = []
@@ -178,12 +203,14 @@ export default {
 
       return JSON.stringify(jsonDoc, null, '  ')
     },
+
     padNumber (num, width, padCharacter = '0') {
       const numString = num.toString()
       return numString.length >= width
         ? numString
         : new Array(width - numString.length + 1).join(padCharacter) + numString
     },
+
     buildCommonCipher (cipher, c) {
       cipher.type = null
       cipher.name = c.name
@@ -269,6 +296,7 @@ export default {
 
       return cipher
     },
+
     getFileName (prefix = null, extension = 'csv') {
       const now = new Date()
       const dateString =
@@ -291,6 +319,7 @@ export default {
         extension
       )
     },
+
     createFileName (prefix) {
       let extension = this.selectedType
       if (this.selectedType === 'encrypted_json') {
@@ -303,6 +332,7 @@ export default {
       }
       return this.getFileName(prefix, extension)
     },
+
     downloadFile (csv) {
       const fileName = this.createFileName(null)
       this.$platformUtilsService.saveFile(

@@ -220,18 +220,18 @@
 <script>
 import orderBy from 'lodash/orderBy'
 import LazyHydrate from 'vue-lazy-hydration'
-import ShareNoCipher from '../../../components/cipher/shares/ShareNoCipher'
-import QuickShareCipher from '../../../components/cipher/shares/QuickShareCipher'
-import { CipherType } from '../../../jslib/src/enums'
-import Vnodes from '../../../components/Vnodes'
-import { Utils } from '../../../jslib/src/misc/utils.ts'
+import ShareNoCipher from '~/components/cipher/shares/ShareNoCipher'
+import QuickShareCipher from '~/components/cipher/shares/quick-shares/QuickShareCipher'
+import { CipherType } from '~/jslib/src/enums'
+import Vnodes from '~/components/Vnodes'
+import { Utils } from '~/jslib/src/misc/utils.ts'
 
 export default {
   components: {
     ShareNoCipher,
     QuickShareCipher,
     // eslint-disable-next-line vue/no-unused-components
-    VueContext: () => import('../../../plugins/vue-context'),
+    VueContext: () => import('../../../../plugins/vue-context'),
     Vnodes,
     LazyHydrate
   },

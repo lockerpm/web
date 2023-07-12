@@ -147,8 +147,8 @@
 
 <script>
 import { AccountRole } from '@/constants'
-import QuickShareCipher from '@/components/cipher/shares/QuickShareCipher'
-import ShareCipher from '@/components/cipher/shares/ShareCipher'
+import QuickShareCipher from '@/components/cipher/shares/quick-shares/QuickShareCipher'
+import ShareCipher from '@/components/cipher/shares/your-shares/ShareCipher'
 
 export default {
   components: { QuickShareCipher, ShareCipher },

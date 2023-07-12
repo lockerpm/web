@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-loading="loading"
-    class="flex flex-col flex-column-fluid relative"
-  >
+  <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
     <!-- List OTP -->
     <div
       v-if="!shouldRenderNoCipher"
@@ -19,12 +16,10 @@
             <div class="mx-6 text-head-4 mb-[5px]">|</div>
             <div class="self-center">
               <!-- Add a specific type -->
-              <template>
-                <button class="btn btn-outline-primary" @click="addEdit({})">
-                  <i class="el-icon-plus text-lg" />
-                  <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
-                </button>
-              </template>
+              <button class="btn btn-outline-primary" @click="addEdit({})">
+                <i class="el-icon-plus text-lg" />
+                <span class="ml-3 break-all">{{ $t('common.add_new') }}</span>
+              </button>
               <!-- Add a specific type end -->
             </div>
           </div>
@@ -32,10 +27,7 @@
         <!-- Breadcrumb end -->
 
         <!-- number of items -->
-        <div
-          v-if="ciphers"
-          class="uppercase text-head-6"
-        >
+        <div v-if="ciphers" class="uppercase text-head-6">
           <span class="text-primary font-semibold">
             {{ itemsCount }}
           </span>
@@ -51,44 +43,55 @@
           <div class="flex">
             <el-dropdown trigger="click" class="self-center">
               <div class="text-sm text-black-600 font-semibold">
-                {{ $t('data.ciphers.sort_by') }} <i class="el-icon-caret-bottom el-icon--right" />
+                {{ $t('data.ciphers.sort_by') }}
+                <i class="el-icon-caret-bottom el-icon--right" />
               </div>
-              <el-dropdown-menu slot="dropdown" class="w-[200px] ">
+              <el-dropdown-menu slot="dropdown" class="w-[200px]">
                 <el-dropdown-item
                   v-if="isSearching"
                   class="flex items-center justify-between"
                   @click.native="changeSort('', '')"
                 >
                   <span>{{ $t('data.ciphers.most_relevant') }}</span>
-                  <i v-if="orderString==='_'" class="fa fa-check" />
+                  <i v-if="orderString === '_'" class="fa fa-check" />
                 </el-dropdown-item>
                 <el-dropdown-item
                   class="flex items-center justify-between"
                   @click.native="changeSort('name', 'asc')"
                 >
-                  <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.ascending') }}</span>
-                  <i v-if="orderString==='name_asc'" class="fa fa-check" />
+                  <span>{{ $t('data.ciphers.name') }}
+                    {{ $t('data.ciphers.ascending') }}</span>
+                  <i v-if="orderString === 'name_asc'" class="fa fa-check" />
                 </el-dropdown-item>
                 <el-dropdown-item
                   class="flex items-center justify-between"
                   @click.native="changeSort('name', 'desc')"
                 >
-                  <span>{{ $t('data.ciphers.name') }} {{ $t('data.ciphers.descending') }}</span>
-                  <i v-if="orderString==='name_desc'" class="fa fa-check" />
+                  <span>{{ $t('data.ciphers.name') }}
+                    {{ $t('data.ciphers.descending') }}</span>
+                  <i v-if="orderString === 'name_desc'" class="fa fa-check" />
                 </el-dropdown-item>
                 <el-dropdown-item
                   class="flex items-center justify-between"
                   @click.native="changeSort('revisionDate', 'asc')"
                 >
-                  <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.ascending') }}</span>
-                  <i v-if="orderString==='revisionDate_asc'" class="fa fa-check" />
+                  <span>{{ $t('data.ciphers.time') }}
+                    {{ $t('data.ciphers.ascending') }}</span>
+                  <i
+                    v-if="orderString === 'revisionDate_asc'"
+                    class="fa fa-check"
+                  />
                 </el-dropdown-item>
                 <el-dropdown-item
                   class="flex items-center justify-between"
                   @click.native="changeSort('revisionDate', 'desc')"
                 >
-                  <span>{{ $t('data.ciphers.time') }} {{ $t('data.ciphers.descending') }}</span>
-                  <i v-if="orderString==='revisionDate_desc'" class="fa fa-check" />
+                  <span>{{ $t('data.ciphers.time') }}
+                    {{ $t('data.ciphers.descending') }}</span>
+                  <i
+                    v-if="orderString === 'revisionDate_desc'"
+                    class="fa fa-check"
+                  />
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -112,18 +115,16 @@
               <div class="self-center mr-1">
                 <el-checkbox
                   v-model="checkedAll"
-                  :class="checkedAll?'!visible':''"
+                  :class="checkedAll ? '!visible' : ''"
                   @change="checkAll"
                 />
               </div>
               <!-- Check all end -->
 
-              <div
-                v-if="multipleSelection.length"
-                class="flex items-center "
-              >
+              <div v-if="multipleSelection.length" class="flex items-center">
                 <div class="text-black mr-8 whitespace-nowrap">
-                  {{ multipleSelection.length }} {{ $t('data.ciphers.selected_items') }}
+                  {{ multipleSelection.length }}
+                  {{ $t('data.ciphers.selected_items') }}
                 </div>
                 <div>
                   <button
@@ -140,7 +141,7 @@
           <!-- Headers end -->
 
           <!-- Body -->
-          <template #default="{item}">
+          <template #default="{ item }">
             <div class="td">
               <div class="flex items-center">
                 <!-- Checkbox -->
@@ -154,10 +155,7 @@
                 <!-- Checkbox end -->
 
                 <!-- Info -->
-                <OTPInfoBlock
-                  :name="item.name"
-                  :otp-data="item.otpData"
-                />
+                <OTPInfoBlock :name="item.name" :otp-data="item.otpData" />
                 <!-- Info end -->
               </div>
             </div>
@@ -167,19 +165,16 @@
               <div class="col-actions text-right">
                 <!-- Copy -->
                 <button
-                  class="btn btn-icon btn-xs hover:bg-black-400"
                   v-clipboard:copy="getOtp(item.otpData)"
                   v-clipboard:success="clipboardSuccessHandler"
+                  class="btn btn-icon btn-xs hover:bg-black-400"
                 >
                   <i class="far fa-clone" />
                 </button>
                 <!-- Copy end -->
 
                 <!-- Other actions -->
-                <el-dropdown
-                  trigger="click"
-                  :hide-on-click="false"
-                >
+                <el-dropdown trigger="click" :hide-on-click="false">
                   <button class="btn btn-icon btn-xs hover:bg-black-400">
                     <i class="fas fa-ellipsis-h" />
                   </button>
@@ -188,8 +183,12 @@
                       <el-dropdown-item @click.native="addEdit(item)">
                         {{ $t('common.edit') }}
                       </el-dropdown-item>
-                      <el-dropdown-item @click.native="deleteCiphers([item.id])">
-                        <span class="text-danger">{{ $t('common.permanently_delete') }}</span>
+                      <el-dropdown-item
+                        @click.native="deleteCiphers([item.id])"
+                      >
+                        <span class="text-danger">{{
+                          $t('common.permanently_delete')
+                        }}</span>
                       </el-dropdown-item>
                     </template>
                   </el-dropdown-menu>
@@ -296,9 +295,13 @@ export default {
         let result = []
         try {
           const filter = c => c.type === CipherType.TOTP
-          result = await this.$searchService.searchCiphers(this.searchText, [filter], null) || []
-        } catch (error) {
-        }
+          result =
+            (await this.$searchService.searchCiphers(
+              this.searchText,
+              [filter],
+              null
+            )) || []
+        } catch (error) {}
         result = result.map(item => {
           try {
             item.otpData = parseOTPUri(item.notes)
@@ -311,13 +314,30 @@ export default {
           }
         })
         if (this.orderField && this.orderDirection) {
-          result = orderBy(result, [c => this.orderField === 'name' ? (c.name && c.name.toLowerCase()) : c.revisionDate], [this.orderDirection]) || []
+          result =
+            orderBy(
+              result,
+              [
+                c =>
+                  this.orderField === 'name'
+                    ? c.name && c.name.toLowerCase()
+                    : c.revisionDate
+              ],
+              [this.orderDirection]
+            ) || []
         }
         // this.dataRendered = result.slice(0, 50)
         // this.renderIndex = 50
         return result
       },
-      watch: ['$store.state.syncedCiphersToggle', 'deleted', 'searchText', 'filter', 'orderField', 'orderDirection']
+      watch: [
+        '$store.state.syncedCiphersToggle',
+        'deleted',
+        'searchText',
+        'filter',
+        'orderField',
+        'orderDirection'
+      ]
     }
   },
 
@@ -370,6 +390,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
