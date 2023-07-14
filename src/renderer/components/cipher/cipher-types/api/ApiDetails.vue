@@ -27,8 +27,9 @@
     />
     <TextHaveCopy
       :label="$t('data.ciphers.notes')"
-      :text="filterPassword(api.notes, !isPublic || !hideAll)"
+      :text="api.notes"
       :text-area="true"
+      :should-hide="isPublic && hideAll"
     />
   </div>
 </template>

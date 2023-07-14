@@ -349,8 +349,8 @@ export default {
     restoreCiphers (ids) {
       this.$refs.addEditCipherDialog.restoreCiphers(ids)
     },
-    moveTrashCiphers (ids) {
-      this.$refs.addEditCipherDialog.moveTrashCiphers(ids)
+    moveTrashCiphers (cs) {
+      this.$refs.addEditCipherDialog.moveTrashCiphers(cs)
     },
     changeSort (orderField, orderDirection) {
       this.orderField = orderField

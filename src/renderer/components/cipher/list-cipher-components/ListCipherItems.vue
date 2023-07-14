@@ -47,7 +47,7 @@
               </button>
               <button
                 class="btn btn-default btn-xs !text-danger"
-                @click="moveTrashCiphers(multipleSelection.map(e => e.id))"
+                @click="moveTrashCiphers(multipleSelection)"
               >
                 {{ $t('common.delete') }}
               </button>
@@ -258,7 +258,7 @@
                   <el-dropdown-item
                     v-if="isOwner(organizations, item)"
                     divided
-                    @click.native="moveTrashCiphers([item.id])"
+                    @click.native="moveTrashCiphers([item])"
                   >
                     <span class="text-danger">{{ $t('common.delete') }}</span>
                   </el-dropdown-item>

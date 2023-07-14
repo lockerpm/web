@@ -134,6 +134,7 @@ Vue.mixin({
       delete this.$options.sockets.onmessage
       delete this.$options.sockets.onerror
       delete this.$options.sockets.onclose
+      delete this.$options.sockets.onopen
     },
 
     disconnectDesktopSocket () {

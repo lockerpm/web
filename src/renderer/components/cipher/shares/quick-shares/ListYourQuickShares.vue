@@ -25,12 +25,7 @@
                 <div class="flex items-center">
                   <!-- Icon -->
                   <div>
-                    <div
-                      class="text-[34px] mr-3 flex-shrink-0"
-                      :class="{
-                        'filter grayscale': isExpired(scope.row)
-                      }"
-                    >
+                    <div class="text-[34px] mr-3 flex-shrink-0">
                       <Vnodes :vnodes="getIconCipher(scope.row.cipher, 34)" />
                     </div>
                   </div>
@@ -44,6 +39,12 @@
                       @click.prevent="viewCipher(scope.row)"
                     >
                       {{ scope.row.cipher.name }}
+                      <span
+                        v-if="isExpired(scope.row)"
+                        class="label whitespace-normal label-default !ml-2"
+                      >
+                        {{ $t('common.expired') }}
+                      </span>
                     </a>
                     <div v-if="scope.row.cipher.type === CipherType.Login">
                       {{ scope.row.cipher.subTitle || 'N/A' }}

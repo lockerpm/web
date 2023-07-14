@@ -32,9 +32,19 @@
     >
       <p class="!break-normal mr-4">{{ $t('data.ciphers.website_address') }}</p>
       <div class="col-span-4 font-semibold">
-        {{ filterPassword(item.uri, !isPublic || !hideAll) }}
+        {{ filterPassword(item.uri, !isPublic || !hideAll || showUri) }}
       </div>
       <div class="text-right">
+        <button
+          v-if="isPublic && hideAll"
+          class="btn btn-icon btn-xs btn-action"
+          @click="showUri = !showUri"
+        >
+          <i
+            class="far"
+            :class="{ 'fa-eye': !showUri, 'fa-eye-slash': showUri }"
+          />
+        </button>
         <button
           v-if="item.canLaunch"
           class="btn btn-icon btn-xs btn-action"
@@ -75,6 +85,12 @@ export default {
     }
   },
 
+  data () {
+    return {
+      showUri: false
+    }
+  },
+
   computed: {
     passwordStrength () {
       return (
@@ -83,6 +99,14 @@ export default {
           ['cystack']
         ) || {}
       )
+    }
+  },
+
+  watch: {
+    hideAll (val) {
+      if (val) {
+        this.showUri = false
+      }
     }
   }
 }
