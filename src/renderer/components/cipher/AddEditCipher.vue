@@ -58,7 +58,9 @@
           @update:password="newValue => (cipher.login.password = newValue)"
           @update:uris="newValue => (cipher.login.uris = newValue)"
           @update:totp="newValue => (cipher.login.totp = newValue)"
-          @update:isCreateAuthenticator="newValue => (isCreateAuthenticator = newValue)"
+          @update:isCreateAuthenticator="
+            newValue => (isCreateAuthenticator = newValue)
+          "
         />
 
         <!-- CARD FIELDS -->
@@ -253,7 +255,7 @@
             @click="
               isDeleted
                 ? deleteCiphers([cipher.id])
-                : moveTrashCiphers([cipher.id])
+                : moveTrashCiphers([cipher])
             "
           >
             <i class="fa fa-trash-alt" />
@@ -657,10 +659,10 @@ export default {
     },
 
     // Move to trash
-    async moveTrashCiphers (ids) {
+    async moveTrashCiphers (ciphers) {
       this.$confirm(
-        this.$tc('data.notifications.trash_selected_desc', ids.length, {
-          count: ids.length
+        this.$tc('data.notifications.trash_selected_desc', ciphers.length, {
+          count: ciphers.length
         }),
         this.$t('common.warning'),
         {
@@ -672,13 +674,22 @@ export default {
       )
         .then(async () => {
           this.loading = true
-          const isSuccess = await this.handleMoveTrashCiphers(ids)
+          const isSuccess = await this.handleMoveTrashCiphers(
+            ciphers.map(c => c.id)
+          )
           this.loading = false
           if (isSuccess) {
             this.$emit('trashed-cipher')
             this.$emit('reset-selection')
             this.closeDialog()
           }
+
+          // Stop share those deleted cipher
+          ciphers.forEach(c => {
+            if (c.organizationId && c.collectionIds?.length) {
+              this.stopShareCipherInCollection(c, true)
+            }
+          })
         })
         .catch(() => {})
     },

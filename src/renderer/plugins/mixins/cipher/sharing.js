@@ -197,6 +197,25 @@ Vue.mixin({
       }
     },
 
+    async stopShareCipherInCollection (cipher) {
+      try {
+        const { data } = await this.getEncCipherForRequest(cipher, {
+          noCheck: true,
+          encKey: await this.$cryptoService.getEncKey()
+        })
+
+        await this.$axios.$put(
+          `cystack_platform/pm/sharing/${cipher.organizationId}/folders/${cipher.collectionIds[0]}/items`,
+          {
+            cipher: { ...data, id: cipher.id }
+          }
+        )
+        this.$store.dispatch('LoadMyShares')
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
     async stopShareFolder (folder) {
       try {
         let memberId = null

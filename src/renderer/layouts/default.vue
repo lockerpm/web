@@ -83,31 +83,40 @@ export default {
     SideBarMenu,
     BottomBanner
   },
+
   middleware: [
     'LoggedIn',
     'UserInfo',
     'NotHaveAccountService',
     'blockBySource'
   ],
+
   data () {
     return {
       locked: true,
       lastActivity: null,
       idleTimer: null,
-      isIdle: false
+      isIdle: false,
+
+      // Used when socket is dead
+      lastSync: null,
+      checkSyncInterval: null
     }
   },
+
   head () {
     return {
       script: [{ src: 'https://js.stripe.com/v3/' }]
     }
   },
+
   watch: {
     '$store.state.userPw' (newValue) {
       if (newValue.is_pwd_manager === false) {
         this.$router.push(this.localeRoute({ name: 'set-master-password' }))
       }
     },
+
     locked (newValue) {
       if (newValue === true) {
         clearInterval(this.intervalGet)
@@ -132,12 +141,15 @@ export default {
       }
     }
   },
+
   created () {
     if (this.$route.query.client === 'browser') {
       this.notify(this.$t('data.notifications.extension_loggedin'), 'success')
     }
   },
+
   mounted () {
+    this.lastSync = Date.now()
     this.setupMomentLocale(this.locale)
     this.$store.dispatch('LoadEnterpriseInvitations')
     this.$broadcasterService.subscribe(
@@ -175,17 +187,25 @@ export default {
     )
     this.init()
   },
+
   asyncComputed: {
     async locked () {
       return await this.$vaultTimeoutService.isLocked()
     }
   },
+
   beforeDestroy () {
     this.$broadcasterService.unsubscribe(BroadcasterSubscriptionId)
     this.removeEvent()
     this.disconnectSocket()
     clearInterval(this.intervalGet)
+    if (this.checkSyncInterval) {
+      console.log('stop polling')
+      clearInterval(this.checkSyncInterval)
+      this.checkSyncInterval = null
+    }
   },
+
   methods: {
     async getShareInvitations () {
       const shareInvitations =
@@ -197,12 +217,15 @@ export default {
       )
       // this.pendingShares = shareInvitations.filter(item => item.status === 'invited').length
     },
+
     async getMyShares () {
       this.$store.dispatch('LoadMyShares')
     },
+
     async getItemsCount () {
       this.$store.dispatch('LoadItemsCount')
     },
+
     async recordActivity () {
       const now = new Date().getTime()
       if (this.lastActivity != null && now - this.lastActivity < 250) {
@@ -227,7 +250,9 @@ export default {
         }
       }, IdleTimeout)
     },
+
     noop () {},
+
     init () {
       window.onmousemove = () => this.recordActivity()
       window.onmousedown = () => this.recordActivity()
@@ -236,6 +261,7 @@ export default {
       window.onscroll = () => this.recordActivity()
       window.onkeypress = () => this.recordActivity()
     },
+
     reconnectSocket () {
       const token = this.$cookies.get('cs_locker_token')
       const _sanitizeUrl = connectionUrl => {
@@ -282,11 +308,45 @@ export default {
           break
         }
       }
+      this.$options.sockets.onerror = e => {
+        console.log('socket error', e)
+        if (!this.checkSyncInterval) {
+          console.log('start polling...')
+          this.checkSyncInterval = setInterval(async () => {
+            const lastUpdate = await this.getLastUpdate()
+            const bumpTimestamp =
+              (lastUpdate - new Date().getTimezoneOffset() * 60) * 1000
+            if (bumpTimestamp > this.lastSync) {
+              this.lastSync = bumpTimestamp
+              this.getSyncData()
+              this.getShareInvitations()
+              this.getMyShares()
+              this.getItemsCount()
+            }
+          }, 5000)
+        }
+      }
+      this.$options.sockets.onclose = e => {
+        console.log('socket closed', e)
+      }
+      this.$options.sockets.onopen = () => {
+        console.log('socket open')
+        if (this.checkSyncInterval) {
+          console.log('stop polling')
+          clearInterval(this.checkSyncInterval)
+          this.checkSyncInterval = null
+        }
+      }
     },
+
     disconnectSocket () {
       delete this.$options.sockets.onmessage
+      delete this.$options.sockets.onerror
+      delete this.$options.sockets.onclose
+      delete this.$options.sockets.onopen
       this.$disconnect()
     },
+
     removeEvent () {
       window.onmousemove = () => this.noop()
       window.onmousedown = () => this.noop()
@@ -294,6 +354,17 @@ export default {
       window.onclick = () => this.noop()
       window.onscroll = () => this.noop()
       window.onkeypress = () => this.noop()
+    },
+
+    async getLastUpdate () {
+      try {
+        const res = await this.$axios.$get(
+          '/cystack_platform/pm/users/me/revision_date'
+        )
+        return res.revision_date
+      } catch (error) {
+        return 0
+      }
     }
   }
 }
