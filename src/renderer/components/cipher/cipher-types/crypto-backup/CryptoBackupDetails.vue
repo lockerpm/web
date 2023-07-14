@@ -60,7 +60,9 @@
       </p>
       <div class="col-span-4 font-semibold">
         <InputSeedPhrase
-          :value="filterPassword(cryptoWallet.seed, !isPublic || !hideAll)"
+          :value="
+            filterPassword(cryptoWallet.seed, !isPublic || !hideAll || showSeed)
+          "
           :label="$t('data.ciphers.seed')"
           :edit-mode="false"
           :disabled="true"
@@ -68,6 +70,16 @@
         />
       </div>
       <div class="text-right">
+        <button
+          v-if="isPublic && hideAll"
+          class="btn btn-icon btn-xs btn-action"
+          @click="showSeed = !showSeed"
+        >
+          <i
+            class="far"
+            :class="{ 'fa-eye': !showSeed, 'fa-eye-slash': showSeed }"
+          />
+        </button>
         <button
           v-clipboard:copy="cryptoWallet.seed"
           v-clipboard:success="clipboardSuccessHandler"
@@ -102,8 +114,9 @@
     </div>
     <TextHaveCopy
       :label="$t('data.ciphers.notes')"
-      :text="filterPassword(cryptoWallet.notes, !isPublic || !hideAll)"
+      :text="cryptoWallet.notes"
       :text-area="true"
+      :should-hide="isPublic && hideAll"
     />
   </div>
 </template>
@@ -138,6 +151,12 @@ export default {
     }
   },
 
+  data () {
+    return {
+      showSeed: false
+    }
+  },
+
   computed: {
     cryptoWallet () {
       const item = { ...this.cipher.cryptoWallet }
@@ -157,6 +176,14 @@ export default {
           ['cystack']
         ) || {}
       )
+    }
+  },
+
+  watch: {
+    hideAll (val) {
+      if (val) {
+        this.showUri = false
+      }
     }
   },
 

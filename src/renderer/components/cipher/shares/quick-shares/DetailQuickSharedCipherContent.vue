@@ -151,8 +151,9 @@
           <TextHaveCopy
             v-if="!newCipherTypes.includes(cipher.type)"
             :label="$t('data.ciphers.notes')"
-            :text="filterPassword(cipher.notes, !isPublic || !hideAll)"
+            :text="cipher.notes"
             :text-area="true"
+            :should-hide="isPublic && hideAll"
           />
         </div>
         <!-- Notes end -->

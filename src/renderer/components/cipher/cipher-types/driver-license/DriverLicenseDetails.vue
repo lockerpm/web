@@ -52,8 +52,9 @@
     />
     <TextHaveCopy
       :label="$t('data.ciphers.notes')"
-      :text="filterPassword(driverLicense.notes, !isPublic || !hideAll)"
+      :text="driverLicense.notes"
       :text-area="true"
+      :should-hide="isPublic && hideAll"
     />
   </div>
 </template>
