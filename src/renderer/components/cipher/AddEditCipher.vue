@@ -686,8 +686,12 @@ export default {
 
           // Stop share those deleted cipher
           ciphers.forEach(c => {
-            if (c.organizationId && c.collectionIds?.length) {
-              this.stopShareCipherInCollection(c, true)
+            if (c.organizationId) {
+              if (c.collectionIds?.length) {
+                this.stopShareCipherInCollection(c)
+              } else {
+                this.stopShareCipher(c, true)
+              }
             }
           })
         })
