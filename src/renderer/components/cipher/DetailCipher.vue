@@ -35,7 +35,7 @@
         <div v-if="!isMasterPw" class="header-actions">
           <!-- Edit -->
           <button
-            v-if="canManageItem(organizations, cipher)"
+            v-if="canManageItem(organizations, cipher) && !cipher.isDeleted"
             class="btn btn-icon btn-xs btn-action"
             @click="addEdit"
           >
@@ -96,12 +96,28 @@
               <el-dropdown-item @click.native="moveFolders([cipher.id])">
                 {{ $t('common.move_folder') }}
               </el-dropdown-item>
-              <el-dropdown-item
-                v-if="isOwner(organizations, cipher)"
-                @click.native="deleteCiphers([cipher.id])"
-              >
-                <span class="text-danger">{{ $t('common.delete') }}</span>
-              </el-dropdown-item>
+
+              <template v-if="isOwner(organizations, cipher)">
+                <template v-if="cipher.isDeleted">
+                  <el-dropdown-item @click.native="restoreCiphers([cipher.id])">
+                    <span class="text-primary">{{ $t('common.restore') }}</span>
+                  </el-dropdown-item>
+
+                  <el-dropdown-item @click.native="deleteCiphers([cipher.id])">
+                    <span class="text-danger">{{
+                      $t('common.permanently_delete')
+                    }}</span>
+                  </el-dropdown-item>
+                </template>
+
+                <el-dropdown-item
+                  v-else
+                  @click.native="moveTrashCiphers([cipher])"
+                >
+                  <span class="text-danger">{{ $t('common.delete') }}</span>
+                </el-dropdown-item>
+              </template>
+
               <el-dropdown-item v-else @click.native="leaveShare(cipher)">
                 <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
               </el-dropdown-item>
@@ -115,7 +131,10 @@
       <client-only>
         <!-- Icon + name -->
         <div class="mt-20 mb-9 text-center">
-          <div class="mb-4 text-[70px]">
+          <div
+            class="mb-4 text-[70px]"
+            :class="{ 'filter grayscale': cipher.isDeleted }"
+          >
             <Vnodes :vnodes="getIconCipher(cipher, 34)" />
           </div>
           <div class="text-head-4 font-medium truncate">
@@ -517,15 +536,12 @@ export default {
   asyncComputed: {
     ciphers: {
       async get () {
-        const deletedFilter = c => {
-          return c.isDeleted === false
+        const filterById = c => {
+          return c.id === this.$route.params.id
         }
         let result =
-          (await this.$searchService.searchCiphers(
-            '',
-            [null, deletedFilter],
-            null
-          )) || []
+          (await this.$searchService.searchCiphers('', [filterById], null)) ||
+          []
         result = result.map(item => {
           const i = this.parseNotesOfNewTypes(item)
           return i
@@ -588,6 +604,12 @@ export default {
     deleteCiphers (ids) {
       this.$refs.addEditCipherDialog.deleteCiphers(ids)
     },
+    moveTrashCiphers (cs) {
+      this.$refs.addEditCipherDialog.moveTrashCiphers(cs)
+    },
+    restoreCiphers (ids) {
+      this.$refs.addEditCipherDialog.restoreCiphers(ids)
+    },
     findFolder (folders, id) {
       return (
         find(folders, e => e.id === id) || {
@@ -617,7 +639,7 @@ export default {
               }),
               'success'
             )
-            this.$router.back()
+            this.back()
           } catch (error) {
             this.notify(
               this.$tc('data.notifications.update_failed', 1, {
@@ -636,7 +658,9 @@ export default {
       this.$refs.shareCipher.closeDialog()
     },
     back () {
-      this.$router.back()
+      if (!['/', '/lock'].includes(this.$store.state.previousPath)) {
+        this.$router.back()
+      }
     }
   }
 }

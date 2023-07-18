@@ -150,7 +150,7 @@ Vue.mixin({
       }
     },
 
-    async stopShareCipher (cipher) {
+    async stopShareCipher (cipher, silent = false) {
       try {
         let memberId = null
         if (cipher.user) {
@@ -180,20 +180,27 @@ Vue.mixin({
           )
         }
 
-        this.notify(
-          this.$tc('data.notifications.update_success', 1, {
-            type: this.$tc(`type.${cipher.type}`, 1)
-          }),
-          'success'
-        )
+        if (!silent) {
+          this.notify(
+            this.$tc('data.notifications.update_success', 1, {
+              type: this.$tc(`type.${cipher.type}`, 1)
+            }),
+            'success'
+          )
+        }
+
         this.$store.dispatch('LoadMyShares')
       } catch (error) {
-        this.notify(
-          this.$tc('data.notifications.update_failed', 1, {
-            type: this.$tc(`type.${cipher.type}`, 1)
-          }),
-          'warning'
-        )
+        if (!silent) {
+          this.notify(
+            this.$tc('data.notifications.update_failed', 1, {
+              type: this.$tc(`type.${cipher.type}`, 1)
+            }),
+            'warning'
+          )
+        } else {
+          console.log(error)
+        }
       }
     },
 
