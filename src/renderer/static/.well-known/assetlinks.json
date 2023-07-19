@@ -9,27 +9,10 @@
   {
     "relation": ["delegate_permission/common.get_login_creds"],
     "target": {
-      "namespace": "web",
-      "site": "https://staging.locker.io"
-    }
-  },
-  {
-    "relation": ["delegate_permission/common.get_login_creds"],
-    "target": {
       "namespace": "android_app",
       "package_name": "com.cystack.locker",
       "sha256_cert_fingerprints": [
         "4E:77:1C:44:03:4A:71:A7:26:BA:F7:9E:63:51:F0:45:C8:57:4D:12:A7:48:9F:8C:B7:37:CA:C9:E1:01:7D:B7"
-      ]
-    }
-  },
-  {
-    "relation": ["delegate_permission/common.get_login_creds"],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "com.cystack.locker.staging",
-      "sha256_cert_fingerprints": [
-        "07:16:74:34:E9:A5:7B:0F:C1:EE:C1:13:E6:09:D8:71:20:CD:1B:A3:BE:50:77:CA:CA:60:DB:92:3F:73:A7:82"
       ]
     }
   }
