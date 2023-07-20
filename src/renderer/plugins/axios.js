@@ -49,16 +49,13 @@ export default function ({
 
   $axios.onResponse(res => {
     if (res.headers['device-id']) {
+      const expiredTime = res.headers['device-expired-time']
+        ? app.$moment.unix(res.headers['device-expired-time'])
+        : app.$moment().add(365, 'days')
       app.$cookies.set('device_id', res.headers['device-id'], {
         path: '/',
-        ...(isDev ? { secure: false } : { secure: true }),
-        ...(res.headers['device-expired-time']
-          ? {
-            expires: app.$moment
-              .unix(res.headers['device-expired-time'])
-              .toDate()
-          }
-          : {}),
+        secure: !isDev,
+        expires: expiredTime.toDate(),
         domain: 'locker.io'
       })
       $axios.setHeader('device-id', res.headers['device-id'])
