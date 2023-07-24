@@ -1,6 +1,9 @@
 [
   {
-    "relation": ["delegate_permission/common.get_login_creds"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
     "target": {
       "namespace": "web",
       "site": "https://locker.io"
@@ -12,7 +15,7 @@
       "namespace": "android_app",
       "package_name": "com.cystack.locker",
       "sha256_cert_fingerprints": [
-        "4E:77:1C:44:03:4A:71:A7:26:BA:F7:9E:63:51:F0:45:C8:57:4D:12:A7:48:9F:8C:B7:37:CA:C9:E1:01:7D:B7"
+        "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C"
       ]
     }
   }
