@@ -78,6 +78,7 @@ module.exports = {
     { ssr: true, src: '@/plugins/mixins/cipher/utils.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/data.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/crud.js' },
+    { ssr: true, src: '@/plugins/mixins/cipher/crudFolder.js' },
     { ssr: true, src: '@/plugins/onpremise/mixins.js' },
 
     // UI
