@@ -289,17 +289,33 @@ export default {
       this.$options.sockets.onmessage = message => {
         const data = JSON.parse(message.data)
         switch (data.event) {
-        case 'sync':
-          this.getSyncData()
-          this.getShareInvitations()
+        case 'sync': {
+          switch (data.type) {
+          case 'cipher_update':
+            this.syncSingleCipher(data.data.id)
+            break
+          case 'folder_update':
+            this.syncSingleFolder(data.data.id)
+            break
+          default:
+            this.getSyncData()
+            this.getShareInvitations()
+          }
           this.getMyShares()
           this.getItemsCount()
           break
+        }
         case 'emergency_access':
           this.$refs.emergencyAccessInvitations.getEmergencyAccessInvitations()
           break
         case 'quick_share':
-          this.syncQuickShares()
+          switch (data.type) {
+          case 'quick_share':
+            this.syncSingleQuickShare(data.data.id)
+            break
+          default:
+            this.syncQuickShares()
+          }
           break
         case 'members':
           this.getMyShares()

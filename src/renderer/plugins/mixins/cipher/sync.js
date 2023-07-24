@@ -69,63 +69,94 @@ Vue.mixin({
       } finally {
         this.$store.commit('UPDATE_SYNCING', false)
       }
-    }
+    },
 
-    // OLD METHOD: get all
-    // async getSyncData () {
-    //   this.$store.commit('UPDATE_SYNCING', true)
-    //   try {
-    //     const userId = await this.$userService.getUserId()
-    //     // partial sync if no ciphers in storage
-    //     if (this.$cipherService.decryptedCipherCache === null) {
-    //       try {
-    //         this.$messagingService.send('syncStarted')
-    //         let res = await this.$axios.$get('cystack_platform/pm/sync?paging=1&size=50&page=1')
-    //         if (res.count && res.count.ciphers) {
-    //           this.$store.commit('UPDATE_CIPHER_COUNT', res.count.ciphers)
-    //         }
-    //         res = new SyncResponse(res)
-    //         await this.$syncService.syncProfile(res.profile)
-    //         await this.$syncService.syncFolders(userId, res.folders)
-    //         await this.$syncService.syncCollections(res.collections)
-    //         await this.$syncService.syncCiphers(userId, res.ciphers)
-    //         await this.$syncService.syncSends(userId, res.sends)
-    //         await this.$syncService.syncSettings(userId, res.domains)
-    //         await this.$syncService.syncPolicies(res.policies)
-    //         await this.$syncService.setLastSync(new Date())
-    //         this.$messagingService.send('syncCompleted', { successfully: true })
-    //         this.$store.commit('UPDATE_SYNCED_CIPHERS')
-    //       } catch (error) {
-    //         this.$messagingService.send('syncCompleted', { successfully: false })
-    //         this.$store.commit('UPDATE_SYNCED_CIPHERS')
-    //       }
-    //     }
-    //     this.$messagingService.send('syncStarted')
-    //     let res = await this.$axios.$get('cystack_platform/pm/sync')
-    //     if (res.count && res.count.ciphers) {
-    //       this.$store.commit('UPDATE_CIPHER_COUNT', res.count.ciphers)
-    //     }
-    //     res = new SyncResponse(res)
-    //     // const userId = await this.$userService.getUserId()
-    //     await this.$syncService.syncProfile(res.profile)
-    //     await this.$syncService.syncFolders(userId, res.folders)
-    //     await this.$syncService.syncCollections(res.collections)
-    //     await this.$syncService.syncCiphers(userId, res.ciphers)
-    //     await this.$syncService.syncSends(userId, res.sends)
-    //     await this.$syncService.syncSettings(userId, res.domains)
-    //     await this.$syncService.syncPolicies(res.policies)
-    //     await this.$syncService.setLastSync(new Date())
-    //     this.$messagingService.send('syncCompleted', { successfully: true })
-    //     console.log('sync completed')
-    //     this.$store.commit('UPDATE_SYNCED_CIPHERS')
-    //     // console.log('PUT scores')
-    //     // console.log('PUT scores completed')
-    //   } catch (e) {
-    //     this.$messagingService.send('syncCompleted', { successfully: false })
-    //     this.$store.commit('UPDATE_SYNCED_CIPHERS')
-    //   } finally {
-    //     this.$store.commit('UPDATE_SYNCING', false)
-    //   }
-    // },
+    async syncProfile () {
+      try {
+        const res = await this.$axios.$get('/cystack_platform/pm/sync/profile')
+        await this.$syncService.syncProfile(res)
+        this.$store.commit('UPDATE_SYNCED_CIPHERS')
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async syncSingleCipher (id) {
+      try {
+        const res = await this.$axios.$get(
+          `/cystack_platform/pm/sync/ciphers/${id}`
+        )
+        await this.$cipherService.upsert([res])
+        if (res.organizationId) {
+          await this.syncProfile()
+        } else {
+          this.$store.commit('UPDATE_SYNCED_CIPHERS')
+        }
+      } catch (e) {
+        const status = e.response?.status
+        if (status === 403 || status === 404) {
+          await this.$cipherService.delete([id])
+          this.$store.commit('UPDATE_SYNCED_CIPHERS')
+        } else {
+          console.log(e)
+        }
+      }
+    },
+
+    async syncSingleFolder (id) {
+      try {
+        const res = await this.$axios.$get(
+          `/cystack_platform/pm/sync/folders/${id}`
+        )
+        await this.$folderService.upsert([res])
+        this.$store.commit('UPDATE_SYNCED_CIPHERS')
+      } catch (e) {
+        const status = e.response?.status
+        if (status === 404) {
+          await this.$folderService.delete([id])
+          this.$store.commit('UPDATE_SYNCED_CIPHERS')
+        } else {
+          console.log(e)
+        }
+      }
+    },
+
+    async syncQuickShares () {
+      try {
+        // No quick shares for on premise
+        if (this.isOnPremise) {
+          return
+        }
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', true)
+        const res = await this.$axios.$get(
+          'cystack_platform/pm/quick_shares?paging=0'
+        )
+        const userId = await this.$userService.getUserId()
+        await this.$syncService.syncSends(userId, res)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', false)
+      }
+    },
+
+    async syncSingleQuickShare (id) {
+      try {
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', true)
+        const res = await this.$axios.$get(
+          `/cystack_platform/pm/quick_shares/${id}`
+        )
+        await this.$sendService.upsert([res])
+      } catch (e) {
+        const status = e.response?.status
+        if (status === 403 || status === 404) {
+          await this.$sendService.delete([id])
+        } else {
+          console.log(e)
+        }
+      } finally {
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', false)
+      }
+    }
   }
 })

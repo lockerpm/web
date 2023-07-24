@@ -113,25 +113,6 @@ Vue.mixin({
       )
     },
 
-    async syncQuickShares () {
-      try {
-        // No quick shares for on premise
-        if (this.isOnPremise) {
-          return
-        }
-        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', true)
-        const res = await this.$axios.$get(
-          'cystack_platform/pm/quick_shares?paging=0'
-        )
-        const userId = await this.$userService.getUserId()
-        await this.$syncService.syncSends(userId, res)
-      } catch (error) {
-        console.log(error)
-      } finally {
-        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', false)
-      }
-    },
-
     getPublicShareUrl (accessId, key) {
       return `${process.env.baseUrl}/shares/${accessId}#${encodeURIComponent(
         key
@@ -140,13 +121,17 @@ Vue.mixin({
 
     async stopQuickSharing (send) {
       try {
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', true)
         await this.$axios.$delete(`cystack_platform/pm/quick_shares/${send.id}`)
+        await this.$sendService.delete([send.id])
         this.notify(this.$t('data.notifications.stop_share_success'), 'success')
         return true
       } catch (error) {
         this.notify(this.$t('errors.something_went_wrong'), 'warning')
         console.log(error)
         return false
+      } finally {
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', false)
       }
     },
 
@@ -178,6 +163,11 @@ Vue.mixin({
               cipher: { ...data, id: cipher.id }
             }
           )
+          await this.upsertCipherLocal(cipher, {
+            ...data,
+            organizationId: null,
+            collectionIds: []
+          })
         }
 
         if (!silent) {
@@ -217,6 +207,11 @@ Vue.mixin({
             cipher: { ...data, id: cipher.id }
           }
         )
+        await this.upsertCipherLocal(cipher, {
+          ...data,
+          organizationId: null,
+          collectionIds: []
+        })
         this.$store.dispatch('LoadMyShares')
       } catch (error) {
         console.log(error)
@@ -249,7 +244,8 @@ Vue.mixin({
             })
             return {
               id: cipher.id,
-              ...data
+              ...data,
+              creationDate: cipher.creationDate
             }
           })
         )
@@ -266,10 +262,32 @@ Vue.mixin({
             payload
           )
         } else {
-          await this.$axios.$post(
+          const res = await this.$axios.$post(
             `cystack_platform/pm/sharing/${folder.organizationId}/stop`,
             payload
           )
+          await this.$collectionService.delete(folder.id)
+          if (res.personal_folder_id) {
+            const now = new Date().toISOString()
+            await this.$cipherService.upsert(
+              ciphers.map(c => ({
+                ...c,
+                revisionDate: now,
+                organizationId: null,
+                collectionIds: [],
+                folderId: res.personal_folder_id
+              }))
+            )
+            await this.$folderService.upsert([
+              {
+                id: res.personal_folder_id,
+                name: folderNameEnc,
+                creationDate: now,
+                revisionDate: now
+              }
+            ])
+          }
+          this.$store.commit('UPDATE_SYNCED_CIPHERS')
         }
         this.notify(
           this.$tc('data.notifications.update_success', 1, {

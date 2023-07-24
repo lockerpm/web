@@ -26,6 +26,20 @@ Vue.mixin({
         return true
       }
       return false
+    },
+
+    objectKeysSnakeToCamel (obj) {
+      function snakeToCamel (str) {
+        return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())
+      }
+      const camelCaseObj = {}
+      for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          const camelCaseKey = snakeToCamel(key)
+          camelCaseObj[camelCaseKey] = obj[key]
+        }
+      }
+      return camelCaseObj
     }
   }
 })

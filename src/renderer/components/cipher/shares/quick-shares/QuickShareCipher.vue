@@ -369,6 +369,29 @@ export default {
         const url = 'cystack_platform/pm/quick_shares'
         const res = await this.$axios.$post(url, sendRequest)
 
+        // Upsert new send
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', true)
+        const now = new Date().toISOString()
+        const userId = await this.$userService.getUserId()
+        const sendObj = {
+          ...this.objectKeysSnakeToCamel(sendRequest),
+          userId,
+          id: res.id,
+          accessId: res.access_id,
+          accessCount: 0,
+          cipher: {
+            ...sendRequest.cipher,
+            userId
+          },
+          creationDate: now,
+          revisionDate: now,
+          expirationDate: new Date(
+            sendRequest.expiration_date * 1000
+          ).toISOString()
+        }
+        await this.$sendService.upsert([sendObj])
+        this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', false)
+
         // Done
         this.closeDialog()
         this.$refs.quickSharedCipherInfo.openDialog(cipher, {

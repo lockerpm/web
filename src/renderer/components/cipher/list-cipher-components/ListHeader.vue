@@ -134,8 +134,10 @@
       {{ $tc('type.0', ciphers.length) }}
     </div>
     <div v-if="folders && viewFolder" class="uppercase text-head-6">
-      <span class="text-primary font-semibold">{{ folders.length }}</span>
-      {{ $tc('type.Folder', folders.length) }}
+      <span class="text-primary font-semibold">{{
+        folders.length + collections.length
+      }}</span>
+      {{ $tc('type.Folder', folders.length + collections.length) }}
     </div>
     <!-- number of items end -->
   </div>
