@@ -54,18 +54,22 @@
 
 <script>
 import InputSelectFolder from '../input/InputSelectFolder'
+import { CipherRequest } from '../../jslib/src/models/request/cipherRequest'
 import AddEditFolder from './AddEditFolder'
+
 export default {
   components: {
     InputSelectFolder,
     AddEditFolder
   },
+
   props: {
     type: {
       type: String,
       default: 'Login'
     }
   },
+
   data () {
     return {
       cipher: {},
@@ -80,8 +84,7 @@ export default {
       ciphers: []
     }
   },
-  computed: {},
-  mounted () {},
+
   methods: {
     async openDialog (data) {
       ;[this.folders, this.collections, this.organizations] = await Promise.all(
@@ -93,9 +96,11 @@ export default {
       this.dialogVisible = true
       this.ids = data
     },
+
     closeDialog () {
       this.dialogVisible = false
     },
+
     async putCiphersFolder () {
       try {
         this.loading = true
@@ -132,7 +137,26 @@ export default {
             ids: this.ids,
             folderId: this.folderId
           })
+          const now = new Date().toISOString()
+          await Promise.all(
+            this.ids.map(id =>
+              (async () => {
+                const encCipher = await this.$cipherService.get(id)
+                const encCipherData = new CipherRequest(encCipher)
+                await this.$cipherService.upsert([
+                  {
+                    ...encCipherData,
+                    id,
+                    revisionDate: now,
+                    folderId: this.folderId,
+                    collectionIds: []
+                  }
+                ])
+              })()
+            )
+          )
         }
+        this.$store.commit('UPDATE_SYNCED_CIPHERS')
         this.notify(
           this.$tc('data.notifications.move_success', this.ids.length),
           'success'
@@ -152,15 +176,18 @@ export default {
         this.loading = false
       }
     },
+
     addFolder () {
       this.$refs.addEditFolder.openDialog({})
     },
+
     async handleCreatedFolder (folder) {
       this.folders.push(folder)
       this.cipher.folderId = folder.id
       this.folderId = folder.id
       this.$refs.inputSelectFolder.value = folder.id
     },
+
     async removeFromCollection (decCipher, personalKey) {
       if (decCipher.collectionIds && decCipher.collectionIds.length) {
         const { data } = await this.getEncCipherForRequest(decCipher, {
@@ -172,9 +199,15 @@ export default {
             `cystack_platform/pm/sharing/${decCipher.organizationId}/folders/${decCipher.collectionIds[0]}/items`,
             { cipher: { ...data, id: decCipher.id } }
           )
+          await this.upsertCipherLocal(decCipher, {
+            ...data,
+            collectionIds: [],
+            organizationId: null
+          })
         } catch (error) {}
       }
     },
+
     async addToCollection (cipher, orgKey, collection) {
       const { data } = await this.getEncCipherForRequest(cipher, {
         noCheck: true,
@@ -184,6 +217,11 @@ export default {
         `cystack_platform/pm/sharing/${collection.organizationId}/folders/${collection.id}/items`,
         { cipher: { ...data, id: cipher.id } }
       )
+      await this.upsertCipherLocal(cipher, {
+        ...data,
+        organizationId: collection.organizationId,
+        collectionIds: [collection.id]
+      })
     }
   }
 }

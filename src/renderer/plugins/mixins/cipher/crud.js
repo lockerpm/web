@@ -7,6 +7,15 @@ import { SecureNote } from '../../../jslib/src/models/domain'
 
 Vue.mixin({
   methods: {
+    async upsertCipherLocal (cipher, data) {
+      if (cipher.id && !data.id) {
+        data.id = cipher.id
+      }
+      data.revisionDate = new Date().toISOString()
+      await this.$cipherService.upsert([data])
+      this.$store.commit('UPDATE_SYNCED_CIPHERS')
+    },
+
     async createEncryptedMasterPwItem (masterPw, encKey) {
       const cipher = new CipherView()
       cipher.type = CipherType.Login
@@ -31,17 +40,25 @@ Vue.mixin({
       cipher.type = CipherType.SecureNote
       cipher.secureNote = new SecureNote()
       cipher.secureNote.type = 0
-      cipher.notes = `otpauth://totp/${encodeURIComponent(otpCipher.name
+      cipher.notes = `otpauth://totp/${encodeURIComponent(
+        otpCipher.name
       )}?secret=${otpCipher.secretKey}&issuer=${encodeURIComponent(
         otpCipher.name
       )}&algorithm=sha1&digits=6&period=30`
       const cipherEnc = await this.$cipherService.encrypt(cipher)
       const data = new CipherRequest(cipherEnc)
       data.type = CipherType.TOTP
-      await this.$axios.post('cystack_platform/pm/ciphers/vaults', {
-        ...data,
-        collectionIds: []
-      })
+      const res = await this.$axios.$post(
+        'cystack_platform/pm/ciphers/vaults',
+        {
+          ...data,
+          collectionIds: []
+        }
+      )
+      if (res.id) {
+        data.id = res.id
+        await this.upsertCipherLocal(cipher, data)
+      }
     },
 
     // Create cipher
@@ -56,11 +73,20 @@ Vue.mixin({
             cloneMode
           }
         )
-        await this.$axios.$post('cystack_platform/pm/ciphers/vaults', {
-          ...data,
-          score,
-          collectionIds
-        })
+        const res = await this.$axios.$post(
+          'cystack_platform/pm/ciphers/vaults',
+          {
+            ...data,
+            score,
+            collectionIds
+          }
+        )
+        if (res.id) {
+          // TODO: test with shared cipher (single and in folder)
+          data.id = res.id
+          data.collectionIds = collectionIds
+          await this.upsertCipherLocal(cipher, data)
+        }
         this.notify(
           this.$tc('data.notifications.create_success', 1, {
             type: this.$tc(`type.${cipher.type}`, 1)
@@ -99,6 +125,12 @@ Vue.mixin({
           score,
           collectionIds
         })
+
+        // TODO: test with shared cipher (single and in folder)
+        data.id = cipher.id
+        data.collectionIds = collectionIds
+        await this.upsertCipherLocal(cipher, data)
+
         if (!silent) {
           this.notify(
             this.$tc('data.notifications.update_success', 1, {
@@ -132,6 +164,7 @@ Vue.mixin({
           ids
         })
         await this.$cipherService.delete(ids)
+        this.$store.commit('UPDATE_SYNCED_CIPHERS')
         this.notify(
           this.$tc('data.notifications.delete_success', ids.length, {
             type: this.$tc('type.0', ids.length)
@@ -160,6 +193,8 @@ Vue.mixin({
         await this.$axios.$put('cystack_platform/pm/ciphers/delete', {
           ids
         })
+        await this.$cipherService.softDelete(ids)
+        this.$store.commit('UPDATE_SYNCED_CIPHERS')
         this.notify(
           this.$tc('data.notifications.trash_success', ids.length, {
             type: this.$tc('type.0', ids.length)
@@ -168,7 +203,6 @@ Vue.mixin({
         )
         return true
       } catch (e) {
-        console.log(e)
         const isHandled = this.handleApiError(e.response)
         if (!isHandled) {
           this.notify(
@@ -188,6 +222,9 @@ Vue.mixin({
         await this.$axios.$put('cystack_platform/pm/ciphers/restore', {
           ids
         })
+        const revisionDate = new Date().toISOString()
+        await this.$cipherService.restore(ids.map(id => ({ id, revisionDate })))
+        this.$store.commit('UPDATE_SYNCED_CIPHERS')
         this.notify(
           this.$tc('data.notifications.restore_success', ids.length, {
             type: this.$tc('type.0', ids.length)
