@@ -1,12 +1,12 @@
 ![Locker Password Manager](https://raw.githubusercontent.com/lockerpm/.github/main/images/locker3.png)
 
-# Locker Web Frontend
+# Locker Web Vault
 
-Locker Web Frontend is the client-side web application for the Locker Password Manager, an end-to-end encryption software that allows users to securely store and manage their sensitive data and secrets. This repository contains the code and resources for the user interface, enabling users to interact with the Locker backend through API calls.
+Locker Web Vault is the client-side web application for the Locker Password Manager, an end-to-end encryption software that allows users to securely store and manage their sensitive data and secrets. This repository contains the code and resources for the user interface, enabling users to interact with the Locker backend through API calls.
 
 
 ## Getting Started
-To run the Locker Web locally, follow these steps:
+To run the Web Vault locally, follow these steps:
 
 - Clone this repository to your local machine.
 - Ensure you have Node.js and npm (Node Package Manager) installed.
@@ -52,6 +52,9 @@ You can manually set your API endpoint and web socket settings by creating a `s
 WS_URL="<wss://your-websocket-url>"
 BASE_API_URL="<https://your-api-url>"
 ```
+
+## Credits
+The Locker Web Vault project utilizes the [Jslib library from Bitwarden](https://github.com/bitwarden/jslib). Jslib is a JavaScript library for working with cryptographic algorithms and other utility functions.
 
 ## Contributing
 Contributions to the Locker Web project are welcome! If you find any issues or want to suggest improvements, please feel free to open an issue or submit a pull request.

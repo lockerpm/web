@@ -12,7 +12,7 @@ RUN yarn
 
 ENV NODE_ENV=production
 
-ENV SENTRY_DSN=https://953169f6dd2947cfbab029caf5810d94@o256038.ingest.sentry.io/6626150
+ARG SENTRY_DSN
 
 ENV BASE_URL=https://locker.io
 
