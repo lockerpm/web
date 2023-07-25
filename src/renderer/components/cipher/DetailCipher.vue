@@ -118,7 +118,7 @@
                 </el-dropdown-item>
               </template>
 
-              <el-dropdown-item v-else @click.native="leaveShare(cipher)">
+              <el-dropdown-item v-else @click.native="handleLeaveShare(cipher)">
                 <span class="text-danger">{{ $t('data.ciphers.leave') }}</span>
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -618,7 +618,7 @@ export default {
         }
       )
     },
-    async leaveShare (cipher) {
+    async handleLeaveShare (cipher) {
       this.$confirm(
         this.$tc('data.notifications.leave_share', 1),
         this.$t('common.warning'),
@@ -629,27 +629,9 @@ export default {
         }
       )
         .then(async () => {
-          try {
-            await this.$axios.$post(
-              `cystack_platform/pm/sharing/${cipher.organizationId}/leave`
-            )
-            this.notify(
-              this.$tc('data.notifications.update_success', 1, {
-                type: this.$tc(`type.${CipherType[cipher.type]}`, 1)
-              }),
-              'success'
-            )
+          const isSuccess = await this.leaveShare(cipher)
+          if (isSuccess) {
             this.back()
-          } catch (error) {
-            this.notify(
-              this.$tc('data.notifications.update_failed', 1, {
-                type: this.$tc(`type.${CipherType[cipher.type]}`, 1)
-              }),
-              'warning'
-            )
-            console.log(error)
-          } finally {
-            this.loading = false
           }
         })
         .catch(() => {})

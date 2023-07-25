@@ -12,9 +12,18 @@
             <span class="font-medium">{{ $t('sidebar.shared_with_you') }}</span>
           </div>
         </div>
-        <div v-if="ciphers" class="uppercase text-head-6">
-          <span class="text-primary font-semibold">{{ ciphers.length }}</span>
-          {{ $tc('type.0', ciphers.length) }}
+        <div class="uppercase text-head-6 mt-2">
+          <span v-if="collections && collections.length">
+            <span class="text-primary font-semibold">{{
+              collections.length
+            }}</span>
+            {{ $tc('type.Folder', collections.length)
+            }}<span v-if="ciphers && ciphers.length">, </span>
+          </span>
+          <span v-if="ciphers && ciphers.length">
+            <span class="text-primary font-semibold">{{ ciphers.length }}</span>
+            {{ $tc('type.0', ciphers.length) }}
+          </span>
         </div>
       </div>
       <!-- Overview end -->
@@ -54,11 +63,18 @@
                     <div v-else>
                       <img
                         src="~/assets/images/icons/folderSolidShare.svg"
-                        alt=""
-                        class="select-none mr-2"
+                        class="select-none mr-3"
+                        style="width: 34px"
                       >
                     </div>
                   </template>
+                  <div v-else>
+                    <img
+                      src="~/assets/images/icons/icon_any.svg"
+                      class="select-none mr-3"
+                      style="height: 34px"
+                    >
+                  </div>
                   <!-- Icon end -->
 
                   <!-- Name -->
@@ -113,13 +129,11 @@
             <!-- Type -->
             <el-table-column :label="$t('common.type')" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{
-                  CipherType[scope.row.cipher_type] ||
-                    CipherType[scope.row.type] ||
-                    (scope.row.cipher_type || scope.row.type
-                      ? 'Unknown'
-                      : 'Folder')
-                }}</span>
+                <span>
+                  {{
+                    getCipherTypeName(scope.row.cipher_type || scope.row.type)
+                  }}
+                </span>
               </template>
             </el-table-column>
             <!-- Type end -->
@@ -180,7 +194,9 @@
             <el-table-column
               :label="$t('common.actions')"
               fixed="right"
-              width="230"
+              :width="
+                tableData.find(r => r.status === 'invited') ? 230 : 'auto'
+              "
             >
               <template slot-scope="scope">
                 <div class="col-actions">
@@ -274,7 +290,7 @@
                         <template v-if="!scope.row.isDeleted">
                           <el-dropdown-item
                             :divided="!!scope.row.type"
-                            @click.native="leaveShare(scope.row)"
+                            @click.native="handleLeaveShare(scope.row)"
                           >
                             <span class="text-danger">{{
                               $t('data.ciphers.leave')
@@ -289,7 +305,7 @@
                       <template v-else-if="scope.row.status === 'accepted'">
                         <el-dropdown-item
                           divided
-                          @click.native="leaveShare(scope.row)"
+                          @click.native="handleLeaveShare(scope.row)"
                         >
                           <span class="text-danger">{{
                             $t('data.ciphers.leave')
@@ -608,7 +624,7 @@ export default {
         )
       }
     },
-    async leaveShare (cipher) {
+    async handleLeaveShare (cipher) {
       this.$confirm(
         this.$tc('data.notifications.leave_share', 1),
         this.$t('common.warning'),
@@ -618,26 +634,7 @@ export default {
           type: 'warning'
         }
       ).then(async () => {
-        try {
-          await this.$axios.$post(
-            `cystack_platform/pm/sharing/${
-              cipher.organizationId || cipher?.team?.id
-            }/leave`
-          )
-          if (cipher.ciphers) {
-            const deletedIds = cipher.ciphers.map(c => c.id)
-            await this.$cipherService.delete(deletedIds)
-          } else {
-            await this.$cipherService.delete([cipher.id])
-          }
-          this.notify(
-            this.$t('data.notifications.leave_share_success'),
-            'success'
-          )
-        } catch (error) {
-          this.notify(this.$t('errors.something_went_wrong'), 'warning')
-          console.log(error)
-        }
+        await this.leaveShare(cipher)
       })
     },
     openAcceptDialog (item) {

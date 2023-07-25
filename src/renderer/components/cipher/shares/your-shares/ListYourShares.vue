@@ -39,7 +39,8 @@
                       <img
                         src="~/assets/images/icons/folderSolidShare.svg"
                         alt=""
-                        class="select-none mr-2"
+                        class="select-none mr-3"
+                        style="width: 34px"
                       >
                     </div>
                   </div>
@@ -78,11 +79,11 @@
             <!-- Type -->
             <el-table-column :label="$t('common.type')" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{
-                  CipherType[scope.row.cipher_type] ||
-                    CipherType[scope.row.type] ||
-                    'Folder'
-                }}</span>
+                <span>
+                  {{
+                    getCipherTypeName(scope.row.cipher_type || scope.row.type)
+                  }}
+                </span>
               </template>
             </el-table-column>
             <!-- Type end -->
@@ -410,6 +411,7 @@ export default {
             this.getTeam(this.organizations, item.organizationId).type ===
             AccountRole.OWNER
         )
+        result = result.map(this.parseNotesOfNewTypes)
         result = orderBy(result, ['user.status'], ['desc']) || []
         this.dataRendered = result.slice(0, 50)
         return result

@@ -164,6 +164,13 @@ Vue.mixin({
           class: 'rounded mx-auto'
         }
       })
+    },
+
+    getCipherTypeName (cipherType) {
+      if (CipherType[cipherType]) {
+        return this.$tc(`type.${cipherType}`, 1)
+      }
+      return cipherType ? 'N/A' : this.$tc('type.Folder', 1)
     }
   }
 })

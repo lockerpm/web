@@ -119,6 +119,7 @@ Vue.mixin({
       )}`
     },
 
+    // Stop quick share
     async stopQuickSharing (send) {
       try {
         this.$store.commit('UPDATE_SYNCING_QUICK_SHARES', true)
@@ -135,6 +136,7 @@ Vue.mixin({
       }
     },
 
+    // Stop share
     async stopShareCipher (cipher, silent = false) {
       try {
         let memberId = null
@@ -194,6 +196,7 @@ Vue.mixin({
       }
     },
 
+    // Stop share a cipher in a shared folder
     async stopShareCipherInCollection (cipher) {
       try {
         const { data } = await this.getEncCipherForRequest(cipher, {
@@ -218,6 +221,7 @@ Vue.mixin({
       }
     },
 
+    // Stop share folder
     async stopShareFolder (folder) {
       try {
         let memberId = null
@@ -303,6 +307,33 @@ Vue.mixin({
           }),
           'warning'
         )
+      }
+    },
+
+    // Leave share cipher/folder
+    async leaveShare (cipher) {
+      try {
+        await this.$axios.$post(
+          `cystack_platform/pm/sharing/${
+            cipher.organizationId || cipher?.team?.id
+          }/leave`
+        )
+        if (cipher.ciphers) {
+          // This is a folder
+          await this.$cipherService.delete(cipher.ciphers.map(c => c.id))
+          await this.$collectionService.delete(cipher.id)
+        } else {
+          await this.$cipherService.delete([cipher.id])
+        }
+        this.notify(
+          this.$t('data.notifications.leave_share_success'),
+          'success'
+        )
+        return true
+      } catch (error) {
+        this.notify(this.$t('errors.something_went_wrong'), 'warning')
+        console.log(error)
+        return false
       }
     }
   }
