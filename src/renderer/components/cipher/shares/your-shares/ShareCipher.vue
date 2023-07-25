@@ -39,7 +39,7 @@
         </div>
         <InputSelect
           v-model="ciphers"
-          placeholder="Search Inventory ..."
+          :placeholder="$t('data.sharing.search_inventory')"
           :multiple="true"
           :collapse-tags="true"
           :filterable="true"

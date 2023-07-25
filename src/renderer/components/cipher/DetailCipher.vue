@@ -429,6 +429,7 @@
         <AddEditCipher
           ref="addEditCipherDialog"
           :type="type || cipher.type"
+          :organizations="organizations"
           @close="editMode = false"
           @reset-selection="back"
         />

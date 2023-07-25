@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import find from 'lodash/find'
 import { CipherType } from '../../../core/enums/cipherType'
+import { AccountRole } from '../../../constants'
 
 Vue.mixin({
   computed: {
@@ -26,7 +27,7 @@ Vue.mixin({
     isOwner (teams, cipher) {
       if (cipher.organizationId) {
         const team = this.getTeam(teams, cipher.organizationId)
-        if (team.type === 0) {
+        if (team.type === AccountRole.OWNER) {
           return true
         }
         return false
@@ -41,23 +42,7 @@ Vue.mixin({
     canManageItem (teams, item) {
       const team = this.getTeam(teams, item.organizationId)
       if (team.id) {
-        return [0, 1].includes(team.type)
-      }
-      return true
-    },
-
-    canViewItem (teams, item) {
-      const team = this.getTeam(teams, item.organizationId)
-      if (team.id) {
-        return [0, 1, 3].includes(team.type) || item.viewPassword
-      }
-      return true
-    },
-
-    canManageFolder (teams, item) {
-      const team = this.getTeam(teams, item.organizationId)
-      if (team.organization_id) {
-        return ['owner', 'admin'].includes(team.role)
+        return [AccountRole.OWNER, AccountRole.ADMIN].includes(team.type)
       }
       return true
     },

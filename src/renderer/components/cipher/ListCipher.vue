@@ -79,11 +79,12 @@
     <AddEditCipher
       ref="addEditCipherDialog"
       :type="selectedType"
+      :organizations="organizations"
       @reset-selection="resetSelection()"
       @trashed-cipher="resetSelection()"
     />
 
-    <AddEditFolder ref="addEditFolder" />
+    <AddEditFolder ref="addEditFolder" :organizations="organizations" />
   </div>
 </template>
 

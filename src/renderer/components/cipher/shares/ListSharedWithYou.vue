@@ -328,9 +328,9 @@
 
     <ShareNoCipher v-else-if="!$store.state.syncing" />
 
-    <AddEditCipher ref="addEditCipherDialog" />
+    <AddEditCipher ref="addEditCipherDialog" :organizations="organizations" />
 
-    <AddEditFolder ref="addEditFolder" />
+    <AddEditFolder ref="addEditFolder" :organizations="organizations" />
 
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
 
