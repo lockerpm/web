@@ -202,7 +202,7 @@ export default {
             )) || []
         } catch (error) {}
 
-        // revert some cipher types back to bote
+        // revert some cipher types back to note
         const revertingCiphers = result.filter(cipher =>
           Object.values(this.cipherMapping)
             .filter(m => m.revertToNote)

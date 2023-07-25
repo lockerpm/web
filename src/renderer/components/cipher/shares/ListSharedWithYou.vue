@@ -28,6 +28,12 @@
       </div>
       <!-- Overview end -->
 
+      <div class="flex items-center justify-end content-end mb-5">
+        <!-- Sort menu -->
+        <SortMenu :change-sort="changeSort" :order-string="orderString" />
+        <!-- Sort menu end -->
+      </div>
+
       <!-- List Ciphers -->
       <client-only>
         <LazyHydrate when-visible>
@@ -365,6 +371,7 @@ import MoveFolder from '../../folder/MoveFolder'
 import { CipherType } from '../../../core/enums/cipherType'
 import Vnodes from '../../../components/Vnodes'
 import { AccountRole } from '../../../constants'
+import SortMenu from '../list-cipher-components/SortMenu.vue'
 import ShareNoCipher from './ShareNoCipher'
 
 export default {
@@ -376,7 +383,8 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     VueContext: () => import('../../../plugins/vue-context'),
     Vnodes,
-    LazyHydrate
+    LazyHydrate,
+    SortMenu
   },
 
   props: {
@@ -395,7 +403,9 @@ export default {
       dataRendered: [],
       lastIndex: 0,
       selectedCipher: {},
-      dialogAcceptVisible: false
+      dialogAcceptVisible: false,
+      orderField: 'revisionDate',
+      orderDirection: 'desc'
     }
   },
 
@@ -426,6 +436,9 @@ export default {
           share_type: shareType
         }
       })
+    },
+    orderString () {
+      return `${this.orderField}_${this.orderDirection}`
     }
   },
 
@@ -505,7 +518,18 @@ export default {
                   : this.$t('data.ciphers.only_use')
           }
         })
-        result = orderBy(result, ['user.status'], ['desc']) || []
+        result =
+          orderBy(
+            result,
+            [
+              'user.status',
+              c =>
+                this.orderField === 'name'
+                  ? c.name && c.name.toLowerCase()
+                  : c.revisionDate
+            ],
+            ['desc', this.orderDirection]
+          ) || []
         this.dataRendered = result.slice(0, 50)
         return result
       },
@@ -515,7 +539,9 @@ export default {
         'searchText',
         'filter',
         'invitations',
-        'myShares'
+        'myShares',
+        'orderField',
+        'orderDirection'
       ]
     },
     collections: {
@@ -551,10 +577,19 @@ export default {
           f.ciphersCount = 0
           f.ciphers = []
         })
-
+        collections = orderBy(
+          collections,
+          [
+            c =>
+              this.orderField === 'name'
+                ? c.name && c.name.toLowerCase()
+                : c.revisionDate
+          ],
+          [this.orderDirection]
+        )
         return collections
       },
-      watch: ['searchText', 'ciphers']
+      watch: ['searchText', 'ciphers', 'orderField', 'orderDirection']
     }
   },
 
@@ -624,6 +659,10 @@ export default {
     openAcceptDialog (item) {
       this.selectedCipher = item
       this.dialogAcceptVisible = true
+    },
+    changeSort (orderField, orderDirection) {
+      this.orderField = orderField
+      this.orderDirection = orderDirection
     }
   }
 }
