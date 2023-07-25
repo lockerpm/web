@@ -395,7 +395,6 @@ export default {
       dataRendered: [],
       lastIndex: 0,
       selectedCipher: {},
-      invitations: [],
       dialogAcceptVisible: false
     }
   },
@@ -413,6 +412,20 @@ export default {
     },
     tableData () {
       return this.invitations.concat(this.collections || [], this.ciphers || [])
+    },
+    invitations () {
+      return this.shareInvitations.map(item => {
+        const shareType =
+          item.share_type === 'Edit'
+            ? this.$t('data.ciphers.editable')
+            : item.share_type === 'View'
+              ? this.$t('data.ciphers.viewable')
+              : this.$t('data.ciphers.only_use')
+        return {
+          ...item,
+          share_type: shareType
+        }
+      })
     }
   },
 
@@ -448,12 +461,6 @@ export default {
           )
         }
       }
-    }
-
-    // Load data
-    const locked = await this.$vaultTimeoutService.isLocked()
-    if (!locked) {
-      this.getShareInvitations()
     }
   },
 
@@ -566,35 +573,13 @@ export default {
     addEdit (cipher) {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     },
-    async getShareInvitations () {
-      this.invitations =
-        (await this.$axios.$get('cystack_platform/pm/sharing/invitations')) ||
-        []
-      this.invitations = this.invitations.map(item => {
-        const shareType =
-          item.share_type === 'Edit'
-            ? this.$t('data.ciphers.editable')
-            : item.share_type === 'View'
-              ? this.$t('data.ciphers.viewable')
-              : this.$t('data.ciphers.only_use')
-        return {
-          ...item,
-          share_type: shareType
-        }
-      })
-      this.$store.commit(
-        'UPDATE_PENDING_SHARES',
-        this.invitations.filter(item => item.status === 'invited').length
-      )
-    },
     async acceptShareInvitation (cipher) {
       try {
         await this.$axios.$put(
           `cystack_platform/pm/sharing/invitations/${cipher.id}`,
           { status: 'accept' }
         )
-        // this.getSyncData()
-        this.getShareInvitations()
+        this.$store.dispatch('LoadMyShareInvitations')
         this.notify(
           this.$t('data.notifications.accept_invitation_success'),
           'success'
@@ -614,8 +599,7 @@ export default {
           `cystack_platform/pm/sharing/invitations/${cipher.id}`,
           { status: 'reject' }
         )
-        // this.getSyncData()
-        this.getShareInvitations()
+        this.$store.dispatch('LoadMyShareInvitations')
         this.notify(this.$t('data.notifications.reject_invitation'), 'success')
       } catch (e) {
         this.notify(

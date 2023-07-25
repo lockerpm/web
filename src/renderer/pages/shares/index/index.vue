@@ -180,7 +180,7 @@ export default {
         {
           label: 'shared_with_you',
           routeName: 'shares-index-index',
-          pending: this.pendingShares
+          pending: this.pendingShareInvitations.length
         },
         {
           label: 'your_shares',

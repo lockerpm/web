@@ -7,8 +7,13 @@ Vue.mixin({
     myShares () {
       return this.$store.state.myShares
     },
-    pendingShares () {
-      return this.$store.state.pendingShares
+    shareInvitations () {
+      return this.$store.state.shareInvitations
+    },
+    pendingShareInvitations () {
+      return this.$store.state.shareInvitations.filter(
+        item => item.status === 'invited'
+      )
     },
     pendingMyShares () {
       return this.$store.state.myShares.filter(
