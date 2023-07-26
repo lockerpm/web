@@ -33,13 +33,14 @@
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow">
         <button
-          v-if="folder.id"
+          v-if="folder.id && isOwner(organizations, folder)"
           class="btn btn-icon !text-danger"
           @click="deleteFolder(folder)"
         >
           <i class="fa fa-trash-alt" />
         </button>
       </div>
+
       <div>
         <button class="btn btn-default" @click="dialogVisible = false">
           {{ $t('common.cancel') }}
@@ -64,6 +65,13 @@ export default {
   components: {
     InputText,
     ValidationProvider
+  },
+
+  props: {
+    organizations: {
+      type: Array,
+      default: () => []
+    }
   },
 
   data () {

@@ -5,6 +5,12 @@
       v-if="!shouldRenderNoCipher"
       class="flex-column-fluid lg:px-28 px-10 mb-20"
     >
+      <div class="flex items-center justify-end content-end mb-5">
+        <!-- Sort menu -->
+        <SortMenu :change-sort="changeSort" :order-string="orderString" />
+        <!-- Sort menu end -->
+      </div>
+
       <!-- List Ciphers -->
       <client-only>
         <LazyHydrate when-visible>
@@ -39,7 +45,8 @@
                       <img
                         src="~/assets/images/icons/folderSolidShare.svg"
                         alt=""
-                        class="select-none mr-2"
+                        class="select-none mr-3"
+                        style="width: 34px"
                       >
                     </div>
                   </div>
@@ -78,11 +85,11 @@
             <!-- Type -->
             <el-table-column :label="$t('common.type')" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{
-                  CipherType[scope.row.cipher_type] ||
-                    CipherType[scope.row.type] ||
-                    'Folder'
-                }}</span>
+                <span>
+                  {{
+                    getCipherTypeName(scope.row.cipher_type || scope.row.type)
+                  }}
+                </span>
               </template>
             </el-table-column>
             <!-- Type end -->
@@ -117,6 +124,8 @@
                     <button class="btn btn-icon btn-xs hover:bg-black-400">
                       <i class="fas fa-ellipsis-h" />
                     </button>
+
+                    <!-- Noti -->
                     <div
                       v-if="
                         !!pendingMyShares.find(
@@ -127,6 +136,8 @@
                     >
                       1
                     </div>
+                    <!-- Noti end -->
+
                     <el-dropdown-menu slot="dropdown">
                       <!-- Edit share -->
                       <el-dropdown-item
@@ -227,6 +238,7 @@
 <script>
 import orderBy from 'lodash/orderBy'
 import LazyHydrate from 'vue-lazy-hydration'
+import SortMenu from '../../list-cipher-components/SortMenu.vue'
 import ShareCipher from './ShareCipher'
 import EditSharedCipher from './EditSharedCipher'
 import ShareFolder from '~/components/folder/ShareFolder'
@@ -245,7 +257,8 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     VueContext: () => import('../../../../plugins/vue-context'),
     Vnodes,
-    LazyHydrate
+    LazyHydrate,
+    SortMenu
   },
 
   props: {
@@ -269,7 +282,9 @@ export default {
       loadingConfirm: false,
       dialogConfirmVisible: false,
       selectedCipher: {},
-      isItemInUrlOpened: false
+      isItemInUrlOpened: false,
+      orderField: 'revisionDate',
+      orderDirection: 'desc'
     }
   },
 
@@ -280,6 +295,9 @@ export default {
     },
     tableData () {
       return [].concat(this.collections || [], this.ciphers || [])
+    },
+    orderString () {
+      return `${this.orderField}_${this.orderDirection}`
     }
   },
 
@@ -314,10 +332,6 @@ export default {
         this.isItemInUrlOpened = true
         this.shareItem(cipher)
       }
-    },
-
-    pendingShares () {
-      this.getShareInvitations()
     }
   },
 
@@ -343,12 +357,6 @@ export default {
           )
         }
       }
-    }
-
-    // Load data
-    const locked = await this.$vaultTimeoutService.isLocked()
-    if (!locked) {
-      // this.getMyShares()
     }
   },
 
@@ -410,7 +418,19 @@ export default {
             this.getTeam(this.organizations, item.organizationId).type ===
             AccountRole.OWNER
         )
-        result = orderBy(result, ['user.status'], ['desc']) || []
+        result = result.map(this.parseNotesOfNewTypes)
+        result =
+          orderBy(
+            result,
+            [
+              'user.status',
+              c =>
+                this.orderField === 'name'
+                  ? c.name && c.name.toLowerCase()
+                  : c.revisionDate
+            ],
+            ['desc', this.orderDirection]
+          ) || []
         this.dataRendered = result.slice(0, 50)
         return result
       },
@@ -419,7 +439,9 @@ export default {
         'deleted',
         'searchText',
         'filter',
-        'myShares'
+        'myShares',
+        'orderField',
+        'orderDirection'
       ]
     },
     collections: {
@@ -442,34 +464,23 @@ export default {
           f.ciphersCount = 0
           f.ciphers = []
         })
+        collections = orderBy(
+          collections,
+          [
+            c =>
+              this.orderField === 'name'
+                ? c.name && c.name.toLowerCase()
+                : c.revisionDate
+          ],
+          [this.orderDirection]
+        )
         return collections
       },
-      watch: ['searchText', 'ciphers']
+      watch: ['searchText', 'ciphers', 'orderField', 'orderDirection']
     }
   },
 
   methods: {
-    async getShareInvitations () {
-      this.invitations =
-        (await this.$axios.$get('cystack_platform/pm/sharing/invitations')) ||
-        []
-      this.invitations = this.invitations.map(item => {
-        const shareType =
-          item.share_type === 'Edit'
-            ? this.$t('data.ciphers.editable')
-            : item.share_type === 'View'
-              ? this.$t('data.ciphers.viewable')
-              : this.$t('data.ciphers.only_use')
-        return {
-          ...item,
-          share_type: shareType
-        }
-      })
-      this.$store.commit(
-        'UPDATE_PENDING_SHARES',
-        this.invitations.filter(item => item.status === 'invited').length
-      )
-    },
     shareItem (cipher) {
       this.selectedCipher = cipher
       this.$refs.shareCipher.openDialog(cipher)
@@ -558,6 +569,10 @@ export default {
     },
     upgradePlan () {
       this.$refs.shareCipher.closeDialog()
+    },
+    changeSort (orderField, orderDirection) {
+      this.orderField = orderField
+      this.orderDirection = orderDirection
     }
   }
 }

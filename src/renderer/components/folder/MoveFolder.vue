@@ -48,7 +48,11 @@
         </div>
       </div>
     </el-dialog>
-    <AddEditFolder ref="addEditFolder" @created-folder="handleCreatedFolder" />
+    <AddEditFolder
+      ref="addEditFolder"
+      :organizations="organizations"
+      @created-folder="handleCreatedFolder"
+    />
   </div>
 </template>
 

@@ -8,7 +8,7 @@
         <template v-if="!locked">
           <!-- Sidebar -->
           <div class="hidden md:block">
-            <SideBarMenu :closable="false" :pending-shares="pendingShares" />
+            <SideBarMenu :closable="false" />
           </div>
           <!-- Sidebar end -->
 
@@ -208,14 +208,7 @@ export default {
 
   methods: {
     async getShareInvitations () {
-      const shareInvitations =
-        (await this.$axios.$get('cystack_platform/pm/sharing/invitations')) ||
-        []
-      this.$store.commit(
-        'UPDATE_PENDING_SHARES',
-        shareInvitations.filter(item => item.status === 'invited').length
-      )
-      // this.pendingShares = shareInvitations.filter(item => item.status === 'invited').length
+      this.$store.dispatch('LoadMyShareInvitations')
     },
 
     async getMyShares () {
@@ -319,6 +312,7 @@ export default {
           break
         case 'members':
           this.getMyShares()
+          this.getShareInvitations()
           break
         default:
           break

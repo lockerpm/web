@@ -115,16 +115,13 @@
               <!-- Label -->
             </div>
 
-            <div
-              v-if="
-                item.routeName === 'shares-index-index' &&
-                  pendingShares + pendingMyShares.length > 0
-              "
-            >
+            <!-- Noti count -->
+            <div v-if="item.notiCount && item.notiCount > 0">
               <div class="notification-badge">
-                {{ pendingShares + pendingMyShares.length }}
+                {{ item.notiCount }}
               </div>
             </div>
+            <!-- Noti count end -->
           </nuxt-link>
         </template>
       </nav>
@@ -232,10 +229,6 @@ export default {
       type: Boolean,
       default: true
     }
-    // pendingShares: {
-    //   type: Number,
-    //   default: 0
-    // }
   },
   data () {
     return {
@@ -245,6 +238,10 @@ export default {
   computed: {
     isFreePlan () {
       return this.$store.state.currentPlan?.alias === 'pm_free'
+    },
+
+    isLifeTime () {
+      return this.$store.state.currentPlan?.alias === 'pm_lifetime_premium'
     },
 
     storagePercentage () {
@@ -303,7 +300,9 @@ export default {
         {
           label: 'shares',
           icon: 'share',
-          routeName: 'shares-index-index'
+          routeName: 'shares-index-index',
+          notiCount:
+            this.pendingShareInvitations.length + this.pendingMyShares.length
         },
         {
           label: 'private_email',
@@ -320,7 +319,7 @@ export default {
           label: 'rewards',
           icon: 'rewards',
           routeName: 'rewards',
-          hide: this.isEnterpriseMember
+          hide: this.isEnterpriseMember || this.isLifeTime
         }
       ]
     },

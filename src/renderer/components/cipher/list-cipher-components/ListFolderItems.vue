@@ -32,13 +32,19 @@
               {{ item.name }}
               <div class="text-black-500">
                 {{ item.ciphersCount }}
-                {{ item.ciphersCount > 1 ? 'items' : 'item' }}
+                {{ $tc('type.0', item.ciphersCount).toLowerCase() }}
               </div>
             </div>
             <!-- Name + count end -->
 
             <!-- Actions -->
-            <el-dropdown v-if="!isProtectedCipher(item)" trigger="click">
+            <el-dropdown
+              v-if="
+                canManageItem(organizations, item) ||
+                  isOwner(organizations, item)
+              "
+              trigger="click"
+            >
               <button class="btn btn-icon btn-xs hover:bg-black-400">
                 <i class="fas fa-ellipsis-h" />
               </button>
@@ -58,14 +64,14 @@
                 </el-dropdown-item>
 
                 <el-dropdown-item
-                  v-if="item.organizationId && isOwner(organizations, item)"
+                  v-if="isOwner(organizations, item)"
                   @click.native="stopSharing(item)"
                 >
                   {{ $t('data.ciphers.stop_sharing') }}
                 </el-dropdown-item>
 
                 <el-dropdown-item
-                  v-if="canManageItem(organizations, item)"
+                  v-if="isOwner(organizations, item)"
                   @click.native="deleteFolder(item)"
                 >
                   <span class="text-danger">{{ $t('common.delete') }}</span>
@@ -105,42 +111,26 @@
               {{ item.name }}
               <div class="text-black-500">
                 {{ item.ciphersCount }}
-                {{ item.ciphersCount > 1 ? 'items' : 'item' }}
+                {{ $tc('type.0', item.ciphersCount).toLowerCase() }}
               </div>
             </div>
             <!-- Name + count end -->
 
             <!-- Actions -->
-            <el-dropdown v-if="!isProtectedCipher(item)" trigger="click">
+            <el-dropdown trigger="click">
               <button class="btn btn-icon btn-xs hover:bg-black-400">
                 <i class="fas fa-ellipsis-h" />
               </button>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item
-                  v-if="canManageItem(organizations, item)"
-                  @click.native="addEditFolder(item, false)"
-                >
+                <el-dropdown-item @click.native="addEditFolder(item, false)">
                   {{ $t('common.rename') }}
                 </el-dropdown-item>
 
-                <el-dropdown-item
-                  v-if="isOwner(organizations, item)"
-                  @click.native="shareFolder(item)"
-                >
+                <el-dropdown-item @click.native="shareFolder(item)">
                   {{ $t('common.share') }}
                 </el-dropdown-item>
 
-                <el-dropdown-item
-                  v-if="item.organizationId && isOwner(organizations, item)"
-                  @click.native="stopSharing(item)"
-                >
-                  {{ $t('data.ciphers.stop_sharing') }}
-                </el-dropdown-item>
-
-                <el-dropdown-item
-                  v-if="canManageItem(organizations, item)"
-                  @click.native="deleteFolder(item)"
-                >
+                <el-dropdown-item @click.native="deleteFolder(item)">
                   <span class="text-danger">{{ $t('common.delete') }}</span>
                 </el-dropdown-item>
               </el-dropdown-menu>

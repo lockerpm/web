@@ -23,6 +23,7 @@
 
     <!-- Overview (your shares) -->
     <div v-if="!isSharedWithYou" class="flex-column-fluid lg:px-28 py-10 px-10">
+      <!-- Title -->
       <div class="flex">
         <div class="text-head-4">
           <span class="font-medium">{{ $t('sidebar.your_shares') }}</span>
@@ -39,13 +40,25 @@
           </button>
         </div>
       </div>
-      <div class="uppercase text-head-6">
-        <span class="text-primary font-semibold">{{
-          sendsCount + sharedCiphersCount
-        }}</span>
-        {{ $tc('type.0', sendsCount + sharedCiphersCount) }}
-      </div>
+      <!-- Title end -->
 
+      <!-- Shared count -->
+      <div class="uppercase text-head-6">
+        <span v-if="collectionsCount">
+          <span class="text-primary font-semibold">{{ collectionsCount }}</span>
+          {{ $tc('type.Folder', collectionsCount)
+          }}<span v-if="sendsCount + sharedCiphersCount">, </span>
+        </span>
+        <span v-if="sendsCount + sharedCiphersCount">
+          <span class="text-primary font-semibold">{{
+            sendsCount + sharedCiphersCount
+          }}</span>
+          {{ $tc('type.0', sendsCount + sharedCiphersCount) }}
+        </span>
+      </div>
+      <!-- Shared count end -->
+
+      <!-- Subnav -->
       <div class="flex mt-6">
         <nuxt-link
           v-for="(item, index) in menuYourShares.filter(item => !item.hide)"
@@ -63,6 +76,7 @@
           </span>
         </nuxt-link>
       </div>
+      <!-- Subnav end -->
     </div>
     <!-- Overview (your shares) end -->
 
@@ -166,7 +180,7 @@ export default {
         {
           label: 'shared_with_you',
           routeName: 'shares-index-index',
-          pending: this.pendingShares
+          pending: this.pendingShareInvitations.length
         },
         {
           label: 'your_shares',
@@ -180,7 +194,7 @@ export default {
         {
           label: 'in_app_shares',
           routeName: 'shares-index-index-your-shares',
-          itemCount: this.sharedCiphersCount,
+          itemCount: this.sharedCiphersCount + this.collectionsCount,
           pending: this.pendingMyShares.length
         },
         {
@@ -250,6 +264,28 @@ export default {
         return result.length
       },
       watch: ['$store.state.syncedCiphersToggle', 'searchText', 'myShares']
+    },
+
+    collectionsCount: {
+      async get () {
+        if (this.$store.state.syncing) {
+          return
+        }
+        let collections = []
+        try {
+          collections = (await this.$collectionService.getAll()) || []
+        } catch (error) {
+          //
+        }
+        collections = collections.filter(
+          item =>
+            item.id &&
+            this.getTeam(this.organizations, item.organizationId).type ===
+              AccountRole.OWNER
+        )
+        return collections.length
+      },
+      watch: ['$store.state.syncedCiphersToggle', 'myShares', 'organizations']
     },
 
     allCiphers: {

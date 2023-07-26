@@ -1,4 +1,5 @@
 export const state = () => ({
+  // User
   isLoggedIn: false,
   user: {
     email: null,
@@ -10,28 +11,39 @@ export const state = () => ({
     count: 0
   },
   userIntercom: {},
+  userPw: {},
+  currentPlan: {},
+  extensionLoggedIn: false,
+
+  // Dev
   currentPath: '/',
   previousPath: '',
   isDev: 'dev',
   environment: 'dev',
+
+  // Cipher
   loading: false,
   syncing: false,
-  userPw: {},
   syncedCiphersToggle: false,
   searchText: '',
-  teams: [],
-  currentPlan: {},
   cipherCount: null,
   itemsCount: {},
   notDeletedCipherCount: {
     total: 0,
     ciphers: {}
   },
-  pendingShares: 0,
-  extensionLoggedIn: false,
+  syncingQuickShares: false,
+
+  // Sharing
+  teams: [],
   myShares: [],
+  shareInvitations: [],
+
+  // Enterprise
   enterpriseInvitations: [],
   enterprisePolicies: [],
+
+  // UI
   notice: {
     showLocked: false,
     showTutorial: false,
@@ -49,7 +61,6 @@ export const state = () => ({
     currentStepId: '',
     doneSteps: []
   },
-  syncingQuickShares: false,
 
   // On premise
   isOnPremise: false,
@@ -84,7 +95,8 @@ export const mutations = {
       total: 0,
       ciphers: {}
     }
-    state.pendingShares = 0
+    state.myShares = []
+    state.shareInvitations = []
     state.enterpriseInvitations = []
     state.enterprisePolicies = []
     state.onPremiseBaseApi = ''
@@ -150,14 +162,14 @@ export const mutations = {
   UPDATE_NOT_DELETED_CIPHER_COUNT (state, value) {
     state.notDeletedCipherCount = value
   },
-  UPDATE_PENDING_SHARES (state, value) {
-    state.pendingShares = value
-  },
   UPDATE_LOGIN_EXTENSION (state, value) {
     state.extensionLoggedIn = value
   },
   UPDATE_MY_SHARES (state, value) {
     state.myShares = value
+  },
+  UPDATE_SHARE_INVITATIONS (state, value) {
+    state.shareInvitations = value
   },
   UPDATE_ENTERPRISE_INVITATIONS (state, value) {
     state.enterpriseInvitations = value
@@ -337,6 +349,14 @@ export const actions = {
       .$get('cystack_platform/pm/sharing/my_share')
       .then(res => {
         commit('UPDATE_MY_SHARES', res)
+        return res
+      })
+  },
+  LoadMyShareInvitations ({ commit }) {
+    return this.$axios
+      .$get('cystack_platform/pm/sharing/invitations')
+      .then(res => {
+        commit('UPDATE_SHARE_INVITATIONS', res)
         return res
       })
   },

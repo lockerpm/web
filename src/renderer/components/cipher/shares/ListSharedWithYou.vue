@@ -12,12 +12,27 @@
             <span class="font-medium">{{ $t('sidebar.shared_with_you') }}</span>
           </div>
         </div>
-        <div v-if="ciphers" class="uppercase text-head-6">
-          <span class="text-primary font-semibold">{{ ciphers.length }}</span>
-          {{ $tc('type.0', ciphers.length) }}
+        <div class="uppercase text-head-6 mt-2">
+          <span v-if="collections && collections.length">
+            <span class="text-primary font-semibold">{{
+              collections.length
+            }}</span>
+            {{ $tc('type.Folder', collections.length)
+            }}<span v-if="ciphers && ciphers.length">, </span>
+          </span>
+          <span v-if="ciphers && ciphers.length">
+            <span class="text-primary font-semibold">{{ ciphers.length }}</span>
+            {{ $tc('type.0', ciphers.length) }}
+          </span>
         </div>
       </div>
       <!-- Overview end -->
+
+      <div class="flex items-center justify-end content-end mb-5">
+        <!-- Sort menu -->
+        <SortMenu :change-sort="changeSort" :order-string="orderString" />
+        <!-- Sort menu end -->
+      </div>
 
       <!-- List Ciphers -->
       <client-only>
@@ -54,11 +69,18 @@
                     <div v-else>
                       <img
                         src="~/assets/images/icons/folderSolidShare.svg"
-                        alt=""
-                        class="select-none mr-2"
+                        class="select-none mr-3"
+                        style="width: 34px"
                       >
                     </div>
                   </template>
+                  <div v-else>
+                    <img
+                      src="~/assets/images/icons/icon_any.svg"
+                      class="select-none mr-3"
+                      style="height: 34px"
+                    >
+                  </div>
                   <!-- Icon end -->
 
                   <!-- Name -->
@@ -113,13 +135,11 @@
             <!-- Type -->
             <el-table-column :label="$t('common.type')" show-overflow-tooltip>
               <template slot-scope="scope">
-                <span>{{
-                  CipherType[scope.row.cipher_type] ||
-                    CipherType[scope.row.type] ||
-                    (scope.row.cipher_type || scope.row.type
-                      ? 'Unknown'
-                      : 'Folder')
-                }}</span>
+                <span>
+                  {{
+                    getCipherTypeName(scope.row.cipher_type || scope.row.type)
+                  }}
+                </span>
               </template>
             </el-table-column>
             <!-- Type end -->
@@ -180,7 +200,9 @@
             <el-table-column
               :label="$t('common.actions')"
               fixed="right"
-              width="230"
+              :width="
+                tableData.find(r => r.status === 'invited') ? 230 : 'auto'
+              "
             >
               <template slot-scope="scope">
                 <div class="col-actions">
@@ -274,7 +296,7 @@
                         <template v-if="!scope.row.isDeleted">
                           <el-dropdown-item
                             :divided="!!scope.row.type"
-                            @click.native="leaveShare(scope.row)"
+                            @click.native="handleLeaveShare(scope.row)"
                           >
                             <span class="text-danger">{{
                               $t('data.ciphers.leave')
@@ -289,7 +311,7 @@
                       <template v-else-if="scope.row.status === 'accepted'">
                         <el-dropdown-item
                           divided
-                          @click.native="leaveShare(scope.row)"
+                          @click.native="handleLeaveShare(scope.row)"
                         >
                           <span class="text-danger">{{
                             $t('data.ciphers.leave')
@@ -312,9 +334,9 @@
 
     <ShareNoCipher v-else-if="!$store.state.syncing" />
 
-    <AddEditCipher ref="addEditCipherDialog" />
+    <AddEditCipher ref="addEditCipherDialog" :organizations="organizations" />
 
-    <AddEditFolder ref="addEditFolder" />
+    <AddEditFolder ref="addEditFolder" :organizations="organizations" />
 
     <MoveFolder ref="moveFolder" @reset-selection="multipleSelection = []" />
 
@@ -349,6 +371,7 @@ import MoveFolder from '../../folder/MoveFolder'
 import { CipherType } from '../../../core/enums/cipherType'
 import Vnodes from '../../../components/Vnodes'
 import { AccountRole } from '../../../constants'
+import SortMenu from '../list-cipher-components/SortMenu.vue'
 import ShareNoCipher from './ShareNoCipher'
 
 export default {
@@ -360,7 +383,8 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     VueContext: () => import('../../../plugins/vue-context'),
     Vnodes,
-    LazyHydrate
+    LazyHydrate,
+    SortMenu
   },
 
   props: {
@@ -379,8 +403,9 @@ export default {
       dataRendered: [],
       lastIndex: 0,
       selectedCipher: {},
-      invitations: [],
-      dialogAcceptVisible: false
+      dialogAcceptVisible: false,
+      orderField: 'revisionDate',
+      orderDirection: 'desc'
     }
   },
 
@@ -397,6 +422,23 @@ export default {
     },
     tableData () {
       return this.invitations.concat(this.collections || [], this.ciphers || [])
+    },
+    invitations () {
+      return this.shareInvitations.map(item => {
+        const shareType =
+          item.share_type === 'Edit'
+            ? this.$t('data.ciphers.editable')
+            : item.share_type === 'View'
+              ? this.$t('data.ciphers.viewable')
+              : this.$t('data.ciphers.only_use')
+        return {
+          ...item,
+          share_type: shareType
+        }
+      })
+    },
+    orderString () {
+      return `${this.orderField}_${this.orderDirection}`
     }
   },
 
@@ -432,12 +474,6 @@ export default {
           )
         }
       }
-    }
-
-    // Load data
-    const locked = await this.$vaultTimeoutService.isLocked()
-    if (!locked) {
-      this.getShareInvitations()
     }
   },
 
@@ -482,7 +518,18 @@ export default {
                   : this.$t('data.ciphers.only_use')
           }
         })
-        result = orderBy(result, ['user.status'], ['desc']) || []
+        result =
+          orderBy(
+            result,
+            [
+              'user.status',
+              c =>
+                this.orderField === 'name'
+                  ? c.name && c.name.toLowerCase()
+                  : c.revisionDate
+            ],
+            ['desc', this.orderDirection]
+          ) || []
         this.dataRendered = result.slice(0, 50)
         return result
       },
@@ -492,7 +539,9 @@ export default {
         'searchText',
         'filter',
         'invitations',
-        'myShares'
+        'myShares',
+        'orderField',
+        'orderDirection'
       ]
     },
     collections: {
@@ -528,10 +577,19 @@ export default {
           f.ciphersCount = 0
           f.ciphers = []
         })
-
+        collections = orderBy(
+          collections,
+          [
+            c =>
+              this.orderField === 'name'
+                ? c.name && c.name.toLowerCase()
+                : c.revisionDate
+          ],
+          [this.orderDirection]
+        )
         return collections
       },
-      watch: ['searchText', 'ciphers']
+      watch: ['searchText', 'ciphers', 'orderField', 'orderDirection']
     }
   },
 
@@ -550,35 +608,13 @@ export default {
     addEdit (cipher) {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     },
-    async getShareInvitations () {
-      this.invitations =
-        (await this.$axios.$get('cystack_platform/pm/sharing/invitations')) ||
-        []
-      this.invitations = this.invitations.map(item => {
-        const shareType =
-          item.share_type === 'Edit'
-            ? this.$t('data.ciphers.editable')
-            : item.share_type === 'View'
-              ? this.$t('data.ciphers.viewable')
-              : this.$t('data.ciphers.only_use')
-        return {
-          ...item,
-          share_type: shareType
-        }
-      })
-      this.$store.commit(
-        'UPDATE_PENDING_SHARES',
-        this.invitations.filter(item => item.status === 'invited').length
-      )
-    },
     async acceptShareInvitation (cipher) {
       try {
         await this.$axios.$put(
           `cystack_platform/pm/sharing/invitations/${cipher.id}`,
           { status: 'accept' }
         )
-        // this.getSyncData()
-        this.getShareInvitations()
+        this.$store.dispatch('LoadMyShareInvitations')
         this.notify(
           this.$t('data.notifications.accept_invitation_success'),
           'success'
@@ -598,8 +634,7 @@ export default {
           `cystack_platform/pm/sharing/invitations/${cipher.id}`,
           { status: 'reject' }
         )
-        // this.getSyncData()
-        this.getShareInvitations()
+        this.$store.dispatch('LoadMyShareInvitations')
         this.notify(this.$t('data.notifications.reject_invitation'), 'success')
       } catch (e) {
         this.notify(
@@ -608,7 +643,7 @@ export default {
         )
       }
     },
-    async leaveShare (cipher) {
+    async handleLeaveShare (cipher) {
       this.$confirm(
         this.$tc('data.notifications.leave_share', 1),
         this.$t('common.warning'),
@@ -618,31 +653,16 @@ export default {
           type: 'warning'
         }
       ).then(async () => {
-        try {
-          await this.$axios.$post(
-            `cystack_platform/pm/sharing/${
-              cipher.organizationId || cipher?.team?.id
-            }/leave`
-          )
-          if (cipher.ciphers) {
-            const deletedIds = cipher.ciphers.map(c => c.id)
-            await this.$cipherService.delete(deletedIds)
-          } else {
-            await this.$cipherService.delete([cipher.id])
-          }
-          this.notify(
-            this.$t('data.notifications.leave_share_success'),
-            'success'
-          )
-        } catch (error) {
-          this.notify(this.$t('errors.something_went_wrong'), 'warning')
-          console.log(error)
-        }
+        await this.leaveShare(cipher)
       })
     },
     openAcceptDialog (item) {
       this.selectedCipher = item
       this.dialogAcceptVisible = true
+    },
+    changeSort (orderField, orderDirection) {
+      this.orderField = orderField
+      this.orderDirection = orderDirection
     }
   }
 }
