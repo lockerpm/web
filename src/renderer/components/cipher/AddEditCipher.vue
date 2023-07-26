@@ -250,7 +250,7 @@
         <!-- To trash/delete -->
         <div class="flex-grow">
           <button
-            v-if="cipher.id"
+            v-if="cipher.id && isOwner(organizations, cipher)"
             class="btn btn-icon !text-danger"
             @click="
               isDeleted
@@ -297,7 +297,11 @@
     </component>
     <!-- Main dialog end -->
 
-    <AddEditFolder ref="addEditFolder" @created-folder="handleCreatedFolder" />
+    <AddEditFolder
+      ref="addEditFolder"
+      :organizations="organizations"
+      @created-folder="handleCreatedFolder"
+    />
 
     <PasswordViolationDialog
       ref="passwordPolicyDialog"
@@ -372,6 +376,10 @@ export default {
     routeName: {
       type: String,
       default: ''
+    },
+    organizations: {
+      type: Array,
+      default: () => []
     }
   },
 

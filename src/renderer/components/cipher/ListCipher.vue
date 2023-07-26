@@ -79,11 +79,12 @@
     <AddEditCipher
       ref="addEditCipherDialog"
       :type="selectedType"
+      :organizations="organizations"
       @reset-selection="resetSelection()"
       @trashed-cipher="resetSelection()"
     />
 
-    <AddEditFolder ref="addEditFolder" />
+    <AddEditFolder ref="addEditFolder" :organizations="organizations" />
   </div>
 </template>
 
@@ -201,7 +202,7 @@ export default {
             )) || []
         } catch (error) {}
 
-        // revert some cipher types back to bote
+        // revert some cipher types back to note
         const revertingCiphers = result.filter(cipher =>
           Object.values(this.cipherMapping)
             .filter(m => m.revertToNote)

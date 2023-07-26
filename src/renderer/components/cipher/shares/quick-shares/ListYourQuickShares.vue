@@ -5,6 +5,16 @@
       v-if="!shouldRenderNoCipher"
       class="flex-column-fluid lg:px-28 px-10 mb-20"
     >
+      <div class="flex items-center justify-end content-end mb-5">
+        <!-- Sort menu -->
+        <SortMenu
+          :change-sort="changeSort"
+          :order-string="orderString"
+          :other-options="otherSortOptions"
+        />
+        <!-- Sort menu end -->
+      </div>
+
       <!-- List Ciphers -->
       <client-only>
         <LazyHydrate when-visible>
@@ -221,6 +231,7 @@
 <script>
 import orderBy from 'lodash/orderBy'
 import LazyHydrate from 'vue-lazy-hydration'
+import SortMenu from '../../list-cipher-components/SortMenu.vue'
 import ShareNoCipher from '~/components/cipher/shares/ShareNoCipher'
 import QuickShareCipher from '~/components/cipher/shares/quick-shares/QuickShareCipher'
 import { CipherType } from '~/jslib/src/enums'
@@ -234,7 +245,8 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     VueContext: () => import('../../../../plugins/vue-context'),
     Vnodes,
-    LazyHydrate
+    LazyHydrate,
+    SortMenu
   },
 
   data () {
@@ -245,7 +257,9 @@ export default {
       dataRendered: [],
       lastIndex: 0,
       minLengthToCollapse: 2,
-      expandedSend: []
+      expandedSend: [],
+      orderField: 'revisionDate',
+      orderDirection: 'desc'
     }
   },
 
@@ -258,6 +272,41 @@ export default {
         ...s,
         isExpanded: this.expandedSend.includes(s.id)
       }))
+    },
+    orderString () {
+      return `${this.orderField}_${this.orderDirection}`
+    },
+    otherSortOptions () {
+      return [
+        {
+          key: 'accessCount',
+          order: 'asc',
+          label: `${this.$tc('data.sharing.quick_share.view', 1)} (${this.$t(
+            'data.ciphers.ascending'
+          )})`
+        },
+        {
+          key: 'accessCount',
+          order: 'desc',
+          label: `${this.$tc('data.sharing.quick_share.view', 1)} (${this.$t(
+            'data.ciphers.descending'
+          )})`
+        },
+        {
+          key: 'expirationDate',
+          order: 'asc',
+          label: `${this.$t('data.sharing.quick_share.expiration')} (${this.$t(
+            'data.ciphers.ascending'
+          )})`
+        },
+        {
+          key: 'expirationDate',
+          order: 'desc',
+          label: `${this.$t('data.sharing.quick_share.expiration')} (${this.$t(
+            'data.ciphers.descending'
+          )})`
+        }
+      ]
     }
   },
 
@@ -305,11 +354,24 @@ export default {
         } catch (error) {
           console.log(error)
         }
-        result = orderBy(result, ['revisionDate'], ['desc']) || []
+        const getOrderKey = s => {
+          switch (this.orderField) {
+          case 'name':
+            return s.cipher.name && s.cipher.name.toLowerCase()
+          case 'accessCount':
+            return s.accessCount
+          case 'expirationDate':
+            return s.expirationDate
+          default:
+            return s.revisionDate
+          }
+        }
+        console.log(result)
+        result = orderBy(result, [getOrderKey], [this.orderDirection]) || []
         this.dataRendered = result.slice(0, 50)
         return result
       },
-      watch: ['$store.state.syncingQuickShares']
+      watch: ['$store.state.syncingQuickShares', 'orderField', 'orderDirection']
     },
 
     allCiphers: {
@@ -374,6 +436,10 @@ export default {
       const maxAccessReached =
         send.maxAccessCount && send.accessCount >= send.maxAccessCount
       return expired || maxAccessReached
+    },
+    changeSort (orderField, orderDirection) {
+      this.orderField = orderField
+      this.orderDirection = orderDirection
     }
   }
 }

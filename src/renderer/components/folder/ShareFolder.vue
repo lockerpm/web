@@ -7,6 +7,7 @@
     custom-class="locker-dialog"
     :close-on-click-modal="false"
   >
+    <!-- Title -->
     <div slot="title">
       <div class="text-head-6 text-black-700 font-semibold mb-4">
         {{ $t('data.folders.share_folder') }}
@@ -20,6 +21,9 @@
         <div class="text-black-700 font-semibold">{{ folder.name }}</div>
       </div>
     </div>
+    <!-- Title end -->
+
+    <!-- Select -->
     <div class="text-left">
       <div class="grid grid-cols-4 gap-x-2 mb-4">
         <InputText
@@ -29,13 +33,6 @@
           :error-text="!isMemberEmailInputValid && !!user.username"
           @keyupEnter="addMember"
         />
-        <!-- <InputSelect
-          label="Role"
-          initial-value="admin"
-          class="w-full !mb-[10px]"
-          :options="roleOptions"
-          @change="(v) => user.role = v"
-        /> -->
         <el-button
           class="btn btn-outline-primary"
           :loading="dialogLoading.addMember"
@@ -47,6 +44,9 @@
         </el-button>
       </div>
     </div>
+    <!-- Select end -->
+
+    <!-- Table -->
     <div>
       <el-table :data="newMembers.concat(members)" style="width: 100%">
         <el-table-column :label="$t('data.sharing.member')" width="200">
@@ -123,6 +123,9 @@
         </el-table-column>
       </el-table>
     </div>
+    <!-- Table end -->
+
+    <!-- Footer -->
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow" />
       <div>
@@ -138,6 +141,7 @@
         </button>
       </div>
     </div>
+    <!-- Footer end -->
   </el-dialog>
 </template>
 
