@@ -1,8 +1,7 @@
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
-
-import { CollectionView } from '../../jslib/src/models/view/collectionView'
-import { FolderView } from '../../jslib/src/models/view/folderView'
+import { CollectionView } from '../../core/models/view/collectionView'
+import { FolderView } from '../../core/models/view/folderView'
 import { Importer } from './importer'
 import { BaseImporter } from './baseImporter'
 
@@ -48,7 +47,10 @@ export class PadlockCsvImporter extends BaseImporter implements Importer {
               result.collections.push(collection)
             }
 
-            result.collectionRelationships.push([result.ciphers.length, collectionIndex])
+            result.collectionRelationships.push([
+              result.ciphers.length,
+              collectionIndex
+            ])
           })
         } else {
           const tags = (value[1] as string).split(',')
@@ -62,7 +64,10 @@ export class PadlockCsvImporter extends BaseImporter implements Importer {
 
       for (let i = 2; i < value.length; i++) {
         const header = headers[i].trim().toLowerCase()
-        if (this.isNullOrWhitespace(value[i]) || this.isNullOrWhitespace(header)) {
+        if (
+          this.isNullOrWhitespace(value[i]) ||
+          this.isNullOrWhitespace(header)
+        ) {
           continue
         }
 

@@ -58,7 +58,7 @@
 
 <script>
 import InputSelectFolder from '../input/InputSelectFolder'
-import { CipherRequest } from '../../jslib/src/models/request/cipherRequest'
+import { CipherRequest } from '../../core/models/request/cipherRequest'
 import AddEditFolder from './AddEditFolder'
 
 export default {

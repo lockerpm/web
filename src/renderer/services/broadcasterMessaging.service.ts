@@ -1,9 +1,7 @@
-import { MessagingService } from '../jslib/src/abstractions/messaging.service';
-
-import { BroadcasterService } from '../jslib/src/angular/services/broadcaster.service';
+import { MessagingService } from '../core/abstractions/messaging.service';
 
 export class BroadcasterMessagingService implements MessagingService {
-    constructor(private broadcasterService: BroadcasterService) { }
+    constructor(private broadcasterService) { }
 
     send(subscriber: string, arg: any = {}) {
         const message = Object.assign({}, { command: subscriber }, arg);

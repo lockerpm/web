@@ -1,15 +1,14 @@
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
-
-import { CipherWithIds } from '../../jslib/src/models/export/cipherWithIds'
-import { CollectionWithId } from '../../jslib/src/models/export/collectionWithId'
-import { FolderWithId } from '../../jslib/src/models/export/folderWithId'
+import { CipherWithIds } from '../../core/models/export/cipherWithIds'
+import { CollectionWithId } from '../../core/models/export/collectionWithId'
+import { FolderWithId } from '../../core/models/export/folderWithId'
 import { Importer } from './importer'
 import { BaseImporter } from './baseImporter'
 
 export class BitwardenJsonImporter extends BaseImporter implements Importer {
-  private results: any;
-  private result: ImportResult;
+  private results: any
+  private result: ImportResult
 
   async parse (data: string): Promise<ImportResult> {
     this.result = new ImportResult()

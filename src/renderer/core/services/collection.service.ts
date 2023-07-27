@@ -1,18 +1,18 @@
 import { CollectionData } from '../models/data/collectionData'
 
 import { Collection } from '../models/domain/collection'
-import { TreeNode } from '../../jslib/src/models/domain/treeNode'
+import { TreeNode } from '../../core/models/domain/treeNode'
 
 import { CollectionView } from '../models/view/collectionView'
 
-import { CollectionService as CollectionServiceAbstraction } from '../../jslib/src/abstractions/collection.service'
-import { CryptoService } from '../../jslib/src/abstractions/crypto.service'
-import { I18nService } from '../../jslib/src/abstractions/i18n.service'
-import { StorageService } from '../../jslib/src/abstractions/storage.service'
-import { UserService } from '../../jslib/src/abstractions/user.service'
+import { CollectionService as CollectionServiceAbstraction } from '../../core/abstractions/collection.service'
+import { CryptoService } from '../../core/abstractions/crypto.service'
+import { I18nService } from '../../core/abstractions/i18n.service'
+import { StorageService } from '../../core/abstractions/storage.service'
+import { UserService } from '../../core/abstractions/user.service'
 
-import { ServiceUtils } from '../../jslib/src/misc/serviceUtils'
-import { Utils } from '../../jslib/src/misc/utils'
+import { ServiceUtils } from '../../core/misc/serviceUtils'
+import { Utils } from '../../core/misc/utils'
 
 const Keys = {
   collectionsPrefix: 'collections_'

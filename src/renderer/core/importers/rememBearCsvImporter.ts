@@ -1,9 +1,8 @@
+import { CipherType } from '../../core/enums/cipherType'
 
-import { CipherType } from '../../jslib/src/enums/cipherType'
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
-
-import { CardView } from '../../jslib/src/models/view/cardView'
+import { CardView } from '../../core/models/view/cardView'
 import { Importer } from './importer'
 import { BaseImporter } from './baseImporter'
 
@@ -39,11 +38,15 @@ export class RememBearCsvImporter extends BaseImporter implements Importer {
           const expMonth = this.getValueOrDefault(value.expiryMonth)
           if (expMonth != null) {
             const expMonthNumber = parseInt(expMonth, null)
-            if (expMonthNumber != null && expMonthNumber >= 1 && expMonthNumber <= 12) {
+            if (
+              expMonthNumber != null &&
+              expMonthNumber >= 1 &&
+              expMonthNumber <= 12
+            ) {
               cipher.card.expMonth = expMonthNumber.toString()
             }
           }
-        } catch { }
+        } catch {}
         try {
           const expYear = this.getValueOrDefault(value.expiryYear)
           if (expYear != null) {
@@ -52,7 +55,7 @@ export class RememBearCsvImporter extends BaseImporter implements Importer {
               cipher.card.expYear = expYearNumber.toString()
             }
           }
-        } catch { }
+        } catch {}
 
         const pin = this.getValueOrDefault(value.pin)
         if (pin != null) {

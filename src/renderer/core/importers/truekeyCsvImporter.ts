@@ -1,16 +1,25 @@
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { CardView } from '../../core/models/view/cardView'
+import { SecureNoteView } from '../../core/models/view/secureNoteView'
 
-import { CardView } from '../../jslib/src/models/view/cardView'
-import { SecureNoteView } from '../../jslib/src/models/view/secureNoteView'
-
-import { CipherType } from '../../jslib/src/enums/cipherType'
-import { SecureNoteType } from '../../jslib/src/enums/secureNoteType'
+import { CipherType } from '../../core/enums/cipherType'
+import { SecureNoteType } from '../../core/enums/secureNoteType'
 import { Importer } from './importer'
 import { BaseImporter } from './baseImporter'
 
-const PropertiesToIgnore = ['kind', 'autologin', 'favorite', 'hexcolor', 'protectedwithpassword', 'subdomainonly',
-  'type', 'tk_export_version', 'note', 'title', 'document_content'
+const PropertiesToIgnore = [
+  'kind',
+  'autologin',
+  'favorite',
+  'hexcolor',
+  'protectedwithpassword',
+  'subdomainonly',
+  'type',
+  'tk_export_version',
+  'note',
+  'title',
+  'document_content'
 ]
 
 export class TrueKeyCsvImporter extends BaseImporter implements Importer {
@@ -24,7 +33,8 @@ export class TrueKeyCsvImporter extends BaseImporter implements Importer {
 
     results.forEach(value => {
       const cipher = this.initLoginCipher()
-      cipher.favorite = this.getValueOrDefault(value.favorite, '').toLowerCase() === 'true'
+      cipher.favorite =
+        this.getValueOrDefault(value.favorite, '').toLowerCase() === 'true'
       cipher.name = this.getValueOrDefault(value.name, '--')
       cipher.notes = this.getValueOrDefault(value.memo, '')
       cipher.login.username = this.getValueOrDefault(value.login)
@@ -47,7 +57,7 @@ export class TrueKeyCsvImporter extends BaseImporter implements Importer {
             const expDate = new Date(value.expiryDate)
             cipher.card.expYear = expDate.getFullYear().toString()
             cipher.card.expMonth = (expDate.getMonth() + 1).toString()
-          } catch { }
+          } catch {}
         }
       } else if (value.kind !== 'login') {
         cipher.type = CipherType.SecureNote
@@ -57,8 +67,11 @@ export class TrueKeyCsvImporter extends BaseImporter implements Importer {
           cipher.notes = this.getValueOrDefault(value.document_content, '')
         }
         for (const property in value) {
-          if (value.hasOwnProperty(property) && !PropertiesToIgnore.includes(property.toLowerCase()) &&
-                        !this.isNullOrWhitespace(value[property])) {
+          if (
+            value.hasOwnProperty(property) &&
+            !PropertiesToIgnore.includes(property.toLowerCase()) &&
+            !this.isNullOrWhitespace(value[property])
+          ) {
             this.processKvp(cipher, property, value[property])
           }
         }

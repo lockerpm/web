@@ -1,8 +1,10 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
-export class PasswordWalletTxtImporter extends BaseImporter implements Importer {
+export class PasswordWalletTxtImporter
+  extends BaseImporter
+  implements Importer {
   parse (data: string): Promise<ImportResult> {
     const result = new ImportResult()
     const results = this.parseCsv(data, false)
@@ -21,7 +23,9 @@ export class PasswordWalletTxtImporter extends BaseImporter implements Importer 
       const cipher = this.initLoginCipher()
       cipher.name = this.getValueOrDefault(value[0], '--')
       if (value.length > 4) {
-        cipher.notes = this.getValueOrDefault(value[4], '').split('¬').join('\n')
+        cipher.notes = this.getValueOrDefault(value[4], '')
+          .split('¬')
+          .join('\n')
       }
       if (value.length > 2) {
         cipher.login.username = this.getValueOrDefault(value[2])

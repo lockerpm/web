@@ -29,16 +29,18 @@
           {{ otp }}
         </p>
         <circular-count-down-timer
-          :circles="[{
-            id: 'main',
-            steps: otpData.period,
-            size: 24,
-            showValue: false,
-            stepLength: -1,
-            value: start,
-            strokeWidth: 3,
-            strokeColor: '#268334'
-          }]"
+          :circles="[
+            {
+              id: 'main',
+              steps: otpData.period,
+              size: 24,
+              showValue: false,
+              stepLength: -1,
+              value: start,
+              strokeWidth: 3,
+              strokeColor: '#268334'
+            }
+          ]"
           :interval="1000"
           :size="24"
           main-circle-id="main"
@@ -46,9 +48,9 @@
         />
         <!-- Copy -->
         <button
-          class="btn btn-icon btn-xs hover:bg-black-400"
           v-clipboard:copy="otp"
           v-clipboard:success="clipboardSuccessHandler"
+          class="btn btn-icon btn-xs hover:bg-black-400"
         >
           <i class="far fa-clone" />
         </button>
@@ -67,7 +69,7 @@
 
 <script>
 import orderBy from 'lodash/orderBy'
-import { FieldType } from '../../../../jslib/src/enums/fieldType'
+import { FieldType } from '../../../../core/enums/fieldType'
 import { CipherType } from '../../../../core/enums/cipherType.ts'
 
 import InputText from '../../../input/InputText.vue'
@@ -117,19 +119,21 @@ export default {
         let result = []
         try {
           const filter = c => c.type === CipherType.TOTP
-          result = await this.$searchService.searchCiphers(this.otpSearchText, [filter], null) || []
-        } catch (error) {
-        }
-        result = orderBy(result, [c => c.name && c.name.toLowerCase()], []) || []
+          result =
+            (await this.$searchService.searchCiphers(
+              this.otpSearchText,
+              [filter],
+              null
+            )) || []
+        } catch (error) {}
+        result =
+          orderBy(result, [c => c.name && c.name.toLowerCase()], []) || []
         return result.map(r => ({
           label: r.name,
           value: r.notes
         }))
       },
-      watch: [
-        '$store.state.syncedCiphersToggle',
-        'otpSearchText'
-      ]
+      watch: ['$store.state.syncedCiphersToggle', 'otpSearchText']
     }
   },
 
@@ -157,7 +161,7 @@ export default {
       }
     },
     getRemainingTime (period = 30) {
-      return (period + 1) - Math.floor(new Date().getTime() / 1000) % period
+      return period + 1 - (Math.floor(new Date().getTime() / 1000) % period)
     },
     changeOption (option) {
       this.option = option
@@ -186,6 +190,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

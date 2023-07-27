@@ -74,7 +74,7 @@
           >
             <span>{{ item.label }}</span>
             <i
-              v-if="orderString === `${item_key}_${item.order}`"
+              v-if="orderString === `${item.key}_${item.order}`"
               class="fa fa-check"
             />
           </el-dropdown-item>

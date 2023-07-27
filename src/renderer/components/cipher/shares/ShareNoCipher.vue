@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { CipherType } from '../../../jslib/src/enums/cipherType.ts'
+import { CipherType } from '../../../core/enums/cipherType.ts'
 import Vnodes from '../../../components/Vnodes'
 
 export default {

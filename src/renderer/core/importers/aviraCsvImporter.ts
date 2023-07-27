@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -12,16 +12,27 @@ export class AviraCsvImporter extends BaseImporter implements Importer {
     }
 
     // CS
-    const existingKeys = ['name', 'website', 'password', 'username', 'secondary_username']
+    const existingKeys = [
+      'name',
+      'website',
+      'password',
+      'username',
+      'secondary_username'
+    ]
 
     results.forEach(value => {
       const cipher = this.initLoginCipher()
-      cipher.name = this.getValueOrDefault(value.name,
-        this.getValueOrDefault(this.nameFromUrl(value.website), '--'))
+      cipher.name = this.getValueOrDefault(
+        value.name,
+        this.getValueOrDefault(this.nameFromUrl(value.website), '--')
+      )
       cipher.login.uris = this.makeUriArray(value.website)
       cipher.login.password = this.getValueOrDefault(value.password)
 
-      if (this.isNullOrWhitespace(value.username) && !this.isNullOrWhitespace(value.secondary_username)) {
+      if (
+        this.isNullOrWhitespace(value.username) &&
+        !this.isNullOrWhitespace(value.secondary_username)
+      ) {
         cipher.login.username = value.secondary_username
       } else {
         cipher.login.username = this.getValueOrDefault(value.username)
@@ -32,9 +43,11 @@ export class AviraCsvImporter extends BaseImporter implements Importer {
       }
 
       // CS
-      Object.keys(value).filter(k => !existingKeys.includes(k)).forEach(k => {
-        this.processKvp(cipher, k, value[k])
-      })
+      Object.keys(value)
+        .filter(k => !existingKeys.includes(k))
+        .forEach(k => {
+          this.processKvp(cipher, k, value[k])
+        })
 
       this.cleanupCipher(cipher)
       result.ciphers.push(cipher)

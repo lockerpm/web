@@ -1,5 +1,5 @@
 {
-  "name": "cypass-manager",
+  "name": "locker-web",
   "version": "0.0.1",
   "description": "An awesome project",
   "main": "./dist/main/index.js",
@@ -22,7 +22,6 @@
   "keywords": [],
   "author": "sonnh@cystack.net <sonnh@cystack.net>",
   "license": "MIT",
-  "homepage": "https://github.com/michalzaq12/electron-nuxt/blob/master/README.md",
   "engines": {
     "node": ">=12.13.0"
   },

@@ -208,7 +208,7 @@
   </div>
 </template>
 <script>
-import { Utils } from '../../jslib/src/misc/utils'
+import { Utils } from '../../core/misc/utils'
 import { Cipher } from '../../core/models/domain/cipher'
 import DetailQuickSharedCipherContent from '@/components/cipher/shares/quick-shares/DetailQuickSharedCipherContent.vue'
 

@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -12,17 +12,27 @@ export class KeePassXCsvImporter extends BaseImporter implements Importer {
     }
 
     // CS
-    const existingKeys = ['Group', 'Notes', 'Title', 'Username', 'Password', 'URL']
+    const existingKeys = [
+      'Group',
+      'Notes',
+      'Title',
+      'Username',
+      'Password',
+      'URL'
+    ]
 
     results.forEach(value => {
       if (this.isNullOrWhitespace(value.Title)) {
         return
       }
 
-      value.Group = !this.isNullOrWhitespace(value.Group) && value.Group.startsWith('Root/')
-        ? value.Group.replace('Root/', '')
-        : value.Group
-      const groupName = !this.isNullOrWhitespace(value.Group) ? value.Group : null
+      value.Group =
+        !this.isNullOrWhitespace(value.Group) && value.Group.startsWith('Root/')
+          ? value.Group.replace('Root/', '')
+          : value.Group
+      const groupName = !this.isNullOrWhitespace(value.Group)
+        ? value.Group
+        : null
       this.processFolder(result, groupName)
 
       const cipher = this.initLoginCipher()
@@ -33,9 +43,11 @@ export class KeePassXCsvImporter extends BaseImporter implements Importer {
       cipher.login.uris = this.makeUriArray(value.URL)
 
       // CS
-      Object.keys(value).filter(k => !existingKeys.includes(k)).forEach(k => {
-        this.processKvp(cipher, k, value[k])
-      })
+      Object.keys(value)
+        .filter(k => !existingKeys.includes(k))
+        .forEach(k => {
+          this.processKvp(cipher, k, value[k])
+        })
 
       this.cleanupCipher(cipher)
       result.ciphers.push(cipher)

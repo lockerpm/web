@@ -2,19 +2,19 @@
 import { SendData } from '../models/data/sendData'
 
 import { Send } from '../models/domain/send'
-import { SymmetricCryptoKey } from '../../jslib/src/models/domain/symmetricCryptoKey'
+import { SymmetricCryptoKey } from '../../core/models/domain/symmetricCryptoKey'
 
 import { SendView } from '../models/view/sendView'
 
-import { CryptoService } from '../../jslib/src/abstractions/crypto.service'
+import { CryptoService } from '../../core/abstractions/crypto.service'
 import { CipherService } from '../services/cipher.service'
-import { CryptoFunctionService } from '../../jslib/src/abstractions/cryptoFunction.service'
-import { I18nService } from '../../jslib/src/abstractions/i18n.service'
+import { CryptoFunctionService } from '../../core/abstractions/cryptoFunction.service'
+import { I18nService } from '../../core/abstractions/i18n.service'
 import { SendService as SendServiceAbstraction } from '../abstractions/send.service'
-import { StorageService } from '../../jslib/src/abstractions/storage.service'
-import { UserService } from '../../jslib/src/abstractions/user.service'
+import { StorageService } from '../../core/abstractions/storage.service'
+import { UserService } from '../../core/abstractions/user.service'
 
-import { Utils } from '../../jslib/src/misc/utils'
+import { Utils } from '../../core/misc/utils'
 
 const Keys = {
   sendsPrefix: 'sends_'

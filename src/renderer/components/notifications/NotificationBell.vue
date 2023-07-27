@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { Utils } from '../../jslib/src/misc/utils.ts'
+import { Utils } from '../../core/misc/utils.ts'
 
 export default {
   data () {

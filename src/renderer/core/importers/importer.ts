@@ -1,6 +1,6 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 
 export interface Importer {
-    organizationId: string;
-    parse(data: string): Promise<ImportResult>;
+  organizationId: string
+  parse(data: string): Promise<ImportResult>
 }

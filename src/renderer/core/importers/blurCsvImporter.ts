@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -19,8 +19,10 @@ export class BlurCsvImporter extends BaseImporter implements Importer {
         value.label = null
       }
       const cipher = this.initLoginCipher()
-      cipher.name = this.getValueOrDefault(value.label,
-        this.getValueOrDefault(this.nameFromUrl(value.domain), '--'))
+      cipher.name = this.getValueOrDefault(
+        value.label,
+        this.getValueOrDefault(this.nameFromUrl(value.domain), '--')
+      )
       cipher.login.uris = this.makeUriArray(value.domain)
       cipher.login.password = this.getValueOrDefault(value.password)
 
@@ -31,7 +33,10 @@ export class BlurCsvImporter extends BaseImporter implements Importer {
       //     cipher.login.username = this.getValueOrDefault(value.email);
       //     cipher.notes = this.getValueOrDefault(value.username);
       // }
-      if (this.isNullOrWhitespace(value.username) && !this.isNullOrWhitespace(value.email)) {
+      if (
+        this.isNullOrWhitespace(value.username) &&
+        !this.isNullOrWhitespace(value.email)
+      ) {
         cipher.login.username = value.email
       } else {
         cipher.login.username = this.getValueOrDefault(value.username)
@@ -39,9 +44,11 @@ export class BlurCsvImporter extends BaseImporter implements Importer {
       }
 
       // CS
-      Object.keys(value).filter(k => !existingKeys.includes(k)).forEach(k => {
-        this.processKvp(cipher, k, value[k])
-      })
+      Object.keys(value)
+        .filter(k => !existingKeys.includes(k))
+        .forEach(k => {
+          this.processKvp(cipher, k, value[k])
+        })
 
       this.cleanupCipher(cipher)
       result.ciphers.push(cipher)

@@ -1,5 +1,5 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
-import { CipherView } from '../../jslib/src/models/view/cipherView'
+import { ImportResult } from '../../core/models/domain/importResult'
+import { CipherView } from '../../core/models/view/cipherView'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -17,12 +17,19 @@ export class SplashIdCsvImporter extends BaseImporter implements Importer {
         return
       }
 
-      this.processFolder(result, this.getValueOrDefault(value[value.length - 1]))
+      this.processFolder(
+        result,
+        this.getValueOrDefault(value[value.length - 1])
+      )
       const cipher = this.initLoginCipher()
       cipher.notes = this.getValueOrDefault(value[value.length - 2], '')
       cipher.name = this.getValueOrDefault(value[1], '--')
 
-      if (value[0] === 'Web Logins' || value[0] === 'Servers' || value[0] === 'Email Accounts') {
+      if (
+        value[0] === 'Web Logins' ||
+        value[0] === 'Servers' ||
+        value[0] === 'Email Accounts'
+      ) {
         cipher.login.username = this.getValueOrDefault(value[2])
         cipher.login.password = this.getValueOrDefault(value[3])
         cipher.login.uris = this.makeUriArray(value[4])
@@ -44,13 +51,17 @@ export class SplashIdCsvImporter extends BaseImporter implements Importer {
     return Promise.resolve(result)
   }
 
-  private parseFieldsToNotes (cipher: CipherView, startIndex: number, value: any) {
+  private parseFieldsToNotes (
+    cipher: CipherView,
+    startIndex: number,
+    value: any
+  ) {
     // last 3 rows do not get parsed
     for (let i = startIndex; i < value.length - 3; i++) {
       if (this.isNullOrWhitespace(value[i])) {
         continue
       }
-      cipher.notes += (value[i] + '\n')
+      cipher.notes += value[i] + '\n'
     }
   }
 }

@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -14,22 +14,29 @@ export class FirefoxCsvImporter extends BaseImporter implements Importer {
     // CS
     const existingKeys = ['url', 'username', 'password', 'hostname']
 
-    results.filter(value => {
-      return value.url !== 'chrome://FirefoxAccounts'
-    }).forEach(value => {
-      const cipher = this.initLoginCipher()
-      const url = this.getValueOrDefault(value.url, this.getValueOrDefault(value.hostname))
-      cipher.name = this.getValueOrDefault(this.nameFromUrl(url), '--')
-      cipher.login.username = this.getValueOrDefault(value.username)
-      cipher.login.password = this.getValueOrDefault(value.password)
-      cipher.login.uris = this.makeUriArray(url)
-      // CS
-      Object.keys(value).filter(k => !existingKeys.includes(k)).forEach(k => {
-        this.processKvp(cipher, k, value[k])
+    results
+      .filter(value => {
+        return value.url !== 'chrome://FirefoxAccounts'
       })
-      this.cleanupCipher(cipher)
-      result.ciphers.push(cipher)
-    })
+      .forEach(value => {
+        const cipher = this.initLoginCipher()
+        const url = this.getValueOrDefault(
+          value.url,
+          this.getValueOrDefault(value.hostname)
+        )
+        cipher.name = this.getValueOrDefault(this.nameFromUrl(url), '--')
+        cipher.login.username = this.getValueOrDefault(value.username)
+        cipher.login.password = this.getValueOrDefault(value.password)
+        cipher.login.uris = this.makeUriArray(url)
+        // CS
+        Object.keys(value)
+          .filter(k => !existingKeys.includes(k))
+          .forEach(k => {
+            this.processKvp(cipher, k, value[k])
+          })
+        this.cleanupCipher(cipher)
+        result.ciphers.push(cipher)
+      })
 
     result.success = true
     return Promise.resolve(result)

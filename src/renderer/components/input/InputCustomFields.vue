@@ -7,9 +7,9 @@
         :label="field.name"
         :is-date="field.type === 7"
         :is-password="field.type === FieldType.Hidden"
-        :option="fieldTypeOptions.find((o) => o.value == field.type)"
-        @input-label="(l) => updateField(index, {name: l, value: field.value})"
-        @input="(v) => updateField(index, {name: field.name, value: v})"
+        :option="fieldTypeOptions.find(o => o.value == field.type)"
+        @input-label="l => updateField(index, { name: l, value: field.value })"
+        @input="v => updateField(index, { name: field.name, value: v })"
         @delete="deleteField(index)"
       />
     </div>
@@ -18,7 +18,9 @@
     <div>
       <el-dropdown trigger="click">
         <span class="el-dropdown-link text-primary">
-          <i class="el-icon-circle-plus-outline mr-2" />{{ $t('data.ciphers.new_custom_field') }}
+          <i class="el-icon-circle-plus-outline mr-2" />{{
+            $t('data.ciphers.new_custom_field')
+          }}
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item
@@ -36,8 +38,8 @@
 </template>
 
 <script>
-import { FieldView } from '../../jslib/src/models/view'
-import { FieldType } from '../../jslib/src/enums/fieldType'
+import { FieldView } from '../../core/models/view'
+import { FieldType } from '../../core/enums/fieldType'
 import InputField from '../input/InputField.vue'
 export default {
   components: {
@@ -116,6 +118,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

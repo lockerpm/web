@@ -194,7 +194,7 @@
 <script>
 import find from 'lodash/find'
 import QuickSharedCipherInfo from './QuickSharedCipherInfo'
-import { CipherType } from '~/jslib/src/enums'
+import { CipherType } from '~/core/enums'
 import Vnodes from '~/components/Vnodes'
 import { SendView } from '~/core/models/view/sendView'
 import { Send } from '~/core/models/domain/send'

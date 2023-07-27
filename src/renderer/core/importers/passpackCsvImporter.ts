@@ -1,5 +1,5 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
-import { CollectionView } from '../../jslib/src/models/view/collectionView'
+import { ImportResult } from '../../core/models/domain/importResult'
+import { CollectionView } from '../../core/models/view/collectionView'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -13,16 +13,21 @@ export class PasspackCsvImporter extends BaseImporter implements Importer {
     }
 
     results.forEach(value => {
-      const tagsJson = !this.isNullOrWhitespace(value.Tags) ? JSON.parse(value.Tags) : null
-      const tags: string[] = tagsJson != null && tagsJson.tags != null && tagsJson.tags.length > 0
-        ? tagsJson.tags.map((tagJson: string) => {
-          try {
-            const t = JSON.parse(tagJson)
-            return this.getValueOrDefault(t.tag)
-          } catch { }
-          return null
-        }).filter((t: string) => !this.isNullOrWhitespace(t))
+      const tagsJson = !this.isNullOrWhitespace(value.Tags)
+        ? JSON.parse(value.Tags)
         : null
+      const tags: string[] =
+        tagsJson != null && tagsJson.tags != null && tagsJson.tags.length > 0
+          ? tagsJson.tags
+            .map((tagJson: string) => {
+              try {
+                const t = JSON.parse(tagJson)
+                return this.getValueOrDefault(t.tag)
+              } catch {}
+              return null
+            })
+            .filter((t: string) => !this.isNullOrWhitespace(t))
+          : null
 
       if (this.organization && tags != null && tags.length > 0) {
         tags.forEach(tag => {
@@ -43,7 +48,10 @@ export class PasspackCsvImporter extends BaseImporter implements Importer {
             result.collections.push(collection)
           }
 
-          result.collectionRelationships.push([result.ciphers.length, collectionIndex])
+          result.collectionRelationships.push([
+            result.ciphers.length,
+            collectionIndex
+          ])
         })
       } else if (!this.organization && tags != null && tags.length > 0) {
         this.processFolder(result, tags[0])
@@ -51,7 +59,8 @@ export class PasspackCsvImporter extends BaseImporter implements Importer {
 
       const cipher = this.initLoginCipher()
       cipher.notes = this.getValueOrDefault(value.Notes, '')
-      cipher.notes += ('\n\n' + this.getValueOrDefault(value['Shared Notes'], '') + '\n')
+      cipher.notes +=
+        '\n\n' + this.getValueOrDefault(value['Shared Notes'], '') + '\n'
       cipher.name = this.getValueOrDefault(value['Entry Name'], '--')
       cipher.login.username = this.getValueOrDefault(value['User ID'])
       cipher.login.password = this.getValueOrDefault(value.Password)
@@ -60,7 +69,7 @@ export class PasspackCsvImporter extends BaseImporter implements Importer {
       if (value.__parsed_extra != null && value.__parsed_extra.length > 0) {
         value.__parsed_extra.forEach((extra: string) => {
           if (!this.isNullOrWhitespace(extra)) {
-            cipher.notes += ('\n' + extra)
+            cipher.notes += '\n' + extra
           }
         })
       }
@@ -68,15 +77,17 @@ export class PasspackCsvImporter extends BaseImporter implements Importer {
       const fieldsJson = !this.isNullOrWhitespace(value['Extra Fields'])
         ? JSON.parse(value['Extra Fields'])
         : null
-      const fields = fieldsJson != null && fieldsJson.extraFields != null &&
-                fieldsJson.extraFields.length > 0
-        ? fieldsJson.extraFields.map((fieldJson: string) => {
-          try {
-            return JSON.parse(fieldJson)
-          } catch { }
-          return null
-        })
-        : null
+      const fields =
+        fieldsJson != null &&
+        fieldsJson.extraFields != null &&
+        fieldsJson.extraFields.length > 0
+          ? fieldsJson.extraFields.map((fieldJson: string) => {
+            try {
+              return JSON.parse(fieldJson)
+            } catch {}
+            return null
+          })
+          : null
       if (fields != null) {
         fields.forEach((f: any) => {
           if (f != null) {

@@ -1,9 +1,9 @@
-import { Utils } from '../../../jslib/src/misc/utils'
+import { Utils } from '../../../core/misc/utils'
 
 import { Send } from '../domain/send'
-import { SymmetricCryptoKey } from '../../../jslib/src/models/domain/symmetricCryptoKey'
+import { SymmetricCryptoKey } from '../../../core/models/domain/symmetricCryptoKey'
 
-import { View } from '../../../jslib/src/models/view'
+import { View } from '../../../core/models/view'
 import { CipherView } from './cipherView'
 
 export class SendView implements View {

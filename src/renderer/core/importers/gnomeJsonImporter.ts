@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -12,19 +12,27 @@ export class GnomeJsonImporter extends BaseImporter implements Importer {
     }
 
     for (const keyRing in results) {
-      if (!results.hasOwnProperty(keyRing) || this.isNullOrWhitespace(keyRing) ||
-                results[keyRing].length === 0) {
+      if (
+        !results.hasOwnProperty(keyRing) ||
+        this.isNullOrWhitespace(keyRing) ||
+        results[keyRing].length === 0
+      ) {
         continue
       }
 
       results[keyRing].forEach((value: any) => {
-        if (this.isNullOrWhitespace(value.display_name) || value.display_name.indexOf('http') !== 0) {
+        if (
+          this.isNullOrWhitespace(value.display_name) ||
+          value.display_name.indexOf('http') !== 0
+        ) {
           return
         }
 
         this.processFolder(result, keyRing)
         const cipher = this.initLoginCipher()
-        cipher.name = value.display_name.replace('http://', '').replace('https://', '')
+        cipher.name = value.display_name
+          .replace('http://', '')
+          .replace('https://', '')
         if (cipher.name.length > 30) {
           cipher.name = cipher.name.substring(0, 30)
         }
@@ -32,12 +40,16 @@ export class GnomeJsonImporter extends BaseImporter implements Importer {
         cipher.login.uris = this.makeUriArray(value.display_name)
 
         if (value.attributes != null) {
-          cipher.login.username = value.attributes != null
-            ? this.getValueOrDefault(value.attributes.username_value)
-            : null
+          cipher.login.username =
+            value.attributes != null
+              ? this.getValueOrDefault(value.attributes.username_value)
+              : null
           for (const attr in value.attributes) {
-            if (!value.attributes.hasOwnProperty(attr) || attr === 'username_value' ||
-                            attr === 'xdg:schema') {
+            if (
+              !value.attributes.hasOwnProperty(attr) ||
+              attr === 'username_value' ||
+              attr === 'xdg:schema'
+            ) {
               continue
             }
             this.processKvp(cipher, attr, value.attributes[attr])

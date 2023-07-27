@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { CipherRequest } from '../../../jslib/src/models/request/cipherRequest'
+import { CipherRequest } from '../../../core/models/request/cipherRequest'
 import { Send } from '../domain/send'
 
 export class SendRequest {

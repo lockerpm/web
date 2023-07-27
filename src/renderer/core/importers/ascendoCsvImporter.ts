@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -20,7 +20,7 @@ export class AscendoCsvImporter extends BaseImporter implements Importer {
       cipher.notes = this.getValueOrDefault(value[value.length - 1])
       cipher.name = this.getValueOrDefault(value[0], '--')
 
-      if (value.length > 2 && (value.length % 2) === 0) {
+      if (value.length > 2 && value.length % 2 === 0) {
         for (let i = 0; i < value.length - 2; i += 2) {
           const val: string = value[i + 2]
           const field: string = value[i + 1]
@@ -29,13 +29,20 @@ export class AscendoCsvImporter extends BaseImporter implements Importer {
           }
 
           const fieldLower = field.toLowerCase()
-          if (cipher.login.password == null && this.passwordFieldNames.includes(fieldLower)) {
+          if (
+            cipher.login.password == null &&
+            this.passwordFieldNames.includes(fieldLower)
+          ) {
             cipher.login.password = this.getValueOrDefault(val)
-          } else if (cipher.login.username == null &&
-                        this.usernameFieldNames.includes(fieldLower)) {
+          } else if (
+            cipher.login.username == null &&
+            this.usernameFieldNames.includes(fieldLower)
+          ) {
             cipher.login.username = this.getValueOrDefault(val)
-          } else if ((cipher.login.uris == null || cipher.login.uris.length === 0) &&
-                        this.uriFieldNames.includes(fieldLower)) {
+          } else if (
+            (cipher.login.uris == null || cipher.login.uris.length === 0) &&
+            this.uriFieldNames.includes(fieldLower)
+          ) {
             cipher.login.uris = this.makeUriArray(val)
           } else {
             this.processKvp(cipher, field, val)

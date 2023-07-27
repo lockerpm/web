@@ -1,19 +1,19 @@
-import { BaseImporter } from '../../jslib/src/importers/baseImporter'
-import { Importer } from '../../jslib/src/importers/importer'
+import { BaseImporter } from '../../core/importers/baseImporter'
+import { Importer } from '../../core/importers/importer'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { CipherView } from '../../jslib/src/models/view/cipherView'
-import { CollectionView } from '../../jslib/src/models/view/collectionView'
-import { FieldView } from '../../jslib/src/models/view/fieldView'
-import { LoginView } from '../../jslib/src/models/view/loginView'
-import { CardView } from '../../jslib/src/models/view/cardView'
-import { IdentityView } from '../../jslib/src/models/view/identityView'
-import { SecureNoteView } from '../../jslib/src/models/view/secureNoteView'
+import { CipherView } from '../../core/models/view/cipherView'
+import { CollectionView } from '../../core/models/view/collectionView'
+import { FieldView } from '../../core/models/view/fieldView'
+import { LoginView } from '../../core/models/view/loginView'
+import { CardView } from '../../core/models/view/cardView'
+import { IdentityView } from '../../core/models/view/identityView'
+import { SecureNoteView } from '../../core/models/view/secureNoteView'
 
-import { CipherType } from '../../jslib/src/enums/cipherType'
-import { FieldType } from '../../jslib/src/enums/fieldType'
-import { SecureNoteType } from '../../jslib/src/enums/secureNoteType'
+import { CipherType } from '../../core/enums/cipherType'
+import { FieldType } from '../../core/enums/fieldType'
+import { SecureNoteType } from '../../core/enums/secureNoteType'
 import { CipherMapper } from '../../constants'
 
 export class BitwardenCsvImporter extends BaseImporter implements Importer {

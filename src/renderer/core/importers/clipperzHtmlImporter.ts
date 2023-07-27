@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -36,7 +36,8 @@ export class ClipperzHtmlImporter extends BaseImporter implements Importer {
           }
 
           const field = entry.currentVersion.fields[property]
-          const actionType = field.actionType != null ? field.actionType.toLowerCase() : null
+          const actionType =
+            field.actionType != null ? field.actionType.toLowerCase() : null
           switch (actionType) {
           case 'password':
             cipher.login.password = this.getValueOrDefault(field.value)
@@ -51,14 +52,22 @@ export class ClipperzHtmlImporter extends BaseImporter implements Importer {
             cipher.login.uris = this.makeUriArray(field.value)
             break
           default:
-            const labelLower = field.label != null ? field.label.toLowerCase() : null
-            if (cipher.login.password == null && this.passwordFieldNames.includes(labelLower)) {
+            const labelLower =
+                field.label != null ? field.label.toLowerCase() : null
+            if (
+              cipher.login.password == null &&
+                this.passwordFieldNames.includes(labelLower)
+            ) {
               cipher.login.password = this.getValueOrDefault(field.value)
-            } else if (cipher.login.username == null &&
-                                this.usernameFieldNames.includes(labelLower)) {
+            } else if (
+              cipher.login.username == null &&
+                this.usernameFieldNames.includes(labelLower)
+            ) {
               cipher.login.username = this.getValueOrDefault(field.value)
-            } else if ((cipher.login.uris == null || cipher.login.uris.length === 0) &&
-                                this.uriFieldNames.includes(labelLower)) {
+            } else if (
+              (cipher.login.uris == null || cipher.login.uris.length === 0) &&
+                this.uriFieldNames.includes(labelLower)
+            ) {
               cipher.login.uris = this.makeUriArray(field.value)
             } else {
               this.processKvp(cipher, field.label, field.value)

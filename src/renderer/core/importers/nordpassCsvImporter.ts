@@ -1,35 +1,34 @@
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { CipherView } from '../../core/models/view/cipherView'
+import { LoginView } from '../../core/models/view/loginView'
 
-import { CipherView } from '../../jslib/src/models/view/cipherView'
-import { LoginView } from '../../jslib/src/models/view/loginView'
-
-import { CipherType } from '../../jslib/src/enums/cipherType'
-import { SecureNoteType } from '../../jslib/src/enums/secureNoteType'
+import { CipherType } from '../../core/enums/cipherType'
+import { SecureNoteType } from '../../core/enums/secureNoteType'
 import { Importer } from './importer'
 import { BaseImporter } from './baseImporter'
 
 type nodePassCsvParsed = {
-    name: string;
-    url: string;
-    username: string;
-    password: string;
-    note: string;
-    cardholdername: string;
-    cardnumber: string;
-    cvc: string;
-    expirydate: string;
-    zipcode: string;
-    folder: string;
-    full_name: string;
-    phone_number: string;
-    email: string;
-    address1: string;
-    address2: string;
-    city: string;
-    country: string;
-    state: string;
-};
+  name: string
+  url: string
+  username: string
+  password: string
+  note: string
+  cardholdername: string
+  cardnumber: string
+  cvc: string
+  expirydate: string
+  zipcode: string
+  folder: string
+  full_name: string
+  phone_number: string
+  email: string
+  address1: string
+  address2: string
+  city: string
+  country: string
+  state: string
+}
 
 export class NordPassCsvImporter extends BaseImporter implements Importer {
   parse (data: string): Promise<ImportResult> {
@@ -68,7 +67,9 @@ export class NordPassCsvImporter extends BaseImporter implements Importer {
         break
       case CipherType.Card:
         cipher.type = CipherType.Card
-        cipher.card.cardholderName = this.getValueOrDefault(record.cardholdername)
+        cipher.card.cardholderName = this.getValueOrDefault(
+          record.cardholdername
+        )
         cipher.card.number = this.getValueOrDefault(record.cardnumber)
         cipher.card.code = this.getValueOrDefault(record.cvc)
         cipher.card.brand = this.getCardBrand(cipher.card.number)
@@ -90,7 +91,17 @@ export class NordPassCsvImporter extends BaseImporter implements Importer {
         }
         cipher.identity.email = this.getValueOrDefault(record.email)
         cipher.identity.phone = this.getValueOrDefault(record.phone_number)
-        existingKeys.push('full_name', 'address1', 'address2', 'city', 'state', 'zipcode', 'country', 'email', 'phone_number')
+        existingKeys.push(
+          'full_name',
+          'address1',
+          'address2',
+          'city',
+          'state',
+          'zipcode',
+          'country',
+          'email',
+          'phone_number'
+        )
         break
       case CipherType.SecureNote:
         cipher.type = CipherType.SecureNote
@@ -101,9 +112,11 @@ export class NordPassCsvImporter extends BaseImporter implements Importer {
       }
 
       // CS
-      Object.keys(record).filter(k => !existingKeys.includes(k)).forEach(k => {
-        this.processKvp(cipher, k, record[k])
-      })
+      Object.keys(record)
+        .filter(k => !existingKeys.includes(k))
+        .forEach(k => {
+          this.processKvp(cipher, k, record[k])
+        })
 
       this.cleanupCipher(cipher)
       result.ciphers.push(cipher)

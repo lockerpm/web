@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -24,7 +24,7 @@ export class PassmanJsonImporter extends BaseImporter implements Importer {
       if (this.isNullOrWhitespace(cipher.login.username)) {
         cipher.login.username = this.getValueOrDefault(credential.email)
       } else if (!this.isNullOrWhitespace(credential.email)) {
-        cipher.notes = ('Email: ' + credential.email + '\n')
+        cipher.notes = 'Email: ' + credential.email + '\n'
       }
 
       cipher.login.password = this.getValueOrDefault(credential.password)

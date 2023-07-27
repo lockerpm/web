@@ -1,9 +1,15 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
 const OfficialProps = [
-  '!group_id', '!group_name', 'title', 'username', 'password', 'URL', 'id'
+  '!group_id',
+  '!group_name',
+  'title',
+  'username',
+  'password',
+  'URL',
+  'id'
 ]
 
 export class ButtercupCsvImporter extends BaseImporter implements Importer {

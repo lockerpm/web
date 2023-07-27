@@ -1,12 +1,11 @@
+import { CipherType } from '../../core/enums/cipherType'
+import { SecureNoteType } from '../../core/enums/secureNoteType'
 
-import { CipherType } from '../../jslib/src/enums/cipherType'
-import { SecureNoteType } from '../../jslib/src/enums/secureNoteType'
+import { CardView } from '../../core/models/view/cardView'
+import { IdentityView } from '../../core/models/view/identityView'
+import { SecureNoteView } from '../../core/models/view/secureNoteView'
 
-import { CardView } from '../../jslib/src/models/view/cardView'
-import { IdentityView } from '../../jslib/src/models/view/identityView'
-import { SecureNoteView } from '../../jslib/src/models/view/secureNoteView'
-
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { Importer } from './importer'
 import { BaseImporter } from './baseImporter'
 
@@ -43,7 +42,13 @@ export class MykiCsvImporter extends BaseImporter implements Importer {
         cipher.card.expMonth = this.getValueOrDefault(value.exp_month)
         cipher.card.expYear = this.getValueOrDefault(value.exp_year)
         cipher.card.code = this.getValueOrDefault(value.cvv)
-        existingKeys.push('cardName', 'cardNumber', 'exp_month', 'exp_year', 'cvv')
+        existingKeys.push(
+          'cardName',
+          'cardNumber',
+          'exp_month',
+          'exp_year',
+          'cvv'
+        )
       } else if (value.firstName !== undefined) {
         // Identities
         cipher.identity = new IdentityView()
@@ -54,12 +59,28 @@ export class MykiCsvImporter extends BaseImporter implements Importer {
         cipher.identity.lastName = this.getValueOrDefault(value.lastName)
         cipher.identity.phone = this.getValueOrDefault(value.number)
         cipher.identity.email = this.getValueOrDefault(value.email)
-        cipher.identity.address1 = this.getValueOrDefault(value.firstAddressLine)
-        cipher.identity.address2 = this.getValueOrDefault(value.secondAddressLine)
+        cipher.identity.address1 = this.getValueOrDefault(
+          value.firstAddressLine
+        )
+        cipher.identity.address2 = this.getValueOrDefault(
+          value.secondAddressLine
+        )
         cipher.identity.city = this.getValueOrDefault(value.city)
         cipher.identity.country = this.getValueOrDefault(value.country)
         cipher.identity.postalCode = this.getValueOrDefault(value.zipCode)
-        existingKeys.push('title', 'firstName', 'middleName', 'lastName', 'number', 'email', 'firstAddressLine', 'secondAddressLine', 'city', 'country', 'zipCode')
+        existingKeys.push(
+          'title',
+          'firstName',
+          'middleName',
+          'lastName',
+          'number',
+          'email',
+          'firstAddressLine',
+          'secondAddressLine',
+          'city',
+          'country',
+          'zipCode'
+        )
       } else if (value.content !== undefined) {
         // Notes
         cipher.secureNote = new SecureNoteView()
@@ -72,9 +93,11 @@ export class MykiCsvImporter extends BaseImporter implements Importer {
         return
       }
       // CS
-      Object.keys(value).filter(k => !existingKeys.includes(k)).forEach(k => {
-        this.processKvp(cipher, k, value[k])
-      })
+      Object.keys(value)
+        .filter(k => !existingKeys.includes(k))
+        .forEach(k => {
+          this.processKvp(cipher, k, value[k])
+        })
 
       this.cleanupCipher(cipher)
       result.ciphers.push(cipher)

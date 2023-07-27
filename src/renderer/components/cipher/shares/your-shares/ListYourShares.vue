@@ -245,7 +245,7 @@ import ShareFolder from '~/components/folder/ShareFolder'
 import ShareNoCipher from '~/components/cipher/shares/ShareNoCipher'
 import { CipherType } from '~/core/enums/cipherType'
 import Vnodes from '~/components/Vnodes'
-import { Utils } from '~/jslib/src/misc/utils.ts'
+import { Utils } from '~/core/misc/utils.ts'
 import { AccountRole } from '~/constants'
 
 export default {

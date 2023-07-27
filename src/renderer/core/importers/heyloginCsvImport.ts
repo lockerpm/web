@@ -1,5 +1,5 @@
-import { FieldType } from '../../jslib/src/enums/fieldType'
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { FieldType } from '../../core/enums/fieldType'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
