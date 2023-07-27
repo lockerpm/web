@@ -1,5 +1,5 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
-import { CipherView } from '../../jslib/src/models/view'
+import { ImportResult } from '../../core/models/domain/importResult'
+import { CipherView } from '../../core/models/view'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -13,10 +13,23 @@ export class ZohoVaultCsvImporter extends BaseImporter implements Importer {
     }
 
     // CS
-    const existingKeys = ['ChamberName', 'Favorite', 'Notes', 'Password Name', 'Secret Name', 'Password URL', 'Secret URL', 'SecretData', 'CustomData']
+    const existingKeys = [
+      'ChamberName',
+      'Favorite',
+      'Notes',
+      'Password Name',
+      'Secret Name',
+      'Password URL',
+      'Secret URL',
+      'SecretData',
+      'CustomData'
+    ]
 
     results.forEach(value => {
-      if (this.isNullOrWhitespace(value['Password Name']) && this.isNullOrWhitespace(value['Secret Name'])) {
+      if (
+        this.isNullOrWhitespace(value['Password Name']) &&
+        this.isNullOrWhitespace(value['Secret Name'])
+      ) {
         return
       }
       this.processFolder(result, this.getValueOrDefault(value.ChamberName))
@@ -24,16 +37,24 @@ export class ZohoVaultCsvImporter extends BaseImporter implements Importer {
       cipher.favorite = this.getValueOrDefault(value.Favorite, '0') === '1'
       cipher.notes = this.getValueOrDefault(value.Notes)
       cipher.name = this.getValueOrDefault(
-        value['Password Name'], this.getValueOrDefault(value['Secret Name'], '--'))
+        value['Password Name'],
+        this.getValueOrDefault(value['Secret Name'], '--')
+      )
       cipher.login.uris = this.makeUriArray(
-        this.getValueOrDefault(value['Password URL'], this.getValueOrDefault(value['Secret URL'])))
+        this.getValueOrDefault(
+          value['Password URL'],
+          this.getValueOrDefault(value['Secret URL'])
+        )
+      )
       this.parseData(cipher, value.SecretData)
       this.parseData(cipher, value.CustomData)
 
       // CS
-      Object.keys(value).filter(k => !existingKeys.includes(k)).forEach(k => {
-        this.processKvp(cipher, k, value[k])
-      })
+      Object.keys(value)
+        .filter(k => !existingKeys.includes(k))
+        .forEach(k => {
+          this.processKvp(cipher, k, value[k])
+        })
 
       this.convertToNoteIfNeeded(cipher)
       this.cleanupCipher(cipher)
@@ -59,14 +80,25 @@ export class ZohoVaultCsvImporter extends BaseImporter implements Importer {
         return
       }
       const field = line.substring(0, delimPosition)
-      const value = line.length > delimPosition ? line.substring(delimPosition + 1) : null
-      if (this.isNullOrWhitespace(field) || this.isNullOrWhitespace(value) || field === 'SecretType') {
+      const value =
+        line.length > delimPosition ? line.substring(delimPosition + 1) : null
+      if (
+        this.isNullOrWhitespace(field) ||
+        this.isNullOrWhitespace(value) ||
+        field === 'SecretType'
+      ) {
         return
       }
       const fieldLower = field.toLowerCase()
-      if (cipher.login.username == null && this.usernameFieldNames.includes(fieldLower)) {
+      if (
+        cipher.login.username == null &&
+        this.usernameFieldNames.includes(fieldLower)
+      ) {
         cipher.login.username = value
-      } else if (cipher.login.password == null && this.passwordFieldNames.includes(fieldLower)) {
+      } else if (
+        cipher.login.password == null &&
+        this.passwordFieldNames.includes(fieldLower)
+      ) {
         cipher.login.password = value
       } else {
         this.processKvp(cipher, field, value)

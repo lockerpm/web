@@ -708,10 +708,10 @@
 </template>
 
 <script>
-import { Utils } from '@/jslib/src/misc/utils.ts'
+import { Utils } from '@/core/misc/utils.ts'
 import PasswordStrengthBar from '@/components/password/PasswordStrengthBar'
 import EmergencyContact from '@/components/setting/EmergencyContact.vue'
-import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
+import { SymmetricCryptoKey } from '@/core/models/domain/symmetricCryptoKey'
 import { MIN_MASTER_PW_LEN } from '@/constants'
 export default {
   components: {

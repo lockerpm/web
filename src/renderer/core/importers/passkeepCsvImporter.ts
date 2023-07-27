@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -33,6 +33,9 @@ export class PassKeepCsvImporter extends BaseImporter implements Importer {
   }
 
   private getValue (key: string, value: any) {
-    return this.getValueOrDefault(value[key], this.getValueOrDefault(value[(' ' + key)]))
+    return this.getValueOrDefault(
+      value[key],
+      this.getValueOrDefault(value[' ' + key])
+    )
   }
 }

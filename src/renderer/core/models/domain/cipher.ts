@@ -1,4 +1,4 @@
-import Domain from '../../../jslib/src/models/domain/domainBase'
+import Domain from '../../../core/models/domain/domainBase'
 import {
   Attachment,
   Card,
@@ -8,13 +8,13 @@ import {
   Login,
   SecureNote,
   SymmetricCryptoKey
-} from '../../../jslib/src/models/domain'
+} from '../../../core/models/domain'
 // import { CipherType } from '../../enums/cipherType'
-import { CipherRepromptType } from '../../../jslib/src/enums/cipherRepromptType'
+import { CipherRepromptType } from '../../../core/enums/cipherRepromptType'
 import { CipherData } from '../data/cipherData'
 import { CipherView } from '../view/cipherView'
-import { Password } from '../../../jslib/src/models/domain/password'
-import { CipherType } from '../../../jslib/src/enums'
+import { Password } from '../../../core/models/domain/password'
+import { CipherType } from '../../../core/enums'
 
 export class Cipher extends Domain {
   id: string

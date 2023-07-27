@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -13,9 +13,10 @@ export class RoboFormCsvImporter extends BaseImporter implements Importer {
 
     let i = 1
     results.forEach(value => {
-      const folder = !this.isNullOrWhitespace(value.Folder) && value.Folder.startsWith('/')
-        ? value.Folder.replace('/', '')
-        : value.Folder
+      const folder =
+        !this.isNullOrWhitespace(value.Folder) && value.Folder.startsWith('/')
+          ? value.Folder.replace('/', '')
+          : value.Folder
       const folderName = !this.isNullOrWhitespace(folder) ? folder : null
       this.processFolder(result, folderName)
 
@@ -37,7 +38,8 @@ export class RoboFormCsvImporter extends BaseImporter implements Importer {
             return
           }
           const key = parts[0] === '-no-name-' ? null : parts[0]
-          const val = parts.length === 4 && parts[2] === 'rck' ? parts[1] : parts[2]
+          const val =
+            parts.length === 4 && parts[2] === 'rck' ? parts[1] : parts[2]
           this.processKvp(cipher, key, val)
         })
       }
@@ -45,7 +47,11 @@ export class RoboFormCsvImporter extends BaseImporter implements Importer {
       this.convertToNoteIfNeeded(cipher)
       this.cleanupCipher(cipher)
 
-      if (i === results.length && cipher.name === '--' && this.isNullOrWhitespace(cipher.login.password)) {
+      if (
+        i === results.length &&
+        cipher.name === '--' &&
+        this.isNullOrWhitespace(cipher.login.password)
+      ) {
         return
       }
 

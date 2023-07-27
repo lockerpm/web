@@ -5,11 +5,11 @@ import {
   IdentityData,
   LoginData,
   SecureNoteData
-} from '../../../jslib/src/models/data'
-import { CipherRepromptType } from '../../../jslib/src/enums/cipherRepromptType'
-import { PasswordHistoryData } from '../../../jslib/src/models/data/passwordHistoryData'
+} from '../../../core/models/data'
+import { CipherRepromptType } from '../../../core/enums/cipherRepromptType'
+import { PasswordHistoryData } from '../../../core/models/data/passwordHistoryData'
 import { CipherResponse } from '../response/cipherResponse'
-import { CipherType } from '../../../jslib/src/enums'
+import { CipherType } from '../../../core/enums'
 
 export class CipherData {
   id: string

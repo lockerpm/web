@@ -234,9 +234,9 @@ import LazyHydrate from 'vue-lazy-hydration'
 import SortMenu from '../../list-cipher-components/SortMenu.vue'
 import ShareNoCipher from '~/components/cipher/shares/ShareNoCipher'
 import QuickShareCipher from '~/components/cipher/shares/quick-shares/QuickShareCipher'
-import { CipherType } from '~/jslib/src/enums'
+import { CipherType } from '~/core/enums'
 import Vnodes from '~/components/Vnodes'
-import { Utils } from '~/jslib/src/misc/utils.ts'
+import { Utils } from '~/core/misc/utils.ts'
 
 export default {
   components: {
@@ -366,7 +366,6 @@ export default {
             return s.revisionDate
           }
         }
-        console.log(result)
         result = orderBy(result, [getOrderKey], [this.orderDirection]) || []
         this.dataRendered = result.slice(0, 50)
         return result

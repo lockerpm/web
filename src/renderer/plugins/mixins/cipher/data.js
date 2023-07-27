@@ -9,8 +9,8 @@ import { toSocialSecurityNumberData } from '../../../utils/new-types/ssn'
 import { toWirelessRouterData } from '../../../utils/new-types/router'
 import { toServerData } from '../../../utils/new-types/server'
 import { toApiCipherData, API_METHODS } from '../../../utils/new-types/api'
-import { CipherRequest } from '@/jslib/src/models/request'
-import { SecureNote } from '@/jslib/src/models/domain'
+import { CipherRequest } from '@/core/models/request'
+import { SecureNote } from '@/core/models/domain'
 import { getTOTP, parseOTPUri } from '@/utils/totp/index.ts'
 
 Vue.mixin({
@@ -324,7 +324,9 @@ Vue.mixin({
             label: 'common.password'
           },
           {
-            value: item.login.totp ? getTOTP(parseOTPUri(item.login.totp)) : null,
+            value: item.login.totp
+              ? getTOTP(parseOTPUri(item.login.totp))
+              : null,
             label: 'common.totp'
           }
         ]

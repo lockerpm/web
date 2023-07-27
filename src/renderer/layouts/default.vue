@@ -290,6 +290,9 @@ export default {
           case 'folder_update':
             this.syncSingleFolder(data.data.id)
             break
+          case 'collection_update':
+            this.syncSingleCollection(data.data.id)
+            break
           default:
             this.getSyncData()
             this.getShareInvitations()

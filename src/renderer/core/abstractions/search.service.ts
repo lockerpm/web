@@ -1,14 +1,14 @@
 import { CipherView } from '../models/view/cipherView'
-import { SendView } from '../../jslib/src/models/view/sendView'
+import { SendView } from '../../core/models/view/sendView'
 
 export abstract class SearchService {
-  indexedEntityId?: string = null;
-  clearIndex: () => void;
-  isSearchable: (query: string) => boolean;
+  indexedEntityId?: string = null
+  clearIndex: () => void
+  isSearchable: (query: string) => boolean
   indexCiphers: (
     indexedEntityGuid?: string,
     ciphersToIndex?: CipherView[]
-  ) => Promise<void>;
+  ) => Promise<void>
 
   searchCiphers: (
     query: string,
@@ -16,13 +16,13 @@ export abstract class SearchService {
       | ((cipher: CipherView) => boolean)
       | ((cipher: CipherView) => boolean)[],
     ciphers?: CipherView[]
-  ) => Promise<CipherView[]>;
+  ) => Promise<CipherView[]>
 
   searchCiphersBasic: (
     ciphers: CipherView[],
     query: string,
     deleted?: boolean
-  ) => CipherView[];
+  ) => CipherView[]
 
-  searchSends: (sends: SendView[], query: string) => SendView[];
+  searchSends: (sends: SendView[], query: string) => SendView[]
 }

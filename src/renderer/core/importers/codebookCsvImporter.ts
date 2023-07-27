@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -18,7 +18,10 @@ export class CodebookCsvImporter extends BaseImporter implements Importer {
       cipher.favorite = this.getValueOrDefault(value.Favorite) === 'True'
       cipher.name = this.getValueOrDefault(value.Entry, '--')
       cipher.notes = this.getValueOrDefault(value.Note)
-      cipher.login.username = this.getValueOrDefault(value.Username, value.Email)
+      cipher.login.username = this.getValueOrDefault(
+        value.Username,
+        value.Email
+      )
       cipher.login.password = this.getValueOrDefault(value.Password)
       cipher.login.totp = this.getValueOrDefault(value.TOTP)
       cipher.login.uris = this.makeUriArray(value.Website)

@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -88,7 +88,7 @@ export class KasperskyTxtImporter extends BaseImporter implements Importer {
       let itemCommentKey: string
       p.split('\n').forEach(l => {
         if (itemComment != null) {
-          itemComment += ('\n' + l)
+          itemComment += '\n' + l
           return
         }
         const colonIndex = l.indexOf(':')

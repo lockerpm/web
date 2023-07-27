@@ -121,6 +121,24 @@ Vue.mixin({
       }
     },
 
+    async syncSingleCollection (id) {
+      try {
+        const res = await this.$axios.$get(
+          `/cystack_platform/pm/sync/collections/${id}`
+        )
+        await this.$collectionService.upsert([res])
+        this.$store.commit('UPDATE_SYNCED_CIPHERS')
+      } catch (e) {
+        const status = e.response?.status
+        if (status === 404) {
+          await this.$collectionService.delete([id])
+          this.$store.commit('UPDATE_SYNCED_CIPHERS')
+        } else {
+          console.log(e)
+        }
+      }
+    },
+
     async syncQuickShares () {
       try {
         // No quick shares for on premise

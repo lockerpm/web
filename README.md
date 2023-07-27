@@ -16,9 +16,6 @@ To run the Web Vault locally, follow these steps:
     # install dependencies
     yarn
     
-    # install submodules
-    yarn sub:init
-    
     # serve app with hot reload
     yarn dev-web
     ```

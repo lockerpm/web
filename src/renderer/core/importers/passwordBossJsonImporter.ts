@@ -1,10 +1,9 @@
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { CardView } from '../../core/models/view/cardView'
+import { FolderView } from '../../core/models/view/folderView'
 
-import { CardView } from '../../jslib/src/models/view/cardView'
-import { FolderView } from '../../jslib/src/models/view/folderView'
-
-import { CipherType } from '../../jslib/src/enums/cipherType'
+import { CipherType } from '../../core/enums/cipherType'
 import { Importer } from './importer'
 import { BaseImporter } from './baseImporter'
 
@@ -35,7 +34,10 @@ export class PasswordBossJsonImporter extends BaseImporter implements Importer {
       cipher.login.uris = this.makeUriArray(value.login_url)
 
       if (value.folder != null && foldersIndexMap.has(value.folder)) {
-        result.folderRelationships.push([result.ciphers.length, foldersIndexMap.get(value.folder)])
+        result.folderRelationships.push([
+          result.ciphers.length,
+          foldersIndexMap.get(value.folder)
+        ])
       }
 
       if (value.identifiers == null) {
@@ -43,7 +45,11 @@ export class PasswordBossJsonImporter extends BaseImporter implements Importer {
       }
 
       if (!this.isNullOrWhitespace(value.identifiers.notes)) {
-        cipher.notes = value.identifiers.notes.split('\\r\\n').join('\n').split('\\n').join('\n')
+        cipher.notes = value.identifiers.notes
+          .split('\\r\\n')
+          .join('\n')
+          .split('\\n')
+          .join('\n')
       }
 
       if (value.type === 'CreditCard') {
@@ -57,7 +63,11 @@ export class PasswordBossJsonImporter extends BaseImporter implements Importer {
         }
         const valObj = value.identifiers[property]
         const val = valObj != null ? valObj.toString() : null
-        if (this.isNullOrWhitespace(val) || property === 'notes' || property === 'ignoreItemInSecurityScore') {
+        if (
+          this.isNullOrWhitespace(val) ||
+          property === 'notes' ||
+          property === 'ignoreItemInSecurityScore'
+        ) {
           continue
         }
 
@@ -84,13 +94,15 @@ export class PasswordBossJsonImporter extends BaseImporter implements Importer {
               const expDate = new Date(val)
               cipher.card.expYear = expDate.getFullYear().toString()
               cipher.card.expMonth = (expDate.getMonth() + 1).toString()
-            } catch { }
+            } catch {}
             continue
           } else if (property === 'cardType') {
             continue
           }
-        } else if ((property === 'username' || property === 'email') &&
-                        this.isNullOrWhitespace(cipher.login.username)) {
+        } else if (
+          (property === 'username' || property === 'email') &&
+          this.isNullOrWhitespace(cipher.login.username)
+        ) {
           cipher.login.username = val
           continue
         } else if (property === 'password') {
@@ -99,8 +111,10 @@ export class PasswordBossJsonImporter extends BaseImporter implements Importer {
         } else if (property === 'totp') {
           cipher.login.totp = val
           continue
-        } else if ((cipher.login.uris == null || cipher.login.uris.length === 0) &&
-                        this.uriFieldNames.includes(property)) {
+        } else if (
+          (cipher.login.uris == null || cipher.login.uris.length === 0) &&
+          this.uriFieldNames.includes(property)
+        ) {
           cipher.login.uris = this.makeUriArray(val)
           continue
         }

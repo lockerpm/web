@@ -1,4 +1,4 @@
-import { BaseResponse } from '../../../jslib/src/models/response/baseResponse'
+import { BaseResponse } from '../../../core/models/response/baseResponse'
 import { CipherResponse } from '../response/cipherResponse'
 
 export class SendResponse extends BaseResponse {

@@ -1,33 +1,33 @@
 import * as papa from 'papaparse'
 
 import moment from 'moment'
-import { LogService } from '../../jslib/src/abstractions/log.service'
+import { LogService } from '../../core/abstractions/log.service'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { CipherView } from '../../jslib/src/models/view/cipherView'
-import { CollectionView } from '../../jslib/src/models/view/collectionView'
-import { LoginUriView } from '../../jslib/src/models/view/loginUriView'
+import { CipherView } from '../../core/models/view/cipherView'
+import { CollectionView } from '../../core/models/view/collectionView'
+import { LoginUriView } from '../../core/models/view/loginUriView'
 
-import { Utils } from '../../jslib/src/misc/utils'
+import { Utils } from '../../core/misc/utils'
 
-import { FieldView } from '../../jslib/src/models/view/fieldView'
-import { FolderView } from '../../jslib/src/models/view/folderView'
-import { LoginView } from '../../jslib/src/models/view/loginView'
-import { SecureNoteView } from '../../jslib/src/models/view/secureNoteView'
+import { FieldView } from '../../core/models/view/fieldView'
+import { FolderView } from '../../core/models/view/folderView'
+import { LoginView } from '../../core/models/view/loginView'
+import { SecureNoteView } from '../../core/models/view/secureNoteView'
 
-import { CipherType } from '../../jslib/src/enums/cipherType'
-import { FieldType } from '../../jslib/src/enums/fieldType'
-import { SecureNoteType } from '../../jslib/src/enums/secureNoteType'
+import { CipherType } from '../../core/enums/cipherType'
+import { FieldType } from '../../core/enums/fieldType'
+import { SecureNoteType } from '../../core/enums/secureNoteType'
 
-import { ConsoleLogService } from '../../jslib/src/services/consoleLog.service'
+import { ConsoleLogService } from '../../core/services/consoleLog.service'
 
 export abstract class BaseImporter {
-  organizationId: string = null;
+  organizationId: string = null
 
-  protected logService: LogService = new ConsoleLogService(false);
+  protected logService: LogService = new ConsoleLogService(false)
 
-  protected newLineRegex = /(?:\r\n|\r|\n)/;
+  protected newLineRegex = /(?:\r\n|\r|\n)/
 
   protected passwordFieldNames = [
     'password',
@@ -61,7 +61,7 @@ export abstract class BaseImporter {
 
     // Non-English names
     'passwort'
-  ];
+  ]
 
   protected usernameFieldNames = [
     'user',
@@ -92,7 +92,7 @@ export abstract class BaseImporter {
     // Non-English names
     'nom',
     'benutzername'
-  ];
+  ]
 
   protected notesFieldNames = [
     'note',
@@ -109,7 +109,7 @@ export abstract class BaseImporter {
 
     // Non-English names
     'kommentar'
-  ];
+  ]
 
   protected uriFieldNames: string[] = [
     'url',
@@ -133,12 +133,12 @@ export abstract class BaseImporter {
     // Non-English names
     'ort',
     'adresse'
-  ];
+  ]
 
   protected parseCsvOptions = {
     encoding: 'UTF-8',
     skipEmptyLines: false
-  };
+  }
 
   protected get organization () {
     return this.organizationId != null
@@ -233,9 +233,7 @@ export abstract class BaseImporter {
     if (this.isNullOrWhitespace(hostname)) {
       return null
     }
-    return hostname.startsWith('www.')
-      ? hostname.replace('www.', '')
-      : hostname
+    return hostname.startsWith('www.') ? hostname.replace('www.', '') : hostname
   }
 
   protected isNullOrWhitespace (str: string): boolean {

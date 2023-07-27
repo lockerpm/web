@@ -44,10 +44,10 @@
 import * as papa from 'papaparse'
 import ReConfirmMasterPassword from '../../components/password/ReConfirmMasterPassword'
 import { CipherType } from '../../core/enums/cipherType'
-import { Utils } from '../../jslib/src/misc/utils'
+import { Utils } from '../../core/misc/utils'
 import { CipherWithIds as CipherExport } from '../../core/models/export/cipherWithIds'
-import { FolderWithId as FolderExport } from '../../jslib/src/models/export/folderWithId'
-import { FolderView } from '../../jslib/src/models/view/folderView'
+import { FolderWithId as FolderExport } from '../../core/models/export/folderWithId'
+import { FolderView } from '../../core/models/view/folderView'
 export default {
   components: {
     ReConfirmMasterPassword

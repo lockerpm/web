@@ -240,9 +240,9 @@
 <script>
 import InputSelect from '~/components/input/InputSelect.vue'
 import InputText from '~/components/input/InputText.vue'
-import { CipherType } from '~/jslib/src/enums'
+import { CipherType } from '~/core/enums'
 import Vnodes from '~/components/Vnodes'
-import { Utils } from '~/jslib/src/misc/utils.ts'
+import { Utils } from '~/core/misc/utils.ts'
 
 export default {
   components: { Vnodes, InputSelect, InputText },

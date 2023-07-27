@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { FolderRequest } from '../../../jslib/src/models/request'
+import { FolderRequest } from '../../../core/models/request'
 
 Vue.mixin({
   methods: {

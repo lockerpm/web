@@ -1,20 +1,20 @@
 import { BaseImporter } from '../baseImporter'
 import { Importer } from '../importer'
 
-import { ImportResult } from '../../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../../core/models/domain/importResult'
 
-import { CardView } from '../../../jslib/src/models/view/cardView'
-import { CipherView } from '../../../jslib/src/models/view/cipherView'
-import { IdentityView } from '../../../jslib/src/models/view/identityView'
-import { PasswordHistoryView } from '../../../jslib/src/models/view/passwordHistoryView'
-import { SecureNoteView } from '../../../jslib/src/models/view/secureNoteView'
+import { CardView } from '../../../core/models/view/cardView'
+import { CipherView } from '../../../core/models/view/cipherView'
+import { IdentityView } from '../../../core/models/view/identityView'
+import { PasswordHistoryView } from '../../../core/models/view/passwordHistoryView'
+import { SecureNoteView } from '../../../core/models/view/secureNoteView'
 
-import { CipherType } from '../../../jslib/src/enums/cipherType'
-import { FieldType } from '../../../jslib/src/enums/fieldType'
-import { SecureNoteType } from '../../../jslib/src/enums/secureNoteType'
+import { CipherType } from '../../../core/enums/cipherType'
+import { FieldType } from '../../../core/enums/fieldType'
+import { SecureNoteType } from '../../../core/enums/secureNoteType'
 
 export class OnePassword1PifImporter extends BaseImporter implements Importer {
-  result = new ImportResult();
+  result = new ImportResult()
 
   parse (data: string): Promise<ImportResult> {
     data.split(this.newLineRegex).forEach(line => {
@@ -117,8 +117,15 @@ export class OnePassword1PifImporter extends BaseImporter implements Importer {
     // CS
     // CS
     const existingKeys = [
-      'passwordHistory', 'notesPlain', 'password', 'URLs', 'fields', 'sections',
-      'unknown_overview', 'unknown_details', 'username'
+      'passwordHistory',
+      'notesPlain',
+      'password',
+      'URLs',
+      'fields',
+      'sections',
+      'unknown_overview',
+      'unknown_details',
+      'username'
     ]
 
     cipher.name = this.getValueOrDefault(item.title)

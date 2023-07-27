@@ -15,14 +15,18 @@
         }"
       >
         <span v-if="noData">{{ $t('data.tools.good_news') }}</span>
-        <span v-if="haveData">{{ $t('data.tools.exposed_passwords_found') }}</span>
+        <span v-if="haveData">{{
+          $t('data.tools.exposed_passwords_found')
+        }}</span>
       </div>
       <div>
         <span v-if="noData">
           {{ $t('data.tools.good_news_exposed_details') }}
         </span>
         <span v-if="haveData">
-          {{ $t('data.tools.exposed_passwords_found_details', {data: haveData}) }}
+          {{
+            $t('data.tools.exposed_passwords_found_details', { data: haveData })
+          }}
         </span>
       </div>
     </div>
@@ -78,19 +82,19 @@
         :item-size="65"
         :items="exposedPasswordCiphers || []"
       >
-        <template #default="{item}">
+        <template #default="{ item }">
           <div class="td">
             <div class="flex items-center">
               <div
                 class="text-[34px] mr-3 flex-shrink-0"
-                :class="{'filter grayscale': item.isDeleted}"
+                :class="{ 'filter grayscale': item.isDeleted }"
               >
                 <Vnodes :vnodes="getIconCipher(item, 34)" />
               </div>
               <div class="flex flex-col">
                 <a
                   class="text-black font-semibold truncate flex items-center"
-                  :class="{'opacity-80': item.isDeleted}"
+                  :class="{ 'opacity-80': item.isDeleted }"
                   @click="routerCipher(item, addEdit)"
                 >
                   {{ item.name }}
@@ -110,7 +114,9 @@
           </div>
           <div class="td">
             <span class="label label-warning-light">
-              {{ $t('data.tools.exposed') }} {{ exposedPasswordMap.get(item.id) | formatNumber }} {{ $t('data.tools.times') }}
+              {{ $t('data.tools.exposed') }}
+              {{ exposedPasswordMap.get(item.id) | formatNumber }}
+              {{ $t('data.tools.times') }}
             </span>
           </div>
         </template>
@@ -121,7 +127,7 @@
 
 <script>
 import Vnodes from '../../../components/Vnodes'
-import { CipherType } from '../../../jslib/src/enums'
+import { CipherType } from '../../../core/enums'
 export default {
   components: { Vnodes },
   data () {
@@ -135,7 +141,9 @@ export default {
       return this.exposedPasswordCiphers && this.exposedPasswordCiphers.length
     },
     noData () {
-      return this.exposedPasswordCiphers && this.exposedPasswordCiphers.length === 0
+      return (
+        this.exposedPasswordCiphers && this.exposedPasswordCiphers.length === 0
+      )
     }
   },
   asyncComputed: {
@@ -146,15 +154,22 @@ export default {
         const exposedPasswordCiphers = []
         const promises = []
         allCiphers.forEach(c => {
-          if (c.type !== CipherType.Login || c.login.password == null || c.login.password === '' || c.isDeleted) {
+          if (
+            c.type !== CipherType.Login ||
+            c.login.password == null ||
+            c.login.password === '' ||
+            c.isDeleted
+          ) {
             return
           }
-          const promise = this.$auditService.passwordLeaked(c.login.password).then(exposedCount => {
-            if (exposedCount > 0) {
-              exposedPasswordCiphers.push(c)
-              this.exposedPasswordMap.set(c.id, exposedCount)
-            }
-          })
+          const promise = this.$auditService
+            .passwordLeaked(c.login.password)
+            .then(exposedCount => {
+              if (exposedCount > 0) {
+                exposedPasswordCiphers.push(c)
+                this.exposedPasswordMap.set(c.id, exposedCount)
+              }
+            })
           promises.push(promise)
         })
         await Promise.all(promises)
@@ -164,7 +179,6 @@ export default {
       watch: ['$store.state.syncedCiphersToggle']
     }
   },
-  methods: {
-  }
+  methods: {}
 }
 </script>

@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -12,7 +12,15 @@ export class BlackBerryCsvImporter extends BaseImporter implements Importer {
     }
 
     // CS
-    const existingKeys = ['grouping', 'fav', 'name', 'extra', 'url', 'password', 'username']
+    const existingKeys = [
+      'grouping',
+      'fav',
+      'name',
+      'extra',
+      'url',
+      'password',
+      'username'
+    ]
 
     results.forEach(value => {
       if (value.grouping === 'list') {
@@ -29,9 +37,11 @@ export class BlackBerryCsvImporter extends BaseImporter implements Importer {
       }
 
       // CS
-      Object.keys(value).filter(k => !existingKeys.includes(k)).forEach(k => {
-        this.processKvp(cipher, k, value[k])
-      })
+      Object.keys(value)
+        .filter(k => !existingKeys.includes(k))
+        .forEach(k => {
+          this.processKvp(cipher, k, value[k])
+        })
 
       this.convertToNoteIfNeeded(cipher)
       this.cleanupCipher(cipher)

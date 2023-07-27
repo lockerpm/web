@@ -6,11 +6,11 @@ import {
   LoginView,
   SecureNoteView,
   View
-} from '../../../jslib/src/models/view'
-import { CipherRepromptType } from '../../../jslib/src/enums/cipherRepromptType'
-import { PasswordHistoryView } from '../../../jslib/src/models/view/passwordHistoryView'
+} from '../../../core/models/view'
+import { CipherRepromptType } from '../../../core/enums/cipherRepromptType'
+import { PasswordHistoryView } from '../../../core/models/view/passwordHistoryView'
 import { Cipher } from '../domain/cipher'
-import { CipherType } from '../../../jslib/src/enums'
+import { CipherType } from '../../../core/enums'
 
 export class CipherView implements View {
   id: string = null

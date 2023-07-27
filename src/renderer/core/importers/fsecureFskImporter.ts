@@ -1,9 +1,8 @@
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { CardView } from '../../core/models/view/cardView'
 
-import { CardView } from '../../jslib/src/models/view/cardView'
-
-import { CipherType } from '../../jslib/src/enums/cipherType'
+import { CipherType } from '../../core/enums/cipherType'
 import { Importer } from './importer'
 import { BaseImporter } from './baseImporter'
 

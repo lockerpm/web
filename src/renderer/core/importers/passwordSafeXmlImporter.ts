@@ -1,4 +1,4 @@
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { ImportResult } from '../../core/models/domain/importResult'
 import { BaseImporter } from './baseImporter'
 import { Importer } from './importer'
 
@@ -22,9 +22,10 @@ export class PasswordSafeXmlImporter extends BaseImporter implements Importer {
     const entries = doc.querySelectorAll('passwordsafe > entry')
     Array.from(entries).forEach(entry => {
       const group = this.querySelectorDirectChild(entry, 'group')
-      const groupText = group != null && !this.isNullOrWhitespace(group.textContent)
-        ? group.textContent.split('.').join('/')
-        : null
+      const groupText =
+        group != null && !this.isNullOrWhitespace(group.textContent)
+          ? group.textContent.split('.').join('/')
+          : null
       this.processFolder(result, groupText)
 
       const title = this.querySelectorDirectChild(entry, 'title')
@@ -34,20 +35,27 @@ export class PasswordSafeXmlImporter extends BaseImporter implements Importer {
       const url = this.querySelectorDirectChild(entry, 'url')
       const notes = this.querySelectorDirectChild(entry, 'notes')
       const cipher = this.initLoginCipher()
-      cipher.name = title != null ? this.getValueOrDefault(title.textContent, '--') : '--'
-      cipher.notes = notes != null
-        ? this.getValueOrDefault(notes.textContent, '').split(notesDelimiter).join('\n')
-        : null
-      cipher.login.username = username != null ? this.getValueOrDefault(username.textContent) : null
-      cipher.login.password = password != null ? this.getValueOrDefault(password.textContent) : null
-      cipher.login.uris = url != null ? this.makeUriArray(url.textContent) : null
+      cipher.name =
+        title != null ? this.getValueOrDefault(title.textContent, '--') : '--'
+      cipher.notes =
+        notes != null
+          ? this.getValueOrDefault(notes.textContent, '')
+            .split(notesDelimiter)
+            .join('\n')
+          : null
+      cipher.login.username =
+        username != null ? this.getValueOrDefault(username.textContent) : null
+      cipher.login.password =
+        password != null ? this.getValueOrDefault(password.textContent) : null
+      cipher.login.uris =
+        url != null ? this.makeUriArray(url.textContent) : null
 
       if (this.isNullOrWhitespace(cipher.login.username) && email != null) {
         cipher.login.username = this.getValueOrDefault(email.textContent)
       } else if (email != null && !this.isNullOrWhitespace(email.textContent)) {
         cipher.notes = this.isNullOrWhitespace(cipher.notes)
           ? 'Email: ' + email.textContent
-          : (cipher.notes + '\n' + 'Email: ' + email.textContent)
+          : cipher.notes + '\n' + 'Email: ' + email.textContent
       }
 
       this.cleanupCipher(cipher)

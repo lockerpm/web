@@ -1,12 +1,12 @@
-import { BaseResponse } from '../../../jslib/src/models/response/baseResponse'
-import { SelectionReadOnlyResponse } from '../../../jslib/src/models/response/selectionReadOnlyResponse'
+import { BaseResponse } from '../../../core/models/response/baseResponse'
+import { SelectionReadOnlyResponse } from '../../../core/models/response/selectionReadOnlyResponse'
 
 export class CollectionResponse extends BaseResponse {
-  id: string;
-  organizationId: string;
-  name: string;
-  externalId: string;
-  revisionDate: string;
+  id: string
+  organizationId: string
+  name: string
+  externalId: string
+  revisionDate: string
 
   constructor (response: any) {
     super(response)
@@ -19,7 +19,7 @@ export class CollectionResponse extends BaseResponse {
 }
 
 export class CollectionDetailsResponse extends CollectionResponse {
-  readOnly: boolean;
+  readOnly: boolean
 
   constructor (response: any) {
     super(response)
@@ -28,7 +28,7 @@ export class CollectionDetailsResponse extends CollectionResponse {
 }
 
 export class CollectionGroupDetailsResponse extends CollectionResponse {
-  groups: SelectionReadOnlyResponse[] = [];
+  groups: SelectionReadOnlyResponse[] = []
 
   constructor (response: any) {
     super(response)

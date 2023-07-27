@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import { LoginUriView, LoginView } from '../../../jslib/src/models/view'
-import { CipherRequest } from '../../../jslib/src/models/request'
+import { LoginUriView, LoginView } from '../../../core/models/view'
+import { CipherRequest } from '../../../core/models/request'
 import { CipherType } from '../../../core/enums/cipherType'
 import { CipherView } from '../../../core/models/view/cipherView'
-import { SecureNote } from '../../../jslib/src/models/domain'
+import { SecureNote } from '../../../core/models/domain'
 
 Vue.mixin({
   methods: {

@@ -1,9 +1,8 @@
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { CardView } from '../../core/models/view/cardView'
 
-import { CardView } from '../../jslib/src/models/view/cardView'
-
-import { CipherType } from '../../jslib/src/enums/cipherType'
+import { CipherType } from '../../core/enums/cipherType'
 import { Importer } from './importer'
 import { BaseImporter } from './baseImporter'
 
@@ -16,7 +15,19 @@ export class EncryptrCsvImporter extends BaseImporter implements Importer {
       return Promise.resolve(result)
     }
     // CS
-    const existingKeys = ['Label', 'Notes', 'Text', 'Username', 'Password', 'Site URL', 'Name on card', 'Card Number', 'CVV', 'Expiry', 'Entry Type']
+    const existingKeys = [
+      'Label',
+      'Notes',
+      'Text',
+      'Username',
+      'Password',
+      'Site URL',
+      'Name on card',
+      'Card Number',
+      'CVV',
+      'Expiry',
+      'Entry Type'
+    ]
 
     results.forEach(value => {
       const cipher = this.initLoginCipher()
@@ -27,7 +38,7 @@ export class EncryptrCsvImporter extends BaseImporter implements Importer {
         if (this.isNullOrWhitespace(cipher.notes)) {
           cipher.notes = text
         } else {
-          cipher.notes += ('\n\n' + text)
+          cipher.notes += '\n\n' + text
         }
       }
 
@@ -39,7 +50,9 @@ export class EncryptrCsvImporter extends BaseImporter implements Importer {
       } else if (type === 'Credit Card') {
         cipher.type = CipherType.Card
         cipher.card = new CardView()
-        cipher.card.cardholderName = this.getValueOrDefault(value['Name on card'])
+        cipher.card.cardholderName = this.getValueOrDefault(
+          value['Name on card']
+        )
         cipher.card.number = this.getValueOrDefault(value['Card Number'])
         cipher.card.brand = this.getCardBrand(cipher.card.number)
         cipher.card.code = this.getValueOrDefault(value.CVV)
@@ -48,15 +61,19 @@ export class EncryptrCsvImporter extends BaseImporter implements Importer {
           const expParts = expiry.split('/')
           if (expParts.length > 1) {
             cipher.card.expMonth = parseInt(expParts[0], null).toString()
-            cipher.card.expYear = (2000 + parseInt(expParts[1], null)).toString()
+            cipher.card.expYear = (
+              2000 + parseInt(expParts[1], null)
+            ).toString()
           }
         }
       }
 
       // CS
-      Object.keys(value).filter(k => !existingKeys.includes(k)).forEach(k => {
-        this.processKvp(cipher, k, value[k])
-      })
+      Object.keys(value)
+        .filter(k => !existingKeys.includes(k))
+        .forEach(k => {
+          this.processKvp(cipher, k, value[k])
+        })
 
       this.convertToNoteIfNeeded(cipher)
       this.cleanupCipher(cipher)

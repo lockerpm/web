@@ -3,13 +3,13 @@ import { CipherType } from '../../enums/cipherType'
 import { CipherView } from '../view/cipherView'
 
 import { Cipher as CipherDomain } from '../domain/cipher'
-import { EncString } from '../../../jslib/src/models/domain/encString'
+import { EncString } from '../../../core/models/domain/encString'
 
-import { Card } from '../../../jslib/src/models/export/card'
-import { Field } from '../../../jslib/src/models/export/field'
-import { Identity } from '../../../jslib/src/models/export/identity'
-import { Login } from '../../../jslib/src/models/export/login'
-import { SecureNote } from '../../../jslib/src/models/export/secureNote'
+import { Card } from '../../../core/models/export/card'
+import { Field } from '../../../core/models/export/field'
+import { Identity } from '../../../core/models/export/identity'
+import { Login } from '../../../core/models/export/login'
+import { SecureNote } from '../../../core/models/export/secureNote'
 
 export class Cipher {
   static template (): Cipher {

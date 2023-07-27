@@ -1,10 +1,9 @@
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
+import { CipherType } from '../../core/enums/cipherType'
+import { SecureNoteType } from '../../core/enums/secureNoteType'
 
-import { CipherType } from '../../jslib/src/enums/cipherType'
-import { SecureNoteType } from '../../jslib/src/enums/secureNoteType'
-
-import { SecureNoteView } from '../../jslib/src/models/view/secureNoteView'
+import { SecureNoteView } from '../../core/models/view/secureNoteView'
 import { Importer } from './importer'
 import { BaseImporter } from './baseImporter'
 
@@ -22,7 +21,10 @@ export class MSecureCsvImporter extends BaseImporter implements Importer {
         return
       }
 
-      const folderName = this.getValueOrDefault(value[0], 'Unassigned') !== 'Unassigned' ? value[0] : null
+      const folderName =
+        this.getValueOrDefault(value[0], 'Unassigned') !== 'Unassigned'
+          ? value[0]
+          : null
       this.processFolder(result, folderName)
 
       const cipher = this.initLoginCipher()
@@ -32,19 +34,24 @@ export class MSecureCsvImporter extends BaseImporter implements Importer {
         cipher.login.uris = this.makeUriArray(value[4])
         cipher.login.username = this.getValueOrDefault(value[5])
         cipher.login.password = this.getValueOrDefault(value[6])
-        cipher.notes = !this.isNullOrWhitespace(value[3]) ? value[3].split('\\n').join('\n') : null
+        cipher.notes = !this.isNullOrWhitespace(value[3])
+          ? value[3].split('\\n').join('\n')
+          : null
       } else if (value.length > 3) {
         cipher.type = CipherType.SecureNote
         cipher.secureNote = new SecureNoteView()
         cipher.secureNote.type = SecureNoteType.Generic
         for (let i = 3; i < value.length; i++) {
           if (!this.isNullOrWhitespace(value[i])) {
-            cipher.notes += (value[i] + '\n')
+            cipher.notes += value[i] + '\n'
           }
         }
       }
 
-      if (!this.isNullOrWhitespace(value[1]) && cipher.type !== CipherType.Login) {
+      if (
+        !this.isNullOrWhitespace(value[1]) &&
+        cipher.type !== CipherType.Login
+      ) {
         cipher.name = value[1] + ': ' + cipher.name
       }
 

@@ -2,17 +2,17 @@ import { CollectionData } from '../data/collectionData'
 
 import { CollectionView } from '../view/collectionView'
 
-import Domain from '../../../jslib/src/models/domain/domainBase'
-import { EncString } from '../../../jslib/src/models/domain/encString'
+import Domain from '../../../core/models/domain/domainBase'
+import { EncString } from '../../../core/models/domain/encString'
 
 export class Collection extends Domain {
-  id: string;
-  organizationId: string;
-  name: EncString;
-  externalId: string;
-  readOnly: boolean;
-  hidePasswords: boolean;
-  revisionDate: Date;
+  id: string
+  organizationId: string
+  name: EncString
+  externalId: string
+  readOnly: boolean
+  hidePasswords: boolean
+  revisionDate: Date
 
   constructor (obj?: CollectionData, alreadyEncrypted: boolean = false) {
     super()
@@ -34,7 +34,8 @@ export class Collection extends Domain {
       alreadyEncrypted,
       ['id', 'organizationId', 'externalId', 'readOnly', 'hidePasswords']
     )
-    this.revisionDate = obj.revisionDate != null ? new Date(obj.revisionDate) : null
+    this.revisionDate =
+      obj.revisionDate != null ? new Date(obj.revisionDate) : null
   }
 
   decrypt (): Promise<CollectionView> {

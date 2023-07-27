@@ -181,7 +181,7 @@
           >
             <div
               v-for="item in showMember ? emails : emails.slice(0, 3)"
-              :key="item"
+              :key="item.email"
               :class="
                 emails.length <= 3
                   ? 'md:w-1/3 pr-3 w-full'
@@ -220,7 +220,7 @@
 import { CipherType } from '~/core/enums/cipherType'
 import TextHaveCopy from '~/components/cipher/TextHaveCopy'
 import Vnodes from '~/components/Vnodes'
-import { FieldType } from '~/jslib/src/enums/fieldType'
+import { FieldType } from '~/core/enums/fieldType'
 import LoginDetails from '~/components/cipher/cipher-types/login/LoginDetails.vue'
 import CardDetails from '~/components/cipher/cipher-types/card/CardDetails.vue'
 import IdentityDetails from '~/components/cipher/cipher-types/identity/IdentityDetails.vue'

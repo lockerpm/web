@@ -1,8 +1,7 @@
+import { ImportResult } from '../../core/models/domain/importResult'
 
-import { ImportResult } from '../../jslib/src/models/domain/importResult'
-
-import { CipherType } from '../../jslib/src/enums/cipherType'
-import { SecureNoteType } from '../../jslib/src/enums/secureNoteType'
+import { CipherType } from '../../core/enums/cipherType'
+import { SecureNoteType } from '../../core/enums/secureNoteType'
 import { Importer } from './importer'
 import { BaseImporter } from './baseImporter'
 
@@ -28,9 +27,11 @@ export class AvastJsonImporter extends BaseImporter implements Importer {
         cipher.login.username = this.getValueOrDefault(value.custName)
 
         // CS
-        Object.keys(value).filter(k => !existingKeys.includes(k)).forEach(k => {
-          this.processKvp(cipher, k, value[k])
-        })
+        Object.keys(value)
+          .filter(k => !existingKeys.includes(k))
+          .forEach(k => {
+            this.processKvp(cipher, k, value[k])
+          })
 
         this.cleanupCipher(cipher)
         result.ciphers.push(cipher)
@@ -49,9 +50,11 @@ export class AvastJsonImporter extends BaseImporter implements Importer {
         cipher.notes = this.getValueOrDefault(value.text)
 
         // CS
-        Object.keys(value).filter(k => !existingKeys.includes(k)).forEach(k => {
-          this.processKvp(cipher, k, value[k])
-        })
+        Object.keys(value)
+          .filter(k => !existingKeys.includes(k))
+          .forEach(k => {
+            this.processKvp(cipher, k, value[k])
+          })
 
         this.cleanupCipher(cipher)
         result.ciphers.push(cipher)
@@ -60,7 +63,14 @@ export class AvastJsonImporter extends BaseImporter implements Importer {
 
     if (results.cards != null) {
       // CS
-      const existingKeys = ['custName', 'note', 'holderName', 'cardNumber', 'cvv', 'expirationDate']
+      const existingKeys = [
+        'custName',
+        'note',
+        'holderName',
+        'cardNumber',
+        'cvv',
+        'expirationDate'
+      ]
 
       results.cards.forEach((value: any) => {
         const cipher = this.initLoginCipher()
@@ -81,9 +91,11 @@ export class AvastJsonImporter extends BaseImporter implements Importer {
         }
 
         // CS
-        Object.keys(value).filter(k => !existingKeys.includes(k)).forEach(k => {
-          this.processKvp(cipher, k, value[k])
-        })
+        Object.keys(value)
+          .filter(k => !existingKeys.includes(k))
+          .forEach(k => {
+            this.processKvp(cipher, k, value[k])
+          })
 
         this.cleanupCipher(cipher)
         result.ciphers.push(cipher)
