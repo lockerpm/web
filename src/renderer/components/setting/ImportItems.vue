@@ -113,7 +113,7 @@ export default {
   },
   data () {
     return {
-      format: 'cystackjson',
+      format: 'lockerjson',
       file: null,
       fileContents: '',
       filter: null,
@@ -314,15 +314,12 @@ export default {
             }
             console.log(error)
             this.notify(
-              this.$t('data.notifications.incorrect_format') + '..',
+              this.$t('data.notifications.incorrect_format'),
               'warning'
             )
           }
         } else {
-          this.notify(
-            this.$t('data.notifications.incorrect_format') + '...',
-            'warning'
-          )
+          this.notify(this.$t('data.notifications.incorrect_format'), 'warning')
         }
       } catch {
         this.notify(this.$t('data.notifications.import_failed'), 'warning')
