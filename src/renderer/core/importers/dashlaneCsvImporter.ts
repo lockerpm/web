@@ -44,7 +44,7 @@ export class DashlaneCsvImporter extends BaseImporter implements Importer {
 
   protected personalInfoFields = [
     // 'type',
-    'title',
+    // 'title',
     'first_name',
     // 'middle_name',
     'last_name',
@@ -92,10 +92,14 @@ export class DashlaneCsvImporter extends BaseImporter implements Importer {
     results.forEach(value => {
       let cipher: CipherView
       const fields = Object.keys(value)
-      if (isSubset(fields, this.idFields)) {
+      if (isSubset(this.idFields, fields)) {
         cipher = this.processId(value)
-      } else if (isSubset(fields, this.paymentFields)) {
+      } else if (isSubset(this.paymentFields, fields)) {
         cipher = this.processPayment(value)
+      } else if (isSubset(this.personalInfoFields, fields)) {
+        cipher = this.processPersonalInfo(value)
+      } else if (isSubset(this.credentialFields, fields)) {
+        cipher = this.processCredential(value)
       } else {
         cipher = this.processNote(value)
       }
@@ -104,19 +108,16 @@ export class DashlaneCsvImporter extends BaseImporter implements Importer {
       result.ciphers.push(cipher)
     })
 
-    result.success = false
-    console.log(result)
-
-    // result.success = true
+    result.success = true
     return Promise.resolve(result)
   }
 
   // ID
   private processId (obj: { [key: string]: string }) {
-    const existingKeys = ['name', 'number', 'type']
+    let existingKeys = ['name', 'number', 'type']
 
     const cipher = new CipherView()
-    cipher.name = this.getValueOrDefault(obj.name)
+    cipher.name = this.getValueOrDefault(obj.name || obj.type)
 
     switch (obj.type) {
     case 'passport': {
@@ -144,6 +145,7 @@ export class DashlaneCsvImporter extends BaseImporter implements Importer {
       cipher.type = CipherType.SecureNote
       cipher.secureNote = new SecureNoteView()
       cipher.secureNote.type = SecureNoteType.Generic
+      existingKeys = ['name', 'type']
     }
 
     Object.keys(obj)
@@ -156,7 +158,7 @@ export class DashlaneCsvImporter extends BaseImporter implements Importer {
 
   // Payment
   private processPayment (obj: { [key: string]: string }) {
-    const existingKeys = [
+    let existingKeys = [
       'type',
       'account_name',
       'cc_number',
@@ -192,7 +194,103 @@ export class DashlaneCsvImporter extends BaseImporter implements Importer {
       cipher.type = CipherType.SecureNote
       cipher.secureNote = new SecureNoteView()
       cipher.secureNote.type = SecureNoteType.Generic
+      existingKeys = ['type']
     }
+
+    Object.keys(obj)
+      .filter(k => !existingKeys.includes(k))
+      .forEach(k => {
+        this.processKvp(cipher, k, obj[k])
+      })
+    return cipher
+  }
+
+  // Personal info
+  private processPersonalInfo (obj: { [key: string]: string }) {
+    let existingKeys = [
+      'type',
+      'item_name',
+      'first_name',
+      'last_name',
+      'middle_name',
+      'login',
+      'email',
+      'phone_number',
+      'address',
+      'country',
+      'state',
+      'city',
+      'zip'
+    ]
+
+    const cipher = new CipherView()
+    cipher.name = this.getValueOrDefault(obj.item_name)
+
+    switch (obj.type) {
+    case 'name':
+    case 'email':
+    case 'number':
+    case 'address':
+    case 'company': {
+      cipher.type = CipherType.Identity
+      cipher.identity = new IdentityView()
+      cipher.identity.firstName = this.getValueOrDefault(obj.first_name)
+      if (this.getValueOrDefault(obj.middle_name)) {
+        cipher.identity.firstName +=
+            ' ' + this.getValueOrDefault(obj.middle_name)
+      }
+      cipher.identity.lastName = this.getValueOrDefault(obj.last_name)
+      cipher.identity.username = this.getValueOrDefault(obj.login)
+      cipher.identity.email = this.getValueOrDefault(obj.email)
+      cipher.identity.phone = this.getValueOrDefault(obj.phone_number)
+      cipher.identity.address1 = this.getValueOrDefault(obj.address)
+      cipher.identity.country = this.getValueOrDefault(obj.country)
+      cipher.identity.state = this.getValueOrDefault(obj.state)
+      cipher.identity.city = this.getValueOrDefault(obj.city)
+      cipher.identity.postalCode = this.getValueOrDefault(obj.zip)
+      if (obj.type === 'company') {
+        cipher.identity.company = this.getValueOrDefault(obj.item_name)
+      }
+      if (cipher.identity.fullName) {
+        cipher.name = cipher.identity.fullName
+      }
+      break
+    }
+
+    default:
+      cipher.type = CipherType.SecureNote
+      cipher.secureNote = new SecureNoteView()
+      cipher.secureNote.type = SecureNoteType.Generic
+      existingKeys = ['type']
+    }
+
+    Object.keys(obj)
+      .filter(k => !existingKeys.includes(k))
+      .forEach(k => {
+        this.processKvp(cipher, k, obj[k])
+      })
+    return cipher
+  }
+
+  // Credential
+  private processCredential (obj: { [key: string]: string }) {
+    const existingKeys = [
+      'title',
+      'username',
+      'password',
+      'note',
+      'url',
+      'otpSecret'
+    ]
+    const cipher = new CipherView()
+    cipher.type = CipherType.Login
+    cipher.name = this.getValueOrDefault(obj.title || obj.username)
+    cipher.login = new LoginView()
+    cipher.login.username = this.getValueOrDefault(obj.username)
+    cipher.login.password = this.getValueOrDefault(obj.password)
+    cipher.notes = this.getValueOrDefault(obj.note)
+    cipher.login.uris = this.makeUriArray(obj.url)
+    cipher.login.totp = this.getValueOrDefault(obj.otpSecret)
 
     Object.keys(obj)
       .filter(k => !existingKeys.includes(k))
@@ -204,14 +302,18 @@ export class DashlaneCsvImporter extends BaseImporter implements Importer {
 
   // Note
   private processNote (obj: { [key: string]: string }) {
+    const existingKeys = ['title', 'note', 'name']
     const cipher = new CipherView()
     cipher.type = CipherType.SecureNote
     cipher.name = this.getValueOrDefault(obj.name || obj.title)
+    cipher.notes = this.getValueOrDefault(obj.note)
     cipher.secureNote = new SecureNoteView()
     cipher.secureNote.type = SecureNoteType.Generic
-    Object.keys(obj).forEach(k => {
-      this.processKvp(cipher, k, obj[k])
-    })
+    Object.keys(obj)
+      .filter(k => !existingKeys.includes(k))
+      .forEach(k => {
+        this.processKvp(cipher, k, obj[k])
+      })
     return cipher
   }
 }
