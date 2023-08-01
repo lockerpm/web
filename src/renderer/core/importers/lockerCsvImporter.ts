@@ -60,7 +60,7 @@ export class LockerCsvImporter extends BaseImporter implements Importer {
         !this.organization &&
         this.getValueOrDefault(value.favorite, '0') !== '0'
       )
-      cipher.type = CipherType.Login
+      cipher.type = CipherType.SecureNote
       cipher.notes = this.getValueOrDefault(value.notes)
       cipher.name = this.getValueOrDefault(value.name, '--')
 
@@ -130,22 +130,7 @@ export class LockerCsvImporter extends BaseImporter implements Importer {
           // Do nothing
         }
         break
-      default: {
-        // Check new type
-        if (valueType) {
-          const mappedType = Object.values(CipherMapper).find(
-            m => m.csvTypeName === valueType
-          )
-          if (mappedType) {
-            // @ts-ignore
-            cipher.type = mappedType.type
-            cipher.secureNote = new SecureNoteView()
-            cipher.secureNote.type = SecureNoteType.Generic
-            break
-          }
-        }
-
-        // Else treated as Login
+      case 'login': {
         cipher.type = CipherType.Login
         cipher.login = new LoginView()
         cipher.login.totp = this.getValueOrDefault(
@@ -160,6 +145,20 @@ export class LockerCsvImporter extends BaseImporter implements Importer {
         const uris = this.parseSingleRowCsv(value.login_uri || value.uri)
         cipher.login.uris = this.makeUriArray(uris)
         break
+      }
+      default: {
+        // Check new type
+        if (valueType) {
+          const mappedType = Object.values(CipherMapper).find(
+            m => m.csvTypeName === valueType
+          )
+          if (mappedType) {
+            // @ts-ignore
+            cipher.type = mappedType.type
+          }
+        }
+        cipher.secureNote = new SecureNoteView()
+        cipher.secureNote.type = SecureNoteType.Generic
       }
       }
 

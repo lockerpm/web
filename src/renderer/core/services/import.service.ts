@@ -37,6 +37,7 @@ import { ButtercupCsvImporter } from '../importers/buttercupCsvImporter'
 import { ChromeCsvImporter } from '../importers/chromeCsvImporter'
 import { ClipperzHtmlImporter } from '../importers/clipperzHtmlImporter'
 import { CodebookCsvImporter } from '../importers/codebookCsvImporter'
+import { DashlaneCsvImporter } from '../importers/dashlaneCsvImporter'
 import { DashlaneJsonImporter } from '../importers/dashlaneJsonImporter'
 import { EncryptrCsvImporter } from '../importers/encryptrCsvImporter'
 import { EnpassCsvImporter } from '../importers/enpassCsvImporter'
@@ -93,6 +94,7 @@ export class ImportService implements ImportServiceAbstraction {
     { id: 'firefoxcsv', name: 'Firefox (csv)' },
     { id: 'keepass2xml', name: 'KeePass 2 (xml)' },
     { id: '1password1pif', name: '1Password (1pif)' },
+    { id: 'dashlanecsv', name: 'Dashlane (csv)' },
     { id: 'dashlanejson', name: 'Dashlane (json)' }
   ]
 
@@ -263,6 +265,8 @@ export class ImportService implements ImportServiceAbstraction {
       return new EnpassJsonImporter()
     case 'pwsafexml':
       return new PasswordSafeXmlImporter()
+    case 'dashlanecsv':
+      return new DashlaneCsvImporter()
     case 'dashlanejson':
       return new DashlaneJsonImporter()
     case 'msecurecsv':

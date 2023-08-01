@@ -34,7 +34,8 @@ export default function ({
       '/onpremise/host',
       '/users/exist',
       '/payments/trial/enterprise',
-      'sso/users'
+      'sso/users',
+      '/payments/lifetime'
     ]
     if (
       store.state.isOnPremise &&
