@@ -161,7 +161,9 @@ export class SplashIdCsvImporter extends BaseImporter implements Importer {
     cipher.card.brand = this.getCardBrand(cipher.card.number)
     cipher.card.cardholderName = obj.Name
     cipher.card.code = obj.PIN
-    const [month, year] = this.getValueOrDefault(obj['Expir Date'], '/')
+    const [month, year] = this.getValueOrDefault(obj['Expir Date'], '/').split(
+      '/'
+    )
     cipher.card.expMonth = month
     cipher.card.expYear = year
     return { cipher, existingKeys }
