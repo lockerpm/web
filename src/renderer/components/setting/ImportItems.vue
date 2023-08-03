@@ -48,14 +48,25 @@
         />
       </div>
       <div class="form-group">
-        <label for="">{{ $t('data.importFile.select_format') }}</label>
+        <label for="import-file-select">{{
+          $t('data.importFile.select_format')
+        }}</label>
         <input
           id="import-file-select"
+          ref="fileSelect"
           type="file"
-          class="form-control-file form-input mb-4"
+          class="form-control-file form-input mb-4 hidden"
           name="file"
           @change="handleFile"
         >
+        <div class="flex flex-wrap items-center mb-4">
+          <el-button @click="$refs.fileSelect.click()">
+            {{ $t('common.choose_file') }}
+          </el-button>
+          <p v-if="file" class="ml-2">
+            {{ file.name }}
+          </p>
+        </div>
 
         <label>{{ $t('data.importFile.or_copy') }}</label>
         <el-input v-model="fileContents" type="textarea" :rows="5" />

@@ -1,7 +1,9 @@
 <template>
   <div>
     <ValidationObserver ref="observer" tag="div" class="credit-drawer-body">
-      <p class="font-semibold text-[16px] mb-1">Payment method</p>
+      <p class="font-semibold text-[16px] mb-1">
+        {{ $t('data.billing.payment_method') }}
+      </p>
 
       <p class="mb-6">
         {{ $t('data.billing.intro') }}

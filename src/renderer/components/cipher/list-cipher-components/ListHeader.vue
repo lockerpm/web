@@ -19,7 +19,7 @@
             <span class="font-medium">{{ $t('common.all_items') }}</span>
           </template>
           <template v-else-if="getRouteBaseName() === 'trash'">
-            <span class="font-medium">Trash</span>
+            <span class="font-medium">{{ $t('sidebar.trash') }}</span>
           </template>
           <template v-else>
             <span class="font-medium">

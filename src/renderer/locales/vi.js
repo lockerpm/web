@@ -51,20 +51,17 @@ module.exports = {
     email_address: 'Địa chỉ email',
     email_placeholder: 'Nhập địa chỉ email của bạn',
     name: 'Họ và tên',
-    username_placeholder: 'Nhập tên của bạn',
     address: 'Địa chỉ',
     address_placeholder: 'Nhập địa chỉ của bạn',
     company: 'Công ty',
     company_size: 'Số lượng nhân viên',
     company_placeholder: 'Nhập tên công ty của bạn',
-    company_size_placeholder: 'Chọn số lượng nhân viên',
     phone: 'Số điện thoại',
     phone_placeholder: 'Nhập số điện thoại',
     city: 'Thành phố',
     state: 'Tỉnh/Tiểu bang',
     zip: 'Mã bưu chính',
     country: 'Quốc gia',
-    country_placeholder: 'Chọn quốc gia của bạn',
     cancel: 'Hủy bỏ',
     save: 'Lưu',
     folder_name: 'Tên Thư mục',
@@ -143,6 +140,7 @@ module.exports = {
     ok: 'Ok',
     configuration: 'Tuỳ chỉnh',
     skip: 'Bỏ qua',
+    active: 'Đang hoạt động',
     male: 'Nam',
     female: 'Nữ',
     other: 'Khác',
@@ -168,7 +166,8 @@ module.exports = {
     privacy: 'Chính sách bảo mật',
     subscribe: 'Đăng ký',
     agree_terms: 'Tôi đồng ý với <a target="_blank" href="https://locker.io/vi/terms"><b>Điều khoản</b></a> và <a target="_blank" href="https://locker.io/vi/privacy"><b>Chính sách</b></a>',
-    expired: 'Hết hạn'
+    expired: 'Hết hạn',
+    choose_file: 'Chọn tệp'
   },
   sidebar: {
     all: 'Tất cả',
@@ -197,7 +196,6 @@ module.exports = {
     overview: 'Tổng quan',
     billing: 'Thanh toán',
     family_members: 'Thành viên gói cước',
-    cardholder: 'Tên chủ thẻ',
     policies: 'Chính sách',
     inventory: 'Kho dữ liệu',
     help: 'Trợ giúp & Phản hồi',
@@ -211,12 +209,13 @@ module.exports = {
     account: 'Tài khoản',
     options: 'Tùy chọn',
     security: 'Bảo mật',
+    security_tools: 'Công cụ bảo mật',
     plans_billing: 'Gói & Hóa đơn',
     referral: 'Giới thiệu',
     manage_member: 'Quản lý thành viên',
     notifications: 'Thông báo',
     private_email: 'Email ẩn danh',
-    authenticator: 'Authenticator',
+    authenticator: 'Ứng dụng xác thực',
     in_app_shares: 'Chia sẻ nội bộ',
     quick_shares: 'Chia sẻ nhanh',
     'driver-licenses': 'Giấy phép lái xe',
@@ -249,7 +248,6 @@ module.exports = {
     7009: 'Thẻ của bạn bị từ chối (do không đủ số dư, v.v...). Vui lòng liên hệ nhà cung cấp thẻ để có thêm thông tin.',
     7013: '{email} đã áp dụng dùng thử.',
     '0004': 'Sai định dạng email',
-    opps: 'Có điều gì đó không đúng. Hãy thử lại sau ít phút.',
     7015: '{email} hiện tại đang ở trong một doanh nghiệp. Vui lòng rời doanh nghiệp hoặc sử dụng email khác.',
     id_confirm_password: 'Xác nhận mật khẩu Locker ID không khớp',
     something_went_wrong: 'Đã có lỗi xảy ra',
@@ -297,7 +295,7 @@ module.exports = {
     SecureNote: 'Ghi chú',
     Card: 'Thẻ',
     Identity: 'Danh tính',
-    null: 'Trash'
+    null: 'Thùng rác'
   },
   type: {
     1: 'Mật khẩu | Mật khẩu',
@@ -329,6 +327,7 @@ module.exports = {
     CryptoAccount: 'Tài khoản Crypto | Tài khoản Crypto',
     CryptoWallet: 'Ví Crypto | Ví Crypto',
     CryptoBackup: 'Ví Crypto | Ví Crypto',
+    TOTP: 'Ứng dụng xác thực',
     private_email: 'Email ẩn danh | Email ẩn danh'
   },
   set_master_password: {
@@ -351,6 +350,8 @@ module.exports = {
   },
   data: {
     notifications: {
+      safe: 'Email của bạn an toàn!',
+      leaked: 'Email của bạn xuất hiện trong {breaches} vụ lộ dữ liệu',
       create_success: '{type} đã được thêm thành công! | {type} đã được thêm thành công!',
       create_failed: 'Thêm {type} thất bại! | Thêm {type} thất bại!',
       update_success: '{type} đã được cập nhật thành công! | {type} đã được cập nhật thành công!',
@@ -359,18 +360,19 @@ module.exports = {
       trash_failed: '{type} chưa được chuyển vào thùng rác! | {type} chưa được chuyển vào thùng rác!',
       delete_success: '{type} đã được xóa vĩnh viễn! | {type} được xóa vĩnh viễn!',
       delete_failed: '{type} chưa được xóa vĩnh viễn! | {type} chưa được xóa vĩnh viễn!',
+      restore_success: '{type} đã được khôi phục! | {type} đã được khôi phục!',
+      restore_failed: '{type} chưa được khôi phục! | {type} chưa được khôi phục!',
       delete_selected: 'Xóa Mục đã chọn',
-      trash_selected_desc: 'Bạn có thực sự muốn chuyển vào thùng rác? Các mục này sẽ bị xóa vĩnh viễn sau 30 ngày. | Bạn đã chọn {count} mục. Bạn có thực sự muốn chuyển các mục này vào thùng rác? Các mục này sẽ bị xóa vĩnh viễn sau 30 ngày.',
+      delete_selected_desc: 'Bạn có chắc chắn sẽ xoá vĩnh viễn mục này? | Bạn đã chọn xoá vĩnh viễn {count} mục. Bạn có chắc chắn sẽ xoá vĩnh viễn tất cả các mục này?',
       trash_selected: 'Xóa Mục đã chọn',
+      trash_selected_desc: 'Bạn có thực sự muốn chuyển vào thùng rác? Các mục này sẽ bị xóa vĩnh viễn sau 30 ngày. | Bạn đã chọn {count} mục. Bạn có thực sự muốn chuyển các mục này vào thùng rác? Các mục này sẽ bị xóa vĩnh viễn sau 30 ngày.',
       restore_selected: 'Khôi phục các mục đã chọn',
       restore_selected_desc: 'Bạn có thực sự muốn khôi phục mục này? | Bạn đã chọn {count} mục. Bạn có thực sự muốn khôi phục các mục này?',
       move_selected: 'Di chuyển các mục đã chọn',
       move_selected_desc: 'Chọn thực mục bạn muốn di chuyển {count} danh mục này tới.',
       move_success: 'Danh mục đã được chuyển thư mục! | Danh mục chưa được xóa vĩnh viễn!',
       move_failed: 'Danh mục chưa được chuyển thư mục! | Danh mục chưa được xóa vĩnh viễn!',
-      overwrite_password: 'Bạn có chắc muốn ghi đè mật khẩu hiện tại?',
       deleted_folder: 'Sau khi thư mục được xóa, toàn bộ danh mục sẽ được di chuyển vào thùng rác. Bạn có thực sự muốn xóa thư mục này?',
-      deleted_team_folder: 'Sau khi thư mục Team được xóa, toàn bộ danh mục không thuộc Team Folder sẽ được di chuyển vào Unassigned Folder. Bạn có thực sự muốn xóa thư mục này?',
       add_member_success: 'Thành viên đã được mời!',
       add_member_failed: 'Thành viên chưa được mời!',
       delete_member_success: 'Thành viên đã được xóa!',
@@ -646,7 +648,7 @@ module.exports = {
       import_items_desc: 'Di chuyển dữ liệu từ trình duyệt hoặc phần mềm khác sang Locker.',
       select_file: '1. Chọn loại tệp thích hợp',
       select_format: '2. Chọn tệp dữ liệu',
-      or_copy: 'hoặc copy/paste nội dung tệp dữ liệu',
+      or_copy: 'hoặc sao chép/dán nội dung tệp dữ liệu',
       instructions: 'Hướng dẫn {name}',
       upgrade_dialog_title: 'Dung lượng gói Miễn phí bị giới hạn',
       upgrade_dialog_message: 'Đã nhập {importedCount}/{total} mục. Nâng cấp lên gói Premium để thêm không giới hạn.'
@@ -986,7 +988,8 @@ module.exports = {
         add_new: 'Thêm mới OTP',
         select: 'Thiết lập từ một OTP hiện có',
         select_placeholder: 'Chọn 1 OTP',
-        secret_key: 'Khóa bí mật hoặc Đường dẫn'
+        secret_key: 'Khóa bí mật hoặc Đường dẫn',
+        otp_option: 'Chọn một OTP'
       }
     },
     settings: {
