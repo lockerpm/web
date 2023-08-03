@@ -1,15 +1,26 @@
 <template>
   <div>
     <section class="full-width h-auto mt-20">
-      <div class="h-[185px]" style="background-image: linear-gradient(#F8FAFE, #FFFFFF);" />
-      <div class="pb-[50px] min-w-[320px] max-w-6xl mx-auto px-6 flex flex-wrap" style="transform: translateY(-110px);">
+      <div
+        class="h-[185px]"
+        style="background-image: linear-gradient(#f8fafe, #ffffff)"
+      />
+      <div
+        class="pb-[50px] min-w-[320px] max-w-6xl mx-auto px-6 flex flex-wrap"
+        style="transform: translateY(-110px)"
+      >
         <div class="w-full md:w-1/2 md:pr-[100px] self-center">
           <h1 class="landing-font-56 font-bold text-black">
             {{ $t('landing_contact.title1') }}
           </h1>
-          <p class="landing-font-20 text-black-600 mt-5" v-html="$t('landing_contact.title2')" />
+          <p
+            class="landing-font-20 text-black-600 mt-5"
+            v-html="$t('landing_contact.title2')"
+          />
         </div>
-        <div class="w-full md:w-1/2 md:mt-0 mt-10 shadow-custom rounded-lg h-auto bg-white p-[30px]">
+        <div
+          class="w-full md:w-1/2 md:mt-0 mt-10 shadow-custom rounded-lg h-auto bg-white p-[30px]"
+        >
           <el-form
             ref="inputForm"
             :model="form"
@@ -18,7 +29,10 @@
             label-width="120px"
             class="demo-form"
           >
-            <el-form-item :label="$t('landing_contact.full_name')" prop="fullName">
+            <el-form-item
+              :label="$t('landing_contact.full_name')"
+              prop="fullName"
+            >
               <el-input v-model="form.fullName" />
             </el-form-item>
             <div class="w-full flex flex-nowrap">
@@ -35,16 +49,40 @@
             </div>
             <div class="w-full flex flex-nowrap">
               <div class="w-1/2">
-                <el-form-item :label="$t('landing_contact.inquiry')" prop="topic">
-                  <el-select v-model="form.topic" class="w-full" placeholder="Others">
-                    <el-option v-for="(item, index) in options.topic" :key="index" :label="item.label" :value="item.value" />
+                <el-form-item
+                  :label="$t('landing_contact.inquiry')"
+                  prop="topic"
+                >
+                  <el-select
+                    v-model="form.topic"
+                    class="w-full"
+                    placeholder="Others"
+                  >
+                    <el-option
+                      v-for="(item, index) in options.topic"
+                      :key="index"
+                      :label="item.label"
+                      :value="item.value"
+                    />
                   </el-select>
                 </el-form-item>
               </div>
               <div class="w-1/2 ml-[10px]">
-                <el-form-item :label="$t('landing_contact.urgency')" prop="urgency">
-                  <el-select v-model="form.urgency" class="w-full" placeholder="">
-                    <el-option v-for="(item, index) in options.urgency" :key="index" :label="item.label" :value="item.value" />
+                <el-form-item
+                  :label="$t('landing_contact.urgency')"
+                  prop="urgency"
+                >
+                  <el-select
+                    v-model="form.urgency"
+                    class="w-full"
+                    placeholder=""
+                  >
+                    <el-option
+                      v-for="(item, index) in options.urgency"
+                      :key="index"
+                      :label="item.label"
+                      :value="item.value"
+                    />
                   </el-select>
                 </el-form-item>
               </div>
@@ -54,7 +92,11 @@
               <el-input v-model="form.message" type="textarea" :rows="5" />
             </el-form-item>
             <el-form-item>
-              <el-button class="landing-btn w-full" :loading="isLoading" @click.prevent="submit">
+              <el-button
+                class="landing-btn w-full"
+                :loading="isLoading"
+                @click.prevent="submit"
+              >
                 {{ $t('landing_contact.send') }}
               </el-button>
             </el-form-item>
@@ -67,7 +109,7 @@
 </template>
 
 <script>
-import uuidv1 from 'uuid/v1'
+const { v1: uuidv1 } = require('uuid')
 export default {
   layout: 'landing',
   data () {
@@ -87,24 +129,25 @@ export default {
       },
       rules: {
         phone: [
-          { validator: this.phoneNotRequiredValidator, trigger: ['blur', 'change'] }
+          {
+            validator: this.phoneNotRequiredValidator,
+            trigger: ['blur', 'change']
+          }
         ],
         fullName: [
           { required: true, message: 'Please input Full name', trigger: 'blur' }
         ],
         email: [
           { required: true, message: 'Please input Email', trigger: 'blur' },
-          { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+          {
+            type: 'email',
+            message: 'Please input correct email address',
+            trigger: ['blur', 'change']
+          }
         ],
-        topic: [
-          { required: true }
-        ],
-        urgency: [
-          { required: true }
-        ],
-        message: [
-          { required: true }
-        ]
+        topic: [{ required: true }],
+        urgency: [{ required: true }],
+        message: [{ required: true }]
       }
     }
   },
@@ -116,6 +159,8 @@ export default {
   },
   mounted () {
     this.$recaptcha.init()
+    console.log('sentry test')
+    this.$sentry.captureException(new Error('example'))
   },
   methods: {
     getLabelFromOptions (optionKey, value) {
@@ -196,14 +241,17 @@ export default {
         utm_content: this.$cookies.get('utm_content')
       }
 
-      return this.$axios.post('https://tracking.cystack.net/v1/activities', payload)
+      return this.$axios.post(
+        'https://tracking.cystack.net/v1/activities',
+        payload
+      )
     }
   }
 }
 </script>
 
 <style>
-.el-form-item__label{
+.el-form-item__label {
   @apply text-black !important;
   font-size: 14px !important;
   line-height: 24px !important;

@@ -1,4 +1,4 @@
-FROM node:16.10.0
+FROM node:16.14.0
 
 WORKDIR /app
 
@@ -13,6 +13,8 @@ RUN yarn
 ENV NODE_ENV=production
 
 ARG SENTRY_DSN
+
+ARG SENTRY_AUTH_TOKEN
 
 ENV CS_ENVIRONMENT=staging
 

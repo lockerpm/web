@@ -9,6 +9,7 @@ import viVee from 'vee-validate/dist/locale/vi.json'
 import enVee from 'vee-validate/dist/locale/en.json'
 import axios from 'axios'
 import cheerio from 'cheerio'
+const { sentryWebpackPlugin } = require('@sentry/webpack-plugin')
 
 const isStaging = process.env.CS_ENVIRONMENT === 'staging'
 
@@ -192,6 +193,20 @@ module.exports = {
         ['@babel/plugin-proposal-private-methods', { loose: true }],
         ['@babel/plugin-proposal-private-property-in-object', { loose: true }]
       ]
+    },
+    extend (config, { isClient }) {
+      // Extend only webpack config for client-bundle
+      if (isClient) {
+        config.devtool = 'source-map'
+        config.plugins = [
+          ...config.plugins,
+          sentryWebpackPlugin({
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+            org: 'cystack-security',
+            project: 'locker-web'
+          })
+        ]
+      }
     }
   },
   publicRuntimeConfig: {
