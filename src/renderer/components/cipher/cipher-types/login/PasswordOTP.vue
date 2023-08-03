@@ -2,7 +2,7 @@
   <div>
     <InputSelect
       v-if="!initialValue"
-      :label="'Option'"
+      :label="$t('data.ciphers.otp.otp_option')"
       :initial-value="option"
       :options="options"
       @change="changeOption"

@@ -45,27 +45,23 @@ module.exports = {
     confirmed: 'Confirmed',
     cardholder: "Cardholder's name",
     cardholder_placeholder: 'Jane Doe',
-    email_placeholder: 'Enter your email',
     first_name_placeholder: 'Your first name',
     last_name_placeholder: 'Your last name',
     email: 'Email address',
     email_address: 'Email address',
-    email_address_placeholder: 'Enter your email',
+    email_placeholder: 'Enter your email',
     name: 'Name',
-    full_name_placeholder: 'Enter your full name',
     address: 'Address',
     address_placeholder: 'Enter your address',
     company: 'Company',
     company_size: 'Number of staffs',
     company_placeholder: 'Enter your company',
-    company_size_placeholder: 'Choose number of staffs',
     phone: 'Phone number',
     phone_placeholder: 'Enter your phone',
     city: 'City',
     state: 'Province/State',
     zip: 'Postal/Zip Code',
     country: 'Country',
-    country_placeholder: 'Select your country',
     cancel: 'Cancel',
     save: 'Save',
     folder_name: 'Folder name',
@@ -170,7 +166,8 @@ module.exports = {
     privacy: 'Privacy',
     subscribe: 'Subscribe',
     agree_terms: 'I agree with the <a target="_blank" href="https://locker.io/terms"><b>Terms</b></a> and <a target="_blank" href="https://locker.io/privacy"><b>Conditions</b></a>',
-    expired: 'Expired'
+    expired: 'Expired',
+    choose_file: 'Choose File'
   },
   sidebar: {
     all: 'All',
@@ -373,11 +370,9 @@ module.exports = {
       restore_selected_desc: 'Are you sure you want to restore this item? | You have selected {count} item(s) to restore. Are you sure you want to restore all of these items?',
       move_selected: 'Move selected',
       move_selected_desc: 'Choose a folder that you would like to move the {count} selected item(s) to.',
-      overwrite_password: 'Are you sure you want to overwrite the current password?',
       move_success: 'The item has been moved! | The items have been moved!',
       move_failed: 'The item has not been moved! | The items have not been moved!',
       deleted_folder: 'After folder deleted, all items will be moved to trash. Are you sure you want to delete the folder?',
-      deleted_team_folder: 'After Team folder deleted, all items which belong to no Team folder will be moved to Unassigned Folder. Are you sure you want to delete this Team folder?',
       add_member_success: 'The member has been invited!',
       add_member_failed: 'The member has not been invited!',
       delete_member_success: 'The member has been deleted!',
@@ -430,7 +425,7 @@ module.exports = {
       min_password_length: 'Minimum password length is {length}',
       max_password_length: 'Maximum password length is {length}',
       password_composition: 'Password must contain at least 1 special character',
-      max_less_than_min: 'Maximum password length can’t be less than minimum password length.',
+      max_less_than_min: 'Maximum password length can\'t be less than minimum password length.',
       requires_lowercase: 'Requires lowercase letters (abc)',
       requires_uppercase: 'Requires uppercase letters (ABC)',
       requires_special: 'Requires special characters (@#!$%)',
@@ -993,7 +988,8 @@ module.exports = {
         add_new: 'Add new OTP',
         select: 'Set up from an existing OTP',
         select_placeholder: 'Select an OTP',
-        secret_key: 'Secret key or Path'
+        secret_key: 'Secret key or Path',
+        otp_option: 'Option'
       }
     },
     settings: {
@@ -1730,10 +1726,6 @@ module.exports = {
         btn: 'Send'
       }
     }
-  },
-  video_intro: {
-    title: 'Secure your accounts in 2 minutes',
-    desc: 'Locker uses multiple security and privacy technologies to protect your online accounts and identities, but it only takes 2 minutes to create a free account and get started.'
   },
   landing: {
     title: 'Enjoy a secure and seamless Internet experience with Locker. Save passwords as you browse and access your vault whenever you need, on any device.',

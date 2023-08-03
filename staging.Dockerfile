@@ -14,8 +14,6 @@ ENV NODE_ENV=production
 
 ARG SENTRY_DSN
 
-ARG SENTRY_AUTH_TOKEN
-
 ENV CS_ENVIRONMENT=staging
 
 ENV BASE_URL=https://staging.locker.io

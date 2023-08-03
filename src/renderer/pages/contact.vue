@@ -109,7 +109,7 @@
 </template>
 
 <script>
-const { v1: uuidv1 } = require('uuid')
+import uuidv1 from 'uuid/v1'
 export default {
   layout: 'landing',
   data () {
@@ -159,8 +159,6 @@ export default {
   },
   mounted () {
     this.$recaptcha.init()
-    console.log('sentry test')
-    this.$sentry.captureException(new Error('example'))
   },
   methods: {
     getLabelFromOptions (optionKey, value) {
