@@ -112,7 +112,6 @@ export default function ({
           '/comparison',
           '/promotion',
           '/crypto',
-          '/shares/quick-share-item',
           '/',
           '/on-premise-create-master-pw'
         ]
