@@ -190,6 +190,7 @@ import moment from 'moment'
 import cheerio from 'cheerio'
 import slugify from 'slugify'
 import Post from '~/components/landing/blog/Post'
+
 export default {
   components: { Post },
   layout: 'landing',
@@ -348,12 +349,8 @@ export default {
       }
       let res = tx
       try {
-        res = res.replace(/<[^>]*>/g, '') // Remove tags
-        res = res.replaceAll('&amp;', '&') // Remove amp
-        res = res.replaceAll('&#8217;', "'") // Remove '
-        res.replaceAll('’', "'")
-        res = res.replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(dec))
-        res = res.replace('[&hellip;]', '...')
+        res = this.$sanitize(res, { allowedTags: [] }) // Remove tags
+        res = res.replaceAll('’', "'")
       } catch (error) {}
       return res
     }
