@@ -1,4 +1,3 @@
-import https from 'https'
 export default function ({
   store,
   $axios,
@@ -9,8 +8,6 @@ export default function ({
   $config,
   env
 }) {
-  $axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false })
-
   $axios.interceptors.request.use(request => {
     // Get token from auth.js store
     // const token = store.state.auth.accessToken
@@ -112,7 +109,6 @@ export default function ({
           '/comparison',
           '/promotion',
           '/crypto',
-          '/shares/quick-share-item',
           '/',
           '/on-premise-create-master-pw'
         ]

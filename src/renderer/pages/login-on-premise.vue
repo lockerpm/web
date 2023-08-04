@@ -44,11 +44,6 @@ export default {
       })
 
       if (
-        this.$route.query.external_url &&
-        isString(this.$route.query.external_url)
-      ) {
-        window.location.replace(this.$route.query.external_url)
-      } else if (
         this.$route.query.return_url &&
         isString(this.$route.query.return_url)
       ) {

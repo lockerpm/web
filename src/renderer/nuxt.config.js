@@ -66,6 +66,7 @@ module.exports = {
     { ssr: false, src: '@/plugins/asyncComputed.js' },
     { ssr: false, src: '@/plugins/vue-native-socket.js' },
     { ssr: false, src: '@/plugins/tutorial.js' },
+    { ssr: true, src: '@/plugins/vue-sanitize.js' },
 
     // Mixins
     { ssr: true, src: '@/plugins/mixins/index.js' },
