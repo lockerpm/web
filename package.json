@@ -114,6 +114,7 @@
     "vue-katex": "^0.5.0",
     "vue-lazy-hydration": "^2.0.0-beta.4",
     "vue-native-websocket": "^2.0.14",
+    "vue-sanitize": "^0.2.3",
     "vue-social-sharing": "^3.0.9",
     "vue-virtual-scroller": "^1.0.10",
     "vue-youtube-embed": "^2.2.2",

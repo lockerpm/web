@@ -50,34 +50,10 @@ export default {
             },
             window.location.origin
           )
-        } else {
-          const url = `${process.env.baseApiUrl}/sso/access_token`
-          this.$axios
-            .post(url, {
-              SERVICE_URL: '/sso',
-              SERVICE_SCOPE: 'pwdmanager',
-              CLIENT: 'browser'
-            })
-            .then(async result => {
-              const extensionToken = result.data ? result.data.access_token : ''
-              window.postMessage(
-                {
-                  command: 'cs-authResult',
-                  token: extensionToken
-                },
-                window.location.origin
-              )
-            })
-            .catch(() => {})
         }
 
         // end sendMessage
         if (
-          this.$route.query.external_url &&
-          isString(this.$route.query.external_url)
-        ) {
-          window.location.replace(this.$route.query.external_url)
-        } else if (
           this.$route.query.return_url &&
           isString(this.$route.query.return_url)
         ) {
