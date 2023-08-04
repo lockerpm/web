@@ -645,8 +645,8 @@
 
 <script>
 import axios from 'axios'
-import cheerio from 'cheerio'
 import Post from '~/components/landing/blog/Post'
+import { getTagFromHtml, getTextFromPTag } from '~/utils/common'
 
 export default {
   components: { Post },
@@ -678,14 +678,16 @@ export default {
             featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
           } catch (error) {}
           if (!featuredImage) {
-            const $ = cheerio.load(post.content.rendered)
-            const images = $('img').attr('src')
-            if (images) {
-              featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
+            const img = getTagFromHtml(post.content.rendered, 'img')
+            if (img) {
+              const src =
+                img.attrs.find(attr => attr.name === 'src')?.value || ''
+              featuredImage = src.replace(/-[0-9]+x[0-9]+/g, '')
             }
           }
-          const $_ = cheerio.load(post.excerpt.rendered)
-          const desc = $_('p').text()
+          const p = getTagFromHtml(post.excerpt.rendered, 'p')
+          const desc = p ? getTextFromPTag(p) : ''
+
           posts.push({
             ...post,
             user: userArray.find(author => author.id === post.author),
