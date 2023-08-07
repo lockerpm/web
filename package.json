@@ -29,8 +29,6 @@
     "@types/node": "12.12.6"
   },
   "devDependencies": {
-    "@angular/core": "9",
-    "@angular/router": "9",
     "@fortawesome/fontawesome-free": "5.15.3",
     "@nuxt/types": "2.15.8",
     "@nuxt/typescript-build": "2.1.0",
@@ -44,9 +42,9 @@
     "@xpda-dev/webpack-step": "^0.1.2",
     "cross-env": "7.0.3",
     "deepmerge": "4.2.2",
-    "electron": "12.0.4",
-    "electron-builder": "22.10.5",
-    "electron-devtools-installer": "3.1.1",
+    "electron": "^25.4.0",
+    "electron-builder": "^24.6.3",
+    "electron-devtools-installer": "^3.2.0",
     "eslint": "7.24.0",
     "eslint-friendly-formatter": "4.0.1",
     "eslint-loader": "4.0.2",
