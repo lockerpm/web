@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
-    "@notionhq/client": "^1.0.4",
+    "@notionhq/client": "^2.2.10",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/feed": "^2.0.0",
     "@nuxtjs/gtm": "^2.4.0",
