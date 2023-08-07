@@ -14,6 +14,7 @@ const isStaging = process.env.CS_ENVIRONMENT === 'staging'
 
 module.exports = {
   ssr: true,
+  telemetry: false,
   target: 'server',
   head: {
     htmlAttrs: {
