@@ -82,7 +82,7 @@ export default {
     },
 
     focusItem (index, items) {
-      const el = items.find((el, idx) => idx === index)
+      const el = items.find((_, idx) => idx === index)
       if (el && el.focus) {
         el.focus()
       }
@@ -168,8 +168,8 @@ export default {
     },
 
     positionMenu (top, left) {
-      const largestHeight = window.innerHeight - this.$el.offsetHeight - 25
-      const largestWidth = window.innerWidth - this.$el.offsetWidth - 25
+      const largestHeight = window.innerHeight - (this.$el?.offsetHeight || 0) - 25
+      const largestWidth = window.innerWidth - (this.$el?.offsetWidth || 0) - 25
 
       if (top > largestHeight) {
         top = largestHeight
@@ -197,7 +197,7 @@ export default {
     setItemRoles () {
       // Add role="menuitem" and tabindex="-1" to all items
       selectAll(this.localItemSelector, this.$el)
-        .forEach((el) => {
+        .forEach(el => {
           setAttr(el, 'role', 'menuitem')
           setAttr(el, 'tabindex', '-1')
         })
@@ -232,7 +232,7 @@ export default {
     // Only register the events we need
     const on = {
       // `!` modifier for capture
-      '!contextmenu': (e) => {
+      '!contextmenu': e => {
         e.preventDefault()
       },
       keydown: this.onKeydown // up, down, esc

@@ -193,136 +193,141 @@ import Post from '~/components/landing/blog/Post'
 
 export default {
   components: { Post },
-  layout: 'landing',
-  scrollToTop: true,
-  async asyncData ({ store, params, error }) {
-    const slug = encodeURIComponent(params.slug)
-    const language = store.state.i18n.locale
-    const { data } = await axios.get(
-      `${process.env.blogUrl}/posts?slug=${slug}&categories=8,13,18,54,25`
-    )
-    if (data.length === 0) {
-      error({ statusCode: 404 })
-      return
-    }
-    const categoriesId = data[0].categories
-    const categories = await Promise.all(
-      categoriesId.map(async id => {
-        const res = await axios.get(`${process.env.blogUrl}/categories/${id}`)
-        return res.data
-      })
-    )
-    const languageTag = await axios.get(
-      `${process.env.blogUrl}/tags?slug=${language}`
-    )
-    const relateResult = await axios.get(
-      `${process.env.blogUrl}/posts?exclude=${
-        data[0].id
-      }&categories=${categoriesId.toString()}&tags=${
-        languageTag.data[0].id
-      }&per_page=2`
-    )
-    const users = await axios.get(`${process.env.blogUrl}/users`)
-    const userArray = users.data
-    const relatedPosts = []
-    relateResult.data.forEach(async element => {
-      let featuredImage = ''
-      try {
-        featuredImage = element._embedded['wp:featuredmedia']['0'].source_url
-      } catch (error) {}
-      if (!featuredImage) {
-        const $ = cheerio.load(element.content.rendered)
-        const images = $('img').attr('src')
-        if (images) {
-          featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
-        }
-      }
-      const $_ = cheerio.load(element.excerpt.rendered)
-      const desc = $_('p').text()
 
-      // const authorResult = await axios.get(`${process.env.blogUrl}/users/${element.author}`)
-      relatedPosts.push({
-        ...element,
-        // author: authorResult.data.name,
-        featured_image: featuredImage,
-        user: userArray.find(user => user.id === element.author),
-        desc
-      })
-    })
-    // const authorResult = await axios.get(`${process.env.blogUrl}/users/${data[0].author}`)
-    return {
-      post: data.map(post => {
-        const $ = cheerio.load(post.content.rendered)
-        let featuredImage = ''
-        try {
-          featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
-        } catch (error) {}
-        if (!featuredImage) {
-          const $ = cheerio.load(post.content.rendered)
-          const images = $('img').attr('src')
-          if (images) {
-            featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
+  layout: 'landing',
+
+  scrollToTop: true,
+
+  async asyncData ({ store, params, error }) {
+    try {
+      const slug = encodeURIComponent(params.slug)
+      const language = store.state.i18n.locale
+
+      // Get post by slug + get users + language tag
+      const [postRes, usersRes, langRes] = await Promise.all([
+        axios.get(
+          `${process.env.blogUrl}/posts?slug=${slug}&categories=8,13,18,54,25`
+        ),
+        axios.get(`${process.env.blogUrl}/users`),
+        axios.get(
+          `${process.env.blogUrl}/tags?slug=${language}`
+        )
+      ])
+
+      const data = postRes.data
+      if (data.length === 0) {
+        error({ statusCode: 404 })
+        return
+      }
+
+      const userArray = usersRes.data
+      const languageTagId = langRes.data[0].id
+      const relatedPosts = []
+      const categoryIds = data[0].categories
+      let categories = []
+
+      try {
+        // Get categories + related posts
+        const [relateResult, ...categoriesRes] = await Promise.all([
+          axios.get(
+            `${process.env.blogUrl}/posts?exclude=${
+              data[0].id
+            }&categories=${categoryIds.toString()}&tags=${
+              languageTagId
+            }&per_page=2`
+          ),
+          ...categoryIds.map(async id => {
+            const res = await axios.get(`${process.env.blogUrl}/categories/${id}`)
+            return res.data
+          })
+        ])
+
+        categories = categoriesRes
+
+        // Process related results
+        relateResult.data.forEach(async element => {
+          let featuredImage = ''
+          try {
+            featuredImage = element._embedded['wp:featuredmedia']['0'].source_url
+          } catch (error) {}
+          if (!featuredImage) {
+            const $ = cheerio.load(element.content.rendered)
+            const images = $('img').attr('src')
+            if (images) {
+              featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
+            }
           }
-        }
-        const $_ = cheerio.load(post.excerpt.rendered)
-        const desc = $_('p').text()
-        const tableOfContents = []
-        $('h2, h3').each(function (i, e) {
-          const title = $(e).text()
-          const slug = slugify(title, { locale: 'vi', lower: true })
-          tableOfContents[i] = {
-            text: $(e).text(),
-            link: slug,
-            heading: e.name
-          }
-          $(this).attr('id', slug)
+          const $_ = cheerio.load(element.excerpt.rendered)
+          const desc = $_('p').text()
+
+          relatedPosts.push({
+            ...element,
+            featured_image: featuredImage,
+            user: userArray.find(user => user.id === element.author),
+            desc
+          })
         })
-        if (!tableOfContents.length) {
-          $('h1').each(function (i, e) {
+      } catch (error) {
+        console.log(error)
+      }
+
+      // Process post
+      return {
+        post: data.map(post => {
+          const $ = cheerio.load(post.content.rendered)
+          let featuredImage = ''
+          try {
+            featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
+          } catch (error) {}
+          if (!featuredImage) {
+            const $ = cheerio.load(post.content.rendered)
+            const images = $('img').attr('src')
+            if (images) {
+              featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
+            }
+          }
+          const $_ = cheerio.load(post.excerpt.rendered)
+          const desc = $_('p').text()
+          const tableOfContents = []
+          $('h2, h3').each(function (i, e) {
             const title = $(e).text()
             const slug = slugify(title, { locale: 'vi', lower: true })
             tableOfContents[i] = {
-              text: title,
-              link: slug
+              text: $(e).text(),
+              link: slug,
+              heading: e.name
             }
             $(this).attr('id', slug)
           })
-        }
-        return {
-          ...post,
-          new_content_rendered: $.html(),
-          desc,
-          featured_image: featuredImage,
-          user: userArray.find(user => user.id === post.author),
-          table_of_contents: tableOfContents
-          // author: authorResult.data.name
-        }
-      })[0],
-      categories: categories.map(item => item.name),
-      relatedPosts
-      // relatedPosts: relateResult.data.map(post => {
-      //   let featuredImage = ''
-      //   try {
-      //     featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
-      //   } catch (error) {
-      //   }
-      //   if (!featuredImage) {
-      //     const $ = cheerio.load(post.content.rendered)
-      //     const images = $('img').attr('src')
-      //     if (images) {
-      //       featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
-      //     }
-      //   }
-      //   const $_ = cheerio.load(post.excerpt.rendered)
-      //   const desc = $_('p').text()
-      //   return {
-      //     ...post,
-      //     featured_image: featuredImage,
-      //     desc
-      //   }
-      // })
+          if (!tableOfContents.length) {
+            $('h1').each(function (i, e) {
+              const title = $(e).text()
+              const slug = slugify(title, { locale: 'vi', lower: true })
+              tableOfContents[i] = {
+                text: title,
+                link: slug
+              }
+              $(this).attr('id', slug)
+            })
+          }
+          return {
+            ...post,
+            new_content_rendered: $.html(),
+            desc,
+            featured_image: featuredImage,
+            user: userArray.find(user => user.id === post.author),
+            table_of_contents: tableOfContents
+          }
+        })[0],
+        categories: categories.map(item => item.name),
+        relatedPosts
+      }
+    } catch (error) {
+      console.log(error)
+      error({ statusCode: 404 })
     }
   },
+
   data () {
     return {
       form: {

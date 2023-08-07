@@ -70,17 +70,6 @@
         <h3 class="landing-font-28 text-black-800 font-bold mb-8">
           {{ $t('blog.most_recent') }}
         </h3>
-        <!-- <el-input
-          v-model="query"
-          :placeholder="`${$t('blog.search')}`"
-          style="margin-bottom: 7px; max-width: 20%;"
-          @input="searchPosts"
-        >
-          <i
-            slot="suffix"
-            class="el-icon-search el-input__icon text-20 font-weight-700 text-black"
-          />
-        </el-input> -->
       </div>
       <!-- Posts -->
       <div v-loading="postLoading" class="blog-container w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[30px] gap-y-[30px]">
@@ -96,27 +85,6 @@
       </div>
     </section>
 
-    <!-- CTA -->
-    <!-- <section class="md:mt-36 mt-24">
-      <div
-        class="w-full rounded py-[40px] px-[65px] flex justify-between align-middle md:flex-row flex-col"
-        style="background-color: #f5f6f7"
-      >
-        <div>
-          <h2 class="landing-font-28 font-semibold mb-3 sm:text-left text-center">{{ $t('blog.cta.title') }}</h2>
-          <p class=" md:max-w-[490px] md:text-left md:mb-0 landing-font-14 max-w-max text-center mb-6">
-            {{ $t('blog.cta.desc') }}
-          </p>
-        </div>
-        <nuxt-link
-          class="landing-btn"
-          :to="localePath('/register')"
-          style="align-self: center"
-        >
-          {{ $t('blog.cta.btn.text') }}
-        </nuxt-link>
-      </div>
-    </section> -->
     <section class="md:mt-36 mt-24">
       <div
         class="w-full rounded py-[40px] px-[65px] flex justify-between align-middle md:flex-row flex-col"
@@ -151,20 +119,29 @@ export default {
   components: {
     Post,
     SubscribeSuccessful
-    // SecurityReport
   },
+
   layout: 'landing',
+
   scrollToTop: true,
+
   async asyncData (context) {
     const language = context.store.state.i18n.locale
-    let tagId
     try {
-      const posts = []
+      // Get language tag
       const result = await axios.get(`${process.env.blogUrl}/tags?slug=${language}`)
-      tagId = result.data[0].id
-      const { data } = await axios.get(`${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${tagId}&categories=8,13,18,54,25`)
-      const users = await axios.get(`${process.env.blogUrl}/users`)
-      const userArray = users.data
+      const tagId = result.data[0].id
+
+      // Get posts and users
+      const [postsRes, usersRes] = await Promise.all([
+        axios.get(`${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${tagId}&categories=8,13,18,54,25`),
+        axios.get(`${process.env.blogUrl}/users`)
+      ])
+
+      const posts = []
+      const data = postsRes.data
+      const userArray = usersRes.data
+
       data.forEach(async post => {
         let featuredImage = ''
         try {
@@ -180,7 +157,6 @@ export default {
         }
         const $_ = cheerio.load(post.excerpt.rendered)
         const desc = $_('p').text()
-        // const author = await axios.get(`${process.env.blogUrl}/users/${post.author}`)
         posts.push({
           ...post,
           featured_image: featuredImage,
@@ -188,35 +164,17 @@ export default {
           desc
         })
       })
+
       return {
-        // posts: data.map(post => {
-        //   let featuredImage = ''
-        //   try {
-        //     featuredImage = post._embedded['wp:featuredmedia']['0'].source_url
-        //   } catch (error) {
-        //   }
-        //   if (!featuredImage) {
-        //     const $ = cheerio.load(post.content.rendered)
-        //     const images = $('img').attr('src')
-        //     if (images) {
-        //       featuredImage = images.replace(/-[0-9]+x[0-9]+/g, '')
-        //     }
-        //   }
-        //   const $_ = cheerio.load(post.excerpt.rendered)
-        //   const desc = $_('p').text()
-        //   // const categories = this.categories.filter(item => post.categories.includes(item.id))
-        //   return {
-        //     ...post,
-        //     featured_image: featuredImage,
-        //     desc
-        //   }
-        // })
         posts,
-        users: userArray
+        users: userArray,
+        localeTagId: tagId
       }
     } catch (error) {
+      console.log(error)
     }
   },
+
   data () {
     return {
       form: {
@@ -234,12 +192,15 @@ export default {
       loadingMore: false,
       loadMoreDisabled: false,
       postLoading: false,
-      posts: []
+      posts: [],
+      localeTagId: null
     }
   },
+
   computed: {
     locale () { return this.$store.state.i18n.locale }
   },
+
   watch: {
     '$route.query.category' (newValue) {
       console.log(newValue)
@@ -254,6 +215,7 @@ export default {
       this.changeCategory(newValue)
     }
   },
+
   mounted () {
     if (this.$route.query.category) {
       const category = this.blog_categories.find(cate => cate.slug === this.$route.query.category)
@@ -262,23 +224,30 @@ export default {
       }
     }
   },
+
   methods: {
     showPre () {
       const slider = document.querySelector('.catalog-list')
-      const scrollLeft = slider.scrollLeft
-      slider.scroll({
-        left: scrollLeft - 150,
-        behavior: 'smooth'
-      })
+      if (slider) {
+        const scrollLeft = slider.scrollLeft || 0
+        slider.scroll({
+          left: scrollLeft - 150,
+          behavior: 'smooth'
+        })
+      }
     },
+
     showNext () {
       const slider = document.querySelector('.catalog-list')
-      const scrollLeft = slider.scrollLeft
-      slider.scroll({
-        left: scrollLeft + 150,
-        behavior: 'smooth'
-      })
+      if (slider) {
+        const scrollLeft = slider.scrollLeft || 0
+        slider.scroll({
+          left: scrollLeft + 150,
+          behavior: 'smooth'
+        })
+      }
     },
+
     async subscribeBlog () {
       if (this.$refs.form) {
         const isValid = await this.$refs.form.validate()
@@ -290,10 +259,6 @@ export default {
       }
       try {
         await this.subscribe(this.form.email)
-        // this.$message({
-        //   message: this.$t('landing_contact.messages.request_has_been_sent'),
-        //   type: 'success'
-        // })
         this.$refs.subscribeSuccessful.openDialog()
       } catch (error) {
         this.$message({
@@ -302,17 +267,20 @@ export default {
         })
       }
     },
+
     async getTagBySlug (tagSlug) {
       try {
+        if (tagSlug === this.locale && this.localeTagId) {
+          return this.localeTagId
+        }
         const result = await axios.get(`${process.env.blogUrl}/tags?slug=${tagSlug}`)
         return result.data[0]
       } catch (error) {
-        return {}
+        return null
       }
     },
+
     async changeCategory (id) {
-      // const category = this.blog_categories.find(cate => cate.id === id)
-      // this.$router.push(`/blog?category=${category.slug}`)
       window.scroll({
         top: 650,
         left: 0,
@@ -324,13 +292,8 @@ export default {
       this.page = 1
       this.query = ''
       try {
-        const localeTag = await this.getTagBySlug(this.locale)
-        const url = `${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${localeTag.id}&categories=${this.category}`
-        // if (this.category !== 0) {
-        //   url += `&categories=${parseInt(this.category)}`
-        // } else {
-        //   url += `&categories=${this.categories_id.toString()}`
-        // }
+        const localeTagId = await this.getTagBySlug(this.locale)
+        const url = `${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${localeTagId}&categories=${this.category}`
         const { data } = await axios.get(url)
         if (data.length < 9) {
           this.loadMoreDisabled = true
@@ -339,21 +302,18 @@ export default {
         }
         this.posts = data.map(this.mapFeatures)
       } catch (error) {
-        this.errorMessage()
+        console.log(error)
+        this.notify(this.$t('errors.something_went_wrong'), 'warning')
       }
       this.postLoading = false
     },
+
     async loadMore () {
       this.loadingMore = true
       this.page += 1
       try {
-        const localeTag = await this.getTagBySlug(this.locale)
-        const url = `${process.env.blogUrl}/posts?_embed=1&per_page=9&page=${this.page}&tags=${localeTag.id}&search=${this.query}&categories=${this.category}`
-        // if (this.category !== 0) {
-        //   url += `&categories=${this.category}`
-        // } else {
-        //   url += `&categories=${this.categories_id.toString()}`
-        // }
+        const localeTagId = await this.getTagBySlug(this.locale)
+        const url = `${process.env.blogUrl}/posts?_embed=1&per_page=9&page=${this.page}&tags=${localeTagId}&search=${this.query}&categories=${this.category}`
         const newData = await axios.get(url)
         const newPosts = newData.data.map(this.mapFeatures)
         if (newPosts.length < 9) {
@@ -361,17 +321,17 @@ export default {
         } else {
           this.loadMoreDisabled = false
         }
-        // console.log(newPosts)
         this.posts = this.posts.concat(newPosts)
       } catch (error) {
-        // this.errorMessage()
         this.loadMoreDisabled = true
       }
       this.loadingMore = false
     },
+
     dateToFormattedString (date) {
       return moment(date).format('DD MMM YYYY')
     },
+
     mapFeatures (post) {
       let featuredImage = ''
       try {
@@ -394,6 +354,7 @@ export default {
         user: this.users.find(user => user.id === post.author)
       }
     },
+
     searchPosts: debounce(async function () {
       window.scroll({
         top: 650,
@@ -404,13 +365,8 @@ export default {
       this.loadMoreDisabled = false
       this.page = 1
       try {
-        const localeTag = await this.getTagBySlug(this.locale)
-        const url = `${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${localeTag.id}&search=${this.query}&categories=${this.category}`
-        // if (this.category !== 0) {
-        //   url += `&categories=${parseInt(this.category)}`
-        // } else {
-        //   url += `&categories=${this.categories_id.toString()}`
-        // }
+        const localeTagId = await this.getTagBySlug(this.locale)
+        const url = `${process.env.blogUrl}/posts?_embed=1&per_page=9&tags=${localeTagId}&search=${this.query}&categories=${this.category}`
         const { data } = await axios.get(url)
         if (data.length < 9) {
           this.loadMoreDisabled = true
@@ -419,7 +375,8 @@ export default {
         }
         this.posts = data.map(this.mapFeatures)
       } catch (error) {
-        this.errorMessage()
+        console.log(error)
+        this.notify(this.$t('errors.something_went_wrong'), 'warning')
       }
       this.postLoading = false
     }, 800)
