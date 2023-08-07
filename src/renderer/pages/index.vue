@@ -686,6 +686,7 @@ export default {
           }
           const $_ = cheerio.load(post.excerpt.rendered)
           const desc = $_('p').text()
+
           posts.push({
             ...post,
             user: userArray.find(author => author.id === post.author),
