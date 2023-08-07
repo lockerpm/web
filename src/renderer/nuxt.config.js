@@ -276,6 +276,7 @@ module.exports = {
     }
   ],
   serverMiddleware: [
+    // Notion - Whitepaper
     { path: '/api', handler: '~/server-middleware/rest.js' },
     { path: '/api/content', handler: '~/server-middleware/notion.js' },
     { path: '/api/top-banner', handler: '~/server-middleware/topBanner.js' },
