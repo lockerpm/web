@@ -653,10 +653,35 @@ export default {
 
   layout: 'landing',
 
-  async asyncData ({ store, $axios }) {
+  data () {
+    return {
+      videoId: 'kAutqE2ATfU',
+      dialogVisible: false,
+      posts: [],
+      testimonials: []
+    }
+  },
+
+  head () {
+    return {
+      script: [
+        {
+          src: '//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js',
+          async: true
+        }
+      ]
+    }
+  },
+
+  mounted () {
+    this.getBlogs()
+    this.getTestimonials()
+  },
+
+  methods: {
     // Get blogs
-    const _getBlogs = async () => {
-      const language = store.state.i18n.locale
+    async getBlogs  () {
+      const language = this.locale
       let tagId
       try {
         const posts = []
@@ -694,72 +719,38 @@ export default {
             desc
           })
         })
-        return {
-          posts
-        }
+        this.posts = posts
       } catch (error) {
-        // console.log(error)
+        console.log(error)
       }
-    }
+    },
 
     // Get testimonials
-    const _getTestimonials = async () => {
+    async getTestimonials () {
       try {
-        const res = await $axios.get(`${process.env.baseUrl}/api/testimonials`)
+        const res = await this.$axios.get(`${process.env.baseUrl}/api/testimonials`)
         if (!res.data?.data) {
           return {
             testimonials: []
           }
         }
-        return {
-          testimonials: res.data.data
-            .filter(t => t.Status === 'Active')
-            .map(t => {
-              let rating = 5
-              try {
-                rating = parseInt(t.Rating)
-              } catch (error) {
-                //
-              }
-              return {
-                ...t,
-                Rating: rating
-              }
-            })
-        }
+        this.testimonials = res.data.data
+          .filter(t => t.Status === 'Active')
+          .map(t => {
+            let rating = 5
+            try {
+              rating = parseInt(t.Rating)
+            } catch (error) {
+              //
+            }
+            return {
+              ...t,
+              Rating: rating
+            }
+          })
       } catch (error) {
-        // console.log(error)
+        console.log(error)
       }
-    }
-
-    const [blogRes, testimonialRes] = await Promise.all([
-      _getBlogs(),
-      _getTestimonials()
-    ])
-
-    return {
-      ...blogRes,
-      ...testimonialRes
-    }
-  },
-
-  data () {
-    return {
-      videoId: 'kAutqE2ATfU',
-      dialogVisible: false,
-      posts: [],
-      testimonials: []
-    }
-  },
-
-  head () {
-    return {
-      script: [
-        {
-          src: '//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js',
-          async: true
-        }
-      ]
     }
   }
 }
