@@ -34,12 +34,9 @@
         <a
           href="https://github.com/lockerpm"
           target="_blank"
-          class="nav-item btn !font-normal flex items-center"
+          class="nav-item btn !font-normal"
         >
-          <img
-            src="https://id.locker.io/img/logo/github.svg"
-            style="height: 18px; margin-right: 8px"
-          >
+          <i class="fab fa-github mr-1" />
           Open-source
         </a>
 

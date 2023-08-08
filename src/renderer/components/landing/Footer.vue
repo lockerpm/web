@@ -85,6 +85,14 @@
                 >
                   <i class="fab fa-twitter mt-2" />
                 </a>
+                <a
+                  class="text-black-600 landing-font-22 landing-transition mr-6 w-10 h-10 text-center border hover:border-green"
+                  style="border-radius: 50%"
+                  target="_blank"
+                  href="https://github.com/lockerpm"
+                >
+                  <i class="fab fa-github mt-2" />
+                </a>
               </div>
               <div class="flex mt-[20px]">
                 <a
