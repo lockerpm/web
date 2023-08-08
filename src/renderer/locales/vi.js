@@ -3283,6 +3283,11 @@ module.exports = {
               name: 'Báo cáo đánh giá bảo mật',
               link: 'https://s.locker.io/audit_reports/Locker_Audit_Report_By_CyStack_VI.pdf',
               external: true
+            },
+            {
+              name: 'Open-source',
+              link: 'https://github.com/lockerpm',
+              external: true
             }
           ]
         }
