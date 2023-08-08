@@ -1,19 +1,22 @@
 <template>
   <div>
     <el-collapse v-model="collapse" class="mb-8">
-      <el-collapse-item
-        class="setting-wrapper"
-        name="collapse"
-      >
+      <el-collapse-item class="setting-wrapper" name="collapse">
         <template slot="title">
           <div class="w-full">
-            <div class="py-5 flex items-center justify-between" style="width: calc(100% - 24px)">
+            <div
+              class="py-5 flex items-center justify-between"
+              style="width: calc(100% - 24px)"
+            >
               <div class="flex items-center">
                 <div>
                   <div class="text-head-5 font-semibold">
                     {{ $t('data.rewards.ext_installation.title') }}
                   </div>
-                  <span v-if="!collapse.length" class="text-black-500 lg:hidden md:block">
+                  <span
+                    v-if="!collapse.length"
+                    class="text-black-500 lg:hidden md:block"
+                  >
                     {{ $t('data.rewards.note1', { month: 1, plan: planText }) }}
                   </span>
                   <CurrentStep
@@ -22,7 +25,10 @@
                     class="lg:hidden md:flex"
                   />
                 </div>
-                <span v-if="!collapse.length" class="ml-4 text-black-500 lg:block md:hidden hidden">
+                <span
+                  v-if="!collapse.length"
+                  class="ml-4 text-black-500 lg:block md:hidden hidden"
+                >
                   {{ $t('data.rewards.note1', { month: 1, plan: planText }) }}
                 </span>
               </div>
@@ -32,9 +38,20 @@
                 class="lg:flex md:hidden hidden"
               />
             </div>
-            <div v-if="currentPlan.alias !== 'pm_free' && currentPlan.extra_time > 0 && currentStep.key === 3" class="flex items-center pb-5">
-              <a href="/settings/plans-billing">{{ $t('data.rewards.discontinue') }}</a>
-              <span class="ml-1">{{ $t('data.rewards.discontinue_note') }}</span>
+            <div
+              v-if="
+                currentPlan.alias !== 'pm_free' &&
+                  currentPlan.extra_time > 0 &&
+                  currentStep.key === 3
+              "
+              class="flex items-center pb-5"
+            >
+              <a href="/settings/plans-billing">{{
+                $t('data.rewards.discontinue')
+              }}</a>
+              <span class="ml-1">{{
+                $t('data.rewards.discontinue_note')
+              }}</span>
             </div>
           </div>
         </template>
@@ -62,19 +79,19 @@
                 <button
                   class="mt-3 py-[3px] px-[20px] font-semibold text-[#FFFFFF] bg-[#62AD56] rounded-sm hover:bg-[#2D702C]"
                 >
-                  {{ $t("download.section3.install") }}
+                  {{ $t('download.section3.install') }}
                 </button>
               </a>
               <button
                 v-else
                 class="mt-3 py-[3px] px-[20px] font-semibold text-[#606060] bg-[#EBEEF2] rounded-sm box-border border-[1px] border-[#DADEE3] cursor-auto"
               >
-                {{ $t("download.section3.coming") }}
+                {{ $t('download.section3.coming') }}
               </button>
             </div>
           </div>
           <div class="mb-4 text-black-500">
-            <div v-html="$t('data.rewards.ext_installation.subtitle1_desc')"/>
+            <div v-html="$t('data.rewards.ext_installation.subtitle1_desc')" />
           </div>
           <div class="">
             <el-checkbox-group
@@ -101,7 +118,9 @@
                       v-model="browser.displayName"
                       size="small"
                       :disabled="callingAPI || currentStep.key === 3"
-                      :placeholder="$t('data.rewards.ext_installation.input_placeholder')"
+                      :placeholder="
+                        $t('data.rewards.ext_installation.input_placeholder')
+                      "
                     />
                   </div>
                 </div>
@@ -135,7 +154,7 @@ export default {
   props: {
     mission: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     },
     planText: {
       type: String,
@@ -143,7 +162,7 @@ export default {
     },
     currentPlan: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     }
   },
   data () {
@@ -163,19 +182,26 @@ export default {
       return this.$t('data.rewards.steps')
     },
     currentStep () {
-      const missionStep = this.originSteps.find(s => s.value === this.mission.status)
+      const missionStep = this.originSteps.find(
+        s => s.value === this.mission.status
+      )
       return missionStep || {}
     },
     steps () {
       return this.originSteps.map(s => ({
         ...s,
-        status: this.currentStep.key !== 1 && this.currentStep.key >= s.key ? 'finish' : 'await'
+        status:
+          this.currentStep.key !== 1 && this.currentStep.key >= s.key
+            ? 'finish'
+            : 'await'
       }))
     },
     selectedBrowsers () {
-      return this.browsers.map(b => {
-        return this.allBrowsers.find(browser => browser.value === b)
-      }).filter(b => b.displayName)
+      return this.browsers
+        .map(b => {
+          return this.allBrowsers.find(browser => browser.value === b)
+        })
+        .filter(b => b.displayName)
     }
   },
   watch: {
@@ -191,41 +217,46 @@ export default {
   },
   methods: {
     fetchData () {
-      console.log(this.currentPlan)
       const browsers = this.mission?.answer || []
       this.browsers = browsers.map(a => a.browser)
       this.allBrowsers = this.allBrowsers.map(b => ({
         ...b,
-        displayName: (this.mission?.answer || []).find(a => a.browser === b.value)?.user_identifier || ''
+        displayName:
+          (this.mission?.answer || []).find(a => a.browser === b.value)
+            ?.user_identifier || ''
       }))
     },
     handleSend () {
       this.callingAPI = true
-      this.$axios.$post(`/cystack_platform/pm/reward/missions/${this.mission.mission.id}/completed`,
-        this.selectedBrowsers.map(b => ({
-          user_identifier: b.displayName,
-          browser: b.value
-        }))
-      ).then(res => {
-        this.callingAPI = false
-        if (res.claim) {
-          this.$emit('send', {
-            type: 'free_month',
-            action: this.$t('data.rewards.ext_installation.title')
-          })
-        } else {
+      this.$axios
+        .$post(
+          `/cystack_platform/pm/reward/missions/${this.mission.mission.id}/completed`,
+          this.selectedBrowsers.map(b => ({
+            user_identifier: b.displayName,
+            browser: b.value
+          }))
+        )
+        .then(res => {
+          this.callingAPI = false
+          if (res.claim) {
+            this.$emit('send', {
+              type: 'free_month',
+              action: this.$t('data.rewards.ext_installation.title')
+            })
+          } else {
+            this.$emit('resubmit', {
+              type: 'free_month',
+              action: this.$t('data.rewards.ext_installation.title')
+            })
+          }
+        })
+        .catch(() => {
+          this.callingAPI = false
           this.$emit('resubmit', {
             type: 'free_month',
             action: this.$t('data.rewards.ext_installation.title')
           })
-        }
-      }).catch(() => {
-        this.callingAPI = false
-        this.$emit('resubmit', {
-          type: 'free_month',
-          action: this.$t('data.rewards.ext_installation.title')
         })
-      })
     }
   }
 }

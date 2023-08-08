@@ -86,13 +86,6 @@ export default {
     }
   },
   computed: {
-    url () {
-      if (this.$i18n.locale === 'vi') {
-        return 'https://locker.io/vi/blog/tien-ich-quan-ly-mat-khau'
-      } else {
-        return 'https://locker.io/blog/introducing-a-new-locker-password-manager-for-firefox'
-      }
-    },
     realData () {
       return this.notionData.filter(
         data =>
