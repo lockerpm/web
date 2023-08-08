@@ -4,7 +4,7 @@
     class="fixed w-full z-30 transition duration-300 ease-in-out bg-transparent"
   >
     <div
-      class="max-w-6xl mx-auto flex flex-wrap items-center justify-between mt-0 py-[14px] px-6"
+      class="mx-auto flex flex-wrap items-center justify-between mt-0 py-[14px] px-6"
     >
       <!-- Logo -->
       <div class="flex items-center order-1">
@@ -30,7 +30,16 @@
       <!-- Icon on mobile end -->
 
       <!-- Right actions -->
-      <div class="hidden sm:flex ml-auto mr-6 lg:order-4 order-2">
+      <div class="hidden sm:flex ml-auto mr-6 lg:mr-0 lg:order-4 order-2">
+        <a
+          href="https://github.com/lockerpm"
+          target="_blank"
+          class="nav-item btn !font-normal"
+        >
+          <i class="fab fa-github mr-1" />
+          Open-source
+        </a>
+
         <template v-if="isLoggedIn">
           <nuxt-link :to="localeRoute({ name: 'vault' })" class="landing-btn">
             My Vault
@@ -81,66 +90,80 @@
             </nuxt-link>
           </li>
         </ul>
+
         <!-- Nav items -->
-        <ul
-          class="list-reset lg:flex justify-end flex-1 items-center gap-x-[45px]"
-        >
-          <li v-for="(item, index) in $t('landing_header.menu')" :key="index">
-            <a
-              v-if="item.external"
-              :href="item.link"
-              target="_blank"
-              class="inline-block nav-item text-black landing-transition"
-            >
-              {{ item.name }}
-            </a>
-            <nuxt-link
-              v-else
-              class="inline-block nav-item text-black landing-transition"
-              :to="
-                localeRoute({
-                  name:
-                    ['business', 'business-pricing'].includes(
-                      getRouteBaseName()
-                    ) && item.link === 'pricing'
-                      ? `business-${item.link}`
-                      : item.link
-                })
-              "
-            >
-              {{ item.name }}
-            </nuxt-link>
-          </li>
-          <hr class="sm:hidden my-5 opacity-20">
-          <template v-if="isLoggedIn">
-            <li class="sm:hidden">
-              <nuxt-link
-                :to="localeRoute({ name: 'vault' })"
+        <div class="flex-1 flex lg:justify-end xl:justify-center">
+          <ul class="list-reset lg:flex justify-end items-center gap-x-[45px]">
+            <li v-for="(item, index) in $t('landing_header.menu')" :key="index">
+              <a
+                v-if="item.external"
+                :href="item.link"
+                target="_blank"
                 class="inline-block nav-item text-black landing-transition"
               >
-                My Vault
-              </nuxt-link>
-            </li>
-          </template>
-          <template v-else>
-            <li class="sm:hidden">
+                {{ item.name }}
+              </a>
               <nuxt-link
+                v-else
                 class="inline-block nav-item text-black landing-transition"
-                to="/login"
+                :to="
+                  localeRoute({
+                    name:
+                      ['business', 'business-pricing'].includes(
+                        getRouteBaseName()
+                      ) && item.link === 'pricing'
+                        ? `business-${item.link}`
+                        : item.link
+                  })
+                "
               >
-                {{ $t('common.login') }}
+                {{ item.name }}
               </nuxt-link>
             </li>
+
+            <hr class="sm:hidden my-5 opacity-20">
+
             <li class="sm:hidden">
-              <nuxt-link
-                class="inline-block nav-item text-black landing-transition"
-                to="/register"
+              <a
+                href="https://github.com/lockerpm"
+                target="_blank"
+                class="nav-item !font-normal flex items-center text-black"
               >
-                {{ $t('common.sign_up') }}
-              </nuxt-link>
+                Open-source
+              </a>
             </li>
-          </template>
-        </ul>
+
+            <template v-if="isLoggedIn">
+              <li class="sm:hidden">
+                <nuxt-link
+                  :to="localeRoute({ name: 'vault' })"
+                  class="inline-block nav-item text-black landing-transition"
+                >
+                  My Vault
+                </nuxt-link>
+              </li>
+            </template>
+            <template v-else>
+              <li class="sm:hidden">
+                <nuxt-link
+                  class="inline-block nav-item text-black landing-transition"
+                  to="/login"
+                >
+                  {{ $t('common.login') }}
+                </nuxt-link>
+              </li>
+              <li class="sm:hidden">
+                <nuxt-link
+                  class="inline-block nav-item text-black landing-transition"
+                  to="/register"
+                >
+                  {{ $t('common.sign_up') }}
+                </nuxt-link>
+              </li>
+            </template>
+          </ul>
+        </div>
+
         <!-- Nav items end -->
       </div>
       <!-- Content end -->
