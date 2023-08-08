@@ -3288,6 +3288,11 @@ module.exports = {
               name: 'Product Roadmap',
               link: 'https://www.notion.so/cystack/a4c2ba7964dd4461a7d9e3dc8fea5a0c?v=f1e7954c7a1c40e38eb66253bed5dce0&pvs=4',
               external: true
+            },
+            {
+              name: 'Open-source',
+              link: 'https://github.com/lockerpm',
+              external: true
             }
           ]
         }
