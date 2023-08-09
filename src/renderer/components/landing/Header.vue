@@ -30,7 +30,9 @@
       <!-- Icon on mobile end -->
 
       <!-- Right actions -->
-      <div class="hidden sm:flex ml-auto mr-6 lg:mr-0 lg:order-4 order-2">
+      <div
+        class="hidden sm:flex items-center ml-auto mr-6 lg:mr-0 lg:order-4 order-2"
+      >
         <a
           href="https://github.com/lockerpm"
           target="_blank"
