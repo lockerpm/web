@@ -1228,7 +1228,7 @@ module.exports = {
       relay_desc_2_premium: 'You can reply to the email senders via your aliases.',
       relay_desc_3_premium: 'You can generate and use unlimited alias addresses.',
       relay_desc_4_premium: 'You have one customizable alias and one subdomain.',
-      relay_your_alias_addresses: 'You have one editable alias and one editable subdomain.',
+      relay_your_alias_addresses: 'Your alias addresses',
       relay_new_alias: 'New alias',
       relay_manage_subdomain: 'Manage subdomain',
       relay_use_subdomain: 'Use subdomain',

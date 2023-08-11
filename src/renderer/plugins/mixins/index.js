@@ -295,14 +295,21 @@ Vue.mixin({
         }
 
         this.$store.commit('UPDATE_SYNCING', true)
-        let path =
-          this.$store.state.currentPath === '/lock'
-            ? '/vault'
-            : this.$store.state.currentPath
-        if (path === '/' && this.isOnPremise) {
+        let path = this.$store.state.currentPath
+        console.log(path)
+        const IGNORED_PATHS = [
+          '/lock',
+          '/authenticate',
+          '/on-premise-create-master-pw'
+        ]
+        if (
+          IGNORED_PATHS.some(
+            p => path.startsWith(p) || path.startsWith(`/${this.locale}${p}`)
+          )
+        ) {
           path = '/vault'
         }
-        if (path.startsWith('/on-premise-create-master-pw')) {
+        if (path === '/' && this.isOnPremise) {
           path = '/vault'
         }
         this.$router.push(
