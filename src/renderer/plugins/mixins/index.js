@@ -296,7 +296,6 @@ Vue.mixin({
 
         this.$store.commit('UPDATE_SYNCING', true)
         let path = this.$store.state.currentPath
-        console.log(path)
         const IGNORED_PATHS = [
           '/lock',
           '/authenticate',

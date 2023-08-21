@@ -17,7 +17,6 @@
     <div class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4 mb-20">
       <Referral
         :plan-text="planText"
-        :current-plan="currentPlan"
       />
       <ExtInstallation
         :mission="getMissionById('extension_installation_and_review')"
@@ -131,9 +130,6 @@ export default {
     },
     remainPercent () {
       return this.totalPercent - this.usedPercent
-    },
-    currentPlan () {
-      return this.$store.state.currentPlan
     },
     planText () {
       if (['pm_free', 'pm_lifetime_premium', 'pm_premium'].includes(this.currentPlan.alias)) {
