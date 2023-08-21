@@ -1,24 +1,30 @@
 <template>
   <div>
     <el-collapse v-model="collapse" class="mb-8">
-      <el-collapse-item
-        class="setting-wrapper"
-        name="collapse"
-      >
+      <el-collapse-item class="setting-wrapper" name="collapse">
         <!-- Header -->
         <template slot="title">
           <div class="w-full">
-            <div class="py-5 flex items-center justify-between" style="width: calc(100% - 24px)">
+            <div
+              class="py-5 flex items-center justify-between"
+              style="width: calc(100% - 24px)"
+            >
               <div class="flex items-center">
                 <div>
                   <div class="text-head-5 font-semibold">
                     {{ $t('data.rewards.referral.title') }}
                   </div>
-                  <span v-if="!collapse.length" class="text-black-500 lg:hidden md:flex">
+                  <span
+                    v-if="!collapse.length"
+                    class="text-black-500 lg:hidden md:flex"
+                  >
                     {{ $t('data.rewards.note1', { month: 1, plan: planText }) }}
                   </span>
                 </div>
-                <span v-if="!collapse.length" class="ml-4 text-black-500 lg:flex md:hidden hidden">
+                <span
+                  v-if="!collapse.length"
+                  class="ml-4 text-black-500 lg:flex md:hidden hidden"
+                >
                   {{ $t('data.rewards.note1', { month: 1, plan: planText }) }}
                 </span>
               </div>
@@ -29,9 +35,20 @@
                 <img :src="require('~/assets/images/icons/referral.svg')">
               </div>
             </div>
-            <div v-if="currentPlan.alias !== 'pm_free' && currentPlan.extra_time > 0 && referrals.referred > 0" class="flex items-center pb-5">
-              <a href="/settings/plans-billing">{{ $t('data.rewards.discontinue') }}</a>
-              <span class="ml-1">{{ $t('data.rewards.discontinue_note') }}</span>
+            <div
+              v-if="
+                currentPlan.alias !== 'pm_free' &&
+                  currentPlan.extra_time > 0 &&
+                  referrals.referred > 0
+              "
+              class="flex items-center pb-5"
+            >
+              <a href="/settings/plans-billing">{{
+                $t('data.rewards.discontinue')
+              }}</a>
+              <span class="ml-1">{{
+                $t('data.rewards.discontinue_note')
+              }}</span>
             </div>
           </div>
         </template>
@@ -49,11 +66,11 @@
           </div>
           <div class="flex items-center justify-between w-full">
             <div style="width: calc(100% - 160px)">
-              <el-input
-                :value="referrals.referral_link"
-                readonly
-              >
-                <div slot="suffix" class="flex items-center mr-3 cursor-pointer">
+              <el-input :value="referrals.referral_link" readonly>
+                <div
+                  slot="suffix"
+                  class="flex items-center mr-3 cursor-pointer"
+                >
                   <span
                     v-clipboard:copy="referrals.referral_link"
                     v-clipboard:success="clipboardSuccessHandler"
@@ -91,18 +108,15 @@
                   <i class="fab fa-twitter text-head-5" />
                 </button>
               </ShareNetwork>
-              <ShareNetwork
-                network="telegram"
-                :url="referrals.referral_link"
-                :title="title"
+              <!-- Use custom link for Telegram because the ue-social-sharing version is bugged -->
+              <a
+                target="_blank"
+                :href="`https://t.me/share/url?url=${referrals.referral_link}&text=${title}`"
+                class="btn btn-icon btn-share bg-[#0088cc] !text-white"
+                type="button"
               >
-                <button
-                  class="btn btn-icon btn-share bg-[#0088cc] !text-white"
-                  type="button"
-                >
-                  <i class="fab fa-telegram text-head-5" />
-                </button>
-              </ShareNetwork>
+                <i class="fab fa-telegram text-head-5" />
+              </a>
             </div>
           </div>
         </div>
@@ -119,10 +133,6 @@ export default {
     planText: {
       type: String,
       default: ''
-    },
-    currentPlan: {
-      type: Object,
-      default: () => {}
     }
   },
   data () {
@@ -133,8 +143,6 @@ export default {
         referral_link: ''
       }
     }
-  },
-  computed: {
   },
   created () {
     this.getReferrals()
