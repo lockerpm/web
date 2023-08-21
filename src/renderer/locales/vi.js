@@ -2499,6 +2499,45 @@ module.exports = {
 
   },
   plan: {
+    // Do not delete this key
+    plans: [
+      {
+        alias: 'pm_free',
+        title: 'Free',
+        duration: '',
+        accounts: '',
+        price: {
+          usd: 0
+        },
+        yearly_price: {
+          usd: 0
+        }
+      },
+      {
+        alias: 'pm_premium',
+        title: 'Premium',
+        duration: 'tháng',
+        accounts: '',
+        price: {
+          usd: 4.99
+        },
+        yearly_price: {
+          usd: 15.48
+        }
+      },
+      {
+        alias: 'pm_family',
+        title: 'Family & Friends',
+        duration: 'tháng',
+        accounts: '6 tài khoản',
+        price: {
+          usd: 9.99
+        },
+        yearly_price: {
+          usd: 71.88
+        }
+      }
+    ],
     head_title: 'Bảng giá - Locker Password Manager',
     header: {
       title: 'Locker mang đến cho bạn GIÁ CẢ HỢP LÝ NHẤT',

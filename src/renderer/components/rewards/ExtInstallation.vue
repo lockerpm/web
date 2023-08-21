@@ -159,10 +159,6 @@ export default {
     planText: {
       type: String,
       default: ''
-    },
-    currentPlan: {
-      type: Object,
-      default: () => ({})
     }
   },
   data () {

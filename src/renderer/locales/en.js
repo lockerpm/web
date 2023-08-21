@@ -2499,6 +2499,45 @@ module.exports = {
 
   },
   plan: {
+    // Do not delete this key
+    plans: [
+      {
+        alias: 'pm_free',
+        title: 'Free',
+        duration: '',
+        accounts: '',
+        price: {
+          usd: 0
+        },
+        yearly_price: {
+          usd: 0
+        }
+      },
+      {
+        alias: 'pm_premium',
+        title: 'Premium',
+        duration: 'month',
+        accounts: '',
+        price: {
+          usd: 4.99
+        },
+        yearly_price: {
+          usd: 15.48
+        }
+      },
+      {
+        alias: 'pm_family',
+        title: 'Family & Friends',
+        duration: 'month',
+        accounts: '6 accounts',
+        price: {
+          usd: 9.99
+        },
+        yearly_price: {
+          usd: 71.88
+        }
+      }
+    ],
     head_title: 'Plans - Locker Password Manager',
     header: {
       title: 'Locker offers you the MOST REASONABLE PRICES',
