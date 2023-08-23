@@ -1805,7 +1805,8 @@ module.exports = {
         },
         {
           name: 'Windows',
-          img: 'windows.png'
+          img: 'windows.png',
+          href: '/download#windows'
         },
         {
           name: 'iOS',
@@ -1814,7 +1815,8 @@ module.exports = {
         },
         {
           name: 'Linux',
-          img: 'linux.png'
+          img: 'linux.png',
+          href: '/download#linux'
         },
         {
           name: 'Chrome',
@@ -1823,7 +1825,8 @@ module.exports = {
         },
         {
           name: 'MacOS',
-          img: 'macos.svg'
+          img: 'macos.svg',
+          href: '/download#macos'
         }
         // {
         //   name: 'Ubuntu',
@@ -1851,7 +1854,6 @@ module.exports = {
         // }
       ]
     },
-
     benefits: [
       {
         img: 'img1.png',

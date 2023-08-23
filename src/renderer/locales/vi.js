@@ -1802,8 +1802,13 @@ module.exports = {
       platforms: [
         {
           name: 'Android',
-          img: 'android.png',
+          img: 'android.svg',
           href: 'https://play.google.com/store/apps/details?id=com.cystack.locker'
+        },
+        {
+          name: 'Windows',
+          img: 'windows.png',
+          href: '/download#windows'
         },
         {
           name: 'iOS',
@@ -1811,21 +1816,19 @@ module.exports = {
           href: 'https://apps.apple.com/vn/app/locker-password-manager/id1586927301?l=vi'
         },
         {
+          name: 'Linux',
+          img: 'linux.png',
+          href: '/download#linux'
+        },
+        {
           name: 'Chrome',
           img: 'chrome.png',
           href: 'https://chrome.google.com/webstore/detail/locker-free-password-mana/cmajindocfndlkpkjnmjpjoilibjgmgh'
         },
         {
-          name: 'Windows',
-          img: 'windows.png'
-        },
-        {
-          name: 'Linux',
-          img: 'linux.png'
-        },
-        {
           name: 'MacOS',
-          img: 'macos.png'
+          img: 'macos.svg',
+          href: '/download#macos'
         }
         // {
         //   name: 'Ubuntu',
@@ -1853,7 +1856,6 @@ module.exports = {
         // }
       ]
     },
-
     benefits: [
       {
         img: 'img1_vi.png',

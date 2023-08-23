@@ -413,31 +413,33 @@
 
     <!-- Platforms -->
     <section class="mt-8">
-      <div class="w-8/12 mx-auto">
+      <div class="w-full lg:w-8/12 mx-auto mb-[100px]">
         <h2 class="text-center font-bold text-black landing-font-38 mb-[14px]">
           {{ $t('landing.platform.title') }}
         </h2>
         <p
-          class="text-center text-black-600 leading-[26px] landing-font-18 mx-auto mb-[42px] md:max-w-[540px]"
+          class="text-center text-black-600 leading-[26px] landing-font-18 mx-auto mb-[42px]"
         >
           {{ $t('landing.platform.desc') }}
         </p>
       </div>
       <div
-        class="w-full mx-auto md:justify-between justify-center align-start grid sm:grid-cols-3 grid-cols-2 justify-items-center"
+        class="w-full lg:w-8/12 mx-auto align-start grid sm:grid-cols-3 grid-cols-2"
       >
         <div
           v-for="(item, index) in $t('landing.platform.platforms')"
           :key="index"
-          class="opacity-90 mb-9"
+          class="opacity-90 mb-[80px]"
         >
           <a
             v-if="!!item.href"
             :href="item.href || '#'"
             :target="item.href ? '_blank' : '_self'"
-            class="sm:flex flex-flex-nowrap text-center"
+            class="flex sm:flex-row flex-col justify-center items-center"
           >
-            <div class="circle sm:mx-5 mx-auto">
+            <div
+              class="rounded-full shadow-md w-[80px] h-[80px] justify-center items-center flex sm:mr-5 mr-0 mb-5 sm:mb-0"
+            >
               <img
                 :src="require(`~/assets/images/landing/index/${item.img}`)"
                 :alt="item.name"
@@ -446,7 +448,7 @@
             </div>
 
             <p
-              class="landing-font-16 font-semibold text-black self-center sm:mt-0 mt-2"
+              class="landing-font-16 font-semibold text-black self-center sm:mt-0 mt-2 w-[70px] text-center sm:text-left"
             >
               {{ item.name }}
             </p>
@@ -680,7 +682,7 @@ export default {
 
   methods: {
     // Get blogs
-    async getBlogs  () {
+    async getBlogs () {
       const language = this.locale
       let tagId
       try {
@@ -728,7 +730,9 @@ export default {
     // Get testimonials
     async getTestimonials () {
       try {
-        const res = await this.$axios.get(`${process.env.baseUrl}/api/testimonials`)
+        const res = await this.$axios.get(
+          `${process.env.baseUrl}/api/testimonials`
+        )
         if (!res.data?.data) {
           return {
             testimonials: []
