@@ -1228,7 +1228,7 @@ module.exports = {
       relay_desc_2_premium: 'You can reply to the email senders via your aliases.',
       relay_desc_3_premium: 'You can generate and use unlimited alias addresses.',
       relay_desc_4_premium: 'You have one customizable alias and one subdomain.',
-      relay_your_alias_addresses: 'You have one editable alias and one editable subdomain.',
+      relay_your_alias_addresses: 'Your alias addresses',
       relay_new_alias: 'New alias',
       relay_manage_subdomain: 'Manage subdomain',
       relay_use_subdomain: 'Use subdomain',
@@ -1805,7 +1805,8 @@ module.exports = {
         },
         {
           name: 'Windows',
-          img: 'windows.png'
+          img: 'windows.png',
+          href: '/download#windows'
         },
         {
           name: 'iOS',
@@ -1814,7 +1815,8 @@ module.exports = {
         },
         {
           name: 'Linux',
-          img: 'linux.png'
+          img: 'linux.png',
+          href: '/download#linux'
         },
         {
           name: 'Chrome',
@@ -1823,7 +1825,8 @@ module.exports = {
         },
         {
           name: 'MacOS',
-          img: 'macos.svg'
+          img: 'macos.svg',
+          href: '/download#macos'
         }
         // {
         //   name: 'Ubuntu',
@@ -1851,7 +1854,6 @@ module.exports = {
         // }
       ]
     },
-
     benefits: [
       {
         img: 'img1.png',
@@ -1937,7 +1939,8 @@ module.exports = {
       title: 'Explore our blog'
     },
     testimonials: {
-      title: 'Trusted by thousands of customers'
+      title: 'Trusted by thousands of customers',
+      we_are_on: 'We are on'
     }
   },
   how_it_works: {
@@ -2499,11 +2502,55 @@ module.exports = {
 
   },
   plan: {
+    // Do not delete this key
+    plans: [
+      {
+        alias: 'pm_free',
+        title: 'Free',
+        duration: '',
+        accounts: '',
+        price: {
+          usd: 0
+        },
+        yearly_price: {
+          usd: 0
+        }
+      },
+      {
+        alias: 'pm_premium',
+        title: 'Premium',
+        duration: 'month',
+        accounts: '',
+        price: {
+          usd: 4.99
+        },
+        yearly_price: {
+          usd: 15.48
+        }
+      },
+      {
+        alias: 'pm_family',
+        title: 'Family & Friends',
+        duration: 'month',
+        accounts: '6 accounts',
+        price: {
+          usd: 9.99
+        },
+        yearly_price: {
+          usd: 71.88
+        }
+      }
+    ],
     head_title: 'Plans - Locker Password Manager',
     header: {
       title: 'Locker offers you the MOST REASONABLE PRICES',
       desc: 'The price is lower and lower when Locker is',
       desc_colored: 'the only Password Manager integrated with Private Email',
+      lifetime: {
+        get: 'Get Lifetime Premium for',
+        pay_once: 'Pay once, use forever!',
+        buy_now: 'Buy now'
+      },
       features: {
         sync_devices: {
           title: 'Cross-device data sync',
@@ -5631,6 +5678,20 @@ module.exports = {
           desc_1_new: 'Thank you, now please verify your account and enjoy full Locker Premium features.',
           desc_2_new: 'We have sent you a confirmation mail and a receipt to your email address.'
         }
+      }
+    },
+    lifetime: {
+      title: 'Locker Password Manager | Lifetime Premium',
+      desc: 'Secure your passwords with the lowest price & highest quality ever!',
+      common: {
+        lifetime: 'lifetime'
+      },
+      header: {
+        title: 'Sign up for Locker',
+        duration: 'Duration',
+        unlimited: 'Unlimited',
+        desc1: 'You will be billed once only for this Lifetime Subscription.',
+        desc2: 'Locker offers 30-day money back guarantee for any reason. Contact contact@locker.io to process the money back guarantee or for further support.'
       }
     }
   }

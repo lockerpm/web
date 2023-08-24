@@ -134,7 +134,8 @@ export default {
           href: this.getAlternatePath(this.locale)
         }
         // { rel: 'alternate', hreflang: 'vi', href: this.getAlternatePath('vi') }
-      ]
+      ],
+      script: [{ src: 'https://js.stripe.com/v3/' }]
     }
   },
   computed: {

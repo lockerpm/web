@@ -1802,8 +1802,13 @@ module.exports = {
       platforms: [
         {
           name: 'Android',
-          img: 'android.png',
+          img: 'android.svg',
           href: 'https://play.google.com/store/apps/details?id=com.cystack.locker'
+        },
+        {
+          name: 'Windows',
+          img: 'windows.png',
+          href: '/download#windows'
         },
         {
           name: 'iOS',
@@ -1811,21 +1816,19 @@ module.exports = {
           href: 'https://apps.apple.com/vn/app/locker-password-manager/id1586927301?l=vi'
         },
         {
+          name: 'Linux',
+          img: 'linux.png',
+          href: '/download#linux'
+        },
+        {
           name: 'Chrome',
           img: 'chrome.png',
           href: 'https://chrome.google.com/webstore/detail/locker-free-password-mana/cmajindocfndlkpkjnmjpjoilibjgmgh'
         },
         {
-          name: 'Windows',
-          img: 'windows.png'
-        },
-        {
-          name: 'Linux',
-          img: 'linux.png'
-        },
-        {
           name: 'MacOS',
-          img: 'macos.png'
+          img: 'macos.svg',
+          href: '/download#macos'
         }
         // {
         //   name: 'Ubuntu',
@@ -1853,7 +1856,6 @@ module.exports = {
         // }
       ]
     },
-
     benefits: [
       {
         img: 'img1_vi.png',
@@ -1939,7 +1941,8 @@ module.exports = {
       title: 'Khám phá blog của chúng tôi'
     },
     testimonials: {
-      title: 'Tin tưởng bởi hàng nghìn khách hàng'
+      title: 'Tin tưởng bởi hàng nghìn khách hàng',
+      we_are_on: 'Có mặt trên'
     }
   },
   how_it_works: {
@@ -2499,11 +2502,55 @@ module.exports = {
 
   },
   plan: {
+    // Do not delete this key
+    plans: [
+      {
+        alias: 'pm_free',
+        title: 'Free',
+        duration: '',
+        accounts: '',
+        price: {
+          usd: 0
+        },
+        yearly_price: {
+          usd: 0
+        }
+      },
+      {
+        alias: 'pm_premium',
+        title: 'Premium',
+        duration: 'tháng',
+        accounts: '',
+        price: {
+          usd: 4.99
+        },
+        yearly_price: {
+          usd: 15.48
+        }
+      },
+      {
+        alias: 'pm_family',
+        title: 'Family & Friends',
+        duration: 'tháng',
+        accounts: '6 tài khoản',
+        price: {
+          usd: 9.99
+        },
+        yearly_price: {
+          usd: 71.88
+        }
+      }
+    ],
     head_title: 'Bảng giá - Locker Password Manager',
     header: {
       title: 'Locker mang đến cho bạn GIÁ CẢ HỢP LÝ NHẤT',
       desc: 'Giá ngày càng thấp hơn khi Locker là',
       desc_colored: 'Trình quản lý mật khẩu duy nhất được tích hợp với Email ẩn danh',
+      lifetime: {
+        get: 'Sở hữu gói Lifetime Premium chỉ với',
+        pay_once: 'Mua một lần, dùng vĩnh viễn!',
+        buy_now: 'Mua ngay'
+      },
       features: {
         sync_devices: {
           title: 'Đồng bộ hóa dữ liệu trên nhiều thiết bị',
@@ -5475,6 +5522,20 @@ module.exports = {
           desc_1_new: 'Thank you, now please verify your account and enjoy full Locker Premium features.',
           desc_2_new: 'We have sent you a confirmation mail and a receipt to your email address.'
         }
+      }
+    },
+    lifetime: {
+      title: 'Locker Password Manager | Lifetime Premium',
+      desc: 'Secure your passwords with the lowest price & highest quality ever!',
+      common: {
+        lifetime: 'lifetime'
+      },
+      header: {
+        title: 'Sign up for Locker',
+        duration: 'Duration',
+        unlimited: 'Unlimited',
+        desc1: 'You will be billed once only for this Lifetime Subscription.',
+        desc2: 'Locker offers 30-day money back guarantee for any reason. Contact contact@locker.io to process the money back guarantee or for further support.'
       }
     }
   }
