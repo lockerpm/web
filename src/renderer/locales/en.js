@@ -1939,7 +1939,8 @@ module.exports = {
       title: 'Explore our blog'
     },
     testimonials: {
-      title: 'Trusted by thousands of customers'
+      title: 'Trusted by thousands of customers',
+      we_are_on: 'We are on'
     }
   },
   how_it_works: {
@@ -5672,6 +5673,20 @@ module.exports = {
           desc_1_new: 'Thank you, now please verify your account and enjoy full Locker Premium features.',
           desc_2_new: 'We have sent you a confirmation mail and a receipt to your email address.'
         }
+      }
+    },
+    lifetime: {
+      title: 'Locker Password Manager | Lifetime Premium',
+      desc: 'Secure your passwords with the lowest price & highest quality ever!',
+      common: {
+        lifetime: 'lifetime'
+      },
+      header: {
+        title: 'Sign up for Locker',
+        duration: 'Duration',
+        unlimited: 'Unlimited',
+        desc1: 'You will be billed once only for this Lifetime Subscription.',
+        desc2: 'Locker offers 30-day money back guarantee for any reason. Contact contact@locker.io to process the money back guarantee or for further support.'
       }
     }
   }
