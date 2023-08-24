@@ -2546,6 +2546,11 @@ module.exports = {
       title: 'Locker mang đến cho bạn GIÁ CẢ HỢP LÝ NHẤT',
       desc: 'Giá ngày càng thấp hơn khi Locker là',
       desc_colored: 'Trình quản lý mật khẩu duy nhất được tích hợp với Email ẩn danh',
+      lifetime: {
+        get: 'Sở hữu gói Lifetime Premium chỉ với',
+        pay_once: 'Mua một lần, dùng vĩnh viễn!',
+        buy_now: 'Mua ngay'
+      },
       features: {
         sync_devices: {
           title: 'Đồng bộ hóa dữ liệu trên nhiều thiết bị',

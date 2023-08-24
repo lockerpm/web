@@ -333,8 +333,7 @@ export default {
           name: 'twitter:description',
           content: desc
         }
-      ],
-      script: [{ src: 'https://js.stripe.com/v3/' }]
+      ]
     }
   },
 

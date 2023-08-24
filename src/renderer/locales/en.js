@@ -2546,6 +2546,11 @@ module.exports = {
       title: 'Locker offers you the MOST REASONABLE PRICES',
       desc: 'The price is lower and lower when Locker is',
       desc_colored: 'the only Password Manager integrated with Private Email',
+      lifetime: {
+        get: 'Get Lifetime Premium for',
+        pay_once: 'Pay once, use forever!',
+        buy_now: 'Buy now'
+      },
       features: {
         sync_devices: {
           title: 'Cross-device data sync',
