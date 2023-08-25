@@ -39,7 +39,7 @@
             <div class="mb-8">
               <div class="flex justify-between mb-3">
                 <p class="font-semibold">1 {{ $tc('common.month', 1) }}</p>
-                <p class="text-right">$1.66 USD</p>
+                <p class="text-right">$4.99 USD</p>
               </div>
               <div class="flex justify-between">
                 <p class="font-semibold">
@@ -52,7 +52,10 @@
                 <p>
                   {{ $t('common.total') }}
                 </p>
-                <p>$4.99 USD</p>
+                <p>
+                  <span class="line-through text-sm font-normal">$14.97</span>
+                  $4.99 USD
+                </p>
               </div>
             </div>
             <!-- Invoice end -->

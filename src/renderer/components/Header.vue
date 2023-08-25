@@ -25,7 +25,7 @@
     <!-- Search bar end -->
 
     <div class="flex">
-      <template v-if="!currentTeam">
+      <template v-if="shouldShowRewardsAndPlans">
         <!-- Referral -->
         <div class="mr-3 md:block hidden">
           <button
@@ -79,7 +79,7 @@
         <!-- User info -->
 
         <el-dropdown-menu slot="dropdown" class="min-w-[200px]">
-          <template v-if="!currentTeam">
+          <template v-if="shouldShowRewardsAndPlans">
             <el-dropdown-item
               class="text-warning md:hidden"
               icon="fa fa-tasks"
@@ -175,6 +175,7 @@ export default {
       return await this.$vaultTimeoutService.isLocked()
     }
   },
+
   computed: {
     shouldShowSearch () {
       return [
@@ -188,13 +189,22 @@ export default {
         'authenticator'
       ].includes(this.getRouteBaseName())
     },
+
     currentPlan () {
       return this.$store.state.currentPlan
     },
+
     currentTeam () {
       return this.teams[0]
+    },
+
+    shouldShowRewardsAndPlans () {
+      return (
+        !this.currentTeam && this.currentPlan.alias !== 'pm_lifetime_premium'
+      )
     }
   },
+
   mounted () {
     // Set click event
     const navMenuDiv = document.getElementById('nav-content')
