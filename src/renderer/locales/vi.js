@@ -167,7 +167,8 @@ module.exports = {
     subscribe: 'Đăng ký',
     agree_terms: 'Tôi đồng ý với <a target="_blank" href="https://locker.io/vi/terms"><b>Điều khoản</b></a> và <a target="_blank" href="https://locker.io/vi/privacy"><b>Chính sách</b></a>',
     expired: 'Hết hạn',
-    choose_file: 'Chọn tệp'
+    choose_file: 'Chọn tệp',
+    onetime: 'Gói trọn đời'
   },
   sidebar: {
     all: 'Tất cả',
@@ -5303,93 +5304,93 @@ module.exports = {
   lifetime: {
     redeem_page: {
       form: {
-        need_create_account: 'Haven\'t had a Locker account?',
-        app_code: '{service} Code',
-        agree_terms: 'I agree with the <a target="_blank" href="https://locker.io/terms"><b>Terms</b></a> and <a target="_blank" href="https://locker.io/privacy"><b>Conditions</b></a>',
-        submit_btn: 'Redeem Code',
+        need_create_account: 'Chưa có tài khoản Locker?',
+        app_code: 'Mã {service}',
+        agree_terms: 'Tôi đồng ý với <a target="_blank" href="https://locker.io/vi/terms"><b>Điều khoản dịch vụ</b></a> và <a target="_blank" href="https://locker.io/vi/privacy"><b>Chính sách bảo mật</b></a>',
+        submit_btn: 'Sử dụng mã',
         success: {
-          title: 'Success',
-          desc: 'Now check your email {email} and then you\'ll be ready to go!',
+          title: 'Thành công',
+          desc: 'Bây giờ hãy kiểm tra email {email} của bạn và sẵn sàng sử dụng Locker Premium trọn đời.',
           btn: 'Yay!'
         },
         error: {
-          invalid_code: 'Hmm! It seems the {service} Code you\'ve entered doesn\'t exist or expired :(',
-          account_not_exist: 'Please create a new account with this email',
-          only_individual: 'This {service} Code is applicable only for individual accounts. Use an individual account to apply the code, or return it at {service}.',
-          invalid_data: 'Invalid data'
+          invalid_code: 'Hmm! Có vẻ như mã {service} bạn vừa nhập không tồn tại hoặc đã hết hạn :(',
+          account_not_exist: 'Vui lòng tạo một tài khoản với email này',
+          only_individual: 'Mã {service} này chỉ áp dụng đối với tài khoản cá nhân. Sử dụng một tài khoản cá nhân để sử dụng mã, hoặc đổi trả tại {service}.',
+          invalid_data: 'Thông tin không hợp lệ'
         }
       },
       intro: {
-        title: 'Redeem your {service} Code for Locker\'s Lifetime Package',
-        desc: 'If you have already had an {service} Code for Locker Password Manager, use them to redeem for Locker\'s services now.',
+        title: 'Sử dụng mã {service} để mua gói Locker Premium trọn đời',
+        desc: 'Nễu bạn đã có một mã {service} cho Trình quản lý mật khẩu Locker, hãy sử dụng để đăng ký dịch vụ Locker ngay bây giờ!',
         instructions: [
-          'If you haven\'t had a Locker account, tick on the box below to create your account.',
-          'Enter your Email used for Locker account and your {service} Code.',
-          'Click Redeem Code, you will receive a notification sent to your mail box.',
-          'Log in to your account and enjoy Locker!'
+          'Nếu bạn chưa có tài khoản Locker, tích vào ô vuông bên dưới để tạo một tài khoản.',
+          'Nhập email sử dụng Locker của bạn và mã {service}.',
+          'Nhấp vào nút Sử dụng mã, và bạn sẽ nhận được thông báo thành công về email.',
+          'Đăng nhập và tận hưởng những lợi ích từ Locker!'
         ]
       },
       benefits: {
-        title: 'What do I get?',
+        title: 'Tôi sẽ nhận được gì?',
         items: [
           {
-            title: 'With-a-click password saving',
-            desc: 'Locker saves your login credentials with one click when you first sign in to a website or application for later use.'
+            title: 'Lưu mật khẩu với một cú nhấp chuột',
+            desc: 'Locker lưu thông tin đăng nhập của bạn chỉ bằng một cú nhấp chuột khi bạn đăng nhập lần đầu vào bất kỳ trang web hoặc ứng dụng nào.'
           },
           {
-            title: 'Automatic Login',
-            desc: 'Already stored passwords in Locker? No need to enter the passwords manually - Locker is here to do it.'
+            title: 'Đăng nhập tự động',
+            desc: 'Bạn đã lưu trữ các mật khẩu trong Locker? Không cần nhập mật khẩu theo cách thủ công - Locker ở đây để làm điều đó giúp bạn.'
           },
           {
-            title: 'Strong Password Generator',
-            desc: 'The built-in password generator helps create strong, unique passwords to safeguard your accounts against intruders.'
+            title: 'Công cụ tạo mật khẩu mạnh',
+            desc: 'Trình tạo mật khẩu tích hợp trong Locker giúp tạo mật khẩu mạnh và độc nhất để bảo vệ tài khoản của bạn khỏi những kẻ xâm nhập.'
           },
           {
-            title: 'Built-in Locker Authentication',
-            desc: 'Set up a TOTP in Locker for any app or website you want to serve as the second-factor authentication for your account.'
+            title: 'Trình xác thực hai yếu tố',
+            desc: 'Thiết lập xác thực hai yếu tố bằng TOTP với Locker cho bất kỳ tài khoản nào của bạn để nâng cao bảo mật.'
           },
           {
-            title: 'Locker Private Email',
-            desc: 'With email aliases, you can receive and reply to emails anonymously. Your true email inbox stays hidden.'
+            title: 'Email ẩn danh',
+            desc: 'Với dịch vụ email ẩn danh, bạn có thể nhận và trả lời email một cách ẩn danh. Địa chỉ email gốc của bạn được ẩn giấu một cách an toàn.'
           },
           {
-            title: 'Crypto Asset Protection',
-            desc: 'Locker gives prominence to crypto wallets, with the custom form to make it easier to store every aspect of a wallet, which Locker encrypts along with the rest of your vault.'
+            title: 'Bảo vệ tài sản điện tử',
+            desc: 'Locker bảo mật ví tiền điện tử của bạn, với biểu mẫu tùy chỉnh để giúp lưu trữ mọi khía cạnh của ví dễ dàng hơn và mã hóa cùng với các dữ liệu khác trong kho lưu trữ của bạn.'
           },
           {
-            title: 'Data synchronization across all devices',
-            desc: 'With cross-device data synchronization, you can access your  passwords and data in Locker from anywhere at any time.'
+            title: 'Đồng bộ hóa dữ liệu trên tất cả các thiết bị',
+            desc: 'Với tính năng đồng bộ hóa dữ liệu trên nhiều thiết bị, bạn có thể truy cập mật khẩu và dữ liệu của mình trong Locker mọi lúc, mọi nơi.'
           },
           {
-            title: 'Unlimited Storage',
-            desc: 'Locker provides you with unlimited storage to save your passwords and data. Never afraid of using up space.'
+            title: 'Lưu trữ không giới hạn',
+            desc: 'Locker cung cấp cho bạn dung lượng lưu trữ không giới hạn để lưu mật khẩu và các dữ liệu khác của bạn.'
           },
           {
-            title: 'AES 256-bit encryption',
-            desc: 'Your data is encrypted with military-grade AES 256-bit encryption to ensure maximum security.'
+            title: 'Mã hóa AES 256-bit',
+            desc: 'Dữ liệu của bạn được mã hóa bằng thuật toán mã hóa AES 256-bit cấp quân sự để đảm bảo an ninh tối đa.'
           },
           {
-            title: 'Password sharing',
-            desc: 'Share credentials with your family and friends quickly and securely over an encrypted channel.'
+            title: 'Chia sẻ mật khẩu',
+            desc: 'Chia sẻ thông tin đăng nhập và dữ liệu khác với gia đình và bạn bè của bạn một cách nhanh chóng và an toàn qua kênh được mã hóa.'
           },
           {
-            title: 'Data breach scanner',
-            desc: 'Locker scans and sends alerts if it detects that your data has been leaked in any data breaches.'
+            title: 'Trình quét rò rỉ dữ liệu',
+            desc: 'Locker quét và gửi cảnh báo cho bạn nếu phát hiện dữ liệu của bạn đã bị rò rỉ trong bất kỳ cuộc vi phạm dữ liệu nào.'
           },
           {
-            title: 'Emergency access',
-            desc: 'Add your trusted contacts so they can help access your data in any emergency cases.'
+            title: 'Truy cập khẩn cấp',
+            desc: 'Locker cho phép bạn thêm các liên hệ đáng tin cậy để họ có thể giúp truy cập dữ liệu của bạn trong bất kỳ trường hợp khẩn cấp nào.'
           },
           {
-            title: 'Secure confidential notes',
-            desc: 'Locker has a separate folder for users to save confidential notes. No need to remember a thing as Locker is here.'
+            title: 'Bảo vệ các ghi chú bí mật',
+            desc: 'Locker có loại mục riêng để người dùng lưu những ghi chú bí mật. Bạn sẽ không cần phải lo lắng vì đã có Locker ở đây.'
           },
           {
-            title: 'Credit card quick access',
-            desc: 'Save your credit and debit card details so that Locker automatically fills them in when you go shopping online.'
+            title: 'Truy cập nhanh vào thẻ tín dụng',
+            desc: 'Lưu thông tin thẻ tín dụng và thẻ ghi nợ của bạn để Locker tự động điền giúp bạn một cách nhanh chóng khi mua sắm trực tuyến.'
           }
         ],
-        more_features: 'And much more cool features for Your Secure and Seamless Internet Experience'
+        more_features: 'Và nhiều tính năng thú vị khác cho trải nghiệm Internet của bạn an toàn và liền mạch hơn.'
       }
     }
   },
@@ -5501,41 +5502,41 @@ module.exports = {
         ]
       },
       form: {
-        title: 'Sign up for Locker',
-        total_month: 'Total months of use',
-        offer_desc_1: 'You will get 3 months of Premium when signing up for this offer.',
-        offer_desc_2: 'After that, your plan is billed monthly and will renew for $4.99 USD (plus any applicable taxes and minus any discounts) on {date}.',
-        offer_desc_3: 'You can cancel any time before this date.',
-        pay_with_card: 'Pay with card',
-        need_create_account: 'Haven\'t had a Locker account?',
-        create_pw: 'Create a password',
-        confirm_pw: 'Confirm password',
+        title: 'Đăng ký Locker',
+        total_month: 'Thời gian sử dụng',
+        offer_desc_1: 'Bạn sẽ nhận được 3 tháng sử dụng gói Premium khi đăng ký ưu đãi này.',
+        offer_desc_2: 'Sau đó, gói của bạn sẽ gia hạn hàng tháng với giá $4.99 USD (cộng với thuế hiện hành và trừ đi các giảm giá) vào ngày {date}.',
+        offer_desc_3: 'Bạn có thể hủy đăng ký bất kỳ lúc nào trước thời hạn này.',
+        pay_with_card: 'Thanh toán với thẻ',
+        need_create_account: 'Chưa có tài khoản Locker?',
+        create_pw: 'Tạo mật khẩu',
+        confirm_pw: 'Xác nhận mật khẩu',
         error: {
-          account_not_exist: 'Please create a new account with this email',
-          only_individual: 'This promotion is applicable only for individual accounts.',
-          invalid_data: 'Invalid data'
+          account_not_exist: 'Vui lòng tạo một tài khoản với email này',
+          only_individual: 'Ưu đãi này chỉ áp dụng đối với tài khoản cá nhân.',
+          invalid_data: 'Thông tin không hợp lệ'
         },
         success: {
-          title: 'Payment Successful',
-          desc_1: 'Thank you, now your account has been upgraded.',
-          desc_2: 'We have sent you a receipt to your email address.',
-          desc_1_new: 'Thank you, now please verify your account and enjoy full Locker Premium features.',
-          desc_2_new: 'We have sent you a confirmation mail and a receipt to your email address.'
+          title: 'Thanh toán thành công',
+          desc_1: 'Tài khoản của bạn đã được nâng cấp.',
+          desc_2: 'Bạn sẽ nhận được một hóa đơn qua email của bạn.',
+          desc_1_new: 'Bây giờ hãy xác thực tài khoản của bạn và khám phá Locker',
+          desc_2_new: 'Chúng tôi đã gửi liên kết xác thực và hóa đơn qua email của bạn.'
         }
       }
     },
     lifetime: {
-      title: 'Locker Password Manager | Lifetime Premium',
-      desc: 'Secure your passwords with the lowest price & highest quality ever!',
+      title: 'Trình quản lý mật khẩu Locker | Premium trọn đời',
+      desc: 'Bảo vệ mật khẩu của bạn ở mức độ cao nhất với mức giá rẻ nhất!',
       common: {
-        lifetime: 'lifetime'
+        lifetime: 'Trọn đời'
       },
       header: {
-        title: 'Sign up for Locker',
-        duration: 'Duration',
-        unlimited: 'Unlimited',
-        desc1: 'You will be billed once only for this Lifetime Subscription.',
-        desc2: 'Locker offers 30-day money back guarantee for any reason. Contact contact@locker.io to process the money back guarantee or for further support.'
+        title: 'Đăng ký Locker',
+        duration: 'Thời gian',
+        unlimited: 'Trọn đời',
+        desc1: 'Bạn chỉ cần thanh toán một lần duy nhất một lần cho gói Đăng ký trọn đời này.',
+        desc2: 'Locker đảm bảo hoàn lại tiền trong vòng 30 ngày kể từ ngày mua vì bất kỳ lý do gì. Hãy liên hệ contact@locker.io để tiến hành yêu cầu hoàn tiền hoặc để được hỗ trợ thêm.'
       }
     }
   }

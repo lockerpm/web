@@ -15,9 +15,7 @@
       </div>
     </div>
     <div class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4 mb-20">
-      <Referral
-        :plan-text="planText"
-      />
+      <Referral :plan-text="planText" />
       <ExtInstallation
         :mission="getMissionById('extension_installation_and_review')"
         @send="openVerifiedDialog"
@@ -64,10 +62,7 @@
       :remain-percent="remainPercent"
       @getCode="handleGetCode"
     />
-    <GetCodeSuccessDialog
-      ref="getCodeSuccessDialog"
-      @redeemCode="redeemCode"
-    />
+    <GetCodeSuccessDialog ref="getCodeSuccessDialog" @redeemCode="redeemCode" />
   </div>
 </template>
 
@@ -102,8 +97,9 @@ export default {
     GetCodeConfirmDialog,
     GetCodeSuccessDialog
   },
-  props: {
-  },
+
+  middleware: ['BlockEnterpriseMember', 'BlockLifetime'],
+
   data () {
     return {
       loading: false,
@@ -112,6 +108,7 @@ export default {
       callingAPI: false
     }
   },
+
   computed: {
     totalPercent () {
       return this.claimStatus.total_promo_code_value || 20
@@ -132,12 +129,17 @@ export default {
       return this.totalPercent - this.usedPercent
     },
     planText () {
-      if (['pm_free', 'pm_lifetime_premium', 'pm_premium'].includes(this.currentPlan.alias)) {
+      if (
+        ['pm_free', 'pm_lifetime_premium', 'pm_premium'].includes(
+          this.currentPlan.alias
+        )
+      ) {
         return this.$t('plan.plans[1].title')
       }
       return this.$t('plan.plans[2].title')
     }
   },
+
   mounted () {
     if (!this.isEnterpriseMember) {
       this.getClaimStatus()
@@ -146,6 +148,7 @@ export default {
       this.$router.push(this.localePath({ name: 'vault' }))
     }
   },
+
   methods: {
     openVerifiedDialog (data) {
       this.$refs.verifiedDialog.openDialog(data)
@@ -177,20 +180,29 @@ export default {
     },
     handleGetCode () {
       this.callingAPI = true
-      this.$axios.$post('/cystack_platform/pm/reward/claim/promo_codes').then(res => {
-        this.callingAPI = false
-        this.$refs.getCodeConfirmDialog.closeDialog()
-        this.openGetCodeSuccessDialog({
-          ...res,
-          currentTime: moment().add(7, 'days').format('MMMM Do YYYY')
+      this.$axios
+        .$post('/cystack_platform/pm/reward/claim/promo_codes')
+        .then(res => {
+          this.callingAPI = false
+          this.$refs.getCodeConfirmDialog.closeDialog()
+          this.openGetCodeSuccessDialog({
+            ...res,
+            currentTime: moment().add(7, 'days').format('MMMM Do YYYY')
+          })
         })
-      }).catch(error => {
-        this.callingAPI = false
-        this.notify(error.response?.data?.message || this.$t('errors.something_went_wrong'), 'error')
-      })
+        .catch(error => {
+          this.callingAPI = false
+          this.notify(
+            error.response?.data?.message ||
+              this.$t('errors.something_went_wrong'),
+            'error'
+          )
+        })
     },
     redeemCode (code) {
-      this.$router.push(this.localeRoute({ name: 'manage-plans', query: { code } }))
+      this.$router.push(
+        this.localeRoute({ name: 'manage-plans', query: { code } })
+      )
     },
     getMissionById (id) {
       return (this.missions || []).find(m => m.mission.id === id) || {}
@@ -201,7 +213,7 @@ export default {
 <style lang="scss">
 .rewards {
   &__generate-code {
-    background-color: #F4F5F7 !important;
+    background-color: #f4f5f7 !important;
   }
   .el-collapse-item__header {
     color: initial !important;

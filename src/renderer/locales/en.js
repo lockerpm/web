@@ -167,7 +167,8 @@ module.exports = {
     subscribe: 'Subscribe',
     agree_terms: 'I agree with the <a target="_blank" href="https://locker.io/terms"><b>Terms</b></a> and <a target="_blank" href="https://locker.io/privacy"><b>Conditions</b></a>',
     expired: 'Expired',
-    choose_file: 'Choose File'
+    choose_file: 'Choose File',
+    onetime: 'Lifetime plan'
   },
   sidebar: {
     all: 'All',
