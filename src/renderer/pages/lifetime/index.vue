@@ -42,12 +42,52 @@
                   {{ $t('promo.lifetime.header.unlimited') }}
                 </p>
               </div>
-              <hr class="border-black-100 mt-6 mb-8">
+              <hr class="border-black-100 my-6">
+
+              <!-- Promo code -->
+              <div class="mb-8">
+                <div
+                  v-if="result.discount && form.promo_code"
+                  class="flex justify-between"
+                >
+                  <p class="text-primary italic pr-2">
+                    {{ form.promo_code }}
+                  </p>
+
+                  <div class="text-right">
+                    <p class="text-black-600">
+                      -{{ result.discount | formatNumber }}
+                      {{ result.currency }}
+                    </p>
+                    <p class="text-warning">{{ discountPercentage }}% off</p>
+                  </div>
+                </div>
+
+                <div v-else class="flex items-center">
+                  <el-input
+                    v-model="form.promo_code"
+                    :placeholder="$t('data.plans.payment_step.enter_code')"
+                    class="mr-2"
+                  />
+                  <el-button
+                    type="primary"
+                    :disabled="!form.promo_code || loadingCalc"
+                    @click="calcPrice"
+                  >
+                    {{ $t('common.apply') }}
+                  </el-button>
+                </div>
+              </div>
+              <!-- Promo code end -->
+
               <div class="flex justify-between font-semibold">
                 <p>
                   {{ $t('common.total') }}
                 </p>
-                <p>$69.99 USD</p>
+                <p v-if="result.price">
+                  ${{ result.price | formatNumber }} {{ result.currency }}
+                </p>
+                <p v-else>$69.99 USD</p>
               </div>
             </div>
             <!-- Invoice end -->
@@ -279,6 +319,7 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 import AvailablePlatforms from '~/components/pages/landing/AvailablePlatforms.vue'
 import Testimonials from '~/components/pages/landing/Testimonials.vue'
 import StripeForm from '~/components/upgrade/StripeForm.vue'
@@ -292,13 +333,16 @@ export default {
     return {
       needCreateAccount: false,
       isSuccessOpen: false,
+      loadingCalc: false,
       form: {
         email: '',
         password: '',
         confirmPassword: '',
         fullName: '',
-        agreed: false
-      }
+        agreed: false,
+        promo_code: ''
+      },
+      result: {}
     }
   },
 
@@ -350,6 +394,14 @@ export default {
         )
       }
       return !this.form.email
+    },
+
+    discountPercentage () {
+      const res = (this.result.discount * 100) / this.result.total_price
+      if (!Number.isNaN(res)) {
+        return Math.ceil(res)
+      }
+      return 0
     }
   },
 
@@ -362,7 +414,10 @@ export default {
       this.form = {
         email: '',
         password: '',
-        fullName: ''
+        confirmPassword: '',
+        fullName: '',
+        agreed: false,
+        promo_code: ''
       }
     },
 
@@ -370,13 +425,46 @@ export default {
       this.$router.push('/vault')
     },
 
+    calcPrice: debounce(function () {
+      this.loadingCalc = true
+      const url = 'cystack_platform/pm/payments/calc'
+      this.$axios
+        .$post(url, {
+          plan_alias: 'pm_lifetime_premium',
+          promo_code: this.form.promo_code,
+          currency: 'USD'
+        })
+        .then(res => {
+          this.result = res
+          if (res.error_promo) {
+            this.notify(this.$t('errors.invalid_code'), 'warning')
+          }
+        })
+        .catch(error => {
+          const isHandled = this.handleApiError(error?.response)
+          if (!isHandled) {
+            this.notify(this.$t('data.notifications.error_occurred'), 'warning')
+          }
+        })
+        .then(() => {
+          this.loadingCalc = false
+        })
+    }, 300),
+
     async handleAddCardDone ({ tokenId, country }) {
       try {
+        if (
+          this.form.promo_code &&
+          (this.result.error_promo || !this.result.price)
+        ) {
+          this.form.promo_code = ''
+        }
         const token = await this.$recaptcha.execute('login')
         const payload = {
           email: this.form.email,
           token_card: tokenId,
-          request_code: token
+          request_code: token,
+          promo_code: this.form.promo_code
         }
         if (this.needCreateAccount) {
           payload.full_name = this.form.fullName
@@ -398,19 +486,28 @@ export default {
         if (errorData?.code === '1004') {
           this.needCreateAccount = true
           this.$nextTick(() => {
-            message = this.$t('promo.buy13.form.error.account_not_exist')
+            message = this.$t(
+              'lifetime.redeem_page.form.error.account_not_exist'
+            )
             this.needCreateAccount = true
           })
         }
 
         // Block business/family
-        if (errorData?.code === '7015') {
-          message = this.$t('promo.buy13.form.error.only_individual')
+        if (['7015', '7016'].includes(errorData?.code)) {
+          message = this.$t(
+            'lifetime.redeem_page.form.error.only_individual_no_service'
+          )
+        }
+
+        // Already lifetime
+        if (errorData?.code === '7017') {
+          message = this.$t('lifetime.redeem_page.form.error.already_lifetime')
         }
 
         // Invalid data
         if (errorData?.code === '0004') {
-          message = this.$t('promo.buy13.form.error.invalid_data')
+          message = this.$t('lifetime.redeem_page.form.error.invalid_data')
         }
 
         this.notify(message, 'warning')

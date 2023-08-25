@@ -286,7 +286,9 @@ export default {
       this.form = {
         email: '',
         password: '',
-        fullName: ''
+        confirmPassword: '',
+        fullName: '',
+        agreed: false
       }
     },
 
@@ -329,7 +331,7 @@ export default {
         }
 
         // Block business/family
-        if (errorData?.code === '7015') {
+        if (['7015', '7016'].includes(errorData?.code)) {
           message = this.$t('promo.buy13.form.error.only_individual')
         }
 

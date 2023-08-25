@@ -1736,14 +1736,10 @@ module.exports = {
       desc: 'Store your passwords, manage sensitive data, fill in forms and log you into your favorite sites with just one click. Locker is here to help.',
       btn: [
         {
-          text: 'Create an Account',
-          link: 'register',
-          note: 'No credit card required.'
+          text: 'Create an Account'
         },
         {
-          text: 'Enterprise',
-          link: '',
-          note: ''
+          text: 'Get Lifetime Premium'
         }
       ],
       image: 'bg-img_en.png'
@@ -5473,7 +5469,9 @@ module.exports = {
           invalid_code: 'Hmm! It seems the {service} Code you\'ve entered doesn\'t exist or expired :(',
           account_not_exist: 'Please create a new account with this email',
           only_individual: 'This {service} Code is applicable only for individual accounts. Use an individual account to apply the code, or return it at {service}.',
-          invalid_data: 'Invalid data'
+          only_individual_no_service: 'This plan is applicable only for individual accounts. Please use an individual account to buy this plan.',
+          invalid_data: 'Invalid data',
+          already_lifetime: 'Payment failed! This account has already been upgraded to Lifetime Premium.'
         }
       },
       intro: {

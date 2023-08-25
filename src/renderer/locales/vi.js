@@ -1737,14 +1737,10 @@ module.exports = {
       desc: 'Locker giúp bạn lưu trữ dữ liệu quan trọng <span class="text-green">an toàn</span>, quản lý mật khẩu <span class="text-green">trực quan</span>, và tự động đăng nhập trên mọi thiết bị.',
       btn: [
         {
-          text: 'Tạo tài khoản',
-          link: 'register',
-          note: 'Không cần thẻ tín dụng.'
+          text: 'Tạo tài khoản'
         },
         {
-          text: 'Doanh nghiệp',
-          link: '',
-          note: ''
+          text: 'Đăng ký Premium trọn đời'
         }
       ],
       image: 'bg-img_vi.png'
@@ -5317,7 +5313,9 @@ module.exports = {
           invalid_code: 'Hmm! Có vẻ như mã {service} bạn vừa nhập không tồn tại hoặc đã hết hạn :(',
           account_not_exist: 'Vui lòng tạo một tài khoản với email này',
           only_individual: 'Mã {service} này chỉ áp dụng đối với tài khoản cá nhân. Sử dụng một tài khoản cá nhân để sử dụng mã, hoặc đổi trả tại {service}.',
-          invalid_data: 'Thông tin không hợp lệ'
+          only_individual_no_service: 'Gói này chỉ áp dụng đối với tài khoản cá nhân. Vui lòng sử dụng một tài khoản cá nhân để mua gói.',
+          invalid_data: 'Thông tin không hợp lệ',
+          already_lifetime: 'Thanh toán thất bại! Tài khoản này đã được nâng cấp lên gói Premium trọn đời trước đó.'
         }
       },
       intro: {
