@@ -20,16 +20,23 @@
               class="mx-auto block sm:hidden"
             >
             <p
-              class="text-center sm:text-left font-normal text-black-600 landing-font-20 mx-auto mb-[50px] mt-[18px]"
+              class="text-center sm:text-left font-normal text-black-600 landing-font-20 mx-auto mb-6 mt-[18px]"
               v-html="$t('landing.section1.desc')"
             />
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
                 <nuxt-link
-                  class="landing-btn w-full sm:w-auto mb-1"
+                  class="landing-btn w-full sm:w-auto mb-2 mr-2"
                   :to="localePath('/register')"
                 >
                   {{ $t('landing.section1.btn[0].text') }}
+                </nuxt-link>
+
+                <nuxt-link
+                  class="landing-btn2 w-full sm:w-auto mb-2"
+                  :to="localePath('/lifetime')"
+                >
+                  {{ $t('landing.section1.btn[1].text') }}
                 </nuxt-link>
               </div>
             </div>

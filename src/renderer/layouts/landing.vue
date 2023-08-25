@@ -239,12 +239,9 @@ export default {
 
 <style lang="scss">
 .landing-btn {
-  @apply hover:no-underline transition duration-200 ease-in-out text-white hover:text-white hover:bg-green-hover;
+  @apply hover:no-underline transition duration-200 ease-in-out text-white hover:text-white hover:bg-green-hover font-semibold text-center;
   display: inline-block;
-  padding: 18px 36px;
-  min-width: 240px;
-  text-align: center;
-  font-weight: bold;
+  padding: 10px 24px;
   font-size: 16px;
   border-radius: 5px;
   background-color: #268334;
@@ -257,12 +254,9 @@ export default {
 }
 
 .landing-btn2 {
-  @apply hover:no-underline hover:bg-green transition duration-200 ease-in-out text-green hover:text-white;
+  @apply hover:no-underline hover:bg-green transition duration-200 ease-in-out text-green hover:text-white font-semibold text-center;
   display: inline-block;
-  padding: 13px 20px;
-  min-width: 160px;
-  text-align: center;
-  font-weight: bold;
+  padding: 10px 24px;
   font-size: 16px;
   border-radius: 5px;
   border: 1px solid #268334;
