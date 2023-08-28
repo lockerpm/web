@@ -7,12 +7,33 @@
       <h1 class="font-bold landing-font-42 text-center mb-2">
         {{ $t('plan.header.title') }}
       </h1>
-      <p class="landing-font-20 text-center mb-6">
+      <p class="landing-font-20 text-center mb-8">
         {{ $t('plan.header.desc') }}
         <span class="gradient-text">
           {{ $t('plan.header.desc_colored') }}
         </span>
       </p>
+
+      <!-- Lifetime -->
+      <div
+        class="flex flex-wrap rounded-xl border border-primary py-5 mb-7 px-2 justify-center mx-auto bg-[#F5F9F5] relative"
+        :class="locale === 'vi' ? 'max-w-[650px]' : 'max-w-[523px]'"
+      >
+        <img
+          :src="require('~/assets/images/landing/lifetime/special-offer.svg')"
+          alt="Special offer"
+          class="absolute top-[-10px] left-[-2px]"
+        >
+        <p class="mr-0 sm:mr-2 ml-0 sm:ml-8 mt-4 sm:mt-0 text-center">
+          {{ $t('plan.header.lifetime.get') }}
+          <span class="text-primary font-semibold">$69.99</span>.
+          {{ $t('plan.header.lifetime.pay_once') }} 🎁
+        </p>
+        <nuxt-link to="/lifetime" class="text-primary">
+          {{ $t('plan.header.lifetime.buy_now') }} <i class="el-icon-right" />
+        </nuxt-link>
+      </div>
+      <!-- Lifetime end -->
 
       <!-- Plan selector -->
       <div class="flex flex-col mb-6 items-center">

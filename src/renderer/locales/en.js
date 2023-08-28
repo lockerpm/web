@@ -167,7 +167,8 @@ module.exports = {
     subscribe: 'Subscribe',
     agree_terms: 'I agree with the <a target="_blank" href="https://locker.io/terms"><b>Terms</b></a> and <a target="_blank" href="https://locker.io/privacy"><b>Conditions</b></a>',
     expired: 'Expired',
-    choose_file: 'Choose File'
+    choose_file: 'Choose File',
+    onetime: 'Lifetime plan'
   },
   sidebar: {
     all: 'All',
@@ -1735,14 +1736,10 @@ module.exports = {
       desc: 'Store your passwords, manage sensitive data, fill in forms and log you into your favorite sites with just one click. Locker is here to help.',
       btn: [
         {
-          text: 'Create an Account',
-          link: 'register',
-          note: 'No credit card required.'
+          text: 'Create an Account'
         },
         {
-          text: 'Enterprise',
-          link: '',
-          note: ''
+          text: 'Get Lifetime Premium'
         }
       ],
       image: 'bg-img_en.png'
@@ -1805,7 +1802,8 @@ module.exports = {
         },
         {
           name: 'Windows',
-          img: 'windows.png'
+          img: 'windows.png',
+          href: '/download#windows'
         },
         {
           name: 'iOS',
@@ -1814,7 +1812,8 @@ module.exports = {
         },
         {
           name: 'Linux',
-          img: 'linux.png'
+          img: 'linux.png',
+          href: '/download#linux'
         },
         {
           name: 'Chrome',
@@ -1823,7 +1822,8 @@ module.exports = {
         },
         {
           name: 'MacOS',
-          img: 'macos.svg'
+          img: 'macos.svg',
+          href: '/download#macos'
         }
         // {
         //   name: 'Ubuntu',
@@ -1851,7 +1851,6 @@ module.exports = {
         // }
       ]
     },
-
     benefits: [
       {
         img: 'img1.png',
@@ -1937,7 +1936,8 @@ module.exports = {
       title: 'Explore our blog'
     },
     testimonials: {
-      title: 'Trusted by thousands of customers'
+      title: 'Trusted by thousands of customers',
+      we_are_on: 'We are on'
     }
   },
   how_it_works: {
@@ -2543,6 +2543,11 @@ module.exports = {
       title: 'Locker offers you the MOST REASONABLE PRICES',
       desc: 'The price is lower and lower when Locker is',
       desc_colored: 'the only Password Manager integrated with Private Email',
+      lifetime: {
+        get: 'Get Lifetime Premium for',
+        pay_once: 'Pay once, use forever!',
+        buy_now: 'Buy now'
+      },
       features: {
         sync_devices: {
           title: 'Cross-device data sync',
@@ -5464,7 +5469,9 @@ module.exports = {
           invalid_code: 'Hmm! It seems the {service} Code you\'ve entered doesn\'t exist or expired :(',
           account_not_exist: 'Please create a new account with this email',
           only_individual: 'This {service} Code is applicable only for individual accounts. Use an individual account to apply the code, or return it at {service}.',
-          invalid_data: 'Invalid data'
+          only_individual_no_service: 'This plan is applicable only for individual accounts. Please use an individual account to buy this plan.',
+          invalid_data: 'Invalid data',
+          already_lifetime: 'Payment failed! This account has already been upgraded to Lifetime Premium.'
         }
       },
       intro: {
@@ -5670,6 +5677,20 @@ module.exports = {
           desc_1_new: 'Thank you, now please verify your account and enjoy full Locker Premium features.',
           desc_2_new: 'We have sent you a confirmation mail and a receipt to your email address.'
         }
+      }
+    },
+    lifetime: {
+      title: 'Locker Password Manager | Lifetime Premium',
+      desc: 'Secure your passwords with the lowest price & highest quality ever!',
+      common: {
+        lifetime: 'lifetime'
+      },
+      header: {
+        title: 'Sign up for Locker',
+        duration: 'Duration',
+        unlimited: 'Unlimited',
+        desc1: 'You will be billed once only for this Lifetime Subscription.',
+        desc2: 'Locker offers 30-day money back guarantee for any reason. Contact contact@locker.io to process the money back guarantee or for further support.'
       }
     }
   }
