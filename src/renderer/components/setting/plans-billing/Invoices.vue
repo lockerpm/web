@@ -105,6 +105,11 @@ export default {
     },
 
     getPlanByAlias (plans, alias) {
+      if (alias === 'pm_lifetime_premium') {
+        return {
+          name: 'Premium'
+        }
+      }
       return find(plans, e => e.alias === alias) || {}
     }
   }
