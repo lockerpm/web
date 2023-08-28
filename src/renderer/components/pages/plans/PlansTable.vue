@@ -22,7 +22,7 @@
         <tbody>
           <!-- Features -->
           <template v-for="(feature, index) in $t('plan.plan_table.table')">
-            <tr :key="index" style="background-color: #fbfaf3">
+            <tr :key="`${index}_col_1`" style="background-color: #fbfaf3">
               <td
                 colspan="100%"
                 class="py-[18px] pl-6 text-green font-semibold landing-font-16"
@@ -30,7 +30,7 @@
                 {{ feature.title }}
               </td>
             </tr>
-            <tr :key="index">
+            <tr :key="`${index}_col_2`">
               <td colspan="100%" class="pb-5" />
             </tr>
             <tr

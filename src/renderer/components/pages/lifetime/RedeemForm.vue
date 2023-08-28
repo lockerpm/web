@@ -366,7 +366,7 @@ export default {
         }
 
         // Block business/family
-        if (errorData?.code === '7015') {
+        if (['7015', '7016'].includes(errorData?.code)) {
           this.errorMessage = 'only_individual'
           return
         }

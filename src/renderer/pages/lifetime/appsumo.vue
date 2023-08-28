@@ -7,7 +7,7 @@
         <div>
           <h1 class="font-medium text-[48px] leading-[58px] text-primary">
             Redeem your <br>
-            StackCommerce Code for <br>
+            AppSumo Code for <br>
           </h1>
 
           <div class="relative">
@@ -22,11 +22,7 @@
           </div>
 
           <p class="font-semibold text-[20px] mb-4 mt-4">
-            {{
-              $t('lifetime.redeem_page.intro.desc', {
-                service: 'StackCommerce'
-              })
-            }}
+            {{ $t('lifetime.redeem_page.intro.desc', { service: 'AppSumo' }) }}
           </p>
           <ol class="list-decimal ml-4 mb-4">
             <li
@@ -35,14 +31,14 @@
               )"
               :key="index"
             >
-              {{ item.replaceAll('{service}', 'StackCommerce') }}
+              {{ item.replaceAll('{service}', 'AppSumo') }}
             </li>
           </ol>
         </div>
         <!-- Intro end -->
 
         <!-- Form -->
-        <RedeemForm :countries="countries" service="StackCommerce" />
+        <RedeemForm :countries="countries" service="AppSumo" />
         <!-- Form end -->
       </div>
       <!-- Left end -->
@@ -60,9 +56,13 @@
 </template>
 
 <script>
-import RedeemForm from '../../../components/pages/lifetime/RedeemForm.vue'
+import RedeemForm from '~/components/pages/lifetime/RedeemForm.vue'
 export default {
   components: { RedeemForm },
+
+  layout: 'lifetime-store',
+
+  middleware: ['blockProduction'],
 
   asyncData ({ $axios }) {
     return $axios

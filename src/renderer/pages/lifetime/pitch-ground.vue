@@ -58,9 +58,11 @@
 </template>
 
 <script>
-import RedeemForm from '../../../components/pages/lifetime/RedeemForm.vue'
+import RedeemForm from '~/components/pages/lifetime/RedeemForm.vue'
 export default {
   components: { RedeemForm },
+
+  layout: 'lifetime-store',
 
   asyncData ({ $axios }) {
     return $axios

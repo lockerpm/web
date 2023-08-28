@@ -65,7 +65,7 @@ export default {
     ConfirmationStep
   },
 
-  middleware: ['BlockEnterpriseMember'],
+  middleware: ['BlockEnterpriseMember', 'BlockLifetime'],
 
   data () {
     return {
