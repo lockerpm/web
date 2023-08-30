@@ -5693,5 +5693,56 @@ module.exports = {
         desc2: 'Locker offers 30-day money back guarantee for any reason. Contact contact@locker.io to process the money back guarantee or for further support.'
       }
     }
+  },
+  education: {
+    features: {
+      title: "Let Locker protects your instution's passwords!",
+      desc: 'Why choose us?',
+      subtitle: 'We offer full Premium features for the package!',
+      items: [
+        {
+          title: 'Manage unlimited passwords & organized access',
+          desc: [
+            'You can grant students a personal Locker Premium account. Locker provides a comprehensive admin dashboard to manage passwords for your institution effectively from one place.',
+            'You can add members, provide each with a secure vault, adjust the privacy settings for each and maintain oversight.'
+          ]
+        },
+        {
+          title: 'Generate strong passwords',
+          desc: ['The built-in password generator helps create strong, unique passwords to safeguard your account against intruders.']
+        },
+        {
+          title: 'Secure password sharing',
+          desc: [
+            'Internally share passwords and sensitive data quickly and securely.',
+            'Encrypt your information and manage your shared files within Locker.'
+          ]
+        },
+        {
+          title: 'Integrated with private email feature',
+          desc: [
+            'Locker Private Email protects your true email, as well as your online identity.',
+            'You can manage all emails for different aliases in your primary mailbox & stop spam emails.'
+          ]
+        },
+        {
+          title: 'Customized for admins',
+          desc: [
+            'Vault offers a variety of administrative controls that are easy to deploy but extensive enough to customize based on your privacy policy.'
+          ]
+        },
+        {
+          title: 'Data breach scanner',
+          desc: [
+            'Locker scans and sends alerts if it detects your data has been leaked in any database.'
+          ]
+        }
+      ]
+    },
+    cta: {
+      title: 'Enjoy the <span class="gradient-text">free</span> first year right now!',
+      desc: 'Experience unlimited Premium features for your instutions with no payment details required',
+      btn: 'Sign up for this offer'
+    }
   }
 }
