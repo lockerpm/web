@@ -17,7 +17,7 @@
             <p class="landing-font-18 font-semibold gradient-text mb-12">
               {{ $t('education.header.desc2') }}
             </p>
-            <el-button type="primary">
+            <el-button type="primary" @click="goToForm">
               {{ $t('education.header.btn') }} <i class="el-icon-right" />
             </el-button>
           </div>
@@ -32,8 +32,8 @@
     <!-- Header end -->
 
     <!-- Form -->
-    <section class="py-14">
-      <education-pack-form />
+    <section v-show="showForm" id="form" class="py-14">
+      <education-pack-form ref="form" @close="showForm = false" />
     </section>
     <!-- Form end -->
 
@@ -107,7 +107,7 @@
           </div>
 
           <div class="mt-14 flex justify-center">
-            <el-button type="primary">
+            <el-button type="primary" @click="goToForm">
               {{ $t('education.questions.btn') }} <i class="el-icon-right" />
             </el-button>
           </div>
@@ -157,7 +157,7 @@
       </div>
 
       <div class="mt-14 flex justify-center">
-        <el-button type="primary">
+        <el-button type="primary" @click="goToForm">
           {{ $t('education.features.btn') }} <i class="el-icon-right" />
         </el-button>
       </div>
@@ -178,7 +178,7 @@
             <p class="mb-6">
               {{ $t('education.cta.desc') }}
             </p>
-            <el-button type="primary">
+            <el-button type="primary" @click="goToForm">
               {{ $t('education.cta.btn') }} <i class="el-icon-right" />
             </el-button>
           </div>
@@ -200,7 +200,24 @@
 import EducationPackForm from '../../components/pages/education/EducationPackForm.vue'
 export default {
   components: { EducationPackForm },
-  layout: 'landing'
+  layout: 'landing',
+  data () {
+    return {
+      showForm: false
+    }
+  },
+  methods: {
+    goToForm () {
+      if (!this.showForm) {
+        this.showForm = true
+        this.$refs.form.reset()
+      }
+      setTimeout(() => {
+        const element = document.getElementById('form')
+        element.scrollIntoView()
+      }, 0)
+    }
+  }
 }
 </script>
 <style>
