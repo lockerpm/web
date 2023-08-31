@@ -7,19 +7,18 @@
       <div class="px-6 md:pr-0 py-20 relative z-10">
         <div class="flex flex-wrap">
           <div class="w-full lg:w-[55%] mt-10 text-center lg:text-left">
-            <h1 class="text-[51px] leading-[62px] font-semibold mb-6">
-              Enjoy the <span class="gradient-text">greatest deal</span> from
-              Locker Password Manager
-            </h1>
+            <h1
+              class="text-[51px] leading-[62px] font-semibold mb-6"
+              v-html="$t('education.header.title')"
+            />
             <p class="landing-font-18 mb-3">
-              Only for Students/Teachers, Education Institutions & Universities,
-              and Non-government Organizations
+              {{ $t('education.header.desc') }}
             </p>
             <p class="landing-font-18 font-semibold gradient-text mb-12">
-              Enjoy the free first year right now!
+              {{ $t('education.header.desc2') }}
             </p>
             <el-button type="primary">
-              Sign up for this offer <i class="el-icon-right" />
+              {{ $t('education.header.btn') }} <i class="el-icon-right" />
             </el-button>
           </div>
           <img
@@ -43,15 +42,13 @@
       <div class="flex flex-wrap items-center mb-16">
         <div class="w-full md:w-7/12 md:pr-16 mb-6 md:mb-0">
           <h2 class="landing-font-28 font-semibold mb-8">
-            Are managing all passwords for your insitution overcontrol?
+            {{ $t('education.questions.q1.title') }}
           </h2>
           <p class="mb-4 landing-font-18">
-            👏 Stop managing and keeping your passwords in untrustworthy places
-            that can easily be hacked anytime.
+            {{ $t('education.questions.q1.desc') }}
           </p>
           <p class="landing-font-18">
-            Furthermore, there are hundred passwords from your institution's
-            different accounts that you can't manage.
+            {{ $t('education.questions.q1.desc2') }}
           </p>
         </div>
         <div class="w-full md:w-5/12">
@@ -66,16 +63,13 @@
       <div class="flex flex-wrap items-center mb-16">
         <div class="w-full md:w-7/12 md:pl-16 md:order-1 mb-6 md:mb-0">
           <h2 class="landing-font-28 font-semibold mb-8">
-            Are your passwords strong enough?
+            {{ $t('education.questions.q2.title') }}
           </h2>
           <p class="mb-4 landing-font-18">
-            A common mistake people make is to set passwords that are easy to
-            guess.
+            {{ $t('education.questions.q2.desc') }}
           </p>
           <p class="landing-font-18">
-            Especially, educational institutions have often been the target of
-            cyber attacks in recent years. Attackers will install the malware
-            once they have established a foothold.
+            {{ $t('education.questions.q2.desc2') }}
           </p>
         </div>
         <div class="w-full md:w-5/12">
@@ -97,7 +91,7 @@
                 class="w-full mb-8 max-h-[320px] mt-10"
               >
               <p class="landing-font-24 font-semibold text-center">
-                Having troubles with passwords internal sharing?
+                {{ $t('education.questions.q3.title') }}
               </p>
             </div>
             <div>
@@ -107,14 +101,14 @@
                 class="w-full mb-8 max-h-[360px]"
               >
               <p class="landing-font-24 font-semibold text-center">
-                Need a safe password manager with the most reasonable price?
+                {{ $t('education.questions.q4.title') }}
               </p>
             </div>
           </div>
 
           <div class="mt-14 flex justify-center">
             <el-button type="primary">
-              Sign up for this offer <i class="el-icon-right" />
+              {{ $t('education.questions.btn') }} <i class="el-icon-right" />
             </el-button>
           </div>
         </div>
@@ -164,7 +158,7 @@
 
       <div class="mt-14 flex justify-center">
         <el-button type="primary">
-          Experience Locker now <i class="el-icon-right" />
+          {{ $t('education.features.btn') }} <i class="el-icon-right" />
         </el-button>
       </div>
     </section>
