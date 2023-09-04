@@ -168,7 +168,8 @@ module.exports = {
     agree_terms: 'Tôi đồng ý với <a target="_blank" href="https://locker.io/vi/terms"><b>Điều khoản</b></a> và <a target="_blank" href="https://locker.io/vi/privacy"><b>Chính sách</b></a>',
     expired: 'Hết hạn',
     choose_file: 'Chọn tệp',
-    onetime: 'Gói trọn đời'
+    onetime: 'Gói trọn đời',
+    submit: 'Gửi'
   },
   sidebar: {
     all: 'Tất cả',

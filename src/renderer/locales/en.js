@@ -168,7 +168,8 @@ module.exports = {
     agree_terms: 'I agree with the <a target="_blank" href="https://locker.io/terms"><b>Terms</b></a> and <a target="_blank" href="https://locker.io/privacy"><b>Conditions</b></a>',
     expired: 'Expired',
     choose_file: 'Choose File',
-    onetime: 'Lifetime plan'
+    onetime: 'Lifetime plan',
+    submit: 'Submit'
   },
   sidebar: {
     all: 'All',
@@ -5692,6 +5693,91 @@ module.exports = {
         desc1: 'You will be billed once only for this Lifetime Subscription.',
         desc2: 'Locker offers 30-day money back guarantee for any reason. Contact contact@locker.io to process the money back guarantee or for further support.'
       }
+    }
+  },
+  education: {
+    header: {
+      title: 'Enjoy the <span class="gradient-text">greatest deal</span> from Locker Password Manager',
+      desc: 'Only for Students/Teachers, Education Institutions & Universities, and Non-government Organizations',
+      desc2: 'Enjoy the free first year right now!',
+      btn: 'Sign up for this offer'
+    },
+    form: {
+      title: 'Choose a pack to claim 👇',
+      email_desc: 'Enter the email address linked with your Locker account',
+      school_email: 'School email',
+      school_email_desc: 'If your Locker email isn\'t a school-issued email address, enter a valid one. You need to verify your school email later',
+      school_name: 'School name',
+      school_name_desc: 'If your school name doesn\'t appear in the list, then enter the full school name and continue'
+    },
+    questions: {
+      q1: {
+        title: 'Are managing all passwords for your insitution overcontrol?',
+        desc: '👏 Stop managing and keeping your passwords in untrustworthy places that can easily be hacked anytime.',
+        desc2: 'Furthermore, there are hundred passwords from your institution\'s different accounts that you can\'t manage.'
+      },
+      q2: {
+        title: 'Are your passwords strong enough?',
+        desc: 'A common mistake people make is to set passwords that are easy to guess.',
+        desc2: 'Especially, educational institutions have often been the target of cyber attacks in recent years. Attackers will install the malware once they have established a foothold.'
+      },
+      q3: {
+        title: 'Having troubles with passwords internal sharing?'
+      },
+      q4: {
+        title: 'Need a safe password manager with the most reasonable price?'
+      },
+      btn: 'Sign up for this offer'
+    },
+    features: {
+      title: "Let Locker protects your instution's passwords!",
+      desc: 'Why choose us?',
+      subtitle: 'We offer full Premium features for the package!',
+      items: [
+        {
+          title: 'Manage unlimited passwords & organized access',
+          desc: [
+            'You can grant students a personal Locker Premium account. Locker provides a comprehensive admin dashboard to manage passwords for your institution effectively from one place.',
+            'You can add members, provide each with a secure vault, adjust the privacy settings for each and maintain oversight.'
+          ]
+        },
+        {
+          title: 'Generate strong passwords',
+          desc: ['The built-in password generator helps create strong, unique passwords to safeguard your account against intruders.']
+        },
+        {
+          title: 'Secure password sharing',
+          desc: [
+            'Internally share passwords and sensitive data quickly and securely.',
+            'Encrypt your information and manage your shared files within Locker.'
+          ]
+        },
+        {
+          title: 'Integrated with private email feature',
+          desc: [
+            'Locker Private Email protects your true email, as well as your online identity.',
+            'You can manage all emails for different aliases in your primary mailbox & stop spam emails.'
+          ]
+        },
+        {
+          title: 'Customized for admins',
+          desc: [
+            'Vault offers a variety of administrative controls that are easy to deploy but extensive enough to customize based on your privacy policy.'
+          ]
+        },
+        {
+          title: 'Data breach scanner',
+          desc: [
+            'Locker scans and sends alerts if it detects your data has been leaked in any database.'
+          ]
+        }
+      ],
+      btn: 'Experience Locker now'
+    },
+    cta: {
+      title: 'Enjoy the <span class="gradient-text">free</span> first year right now!',
+      desc: 'Experience unlimited Premium features for your instutions with no payment details required',
+      btn: 'Sign up for this offer'
     }
   }
 }
