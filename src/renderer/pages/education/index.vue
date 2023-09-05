@@ -206,6 +206,40 @@ export default {
       showForm: false
     }
   },
+  head () {
+    const title = this.$t('education.title')
+    const desc = this.$t('education.desc')
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: title
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: title
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: desc
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: desc
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: desc
+        }
+      ]
+    }
+  },
   methods: {
     goToForm () {
       if (!this.showForm) {
@@ -214,7 +248,7 @@ export default {
       }
       setTimeout(() => {
         const element = document.getElementById('form')
-        element.scrollIntoView()
+        element.scrollIntoView({ behavior: 'smooth' })
       }, 0)
     }
   }

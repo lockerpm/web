@@ -251,12 +251,15 @@ module.exports = {
     7013: '{email} đã áp dụng dùng thử.',
     '0004': 'Sai định dạng email',
     7015: '{email} hiện tại đang ở trong một doanh nghiệp. Vui lòng rời doanh nghiệp hoặc sử dụng email khác.',
+    7018: 'Email bạn cung cấp không phải là email hợp lệ của trường',
     id_confirm_password: 'Xác nhận mật khẩu Locker ID không khớp',
     something_went_wrong: 'Đã có lỗi xảy ra',
     oops: 'Ối! Đã xảy ra sự cố. Vui lòng thử lại sau vài phút.',
     locked_until_pay: 'Tài khoản của bạn bị tạm khóa do gói cước Locker cho doanh nghiệp đã hết hạn.',
     upgrade_to_use: 'Bạn cần nâng cấp gói của mình để sử dụng tính năng này',
     1002: 'Mã xác nhận không tồn tại.',
+    1004: 'Vui lòng tạo một tài khoản mới với email này',
+    only_individual: 'Gói chỉ áp dụng cho tài khoản cá nhân',
     invalid_url: 'URL không hợp lệ',
     invalid_code: 'Mã bạn nhập không tồn tại hoặc đã hết hạn :('
   },
@@ -5537,6 +5540,103 @@ module.exports = {
         desc1: 'Bạn chỉ cần thanh toán một lần duy nhất một lần cho gói Đăng ký trọn đời này.',
         desc2: 'Locker đảm bảo hoàn lại tiền trong vòng 30 ngày kể từ ngày mua vì bất kỳ lý do gì. Hãy liên hệ contact@locker.io để tiến hành yêu cầu hoàn tiền hoặc để được hỗ trợ thêm.'
       }
+    }
+  },
+  education: {
+    title: 'Locker Password Manager | Education Pack',
+    desc: 'Only for Students/Teachers, Education Institutions & Universities, and Non-government Organizations',
+    packs: {
+      student: 'Student pack',
+      teacher: 'Teacher pack'
+    },
+    header: {
+      title: 'Enjoy the <span class="gradient-text">greatest deal</span> from Locker Password Manager',
+      desc: 'Only for Students/Teachers, Education Institutions & Universities, and Non-government Organizations',
+      desc2: 'Enjoy the free first year right now!',
+      btn: 'Sign up for this offer'
+    },
+    form: {
+      title: 'Choose a pack to claim 👇',
+      create_account_desc: 'You will be registered for a Locker account with your school email.',
+      email_desc: 'Enter the email address linked with your Locker account',
+      email_need_create_desc: 'Enter a verifiable school-issued email address',
+      school_email: 'School email',
+      school_email_desc: 'If your Locker email isn\'t a school-issued email address, enter a valid one. You need to verify your school email later',
+      school_name: 'School name',
+      school_name_desc: 'If your school name doesn\'t appear in the list, then enter the full school name and continue',
+      success: {
+        title: 'Application Form sent!',
+        desc: '😍 Thank you for your application for the Student Pack! Please wait for the qualification result sent to your email within 24 hours.'
+      }
+    },
+    questions: {
+      q1: {
+        title: 'Are managing all passwords for your insitution overcontrol?',
+        desc: '👏 Stop managing and keeping your passwords in untrustworthy places that can easily be hacked anytime.',
+        desc2: 'Furthermore, there are hundred passwords from your institution\'s different accounts that you can\'t manage.'
+      },
+      q2: {
+        title: 'Are your passwords strong enough?',
+        desc: 'A common mistake people make is to set passwords that are easy to guess.',
+        desc2: 'Especially, educational institutions have often been the target of cyber attacks in recent years. Attackers will install the malware once they have established a foothold.'
+      },
+      q3: {
+        title: 'Having troubles with passwords internal sharing?'
+      },
+      q4: {
+        title: 'Need a safe password manager with the most reasonable price?'
+      },
+      btn: 'Sign up for this offer'
+    },
+    features: {
+      title: "Let Locker protects your instution's passwords!",
+      desc: 'Why choose us?',
+      subtitle: 'We offer full Premium features for the package!',
+      items: [
+        {
+          title: 'Manage unlimited passwords & organized access',
+          desc: [
+            'You can grant students a personal Locker Premium account. Locker provides a comprehensive admin dashboard to manage passwords for your institution effectively from one place.',
+            'You can add members, provide each with a secure vault, adjust the privacy settings for each and maintain oversight.'
+          ]
+        },
+        {
+          title: 'Generate strong passwords',
+          desc: ['The built-in password generator helps create strong, unique passwords to safeguard your account against intruders.']
+        },
+        {
+          title: 'Secure password sharing',
+          desc: [
+            'Internally share passwords and sensitive data quickly and securely.',
+            'Encrypt your information and manage your shared files within Locker.'
+          ]
+        },
+        {
+          title: 'Integrated with private email feature',
+          desc: [
+            'Locker Private Email protects your true email, as well as your online identity.',
+            'You can manage all emails for different aliases in your primary mailbox & stop spam emails.'
+          ]
+        },
+        {
+          title: 'Customized for admins',
+          desc: [
+            'Vault offers a variety of administrative controls that are easy to deploy but extensive enough to customize based on your privacy policy.'
+          ]
+        },
+        {
+          title: 'Data breach scanner',
+          desc: [
+            'Locker scans and sends alerts if it detects your data has been leaked in any database.'
+          ]
+        }
+      ],
+      btn: 'Experience Locker now'
+    },
+    cta: {
+      title: 'Enjoy the <span class="gradient-text">free</span> first year right now!',
+      desc: 'Experience unlimited Premium features for your instutions with no payment details required',
+      btn: 'Sign up for this offer'
     }
   }
 }
