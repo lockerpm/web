@@ -5544,99 +5544,99 @@ module.exports = {
   },
   education: {
     title: 'Locker Password Manager | Education Pack',
-    desc: 'Only for Students/Teachers, Education Institutions & Universities, and Non-government Organizations',
+    desc: 'Tận hưởng ưu đãi độc quyền cho sinh viên, nhà giáo, cơ sở giáo dục và tổ chức phi chính phủ',
     packs: {
-      student: 'Student pack',
-      teacher: 'Teacher pack'
+      student: 'Sinh viên',
+      teacher: 'Nhà giáo'
     },
     header: {
-      title: 'Enjoy the <span class="gradient-text">greatest deal</span> from Locker Password Manager',
-      desc: 'Only for Students/Teachers, Education Institutions & Universities, and Non-government Organizations',
-      desc2: 'Enjoy the free first year right now!',
-      btn: 'Sign up for this offer'
+      title: 'Ưu đãi lớn nhất từ Trình Quản lý Mật khẩu Locker',
+      desc: 'Chỉ dành cho Sinh viên/Nhà giáo, Trường đại học và Cơ sở giáo dục, và Tổ chức phi chính phủ',
+      desc2: 'Nhận ngay ưu đãi miễn phí một năm!',
+      btn: 'Đăng ký ưu đãi'
     },
     form: {
-      title: 'Choose a pack to claim 👇',
-      create_account_desc: 'You will be registered for a Locker account with your school email.',
-      email_desc: 'Enter the email address linked with your Locker account',
-      email_need_create_desc: 'Enter a verifiable school-issued email address',
-      school_email: 'School email',
-      school_email_desc: 'If your Locker email isn\'t a school-issued email address, enter a valid one. You need to verify your school email later',
-      school_name: 'School name',
-      school_name_desc: 'If your school name doesn\'t appear in the list, then enter the full school name and continue',
+      title: 'Chọn một gói để nhận 👇',
+      create_account_desc: 'Bạn cần đăng ký một tài khoản Locker bằng email của trường.',
+      email_desc: 'Nhập địa chỉ email được liên kết với tài khoản Locker của bạn',
+      email_need_create_desc: 'Nhập địa chỉ email có thể xác minh được cấp bởi trường',
+      school_email: 'Email của trường',
+      school_email_desc: 'Nếu email Locker của bạn không phải là địa chỉ email do trường cấp, hãy nhập email của trường ở đây. Bạn sẽ cần xác minh email trường học của mình',
+      school_name: 'Tên trường',
+      school_name_desc: 'Nếu tên trường không xuất hiện trong danh sách, hãy nhập thủ công',
       success: {
-        title: 'Application Form sent!',
-        desc: '😍 Thank you for your application for the Student Pack! Please wait for the qualification result sent to your email within 24 hours.'
+        title: 'Đơn đăng ký đã được gửi!',
+        desc: '😍 Cảm ơn bạn đã đăng ký Gói Sinh viên! Vui lòng đợi kết quả được gửi đến email của bạn trong vòng 24 giờ.'
       }
     },
     questions: {
       q1: {
-        title: 'Are managing all passwords for your insitution overcontrol?',
-        desc: '👏 Stop managing and keeping your passwords in untrustworthy places that can easily be hacked anytime.',
-        desc2: 'Furthermore, there are hundred passwords from your institution\'s different accounts that you can\'t manage.'
+        title: 'Mất kiểm soát các mật khẩu dành cho tổ chức của bạn?',
+        desc: '👏 Ngừng quản lý và lưu trữ mật khẩu của bạn ở những nơi không đáng tin cậy, có thể dễ dàng bị đánh mất bất cứ lúc nào.',
+        desc2: 'Hơn nữa, có hàng trăm mật khẩu từ các tài khoản khác nhau của tổ chức mà bạn khó để quản lý.'
       },
       q2: {
-        title: 'Are your passwords strong enough?',
-        desc: 'A common mistake people make is to set passwords that are easy to guess.',
-        desc2: 'Especially, educational institutions have often been the target of cyber attacks in recent years. Attackers will install the malware once they have established a foothold.'
+        title: 'Mật khẩu của bạn có đủ mạnh mẽ?',
+        desc: 'Một lỗi phổ biến mà mọi người đều có thể mắc phải là đặt mật khẩu quá dễ đoán.',
+        desc2: 'Đặc biệt, các cơ sở giáo dục thường xuyên là mục tiêu tấn công mạng trong những năm gần đây. Những kẻ tấn công sẽ cài đặt phần mềm độc hại khi chúng tìm được lỗ hổng.'
       },
       q3: {
-        title: 'Having troubles with passwords internal sharing?'
+        title: 'Khó khăn trong việc chia sẻ mật khẩu nội bộ một cách an toàn?'
       },
       q4: {
-        title: 'Need a safe password manager with the most reasonable price?'
+        title: 'Cần một trình quản lý mật khẩu an toàn với mức giá hợp lý nhất?'
       },
-      btn: 'Sign up for this offer'
+      btn: 'Đăng ký ngay ưu đãi'
     },
     features: {
-      title: "Let Locker protects your instution's passwords!",
-      desc: 'Why choose us?',
-      subtitle: 'We offer full Premium features for the package!',
+      title: 'Hãy để Locker bảo vệ mật khẩu cho tổ chức của bạn!',
+      desc: 'Vì sao nên chọn Locker?',
+      subtitle: 'Gói giáo dục được cung cấp đầy đủ tính năng của Locker Premium!',
       items: [
         {
-          title: 'Manage unlimited passwords & organized access',
+          title: 'Quản lý không giới hạn mật khẩu và các quyền truy cập một cách có tổ chức',
           desc: [
-            'You can grant students a personal Locker Premium account. Locker provides a comprehensive admin dashboard to manage passwords for your institution effectively from one place.',
-            'You can add members, provide each with a secure vault, adjust the privacy settings for each and maintain oversight.'
+            'Bạn có thể cấp cho sinh viên tài khoản Locker Premium cá nhân. Locker cung cấp trang điều khiển quản trị toàn diện để quản lý mật khẩu cho tổ chức của bạn một cách hiệu quả.',
+            'Dễ dàng thêm thành viên, cung cấp cho thành viên một kho lưu trữ an toàn, điều chỉnh cài đặt quyền riêng tư cho từng thành viên và duy trì giám sát.'
           ]
         },
         {
-          title: 'Generate strong passwords',
-          desc: ['The built-in password generator helps create strong, unique passwords to safeguard your account against intruders.']
+          title: 'Tạo mật khẩu mạnh',
+          desc: ['Trình tạo mật khẩu tích hợp giúp tạo mật khẩu mạnh, duy nhất để bảo vệ tài khoản của bạn khỏi những kẻ xâm nhập.']
         },
         {
-          title: 'Secure password sharing',
+          title: 'Chia sẻ mật khẩu an toàn',
           desc: [
-            'Internally share passwords and sensitive data quickly and securely.',
-            'Encrypt your information and manage your shared files within Locker.'
+            'Chia sẻ mật khẩu và dữ liệu nhạy cảm một cách nhanh chóng và an toàn trong nội bộ tổ chức của bạn.',
+            'Mã hóa dữ liệu trong khi chia sẻ và quản lý các tệp được chia sẻ của bạn ngay trong Locker.'
           ]
         },
         {
-          title: 'Integrated with private email feature',
+          title: 'Tích hợp với tính năng email riêng tư',
           desc: [
-            'Locker Private Email protects your true email, as well as your online identity.',
-            'You can manage all emails for different aliases in your primary mailbox & stop spam emails.'
+            'Dịch vụ email bí mật của Locker bảo vệ email thật của bạn cũng như danh tính trực tuyến của bạn.',
+            'Bạn có thể thiết lập, quản lý tất cả email từ các bí danh khác nhau từ email gốc của mình và ngăn chặn thư rác.'
           ]
         },
         {
-          title: 'Customized for admins',
+          title: 'Thiết kế cho quản trị viên',
           desc: [
-            'Vault offers a variety of administrative controls that are easy to deploy but extensive enough to customize based on your privacy policy.'
+            'Locker cung cấp nhiều biện pháp kiểm soát quản trị dễ triển khai nhưng đủ rộng để tùy chỉnh dựa trên chính sách quyền riêng tư của bạn.'
           ]
         },
         {
-          title: 'Data breach scanner',
+          title: 'Quét vi phạm dữ liệu',
           desc: [
-            'Locker scans and sends alerts if it detects your data has been leaked in any database.'
+            'Locker quét và gửi cảnh báo nếu phát hiện dữ liệu của bạn bị rò rỉ trong bất kỳ cơ sở dữ liệu nào.'
           ]
         }
       ],
-      btn: 'Experience Locker now'
+      btn: 'Trải nghiệm Locker ngay'
     },
     cta: {
-      title: 'Enjoy the <span class="gradient-text">free</span> first year right now!',
-      desc: 'Experience unlimited Premium features for your instutions with no payment details required',
-      btn: 'Sign up for this offer'
+      title: 'Tận hưởng một năm sử dụng <span class="gradient-text">miễn phí</span> ngay hôm nay!',
+      desc: 'Trải nghiệm các tính năng Premium không giới hạn cho tổ chức của bạn mà không cần thanh toán',
+      btn: 'Đăng ký ngay'
     }
   }
 }

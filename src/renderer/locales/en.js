@@ -5700,13 +5700,13 @@ module.exports = {
   },
   education: {
     title: 'Locker Password Manager | Education Pack',
-    desc: 'Only for Students/Teachers, Education Institutions & Universities, and Non-government Organizations',
+    desc: 'Enjoy the preferential use for students, teachers, educational institutions and non-government organizations',
     packs: {
       student: 'Student pack',
       teacher: 'Teacher pack'
     },
     header: {
-      title: 'Enjoy the <span class="gradient-text">greatest deal</span> from Locker Password Manager',
+      title: 'Enjoy the greatest deal from Locker Password Manager',
       desc: 'Only for Students/Teachers, Education Institutions & Universities, and Non-government Organizations',
       desc2: 'Enjoy the free first year right now!',
       btn: 'Sign up for this offer'

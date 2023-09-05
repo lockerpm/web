@@ -7,25 +7,28 @@
       <div class="px-6 md:pr-0 py-20 relative z-10">
         <div class="flex flex-wrap">
           <div class="w-full lg:w-[55%] mt-10 text-center lg:text-left">
-            <h1
-              class="text-[51px] leading-[62px] font-semibold mb-6"
-              v-html="$t('education.header.title')"
-            />
-            <p class="landing-font-18 mb-3">
+            <h1 class="text-[51px] leading-[62px] font-semibold mb-6">
+              {{ $t('education.header.title') }}
+            </h1>
+            <p class="landing-font-18 mb-3 max-w-[555px] mx-auto lg:mx-0">
               {{ $t('education.header.desc') }}
             </p>
-            <p class="landing-font-18 font-semibold gradient-text mb-12">
-              {{ $t('education.header.desc2') }}
+            <p class="landing-font-18 font-semibold text-white mb-12">
+              <span class="gradient-bg py-2 px-6 rounded-full">
+                {{ $t('education.header.desc2') }}
+              </span>
             </p>
             <el-button type="primary" @click="goToForm">
               {{ $t('education.header.btn') }} <i class="el-icon-right" />
             </el-button>
           </div>
-          <img
-            src="~assets/images/pages/education/header-img.png"
-            alt="Locker"
-            class="md:w-[45%] hidden lg:flex"
-          >
+          <div class="lg:w-[45%] lg:scale-125 w-full mt-14 lg:mt-0">
+            <img
+              src="~assets/images/pages/education/header-img.png"
+              alt="Locker"
+              style="object-fit: contain"
+            >
+          </div>
         </div>
       </div>
     </section>
@@ -256,9 +259,12 @@ export default {
 </script>
 <style>
 .gradient-text {
-  background: -webkit-linear-gradient(90deg, #34e98d 0%, #4c9aff 100%);
+  background: -webkit-linear-gradient(0deg, #34e98d 29.87%, #4c9aff 80.74%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+.gradient-bg {
+  background: -webkit-linear-gradient(0deg, #34e98d -2.57%, #4c9aff 45.56%);
 }
 .header-bg {
   background-image: url(~assets/images/pages/education/header-bg.png);
