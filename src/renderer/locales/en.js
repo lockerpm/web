@@ -249,6 +249,7 @@ module.exports = {
     3003: 'This team was locked. Please upgrade your plan.',
     7009: 'The card has been declined (insufficient funds, etc...). You needs to contact your card issuer for more information.',
     7013: 'The trial plan was applied for {email}',
+    7018: 'The email you provided was not a valid school email',
     '0004': 'Invalid data',
     7015: '{email} is in an Enterprise. Please leave the enterprise or use another email.',
     id_confirm_password: 'Locker ID password confirmation does not match',
@@ -257,6 +258,8 @@ module.exports = {
     locked_until_pay: 'Your account is suspended due to the expiration of Locker for business plan.',
     upgrade_to_use: 'You need to upgrade your plan to use this feature',
     1002: 'The authorization code is not valid.',
+    1004: 'Please create a new account with this email',
+    only_individual: 'This plan is applicable only for individual accounts',
     invalid_url: 'Invalid URL',
     invalid_code: 'Hmm! It seems the code you\'ve entered doesn\'t exist or expired :('
   },
@@ -5696,6 +5699,12 @@ module.exports = {
     }
   },
   education: {
+    title: 'Locker Password Manager | Education Pack',
+    desc: 'Only for Students/Teachers, Education Institutions & Universities, and Non-government Organizations',
+    packs: {
+      student: 'Student pack',
+      teacher: 'Teacher pack'
+    },
     header: {
       title: 'Enjoy the <span class="gradient-text">greatest deal</span> from Locker Password Manager',
       desc: 'Only for Students/Teachers, Education Institutions & Universities, and Non-government Organizations',
@@ -5704,11 +5713,17 @@ module.exports = {
     },
     form: {
       title: 'Choose a pack to claim 👇',
+      create_account_desc: 'You will be registered for a Locker account with your school email.',
       email_desc: 'Enter the email address linked with your Locker account',
+      email_need_create_desc: 'Enter a verifiable school-issued email address',
       school_email: 'School email',
       school_email_desc: 'If your Locker email isn\'t a school-issued email address, enter a valid one. You need to verify your school email later',
       school_name: 'School name',
-      school_name_desc: 'If your school name doesn\'t appear in the list, then enter the full school name and continue'
+      school_name_desc: 'If your school name doesn\'t appear in the list, then enter the full school name and continue',
+      success: {
+        title: 'Application Form sent!',
+        desc: '😍 Thank you for your application for the Student Pack! Please wait for the qualification result sent to your email within 24 hours.'
+      }
     },
     questions: {
       q1: {

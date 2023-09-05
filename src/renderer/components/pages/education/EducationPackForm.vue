@@ -17,23 +17,34 @@
           }"
           @click.prevent="selectedPack = item.id"
         >
-          {{ item.name }} pack</a>
+          {{ $t(`education.packs.${item.id}`) }}</a>
       </div>
       <!-- Pack selector end -->
 
       <div class="rounded border border-black-50 p-10">
         <!-- Need create account? -->
-        <el-checkbox v-model="needCreateAccount" class="mb-6 w-full">
+        <el-checkbox
+          v-model="needCreateAccount"
+          class="w-full"
+          :class="needCreateAccount ? 'mb-2' : 'mb-6'"
+        >
           {{ $t('promo.buy13.form.need_create_account') }}
         </el-checkbox>
         <!-- Need create account? end -->
 
+        <p v-if="needCreateAccount" class="mb-4 text-black-500">
+          {{ $t('education.form.create_account_desc') }}
+        </p>
+
         <div class="mb-4">
           <p class="text-black mb-1">
             <span class="text-danger">*</span>
-            {{ needCreateAccount ? 'Email' : 'Locker Email' }}
+            {{ needCreateAccount ? 'Scholl email' : 'Locker Email' }}
           </p>
-          <p v-if="!needCreateAccount">
+          <p v-if="needCreateAccount" class="text-black-500">
+            {{ $t('education.form.email_need_create_desc') }}
+          </p>
+          <p v-else class="text-black-500">
             {{ $t('education.form.email_desc') }}
           </p>
           <el-input v-model="form.email" class="mt-2" />
@@ -73,7 +84,7 @@
 
         <div v-if="!needCreateAccount" class="mb-4">
           <p class="text-black mb-1">{{ $t('education.form.school_email') }}</p>
-          <p class="mb-2">
+          <p class="mb-2 text-black-500">
             {{ $t('education.form.school_email_desc') }}
           </p>
           <el-input v-model="form.schoolEmail" />
@@ -101,20 +112,28 @@
         </div>
 
         <div class="mb-4">
-          <p class="text-black mb-1">
+          <p class="text-black mb-2">
             <span class="text-danger">*</span>
             {{ $t('education.form.school_name') }}
           </p>
-          <p class="mb-2">
+          <!-- <p class="mb-2 text-black-500">
             {{ $t('education.form.school_name_desc') }}
-          </p>
+          </p> -->
           <el-input v-model="form.schoolName" />
         </div>
+
+        <!-- Agree? -->
+        <div v-if="needCreateAccount" class="mb-4">
+          <el-checkbox v-model="form.agreeTerms">
+            <span v-html="$t('lifetime.redeem_page.form.agree_terms')" />
+          </el-checkbox>
+        </div>
+        <!-- Agree? end -->
 
         <div class="mt-10 flex justify-end">
           <el-button
             :loading="isLoading"
-            :disabled="isLoading"
+            :disabled="isLoading || !isBtnActive"
             type="primary"
             @click="handleSubmit"
           >
@@ -127,12 +146,11 @@
     <div v-else>
       <div class="max-w-xl mx-auto rounded-md shadow py-4">
         <p class="landing-font-28 font-semibold mb-4 px-6">
-          Application Form sent!
+          {{ $t('education.form.success.title') }}
         </p>
         <hr class="border-black-50">
         <p class="my-6 landing-font-16 px-6">
-          😍 Thank you for your application for the Student Pack! Please wait
-          for the qualification result sent to your email within 24 hours.
+          {{ $t('education.form.success.desc') }}
         </p>
         <hr class="border-black-50">
         <div class="flex justify-end mt-4 px-6">
@@ -158,7 +176,8 @@ export default {
         fullName: '',
         schoolEmail: '',
         country: null,
-        schoolName: ''
+        schoolName: '',
+        agreeTerms: false
       }
     }
   },
@@ -167,22 +186,33 @@ export default {
     packs () {
       return [
         {
-          id: 'student',
-          name: 'Student'
+          id: 'student'
         },
         {
-          id: 'teacher',
-          name: 'Teacher'
+          id: 'teacher'
         }
         // {
         //   id: 'university',
-        //   name: 'University'
         // },
         // {
         //   id: 'ngo',
-        //   name: 'Non-Government Organization'
         // }
       ]
+    },
+
+    isBtnActive () {
+      if (!this.form.email || !this.form.schoolName || !this.form.country) {
+        return false
+      }
+      if (this.needCreateAccount) {
+        return (
+          this.form.password &&
+          this.form.password === this.form.confirmPassword &&
+          this.form.fullName &&
+          this.form.agreeTerms
+        )
+      }
+      return !!this.form.schoolEmail
     }
   },
 
@@ -259,38 +289,39 @@ export default {
         this.showSuccess = true
       } catch (error) {
         const errorData = error.response?.data
-        this.notify(
-          errorData?.message || this.$t('errors.something_went_wrong'),
-          'warning'
-        )
+        let errorMessage = errorData?.message
 
         // Account not exists
         if (errorData?.code === '1004') {
           this.needCreateAccount = true
-          this.$nextTick(() => {
-            this.errorMessage = 'account_not_exist'
-          })
-          return
+          errorMessage = 1004
+        }
+
+        // Invalid school email
+        if (errorData?.code === '7018') {
+          errorMessage = 7018
         }
 
         // Block business/family
-        if (['7015', '7016'].includes(errorData?.code)) {
-          this.errorMessage = 'only_individual'
-          return
+        if (['7015', '7016'].includes(errorData?.education_email)) {
+          errorMessage = 'only_individual'
         }
 
         // Invalid data
         if (errorData?.code === '0004') {
           // Invalid code
-          if (errorData?.details?.code) {
-            this.errorMessage = 'invalid_code'
-            return
+          if (errorData?.details?.education_email) {
+            errorMessage = 7018
+          } else {
+            errorMessage = 'invalid_data'
           }
-
-          this.errorDetails = errorData?.details
-          this.errorMessage = 'invalid_data'
-          return
         }
+
+        if (!errorMessage) {
+          errorMessage = 'something_went_wrong'
+        }
+
+        this.notify(this.$t(`errors.${errorMessage}`), 'warning')
       } finally {
         this.isLoading = false
       }
