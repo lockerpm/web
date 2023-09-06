@@ -252,6 +252,7 @@ module.exports = {
     '0004': 'Sai định dạng email',
     7015: '{email} hiện tại đang ở trong một doanh nghiệp. Vui lòng rời doanh nghiệp hoặc sử dụng email khác.',
     7018: 'Email bạn cung cấp không phải là email hợp lệ của trường',
+    7019: 'Email trường học này đã được sử dụng',
     id_confirm_password: 'Xác nhận mật khẩu Locker ID không khớp',
     something_went_wrong: 'Đã có lỗi xảy ra',
     oops: 'Ối! Đã xảy ra sự cố. Vui lòng thử lại sau vài phút.',

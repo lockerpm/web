@@ -216,7 +216,7 @@ export default {
           this.form.agreeTerms
         )
       }
-      return !!this.form.schoolEmail
+      return true
     }
   },
 
@@ -259,7 +259,7 @@ export default {
       const payload = {
         email: this.form.email,
         country: this.form.country,
-        education_email: this.form.schoolEmail,
+        education_email: this.form.schoolEmail || this.form.email,
         education_type: this.selectedPack,
         university: this.form.schoolName
       }
@@ -304,6 +304,11 @@ export default {
         // Invalid school email
         if (errorData?.code === '7018') {
           errorMessage = 7018
+        }
+
+        // School email already claimed
+        if (errorData?.code === '7019') {
+          errorMessage = 7019
         }
 
         // Block business/family
