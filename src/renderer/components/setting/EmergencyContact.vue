@@ -11,8 +11,8 @@
       <div class="text-head-5 text-black-700 font-semibold truncate">
         {{
           emergency_access.id
-            ? 'Edit emergency contact'
-            : 'Invite emergency contact'
+            ? $t('data.emergency_access.edit_emergency_contact')
+            : $t('data.emergency_access.invite_emergency_contact')
         }}
       </div>
       <!-- <div class="setting-description">
@@ -73,12 +73,13 @@
     <div slot="footer" class="dialog-footer flex items-center text-left">
       <div class="flex-grow" />
       <div>
-        <button class="btn btn-default" @click="dialogVisible = false">
+        <el-button @click="dialogVisible = false">
           {{ $t('common.cancel') }}
-        </button>
-        <button
-          class="btn btn-primary"
-          :disabled="loading"
+        </el-button>
+        <el-button
+          type="primary"
+          :loading="loading"
+          :disabled="loading || !isBtnActive"
           @click="
             emergency_access.id
               ? putEmergencyAccess(emergency_access)
@@ -86,7 +87,7 @@
           "
         >
           {{ emergency_access.id ? $t('common.update') : $t('common.add') }}
-        </button>
+        </el-button>
       </div>
     </div>
   </el-dialog>
@@ -95,10 +96,12 @@
 <script>
 import InputText from '../input/InputText'
 import { Utils } from '../../core/misc/utils.ts'
+
 export default {
   components: {
     InputText
   },
+
   data () {
     return {
       userAccessOptions: ['view', 'takeover'],
@@ -112,6 +115,7 @@ export default {
       file: null
     }
   },
+
   computed: {
     waitTimeOptions () {
       return [
@@ -122,8 +126,12 @@ export default {
         { label: this.$t('data.wait_time_days.thirtyDays'), value: 30 }
         // { label: this.$t('data.wait_time_days.ninetyDays'), value: 90 }
       ]
+    },
+    isBtnActive () {
+      return this.emergency_access.wait_time_days && this.emergency_access.email
     }
   },
+
   methods: {
     async openDialog (emergencyAccess = {}) {
       this.dialogVisible = true
@@ -137,9 +145,11 @@ export default {
         }
       }
     },
+
     closeDialog () {
       this.dialogVisible = false
     },
+
     async postEmergencyAccess (emergencyAccess) {
       try {
         this.loading = true
@@ -170,6 +180,7 @@ export default {
         this.loading = false
       }
     },
+
     async putEmergencyAccess (emergencyAccess) {
       try {
         this.loading = true
@@ -195,6 +206,7 @@ export default {
         this.loading = false
       }
     },
+
     async deleteEmergencyAccess (emergencyAccess) {
       this.$confirm(
         this.$t('data.notifications.delete_emergency_contact'),
@@ -232,6 +244,7 @@ export default {
         })
         .catch(() => {})
     },
+
     async getPublicKey (email) {
       const { public_key: publicKey } = await this.$axios.$post(
         'cystack_platform/pm/sharing/public_key',
@@ -239,6 +252,7 @@ export default {
       )
       return publicKey
     },
+
     async generateAccessKey (publicKey) {
       const pk = Utils.fromB64ToArray(publicKey)
       const encKey = await this.$cryptoService.getEncKey()
