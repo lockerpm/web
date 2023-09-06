@@ -381,7 +381,7 @@
                   <tr :key="`group_${index}`" style="background-color: #fbfaf3">
                     <td
                       colspan="100%"
-                      class="py-[18px] pl-6 text-green font-semibold landing-font-16"
+                      class="py-[18px] px-6 text-green font-semibold landing-font-16"
                     >
                       {{ feature.title }}
                     </td>
@@ -394,7 +394,7 @@
                     :key="`content_${index}_${idx}`"
                   >
                     <td
-                      class="pl-6 landing-font-16 pb-5"
+                      class="px-6 landing-font-16 pb-5"
                       style="color: #5a6176"
                     >
                       {{ item.label }}
@@ -402,7 +402,7 @@
                     <td
                       v-for="(plan, ind) in item.plans.slice(1, 2)"
                       :key="ind"
-                      class="text-center pb-5"
+                      class="text-center pb-5 pr-6"
                     >
                       <div
                         v-if="plan === true"
