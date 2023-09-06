@@ -5418,8 +5418,8 @@ module.exports = {
         desc2: 'Newly-registered and free plan users can purchase for this preferential price today!'
       },
       features: {
-        title: 'Secure your passwords with the most <span class="text-primary">reasonable price</span>',
-        desc: 'We guarantee to bring you the lowest price & highest quality ever!',
+        title: 'Locker Premium gives you unlimited use with <span class="text-primary">every feature</span>',
+        desc: 'Access to all present features and future updates - just in one purchase',
         items: [
           {
             title: 'Easy-to-manage',
@@ -5448,8 +5448,8 @@ module.exports = {
         ]
       },
       private_email: {
-        title: 'The <span class="text-primary">only</span> Password Manager integrated with Private Email',
-        desc: 'In addition to Password Manager features, Locker offers you to use Private Email feature totally <span class="font-semibold text-primary">free</span>',
+        title: 'The <span class="text-primary">first</span> Password Manager integrated with Private Email',
+        desc: 'Get <span class="font-semibold text-primary">free and unlimited use</span> of Maily - Locker\'s Private Email',
         items: [
           {
             title: 'Stay anonymous',
@@ -5487,20 +5487,16 @@ module.exports = {
         title: 'Frequently Asked Questions',
         question_list: [
           {
-            question: 'Why Locker?',
-            answer: 'Locker is the password manager having the most reasonable prices and integrated with private email features, which you can\'t see in any other password manager'
+            question: 'Why Locker over other password managers?',
+            answer: 'Choose Locker for unbeatable privacy, seamless cross-device syncing, robust security features, data breach alerts, emergency access, and secure sharing, with affordable pricing. Plus, Locker is the 1st Password Manager that offers Private Email.'
           },
           {
-            question: 'How does Locker compare to other password managers?',
-            answer: 'Locker has full features of a password manager like other rivals. However, the annual price of Locker is the lowest price and the only one that is integrated with private email feature.'
+            question: 'Why go Locker Premium?',
+            answer: 'Go Locker Premium for unlimited email aliases, cross-device syncing, robust security features, data breach alerts, emergency access, secure sharing, private email, and more, all for just $1.29/month.'
           },
           {
             question: 'Which payment methods do you accept?',
             answer: 'We accept Visa and Mastercard.'
-          },
-          {
-            question: 'Why is Locker said to have "the most reasonable price"?',
-            answer: 'Our rivals\' prices are from $2 to $8/month billed annually. However, we confirm to have full features with only $1.29/month billed annually.<br><br>If you want to know more about our annual pricing, click <a href="/pricing" target="_blank">Here</a> for more details.'
           }
         ]
       },
