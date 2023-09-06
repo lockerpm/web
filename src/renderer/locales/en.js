@@ -5717,7 +5717,7 @@ module.exports = {
       email_desc: 'Enter the email address linked with your Locker account',
       email_need_create_desc: 'Enter a verifiable school-issued email address',
       school_email: 'School email',
-      school_email_desc: 'If your Locker email isn\'t a school-issued email address, enter a valid one. You need to verify your school email later',
+      school_email_desc: 'If your Locker email isn\'t a school-issued email address, enter a valid one here. You need to verify your school email later',
       school_name: 'School name',
       school_name_desc: 'If your school name doesn\'t appear in the list, then enter the full school name and continue',
       success: {
@@ -5727,7 +5727,7 @@ module.exports = {
     },
     questions: {
       q1: {
-        title: 'Are managing all passwords for your insitution overcontrol?',
+        title: 'Are managing all passwords for your insitution uncontrollable?',
         desc: '👏 Stop managing and keeping your passwords in untrustworthy places that can easily be hacked anytime.',
         desc2: 'Furthermore, there are hundred passwords from your institution\'s different accounts that you can\'t manage.'
       },
@@ -5745,7 +5745,7 @@ module.exports = {
       btn: 'Sign up for this offer'
     },
     features: {
-      title: "Let Locker protects your instution's passwords!",
+      title: "Let Locker protects your institution's passwords!",
       desc: 'Why choose us?',
       subtitle: 'We offer full Premium features for the package!',
       items: [
@@ -5791,7 +5791,7 @@ module.exports = {
     },
     cta: {
       title: 'Enjoy the <span class="gradient-text">free</span> first year right now!',
-      desc: 'Experience unlimited Premium features for your instutions with no payment details required',
+      desc: 'Experience unlimited Premium features for your institution with no payment required.',
       btn: 'Sign up for this offer'
     }
   }
