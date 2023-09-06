@@ -39,7 +39,11 @@
         <div class="mb-4">
           <p class="text-black mb-1">
             <span class="text-danger">*</span>
-            {{ needCreateAccount ? 'Scholl email' : 'Locker Email' }}
+            {{
+              needCreateAccount
+                ? $t('education.form.school_email')
+                : 'Locker Email'
+            }}
           </p>
           <p v-if="needCreateAccount" class="text-black-500">
             {{ $t('education.form.email_need_create_desc') }}
