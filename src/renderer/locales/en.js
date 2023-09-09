@@ -250,6 +250,7 @@ module.exports = {
     7009: 'The card has been declined (insufficient funds, etc...). You needs to contact your card issuer for more information.',
     7013: 'The trial plan was applied for {email}',
     7018: 'The email you provided was not a valid school email',
+    7019: 'The school email was already used',
     '0004': 'Invalid data',
     7015: '{email} is in an Enterprise. Please leave the enterprise or use another email.',
     id_confirm_password: 'Locker ID password confirmation does not match',
@@ -5718,12 +5719,12 @@ module.exports = {
       school_name_desc: 'If your school name doesn\'t appear in the list, then enter the full school name and continue',
       success: {
         title: 'Application Form sent!',
-        desc: '😍 Thank you for your application for the Student Pack! Please wait for the qualification result sent to your email within 24 hours.'
+        desc: '😍 Thank you for your application for the Student Pack. A verification email has just been sent to {email}.'
       }
     },
     questions: {
       q1: {
-        title: 'Are managing all passwords for your insitution uncontrollable?',
+        title: 'Are managing all passwords for your institution uncontrollable?',
         desc: '👏 Stop managing and keeping your passwords in untrustworthy places that can easily be hacked anytime.',
         desc2: 'Furthermore, there are hundred passwords from your institution\'s different accounts that you can\'t manage.'
       },

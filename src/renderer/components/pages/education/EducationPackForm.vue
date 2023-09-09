@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Form -->
     <div v-if="!showSuccess">
       <h2 class="landing-font-38 font-semibold mb-6">
         {{ $t('education.form.title') }}
@@ -146,7 +147,9 @@
         </div>
       </div>
     </div>
+    <!-- Form end -->
 
+    <!-- Success -->
     <div v-else>
       <div class="max-w-xl mx-auto rounded-md shadow py-4">
         <p class="landing-font-28 font-semibold mb-4 px-6">
@@ -154,7 +157,11 @@
         </p>
         <hr class="border-black-50">
         <p class="my-6 landing-font-16 px-6">
-          {{ $t('education.form.success.desc') }}
+          {{
+            $t('education.form.success.desc', {
+              email: form.schoolEmail || form.email
+            })
+          }}
         </p>
         <hr class="border-black-50">
         <div class="flex justify-end mt-4 px-6">
@@ -162,6 +169,7 @@
         </div>
       </div>
     </div>
+    <!-- Success end -->
   </div>
 </template>
 <script>
@@ -216,7 +224,7 @@ export default {
           this.form.agreeTerms
         )
       }
-      return !!this.form.schoolEmail
+      return true
     }
   },
 
@@ -259,7 +267,7 @@ export default {
       const payload = {
         email: this.form.email,
         country: this.form.country,
-        education_email: this.form.schoolEmail,
+        education_email: this.form.schoolEmail || this.form.email,
         education_type: this.selectedPack,
         university: this.form.schoolName
       }
@@ -304,6 +312,11 @@ export default {
         // Invalid school email
         if (errorData?.code === '7018') {
           errorMessage = 7018
+        }
+
+        // School email already claimed
+        if (errorData?.code === '7019') {
+          errorMessage = 7019
         }
 
         // Block business/family

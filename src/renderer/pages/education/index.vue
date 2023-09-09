@@ -7,14 +7,16 @@
       <div class="px-6 md:pr-0 py-20 relative z-10">
         <div class="flex flex-wrap">
           <div class="w-full lg:w-[55%] mt-10 text-center lg:text-left">
-            <h1 class="text-[51px] leading-[62px] font-semibold mb-6">
+            <h1
+              class="text-[51px] leading-[62px] font-semibold mb-6 lg:max-w-[700px]"
+            >
               {{ $t('education.header.title') }}
             </h1>
             <p class="landing-font-18 mb-3 max-w-[555px] mx-auto lg:mx-0">
               {{ $t('education.header.desc') }}
             </p>
             <p class="landing-font-18 font-semibold text-white mb-12">
-              <span class="gradient-bg py-2 px-6 rounded-full">
+              <span class="gradient-bg py-2 md:px-6 px-2 rounded-full">
                 {{ $t('education.header.desc2') }}
               </span>
             </p>
