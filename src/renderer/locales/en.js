@@ -5719,7 +5719,7 @@ module.exports = {
       school_name_desc: 'If your school name doesn\'t appear in the list, then enter the full school name and continue',
       success: {
         title: 'Application Form sent!',
-        desc: '😍 Thank you for your application for the Student Pack! Please wait for the qualification result sent to your email within 24 hours.'
+        desc: '😍 Thank you for your application for the Student Pack. A verification email has just been sent to {email}.'
       }
     },
     questions: {

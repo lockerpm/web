@@ -5563,7 +5563,7 @@ module.exports = {
       school_name_desc: 'Nếu tên trường không xuất hiện trong danh sách, hãy nhập thủ công',
       success: {
         title: 'Đơn đăng ký đã được gửi!',
-        desc: '😍 Cảm ơn bạn đã đăng ký Gói Sinh viên! Vui lòng đợi kết quả được gửi đến email của bạn trong vòng 24 giờ.'
+        desc: '😍 Cảm ơn bạn đã đăng ký Gói Sinh viên! Một email xác minh vừa được gửi tới {email}.'
       }
     },
     questions: {
