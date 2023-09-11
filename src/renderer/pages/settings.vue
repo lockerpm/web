@@ -3,7 +3,7 @@
     class="flex flex-col flex-column-fluid relative bg-[#FBFBFC] min-h-screen"
   >
     <div
-      class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 px-10 sm:overflow-x-hidden overflow-x-auto"
+      class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 md:px-10 px-4 sm:overflow-x-hidden overflow-x-auto"
     >
       <nuxt-link
         v-for="(item, index) in menu"
@@ -20,7 +20,7 @@
         {{ $t(`sidebar.${item.label}`) }}
       </nuxt-link>
     </div>
-    <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
+    <div class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4 mb-20">
       <nuxt-child />
     </div>
   </div>

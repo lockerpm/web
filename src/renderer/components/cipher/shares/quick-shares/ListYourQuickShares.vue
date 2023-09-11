@@ -3,7 +3,7 @@
     <!-- List Ciphers, Folders, ... -->
     <div
       v-if="!shouldRenderNoCipher"
-      class="flex-column-fluid lg:px-28 px-10 mb-20"
+      class="flex-column-fluid lg:px-28 md:px-10 px-4 mb-20"
     >
       <div class="flex items-center justify-end content-end mb-5">
         <!-- Sort menu -->
