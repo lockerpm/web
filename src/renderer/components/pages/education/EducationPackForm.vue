@@ -301,7 +301,7 @@ export default {
         this.showSuccess = true
       } catch (error) {
         const errorData = error.response?.data
-        let errorMessage = errorData?.message
+        let errorMessage = ''
 
         // Account not exists
         if (errorData?.code === '1004') {
@@ -329,12 +329,14 @@ export default {
           // Invalid code
           if (errorData?.details?.education_email) {
             errorMessage = 7018
-          } else {
-            errorMessage = 'invalid_data'
           }
         }
 
         if (!errorMessage) {
+          if (errorData?.message) {
+            this.notify(errorData?.message, 'warning')
+            return
+          }
           errorMessage = 'something_went_wrong'
         }
 
