@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="hidden-scrollbar" style="overflow-x: scroll">
     <RecycleScroller
       ref="list"
       page-mode
       :item-size="65"
       :items="ciphers || []"
+      style="min-width: 550px"
     >
       <template slot="before">
         <div class="th flex">
@@ -19,14 +20,17 @@
           <!-- Check all end -->
 
           <!-- Multi select action -->
-          <div v-if="multipleSelection.length" class="flex items-center">
+          <div
+            v-if="multipleSelection.length"
+            class="flex items-center flex-wrap"
+          >
             <div class="text-black mr-8 whitespace-nowrap">
               {{ multipleSelection.length }}
               {{ $t('data.ciphers.selected_items') }}
             </div>
-            <div v-if="deleted">
+            <div v-if="deleted" class="flex flex-wrap">
               <button
-                class="btn btn-default btn-xs"
+                class="btn btn-default btn-xs mr-2"
                 @click="restoreCiphers(multipleSelection.map(e => e.id))"
               >
                 {{ $t('common.restore') }}
@@ -38,9 +42,9 @@
                 {{ $t('common.permanently_delete') }}
               </button>
             </div>
-            <div v-else class="">
+            <div v-else class="flex flex-wrap">
               <button
-                class="btn btn-default btn-xs"
+                class="btn btn-default btn-xs mr-2"
                 @click="moveFolders(multipleSelection.map(e => e.id))"
               >
                 {{ $t('common.move_folder') }}

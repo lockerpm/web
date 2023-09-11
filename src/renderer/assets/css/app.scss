@@ -99,7 +99,7 @@ select:focus {
   .cipher-item {
     border-bottom: 1px solid #eaeaf5;
     min-height: 57px;
-    @apply hover:bg-black-300 cursor-pointer items-center px-5 break-all;
+    @apply hover:bg-black-300 cursor-pointer items-center break-all;
     &:last-child {
       // border-bottom: none;
     }
@@ -657,4 +657,12 @@ th .cell {
 
 .setting-wrapper .el-collapse-item__header {
   height: auto !important;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hidden-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
