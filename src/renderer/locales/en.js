@@ -168,7 +168,8 @@ module.exports = {
     agree_terms: 'I agree with the <a target="_blank" href="https://locker.io/terms"><b>Terms</b></a> and <a target="_blank" href="https://locker.io/privacy"><b>Conditions</b></a>',
     expired: 'Expired',
     choose_file: 'Choose File',
-    onetime: 'Lifetime plan'
+    onetime: 'Lifetime plan',
+    submit: 'Submit'
   },
   sidebar: {
     all: 'All',
@@ -248,6 +249,8 @@ module.exports = {
     3003: 'This team was locked. Please upgrade your plan.',
     7009: 'The card has been declined (insufficient funds, etc...). You needs to contact your card issuer for more information.',
     7013: 'The trial plan was applied for {email}',
+    7018: 'The email you provided was not a valid school email',
+    7019: 'The school email was already used',
     '0004': 'Invalid data',
     7015: '{email} is in an Enterprise. Please leave the enterprise or use another email.',
     id_confirm_password: 'Locker ID password confirmation does not match',
@@ -256,6 +259,8 @@ module.exports = {
     locked_until_pay: 'Your account is suspended due to the expiration of Locker for business plan.',
     upgrade_to_use: 'You need to upgrade your plan to use this feature',
     1002: 'The authorization code is not valid.',
+    1004: 'Please create a new account with this email',
+    only_individual: 'This plan is applicable only for individual accounts',
     invalid_url: 'Invalid URL',
     invalid_code: 'Hmm! It seems the code you\'ve entered doesn\'t exist or expired :('
   },
@@ -367,6 +372,7 @@ module.exports = {
       delete_selected_desc: 'Are you sure you want to permanently delete this item | You have selected {count} item(s) to permanently delete. Are you sure you want to permanently delete all of these items?',
       trash_selected: 'Delete selected',
       trash_selected_desc: 'Do you really want to send to the trash? Trash items will be permanently deleted after 30 days. | You have selected {count} item(s) to delete. Are you sure you want to delete all of these items? Trash items will be permanently deleted after 30 days.',
+      trash_no_permission: '{count} item(s) cannot be moved to the trash because you are not the owner',
       restore_selected: 'Restore selected',
       restore_selected_desc: 'Are you sure you want to restore this item? | You have selected {count} item(s) to restore. Are you sure you want to restore all of these items?',
       move_selected: 'Move selected',
@@ -5688,6 +5694,103 @@ module.exports = {
         desc1: 'You will be billed once only for this Lifetime Subscription.',
         desc2: 'Locker offers 30-day money back guarantee for any reason. Contact contact@locker.io to process the money back guarantee or for further support.'
       }
+    }
+  },
+  education: {
+    title: 'Locker Password Manager | Education Pack',
+    desc: 'Enjoy the preferential use for students, teachers, educational institutions and non-government organizations',
+    packs: {
+      student: 'Student pack',
+      teacher: 'Teacher pack'
+    },
+    header: {
+      title: 'Enjoy the greatest deal from Locker Password Manager',
+      desc: 'Only for Students/Teachers, Education Institutions & Universities, and Non-government Organizations',
+      desc2: 'Enjoy the free first year right now!',
+      btn: 'Sign up for this offer'
+    },
+    form: {
+      title: 'Choose a pack to claim 👇',
+      create_account_desc: 'You will be registered for a Locker account with your school email.',
+      email_desc: 'Enter the email address linked with your Locker account',
+      email_need_create_desc: 'Enter a verifiable school-issued email address',
+      school_email: 'School email',
+      school_email_desc: 'If your Locker email isn\'t a school-issued email address, enter a valid one here. You need to verify your school email later',
+      school_name: 'School name',
+      school_name_desc: 'If your school name doesn\'t appear in the list, then enter the full school name and continue',
+      success: {
+        title: 'Application Form sent!',
+        desc: '😍 Thank you for your application for the Student Pack. A verification email has just been sent to {email}.'
+      }
+    },
+    questions: {
+      q1: {
+        title: 'Are managing all passwords for your institution uncontrollable?',
+        desc: '👏 Stop managing and keeping your passwords in untrustworthy places that can easily be hacked anytime.',
+        desc2: 'Furthermore, there are hundred passwords from your institution\'s different accounts that you can\'t manage.'
+      },
+      q2: {
+        title: 'Are your passwords strong enough?',
+        desc: 'A common mistake people make is to set passwords that are easy to guess.',
+        desc2: 'Especially, educational institutions have often been the target of cyber attacks in recent years. Attackers will install the malware once they have established a foothold.'
+      },
+      q3: {
+        title: 'Having troubles with passwords internal sharing?'
+      },
+      q4: {
+        title: 'Need a safe password manager with the most reasonable price?'
+      },
+      btn: 'Sign up for this offer'
+    },
+    features: {
+      title: "Let Locker protects your institution's passwords!",
+      desc: 'Why choose us?',
+      subtitle: 'We offer full Premium features for the package!',
+      items: [
+        {
+          title: 'Manage unlimited passwords & organized access',
+          desc: [
+            'You can grant students a personal Locker Premium account. Locker provides a comprehensive admin dashboard to manage passwords for your institution effectively from one place.',
+            'You can add members, provide each with a secure vault, adjust the privacy settings for each and maintain oversight.'
+          ]
+        },
+        {
+          title: 'Generate strong passwords',
+          desc: ['The built-in password generator helps create strong, unique passwords to safeguard your account against intruders.']
+        },
+        {
+          title: 'Secure password sharing',
+          desc: [
+            'Internally share passwords and sensitive data quickly and securely.',
+            'Encrypt your information and manage your shared files within Locker.'
+          ]
+        },
+        {
+          title: 'Integrated with private email feature',
+          desc: [
+            'Locker Private Email protects your true email, as well as your online identity.',
+            'You can manage all emails for different aliases in your primary mailbox & stop spam emails.'
+          ]
+        },
+        {
+          title: 'Customized for admins',
+          desc: [
+            'Vault offers a variety of administrative controls that are easy to deploy but extensive enough to customize based on your privacy policy.'
+          ]
+        },
+        {
+          title: 'Data breach scanner',
+          desc: [
+            'Locker scans and sends alerts if it detects your data has been leaked in any database.'
+          ]
+        }
+      ],
+      btn: 'Experience Locker now'
+    },
+    cta: {
+      title: 'Enjoy the <span class="gradient-text">free</span> first year right now!',
+      desc: 'Experience unlimited Premium features for your institution with no payment required.',
+      btn: 'Sign up for this offer'
     }
   }
 }

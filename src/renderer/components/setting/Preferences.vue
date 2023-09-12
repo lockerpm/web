@@ -1,7 +1,10 @@
 <template>
   <div class="setting-wrapper">
     <div class="setting-section">
-      <div class="setting-section-header cursor-pointer" @click="collapsed = !collapsed">
+      <div
+        class="setting-section-header cursor-pointer"
+        @click="collapsed = !collapsed"
+      >
         <div class="text-head-5 font-semibold">
           {{ $t('data.settings.preferences') }}
         </div>
@@ -27,7 +30,7 @@
     <div v-if="!collapsed">
       <div class="setting-section">
         <div class="setting-section-header">
-          <div>
+          <div class="pr-4">
             <div class="setting-title">{{ $t('data.settings.language') }}</div>
           </div>
           <div>
@@ -105,8 +108,7 @@
 
 <script>
 export default {
-  components: {
-  },
+  components: {},
   data () {
     return {
       user: {},

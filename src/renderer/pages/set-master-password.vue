@@ -334,7 +334,7 @@ export default {
 </script>
 
 <style>
-  .no-pt-dialog .el-dialog__body {
-    padding-top: 0 !important;
-  }
+.no-pt-dialog .el-dialog__body {
+  padding-top: 0 !important;
+}
 </style>

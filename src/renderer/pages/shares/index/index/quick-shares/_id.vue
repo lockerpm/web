@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col flex-grow relative">
-    <div class="flex-grow lg:px-28 py-4 px-10 mb-20">
+    <div class="flex-grow lg:px-28 py-4 md:px-10 px-4 mb-20">
       <!-- Breadcrumb -->
       <div class="flex items-center justify-between">
         <el-breadcrumb class="truncate" separator-class="el-icon-arrow-right">

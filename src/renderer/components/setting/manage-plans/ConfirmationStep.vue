@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
+  <div class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4 mb-20">
     <!-- Confirmation -->
     <div class="setting-wrapper p-8 !mb-8 text-center">
       <img src="~/assets/images/icons/CheckCircle.svg" class="mx-auto">

@@ -22,7 +22,10 @@
     <!-- Navigation Menu end -->
 
     <!-- Overview (your shares) -->
-    <div v-if="!isSharedWithYou" class="flex-column-fluid lg:px-28 py-10 px-10">
+    <div
+      v-if="!isSharedWithYou"
+      class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4"
+    >
       <!-- Title -->
       <div class="flex">
         <div class="text-head-4">

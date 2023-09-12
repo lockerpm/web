@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="emergencyAccessInvitations.length"
-    class="flex-column-fluid lg:px-28 py-10 px-10"
+    class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4"
   >
     <div
       v-for="invitation in emergencyAccessInvitations.slice(0, 1)"

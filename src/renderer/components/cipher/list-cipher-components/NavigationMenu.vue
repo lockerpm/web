@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="['vault', ...cipherRoutes].includes(currentRoute)"
-    class="navigation-bar"
+    class="navigation-bar overflow-x-scroll hidden-scrollbar"
   >
     <!-- List all options if length <= 8 -->
     <template v-if="menuVault.length <= 8">

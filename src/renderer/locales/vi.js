@@ -168,7 +168,8 @@ module.exports = {
     agree_terms: 'Tôi đồng ý với <a target="_blank" href="https://locker.io/vi/terms"><b>Điều khoản</b></a> và <a target="_blank" href="https://locker.io/vi/privacy"><b>Chính sách</b></a>',
     expired: 'Hết hạn',
     choose_file: 'Chọn tệp',
-    onetime: 'Gói trọn đời'
+    onetime: 'Gói trọn đời',
+    submit: 'Gửi'
   },
   sidebar: {
     all: 'Tất cả',
@@ -250,12 +251,16 @@ module.exports = {
     7013: '{email} đã áp dụng dùng thử.',
     '0004': 'Sai định dạng email',
     7015: '{email} hiện tại đang ở trong một doanh nghiệp. Vui lòng rời doanh nghiệp hoặc sử dụng email khác.',
+    7018: 'Email bạn cung cấp không phải là email hợp lệ của trường',
+    7019: 'Email trường học này đã được sử dụng',
     id_confirm_password: 'Xác nhận mật khẩu Locker ID không khớp',
     something_went_wrong: 'Đã có lỗi xảy ra',
     oops: 'Ối! Đã xảy ra sự cố. Vui lòng thử lại sau vài phút.',
     locked_until_pay: 'Tài khoản của bạn bị tạm khóa do gói cước Locker cho doanh nghiệp đã hết hạn.',
     upgrade_to_use: 'Bạn cần nâng cấp gói của mình để sử dụng tính năng này',
     1002: 'Mã xác nhận không tồn tại.',
+    1004: 'Vui lòng tạo một tài khoản mới với email này',
+    only_individual: 'Gói chỉ áp dụng cho tài khoản cá nhân',
     invalid_url: 'URL không hợp lệ',
     invalid_code: 'Mã bạn nhập không tồn tại hoặc đã hết hạn :('
   },
@@ -367,6 +372,7 @@ module.exports = {
       delete_selected_desc: 'Bạn có chắc chắn sẽ xoá vĩnh viễn mục này? | Bạn đã chọn xoá vĩnh viễn {count} mục. Bạn có chắc chắn sẽ xoá vĩnh viễn tất cả các mục này?',
       trash_selected: 'Xóa Mục đã chọn',
       trash_selected_desc: 'Bạn có thực sự muốn chuyển vào thùng rác? Các mục này sẽ bị xóa vĩnh viễn sau 30 ngày. | Bạn đã chọn {count} mục. Bạn có thực sự muốn chuyển các mục này vào thùng rác? Các mục này sẽ bị xóa vĩnh viễn sau 30 ngày.',
+      trash_no_permission: '{count} mục không thể chuyển vào thùng rác do bạn không phải chủ sở hữu',
       restore_selected: 'Khôi phục các mục đã chọn',
       restore_selected_desc: 'Bạn có thực sự muốn khôi phục mục này? | Bạn đã chọn {count} mục. Bạn có thực sự muốn khôi phục các mục này?',
       move_selected: 'Di chuyển các mục đã chọn',
@@ -5532,6 +5538,103 @@ module.exports = {
         desc1: 'Bạn chỉ cần thanh toán một lần duy nhất một lần cho gói Đăng ký trọn đời này.',
         desc2: 'Locker đảm bảo hoàn lại tiền trong vòng 30 ngày kể từ ngày mua vì bất kỳ lý do gì. Hãy liên hệ contact@locker.io để tiến hành yêu cầu hoàn tiền hoặc để được hỗ trợ thêm.'
       }
+    }
+  },
+  education: {
+    title: 'Locker Password Manager | Education Pack',
+    desc: 'Tận hưởng ưu đãi độc quyền cho sinh viên, nhà giáo, cơ sở giáo dục và tổ chức phi chính phủ',
+    packs: {
+      student: 'Sinh viên',
+      teacher: 'Nhà giáo'
+    },
+    header: {
+      title: 'Ưu đãi lớn nhất từ Trình Quản lý Mật khẩu Locker',
+      desc: 'Chỉ dành cho Sinh viên/Nhà giáo, Trường đại học và Cơ sở giáo dục, và Tổ chức phi chính phủ',
+      desc2: 'Nhận ngay ưu đãi miễn phí một năm!',
+      btn: 'Đăng ký ưu đãi'
+    },
+    form: {
+      title: 'Chọn một gói để nhận 👇',
+      create_account_desc: 'Bạn cần đăng ký một tài khoản Locker bằng email của trường.',
+      email_desc: 'Nhập địa chỉ email được liên kết với tài khoản Locker của bạn',
+      email_need_create_desc: 'Nhập địa chỉ email có thể xác minh được cấp bởi trường',
+      school_email: 'Email của trường',
+      school_email_desc: 'Nếu email Locker của bạn không phải là địa chỉ email do trường cấp, hãy nhập email của trường ở đây. Bạn sẽ cần xác minh email trường học của mình',
+      school_name: 'Tên trường',
+      school_name_desc: 'Nếu tên trường không xuất hiện trong danh sách, hãy nhập thủ công',
+      success: {
+        title: 'Đơn đăng ký đã được gửi!',
+        desc: '😍 Cảm ơn bạn đã đăng ký Gói Sinh viên! Một email xác minh vừa được gửi tới {email}.'
+      }
+    },
+    questions: {
+      q1: {
+        title: 'Mất kiểm soát các mật khẩu dành cho tổ chức của bạn?',
+        desc: '👏 Ngừng quản lý và lưu trữ mật khẩu của bạn ở những nơi không đáng tin cậy, có thể dễ dàng bị đánh mất bất cứ lúc nào.',
+        desc2: 'Hơn nữa, có hàng trăm mật khẩu từ các tài khoản khác nhau của tổ chức mà bạn khó để quản lý.'
+      },
+      q2: {
+        title: 'Mật khẩu của bạn có đủ mạnh mẽ?',
+        desc: 'Một lỗi phổ biến mà mọi người đều có thể mắc phải là đặt mật khẩu quá dễ đoán.',
+        desc2: 'Đặc biệt, các cơ sở giáo dục thường xuyên là mục tiêu tấn công mạng trong những năm gần đây. Những kẻ tấn công sẽ cài đặt phần mềm độc hại khi chúng tìm được lỗ hổng.'
+      },
+      q3: {
+        title: 'Khó khăn trong việc chia sẻ mật khẩu nội bộ một cách an toàn?'
+      },
+      q4: {
+        title: 'Cần một trình quản lý mật khẩu an toàn với mức giá hợp lý nhất?'
+      },
+      btn: 'Đăng ký ngay ưu đãi'
+    },
+    features: {
+      title: 'Hãy để Locker bảo vệ mật khẩu cho tổ chức của bạn!',
+      desc: 'Vì sao nên chọn Locker?',
+      subtitle: 'Gói giáo dục được cung cấp đầy đủ tính năng của Locker Premium!',
+      items: [
+        {
+          title: 'Quản lý không giới hạn mật khẩu và các quyền truy cập một cách có tổ chức',
+          desc: [
+            'Bạn có thể cấp cho sinh viên tài khoản Locker Premium cá nhân. Locker cung cấp trang điều khiển quản trị toàn diện để quản lý mật khẩu cho tổ chức của bạn một cách hiệu quả.',
+            'Dễ dàng thêm thành viên, cung cấp cho thành viên một kho lưu trữ an toàn, điều chỉnh cài đặt quyền riêng tư cho từng thành viên và duy trì giám sát.'
+          ]
+        },
+        {
+          title: 'Tạo mật khẩu mạnh',
+          desc: ['Trình tạo mật khẩu tích hợp giúp tạo mật khẩu mạnh, duy nhất để bảo vệ tài khoản của bạn khỏi những kẻ xâm nhập.']
+        },
+        {
+          title: 'Chia sẻ mật khẩu an toàn',
+          desc: [
+            'Chia sẻ mật khẩu và dữ liệu nhạy cảm một cách nhanh chóng và an toàn trong nội bộ tổ chức của bạn.',
+            'Mã hóa dữ liệu trong khi chia sẻ và quản lý các tệp được chia sẻ của bạn ngay trong Locker.'
+          ]
+        },
+        {
+          title: 'Tích hợp với tính năng email riêng tư',
+          desc: [
+            'Dịch vụ email bí mật của Locker bảo vệ email thật của bạn cũng như danh tính trực tuyến của bạn.',
+            'Bạn có thể thiết lập, quản lý tất cả email từ các bí danh khác nhau từ email gốc của mình và ngăn chặn thư rác.'
+          ]
+        },
+        {
+          title: 'Thiết kế cho quản trị viên',
+          desc: [
+            'Locker cung cấp nhiều biện pháp kiểm soát quản trị dễ triển khai nhưng đủ rộng để tùy chỉnh dựa trên chính sách quyền riêng tư của bạn.'
+          ]
+        },
+        {
+          title: 'Quét vi phạm dữ liệu',
+          desc: [
+            'Locker quét và gửi cảnh báo nếu phát hiện dữ liệu của bạn bị rò rỉ trong bất kỳ cơ sở dữ liệu nào.'
+          ]
+        }
+      ],
+      btn: 'Trải nghiệm Locker ngay'
+    },
+    cta: {
+      title: 'Tận hưởng một năm sử dụng <span class="gradient-text">miễn phí</span> ngay hôm nay!',
+      desc: 'Trải nghiệm các tính năng Premium không giới hạn cho tổ chức của bạn mà không cần thanh toán',
+      btn: 'Đăng ký ngay'
     }
   }
 }
