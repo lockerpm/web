@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-column-fluid py-6 px-10 mb-20">
+  <div class="flex-column-fluid py-6 md:px-10 px-4 mb-20">
     <!-- Step title -->
     <div class="flex flex-col mb-6 items-center">
       <h1 class="text-head-3 font-semibold mb-1">

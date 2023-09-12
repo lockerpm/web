@@ -667,7 +667,7 @@ export default {
     },
 
     // Move to trash
-    async moveTrashCiphers (ciphers) {
+    async moveTrashCiphers (ciphers, organizations) {
       this.$confirm(
         this.$tc('data.notifications.trash_selected_desc', ciphers.length, {
           count: ciphers.length
@@ -681,9 +681,30 @@ export default {
         }
       )
         .then(async () => {
+          const ownedCiphers = organizations
+            ? ciphers.filter(c => this.isOwner(organizations, c))
+            : [...ciphers]
+
+          // Warning if some items cannot be moved to trash
+          if (ownedCiphers.length < ciphers.length) {
+            this.notify(
+              this.$t('data.notifications.trash_no_permission', {
+                count: ciphers.length - ownedCiphers.length
+              }),
+              'warning'
+            )
+          }
+
+          // Stop if there is no item to be moved to trash
+          if (ownedCiphers.length === 0) {
+            this.$emit('reset-selection')
+            this.closeDialog()
+            return
+          }
+
           this.loading = true
           const isSuccess = await this.handleMoveTrashCiphers(
-            ciphers.map(c => c.id)
+            ownedCiphers.map(c => c.id)
           )
           this.loading = false
           if (isSuccess) {
@@ -693,7 +714,7 @@ export default {
           }
 
           // Stop share those deleted cipher
-          ciphers.forEach(c => {
+          ownedCiphers.forEach(c => {
             if (c.organizationId) {
               if (c.collectionIds?.length) {
                 this.stopShareCipherInCollection(c)
