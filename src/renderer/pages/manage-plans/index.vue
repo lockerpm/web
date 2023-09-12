@@ -3,7 +3,7 @@
     class="flex flex-col flex-column-fluid relative bg-[#FBFBFC] min-h-screen"
   >
     <!-- Steps -->
-    <div class="flex mb-5 border-b border-black-400 pt-3 px-10">
+    <div class="flex mb-5 border-b border-black-400 pt-3 md:px-10 px-4">
       <template v-for="(item, index) in planMenu">
         <div
           :key="index"

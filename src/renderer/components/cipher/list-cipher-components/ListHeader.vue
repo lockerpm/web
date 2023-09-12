@@ -109,7 +109,7 @@
       </div>
 
       <!-- view folder button -->
-      <div v-if="getRouteBaseName() === 'vault'" class="self-center">
+      <div v-if="getRouteBaseName() === 'vault'" class="hidden sm:flex">
         <button
           class="btn btn-icon hover:bg-[#E5E5E5]"
           :class="viewFolder ? 'bg-[#E5E5E5]' : ''"
@@ -140,6 +140,26 @@
       {{ $tc('type.Folder', folders.length + collections.length) }}
     </div>
     <!-- number of items end -->
+
+    <!-- view folder button on small screen -->
+    <div
+      v-if="getRouteBaseName() === 'vault'"
+      class="flex justify-end sm:hidden mt-2"
+    >
+      <button
+        class="btn btn-icon hover:bg-[#E5E5E5]"
+        :class="viewFolder ? 'bg-[#E5E5E5]' : ''"
+        @click="toggleViewFolder()"
+      >
+        <!-- <i v-if="!viewFolder" class="fas fa-folder-open" @click="viewFolder=true" /> -->
+        {{ $t('common.view_folder') }}
+        <span><i
+          :class="viewFolder ? 'fas' : 'far'"
+          class="fa-folder cursor-pointer"
+        /></span>
+      </button>
+    </div>
+    <!-- view folder button -->
   </div>
 </template>
 <script>

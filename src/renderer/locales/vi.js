@@ -372,6 +372,7 @@ module.exports = {
       delete_selected_desc: 'Bạn có chắc chắn sẽ xoá vĩnh viễn mục này? | Bạn đã chọn xoá vĩnh viễn {count} mục. Bạn có chắc chắn sẽ xoá vĩnh viễn tất cả các mục này?',
       trash_selected: 'Xóa Mục đã chọn',
       trash_selected_desc: 'Bạn có thực sự muốn chuyển vào thùng rác? Các mục này sẽ bị xóa vĩnh viễn sau 30 ngày. | Bạn đã chọn {count} mục. Bạn có thực sự muốn chuyển các mục này vào thùng rác? Các mục này sẽ bị xóa vĩnh viễn sau 30 ngày.',
+      trash_no_permission: '{count} mục không thể chuyển vào thùng rác do bạn không phải chủ sở hữu',
       restore_selected: 'Khôi phục các mục đã chọn',
       restore_selected_desc: 'Bạn có thực sự muốn khôi phục mục này? | Bạn đã chọn {count} mục. Bạn có thực sự muốn khôi phục các mục này?',
       move_selected: 'Di chuyển các mục đã chọn',

@@ -2,7 +2,7 @@
   <div
     class="flex flex-col flex-column-fluid relative bg-[#FBFBFC] min-h-screen"
   >
-    <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
+    <div class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4 mb-20">
       <!-- Breadcrumb -->
       <div class="mb-5">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -409,5 +409,4 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-</style>
+<style lang="scss"></style>

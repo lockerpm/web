@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col flex-column-fluid relative min-h-screen">
-    <div class="flex-column-fluid lg:px-28 py-10 px-10 mb-20">
+    <div class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4 mb-20">
       <!-- Top -->
       <div>
         <el-button

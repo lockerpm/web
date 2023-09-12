@@ -19,14 +19,17 @@
           <!-- Check all end -->
 
           <!-- Multi select action -->
-          <div v-if="multipleSelection.length" class="flex items-center">
+          <div
+            v-if="multipleSelection.length"
+            class="flex items-center flex-wrap"
+          >
             <div class="text-black mr-8 whitespace-nowrap">
               {{ multipleSelection.length }}
               {{ $t('data.ciphers.selected_items') }}
             </div>
-            <div v-if="deleted">
+            <div v-if="deleted" class="flex flex-wrap">
               <button
-                class="btn btn-default btn-xs"
+                class="btn btn-default btn-xs mr-2"
                 @click="restoreCiphers(multipleSelection.map(e => e.id))"
               >
                 {{ $t('common.restore') }}
@@ -38,9 +41,9 @@
                 {{ $t('common.permanently_delete') }}
               </button>
             </div>
-            <div v-else class="">
+            <div v-else class="flex flex-wrap">
               <button
-                class="btn btn-default btn-xs"
+                class="btn btn-default btn-xs mr-2"
                 @click="moveFolders(multipleSelection.map(e => e.id))"
               >
                 {{ $t('common.move_folder') }}
@@ -236,13 +239,13 @@
                   >
                     {{ $t('common.edit') }}
                   </el-dropdown-item>
-                  <el-dropdown-item divided @click.native="cloneCipher(item)">
+                  <el-dropdown-item
+                    :divided="canManageItem(organizations, item)"
+                    @click.native="cloneCipher(item)"
+                  >
                     {{ $t('common.clone') }}
                   </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="isOwner(organizations, item)"
-                    @click.native="moveFolders([item.id])"
-                  >
+                  <el-dropdown-item @click.native="moveFolders([item.id])">
                     {{ $t('common.move_folder') }}
                   </el-dropdown-item>
                   <el-dropdown-item

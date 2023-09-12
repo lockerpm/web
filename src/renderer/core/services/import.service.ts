@@ -82,6 +82,7 @@ import { ZohoVaultCsvImporter } from '../importers/zohoVaultCsvImporter'
 import { HeyLoginCsvImporter } from '../importers/heyloginCsvImport'
 import { LockerCsvImporter } from '../importers/lockerCsvImporter'
 import { LockerJsonImporter } from '../importers/lockerJsonImporter'
+import { SafariCsvImporter } from '../importers/safariCsvImporter'
 
 export class ImportService implements ImportServiceAbstraction {
   featuredImportOptions = [
@@ -92,6 +93,7 @@ export class ImportService implements ImportServiceAbstraction {
     { id: 'lastpasscsv', name: 'LastPass (csv)' },
     { id: 'chromecsv', name: 'Chrome (csv)' },
     { id: 'firefoxcsv', name: 'Firefox (csv)' },
+    { id: 'safaricsv', name: 'Safari (csv)' },
     { id: 'keepass2xml', name: 'KeePass 2 (xml)' },
     { id: '1password1pif', name: '1Password (1pif)' },
     { id: 'dashlanecsv', name: 'Dashlane (csv)' },
@@ -329,6 +331,8 @@ export class ImportService implements ImportServiceAbstraction {
       return new NordPassCsvImporter()
     case 'heylogincsv':
       return new HeyLoginCsvImporter()
+    case 'safaricsv':
+      return new SafariCsvImporter()
     default:
       return null
     }
