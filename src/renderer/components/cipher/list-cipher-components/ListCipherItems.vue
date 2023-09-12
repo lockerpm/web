@@ -1,11 +1,10 @@
 <template>
-  <div class="hidden-scrollbar" style="overflow-x: scroll">
+  <div>
     <RecycleScroller
       ref="list"
       page-mode
       :item-size="65"
       :items="ciphers || []"
-      style="min-width: 550px"
     >
       <template slot="before">
         <div class="th flex">
@@ -240,13 +239,13 @@
                   >
                     {{ $t('common.edit') }}
                   </el-dropdown-item>
-                  <el-dropdown-item divided @click.native="cloneCipher(item)">
+                  <el-dropdown-item
+                    :divided="canManageItem(organizations, item)"
+                    @click.native="cloneCipher(item)"
+                  >
                     {{ $t('common.clone') }}
                   </el-dropdown-item>
-                  <el-dropdown-item
-                    v-if="isOwner(organizations, item)"
-                    @click.native="moveFolders([item.id])"
-                  >
+                  <el-dropdown-item @click.native="moveFolders([item.id])">
                     {{ $t('common.move_folder') }}
                   </el-dropdown-item>
                   <el-dropdown-item

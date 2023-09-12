@@ -3,7 +3,7 @@
     class="flex flex-col flex-column-fluid relative bg-[#FBFBFC] min-h-screen"
   >
     <div
-      class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 md:px-10 px-4 sm:overflow-x-hidden overflow-x-auto"
+      class="flex mb-5 border-b border-black-400 pt-3 lg:px-28 md:px-10 px-4 sm:overflow-x-hidden overflow-x-auto hidden-scrollbar"
     >
       <nuxt-link
         v-for="(item, index) in menu"

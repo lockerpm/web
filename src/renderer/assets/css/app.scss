@@ -55,6 +55,7 @@ select:focus {
 }
 
 .el-dialog.locker-dialog {
+  max-width: 100vw;
   .el-dialog__header,
   .el-dialog__footer {
     @apply px-8;
@@ -665,4 +666,8 @@ th .cell {
 .hidden-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+.el-message-box {
+  max-width: 100vw;
 }

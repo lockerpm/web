@@ -367,6 +367,7 @@ module.exports = {
       delete_selected_desc: 'Are you sure you want to permanently delete this item | You have selected {count} item(s) to permanently delete. Are you sure you want to permanently delete all of these items?',
       trash_selected: 'Delete selected',
       trash_selected_desc: 'Do you really want to send to the trash? Trash items will be permanently deleted after 30 days. | You have selected {count} item(s) to delete. Are you sure you want to delete all of these items? Trash items will be permanently deleted after 30 days.',
+      trash_no_permission: '{count} item(s) cannot be moved to the trash because you are not the owner',
       restore_selected: 'Restore selected',
       restore_selected_desc: 'Are you sure you want to restore this item? | You have selected {count} item(s) to restore. Are you sure you want to restore all of these items?',
       move_selected: 'Move selected',
