@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="enterpriseInvitations.length"
-    class="flex-column-fluid lg:px-28 py-10 px-10"
+    class="flex-column-fluid lg:px-28 py-10 md:px-10 px-4"
   >
     <el-dialog
       :visible.sync="dialogVisible"
