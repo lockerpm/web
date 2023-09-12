@@ -299,6 +299,10 @@ export default {
           }
         )
         this.showSuccess = true
+        setTimeout(() => {
+          const element = document.getElementById('form')
+          element.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
       } catch (error) {
         const errorData = error.response?.data
         let errorMessage = ''

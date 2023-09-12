@@ -3343,6 +3343,10 @@ module.exports = {
               name: 'Open-source',
               link: 'https://github.com/lockerpm',
               external: true
+            },
+            {
+              name: 'Education Pack',
+              link: 'education'
             }
           ]
         }
