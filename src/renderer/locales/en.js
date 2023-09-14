@@ -5704,8 +5704,9 @@ module.exports = {
     title: 'Locker Password Manager | Education Pack',
     desc: 'Enjoy the preferential use for students, teachers, educational institutions and non-government organizations',
     packs: {
-      student: 'Student pack',
-      teacher: 'Teacher pack'
+      student: 'Student/Teacher',
+      university: 'Educational Institution',
+      ngo: 'Non-Government Organization'
     },
     header: {
       title: 'Enjoy the greatest deal from Locker Password Manager',
@@ -5725,6 +5726,11 @@ module.exports = {
       success: {
         title: 'Application Form sent!',
         desc: '😍 Thank you for your application for the Student Pack. A verification email has just been sent to {email}.'
+      },
+      contact: {
+        p1: 'Please go to our',
+        btn: 'Contact form',
+        p2: 'and fill in your information to request for this Pack.'
       }
     },
     questions: {

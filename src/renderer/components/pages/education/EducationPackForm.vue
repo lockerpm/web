@@ -7,22 +7,39 @@
       </h2>
 
       <!-- Pack selector -->
-      <div class="flex items-center py-4 pl-9 landing-font-16">
-        <a
-          v-for="item in packs"
-          :key="item.id"
-          class="mr-20 text-black"
-          :class="{
-            'font-semibold': selectedPack === item.id,
-            'text-primary': selectedPack === item.id
-          }"
-          @click.prevent="selectedPack = item.id"
-        >
-          {{ $t(`education.packs.${item.id}`) }}</a>
+      <div>
+        <div class="items-center py-4 pl-9 landing-font-16 hidden sm:flex">
+          <a
+            v-for="item in packs"
+            :key="item.id"
+            class="mr-20 text-black"
+            :class="{
+              'font-semibold': selectedPack === item.id,
+              'text-primary': selectedPack === item.id
+            }"
+            @click.prevent="selectedPack = item.id"
+          >
+            {{ $t(`education.packs.${item.id}`) }}</a>
+        </div>
+
+        <div class="flex sm:hidden mb-4">
+          <el-select v-model="selectedPack" class="w-full">
+            <el-option
+              v-for="item in packs"
+              :key="item.id"
+              :label="$t(`education.packs.${item.id}`)"
+              :value="item.id"
+            />
+          </el-select>
+        </div>
       </div>
       <!-- Pack selector end -->
 
-      <div class="rounded border border-black-50 p-10">
+      <!-- Student/Teacher -->
+      <div
+        v-if="selectedPack === 'student'"
+        class="rounded border border-black-50 p-10"
+      >
         <!-- Need create account? -->
         <el-checkbox
           v-model="needCreateAccount"
@@ -146,6 +163,26 @@
           </el-button>
         </div>
       </div>
+      <!-- Student/Teacher end -->
+
+      <!-- Others -->
+      <div v-else class="flex flex-col items-center text-center pt-20">
+        <p class="landing-font-28 max-w-[544px]">
+          {{ $t('education.form.contact.p1') }}
+          <nuxt-link to="/contact">
+            {{
+              $t('education.form.contact.btn')
+            }}
+          </nuxt-link>
+          {{ $t('education.form.contact.p2') }}
+        </p>
+        <img
+          src="~assets/images/pages/education/launching.svg"
+          alt="CTA"
+          class="w-full max-w-[320px]"
+        >
+      </div>
+      <!-- Others end -->
     </div>
     <!-- Form end -->
 
@@ -201,14 +238,11 @@ export default {
           id: 'student'
         },
         {
-          id: 'teacher'
+          id: 'university'
+        },
+        {
+          id: 'ngo'
         }
-        // {
-        //   id: 'university',
-        // },
-        // {
-        //   id: 'ngo',
-        // }
       ]
     },
 
