@@ -37,7 +37,8 @@
     <!-- Header end -->
 
     <!-- Form -->
-    <section v-show="showForm" id="form" class="py-14">
+    <section v-show="showForm" class="py-14 relative">
+      <div id="form" class="absolute z-0" style="top: -60px" />
       <education-pack-form ref="form" @close="showForm = false" />
     </section>
     <!-- Form end -->
@@ -254,7 +255,7 @@ export default {
       setTimeout(() => {
         const element = document.getElementById('form')
         element.scrollIntoView({ behavior: 'smooth' })
-      }, 0)
+      }, 100)
     }
   }
 }
