@@ -5548,8 +5548,9 @@ module.exports = {
     title: 'Locker Password Manager | Education Pack',
     desc: 'Tận hưởng ưu đãi độc quyền cho sinh viên, nhà giáo, cơ sở giáo dục và tổ chức phi chính phủ',
     packs: {
-      student: 'Sinh viên',
-      teacher: 'Nhà giáo'
+      student: 'Sinh viên/Nhà giáo',
+      university: 'Cơ sở giáo dục',
+      ngo: 'Tổ chức Phi Chính phủ'
     },
     header: {
       title: 'Ưu đãi lớn nhất từ Trình Quản lý Mật khẩu Locker',
@@ -5569,6 +5570,11 @@ module.exports = {
       success: {
         title: 'Đơn đăng ký đã được gửi!',
         desc: '😍 Cảm ơn bạn đã đăng ký Gói Sinh viên! Một email xác minh vừa được gửi tới {email}.'
+      },
+      contact: {
+        p1: 'Vui lòng đi tới trang',
+        btn: 'Liên hệ',
+        p2: 'và điền thông tin của bạn để gửi yêu cầu nhận gói này.'
       }
     },
     questions: {
