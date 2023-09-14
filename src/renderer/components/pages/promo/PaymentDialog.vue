@@ -316,6 +316,7 @@ export default {
         this.clearInput()
         this.isOpen = false
         this.isSuccessOpen = true
+        this.trackConversation(payload.email)
       } catch (error) {
         const errorData = error.response?.data
         let message =
@@ -342,6 +343,21 @@ export default {
 
         this.notify(message, 'warning')
       }
+    },
+
+    async trackConversation (email) {
+      const utmSource =
+        this.$route.query?.utm_source || this.$cookies.get('utm_source')
+      const utmCampaign =
+        this.$route.query?.utm_campaign || this.$cookies.get('utm_campaign')
+      const eventId = `${utmSource}_${utmCampaign}_purchase`
+      this.$axios.$post(
+        'https://tracking.cystack.net/v2/auto-emails/custom-events',
+        {
+          email,
+          event: eventId
+        }
+      )
     }
   }
 }
