@@ -5546,15 +5546,15 @@ module.exports = {
   },
   education: {
     title: 'Locker Password Manager | Education Pack',
-    desc: 'Tận hưởng ưu đãi độc quyền cho sinh viên, nhà giáo, cơ sở giáo dục và tổ chức phi chính phủ',
+    desc: 'Tận hưởng ưu đãi độc quyền cho sinh viên, nhà giáo, cơ sở giáo dục, trường đại học, tổ chức phi chính phủ và tổ chức phi lợi nhuận',
     packs: {
       student: 'Sinh viên/Nhà giáo',
       university: 'Cơ sở giáo dục',
-      ngo: 'Tổ chức Phi Chính phủ'
+      ngo: 'NGO/NPO'
     },
     header: {
       title: 'Ưu đãi lớn nhất từ Trình Quản lý Mật khẩu Locker',
-      desc: 'Chỉ dành cho Sinh viên/Nhà giáo, Trường đại học và Cơ sở giáo dục, và Tổ chức phi chính phủ',
+      desc: 'Dành cho Sinh viên/Nhà giáo, Cơ sở giáo dục hoặc Trường Đại học, Tổ chức Phi chính phủ hoặc Phi lợi nhuận',
       desc2: 'Nhận ngay ưu đãi miễn phí một năm!',
       btn: 'Đăng ký ưu đãi'
     },
