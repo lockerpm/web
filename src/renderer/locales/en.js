@@ -5702,14 +5702,15 @@ module.exports = {
   },
   education: {
     title: 'Locker Password Manager | Education Pack',
-    desc: 'Enjoy the preferential use for students, teachers, educational institutions and non-government organizations',
+    desc: 'Enjoy the preferential use for students, teachers, educational institutions, universities, non-government organizations and non-profit organizations',
     packs: {
-      student: 'Student pack',
-      teacher: 'Teacher pack'
+      student: 'Student/Teacher',
+      university: 'Educational Institution',
+      ngo: 'NGO/NPO'
     },
     header: {
       title: 'Enjoy the greatest deal from Locker Password Manager',
-      desc: 'Only for Students/Teachers, Education Institutions & Universities, and Non-government Organizations',
+      desc: 'Only for Students/Teachers, Educational Institutions/Universities, and Non-Government Organizations/Non-Profit Organizations',
       desc2: 'Enjoy the free first year right now!',
       btn: 'Sign up for this offer'
     },
@@ -5725,6 +5726,11 @@ module.exports = {
       success: {
         title: 'Application Form sent!',
         desc: '😍 Thank you for your application for the Student Pack. A verification email has just been sent to {email}.'
+      },
+      contact: {
+        p1: 'Please go to our',
+        btn: 'Contact form',
+        p2: 'and fill in your information to request for this Pack.'
       }
     },
     questions: {
