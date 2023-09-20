@@ -95,7 +95,7 @@
         </div>
       </div>
 
-      <div class="setting-section">
+      <div v-loading="loading" class="setting-section">
         <div class="setting-section-header">
           <div>
             <div class="setting-title !text-sm">
@@ -127,7 +127,7 @@
               >
             </div>
             <div
-              v-if="currentPlan.alias === 'pm_family'"
+              v-if="isFamilyOwner"
               class="text-info cursor-pointer self-end pb-2 font-semibold px-3"
               @click="save"
             >
@@ -300,8 +300,15 @@ export default {
     },
 
     async save () {
+      if (this.loading) {
+        return
+      }
       this.loading = true
       this.handleInputEmail()
+      if (!this.emails.length) {
+        this.loading = false
+        return
+      }
       this.$axios
         .$post('/cystack_platform/pm/family/members', {
           family_members: this.emails
