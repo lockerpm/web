@@ -44,10 +44,13 @@ Vue.mixin({
         this.$store.state.currentPlan?.alias
       )
     },
-    isFamilyUser () {
+    isFamilyOwner () {
       return ['pm_family', 'pm_lifetime_family'].includes(
         this.$store.state.currentPlan?.alias
       )
+    },
+    isFamilyUser () {
+      return this.$store.state.currentPlan?.is_family
     },
     searchText () {
       return this.$store.state.searchText
