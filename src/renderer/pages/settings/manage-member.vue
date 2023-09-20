@@ -243,7 +243,7 @@
 
 <script>
 export default {
-  middleWare: ['onlyFamily'],
+  middleware: ['onlyFamily'],
 
   data () {
     return {

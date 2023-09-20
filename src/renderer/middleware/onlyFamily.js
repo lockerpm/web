@@ -3,14 +3,14 @@ export default function ({ store, redirect }) {
   const _delayCheckPlan = () => {
     setTimeout(() => {
       const alias = store.state.currentPlan?.alias
-      if (alias && FAMILY_ALIASES.includes(alias)) {
+      if (alias && !FAMILY_ALIASES.includes(alias)) {
         return redirect(302, '/vault')
       }
       _delayCheckPlan()
     }, 1000)
   }
   const alias = store.state.currentPlan?.alias
-  if (alias && FAMILY_ALIASES.includes(alias)) {
+  if (alias && !FAMILY_ALIASES.includes(alias)) {
     return redirect(302, '/vault')
   }
   _delayCheckPlan()
