@@ -39,6 +39,16 @@ Vue.mixin({
         this.$store.state.currentPlan.alias !== 'pm_free'
       )
     },
+    isLifeTimeUser () {
+      return ['pm_lifetime_premium', 'pm_lifetime_family'].includes(
+        this.$store.state.currentPlan?.alias
+      )
+    },
+    isFamilyUser () {
+      return ['pm_family', 'pm_lifetime_family'].includes(
+        this.$store.state.currentPlan?.alias
+      )
+    },
     searchText () {
       return this.$store.state.searchText
     },
