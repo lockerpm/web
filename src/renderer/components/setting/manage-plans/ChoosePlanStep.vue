@@ -157,7 +157,10 @@
             <div class="mb-8 flex-grow">
               <div v-for="feature in features" :key="feature" class="flex">
                 <i
-                  v-if="blockedFeatures[item.alias].includes(feature)"
+                  v-if="
+                    blockedFeatures[item.alias] &&
+                      blockedFeatures[item.alias].includes(feature)
+                  "
                   class="text-danger el-icon-close !font-bold mt-1.5"
                 />
                 <i
@@ -263,9 +266,6 @@ export default {
     },
     isYearly () {
       return this.selectedPeriod.duration === PlanPeriod.YEARLY
-    },
-    currentPlan () {
-      return this.$store.state.currentPlan
     }
   },
 
@@ -325,10 +325,7 @@ export default {
       if (this.loading[plan.alias]) {
         return true
       }
-      if (
-        plan.alias === 'pm_free' ||
-        this.currentPlan.alias === 'pm_lifetime_premium'
-      ) {
+      if (plan.alias === 'pm_free' || this.isLifeTimeUser) {
         return true
       }
       if (this.currentPlan.alias === plan.alias) {
@@ -340,10 +337,7 @@ export default {
     },
 
     handleBtnClick (plan) {
-      if (
-        plan.alias === 'pm_free' ||
-        this.currentPlan.alias === 'pm_lifetime_premium'
-      ) {
+      if (plan.alias === 'pm_free' || this.isLifeTimeUser) {
         return
       }
       if (this.currentPlan.alias === plan.alias) {
@@ -374,6 +368,12 @@ export default {
       if (
         this.currentPlan.alias === 'pm_lifetime_premium' &&
         plan.alias === 'pm_premium'
+      ) {
+        return this.$t('data.plans.current_plan')
+      }
+      if (
+        this.currentPlan.alias === 'pm_lifetime_family' &&
+        plan.alias === 'pm_family'
       ) {
         return this.$t('data.plans.current_plan')
       }

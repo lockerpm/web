@@ -23,7 +23,7 @@
                   {{ scope.row.payment_id }}
                 </template>
               </el-table-column>
-              <el-table-column :label="$t('common.created_date')">
+              <el-table-column :label="$t('common.created_date')" width="150">
                 <template slot-scope="scope">
                   {{ $moment(scope.row.created_time * 1000).format('LLL') }}
                 </template>
@@ -105,9 +105,19 @@ export default {
     },
 
     getPlanByAlias (plans, alias) {
+      if (alias === 'pm_enterprise') {
+        return {
+          name: 'Enterprise'
+        }
+      }
       if (alias === 'pm_lifetime_premium') {
         return {
           name: 'Premium'
+        }
+      }
+      if (alias === 'pm_lifetime_family') {
+        return {
+          name: 'Family'
         }
       }
       return find(plans, e => e.alias === alias) || {}
