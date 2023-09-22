@@ -199,9 +199,7 @@ export default {
     },
 
     shouldShowRewardsAndPlans () {
-      return (
-        !this.currentTeam && this.currentPlan.alias !== 'pm_lifetime_premium'
-      )
+      return !this.currentTeam && !this.isLifeTimeUser
     }
   },
 

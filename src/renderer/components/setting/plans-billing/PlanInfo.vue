@@ -238,7 +238,7 @@ export default {
       return this.currentPlan.alias === 'pm_family'
     },
     isLifeTime () {
-      return this.currentPlan.alias === 'pm_lifetime_premium'
+      return this.isLifeTimeUser
     },
     itemsStorage () {
       const planLimit = this.$store.state.itemsCount.plan_limit || {}

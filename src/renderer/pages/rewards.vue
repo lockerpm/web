@@ -129,11 +129,7 @@ export default {
       return this.totalPercent - this.usedPercent
     },
     planText () {
-      if (
-        ['pm_free', 'pm_lifetime_premium', 'pm_premium'].includes(
-          this.currentPlan.alias
-        )
-      ) {
+      if (['pm_free', 'pm_premium'].includes(this.currentPlan.alias)) {
         return this.$t('plan.plans[1].title')
       }
       return this.$t('plan.plans[2].title')
