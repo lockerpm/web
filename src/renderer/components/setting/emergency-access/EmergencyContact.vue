@@ -94,8 +94,8 @@
 </template>
 
 <script>
-import InputText from '../input/InputText'
-import { Utils } from '../../core/misc/utils.ts'
+import InputText from '../../input/InputText'
+import { Utils } from '../../../core/misc/utils.ts'
 
 export default {
   components: {

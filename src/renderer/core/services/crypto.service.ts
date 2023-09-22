@@ -548,7 +548,10 @@ export class CryptoService implements CryptoServiceAbstraction {
     )
   }
 
-  async rsaDecrypt (encValue: string): Promise<ArrayBuffer> {
+  async rsaDecrypt (
+    encValue: string,
+    privateKey?: ArrayBuffer
+  ): Promise<ArrayBuffer> {
     const headerPieces = encValue.split('.')
     let encType: EncryptionType = null
     let encPieces: string[]
@@ -579,7 +582,9 @@ export class CryptoService implements CryptoServiceAbstraction {
     }
 
     const data = Utils.fromB64ToArray(encPieces[0]).buffer
-    const privateKey = await this.getPrivateKey()
+    if (!privateKey) {
+      privateKey = await this.getPrivateKey()
+    }
     if (privateKey == null) {
       throw new Error('No private key.')
     }

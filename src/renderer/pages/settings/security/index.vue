@@ -18,7 +18,7 @@
 import ChangePassword from '@/components/setting/ChangePassword.vue'
 import ChangeMasterPassword from '@/components/setting/ChangeMasterPassword.vue'
 import TwoFactorAuthentication from '@/components/setting/TwoFactorAuthentication.vue'
-import EmergencyAccess from '@/components/setting/EmergencyAccess.vue'
+import EmergencyAccess from '@/components/setting/emergency-access/EmergencyAccess.vue'
 import ManageSessions from '@/components/setting/ManageSessions.vue'
 
 export default {

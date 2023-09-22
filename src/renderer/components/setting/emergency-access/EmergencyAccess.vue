@@ -708,9 +708,9 @@
 </template>
 
 <script>
+import EmergencyContact from './EmergencyContact.vue'
 import { Utils } from '@/core/misc/utils.ts'
 import PasswordStrengthBar from '@/components/password/PasswordStrengthBar'
-import EmergencyContact from '@/components/setting/EmergencyContact.vue'
 import { SymmetricCryptoKey } from '@/core/models/domain/symmetricCryptoKey'
 import { MIN_MASTER_PW_LEN } from '@/constants'
 export default {

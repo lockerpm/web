@@ -165,12 +165,10 @@
       <!-- Body end -->
 
       <!-- Footer -->
-      <div slot="footer" class="dialog-footer flex items-center text-left">
-        <div>
-          <button class="btn btn-default" @click="closeDialog">
-            {{ $t('common.close') }}
-          </button>
-        </div>
+      <div slot="footer" class="dialog-footer flex items-center justify-end">
+        <el-button @click="closeDialog">
+          {{ $t('common.close') }}
+        </el-button>
       </div>
       <!-- Footer end -->
     </component>
@@ -180,9 +178,9 @@
 <script>
 import { Dialog } from 'element-ui'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { SecureNoteType } from '../../core/enums'
-import { CipherType } from '../../core/enums/cipherType'
-import { Cipher } from '../../core/models/domain'
+import { SecureNoteType } from '../../../core/enums'
+import { CipherType } from '../../../core/enums/cipherType'
+import { Cipher } from '../../../core/models/domain'
 import {
   CipherView,
   LoginView,
@@ -190,20 +188,20 @@ import {
   IdentityView,
   CardView,
   LoginUriView
-} from '../../core/models/view'
-import InputText from '../input/InputText'
-import LoginInput from '../cipher/cipher-types/login/LoginInput.vue'
-import CardInput from '../cipher/cipher-types/card/CardInput.vue'
-import IdentityInput from '../cipher/cipher-types/identity/IdentityInput.vue'
-import CryptoBackupInput from '../cipher/cipher-types/crypto-backup/CryptoBackupInput.vue'
-import DriverLicenseInput from '../cipher/cipher-types/driver-license/DriverLicenseInput.vue'
-import CitizenIdInput from '../cipher/cipher-types/citizen-id/CitizenIdInput.vue'
-import PassportInput from '../cipher/cipher-types/passport/PassportInput.vue'
-import SsnInput from '../cipher/cipher-types/ssn/SsnInput.vue'
-import RouterInput from '../cipher/cipher-types/router/RouterInput.vue'
-import ServerInput from '../cipher/cipher-types/server/ServerInput.vue'
-import ApiInput from '../cipher/cipher-types/api/ApiInput.vue'
-import DatabaseInput from '../cipher/cipher-types/database/DatabaseInput.vue'
+} from '../../../core/models/view'
+import InputText from '../../input/InputText'
+import LoginInput from '../../cipher/cipher-types/login/LoginInput.vue'
+import CardInput from '../../cipher/cipher-types/card/CardInput.vue'
+import IdentityInput from '../../cipher/cipher-types/identity/IdentityInput.vue'
+import CryptoBackupInput from '../../cipher/cipher-types/crypto-backup/CryptoBackupInput.vue'
+import DriverLicenseInput from '../../cipher/cipher-types/driver-license/DriverLicenseInput.vue'
+import CitizenIdInput from '../../cipher/cipher-types/citizen-id/CitizenIdInput.vue'
+import PassportInput from '../../cipher/cipher-types/passport/PassportInput.vue'
+import SsnInput from '../../cipher/cipher-types/ssn/SsnInput.vue'
+import RouterInput from '../../cipher/cipher-types/router/RouterInput.vue'
+import ServerInput from '../../cipher/cipher-types/server/ServerInput.vue'
+import ApiInput from '../../cipher/cipher-types/api/ApiInput.vue'
+import DatabaseInput from '../../cipher/cipher-types/database/DatabaseInput.vue'
 
 export default {
   components: {
@@ -229,10 +227,6 @@ export default {
     type: {
       type: [String, Number],
       default: 1
-    },
-    routeName: {
-      type: String,
-      default: ''
     }
   },
 
@@ -340,11 +334,6 @@ export default {
         if (this.cipher.collectionIds && this.cipher.collectionIds[0]) {
           this.cipher.folderId = this.cipher.collectionIds[0]
         }
-
-        // Set current folder
-        setTimeout(() => {
-          this.$refs.inputSelectFolder.value = this.cipher.folderId
-        }, 0)
 
         this.cipher = cipherData
         return

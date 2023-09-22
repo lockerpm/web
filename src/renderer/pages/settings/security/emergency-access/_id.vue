@@ -2,6 +2,7 @@
   <div v-loading="loading" class="flex flex-col flex-column-fluid relative">
     <div class="flex-column-fluid py-10 mb-20">
       <client-only>
+        <!-- Breadcrumb -->
         <div class="mb-5">
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item
@@ -14,12 +15,16 @@
             </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
+        <!-- Breadcrumb end -->
+
+        <!-- Cipher table -->
         <el-table
           ref="multipleTable"
           :data="ciphers || []"
           style="width: 100%"
           row-class-name="hover-table-row"
         >
+          <!-- Icon + name -->
           <el-table-column prop="name" label="" show-overflow-tooltip>
             <template slot-scope="scope">
               <div class="flex items-center">
@@ -51,9 +56,13 @@
               </div>
             </template>
           </el-table-column>
+          <!-- Icon + name end -->
+
+          <!-- Actions -->
           <el-table-column label="" align="right" width="200">
             <template slot-scope="scope">
               <div class="col-actions">
+                <!-- Open URL in new tab -->
                 <button
                   v-if="scope.row.login.canLaunch"
                   class="btn btn-icon btn-xs hover:bg-black-400"
@@ -62,101 +71,62 @@
                 >
                   <i class="fas fa-external-link-square-alt" />
                 </button>
-                <el-dropdown trigger="click" :hide-on-click="false">
+                <!-- Open URL in new tab end -->
+
+                <!-- Copy -->
+                <el-dropdown
+                  v-if="
+                    !scope.row.isDeleted && getCopyableValues(scope.row).length
+                  "
+                  trigger="click"
+                  :hide-on-click="false"
+                >
                   <button class="btn btn-icon btn-xs hover:bg-black-400">
-                    <i class="fas fa-ellipsis-h" />
+                    <i class="far fa-clone" />
                   </button>
                   <el-dropdown-menu slot="dropdown">
-                    <template
-                      v-if="
-                        !scope.row.isDeleted &&
-                          scope.row.type === CipherType.Login
-                      "
+                    <el-dropdown-item
+                      v-for="(copyKey, index) in getCopyableValues(scope.row)"
+                      :key="index"
+                      v-clipboard:copy="copyKey.value"
+                      v-clipboard:success="clipboardSuccessHandler"
+                      :disabled="!copyKey.value"
                     >
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.login.username"
-                        v-clipboard:success="clipboardSuccessHandler"
-                        divided
-                      >
-                        {{ $t('common.copy') }} {{ $t('common.username') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.login.password"
-                        v-clipboard:success="clipboardSuccessHandler"
-                      >
-                        {{ $t('common.copy') }} {{ $t('common.password') }}
-                      </el-dropdown-item>
-                    </template>
-                    <template
-                      v-if="
-                        !scope.row.isDeleted &&
-                          scope.row.type === CipherType.SecureNote
-                      "
-                    >
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.notes"
-                        v-clipboard:success="clipboardSuccessHandler"
-                        divided
-                      >
-                        {{ $t('common.copy') }} {{ $t('common.note') }}
-                      </el-dropdown-item>
-                    </template>
-                    <template
-                      v-if="scope.row.type === 7 && scope.row.cryptoWallet"
-                    >
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.cryptoWallet.seed"
-                        v-clipboard:success="clipboardSuccessHandler"
-                      >
-                        {{ $t('common.copy') }} {{ $t('data.ciphers.seed') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.cryptoWallet.address"
-                        v-clipboard:success="clipboardSuccessHandler"
-                      >
-                        {{ $t('common.copy') }}
-                        {{ $t('data.ciphers.wallet_address') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.cryptoWallet.privateKey"
-                        v-clipboard:success="clipboardSuccessHandler"
-                      >
-                        {{ $t('common.copy') }}
-                        {{ $t('data.ciphers.private_key') }}
-                      </el-dropdown-item>
-                      <el-dropdown-item
-                        v-clipboard:copy="scope.row.cryptoWallet.password"
-                        v-clipboard:success="clipboardSuccessHandler"
-                      >
-                        {{ $t('common.copy') }}
-                        {{ $t('data.ciphers.password_pin') }}
-                      </el-dropdown-item>
-                    </template>
+                      {{ $t('common.copy') }} {{ $t(copyKey.label) }}
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
+                <!-- Copy end -->
               </div>
             </template>
           </el-table-column>
+          <!-- Actions end -->
         </el-table>
+        <!-- Cipher table -->
       </client-only>
     </div>
-    <ViewGrantorCipher ref="addEditCipherDialog" :type="type" />
+
+    <ViewGrantorCipher ref="addEditCipherDialog" />
   </div>
 </template>
 
 <script>
 import cloneDeep from 'lodash/cloneDeep'
+import { CipherMapper } from '../../../../constants'
 import { CipherType } from '@/core/enums'
 import Vnodes from '@/components/Vnodes'
-import ViewGrantorCipher from '@/components/setting/ViewGrantorCipher'
+import ViewGrantorCipher from '@/components/setting/emergency-access/ViewGrantorCipher'
 import { Cipher } from '@/core/models/domain/cipher'
 import { CipherData } from '@/core/models/data/cipherData'
 import { SymmetricCryptoKey } from '@/core/models/domain/symmetricCryptoKey'
+import { EncString } from '@/core/models/domain/encString'
+
 export default {
   components: {
     Vnodes,
     ViewGrantorCipher
   },
+
   data () {
     return {
       id: null,
@@ -166,6 +136,7 @@ export default {
       list_granted: []
     }
   },
+
   computed: {
     emergencyAccess () {
       return (
@@ -173,6 +144,7 @@ export default {
       )
     }
   },
+
   mounted () {
     if (this.$route.params.id === null) {
       return this.$router.push(
@@ -183,6 +155,7 @@ export default {
     this.load()
     this.getListGranted()
   },
+
   methods: {
     async load () {
       try {
@@ -196,51 +169,84 @@ export default {
         this.loading = false
       }
     },
+
     async getAllCiphers (response) {
-      let ciphers = response.ciphers
-      ciphers = ciphers.filter(cipher =>
-        [
-          CipherType.Login,
-          CipherType.SecureNote,
-          CipherType.Card,
-          CipherType.Identity,
-          7
-        ].includes(cipher.type)
-      )
+      const allowedCipherTypes = Object.values(CipherMapper)
+        .filter(i => !i.hideFromCipherList && !i.noCreate)
+        .map(i => i.type)
+
+      // Get enc key
+      let encKey
+      try {
+        const keyBuffer = await this.$cryptoService.rsaDecrypt(
+          response.key_encrypted
+        )
+        encKey = new SymmetricCryptoKey(keyBuffer)
+      } catch (error) {
+        this.notify('Invalid key, cannot decrypt data', 'warning')
+        return
+      }
+
+      // Decrypt orgs
+      const orgMap = {}
+      try {
+        const privateKey = await this.$cryptoService.decryptToBytes(
+          new EncString(response.private_key),
+          encKey
+        )
+        const promises = []
+        const _getOrgKey = async (id, key) => {
+          const decKeyBuffer = await this.$cryptoService.rsaDecrypt(
+            key,
+            privateKey
+          )
+          orgMap[id] = new SymmetricCryptoKey(decKeyBuffer)
+        }
+        response.organizations.forEach(org => {
+          promises.push(_getOrgKey(org.id, org.key))
+        })
+        await Promise.allSettled(promises)
+      } catch (error) {
+        //
+      }
+
+      // Decrypt ciphers
       const decCiphers = []
-      const oldKeyBuffer = await this.$cryptoService.rsaDecrypt(
-        response.key_encrypted
-      )
-      const oldEncKey = new SymmetricCryptoKey(oldKeyBuffer)
 
-      const promises = []
-      ciphers.forEach(cipherResponse => {
-        const cipherData = new CipherData(cipherResponse)
-        const cipher = new Cipher(cipherData)
-        promises.push(cipher.decrypt(oldEncKey).then(c => decCiphers.push(c)))
-      })
-
-      await Promise.all(promises)
-      decCiphers.map(item => {
-        if (item.type === 7) {
-          try {
-            item.cryptoWallet = JSON.parse(item.notes)
-            // item.notes = item.cryptoWallet ? item.cryptoWallet.notes : ''
-          } catch (error) {
-            console.log(error)
-          }
+      try {
+        const ciphers = response.ciphers.filter(cipher =>
+          allowedCipherTypes.includes(cipher.type)
+        )
+        const promises = []
+        const _decryptCipher = async cipherResponse => {
+          const cipherData = new CipherData(cipherResponse)
+          const cipher = new Cipher(cipherData)
+          const decCipher = await cipher.decrypt(
+            orgMap[cipherResponse.organization_id] || encKey
+          )
+          decCiphers.push(decCipher)
         }
-        return {
-          ...item
-        }
-      })
-      decCiphers.sort(this.$cipherService.getLocaleSortingFunction())
+        ciphers.forEach(cipherResponse => {
+          promises.push(_decryptCipher(cipherResponse))
+        })
+        await Promise.allSettled(promises)
+      } catch (error) {
+        //
+      }
 
-      return decCiphers
+      // Done, process new types and sort
+      const res = decCiphers.map(item => {
+        const i = this.parseNotesOfNewTypes(item)
+        return i
+      })
+      res.sort(this.$cipherService.getLocaleSortingFunction())
+      return res
     },
+
     addEdit (cipher) {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     },
+
     getListGranted () {
       this.$axios
         .$get('cystack_platform/pm/emergency_access/granted')
