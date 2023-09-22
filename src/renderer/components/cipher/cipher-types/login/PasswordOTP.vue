@@ -5,6 +5,7 @@
       :label="$t('data.ciphers.otp.otp_option')"
       :initial-value="option"
       :options="options"
+      :disabled="disabled"
       @change="changeOption"
     />
     <InputSelect
@@ -14,6 +15,7 @@
       :required="true"
       :options="otps"
       :filterable="true"
+      :disabled="disabled"
       @change="changeOtp"
     />
     <InputText
@@ -21,6 +23,7 @@
       v-model="notes"
       :label="$t('data.ciphers.otp.secret_key')"
       :required="true"
+      :disabled="disabled"
       @input="changeOtp"
     />
     <div class="flex items-center justify-between mt-3">
@@ -86,6 +89,10 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
