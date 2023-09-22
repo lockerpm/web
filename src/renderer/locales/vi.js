@@ -1521,7 +1521,8 @@ module.exports = {
       unknown_tooltip: 'Người này chưa có trên Locker, nhưng họ sẽ nhận được Premium ngay sau khi tạo tài khoản bằng email này.',
       learn_more: 'Chi tiết',
       number_member_detail: '{currentNumber} trong tổng số {planMember} thành viên',
-      bill_annually_desc: '* Chỉ dành cho thanh toán hàng năm. Chi phí thanh toán hàng tháng là {monthlyPrice}/tháng/6 người dùng.'
+      bill_annually_desc: '* Chỉ dành cho thanh toán hàng năm. Chi phí thanh toán hàng tháng là {monthlyPrice}/tháng/6 người dùng.',
+      mo_per_6_users: '/tháng/6 người*'
     },
     enterprise: {
       join_now: 'Tham gia ngay',
