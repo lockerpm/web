@@ -45,15 +45,14 @@
       />
     </template>
     <!-- OTP -->
-    <div
-      class="my-5 text-black-700 text-head-6 font-semibold"
-    >
+    <div class="my-5 text-black-700 text-head-6 font-semibold">
       {{ $t('data.ciphers.otp.setup') }}
     </div>
     <!-- Input -->
     <div>
       <PasswordOTP
         :value="totp"
+        :disabled="isDeleted"
         class="w-full"
         @change="val => $emit('update:totp', val)"
         @createNewOtp="val => $emit('update:isCreateAuthenticator', val)"
@@ -70,7 +69,12 @@ import PasswordGenerator from '../../../password/PasswordGenerator'
 import PasswordOTP from './PasswordOTP.vue'
 
 export default {
-  components: { InputText, PasswordStrengthBar, PasswordGenerator, PasswordOTP },
+  components: {
+    InputText,
+    PasswordStrengthBar,
+    PasswordGenerator,
+    PasswordOTP
+  },
   props: {
     isDeleted: {
       type: Boolean,
