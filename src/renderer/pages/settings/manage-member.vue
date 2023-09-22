@@ -1,28 +1,26 @@
 <template>
   <div class="w-full">
     <div class="grid grid-cols-5 gap-x-6">
-      <div class="setting-wrapper md:col-span-3 col-span-5">
+      <!-- Price -->
+      <div
+        class="setting-wrapper col-span-5 !mb-6"
+        :class="{ 'lg:col-span-3': !isLifeTimeUser }"
+      >
         <div class="setting-section">
           <div class="setting-section-header">
             <div class="setting-description mb-6 mr-3 self-start pt-3">
               Family
             </div>
-            <div>
-              <div v-if="locale === 'vi'">
+
+            <div v-if="!isLifeTimeUser">
+              <div>
                 <span
                   v-if="currentPlan && currentPlan.yearly_price"
                   class="text-head-3 font-semibold"
-                >${{
-                  (currentPlan.yearly_price.usd / 12) | formatNumber
-                }}</span>/tháng/6 người*
-              </div>
-              <div v-else>
-                <span
-                  v-if="currentPlan && currentPlan.yearly_price"
-                  class="text-head-3 font-semibold"
-                >${{
-                  (currentPlan.yearly_price.usd / 12) | formatNumber
-                }}</span>/mo/6 users*
+                >
+                  ${{ (currentPlan.yearly_price.usd / 12) | formatNumber }}
+                </span>
+                {{ $t('data.family_member.mo_per_6_users') }}
               </div>
               <div
                 v-if="currentPlan && currentPlan.price"
@@ -36,6 +34,7 @@
               </div>
             </div>
           </div>
+
           <div>
             <div class="font-semibold mb-3">
               {{
@@ -52,7 +51,13 @@
           </div>
         </div>
       </div>
-      <div class="setting-wrapper md:col-span-2 col-span-5">
+      <!-- Price end -->
+
+      <!-- Next billing -->
+      <div
+        v-if="!isLifeTimeUser"
+        class="setting-wrapper lg:col-span-2 col-span-5 !mb-6"
+      >
         <div class="setting-section">
           <div>
             <div class="setting-description mb-1">
@@ -66,20 +71,21 @@
               }}
             </div>
             <div class="w-full">
-              <button
-                class="btn btn-default"
+              <el-button
                 @click="
                   $router.push(localeRoute({ name: 'settings-plans-billing' }))
                 "
               >
                 {{ $t('data.billing.manage_payments') }}
-              </button>
+              </el-button>
             </div>
           </div>
         </div>
       </div>
-      <div class="setting-wrapper hidden" />
+      <!-- Next billing end -->
     </div>
+
+    <!-- Invite people -->
     <div class="setting-wrapper">
       <div class="setting-section">
         <div class="setting-section-header">
@@ -88,7 +94,8 @@
           </div>
         </div>
       </div>
-      <div class="setting-section">
+
+      <div v-loading="loading" class="setting-section">
         <div class="setting-section-header">
           <div>
             <div class="setting-title !text-sm">
@@ -120,7 +127,7 @@
               >
             </div>
             <div
-              v-if="currentPlan.alias === 'pm_family'"
+              v-if="isFamilyOwner"
               class="text-info cursor-pointer self-end pb-2 font-semibold px-3"
               @click="save"
             >
@@ -230,11 +237,14 @@
         </div>
       </div>
     </div>
+    <!-- Invite people end-->
   </div>
 </template>
 
 <script>
 export default {
+  middleware: ['onlyFamily'],
+
   data () {
     return {
       familyMembers: [],
@@ -244,23 +254,11 @@ export default {
       emails: []
     }
   },
-  async fetch ({ redirect, store }) {
-    await store.dispatch('LoadCurrentPlan')
-    if (
-      store.state.currentPlan &&
-      store.state.currentPlan.alias !== 'pm_family'
-    ) {
-      redirect(302, '/manage-plans')
-    }
-  },
-  computed: {
-    currentPlan () {
-      return this.$store.state.currentPlan
-    }
-  },
+
   mounted () {
     this.getFamilyMember()
   },
+
   methods: {
     async getFamilyMember () {
       try {
@@ -268,6 +266,7 @@ export default {
           (await this.$axios.$get('/cystack_platform/pm/family/members')) || []
       } catch (e) {}
     },
+
     removeFamilyMember (member) {
       this.$confirm(
         this.$t('data.family_member.confirm_delete_member_all', {
@@ -299,9 +298,17 @@ export default {
         })
         .catch(() => {})
     },
+
     async save () {
+      if (this.loading) {
+        return
+      }
       this.loading = true
       this.handleInputEmail()
+      if (!this.emails.length) {
+        this.loading = false
+        return
+      }
       this.$axios
         .$post('/cystack_platform/pm/family/members', {
           family_members: this.emails
@@ -332,6 +339,7 @@ export default {
           this.loading = false
         })
     },
+
     handleInputEmail () {
       const emailList = this.inputEmail.split(',')
       emailList.forEach(email => {
@@ -346,6 +354,7 @@ export default {
         }
       })
     },
+
     emailInput (value) {
       this.inputEmail = value
       const lastChar = value.substr(value.length - 1)
@@ -353,6 +362,7 @@ export default {
         this.handleInputEmail()
       }
     },
+
     handleClose (index) {
       this.emails.splice(index, 1)
     }

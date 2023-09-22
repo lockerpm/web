@@ -214,7 +214,7 @@ module.exports = {
     security_tools: 'Security Tools',
     plans_billing: 'Plans & Billing',
     referral: 'Referral',
-    manage_member: 'Manage member',
+    manage_member: 'Manage Members',
     notifications: 'Notifications',
     private_email: 'Private Email',
     authenticator: 'Authenticator',
@@ -1501,7 +1501,7 @@ module.exports = {
       }
     },
     family_member: {
-      header: 'Manage member',
+      header: 'Manage Members',
       info_upgrade: 'Upgrade to Family Plan and invite your friends joining Locker!',
       add_noti: 'Add members successfully ',
       delete_noti: 'Delete member successfully',
@@ -1519,7 +1519,8 @@ module.exports = {
       unknown_tooltip: 'This person is not on Locker yet, but they will get Premium right after they create an account with this email.',
       learn_more: 'Learn more',
       number_member_detail: '{currentNumber} of {planMember} users',
-      bill_annually_desc: '*For annual billing only. Monthly billing costs {monthlyPrice}/mo/6 users.'
+      bill_annually_desc: '*For annual billing only. Monthly billing costs {monthlyPrice}/mo/6 users.',
+      mo_per_6_users: '/mo/6 users*'
     },
     enterprise: {
       join_now: 'Join now',

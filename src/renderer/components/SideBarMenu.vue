@@ -241,7 +241,7 @@ export default {
     },
 
     isLifeTime () {
-      return this.$store.state.currentPlan?.alias === 'pm_lifetime_premium'
+      return this.isLifeTimeUser
     },
 
     storagePercentage () {
