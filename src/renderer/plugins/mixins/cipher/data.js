@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import cloneDeep from 'lodash/cloneDeep'
-import { CipherType } from '../../../core/enums/cipherType'
+import { CipherType } from '../../../jslib/src/enums/cipherType'
 import { toDriverLicenseData } from '../../../utils/new-types/driver-license'
 import { toCryptoWalletData } from '../../../utils/crypto'
 import { toCitizenIdData } from '../../../utils/new-types/citizen-id'
@@ -9,8 +9,8 @@ import { toSocialSecurityNumberData } from '../../../utils/new-types/ssn'
 import { toWirelessRouterData } from '../../../utils/new-types/router'
 import { toServerData } from '../../../utils/new-types/server'
 import { toApiCipherData, API_METHODS } from '../../../utils/new-types/api'
-import { CipherRequest } from '@/core/models/request'
-import { SecureNote } from '@/core/models/domain'
+import { CipherRequest } from '@/jslib/src/models/request'
+import { SecureNote } from '@/jslib/src/models/domain'
 import { getTOTP, parseOTPUri } from '@/utils/totp/index.ts'
 
 Vue.mixin({

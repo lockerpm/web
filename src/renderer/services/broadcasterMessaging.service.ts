@@ -1,4 +1,4 @@
-import { MessagingService } from '../core/abstractions/messaging.service';
+import { MessagingService } from '../jslib/src/abstractions/messaging.service';
 
 export class BroadcasterMessagingService implements MessagingService {
     constructor(private broadcasterService) { }

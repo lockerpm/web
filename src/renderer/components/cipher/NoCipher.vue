@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { CipherType } from '../../core/enums/cipherType'
+import { CipherType } from '../../jslib/src/enums/cipherType'
 import Vnodes from '../../components/Vnodes'
 export default {
   components: { Vnodes },

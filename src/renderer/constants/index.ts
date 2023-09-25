@@ -1,4 +1,4 @@
-import { CipherType } from '../core/enums/cipherType'
+import { CipherType } from '../jslib/src/enums/cipherType'
 
 export const MIN_MASTER_PW_LEN = 8
 
