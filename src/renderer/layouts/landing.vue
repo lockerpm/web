@@ -256,7 +256,7 @@ export default {
 .landing-btn2 {
   @apply hover:no-underline hover:bg-green transition duration-200 ease-in-out text-green hover:text-white font-semibold text-center;
   display: inline-block;
-  padding: 10px 24px;
+  padding: 9px 23px;
   font-size: 16px;
   border-radius: 5px;
   border: 1px solid #268334;
