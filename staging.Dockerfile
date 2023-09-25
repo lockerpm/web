@@ -10,6 +10,8 @@ COPY . /app
 
 RUN yarn
 
+RUN yarn sub:init
+
 ENV NODE_ENV=production
 
 ARG SENTRY_DSN

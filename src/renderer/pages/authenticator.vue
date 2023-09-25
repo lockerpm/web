@@ -224,7 +224,7 @@
 import orderBy from 'lodash/orderBy'
 import cloneDeep from 'lodash/cloneDeep'
 import NoCipher from '../components/cipher/NoCipher'
-import { CipherType } from '../core/enums/cipherType.ts'
+import { CipherType } from '../jslib/src/enums/cipherType.ts'
 import AddEditOTP from '../components/cipher/AddEditOTP'
 import OTPInfoBlock from '../components/cipher/OTPInfoBlock'
 import { getTOTP, parseOTPUri } from '../utils/totp/index.ts'

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import extractDomain from 'extract-domain'
 import { Avatar } from 'element-ui'
-import { CipherType } from '../../../core/enums/cipherType'
+import { CipherType } from '../../../jslib/src/enums/cipherType'
 import { WALLET_APP_LIST } from '../../../utils/crypto/applist/index'
 
 Vue.mixin({
