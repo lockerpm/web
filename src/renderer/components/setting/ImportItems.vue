@@ -109,15 +109,15 @@
 <script>
 import orderBy from 'lodash/orderBy'
 import Instructions from '../../components/import/Instructions'
-import { CipherType } from '../../core/enums/cipherType'
-import { Utils } from '../../core/misc/utils'
-import { ErrorResponse } from '../../core/models/response'
-import { FolderRequest } from '../../core/models/request'
-import { CollectionRequest } from '../../core/models/request/collectionRequest'
-import { ImportCiphersRequest } from '../../core/models/request/importCiphersRequest'
-import { ImportOrganizationCiphersRequest } from '../../core/models/request/importOrganizationCiphersRequest'
-import { KvpRequest } from '../../core/models/request/kvpRequest'
-import { Collection } from '../../core/models/domain/collection'
+import { CipherType } from '../../jslib/src/enums/cipherType'
+import { Utils } from '../../jslib/src/misc/utils'
+import { ErrorResponse } from '../../jslib/src/models/response'
+import { FolderRequest } from '../../jslib/src/models/request'
+import { CollectionRequest } from '../../jslib/src/models/request/collectionRequest'
+import { ImportCiphersRequest } from '../../jslib/src/models/request/importCiphersRequest'
+import { ImportOrganizationCiphersRequest } from '../../jslib/src/models/request/importOrganizationCiphersRequest'
+import { KvpRequest } from '../../jslib/src/models/request/kvpRequest'
+import { Collection } from '../../jslib/src/models/domain/collection'
 export default {
   components: {
     Instructions

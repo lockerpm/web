@@ -1,10 +1,10 @@
 import Swal, { SweetAlertIcon } from 'sweetalert2/dist/sweetalert2.js';
 
-import { DeviceType } from '../core/enums/deviceType';
+import { DeviceType } from '../jslib/src/enums/deviceType';
 
-import { I18nService } from '../core/abstractions/i18n.service';
-import { MessagingService } from '../core/abstractions/messaging.service';
-import { PlatformUtilsService } from '../core/abstractions/platformUtils.service';
+import { I18nService } from '../jslib/src/abstractions/i18n.service';
+import { MessagingService } from '../jslib/src/abstractions/messaging.service';
+import { PlatformUtilsService } from '../jslib/src/abstractions/platformUtils.service';
 
 export class WebPlatformUtilsService implements PlatformUtilsService {
     identityClientId: string = 'web';

@@ -178,9 +178,9 @@
 <script>
 import { Dialog } from 'element-ui'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { SecureNoteType } from '../../../core/enums'
-import { CipherType } from '../../../core/enums/cipherType'
-import { Cipher } from '../../../core/models/domain'
+import { SecureNoteType } from '../../../jslib/src/enums'
+import { CipherType } from '../../../jslib/src/enums/cipherType'
+import { Cipher } from '../../../jslib/src/models/domain'
 import {
   CipherView,
   LoginView,
@@ -188,7 +188,7 @@ import {
   IdentityView,
   CardView,
   LoginUriView
-} from '../../../core/models/view'
+} from '../../../jslib/src/models/view'
 import InputText from '../../input/InputText'
 import LoginInput from '../../cipher/cipher-types/login/LoginInput.vue'
 import CardInput from '../../cipher/cipher-types/card/CardInput.vue'

@@ -7,7 +7,7 @@
 
 <script>
 import ListCipher from '../../components/cipher/ListCipher'
-import { CipherType } from '../../core/enums/cipherType'
+import { CipherType } from '../../jslib/src/enums/cipherType'
 export default {
   components: {
     ListCipher

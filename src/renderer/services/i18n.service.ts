@@ -1,4 +1,4 @@
-import { I18nService as BaseI18nService } from '../core/services/i18n.service';
+import { I18nService as BaseI18nService } from '../jslib/src/services/i18n.service';
 
 export class I18nService extends BaseI18nService {
     constructor(systemLanguage: string, localesDirectory: string) {
