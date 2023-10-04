@@ -181,7 +181,7 @@
 
 <script>
 import LazyHydrate from 'vue-lazy-hydration'
-import { CipherType } from '../../core/enums'
+import { CipherType } from '../../jslib/src/enums'
 // import Worker from '../../plugins/password-health.worker'
 
 // const worker = new Worker()

@@ -122,7 +122,7 @@
 </template>
 <script>
 import find from 'lodash/find'
-import { CipherView } from '../../../../core/models/view/cipherView'
+import { CipherView } from '../../../../jslib/src/models/view/cipherView'
 import TextHaveCopy from '@/components/cipher/TextHaveCopy'
 import InputSeedPhrase from '@/components/input/InputSeedPhrase'
 import { WALLET_APP_LIST } from '@/utils/crypto/applist/index'

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import groupBy from 'lodash/groupBy'
-import { CipherType } from '../../../core/enums/cipherType'
+import { CipherType } from '../../../jslib/src/enums/cipherType'
 import { CipherMapper } from '../../../constants'
 
 Vue.mixin({

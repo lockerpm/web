@@ -95,7 +95,7 @@
 
 <script>
 import InputText from '../../input/InputText'
-import { Utils } from '../../../core/misc/utils.ts'
+import { Utils } from '../../../jslib/src/misc/utils.ts'
 
 export default {
   components: {

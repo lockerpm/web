@@ -164,7 +164,7 @@
 </template>
 <script>
 import find from 'lodash/find'
-import { CipherType } from '../../../core/enums/cipherType'
+import { CipherType } from '../../../jslib/src/enums/cipherType'
 
 export default {
   props: {

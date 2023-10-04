@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { SyncResponse } from '../../../core/models/response/syncResponse'
+import { SyncResponse } from '../../../jslib/src/models/response/syncResponse'
 
 Vue.mixin({
   computed: {
