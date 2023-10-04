@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-60 h-screen bg-aside min-h-500px min-w-60 flex flex-col justify-between overflow-y-scroll"
+    class="w-60 h-screen bg-aside min-h-[500px] min-w-60 flex flex-col justify-between overflow-y-scroll"
     :class="closable ? 'relative overflow-x-hidden' : 'fixed'"
   >
     <button
