@@ -823,7 +823,8 @@ module.exports = {
       pay_and_upgrade: 'Thanh toán & nâng cấp',
       card_info: 'Thông tin thẻ',
       name_on_card: 'Tên trên thẻ',
-      by_confirm_you_allow: 'Bằng cách xác nhận đăng ký của mình, bạn cho phép CyStack, LLC tính phí vào thẻ của bạn cho khoản thanh toán này và các khoản thanh toán trong tương lai theo các điều khoản của họ. Bạn luôn có thể hủy đăng ký của mình.'
+      by_confirm_you_allow: 'Bằng cách xác nhận đăng ký của mình, bạn cho phép CyStack, LLC tính phí vào thẻ của bạn cho khoản thanh toán này và các khoản thanh toán trong tương lai theo các điều khoản của họ. Bạn luôn có thể hủy đăng ký của mình.',
+      update_payment_or_downgrade: 'Chúng tôi không thể gia hạn đăng ký Locker của bạn. Vui lòng cập nhật thông tin thanh toán của bạn trước {time} nếu không gói của bạn sẽ bị hạ cấp xuống Free.'
     },
     groups: {
       access_all: 'Nhóm này có thể truy cập mọi tệp.',

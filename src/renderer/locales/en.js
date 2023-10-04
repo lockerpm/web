@@ -823,7 +823,8 @@ module.exports = {
       pay_and_upgrade: 'Pay & Upgrade',
       card_info: 'Card information',
       name_on_card: 'Name on card',
-      by_confirm_you_allow: 'By confirming your subscription, you allow CyStack, LLC to charge your card for this payment and future payments in accordance with their terms. You can always cancel your subscription.'
+      by_confirm_you_allow: 'By confirming your subscription, you allow CyStack, LLC to charge your card for this payment and future payments in accordance with their terms. You can always cancel your subscription.',
+      update_payment_or_downgrade: 'We are unable to renew your Locker subscription. Please update your payment information by {time} or your plan will be downgraded to Free.'
     },
     groups: {
       access_all: 'This group can access all items.',
