@@ -17,7 +17,7 @@
     "start-web": "pm2 -v && pm2 start --no-daemon ecosystem.config.js",
     "sub:init": "git submodule update --init --recursive",
     "sub:update": "git submodule update --remote",
-    "sub:pull": "git submodule foreach git pull origin master"
+    "sub:pull": "git submodule foreach git pull origin main"
   },
   "keywords": [],
   "author": "sonnh@cystack.net <sonnh@cystack.net>",

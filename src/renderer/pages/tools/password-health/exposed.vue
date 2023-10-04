@@ -127,7 +127,7 @@
 
 <script>
 import Vnodes from '../../../components/Vnodes'
-import { CipherType } from '../../../core/enums'
+import { CipherType } from '../../../jslib/src/enums'
 export default {
   components: { Vnodes },
   data () {

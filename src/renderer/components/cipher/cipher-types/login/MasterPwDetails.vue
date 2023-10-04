@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import { CipherView } from '../../../../core/models/view/cipherView'
+import { CipherView } from '../../../../jslib/src/models/view/cipherView'
 import TextHaveCopy from '@/components/cipher/TextHaveCopy'
 import PasswordStrength from '@/components/password/PasswordStrength'
 

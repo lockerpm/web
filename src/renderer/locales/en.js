@@ -2849,13 +2849,12 @@ module.exports = {
           link: 'https://github.com/lockerpm/desktop-releases/releases/download/v1.4.47/locker-mac-arm64-1.4.47.dmg'
         }
       ],
-      link: 'See what’s new in the latest version'
+      link: 'See what\'s new in the latest version'
     },
     section3: {
       title: 'Install the Locker browser extension',
       subtitle: 'Access, save, sync, and log in automatically anywhere, anytime.',
       install: 'Install',
-      coming: 'Coming soon',
       list: [
         {
           imgSrc: 'chrome.svg',
@@ -5169,8 +5168,7 @@ module.exports = {
     protect_your_email: 'Protect your true email address now',
     button: 'Create an Account',
     pick_your_plan: 'Pick your Locker plan',
-    pick_plan_desc: 'with extra Private Email features',
-    coming_soon: 'Coming Soon'
+    pick_plan_desc: 'with extra Private Email features'
   },
   business_plan: {
     title: 'Choose the most suitable plan for your business',

@@ -217,10 +217,10 @@
 </template>
 
 <script>
-import { CipherType } from '~/core/enums/cipherType'
+import { CipherType } from '~/jslib/src/enums/cipherType'
 import TextHaveCopy from '~/components/cipher/TextHaveCopy'
 import Vnodes from '~/components/Vnodes'
-import { FieldType } from '~/core/enums/fieldType'
+import { FieldType } from '~/jslib/src/enums/fieldType'
 import LoginDetails from '~/components/cipher/cipher-types/login/LoginDetails.vue'
 import CardDetails from '~/components/cipher/cipher-types/card/CardDetails.vue'
 import IdentityDetails from '~/components/cipher/cipher-types/identity/IdentityDetails.vue'

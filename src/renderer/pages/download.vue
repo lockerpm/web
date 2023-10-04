@@ -6,25 +6,35 @@
       <transition name="fade" mode="out-in">
         <!-- Macos -->
         <section v-if="chosen == 'macos'" id="macos" key="1" class="animation">
-          <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag1 landing-font-16 font-semibold">
-            {{ $t("download.section3.coming") }}
-          </div>
-          <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download.section1.title") }}
+          <h1
+            class="text-center font-bold text-black landing-font-42 mb-[12px]"
+          >
+            {{ $t('download.section1.title') }}
           </h1>
-          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
-            {{ $t("download.section1.subtitle") }}
+          <h2
+            class="text-center font-normal text-black-600 landing-font-20 mb-[35px]"
+          >
+            {{ $t('download.section1.subtitle') }}
           </h2>
-          <div class="grid gap-x-3 items-center max-w-[1010px] mx-auto justify-items-center justify-center min-h-[380px] md:flex md:justify-between">
+          <div
+            class="grid gap-x-3 items-center max-w-[1010px] mx-auto justify-items-center justify-center min-h-[380px] md:flex md:justify-between"
+          >
             <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <button class="button-download bg-tag1" @click="toggleList()">
                   <span>
                     {{ $t('download.section2.button') }}
                   </span>
-                  <img src="~/assets/images/landing/download2/down.svg" alt="" class="rotate-icon">
+                  <img
+                    src="~/assets/images/landing/download2/down.svg"
+                    alt=""
+                    class="rotate-icon"
+                  >
                 </button>
-                <div class="grid gap-y-[12px] dropdown" :class="listDownload ? 'show ' : ''">
+                <div
+                  class="grid gap-y-[12px] dropdown"
+                  :class="listDownload ? 'show ' : ''"
+                >
                   <a
                     v-for="(item, id) in $t('download.section2.list')"
                     :key="id"
@@ -32,14 +42,28 @@
                     :target="item.link ? '_blank' : ''"
                     :href="item.link || ':;'"
                   >
-                    <button :class="item.link ? 'button-download bg-tag1' : 'button-disable'">
+                    <button
+                      :class="
+                        item.link ? 'button-download bg-tag1' : 'button-disable'
+                      "
+                    >
                       <span>
                         {{ item.button }}
                       </span>
-                      <img v-if="item.link" src="~/assets/images/landing/download2/download.svg" alt="">
-                      <img v-else src="~/assets/images/landing/download2/download-disable.svg" alt="">
+                      <img
+                        v-if="item.link"
+                        src="~/assets/images/landing/download2/download.svg"
+                        alt=""
+                      >
+                      <img
+                        v-else
+                        src="~/assets/images/landing/download2/download-disable.svg"
+                        alt=""
+                      >
                     </button>
-                    <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
+                    <p
+                      class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
+                    >
                       {{ item.note }}
                     </p>
                   </a>
@@ -47,30 +71,45 @@
                 <div class="flex my-[32px]">
                   <a
                     href="https://locker.io/release-notes"
-                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap "
+                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
                     target="_blank"
                   >
                     {{ $t('download.section2.link') }}
                   </a>
-                  <img src="~/assets/images/landing/download2/right-blue.svg" alt="">
+                  <img
+                    src="~/assets/images/landing/download2/right-blue.svg"
+                    alt=""
+                  >
                 </div>
               </div>
             </div>
-            <img src="~/assets/images/landing/download2/section2.png" alt="" class="max-w-[550px] w-[100%] sm:w-3/5 object-contain">
+            <img
+              src="~/assets/images/landing/download2/section2.png"
+              alt=""
+              class="max-w-[550px] w-[100%] sm:w-3/5 object-contain"
+            >
           </div>
         </section>
         <!-- Windows -->
-        <section v-if="chosen == 'windows'" id="windows" key="2" class="animation">
-          <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag2 landing-font-16 font-semibold">
-            {{ $t('download.section3.coming') }}
-          </div>
-          <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download.section4.title") }}
+        <section
+          v-if="chosen == 'windows'"
+          id="windows"
+          key="2"
+          class="animation"
+        >
+          <h1
+            class="text-center font-bold text-black landing-font-42 mb-[12px]"
+          >
+            {{ $t('download.section4.title') }}
           </h1>
-          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
-            {{ $t("download.section4.subtitle") }}
+          <h2
+            class="text-center font-normal text-black-600 landing-font-20 mb-[35px]"
+          >
+            {{ $t('download.section4.subtitle') }}
           </h2>
-          <div class="grid justify-center md:justify-between gap-x-3 items-center max-w-[1010px] justify-items-center mx-auto min-h-[380px] md:flex">
+          <div
+            class="grid justify-center md:justify-between gap-x-3 items-center max-w-[1010px] justify-items-center mx-auto min-h-[380px] md:flex"
+          >
             <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <div class="grid gap-y-[32px]">
@@ -80,14 +119,28 @@
                     :target="item.link ? '_blank' : ''"
                     :href="item.link || ':;'"
                   >
-                    <button :class="item.link ? 'button-download bg-tag2': 'button-disable'">
+                    <button
+                      :class="
+                        item.link ? 'button-download bg-tag2' : 'button-disable'
+                      "
+                    >
                       <span>
                         {{ item.button }}
                       </span>
-                      <img v-if="item.link" src="~/assets/images/landing/download2/download.svg" alt="">
-                      <img v-else src="~/assets/images/landing/download2/download-disable.svg" alt="">
+                      <img
+                        v-if="item.link"
+                        src="~/assets/images/landing/download2/download.svg"
+                        alt=""
+                      >
+                      <img
+                        v-else
+                        src="~/assets/images/landing/download2/download-disable.svg"
+                        alt=""
+                      >
                     </button>
-                    <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
+                    <p
+                      class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
+                    >
                       {{ item.note }}
                     </p>
                   </a>
@@ -95,27 +148,40 @@
                 <div class="flex my-[32px]">
                   <a
                     href="https://locker.io/release-notes"
-                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap "
+                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
                     target="_blank"
                   >
                     {{ $t('download.section2.link') }}
                   </a>
-                  <img src="~/assets/images/landing/download2/right-blue.svg" alt="">
+                  <img
+                    src="~/assets/images/landing/download2/right-blue.svg"
+                    alt=""
+                  >
                 </div>
               </div>
             </div>
-            <img src="~/assets/images/landing/download2/section3.png" alt="" class="max-w-[620px] w-[100%] sm:w-3/5 object-contain">
+            <img
+              src="~/assets/images/landing/download2/section3.png"
+              alt=""
+              class="max-w-[620px] w-[100%] sm:w-3/5 object-contain"
+            >
           </div>
         </section>
         <!-- ios -->
         <section v-if="chosen == 'ios'" id="ios" key="3" class="animation">
-          <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download.section5.title") }}
+          <h1
+            class="text-center font-bold text-black landing-font-42 mb-[12px]"
+          >
+            {{ $t('download.section5.title') }}
           </h1>
-          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
-            {{ $t("download.section5.subtitle") }}
+          <h2
+            class="text-center font-normal text-black-600 landing-font-20 mb-[35px]"
+          >
+            {{ $t('download.section5.subtitle') }}
           </h2>
-          <div class="grid justify-center md:justify-between gap-x-3 items-center justify-items-center max-w-[1010px] min-h-[380px] mx-auto md:flex">
+          <div
+            class="grid justify-center md:justify-between gap-x-3 items-center justify-items-center max-w-[1010px] min-h-[380px] mx-auto md:flex"
+          >
             <div class="max-w-[310px] relative">
               <div>
                 <div class="grid gap-y-[32px]">
@@ -125,14 +191,30 @@
                     :target="item.link ? '_blank' : ''"
                     :href="item.link || ':;'"
                   >
-                    <button :class="item.link ? 'button-download button-ios' : 'button-disable'">
+                    <button
+                      :class="
+                        item.link
+                          ? 'button-download button-ios'
+                          : 'button-disable'
+                      "
+                    >
                       <span>
                         {{ item.button }}
                       </span>
-                      <img v-if="item.link" src="~/assets/images/landing/download2/download.svg" alt="">
-                      <img v-else src="~/assets/images/landing/download2/download-disable.svg" alt="">
+                      <img
+                        v-if="item.link"
+                        src="~/assets/images/landing/download2/download.svg"
+                        alt=""
+                      >
+                      <img
+                        v-else
+                        src="~/assets/images/landing/download2/download-disable.svg"
+                        alt=""
+                      >
                     </button>
-                    <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
+                    <p
+                      class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
+                    >
                       {{ item.note }}
                     </p>
                   </a>
@@ -140,27 +222,45 @@
                 <div class="flex my-[32px]">
                   <a
                     href="https://locker.io/release-notes"
-                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap "
+                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
                     target="_blank"
                   >
                     {{ $t('download.section2.link') }}
                   </a>
-                  <img src="~/assets/images/landing/download2/right-blue.svg" alt="">
+                  <img
+                    src="~/assets/images/landing/download2/right-blue.svg"
+                    alt=""
+                  >
                 </div>
               </div>
             </div>
-            <img src="~/assets/images/landing/download2/section6.png" alt="" class="max-w-[440px] w-[100%] sm:w-3/5 object-contain">
+            <img
+              src="~/assets/images/landing/download2/section6.png"
+              alt=""
+              class="max-w-[440px] w-[100%] sm:w-3/5 object-contain"
+            >
           </div>
         </section>
         <!-- android -->
-        <section v-if="chosen == 'android'" id="android" key="4" class="animation">
-          <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download.section6.title") }}
+        <section
+          v-if="chosen == 'android'"
+          id="android"
+          key="4"
+          class="animation"
+        >
+          <h1
+            class="text-center font-bold text-black landing-font-42 mb-[12px]"
+          >
+            {{ $t('download.section6.title') }}
           </h1>
-          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
-            {{ $t("download.section6.subtitle") }}
+          <h2
+            class="text-center font-normal text-black-600 landing-font-20 mb-[35px]"
+          >
+            {{ $t('download.section6.subtitle') }}
           </h2>
-          <div class="grid justify-center md:justify-between gap-x-3 items-center justify-items-center max-w-[1010px] mx-auto md:flex">
+          <div
+            class="grid justify-center md:justify-between gap-x-3 items-center justify-items-center max-w-[1010px] mx-auto md:flex"
+          >
             <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <div class="grid gap-y-[32px]">
@@ -170,14 +270,30 @@
                     :target="item.link ? '_blank' : ''"
                     :href="item.link || ':;'"
                   >
-                    <button :class="item.link ? 'button-download button-android' : 'button-disable'">
+                    <button
+                      :class="
+                        item.link
+                          ? 'button-download button-android'
+                          : 'button-disable'
+                      "
+                    >
                       <span>
                         {{ item.button }}
                       </span>
-                      <img v-if="item.link" src="~/assets/images/landing/download2/download.svg" alt="">
-                      <img v-else src="~/assets/images/landing/download2/download-disable.svg" alt="">
+                      <img
+                        v-if="item.link"
+                        src="~/assets/images/landing/download2/download.svg"
+                        alt=""
+                      >
+                      <img
+                        v-else
+                        src="~/assets/images/landing/download2/download-disable.svg"
+                        alt=""
+                      >
                     </button>
-                    <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
+                    <p
+                      class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
+                    >
                       {{ item.note }}
                     </p>
                   </a>
@@ -185,39 +301,56 @@
                 <div class="flex my-[32px]">
                   <a
                     href="https://locker.io/release-notes"
-                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap "
+                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
                     target="_blank"
                   >
                     {{ $t('download.section2.link') }}
                   </a>
-                  <img src="~/assets/images/landing/download2/right-blue.svg" alt="">
+                  <img
+                    src="~/assets/images/landing/download2/right-blue.svg"
+                    alt=""
+                  >
                 </div>
               </div>
             </div>
-            <img src="~/assets/images/landing/download2/section7.png" alt="" class="max-w-[430px] w-[100%] sm:w-3/5 object-contain">
+            <img
+              src="~/assets/images/landing/download2/section7.png"
+              alt=""
+              class="max-w-[430px] w-[100%] sm:w-3/5 object-contain"
+            >
           </div>
         </section>
         <!-- linux -->
         <section v-if="chosen == 'linux'" id="linux" key="5" class="animation">
-          <div class="absolute top-[70px] lg:top-[120px] right-[50%] sm:right-[75%] text-[#FFFFFF] width-comming-soon bg-tag3 landing-font-16 font-semibold">
-            {{ $t('download.section3.coming') }}
-          </div>
-          <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download.section7.title") }}
+          <h1
+            class="text-center font-bold text-black landing-font-42 mb-[12px]"
+          >
+            {{ $t('download.section7.title') }}
           </h1>
-          <h2 class="text-center font-normal text-black-600 landing-font-20 mb-[35px]">
-            {{ $t("download.section7.subtitle") }}
+          <h2
+            class="text-center font-normal text-black-600 landing-font-20 mb-[35px]"
+          >
+            {{ $t('download.section7.subtitle') }}
           </h2>
-          <div class="grid justify-between gap-x-3 items-center justify-items-center max-w-[1010px] min-h-[380px] mx-auto md:flex">
+          <div
+            class="grid justify-between gap-x-3 items-center justify-items-center max-w-[1010px] min-h-[380px] mx-auto md:flex"
+          >
             <div class="min-w-[310px] max-w-[310px] relative">
               <div>
                 <button class="button-download bg-tag3" @click="toggleList()">
                   <span>
                     {{ $t('download.section7.button') }}
                   </span>
-                  <img src="~/assets/images/landing/download2/down.svg" alt="" class="rotate-icon">
+                  <img
+                    src="~/assets/images/landing/download2/down.svg"
+                    alt=""
+                    class="rotate-icon"
+                  >
                 </button>
-                <div class="grid gap-y-[12px] dropdown" :class="listDownload ? 'show ' : ''">
+                <div
+                  class="grid gap-y-[12px] dropdown"
+                  :class="listDownload ? 'show ' : ''"
+                >
                   <a
                     v-for="(item, id) in $t('download.section7.list')"
                     :key="id"
@@ -225,14 +358,28 @@
                     :target="item.link ? '_blank' : ''"
                     :href="item.link || ':;'"
                   >
-                    <button :class="item.link ? 'button-download bg-tag3' : 'button-disable'">
+                    <button
+                      :class="
+                        item.link ? 'button-download bg-tag3' : 'button-disable'
+                      "
+                    >
                       <span>
                         {{ item.button }}
                       </span>
-                      <img v-if="item.link" src="~/assets/images/landing/download2/download.svg" alt="">
-                      <img v-else src="~/assets/images/landing/download2/download-disable.svg" alt="">
+                      <img
+                        v-if="item.link"
+                        src="~/assets/images/landing/download2/download.svg"
+                        alt=""
+                      >
+                      <img
+                        v-else
+                        src="~/assets/images/landing/download2/download-disable.svg"
+                        alt=""
+                      >
                     </button>
-                    <p class="mt-[8px] text-[#617296] font-normal landing-font-14-2">
+                    <p
+                      class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
+                    >
                       {{ item.note }}
                     </p>
                   </a>
@@ -240,27 +387,36 @@
                 <div class="flex my-[32px]">
                   <a
                     href="https://locker.io/release-notes"
-                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap "
+                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
                     target="_blank"
                   >
                     {{ $t('download.section2.link') }}
                   </a>
-                  <img src="~/assets/images/landing/download2/right-blue.svg" alt="">
+                  <img
+                    src="~/assets/images/landing/download2/right-blue.svg"
+                    alt=""
+                  >
                 </div>
               </div>
             </div>
-            <img src="~/assets/images/landing/download2/linux-image.png" alt="" class="max-w-[637px] w-[100%] sm:w-3/5 object-contain">
+            <img
+              src="~/assets/images/landing/download2/linux-image.png"
+              alt=""
+              class="max-w-[637px] w-[100%] sm:w-3/5 object-contain"
+            >
           </div>
         </section>
         <!-- web browser -->
         <section v-if="chosen == 'web-browser'" id="web-browser" key="6">
-          <h1 class="text-center font-bold text-black landing-font-42 mb-[12px]">
-            {{ $t("download.section3.title") }}
+          <h1
+            class="text-center font-bold text-black landing-font-42 mb-[12px]"
+          >
+            {{ $t('download.section3.title') }}
           </h1>
           <h2
             class="text-center font-normal text-black-600 landing-font-20 mb-[10px]"
           >
-            {{ $t("download.section3.subtitle") }}
+            {{ $t('download.section3.subtitle') }}
           </h2>
           <div class="flex flex-wrap justify-center gap-x-3">
             <div
@@ -281,14 +437,14 @@
                 <button
                   class="mt-3 py-[3px] px-[20px] font-semibold text-[#FFFFFF] bg-[#62AD56] rounded-sm hover:bg-[#2D702C]"
                 >
-                  {{ $t("download.section3.install") }}
+                  {{ $t('download.section3.install') }}
                 </button>
               </a>
               <button
                 v-else
                 class="mt-3 py-[3px] px-[20px] font-semibold text-[#606060] bg-[#EBEEF2] rounded-sm box-border border-[1px] border-[#DADEE3] cursor-auto"
               >
-                {{ $t("download.section3.coming") }}
+                {{ $t('download.coming') }}
               </button>
             </div>
           </div>
@@ -316,12 +472,16 @@
             <div class="block w-fit mx-auto h-[40px]">
               <img
                 v-if="chosen !== item.link"
-                :src="require(`~/assets/images/landing/download2/${item.imageSrc}`)"
+                :src="
+                  require(`~/assets/images/landing/download2/${item.imageSrc}`)
+                "
                 :alt="item.title"
               >
               <img
                 v-else
-                :src="require(`~/assets/images/landing/download2/${item.hover}`)"
+                :src="
+                  require(`~/assets/images/landing/download2/${item.hover}`)
+                "
                 :alt="item.title"
               >
             </div>
@@ -352,7 +512,8 @@ export default {
         const target = document.querySelector('#anchor')
         if (target) {
           target.scrollIntoView({ behavior: 'smooth' })
-          const newUrl = window.location.origin + window.location.pathname + customHref
+          const newUrl =
+            window.location.origin + window.location.pathname + customHref
           history.pushState({}, '', newUrl)
         }
       })
@@ -511,11 +672,13 @@ export default {
 .link-contain:hover .normal-image {
   display: none;
 }
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .3s
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
 }
-.fade-enter, .fade-leave-to {
-  opacity: 0
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 .rotate-icon {
   transition: transform 0.3s ease-in-out; /* Thêm hiệu ứng transition */

@@ -147,9 +147,9 @@
 
 <script>
 import InputText from '../../components/input/InputText.vue'
-import { CipherType } from '../../core/enums'
-import { Utils } from '../../core/misc/utils.ts'
-import { FolderRequest } from '../../core/models/request'
+import { CipherType } from '../../jslib/src/enums'
+import { Utils } from '../../jslib/src/misc/utils.ts'
+import { FolderRequest } from '../../jslib/src/models/request'
 
 export default {
   components: { InputText },

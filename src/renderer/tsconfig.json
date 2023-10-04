@@ -15,8 +15,8 @@
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./*"],
-      "tldjs": ["./core/misc/tldjs.noop"],
-      "core/*": ["./core/*"],
+      "tldjs": ["./jslib/src/misc/tldjs.noop"],
+      "jslib/*": ["./jslib/*"],
       "node": ["../../node_modules/@types/node"]
     },
     "types": ["@nuxt/types", "@types/node", "@nuxtjs/sentry"],
@@ -30,6 +30,6 @@
     "../../build",
     ".nuxt",
     "./services",
-    "./core"
+    "./jslib"
   ]
 }

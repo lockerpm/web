@@ -83,11 +83,11 @@
 import InputText from '../input/InputText'
 import PasswordStrengthBar from '../password/PasswordStrengthBar'
 import PasswordViolationDialog from '../cipher/PasswordViolationDialog'
-import { CipherView } from '../../core/models/view/cipherView.ts'
-import { CipherType } from '../../core/enums/cipherType.ts'
-import { LoginView } from '../../core/models/view/loginView.ts'
-import { LoginUriView } from '../../core/models/view/loginUriView.ts'
-import { CipherRequest } from '../../core/models/request/cipherRequest.ts'
+import { CipherView } from '../../jslib/src/models/view/cipherView.ts'
+import { CipherType } from '../../jslib/src/enums/cipherType.ts'
+import { LoginView } from '../../jslib/src/models/view/loginView.ts'
+import { LoginUriView } from '../../jslib/src/models/view/loginUriView.ts'
+import { CipherRequest } from '../../jslib/src/models/request/cipherRequest.ts'
 import { MIN_MASTER_PW_LEN } from '../../constants'
 
 export default {

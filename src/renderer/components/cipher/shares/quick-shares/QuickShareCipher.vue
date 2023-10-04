@@ -194,11 +194,11 @@
 <script>
 import find from 'lodash/find'
 import QuickSharedCipherInfo from './QuickSharedCipherInfo'
-import { CipherType } from '~/core/enums'
+import { CipherType } from '~/jslib/src/enums'
 import Vnodes from '~/components/Vnodes'
-import { SendView } from '~/core/models/view/sendView'
-import { Send } from '~/core/models/domain/send'
-import { SendRequest } from '~/core/models/request/sendRequest'
+import { SendView } from '~/jslib/src/models/view/sendView'
+import { Send } from '~/jslib/src/models/domain/send'
+import { SendRequest } from '~/jslib/src/models/request/sendRequest'
 import InputSelect from '~/components/input/InputSelect.vue'
 
 export default {

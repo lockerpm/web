@@ -72,8 +72,8 @@
 
 <script>
 import orderBy from 'lodash/orderBy'
-import { FieldType } from '../../../../core/enums/fieldType'
-import { CipherType } from '../../../../core/enums/cipherType.ts'
+import { FieldType } from '../../../../jslib/src/enums/fieldType'
+import { CipherType } from '../../../../jslib/src/enums/cipherType.ts'
 
 import InputText from '../../../input/InputText.vue'
 import InputSelect from '../../../input/InputSelect.vue'

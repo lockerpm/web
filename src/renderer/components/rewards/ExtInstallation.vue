@@ -86,7 +86,7 @@
                 v-else
                 class="mt-3 py-[3px] px-[20px] font-semibold text-[#606060] bg-[#EBEEF2] rounded-sm box-border border-[1px] border-[#DADEE3] cursor-auto"
               >
-                {{ $t('download.section3.coming') }}
+                {{ $t('download.coming') }}
               </button>
             </div>
           </div>

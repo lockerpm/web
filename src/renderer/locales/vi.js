@@ -2855,7 +2855,6 @@ module.exports = {
       title: 'Cài đặt tiện ích Locker cho trình duyệt',
       subtitle: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
       install: 'Cài đặt',
-      coming: 'Sắp ra mắt',
       list: [
         {
           imgSrc: 'chrome.svg',
@@ -5013,8 +5012,7 @@ module.exports = {
     protect_your_email: 'Bảo mật địa chỉ email của bạn ngay hôm nay',
     button: 'Tạo tài khoản',
     pick_your_plan: 'Chọn gói cước Locker',
-    pick_plan_desc: 'với các tính năng bổ sung cho Email Ẩn danh',
-    coming_soon: 'Sắp ra mắt'
+    pick_plan_desc: 'với các tính năng bổ sung cho Email Ẩn danh'
   },
   business_plan: {
     title: 'Chọn gói Locker phù hợp nhất cho doanh nghiệp của bạn',

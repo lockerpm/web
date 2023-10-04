@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import { FieldView } from '../../core/models/view'
-import { FieldType } from '../../core/enums/fieldType'
+import { FieldView } from '../../jslib/src/models/view'
+import { FieldType } from '../../jslib/src/enums/fieldType'
 import InputField from '../input/InputField.vue'
 export default {
   components: {

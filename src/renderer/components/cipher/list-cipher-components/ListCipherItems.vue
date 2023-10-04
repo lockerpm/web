@@ -291,7 +291,7 @@
   </div>
 </template>
 <script>
-import { CipherType } from '../../../core/enums/cipherType'
+import { CipherType } from '../../../jslib/src/enums/cipherType'
 import MoveFolder from '@/components/folder/MoveFolder'
 import ShareCipher from '@/components/cipher/shares/your-shares/ShareCipher'
 import QuickShareCipher from '@/components/cipher/shares/quick-shares/QuickShareCipher'

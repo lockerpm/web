@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import find from 'lodash/find'
-import { CipherType } from '../../../core/enums/cipherType'
+import { CipherType } from '../../../jslib/src/enums/cipherType'
 import { AccountRole } from '../../../constants'
 
 Vue.mixin({

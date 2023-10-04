@@ -113,13 +113,13 @@
 <script>
 import cloneDeep from 'lodash/cloneDeep'
 import { CipherMapper } from '../../../../constants'
-import { CipherType } from '@/core/enums'
+import { CipherType } from '@/jslib/src/enums'
 import Vnodes from '@/components/Vnodes'
 import ViewGrantorCipher from '@/components/setting/emergency-access/ViewGrantorCipher'
-import { Cipher } from '@/core/models/domain/cipher'
-import { CipherData } from '@/core/models/data/cipherData'
-import { SymmetricCryptoKey } from '@/core/models/domain/symmetricCryptoKey'
-import { EncString } from '@/core/models/domain/encString'
+import { Cipher } from '@/jslib/src/models/domain/cipher'
+import { CipherData } from '@/jslib/src/models/data/cipherData'
+import { SymmetricCryptoKey } from '@/jslib/src/models/domain/symmetricCryptoKey'
+import { EncString } from '@/jslib/src/models/domain/encString'
 
 export default {
   components: {

@@ -56,7 +56,7 @@
   </div>
 </template>
 <script>
-import { CipherType } from '../../../core/enums/cipherType'
+import { CipherType } from '../../../jslib/src/enums/cipherType'
 
 export default {
   data () {

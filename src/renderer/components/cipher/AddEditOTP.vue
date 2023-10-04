@@ -99,10 +99,10 @@
 <script>
 import { Dialog } from 'element-ui'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { CipherType, SecureNoteType } from '../../core/enums'
-import { Cipher, SecureNote } from '../../core/models/domain'
-import { CipherRequest } from '../../core/models/request'
-import { CipherView, SecureNoteView } from '../../core/models/view'
+import { CipherType, SecureNoteType } from '../../jslib/src/enums'
+import { Cipher, SecureNote } from '../../jslib/src/models/domain'
+import { CipherRequest } from '../../jslib/src/models/request'
+import { CipherView, SecureNoteView } from '../../jslib/src/models/view'
 import InputText from '../input/InputText'
 import InlineEditCipher from './InlineEditCipher'
 

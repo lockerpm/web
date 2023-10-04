@@ -375,7 +375,7 @@
 
 <script>
 import LazyHydrate from 'vue-lazy-hydration'
-import { CipherType } from '../../core/enums/cipherType'
+import { CipherType } from '../../jslib/src/enums/cipherType'
 
 // const worker = new Worker()
 export default {
