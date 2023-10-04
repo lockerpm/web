@@ -732,7 +732,7 @@ module.exports = {
       edit_card_title: 'Edit Your Payment Information',
       email_hint: 'We will send invoices to this email',
       card_decline: {
-        generic_decline: 'The card has been declined for an unknown reason. You needs to contact your card issuer for more information.',
+        generic_decline: 'Your card has been declined. Please contact your card issuer for more information or try again with another one.',
         validation_error: 'Your card\'s information is invalid.'
       },
       add_card_success: 'Your payment method has been added!',
