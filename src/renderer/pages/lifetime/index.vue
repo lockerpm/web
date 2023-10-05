@@ -2,14 +2,10 @@
   <div>
     <section class="pt-32 pb-12 bg-[#F5F6F7] full-width">
       <div class="w-full max-w-6xl mx-auto px-6">
-        <div class="flex items-end mb-12">
+        <div class="mb-12">
           <h1 class="font-bold text-black landing-font-38 mr-[38px]">
             {{ $t('promo.lifetime.header.title') }}
           </h1>
-          <p class="text-primary font-semibold">
-            <span class="text-head-3">$69.99</span>
-            / {{ $t('promo.lifetime.common.lifetime') }}
-          </p>
         </div>
 
         <div class="flex flex-wrap">
@@ -28,11 +24,34 @@
             </div>
             <!-- Logo end -->
 
+            <!-- Choose subscription -->
+            <div class="mb-6">
+              <p class="font-semibold mb-6">
+                {{ $t('promo.lifetime.header.choose_subscription') }}
+              </p>
+              <el-radio-group v-model="selectedPlan">
+                <div class="mb-3">
+                  <el-radio label="pm_lifetime_premium">
+                    Lifetime Premium (1 {{ $t('common.user') }})
+                  </el-radio>
+                </div>
+
+                <div>
+                  <el-radio label="pm_lifetime_family">
+                    Lifetime Family (6 {{ $t('common.users') }})
+                  </el-radio>
+                </div>
+              </el-radio-group>
+            </div>
+            <!-- Choose subscription end -->
+
             <!-- Invoice -->
             <div class="mb-8">
               <div class="flex justify-between mb-3">
-                <p class="font-semibold">Lifetime Premium</p>
-                <p class="text-right">$69.99 USD</p>
+                <p class="font-semibold">Price</p>
+                <p v-if="result.price" class="text-right">
+                  ${{ result.price | formatNumber }} {{ result.currency }}
+                </p>
               </div>
               <div class="flex justify-between">
                 <p class="font-semibold">
@@ -68,9 +87,11 @@
                     v-model="form.promo_code"
                     :placeholder="$t('data.plans.payment_step.enter_code')"
                     class="mr-2"
+                    @keyup.native.enter="!!form.promo_code && calcPrice()"
                   />
                   <el-button
                     type="primary"
+                    :loading="loadingCalc"
                     :disabled="!form.promo_code || loadingCalc"
                     @click="calcPrice"
                   >
@@ -87,7 +108,6 @@
                 <p v-if="result.price">
                   ${{ result.price | formatNumber }} {{ result.currency }}
                 </p>
-                <p v-else>$69.99 USD</p>
               </div>
             </div>
             <!-- Invoice end -->
@@ -342,7 +362,8 @@ export default {
         agreed: false,
         promo_code: ''
       },
-      result: {}
+      result: {},
+      selectedPlan: 'pm_lifetime_premium'
     }
   },
 
@@ -390,7 +411,8 @@ export default {
           !this.form.confirmPassword ||
           !this.form.fullName ||
           !this.form.agreed ||
-          this.form.password !== this.form.confirmPassword
+          this.form.password !== this.form.confirmPassword ||
+          !this.result.price
         )
       }
       return !this.form.email
@@ -405,8 +427,15 @@ export default {
     }
   },
 
+  watch: {
+    selectedPlan () {
+      this.calcPrice()
+    }
+  },
+
   mounted () {
     this.$recaptcha.init()
+    this.calcPrice()
   },
 
   methods: {
@@ -426,11 +455,15 @@ export default {
     },
 
     calcPrice: debounce(function () {
+      if (this.loadingCalc) {
+        return
+      }
       this.loadingCalc = true
-      const url = 'cystack_platform/pm/payments/calc'
+      this.result = {}
+      const url = 'cystack_platform/pm/lifetime/payments/calc'
       this.$axios
         .$post(url, {
-          plan_alias: 'pm_lifetime_premium',
+          plan_alias: this.selectedPlan,
           promo_code: this.form.promo_code,
           currency: 'USD'
         })
@@ -464,7 +497,8 @@ export default {
           email: this.form.email,
           token_card: tokenId,
           request_code: token,
-          promo_code: this.form.promo_code
+          promo_code: this.form.promo_code,
+          plan_alias: this.selectedPlan
         }
         if (this.needCreateAccount) {
           payload.full_name = this.form.fullName
