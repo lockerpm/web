@@ -732,7 +732,7 @@ module.exports = {
       edit_card_title: 'Edit Your Payment Information',
       email_hint: 'We will send invoices to this email',
       card_decline: {
-        generic_decline: 'The card has been declined for an unknown reason. You needs to contact your card issuer for more information.',
+        generic_decline: 'Your card has been declined. Please contact your card issuer for more information or try again with another one.',
         validation_error: 'Your card\'s information is invalid.'
       },
       add_card_success: 'Your payment method has been added!',
@@ -823,7 +823,8 @@ module.exports = {
       pay_and_upgrade: 'Pay & Upgrade',
       card_info: 'Card information',
       name_on_card: 'Name on card',
-      by_confirm_you_allow: 'By confirming your subscription, you allow CyStack, LLC to charge your card for this payment and future payments in accordance with their terms. You can always cancel your subscription.'
+      by_confirm_you_allow: 'By confirming your subscription, you allow CyStack, LLC to charge your card for this payment and future payments in accordance with their terms. You can always cancel your subscription.',
+      update_payment_or_downgrade: 'We are unable to renew your Locker subscription. Please update your payment information by {time} or your plan will be downgraded to Free.'
     },
     groups: {
       access_all: 'This group can access all items.',
