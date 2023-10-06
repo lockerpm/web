@@ -16,8 +16,7 @@
 
       <!-- Lifetime -->
       <div
-        class="flex flex-wrap rounded-xl border border-primary py-5 mb-7 px-2 justify-center mx-auto bg-[#F5F9F5] relative"
-        :class="locale === 'vi' ? 'max-w-[650px]' : 'max-w-[523px]'"
+        class="flex flex-wrap rounded-xl border border-primary py-5 mb-7 px-2 justify-center items-center mx-auto bg-[#F5F9F5] relative max-w-[650px]"
       >
         <img
           :src="require('~/assets/images/landing/lifetime/special-offer.svg')"
