@@ -309,7 +309,12 @@
 
         <template v-if="needCreateAccount">
           <p>
-            {{ $t('promo.buy13.form.success.desc_1_new') }}
+            {{
+              $t('promo.buy13.form.success.desc_1_new').replace(
+                'Premium',
+                selectedPlan === 'pm_lifetime_family' ? 'Family' : 'Premium'
+              )
+            }}
           </p>
           <p class="mb-6">
             {{ $t('promo.buy13.form.success.desc_2_new') }}
