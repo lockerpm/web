@@ -468,6 +468,7 @@
 <script>
 export default {
   layout: 'white',
+  middleware: ['onlyEng'],
   data () {
     return ({
       activeName: '1',
