@@ -31,7 +31,7 @@
                 alt="Locker"
                 class="h-11 mr-4"
               >
-              <p class="landing-font-18">Your Digital Vault</p>
+              <p class="landing-font-18">{{ $t('common.your_digital_vault') }}</p>
             </div>
             <!-- Logo end -->
 

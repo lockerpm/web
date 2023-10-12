@@ -20,7 +20,9 @@
                 alt="Locker"
                 class="h-11 mr-4"
               >
-              <p class="landing-font-18">Your Digital Vault</p>
+              <p class="landing-font-18">
+                {{ $t('common.your_digital_vault') }}
+              </p>
             </div>
             <!-- Logo end -->
 
@@ -48,7 +50,7 @@
             <!-- Invoice -->
             <div class="mb-8">
               <div class="flex justify-between mb-3">
-                <p class="font-semibold">Price</p>
+                <p class="font-semibold">{{ $t('common.price') }}</p>
                 <p v-if="result.price" class="text-right">
                   ${{ result.price | formatNumber }} {{ result.currency }}
                 </p>

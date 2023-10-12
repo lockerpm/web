@@ -169,6 +169,7 @@ module.exports = {
     yearly: 'Gói 1 năm',
     yes: 'Có',
     you: 'Bạn',
+    your_digital_vault: 'Kho dữ liệu số của bạn',
     zip: 'Mã bưu chính'
   },
   sidebar: {

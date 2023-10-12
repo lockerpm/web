@@ -169,6 +169,7 @@ module.exports = {
     yearly: '1 year plan',
     yes: 'Yes',
     you: 'You',
+    your_digital_vault: 'Your Digital Vault',
     zip: 'Postal/Zip Code'
   },
   sidebar: {
