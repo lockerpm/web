@@ -107,8 +107,9 @@
                 <p>
                   {{ $t('common.total') }}
                 </p>
-                <p v-if="result.price">
-                  ${{ result.price | formatNumber }} {{ result.currency }}
+                <p v-if="result.immediate_payment">
+                  ${{ result.immediate_payment | formatNumber }}
+                  {{ result.currency }}
                 </p>
               </div>
             </div>
@@ -428,7 +429,7 @@ export default {
     discountPercentage () {
       const res = (this.result.discount * 100) / this.result.total_price
       if (!Number.isNaN(res)) {
-        return Math.ceil(res)
+        return res.toFixed(2)
       }
       return 0
     }
