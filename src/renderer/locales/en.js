@@ -82,6 +82,7 @@ module.exports = {
     last_name_placeholder: 'Your last name',
     learn_more: 'Learn more',
     length: 'Length',
+    lifetime: 'Lifetime plan',
     lock: 'Lock',
     login: 'Log in',
     logout: 'Log Out',
@@ -169,6 +170,7 @@ module.exports = {
     yearly: '1 year plan',
     yes: 'Yes',
     you: 'You',
+    your_digital_vault: 'Your Digital Vault',
     zip: 'Postal/Zip Code'
   },
   sidebar: {
@@ -310,6 +312,7 @@ module.exports = {
     4: 'Identity | Identities',
     5: 'OTP | OTPs',
     0: 'Item | Items',
+    null: 'Item | Items',
     6: 'Crypto Account | Crypto Accounts',
     7: 'Crypto Backup | Crypto Backups',
     9: 'Driver License | Driver Licenses',
@@ -732,7 +735,7 @@ module.exports = {
       edit_card_title: 'Edit Your Payment Information',
       email_hint: 'We will send invoices to this email',
       card_decline: {
-        generic_decline: 'The card has been declined for an unknown reason. You needs to contact your card issuer for more information.',
+        generic_decline: 'Your card has been declined. Please contact your card issuer for more information or try again with another one.',
         validation_error: 'Your card\'s information is invalid.'
       },
       add_card_success: 'Your payment method has been added!',

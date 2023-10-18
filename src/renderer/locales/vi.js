@@ -82,6 +82,7 @@ module.exports = {
     last_name_placeholder: 'Nguyen',
     learn_more: 'Tìm hiểu thêm',
     length: 'Độ dài',
+    lifetime: 'Gói trọn đời',
     lock: 'Khóa',
     login: 'Đăng nhập',
     logout: 'Đăng xuất',
@@ -169,6 +170,7 @@ module.exports = {
     yearly: 'Gói 1 năm',
     yes: 'Có',
     you: 'Bạn',
+    your_digital_vault: 'Kho dữ liệu số của bạn',
     zip: 'Mã bưu chính'
   },
   sidebar: {
@@ -310,6 +312,7 @@ module.exports = {
     4: 'Định danh | Định danh',
     5: 'OTP | OTPs',
     0: 'Mục | Mục',
+    null: 'Mục | Mục',
     6: 'Tài khoản Crypto | Tài khoản Crypto',
     7: 'Ví Crypto | Ví Crypto',
     9: 'Giấy phép lái xe | Giấy phép lái xe',
@@ -732,7 +735,7 @@ module.exports = {
       edit_card_title: 'Thay đổi thông tin thanh toán',
       email_hint: 'Chúng tôi sẽ gửi hóa đơn vào địa chỉ email này',
       card_decline: {
-        generic_decline: 'Thẻ của bạn bị từ chối vì lí do không xác định. Vui lòng liên hệ nhà cung cấp thẻ để có thêm thông tin.',
+        generic_decline: 'Thẻ của bạn bị từ chối. Vui lòng liên hệ nhà cung cấp thẻ để có thêm thông tin hoặc thử lại bằng thẻ khác.',
         validation_error: 'Thông tin thẻ của bạn không chính xác'
       },
       add_card_success: 'Phương thức thanh toán đã được thêm!',

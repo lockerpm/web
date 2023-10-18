@@ -20,7 +20,9 @@
                 alt="Locker"
                 class="h-11 mr-4"
               >
-              <p class="landing-font-18">Your Digital Vault</p>
+              <p class="landing-font-18">
+                {{ $t('common.your_digital_vault') }}
+              </p>
             </div>
             <!-- Logo end -->
 
@@ -48,7 +50,7 @@
             <!-- Invoice -->
             <div class="mb-8">
               <div class="flex justify-between mb-3">
-                <p class="font-semibold">Price</p>
+                <p class="font-semibold">{{ $t('common.price') }}</p>
                 <p v-if="result.price" class="text-right">
                   ${{ result.price | formatNumber }} {{ result.currency }}
                 </p>
@@ -105,8 +107,9 @@
                 <p>
                   {{ $t('common.total') }}
                 </p>
-                <p v-if="result.price">
-                  ${{ result.price | formatNumber }} {{ result.currency }}
+                <p v-if="result.immediate_payment">
+                  ${{ result.immediate_payment | formatNumber }}
+                  {{ result.currency }}
                 </p>
               </div>
             </div>
@@ -309,7 +312,12 @@
 
         <template v-if="needCreateAccount">
           <p>
-            {{ $t('promo.buy13.form.success.desc_1_new') }}
+            {{
+              $t('promo.buy13.form.success.desc_1_new').replace(
+                'Premium',
+                selectedPlan === 'pm_lifetime_family' ? 'Family' : 'Premium'
+              )
+            }}
           </p>
           <p class="mb-6">
             {{ $t('promo.buy13.form.success.desc_2_new') }}
@@ -421,7 +429,7 @@ export default {
     discountPercentage () {
       const res = (this.result.discount * 100) / this.result.total_price
       if (!Number.isNaN(res)) {
-        return Math.ceil(res)
+        return res.toFixed(2)
       }
       return 0
     }
