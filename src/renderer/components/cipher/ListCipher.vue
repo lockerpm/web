@@ -316,7 +316,7 @@ export default {
         collections.forEach(f => {
           const ciphers =
             this.ciphers &&
-            (this.ciphers.filter(c => c.collectionIds.includes(f.id)) || [])
+            (this.ciphers.filter(c => c.collectionIds?.includes(f.id)) || [])
           f.ciphersCount = ciphers && ciphers.length
           f.ciphers = ciphers
         })

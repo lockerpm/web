@@ -65,7 +65,7 @@ Vue.mixin({
         !cipher.isDeleted &&
         this.isOwner(organizations, cipher) &&
         // Not in any shared folder
-        !cipher.collectionIds.length &&
+        !cipher.collectionIds?.length &&
         !this.isProtectedCipher(cipher) &&
         cipher.type !== CipherType.TOTP
       )
