@@ -84,8 +84,7 @@ export default {
       ids: [],
       folderId: '',
       collections: [],
-      organizations: [],
-      ciphers: []
+      organizations: []
     }
   },
 
@@ -110,13 +109,14 @@ export default {
         this.loading = true
         const collection = this.collections.find(c => c.id === this.folderId)
         const personalKey = await this.$cryptoService.getEncKey()
-        const promises = []
+        let promises = []
+        const ciphers = []
 
         // Get decrypted ciphers list
         this.ids.forEach(async id => {
           const encCipher = await this.$cipherService.get(id)
           const decCipher = await encCipher.decrypt()
-          this.ciphers.push({ ...decCipher, id })
+          ciphers.push({ ...decCipher, id })
           promises.push(this.removeFromCollection(decCipher, personalKey))
         })
 
@@ -132,7 +132,8 @@ export default {
           const orgKey = await this.$cryptoService.getOrgKey(
             collection.organizationId
           )
-          this.ciphers.forEach(cipher => {
+          promises = []
+          ciphers.forEach(cipher => {
             promises.push(this.addToCollection(cipher, orgKey, collection))
           })
           await Promise.all(promises)
