@@ -127,6 +127,7 @@ Vue.mixin({
           `/cystack_platform/pm/sync/collections/${id}`
         )
         await this.$collectionService.upsert([res])
+        await this.syncProfile()
         this.$store.commit('UPDATE_SYNCED_CIPHERS')
       } catch (e) {
         const status = e.response?.status
