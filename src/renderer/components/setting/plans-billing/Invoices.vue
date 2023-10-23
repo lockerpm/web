@@ -35,7 +35,7 @@
               </el-table-column>
               <el-table-column label="">
                 <template slot-scope="scope">
-                  {{ $t(`common.${scope.row.duration}`) }}
+                  {{ $t(`common.${scope.row.duration.toLowerCase()}`) }}
                 </template>
               </el-table-column>
               <el-table-column prop="total_price" label="" align="right">
