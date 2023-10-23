@@ -65,7 +65,7 @@ Vue.mixin({
         !cipher.isDeleted &&
         this.isOwner(organizations, cipher) &&
         // Not in any shared folder
-        !cipher.collectionIds.length &&
+        !cipher.collectionIds?.length &&
         !this.isProtectedCipher(cipher) &&
         cipher.type !== CipherType.TOTP
       )
@@ -319,6 +319,7 @@ Vue.mixin({
           this.$t('data.notifications.leave_share_success'),
           'success'
         )
+        this.$store.commit('UPDATE_SYNCED_CIPHERS')
         return true
       } catch (error) {
         this.notify(this.$t('errors.something_went_wrong'), 'warning')
