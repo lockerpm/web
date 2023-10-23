@@ -1,5 +1,6 @@
 <template>
   <div class="setting-wrapper">
+    <!-- Header -->
     <div class="setting-section">
       <div
         class="setting-section-header cursor-pointer"
@@ -12,6 +13,8 @@
         <i v-else class="el-icon-arrow-down" />
       </div>
     </div>
+    <!-- Header -->
+
     <div v-if="!collapsed" class="setting-section">
       <div class="setting-description mb-2">
         {{ $t('data.exportFile.export_items_desc') }}
@@ -55,7 +58,7 @@ export default {
   data () {
     return {
       selectedType: 'csv',
-      exportFormats: ['csv', 'json'],
+      exportFormats: ['csv', 'json', 'encrypted_json'],
       collapsed: true
     }
   },
@@ -163,15 +166,20 @@ export default {
       }
     },
 
-    // Not used
-    // But if used again, please handle organizationId, collectionIds and protected ciphers cases
+    // Encrypted export
     async getEncryptedExport () {
       let folders = []
       let ciphers = []
 
-      folders = await this.$folderService.getAll()
-      ciphers = await this.$cipherService.getAll()
-      ciphers = ciphers.filter(c => c.deletedDate === null)
+      folders = [...(await this.$folderService.getAll())]
+      ciphers = [...(await this.$cipherService.getAll())]
+
+      // Don't export protected or deleted cipher
+      ciphers = ciphers.filter(
+        cipher => !this.isProtectedCipher(cipher) && cipher.deletedDate === null
+      )
+
+      // Create key validation
       const encKeyValidation = await this.$cryptoService.encrypt(
         Utils.newGuid()
       )
@@ -182,6 +190,45 @@ export default {
         items: []
       }
 
+      // Encrypt shared cipher with personal key
+      const newCiphers = []
+      let promises = []
+      const _encryptCipherWithPersonalKey = async c => {
+        const decCipher = await this.$cipherService.getSingleDecrypted(c.id)
+        decCipher.folderId = c.collectionIds.length
+          ? `collection_${c.collectionIds[0]}`
+          : c.folderId
+        decCipher.organizationId = null
+        decCipher.collectionIds = null
+        const cipher = await this.$cipherService.encrypt(decCipher)
+        newCiphers.push(cipher)
+      }
+      ciphers.forEach(c => {
+        if (!c.organizationId) {
+          newCiphers.push(c)
+          return
+        }
+        promises.push(_encryptCipherWithPersonalKey(c))
+      })
+      await Promise.all(promises)
+      ciphers = [...newCiphers]
+
+      // Convert collections to folders
+      promises = []
+      const collections = await this.$collectionService.getAllDecrypted()
+      collections.forEach(c => {
+        const f = new FolderView()
+        f.name = c.name
+        f.id = `collection_${c.id}`
+        promises.push(
+          this.$folderService.encrypt(f).then(encryptedFolder => {
+            folders.push(encryptedFolder)
+          })
+        )
+      })
+      await Promise.all(promises)
+
+      // Build export data
       folders.forEach(f => {
         if (f.id == null) {
           return
@@ -190,7 +237,6 @@ export default {
         folder.build(f)
         jsonDoc.folders.push(folder)
       })
-
       ciphers.forEach(c => {
         if (c.organizationId != null) {
           return
