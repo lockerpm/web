@@ -5332,8 +5332,8 @@ module.exports = {
         }
       },
       intro: {
-        title: 'Sử dụng mã {service} để mua gói Locker Premium trọn đời',
-        desc: 'Nễu bạn đã có một mã {service} cho Trình quản lý mật khẩu Locker, hãy sử dụng để đăng ký dịch vụ Locker ngay bây giờ!',
+        title: 'Sử dụng mã {service} của bạn cho Locker',
+        desc: 'Nếu bạn đã có một mã {service} cho Trình quản lý mật khẩu Locker, hãy sử dụng để đăng ký dịch vụ Locker ngay bây giờ!',
         instructions: [
           'Nếu bạn chưa có tài khoản Locker, tích vào ô vuông bên dưới để tạo một tài khoản.',
           'Nhập email sử dụng Locker của bạn và mã {service}.',
