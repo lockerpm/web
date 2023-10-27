@@ -170,7 +170,11 @@
                 <span class="text-danger">*</span>
                 {{ needCreateAccount ? 'Email' : 'Locker Email' }}
               </p>
-              <el-input v-model="form.email" />
+              <el-input
+                v-model="form.email"
+                @blur="calcPriceWithEmail"
+                @keyup.native.enter="calcPriceWithEmail"
+              />
             </div>
 
             <template v-if="needCreateAccount">
@@ -458,6 +462,12 @@ export default {
       }
     },
 
+    calcPriceWithEmail () {
+      if (this.validateEmail(this.form.email)) {
+        this.calcPrice()
+      }
+    },
+
     goToLogin () {
       this.$router.push('/vault')
     },
@@ -473,7 +483,8 @@ export default {
         .$post(url, {
           plan_alias: this.selectedPlan,
           promo_code: this.form.promo_code,
-          currency: 'USD'
+          currency: 'USD',
+          email: this.form.email
         })
         .then(res => {
           this.result = res
