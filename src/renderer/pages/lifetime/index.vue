@@ -47,6 +47,24 @@
             </div>
             <!-- Choose subscription end -->
 
+            <!-- Discount from premium to family desc -->
+            <div v-if="selectedPlan === 'pm_lifetime_family'" class="mb-6">
+              <div class="relative px-5 py-1">
+                <img
+                  src="~assets/images/landing/lifetime/subtract.png"
+                  class="absolute w-full h-full z-0 object-fill left-0 top-0"
+                >
+                <div class="z-10 relative">
+                  <p class="text-white italic text-xs text-center font-medium">
+                    {{
+                      $t('promo.lifetime.header.discount_for_lifetime_premium')
+                    }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- Discount from premium to family desc end -->
+
             <!-- Invoice -->
             <div class="mb-8">
               <div class="flex justify-between mb-3">
@@ -55,7 +73,8 @@
                   ${{ result.price | formatNumber }} {{ result.currency }}
                 </p>
               </div>
-              <div class="flex justify-between">
+
+              <div class="flex justify-between mb-3">
                 <p class="font-semibold">
                   {{ $t('promo.lifetime.header.duration') }}
                 </p>
@@ -63,16 +82,14 @@
                   {{ $t('promo.lifetime.header.unlimited') }}
                 </p>
               </div>
+
               <hr class="border-black-100 my-6">
 
               <!-- Promo code -->
               <div class="mb-8">
-                <div
-                  v-if="result.discount && form.promo_code"
-                  class="flex justify-between"
-                >
+                <div v-if="result.discount" class="flex justify-between">
                   <p class="text-primary italic pr-2">
-                    {{ form.promo_code }}
+                    {{ form.promo_code || $t('common.discount') }}
                   </p>
 
                   <div class="text-right">
