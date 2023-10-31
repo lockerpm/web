@@ -47,6 +47,24 @@
             </div>
             <!-- Choose subscription end -->
 
+            <!-- Discount from premium to family desc -->
+            <div v-if="selectedPlan === 'pm_lifetime_family'" class="mb-6">
+              <div class="relative px-5 py-1">
+                <img
+                  src="~assets/images/landing/lifetime/subtract.png"
+                  class="absolute w-full h-full z-0 object-fill left-0 top-0"
+                >
+                <div class="z-10 relative">
+                  <p class="text-white italic text-xs text-center font-medium">
+                    {{
+                      $t('promo.lifetime.header.discount_for_lifetime_premium')
+                    }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- Discount from premium to family desc end -->
+
             <!-- Invoice -->
             <div class="mb-8">
               <div class="flex justify-between mb-3">
@@ -55,7 +73,8 @@
                   ${{ result.price | formatNumber }} {{ result.currency }}
                 </p>
               </div>
-              <div class="flex justify-between">
+
+              <div class="flex justify-between mb-3">
                 <p class="font-semibold">
                   {{ $t('promo.lifetime.header.duration') }}
                 </p>
@@ -63,16 +82,14 @@
                   {{ $t('promo.lifetime.header.unlimited') }}
                 </p>
               </div>
+
               <hr class="border-black-100 my-6">
 
               <!-- Promo code -->
               <div class="mb-8">
-                <div
-                  v-if="result.discount && form.promo_code"
-                  class="flex justify-between"
-                >
+                <div v-if="result.discount" class="flex justify-between">
                   <p class="text-primary italic pr-2">
-                    {{ form.promo_code }}
+                    {{ form.promo_code || $t('common.discount') }}
                   </p>
 
                   <div class="text-right">
@@ -170,7 +187,11 @@
                 <span class="text-danger">*</span>
                 {{ needCreateAccount ? 'Email' : 'Locker Email' }}
               </p>
-              <el-input v-model="form.email" />
+              <el-input
+                v-model="form.email"
+                @blur="calcPriceWithEmail"
+                @keyup.native.enter="calcPriceWithEmail"
+              />
             </div>
 
             <template v-if="needCreateAccount">
@@ -458,6 +479,12 @@ export default {
       }
     },
 
+    calcPriceWithEmail () {
+      if (this.validateEmail(this.form.email)) {
+        this.calcPrice()
+      }
+    },
+
     goToLogin () {
       this.$router.push('/vault')
     },
@@ -473,7 +500,8 @@ export default {
         .$post(url, {
           plan_alias: this.selectedPlan,
           promo_code: this.form.promo_code,
-          currency: 'USD'
+          currency: 'USD',
+          email: this.form.email
         })
         .then(res => {
           this.result = res
