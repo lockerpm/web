@@ -5702,6 +5702,98 @@ module.exports = {
         desc2: 'Locker offers 30-day money back guarantee for any reason. Contact contact@locker.io to process the money back guarantee or for further support.',
         choose_subscription: 'Choose a subscription'
       }
+    },
+    cyber_month: {
+      title: 'Cyber month',
+      desc: 'Buy now',
+      nav: {
+        btn: 'Get Locker Lifetime'
+      },
+      header: {
+        title_1: 'Pay once, use forever',
+        title_2: 'Save hundreds of dollars with Locker Lifetime',
+        price_family: '+ for 6 users with only $399',
+        btn: 'Get it now'
+      },
+      figures: {
+        items: [
+          {
+            title: '4.7/5',
+            desc: 'Average Rating.'
+          },
+          {
+            title: '28.000+',
+            desc: 'Global Users.'
+          },
+          {
+            title: '1.2M+',
+            desc: 'Strong password generated.'
+          },
+          {
+            title: '50+',
+            desc: 'Asian companies choose Locker as a strategic partner.'
+          },
+          {
+            title: '98%',
+            desc: 'Satisfied with Locker’s support services.'
+          }
+        ]
+      },
+      features: {
+        title: 'Locker - All-in-one password manager',
+        items: [
+          {
+            title: 'Unlimited data storage',
+            desc: 'Store passwords, passkeys and personal data in one encrypted vault. Manage effectively with categories and folders.'
+          },
+          {
+            title: 'Autofill on the go',
+            desc: 'Save passwords with a click and effortlessly log in with auto-fill, from forms to two-factor codes.'
+          },
+          {
+            title: 'Cross-platform availability',
+            desc: 'Locker is available anytime on any platform and device, whether it is web browser, extensions, mobile apps or desktop apps.'
+          },
+          {
+            title: 'Easy and safe sharing',
+            desc: 'Share passwords and data securely with anyone, regardless of their use of Locker.'
+          },
+          {
+            title: 'Advanced security features',
+            desc: 'Monitor and address data cyber risk, recognize potential breaches and get advanced protection.'
+          },
+          {
+            title: 'The Locker Password Manager\'s differences',
+            desc: 'Experience enhanced online features: Custom crypto storage, private email, and passwordless login.'
+          }
+        ],
+        btn: 'Get Promotion Now'
+      },
+      customers: {
+        title: 'Our customers'
+      },
+      security: {
+        title: 'Security & Transparency are in our identity',
+        items: [
+          {
+            title: 'Security foundation',
+            desc: 'Locker employs robust end-to-end and zero-knowledge encryption to guarantee exclusive access to your vault. Your data is encrypted and decrypted on-the-fly on your device, ensuring that neither Locker nor anyone else can access your information.'
+          },
+          {
+            title: 'Open source',
+            desc: 'Going open-source is our way to prove the commitment to delivering a transparent and reliable product. By publishing our source code, we ensure anyone can view, report bugs and contribute changes to make Locker even better.'
+          },
+          {
+            title: 'Independent audit',
+            desc: 'Locker undergoes regular independent audits conducted by the WhiteHub bug bounty platform and security experts, enabling us to detect and address potential vulnerabilities while enhancing our security protocols and procedures.'
+          },
+          {
+            title: 'Secure Infrastructure',
+            desc: 'Our hosting platform is a product of world-leading providers such as AWS, DigitalOcean.'
+          }
+        ],
+        btn: 'Get it now'
+      }
     }
   },
   education: {
