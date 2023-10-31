@@ -5793,6 +5793,23 @@ module.exports = {
           }
         ],
         btn: 'Get it now'
+      },
+      smooth_life: {
+        title: 'Smooth out your digital life',
+        items: [
+          {
+            title: 'Auto Device Sync',
+            desc: 'Seamlessly access your data across all devices with automatic synchronization.'
+          },
+          {
+            title: 'Effortless Management',
+            desc: 'Create, save, and autofill login details, addresses, credit cards, and more for a hassle-free digital life.'
+          },
+          {
+            title: 'Item Recovery',
+            desc: 'Easily restore recently deleted items or previous versions to keep your data intact and organized.'
+          }
+        ]
       }
     }
   },
