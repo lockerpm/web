@@ -2,6 +2,11 @@ import Vue from 'vue'
 import numeral from 'numeral'
 
 Vue.mixin({
+  data () {
+    return {
+      initStripeTimeout: null
+    }
+  },
   computed: {
     language () {
       return this.$store.state.user.language
@@ -86,6 +91,9 @@ Vue.mixin({
     currentYear () {
       return new Date().getFullYear()
     }
+  },
+  beforeDestroy () {
+    clearTimeout(this.initStripeTimeout)
   },
   methods: {
     changeLang (value) {
@@ -462,6 +470,45 @@ Vue.mixin({
       }
 
       return false
+    },
+
+    initStripe () {
+      try {
+        this.stripe = Stripe(this.$config.stripeKey)
+        this.elements = this.stripe.elements({})
+        this.$nextTick(() => {
+          this.cardNumber = this.elements.create('cardNumber', {
+            classes: { base: 'form-control form-control-sm !py-[10px]' }
+          })
+          this.cardNumber.mount(this.$refs.cardNumber)
+          this.cardExpiry = this.elements.create('cardExpiry', {
+            classes: {
+              base: 'form-control form-control-sm bg-white !py-[10px]'
+            }
+          })
+          this.cardExpiry.mount(this.$refs.cardExpiry)
+          this.cardCvc = this.elements.create('cardCvc', {
+            classes: {
+              base: 'form-control form-control-sm bg-white !py-[10px]'
+            }
+          })
+          this.cardCvc.mount(this.$refs.cardCvc)
+          this.cardNumber.on('change', event => {
+            this.eventChangeNumber = event
+          })
+          this.cardExpiry.on('change', event => {
+            this.eventChangeExpiry = event
+          })
+          this.cardCvc.on('change', event => {
+            this.eventChangeCvc = event
+          })
+        })
+      } catch (error) {
+        console.log(error)
+        this.initStripeTimeout = setTimeout(() => {
+          this.initStripe()
+        }, 2000)
+      }
     }
   }
 })
