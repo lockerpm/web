@@ -5710,10 +5710,11 @@ module.exports = {
         btn: 'Get Locker Lifetime'
       },
       header: {
-        title_1: 'Pay once, use forever',
-        title_2: 'Save hundreds of dollars with Locker Lifetime',
-        price_family: '+ for 6 users with only $399',
-        btn: 'Get it now'
+        title: '<span class="text-primary">Open-source</span> and <span class="text-primary">trusted</span> password manager',
+        price_desc: 'Limited-time offer: 82% off new Lifetime plans',
+        just_from: 'just from',
+        btn: 'Get it now',
+        desc: '*30-day money-back guarantee for any dissatisfaction'
       },
       figures: {
         items: [
@@ -5730,14 +5731,29 @@ module.exports = {
             desc: 'Strong password generated.'
           },
           {
-            title: '50+',
-            desc: 'Asian companies choose Locker as a strategic partner.'
-          },
-          {
             title: '98%',
-            desc: 'Satisfied with Locker’s support services.'
+            desc: 'Satisfied with Locker\'s support services.'
           }
         ]
+      },
+      security: {
+        title: 'Security by Design',
+        link: 'Explore the Locker security model',
+        items: [
+          {
+            title: 'Strong encryption',
+            desc: 'Locker employs robust end-to-end and zero-knowledge encryption to guarantee exclusive access to your vault. Your data is encrypted and decrypted on-the-fly on your device, ensuring that neither Locker nor anyone else can access your information.'
+          },
+          {
+            title: 'Open source',
+            desc: 'Going open-source is our way to prove the commitment to delivering a transparent and reliable product. By publishing our source code, we ensure anyone can view, report bugs and contribute changes to make Locker even better.'
+          },
+          {
+            title: 'Independent audit',
+            desc: 'Locker undergoes regular independent audits conducted by the WhiteHub bug bounty platform and security experts, enabling us to detect and address potential vulnerabilities while enhancing our security protocols and procedures.'
+          }
+        ],
+        btn: 'Get it now'
       },
       features: {
         title: 'Locker - All-in-one password manager',
@@ -5768,31 +5784,6 @@ module.exports = {
           }
         ],
         btn: 'Get Promotion Now'
-      },
-      customers: {
-        title: 'Our customers'
-      },
-      security: {
-        title: 'Security & Transparency are in our identity',
-        items: [
-          {
-            title: 'Security foundation',
-            desc: 'Locker employs robust end-to-end and zero-knowledge encryption to guarantee exclusive access to your vault. Your data is encrypted and decrypted on-the-fly on your device, ensuring that neither Locker nor anyone else can access your information.'
-          },
-          {
-            title: 'Open source',
-            desc: 'Going open-source is our way to prove the commitment to delivering a transparent and reliable product. By publishing our source code, we ensure anyone can view, report bugs and contribute changes to make Locker even better.'
-          },
-          {
-            title: 'Independent audit',
-            desc: 'Locker undergoes regular independent audits conducted by the WhiteHub bug bounty platform and security experts, enabling us to detect and address potential vulnerabilities while enhancing our security protocols and procedures.'
-          },
-          {
-            title: 'Secure Infrastructure',
-            desc: 'Our hosting platform is a product of world-leading providers such as AWS, DigitalOcean.'
-          }
-        ],
-        btn: 'Get it now'
       },
       smooth_life: {
         title: 'Smooth out your digital life',

@@ -13363,11 +13363,6 @@ vue-carousel@^0.18.0:
     regenerator-runtime "^0.12.1"
     vue "^2.5.17"
 
-vue-check-view@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/vue-check-view/-/vue-check-view-0.3.0.tgz#813509a73916dd99483eaa4b1b24ca189c50ca7b"
-  integrity sha512-2IR2m4MCgOG/9UQaIn7cvvqbDcvUmPavun8nBMieRxGbhqvlUorjLIwJqvuFXruBO73HXXbCcrVKxnGr4ub5ag==
-
 vue-circular-count-down-timer@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/vue-circular-count-down-timer/-/vue-circular-count-down-timer-2.0.0.tgz#11a28b4c0837df7d32bf9fc15c1c9cb6d707f547"
