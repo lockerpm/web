@@ -139,25 +139,30 @@
     <!-- Security end -->
 
     <!-- Features -->
-    <div class="full-width px-4 py-12">
-      <h2 class="font-bold landing-font-38 text-center mb-16">
-        {{ $t('promo.cyber_month.features.title') }}
-      </h2>
+    <div class="p-12">
+      <div class="text-center mb-16">
+        <h2 class="font-semibold landing-font-38 mb-2">
+          {{ $t('promo.cyber_month.features.title') }}
+        </h2>
+        <a
+          :href="
+            locale === 'vi'
+              ? 'https://locker.io/vi/features'
+              : 'https://locker.io/features'
+          "
+          target="_blank"
+          class="text-primary font-semibold landing-font-18"
+        >
+          {{ $t('promo.cyber_month.features.link') }}
+          <i class="el-icon-right" />
+        </a>
+      </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 mb-16">
         <div
           v-for="(item, index) in $t('promo.cyber_month.features.items')"
           :key="index"
-          class="bg-black-300 px-12 pt-9 flex flex-col justify-between"
         >
-          <div class="mb-4 text-center md:text-left">
-            <h3 class="font-semibold text-primary landing-font-24 mb-2">
-              {{ item.title }}
-            </h3>
-            <p class="landing-font-18">
-              {{ item.desc }}
-            </p>
-          </div>
           <img
             :src="
               require(`~/assets/images/pages/promo/cyber-month/feature-${
@@ -165,8 +170,14 @@
               }.png`)
             "
             :alt="item.title"
-            class="w-full h-auto"
+            class="w-full h-auto mb-6"
           >
+          <h3 class="font-semibold text-primary landing-font-18 mb-3">
+            {{ item.title }}
+          </h3>
+          <p class="landing-font-16">
+            {{ item.desc }}
+          </p>
         </div>
       </div>
 

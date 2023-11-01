@@ -5756,7 +5756,8 @@ module.exports = {
         btn: 'Get it now'
       },
       features: {
-        title: 'Locker - All-in-one password manager',
+        title: 'A Secure and Seamless Internet Experience',
+        link: 'Discover all the features of Locker',
         items: [
           {
             title: 'Unlimited data storage',
@@ -5784,23 +5785,6 @@ module.exports = {
           }
         ],
         btn: 'Get Promotion Now'
-      },
-      smooth_life: {
-        title: 'Smooth out your digital life',
-        items: [
-          {
-            title: 'Auto Device Sync',
-            desc: 'Seamlessly access your data across all devices with automatic synchronization.'
-          },
-          {
-            title: 'Effortless Management',
-            desc: 'Create, save, and autofill login details, addresses, credit cards, and more for a hassle-free digital life.'
-          },
-          {
-            title: 'Item Recovery',
-            desc: 'Easily restore recently deleted items or previous versions to keep your data intact and organized.'
-          }
-        ]
       }
     }
   },
