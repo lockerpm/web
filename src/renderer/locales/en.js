@@ -5785,6 +5785,18 @@ module.exports = {
           }
         ],
         btn: 'Get Promotion Now'
+      },
+      download: {
+        title: 'Available on multiple platforms',
+        desc: 'Locker is compatible with a wide range of popular platforms, ensuring accessibility and usability across various operating systems and devices.'
+      },
+      cta: {
+        title: 'Get Locker Lifetime Now!',
+        desc: '*This is the <span class="text-primary font-bold">last chance</span> to get this offer.<br /> We will stop selling lifetime deals starting in 2024.',
+        btn: 'Claim this offer',
+        compatible: 'Compatible with:',
+        desc2: 'We\'re going to make this a complete <strong>RISK FREE DECISION</strong> for you!<br/><br/>If you purchase a <strong>Locker Lifetime</strong> and you can tell it\'s not save your life...<br/><br/>We will <strong>refund</strong> all your money and you can still <strong>keep using</strong> Locker account that you created!',
+        desc3: ''
       }
     }
   },

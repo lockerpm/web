@@ -92,7 +92,7 @@
     <!-- Figures end -->
 
     <!-- Security -->
-    <div class="p-12">
+    <div class="p-12 mb-20">
       <div class="text-center mb-16">
         <h2 class="font-semibold landing-font-38 mb-2">
           {{ $t('promo.cyber_month.security.title') }}
@@ -190,79 +190,156 @@
     </div>
     <!-- Features end -->
 
-    <!-- Customers -->
-    <div class="w-full bg-black-300 py-16">
-      <h2 class="font-bold landing-font-38 text-center mb-16">
-        {{ $t('promo.cyber_month.customers.title') }}
-      </h2>
-    </div>
-    <!-- Customers end -->
-
-    <!-- Smooth life -->
-    <div class="flex flex-wrap px-12 py-[112px] items-center">
-      <div class="w-full md:w-1/2 md:order-2">
-        <h2 class="landing-font-38 font-semibold mb-4">
-          {{ $t('promo.cyber_month.smooth_life.title') }}
-        </h2>
-
-        <div
-          v-for="(item, index) in $t('promo.cyber_month.smooth_life.items')"
-          :key="index"
-          class="py-12 border-[#BFBFBF] flex"
-          :class="{ 'border-t': index > 0 }"
-        >
+    <!-- Download -->
+    <div class="px-12 pt-20 pb-0">
+      <div
+        id="download"
+        class="rounded-2xl px-20 py-12 flex flex-wrap items-center"
+      >
+        <div class="w-full md:w-1/2 text-white">
           <img
-            :src="
-              require(`~/assets/images/pages/promo/cyber-month/smooth-${1}.svg`)
-            "
-            class="h-10 w-10 mr-5"
+            src="~assets/images/logo/logo_white_with_text.svg"
+            alt="Locker Logo"
+            class="h-12 mb-12"
           >
-          <div>
-            <h3 class="landing-font-24 font-semibold mb-2">
-              {{ item.title }}
-            </h3>
-            <p class="landing-font-16">
-              {{ item.desc }}
-            </p>
+          <h2 class="font-semibold landing-font-38 mb-3">
+            {{ $t('promo.cyber_month.download.title') }}
+          </h2>
+          <p class="landing-font-16 mb-12">
+            {{ $t('promo.cyber_month.download.desc') }}
+          </p>
+          <div class="flex flex-wrap">
+            <a
+              href="https://play.google.com/store/apps/details?id=com.cystack.locker&pli=1"
+              target="_blank"
+            >
+              <img
+                src="~assets/images/pages/promo/cyber-month/download-android.png"
+                alt="Google Play"
+                class="w-auto h-14 mr-3 mb-3"
+              >
+            </a>
+            <a
+              href="https://apps.apple.com/us/app/locker-password-manager/id1586927301"
+              target="_blank"
+            >
+              <img
+                src="~assets/images/pages/promo/cyber-month/download-ios.png"
+                alt="App Store"
+                class="w-auto h-14 mr-3 mb-3"
+              >
+            </a>
+            <a href="/download" target="_blank">
+              <img
+                src="~assets/images/pages/promo/cyber-month/download-other.png"
+                alt="Other Platforms"
+                class="w-auto h-14"
+              >
+            </a>
+          </div>
+        </div>
+        <div class="w-full md:w-1/2 mt-12 md:mt-0 md:pl-[10%]">
+          <img
+            src="~assets/images/pages/promo/cyber-month/download-img.png"
+            alt="Locker Featuers"
+            class="w-full"
+          >
+        </div>
+      </div>
+    </div>
+    <!-- Download end -->
+
+    <!-- Testimonials -->
+    <div class="px-12 mb-12 -ml-4">
+      <Testimonials hide-ratings />
+    </div>
+    <!-- Testimonials end -->
+
+    <!-- CTA -->
+    <div class="w-full bg-black-300">
+      <div class="max-w-6xl mx-auto py-12 px-12">
+        <div class="flex flex-wrap items-center mb-12">
+          <div class="w-full sm:w-1/2">
+            <h2 class="font-semibold landing-font-38 mb-3">
+              {{ $t('promo.cyber_month.cta.title') }}
+            </h2>
+            <p
+              class="landing-font-16 italic mb-6"
+              v-html="$t('promo.cyber_month.cta.desc')"
+            />
+            <div class="flex mb-3 items-center">
+              <nuxt-link to="/lifetime" class="nav-btn">
+                <i class="el-icon-shopping-cart-2" />
+                {{ $t('promo.cyber_month.cta.btn') }}
+              </nuxt-link>
+              <img
+                src="~assets/images/pages/promo/cyber-month/cta-discount.svg"
+                alt="Up to 82% off"
+                class="w-auto h-10 rotate-12 relative top-2 -left-4"
+              >
+            </div>
+            <div class="flex flex-wrap items-center">
+              <p class="text-sm">
+                {{ $t('promo.cyber_month.cta.compatible') }}
+              </p>
+              <div
+                v-for="(item, index) in $t('landing.platform.platforms')"
+                :key="index"
+              >
+                <div
+                  class="rounded-full bg-white shadow-md w-7 h-7 justify-center items-center flex m-2"
+                >
+                  <img
+                    :src="require(`~/assets/images/landing/index/${item.img}`)"
+                    :alt="item.name"
+                    class="mx-auto self-center max-w-4 max-h-4"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="w-full sm:w-1/2 flex justify-end">
+            <img
+              src="~assets/images/pages/promo/cyber-month/cta-img-1.svg"
+              alt="Cyber sale"
+              class="w-full sm:w-1/2 mt-12 sm:mt-0 max-w-[264px] mx-auto sm:mx-0"
+            >
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center">
+          <div class="w-full sm:w-3/4 pl-0 sm:pl-12 sm:order-1">
+            <p
+              class="landing-font-20"
+              v-html="$t('promo.cyber_month.cta.desc2')"
+            />
+          </div>
+          <div class="w-full sm:w-1/4">
+            <img
+              src="~assets/images/pages/promo/cyber-month/cta-img-2.svg"
+              alt="30 days money back"
+              class="w-full mt-12 sm:mt-0 max-w-[264px] mx-auto sm:mx-0"
+            >
           </div>
         </div>
       </div>
-
-      <div class="w-full md:order-1 md:w-1/2 md:pr-[10%] mt-8 md:mt-0">
-        <img
-          src="~/assets/images/pages/promo/cyber-month/smooth-img.png"
-          alt="Smooth digital life"
-          class="w-full"
-        >
-      </div>
     </div>
-    <!-- Smooth life end -->
-
-    <!-- Team collab -->
-    <!-- Team collab end -->
-
-    <!-- CTA 1 -->
-    <!-- CTA 1 end -->
-
-    <!-- Ratings -->
-    <!-- Ratings end -->
-
-    <!-- Testimonials -->
-    <!-- Testimonials end -->
-
-    <!-- Platforms -->
-    <!-- Platforms end -->
-
-    <!-- CTA 2 -->
-    <!-- CTA 2 end -->
+    <!-- CTA end -->
 
     <!-- Footer -->
+    <PromoFooter />
     <!-- Footer end -->
   </div>
 </template>
 <script>
+import Testimonials from '~/components/pages/landing/Testimonials.vue'
+import PromoFooter from '~/components/landing/PromoFooter.vue'
+
 export default {
-  layout: 'authenticate'
+  components: { Testimonials, PromoFooter },
+  layout: 'authenticate',
+  middleware: ['onlyEng']
 }
 </script>
 <style scoped>
@@ -291,5 +368,12 @@ export default {
     #0d5219 100%
   );
   max-width: 500px;
+}
+#download {
+  background: radial-gradient(
+    56.21% 112.71% at 100% 14.71%,
+    #1e8230 0%,
+    #165c23 100%
+  );
 }
 </style>
