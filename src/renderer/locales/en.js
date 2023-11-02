@@ -5700,7 +5700,8 @@ module.exports = {
         unlimited: 'Unlimited',
         desc1: 'You will be billed once only for this Lifetime Subscription.',
         desc2: 'Locker offers 30-day money back guarantee for any reason. Contact contact@locker.io to process the money back guarantee or for further support.',
-        choose_subscription: 'Choose a subscription'
+        choose_subscription: 'Choose a subscription',
+        discount_for_lifetime_premium: '-$69 for the upgrade from Lifetime Premium. <br/> Enter your Lifetime Premium email to apply the discount.'
       }
     },
     cyber_month: {

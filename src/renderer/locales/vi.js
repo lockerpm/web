@@ -5544,7 +5544,8 @@ module.exports = {
         unlimited: 'Trọn đời',
         desc1: 'Bạn chỉ cần thanh toán một lần duy nhất một lần cho gói Đăng ký trọn đời này.',
         desc2: 'Locker đảm bảo hoàn lại tiền trong vòng 30 ngày kể từ ngày mua vì bất kỳ lý do gì. Hãy liên hệ contact@locker.io để tiến hành yêu cầu hoàn tiền hoặc để được hỗ trợ thêm.',
-        choose_subscription: 'Chọn gói đăng ký'
+        choose_subscription: 'Chọn gói đăng ký',
+        discount_for_lifetime_premium: '-$69 khi nâng cấp từ Lifetime Premium. <br/> Nhập email Lifetime Premium của bạn để áp dụng giảm giá.'
       }
     },
     cyber_month: {
