@@ -49,17 +49,18 @@
 
             <!-- Discount from premium to family desc -->
             <div v-if="selectedPlan === 'pm_lifetime_family'" class="mb-6">
-              <div class="relative px-5 py-1">
+              <div class="relative px-5 py-1 max-w-[400px]">
                 <img
                   src="~assets/images/landing/lifetime/subtract.png"
                   class="absolute w-full h-full z-0 object-fill left-0 top-0"
                 >
                 <div class="z-10 relative">
-                  <p class="text-white italic text-xs text-center font-medium">
-                    {{
+                  <p
+                    class="text-white italic text-xs text-center font-medium"
+                    v-html="
                       $t('promo.lifetime.header.discount_for_lifetime_premium')
-                    }}
-                  </p>
+                    "
+                  />
                 </div>
               </div>
             </div>
