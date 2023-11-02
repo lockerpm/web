@@ -5547,6 +5547,102 @@ module.exports = {
         choose_subscription: 'Chọn gói đăng ký',
         discount_for_lifetime_premium: '-$69 khi nâng cấp từ Lifetime Premium. <br/> Nhập email Lifetime Premium của bạn để áp dụng giảm giá.'
       }
+    },
+    cyber_month: {
+      title: 'Cyber month',
+      desc: 'Buy now',
+      nav: {
+        btn: 'Get Locker Lifetime'
+      },
+      header: {
+        title: '<span class="text-primary">Open-source</span> and <span class="text-primary">trusted</span> password manager',
+        price_desc: 'Limited-time offer: 82% off new Lifetime plans',
+        just_from: 'just from',
+        btn: 'Get it now',
+        desc: '*30-day money-back guarantee for any dissatisfaction'
+      },
+      figures: {
+        items: [
+          {
+            title: '4.7/5',
+            desc: 'Average Rating.'
+          },
+          {
+            title: '28.000+',
+            desc: 'Global Users.'
+          },
+          {
+            title: '1.2M+',
+            desc: 'Strong password generated.'
+          },
+          {
+            title: '98%',
+            desc: 'Satisfied with Locker\'s support services.'
+          }
+        ]
+      },
+      security: {
+        title: 'Security by Design',
+        link: 'Explore the Locker security model',
+        items: [
+          {
+            title: 'Strong encryption',
+            desc: 'Locker employs robust end-to-end and zero-knowledge encryption to guarantee exclusive access to your vault. Your data is encrypted and decrypted on-the-fly on your device, ensuring that neither Locker nor anyone else can access your information.'
+          },
+          {
+            title: 'Open source',
+            desc: 'Going open-source is our way to prove the commitment to delivering a transparent and reliable product. By publishing our source code, we ensure anyone can view, report bugs and contribute changes to make Locker even better.'
+          },
+          {
+            title: 'Independent audit',
+            desc: 'Locker undergoes regular independent audits conducted by the WhiteHub bug bounty platform and security experts, enabling us to detect and address potential vulnerabilities while enhancing our security protocols and procedures.'
+          }
+        ],
+        btn: 'Get it now'
+      },
+      features: {
+        title: 'A Secure and Seamless Internet Experience',
+        link: 'Discover all the features of Locker',
+        items: [
+          {
+            title: 'Endless Passwords & Secrets',
+            desc: 'With Locker, you have unlimited storage for your passwords, passkeys and other secrets.'
+          },
+          {
+            title: 'Instant Autofill',
+            desc: 'Save passwords with a click and effortlessly log in, from forms to extra authentication.'
+          },
+          {
+            title: 'Cross-Platform Access',
+            desc: 'Locker is accessible on the most widely used platforms and devices.'
+          },
+          {
+            title: 'Easy, Secure Sharing',
+            desc: 'Share passwords and data securely with anyone, regardless of their use of Locker.'
+          },
+          {
+            title: 'Advanced Security',
+            desc: 'Locker protects your account through MFA, password generation, emergency access...'
+          },
+          {
+            title: 'Unique Features',
+            desc: 'Crypto wallet storage, email alias, OTP authenticator and Passwordless authentication.'
+          }
+        ],
+        btn: 'Get Promotion Now'
+      },
+      download: {
+        title: 'Available on multiple platforms',
+        desc: 'Locker is compatible with a wide range of popular platforms, ensuring accessibility and usability across various operating systems and devices.'
+      },
+      cta: {
+        title: 'Get Locker Lifetime Now!',
+        desc: '*This is the <span class="text-primary font-bold">last chance</span> to get this offer.<br /> We will stop selling lifetime deals starting in 2024.',
+        btn: 'Claim this offer',
+        compatible: 'Compatible with:',
+        desc2: 'We\'re going to make this a complete <strong>RISK FREE DECISION</strong> for you!<br/><br/>If you purchase a <strong>Locker Lifetime</strong> and you can tell it\'s not save your life...<br/><br/>We will <strong>refund</strong> all your money and you can still <strong>keep using</strong> Locker account that you created!',
+        desc3: ''
+      }
     }
   },
   education: {
