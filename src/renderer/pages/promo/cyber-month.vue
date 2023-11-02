@@ -355,6 +355,10 @@ export default {
   font-size: 18px;
   color: white;
   line-height: 26px;
+  transition: opacity ease 0.2s;
+}
+.nav-btn:hover {
+  opacity: 0.8;
 }
 .nav-btn i {
   font-weight: bold;
