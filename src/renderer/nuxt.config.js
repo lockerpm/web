@@ -84,15 +84,11 @@ module.exports = {
     { ssr: true, src: '@/plugins/onpremise/mixins.js' },
 
     // UI
-    { ssr: false, src: '@/plugins/ui/circle-countdown-timer.js' },
-    { ssr: false, src: '@/plugins/ui/clipboard.js' },
+    { ssr: false, src: '@/plugins/ui/client-only.js' },
     { ssr: true, src: '@/plugins/ui/element.js' },
     { ssr: true, src: '@/plugins/ui/fontawesome.js' },
     { ssr: true, src: '@/plugins/ui/katex.js' },
-    { ssr: true, src: '@/plugins/ui/vee.js' },
-    { ssr: false, src: '@/plugins/ui/vue-virtual-scroller.js' },
-    { ssr: false, src: '@/plugins/ui/youtube.js' },
-    { ssr: false, src: '@/plugins/ui/vue-carousel.js' }
+    { ssr: true, src: '@/plugins/ui/vee.js' }
   ],
   buildModules: [
     '@nuxt/typescript-build',

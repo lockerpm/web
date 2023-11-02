@@ -70,7 +70,7 @@
     <!-- Testimonials end -->
 
     <!-- Ratings -->
-    <section class="mt-14">
+    <section v-if="!hideRatings" class="mt-14">
       <div class="mx-auto">
         <h2 class="text-center font-bold text-black landing-font-38 mb-8">
           {{ $t('landing.testimonials.we_are_on') }}
@@ -182,6 +182,13 @@
 </template>
 <script>
 export default {
+  props: {
+    hideRatings: {
+      type: Boolean,
+      default: () => false
+    }
+  },
+
   data () {
     return {
       testimonials: []
