@@ -5605,28 +5605,28 @@ module.exports = {
         link: 'Discover all the features of Locker',
         items: [
           {
-            title: 'Unlimited data storage',
-            desc: 'Store passwords, passkeys and personal data in one encrypted vault. Manage effectively with categories and folders.'
+            title: 'Endless Passwords & Secrets',
+            desc: 'With Locker, you have unlimited storage for your passwords, passkeys and other secrets.'
           },
           {
-            title: 'Autofill on the go',
-            desc: 'Save passwords with a click and effortlessly log in with auto-fill, from forms to two-factor codes.'
+            title: 'Instant Autofill',
+            desc: 'Save passwords with a click and effortlessly log in, from forms to extra authentication.'
           },
           {
-            title: 'Cross-platform availability',
-            desc: 'Locker is available anytime on any platform and device, whether it is web browser, extensions, mobile apps or desktop apps.'
+            title: 'Cross-Platform Access',
+            desc: 'Locker is accessible on the most widely used platforms and devices.'
           },
           {
-            title: 'Easy and safe sharing',
+            title: 'Easy, Secure Sharing',
             desc: 'Share passwords and data securely with anyone, regardless of their use of Locker.'
           },
           {
-            title: 'Advanced security features',
-            desc: 'Monitor and address data cyber risk, recognize potential breaches and get advanced protection.'
+            title: 'Advanced Security',
+            desc: 'Locker protects your account through MFA, password generation, emergency access...'
           },
           {
-            title: 'The Locker Password Manager\'s differences',
-            desc: 'Experience enhanced online features: Custom crypto storage, private email, and passwordless login.'
+            title: 'Unique Features',
+            desc: 'Crypto wallet storage, email alias, OTP authenticator and Passwordless authentication.'
           }
         ],
         btn: 'Get Promotion Now'
