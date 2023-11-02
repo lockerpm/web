@@ -2,7 +2,7 @@
   <div>
     <!-- Nav -->
     <div
-      class="flex flex-col md:flex-row justify-between items-center px-12 py-4"
+      class="flex flex-col md:flex-row justify-between items-center px-6 max-w-7xl mx-auto py-4"
     >
       <nuxt-link to="/">
         <img
@@ -21,7 +21,9 @@
 
     <!-- Header -->
     <section id="header" class="relative">
-      <div class="flex flex-wrap items-center pt-5 py-14 px-12">
+      <div
+        class="flex flex-wrap items-center pt-5 py-14 px-6 max-w-7xl mx-auto"
+      >
         <div class="w-full lg:w-1/2 text-center lg:text-left">
           <h1
             class="text-black font-semibold text-[44px] lg:text-[51px] leading-[130%] mb-8"
@@ -72,27 +74,29 @@
     <!-- Header end -->
 
     <!-- Figures -->
-    <div class="full-width bg-[#0A3614] px-12 py-6">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-        <div
-          v-for="(item, index) in $t('promo.cyber_month.figures.items')"
-          :key="index"
-          class="text-center text-white border-white my-6"
-          :class="{ 'lg:border-l': index > 0 }"
-        >
-          <p class="landing-font-38 font-semibold mb-2">
-            {{ item.title }}
-          </p>
-          <p class="landing-font-16">
-            {{ item.desc }}
-          </p>
+    <div class="full-width bg-[#0A3614]">
+      <div class="p-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <div
+            v-for="(item, index) in $t('promo.cyber_month.figures.items')"
+            :key="index"
+            class="text-center text-white border-white my-6"
+            :class="{ 'lg:border-l': index > 0 }"
+          >
+            <p class="landing-font-38 font-semibold mb-2">
+              {{ item.title }}
+            </p>
+            <p class="landing-font-16">
+              {{ item.desc }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
     <!-- Figures end -->
 
     <!-- Security -->
-    <div class="p-12 mb-20">
+    <div class="py-12 mb-20 px-6 max-w-7xl mx-auto">
       <div class="text-center mb-16">
         <h2 class="font-semibold landing-font-38 mb-2">
           {{ $t('promo.cyber_month.security.title') }}
@@ -139,7 +143,7 @@
     <!-- Security end -->
 
     <!-- Features -->
-    <div class="p-12">
+    <div class="py-12 px-6 max-w-7xl mx-auto">
       <div class="text-center mb-16">
         <h2 class="font-semibold landing-font-38 mb-2">
           {{ $t('promo.cyber_month.features.title') }}
@@ -191,12 +195,12 @@
     <!-- Features end -->
 
     <!-- Download -->
-    <div class="px-12 pt-20 pb-0">
+    <div class="px-6 max-w-7xl mx-auto pt-20 pb-0">
       <div
         id="download"
-        class="rounded-2xl px-20 py-12 flex flex-wrap items-center"
+        class="rounded-2xl p-6 sm:px-20 sm:py-12 flex flex-wrap items-center"
       >
-        <div class="w-full md:w-1/2 text-white">
+        <div class="w-full md:w-7/12 text-white">
           <img
             src="~assets/images/logo/logo_white_with_text.svg"
             alt="Locker Logo"
@@ -238,7 +242,7 @@
             </a>
           </div>
         </div>
-        <div class="w-full md:w-1/2 mt-12 md:mt-0 md:pl-[10%]">
+        <div class="w-full md:w-5/12 mt-12 md:mt-0 md:pl-[10%]">
           <img
             src="~assets/images/pages/promo/cyber-month/download-img.png"
             alt="Locker Featuers"
@@ -250,7 +254,7 @@
     <!-- Download end -->
 
     <!-- Testimonials -->
-    <div class="px-12 mb-12 -ml-4">
+    <div class="px-6 max-w-7xl mx-auto mb-12">
       <Testimonials hide-ratings />
     </div>
     <!-- Testimonials end -->
