@@ -343,7 +343,41 @@ import PromoFooter from '~/components/landing/PromoFooter.vue'
 export default {
   components: { Testimonials, PromoFooter },
   layout: 'authenticate',
-  middleware: ['onlyEng']
+  middleware: ['onlyEng'],
+  head () {
+    const title = this.$t('promo.cyber_month.title')
+    const desc = this.$t('promo.cyber_month.desc')
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: title
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: title
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: desc
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: desc
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: desc
+        }
+      ]
+    }
+  }
 }
 </script>
 <style scoped>
