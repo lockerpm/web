@@ -5705,8 +5705,8 @@ module.exports = {
       }
     },
     cyber_month: {
-      title: 'Cyber month',
-      desc: 'Buy now',
+      title: '[Last Chance] 82% OFF for Locker Lifetime Premium',
+      desc: 'Locker is offering the greatest deal of the year: Lifetime Premium package for ONLY $69.99. Pay once, secure and update latest advanced features forever.',
       nav: {
         btn: 'Get Locker Lifetime'
       },
