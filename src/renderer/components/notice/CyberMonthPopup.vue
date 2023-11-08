@@ -3,11 +3,19 @@
     <el-dialog
       :visible="dialogVisible"
       width="60%"
+      custom-class="max-w-[500px]"
       class="premium-dialog header-no-padding body-no-padding"
-      @close="closeDialog"
+      @close="close"
     >
       <div slot="title">
         <img
+          v-if="locale === 'vi'"
+          width="100%"
+          src="~/assets/images/cyber-month-2023-vi.png"
+          @click="upgradePlan"
+        >
+        <img
+          v-else
           width="100%"
           src="~/assets/images/cyber-month-2023.png"
           @click="upgradePlan"
@@ -19,18 +27,32 @@
 
 <script>
 export default {
+  props: {
+    newTab: {
+      type: Boolean,
+      default: () => false
+    }
+  },
   computed: {
     dialogVisible () {
       return this.$store.state.notice.showCyberMonthPopup
     }
   },
   methods: {
-    closeDialog () {
+    open () {
+      this.$store.commit('UPDATE_NOTICE', { showCyberMonthPopup: true })
+    },
+    close () {
       this.$store.commit('UPDATE_NOTICE', { showCyberMonthPopup: false })
     },
     upgradePlan () {
-      this.closeDialog()
-      this.$router.push('/promo/cyber-month-2023')
+      this.close()
+      const path = '/promo/cyber-month-2023'
+      if (this.newTab) {
+        window.open(path, '_blank')
+      } else {
+        this.$router.push(path)
+      }
     }
   }
 }
