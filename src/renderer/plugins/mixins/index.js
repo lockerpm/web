@@ -45,8 +45,10 @@ Vue.mixin({
       )
     },
     isLifeTimeUser () {
-      return ['pm_lifetime_premium', 'pm_lifetime_family'].includes(
-        this.$store.state.currentPlan?.alias
+      const ALIASES = ['pm_lifetime_premium', 'pm_lifetime_family']
+      return (
+        ALIASES.includes(this.$store.state.currentPlan?.alias) ||
+        ALIASES.includes(this.$store.state.userPw?.pwd_plan)
       )
     },
     isFamilyOwner () {
@@ -337,6 +339,11 @@ Vue.mixin({
             path
           })
         )
+
+        // Show promo popup
+        if (!this.isLifeTimeUser) {
+          this.$store.commit('UPDATE_NOTICE', { showCyberMonthPopup: true })
+        }
       } catch (e) {
         console.log(e)
         // Wrong master pw

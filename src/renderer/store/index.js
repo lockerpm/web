@@ -51,7 +51,8 @@ export const state = () => ({
     showWelcome: false,
     allowShowWelcomeBusiness: false,
     allowShowTutorial: false,
-    showPleaseUpgrade: false
+    showPleaseUpgrade: false,
+    showCyberMonthPopup: false
   },
   ui: {
     closeAllModal: false
