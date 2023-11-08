@@ -105,6 +105,7 @@ export const mutations = {
     state.isLoggedInOnPremise = false
     state.hasPwl = false
     state.requirePwl = false
+    state.userPw = {}
   },
   UPDATE_USER (state, user) {
     state.user = user

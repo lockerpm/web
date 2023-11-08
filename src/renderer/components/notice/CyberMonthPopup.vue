@@ -2,8 +2,8 @@
   <div>
     <el-dialog
       :visible="dialogVisible"
-      width="60%"
-      custom-class="max-w-[500px]"
+      width="90%"
+      custom-class="max-w-[550px]"
       class="premium-dialog header-no-padding body-no-padding"
       @close="close"
     >
@@ -41,7 +41,8 @@ export default {
     },
     upgradePlan () {
       this.close()
-      const path = '/promo/cyber-month-2023'
+      const path =
+        '/promo/cyber-month-2023?utm_source=website&utm_medium=popup&utm_campaign=cybersale&utm_term=1'
       window.open(path, '_blank')
     }
   }
