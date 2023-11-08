@@ -42,6 +42,8 @@
         <PremiumDialog />
 
         <WelcomeToBusiness />
+
+        <CyberMonthPopup />
       </client-only>
     </div>
   </div>
@@ -60,6 +62,7 @@ import PaymentFailedWarning from '../components/notice/PaymentFailedWarning'
 import TrialAboutToExpireWarning from '../components/notice/TrialAboutToExpireWarning'
 import PremiumDialog from '../components/upgrade/PremiumDialog.vue'
 import BottomBanner from '../components/landing/BottomBanner.vue'
+import CyberMonthPopup from '../components/notice/CyberMonthPopup.vue'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var, @typescript-eslint/no-unused-vars
@@ -81,7 +84,8 @@ export default {
     PremiumDialog,
     Header,
     SideBarMenu,
-    BottomBanner
+    BottomBanner,
+    CyberMonthPopup
   },
 
   middleware: [

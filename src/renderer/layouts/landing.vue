@@ -2,6 +2,8 @@
   <div>
     <TopBanner />
 
+    <CyberMonthPopup ref="promoPopup" />
+
     <Header />
 
     <!-- Cookies agreement -->
@@ -46,9 +48,11 @@
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 import Header from '../components/landing/Header'
 import Footer from '../components/landing/Footer'
 import TopBanner from '../components/landing/TopBanner'
+import CyberMonthPopup from '../components/notice/CyberMonthPopup.vue'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
@@ -59,7 +63,8 @@ export default {
   components: {
     Header,
     Footer,
-    TopBanner
+    TopBanner,
+    CyberMonthPopup
   },
   data () {
     return {
@@ -201,6 +206,7 @@ export default {
   mounted () {
     this.setupMomentLocale(this.locale)
     this.showCookie = this.checkCookie()
+    this.checkOpenPromoPopup()
   },
   methods: {
     checkCookie () {
@@ -232,6 +238,23 @@ export default {
       }
 
       return path.endsWith('/') ? path.slice(0, -1) : path
+    },
+    checkOpenPromoPopup () {
+      const key = 'showPromoPopup'
+      let reached = false
+      window.onscroll = debounce(() => {
+        if (
+          window.innerHeight + window.scrollY >=
+            document.body.scrollHeight * 0.2 &&
+          !reached
+        ) {
+          reached = true
+          if (!this.$cookies.get(key) && !this.isLifeTimeUser) {
+            this.$refs.promoPopup.open()
+            this.$cookies.set(key, '1')
+          }
+        }
+      }, 100)
     }
   }
 }
