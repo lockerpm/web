@@ -43,7 +43,7 @@
 
         <WelcomeToBusiness />
 
-        <CyberMonthPopup new-tab />
+        <CyberMonthPopup />
       </client-only>
     </div>
   </div>

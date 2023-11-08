@@ -27,12 +27,6 @@
 
 <script>
 export default {
-  props: {
-    newTab: {
-      type: Boolean,
-      default: () => false
-    }
-  },
   computed: {
     dialogVisible () {
       return this.$store.state.notice.showCyberMonthPopup
@@ -48,11 +42,7 @@ export default {
     upgradePlan () {
       this.close()
       const path = '/promo/cyber-month-2023'
-      if (this.newTab) {
-        window.open(path, '_blank')
-      } else {
-        this.$router.push(path)
-      }
+      window.open(path, '_blank')
     }
   }
 }
