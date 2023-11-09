@@ -249,7 +249,12 @@ export default {
           !reached
         ) {
           reached = true
-          if (!this.$cookies.get(key) && !this.isLifeTimeUser) {
+          if (
+            !this.$cookies.get(key) &&
+            !this.isLifeTimeUser &&
+            !this.isEnterpriseMember &&
+            !['/lifetime', '/vi/lifetime'].includes(this.$route.path)
+          ) {
             this.$refs.promoPopup.open()
             this.$cookies.set(key, '1')
           }

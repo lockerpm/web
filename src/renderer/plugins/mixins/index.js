@@ -341,7 +341,7 @@ Vue.mixin({
         )
 
         // Show promo popup
-        if (!this.isLifeTimeUser) {
+        if (!this.isLifeTimeUser && !this.isEnterpriseMember) {
           this.$store.commit('UPDATE_NOTICE', { showCyberMonthPopup: true })
         }
       } catch (e) {

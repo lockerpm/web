@@ -206,12 +206,10 @@ export default {
       // Get post by slug + get users + language tag
       const [postRes, usersRes, langRes] = await Promise.all([
         axios.get(
-          `${process.env.blogUrl}/posts?slug=${slug}&categories=8,13,18,54,25`
+          `${process.env.blogUrl}/posts?_embed&slug=${slug}&categories=8,13,18,54,25`
         ),
         axios.get(`${process.env.blogUrl}/users`),
-        axios.get(
-          `${process.env.blogUrl}/tags?slug=${language}`
-        )
+        axios.get(`${process.env.blogUrl}/tags?slug=${language}`)
       ])
 
       const data = postRes.data
@@ -230,14 +228,14 @@ export default {
         // Get categories + related posts
         const [relateResult, ...categoriesRes] = await Promise.all([
           axios.get(
-            `${process.env.blogUrl}/posts?exclude=${
+            `${process.env.blogUrl}/posts?_embed&exclude=${
               data[0].id
-            }&categories=${categoryIds.toString()}&tags=${
-              languageTagId
-            }&per_page=2`
+            }&categories=${categoryIds.toString()}&tags=${languageTagId}&per_page=2`
           ),
           ...categoryIds.map(async id => {
-            const res = await axios.get(`${process.env.blogUrl}/categories/${id}`)
+            const res = await axios.get(
+              `${process.env.blogUrl}/categories/${id}`
+            )
             return res.data
           })
         ])
@@ -248,7 +246,8 @@ export default {
         relateResult.data.forEach(async element => {
           let featuredImage = ''
           try {
-            featuredImage = element._embedded['wp:featuredmedia']['0'].source_url
+            featuredImage =
+              element._embedded['wp:featuredmedia']['0'].source_url
           } catch (error) {}
           if (!featuredImage) {
             const $ = cheerio.load(element.content.rendered)
