@@ -224,8 +224,8 @@
           </div>
           <InputCustomFields
             v-model="cipher.fields"
-            :edit-mode="cipher.id ? true : false"
             class="w-full !mb-3"
+            :disabled="isDeleted"
             @set-fields="setFields"
           />
         </div>
