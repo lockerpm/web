@@ -8,6 +8,7 @@
         :is-date="field.type === 7"
         :is-password="field.type === FieldType.Hidden"
         :option="fieldTypeOptions.find(o => o.value == field.type)"
+        :disabled="disabled"
         @input-label="l => updateField(index, { name: l, value: field.value })"
         @input="v => updateField(index, { name: field.name, value: v })"
         @delete="deleteField(index)"
@@ -15,7 +16,7 @@
     </div>
 
     <!-- Add new custom field -->
-    <div>
+    <div v-if="!disabled">
       <el-dropdown trigger="click">
         <span class="el-dropdown-link text-primary">
           <i class="el-icon-circle-plus-outline mr-2" />{{
@@ -50,7 +51,7 @@ export default {
       type: Array,
       default: () => []
     },
-    editMode: {
+    disabled: {
       type: Boolean,
       default: false
     }
@@ -103,6 +104,7 @@ export default {
   },
   methods: {
     addNewField (option) {
+      console.log(this.disabled)
       const newField = new FieldView()
       newField.type = option.value
       newField.value = option.defaultValue || null

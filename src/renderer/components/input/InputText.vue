@@ -24,10 +24,10 @@
         :placeholder="shouldShowPlaceHolder ? placeholder : ''"
         :disabled="disabled"
         @mouseleave="hovering = false"
-        @focus="focusing = true"
-        @blur="focusing = false"
+        @focus="handleFocus"
+        @blur="handleOnBlur"
         @input="handleInput"
-        @mouseenter="hovering = true"
+        @mouseenter="handleHover"
       />
     </template>
     <template v-else>
@@ -170,9 +170,6 @@ export default {
       this.$emit('onBlur')
     },
     togglePassword () {
-      if (this.disabled) {
-        return
-      }
       this.type = this.type === 'text' ? 'password' : 'text'
     },
     setNativeInputValue () {
