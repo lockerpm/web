@@ -14,6 +14,7 @@
       <input
         ref="inputLabel"
         type="text"
+        :disabled="disabled"
         :placeholder="option.fieldPlaceholder || option.label"
         :value="label"
         @input="handleInputLabel"
@@ -23,7 +24,11 @@
         @mouseenter="handleHover"
         @keyup.enter="keyupEnter"
       >
-      <i class="el-icon-remove-outline cursor-pointer text-danger-600 text-head-5 " @click="$emit('delete')" />
+      <i
+        v-if="!disabled"
+        class="el-icon-remove-outline cursor-pointer text-danger-600 text-head-5"
+        @click="$emit('delete')"
+      />
     </div>
     <div class="cs-input-value">
       <template v-if="isTextarea">
@@ -33,16 +38,17 @@
           :placeholder="option.placeholder"
           :disabled="disabled"
           @mouseleave="hovering = false"
-          @focus="focusing = true"
+          @focus="handleFocus"
           @blur="focusing = false"
           @input="handleInput"
-          @mouseenter="hovering = true"
+          @mouseenter="handleHover"
         />
       </template>
       <template v-else-if="isDate">
         <el-date-picker
           ref="datetime"
           v-model="date"
+          :disabled="disabled"
           :default-value="value"
           class="cs-datepicker"
           type="date"
@@ -183,9 +189,6 @@ export default {
   },
   methods: {
     togglePassword () {
-      if (this.disabled) {
-        return
-      }
       this.type = this.type === 'text' ? 'password' : 'text'
     },
     setNativeInputValue () {

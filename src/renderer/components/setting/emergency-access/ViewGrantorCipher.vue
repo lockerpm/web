@@ -161,6 +161,19 @@
             is-textarea
           />
         </div>
+
+        <!-- CUSTOM FIELDS -->
+        <div>
+          <div class="my-5 text-black-700 text-head-6 font-semibold">
+            {{ $t('data.ciphers.custom_fields') }}
+          </div>
+          <InputCustomFields
+            v-model="cipher.fields"
+            class="w-full !mb-3"
+            :disabled="true"
+            @set-fields="setFields"
+          />
+        </div>
       </div>
       <!-- Body end -->
 
@@ -202,6 +215,7 @@ import RouterInput from '../../cipher/cipher-types/router/RouterInput.vue'
 import ServerInput from '../../cipher/cipher-types/server/ServerInput.vue'
 import ApiInput from '../../cipher/cipher-types/api/ApiInput.vue'
 import DatabaseInput from '../../cipher/cipher-types/database/DatabaseInput.vue'
+import InputCustomFields from '../../input/InputCustomFields.vue'
 
 export default {
   components: {
@@ -220,7 +234,8 @@ export default {
     RouterInput,
     ServerInput,
     ApiInput,
-    DatabaseInput
+    DatabaseInput,
+    InputCustomFields
   },
 
   props: {
