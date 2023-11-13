@@ -1743,6 +1743,7 @@ module.exports = {
     title: 'Enjoy a secure and seamless Internet experience with Locker. Save passwords as you browse and access your vault whenever you need, on any device.',
     head_title: 'Locker Password Manager - Your Digital Vault',
     section1: {
+      link: 'Explore passkeys in Locker',
       title: 'Enjoy A Secure and Seamless Internet Experience',
       desc: 'Store your passwords, manage sensitive data, fill in forms and log you into your favorite sites with just one click. Locker is here to help.',
       btn: [
@@ -5558,6 +5559,11 @@ module.exports = {
           }
         ],
         more_features: 'And much more cool features for Your Secure and Seamless Internet Experience'
+      },
+      popup: {
+        desc1: 'Simply write reviews about us on App Store, Google Play or Capterra, then go to',
+        link: 'Locker Rewards',
+        desc2: 'to snatch up to 20% off on any subscription... It\'s easy!'
       }
     }
   },
