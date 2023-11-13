@@ -6,6 +6,19 @@
         <div class="w-full flex flex-wrap">
           <!-- Left -->
           <div class="md:w-1/2 mb-8 md:mb-0 md:pr-4">
+            <div class="mb-4 flex justify-center sm:justify-start">
+              <a
+                :href="
+                  locale === 'vi'
+                    ? 'https://support.locker.io/vi/articles/Passkeys-la-gi-Tao-passkeys-cho-tai-khoan-Locker-88eef2f1a9da47bb865f8a9ea78ed5cb'
+                    : 'https://support.locker.io/articles/What-are-passkeys-How-to-create-passkeys-for-a-Locker-account-d59668df96034b42859c05ed50149ba4'
+                "
+                target="_blank"
+                class="landing-font-16 text-center sm:text-left"
+              >
+                {{ $t('landing.section1.link') }} <i class="el-icon-right" />
+              </a>
+            </div>
             <h1
               class="text-center sm:text-left font-bold text-black landing-font-50 mb-[24px]"
             >
