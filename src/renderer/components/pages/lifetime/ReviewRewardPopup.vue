@@ -35,7 +35,11 @@
 
           <div class="mt-8">
             <a
-              href="/rewards"
+              :href="
+                locale === 'vi'
+                  ? 'https://support.locker.io/vi/articles/Nhan-uu-djai-cho-goi-djang-ky-Locker-fd847d8745c74666bad3caed8632231b'
+                  : 'https://support.locker.io/articles/Get-incentives-for-a-Locker-subscription-e4c2d7cc684d4d8d86d76d6e5bfe5d7a'
+              "
               target="_blank"
               class="cursor-pointer"
               @click="dialogVisible = false"
