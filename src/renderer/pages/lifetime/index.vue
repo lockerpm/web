@@ -365,17 +365,27 @@
       </div>
     </el-dialog>
     <!-- Success dialog end -->
+
+    <!-- Promo dialog -->
+    <review-reward-popup />
+    <!-- Promo dialog end -->
   </div>
 </template>
 
 <script>
 import debounce from 'lodash/debounce'
+import ReviewRewardPopup from '../../components/pages/lifetime/ReviewRewardPopup.vue'
 import AvailablePlatforms from '~/components/pages/landing/AvailablePlatforms.vue'
 import Testimonials from '~/components/pages/landing/Testimonials.vue'
 import StripeForm from '~/components/upgrade/StripeForm.vue'
 
 export default {
-  components: { AvailablePlatforms, Testimonials, StripeForm },
+  components: {
+    AvailablePlatforms,
+    Testimonials,
+    StripeForm,
+    ReviewRewardPopup
+  },
 
   layout: 'landing',
 

@@ -1744,6 +1744,7 @@ module.exports = {
     title: 'Tận hưởng trải nghiệm Internet an toàn và liền mạch với Locker. Lưu mật khẩu khi bạn duyệt và truy cập kho tiền của mình bất cứ khi nào bạn cần, trên mọi thiết bị.',
     head_title: 'Locker Password Manager - Your Digital Vault',
     section1: {
+      link: 'Khám phá tính năng passkeys tại Locker',
       title: 'Tận hưởng trải nghiệm sử dụng internet an toàn và liền mạch',
       desc: 'Locker giúp bạn lưu trữ dữ liệu quan trọng <span class="text-green">an toàn</span>, quản lý mật khẩu <span class="text-green">trực quan</span>, và tự động đăng nhập trên mọi thiết bị.',
       btn: [
@@ -5402,6 +5403,11 @@ module.exports = {
           }
         ],
         more_features: 'Và nhiều tính năng thú vị khác cho trải nghiệm Internet của bạn an toàn và liền mạch hơn.'
+      },
+      popup: {
+        desc1: 'Chỉ cần đánh giá Locker trên App Store, Google Play hoặc Capterra, và truy cập trang',
+        link: 'Phần thưởng',
+        desc2: 'để nhận giảm giá tới 20% cho bất kỳ gói đăng ký nào... Thật dễ dàng!'
       }
     }
   },
