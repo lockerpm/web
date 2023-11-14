@@ -30,7 +30,7 @@
               href="/rewards"
               class="underline text-info hover:text-info hover:underline cursor-pointer"
             >{{ $t('lifetime.redeem_page.popup.link') }}</a>
-            t{{ $t('lifetime.redeem_page.popup.desc2') }}
+            {{ $t('lifetime.redeem_page.popup.desc2') }}
           </p>
 
           <div class="mt-8">
