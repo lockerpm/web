@@ -283,7 +283,7 @@ export default {
       const discount = fullPrice - plan.yearly_price.usd
       const discountPercentage = (discount * 100) / fullPrice
       if (!Number.isNaN(discountPercentage)) {
-        return Math.ceil(discountPercentage)
+        return Math.round(discountPercentage)
       }
       return 0
     },

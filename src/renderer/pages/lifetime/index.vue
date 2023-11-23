@@ -461,7 +461,7 @@ export default {
     discountPercentage () {
       const res = (this.result.discount * 100) / this.result.total_price
       if (!Number.isNaN(res)) {
-        return res.toFixed(2)
+        return Math.round(res)
       }
       return 0
     }

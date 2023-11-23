@@ -1,10 +1,9 @@
 <template>
   <div>
-    <section
-      class="full-width h-auto pt-20"
-      style="background-color: #f5f6f7"
-    >
-      <h1 class="font-bold landing-font-50 text-center mx-auto">Get your free password manager</h1>
+    <section class="full-width h-auto pt-20" style="background-color: #f5f6f7">
+      <h1 class="font-bold landing-font-50 text-center mx-auto">
+        Get your free password manager
+      </h1>
       <div class="mt-[100px] pb-[140px] max-w-6xl mx-auto px-6">
         <!-- <div class="flex justify-center">
           <div class="flex items-center p-2 bg-[#E4F0E6] rounded-[50px] gap-x-3">
@@ -25,41 +24,82 @@
           </div>
         </div> -->
         <div v-if="$t('plan.money_vi') != null" class="relative h-[70px]">
-          <div class="absolute top-0 right-1 italic landing-font-14 font-normal" style="color: #5A6176">
+          <div
+            class="absolute top-0 right-1 italic landing-font-14 font-normal"
+            style="color: #5a6176"
+          >
             {{ $t('plan.money_vi') }}
           </div>
         </div>
-        <div class="w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-[30px] gap-y-[30px]">
+        <div
+          class="w-full grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-[30px] gap-y-[30px]"
+        >
           <div
             v-for="(plan, index) in plans"
-            :key="index.toString()+plan.title"
+            :key="index.toString() + plan.title"
             class="landing-transition h-[630px] px-9 py-14 bg-white relative z-10 rounded-xl hover:shadow-xl"
           >
-            <div v-if="plan.alias != 'pm_premium' && periodSwitch " class="triangle-isosceles landing-font-14 font-medium" style="position: absolute; top: -40px;" :style="$t('plans_family_promotion.text_free_account.status_language') === 'true' ? 'right: 40px' : 'right: 15px'">
+            <div
+              v-if="plan.alias != 'pm_premium' && periodSwitch"
+              class="triangle-isosceles landing-font-14 font-medium"
+              style="position: absolute; top: -40px"
+              :style="
+                $t(
+                  'plans_family_promotion.text_free_account.status_language'
+                ) === 'true'
+                  ? 'right: 40px'
+                  : 'right: 15px'
+              "
+            >
               {{ $t('plans_family_promotion.text_free_account.text') }}
             </div>
-            <div v-if="plan.alias != 'pm_premium' && periodSwitch " class="italic landing-font-14 font-medium">
+            <div
+              v-if="plan.alias != 'pm_premium' && periodSwitch"
+              class="italic landing-font-14 font-medium"
+            >
               {{ $t('plans_family_promotion.text_limited') }}
             </div>
             <p class="landing-font-20 text-green">{{ plan.title }}</p>
             <p class="mt-4">
-              <span v-if="!(plan.alias==='pm_free'&&periodSwitch)" :class="periodSwitch?'line-through landing-font-16 text-black':'font-bold landing-font-50'">${{ plan.price.usd }}</span>
               <span
-                v-if="periodSwitch && plan.yearly_price && plan.alias==='pm_family'"
+                v-if="!(plan.alias === 'pm_free' && periodSwitch)"
+                :class="
+                  periodSwitch
+                    ? 'line-through landing-font-16 text-black'
+                    : 'font-bold landing-font-50'
+                "
+              >${{ plan.price.usd }}</span>
+              <span
+                v-if="
+                  periodSwitch &&
+                    plan.yearly_price &&
+                    plan.alias === 'pm_family'
+                "
                 class="font-bold landing-font-50"
               >$0</span>
               <span
-                v-if="periodSwitch && plan.yearly_price && plan.alias!=='pm_family'"
+                v-if="
+                  periodSwitch &&
+                    plan.yearly_price &&
+                    plan.alias !== 'pm_family'
+                "
                 class="font-bold landing-font-50"
               >${{ (plan.yearly_price.usd / 12) | formatNumber }}</span>
-              <span v-if="plan.duration" class="landing-font-16">/{{ plan.duration }}</span><span v-if="plan.accounts" class="landing-font-16">/{{ plan.accounts }}</span>
+              <span
+                v-if="plan.duration"
+                class="landing-font-16"
+              >/{{ plan.duration }}</span><span
+                v-if="plan.accounts"
+                class="landing-font-16"
+              >/{{ plan.accounts }}</span>
             </p>
-            <div
-              v-if="periodSwitch"
-              class="flex items-center mt-1"
-            >
+            <div v-if="periodSwitch" class="flex items-center mt-1">
               <div v-if="plan.alias === 'pm_premium'">
-                {{ $t('data.plans.price_12months') }} ${{ plan.yearly_price.usd }} <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">{{ $t('data.plans.save') }} {{ discountPercentage(plan) }}%</span>
+                {{ $t('data.plans.price_12months') }} ${{
+                  plan.yearly_price.usd
+                }}
+                <span class="py-[1px] px-2 bg-primary text-white rounded-[20px]">{{ $t('data.plans.save') }}
+                  {{ discountPercentage(plan) }}%</span>
               </div>
             </div>
             <ul class="ml-3 my-[30px]">
@@ -67,18 +107,21 @@
                 v-for="(detail, ind) in plan.desc"
                 :key="ind"
                 class="landing-font-14 mb-[10px] relative"
-                style="color: #5A6176"
+                style="color: #5a6176"
               >
                 {{ detail }}
                 <span
-                  v-if="['Thiết lập Liên hệ Khẩn cấp', 'Emergency access'].includes(detail)"
+                  v-if="
+                    ['Thiết lập Liên hệ Khẩn cấp', 'Emergency access'].includes(
+                      detail
+                    )
+                  "
                   class="info"
                 >
                   <i class="fa fa-info-circle" />
-                  <span
-                    class="tooltiptext"
-                    style="font-size: 11px"
-                  >{{ contact_info }}</span>
+                  <span class="tooltiptext" style="font-size: 11px">{{
+                    contact_info
+                  }}</span>
                 </span>
               </li>
             </ul>
@@ -86,7 +129,11 @@
               <div class="text-center absolute bottom-3 left-6 right-12">
                 <div
                   class="landing-btn !w-full sm:w-auto sm:ml-4 cursor-pointer bg-dang"
-                  :style="plan.alias === 'pm_family' ? 'background-color: #56C9CD !important': ''"
+                  :style="
+                    plan.alias === 'pm_family'
+                      ? 'background-color: #56C9CD !important'
+                      : ''
+                  "
                   style="font-weight: 600"
                   @click="choosePlan(plan.alias)"
                 >
@@ -104,19 +151,18 @@
           <table class="w-full">
             <thead>
               <tr>
-                <th class="w-3/12 text-left pl-6 pb-5 landing-font-18">{{ $t('plan.feature') }}</th>
+                <th class="w-3/12 text-left pl-6 pb-5 landing-font-18">
+                  {{ $t('plan.feature') }}
+                </th>
                 <th class="w-1/12 pb-5 landing-font-18">Free</th>
                 <th class="w-8/36 pb-5 landing-font-18">Premium</th>
                 <th class="w-8/36 pb-5 landing-font-18">Family</th>
-              <!-- <th class="w-8/36 pb-5 landing-font-18">Business</th> -->
+                <!-- <th class="w-8/36 pb-5 landing-font-18">Business</th> -->
               </tr>
             </thead>
             <tbody>
               <template v-for="(feature, index) in feature_plan">
-                <tr
-                  :key="index"
-                  style="background-color: #FBFAF3;"
-                >
+                <tr :key="index" style="background-color: #fbfaf3">
                   <td
                     colspan="100%"
                     class="py-[18px] pl-6 text-green font-semibold landing-font-16"
@@ -125,19 +171,10 @@
                   </td>
                 </tr>
                 <tr :key="index">
-                  <td
-                    colspan="100%"
-                    class="pb-5"
-                  />
+                  <td colspan="100%" class="pb-5" />
                 </tr>
-                <tr
-                  v-for="(item, idx) in feature.features"
-                  :key="idx"
-                >
-                  <td
-                    class="pl-6 landing-font-16 pb-5"
-                    style="color: #5A6176"
-                  >
+                <tr v-for="(item, idx) in feature.features" :key="idx">
+                  <td class="pl-6 landing-font-16 pb-5" style="color: #5a6176">
                     {{ item.label }}
                   </td>
                   <td
@@ -146,28 +183,45 @@
                     class="text-center pb-5"
                   >
                     <img
-                      v-if="plan===true"
+                      v-if="plan === true"
                       class="mx-auto"
                       src="~/assets/images/landing/plan/true.svg"
                     >
                     <img
-                      v-else-if="plan===false"
+                      v-else-if="plan === false"
                       class="mx-auto"
                       src="~/assets/images/landing/plan/false.svg"
                     >
-                    <p
-                      v-else
-                      v-html="plan"
-                    />
+                    <p v-else v-html="plan" />
                   </td>
                 </tr>
               </template>
-              <tr style="background-color: #FBFAF3;">
-                <td class="py-[18px] pl-6 text-green landing-font-16 font-semibold">{{ $t('plan.price') }}</td>
-                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">${{ plans[0].yearly_price.usd/12 | formatNumber }}</td>
-                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">${{ plans[1].yearly_price.usd/12 | formatNumber }}/{{ $t('plan.plans[1].duration') }}</td>
-                <td class="py-[18px] pl-6 text-green landing-font-16 text-center">$0/{{ $t('plan.plans[2].duration') }}/<br>{{ $t('plan.plans[2].accounts') }}</td>
-              <!-- <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[3].price') }}</td> -->
+              <tr style="background-color: #fbfaf3">
+                <td
+                  class="py-[18px] pl-6 text-green landing-font-16 font-semibold"
+                >
+                  {{ $t('plan.price') }}
+                </td>
+                <td
+                  class="py-[18px] pl-6 text-green landing-font-16 text-center"
+                >
+                  ${{ (plans[0].yearly_price.usd / 12) | formatNumber }}
+                </td>
+                <td
+                  class="py-[18px] pl-6 text-green landing-font-16 text-center"
+                >
+                  ${{ (plans[1].yearly_price.usd / 12) | formatNumber }}/{{
+                    $t('plan.plans[1].duration')
+                  }}
+                </td>
+                <td
+                  class="py-[18px] pl-6 text-green landing-font-16 text-center"
+                >
+                  $0/{{ $t('plan.plans[2].duration') }}/<br>{{
+                    $t('plan.plans[2].accounts')
+                  }}
+                </td>
+                <!-- <td class="py-[18px] pl-6 text-green landing-font-16 text-center">{{ $t('plan.plans[3].price') }}</td> -->
               </tr>
               <tr>
                 <td />
@@ -176,10 +230,14 @@
                   :key="index"
                   class="pt-5"
                 >
-                  <div class="text-center" style="margin: 0 5px;">
+                  <div class="text-center" style="margin: 0 5px">
                     <div
                       class="landing-btn w-full sm:w-auto sm:ml-4 cursor-pointer"
-                      :style="button.alias === 'pm_family' ? 'background-color: #56C9CD !important': ''"
+                      :style="
+                        button.alias === 'pm_family'
+                          ? 'background-color: #56C9CD !important'
+                          : ''
+                      "
                       style="font-weight: 600"
                       @click="choosePlan(button.alias)"
                     >
@@ -203,15 +261,7 @@
         <div class="w-full flex flex-wrap">
           <div class="w-full md:mb-0 md:pt-[115px] pt-20 text-center order-1">
             <h2
-              class="
-                w-full
-                font-bold
-                landing-font-38
-                text-black
-                mb-[20px]
-                max-w-[589px]
-                mx-auto
-              "
+              class="w-full font-bold landing-font-38 text-black mb-[20px] max-w-[589px] mx-auto"
             >
               {{ features.title }}
             </h2>
@@ -222,17 +272,7 @@
             >
           </div>
           <div
-            class="
-              w-full
-              mt-[45px]
-              grid grid-cols-1
-              md:grid-cols-2
-              lg:grid-cols-4
-              gap-x-[45px]
-              lg:gap-x-[30px]
-              gap-y-[45px]
-              order-2
-            "
+            class="w-full mt-[45px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[45px] lg:gap-x-[30px] gap-y-[45px] order-2"
           >
             <div
               v-for="(item, index) in features.details"
@@ -260,24 +300,27 @@
     <!--    Questions-->
     <section
       class="full-width h-auto py-[130px]"
-      style="background-color: #FBFAF3"
+      style="background-color: #fbfaf3"
     >
       <div class="max-w-6xl mx-auto px-6">
         <div class="w-8/12 mx-auto">
-          <h2 class="landing-font-38 font-bold mb-[35px]">{{ question.title }}</h2>
+          <h2 class="landing-font-38 font-bold mb-[35px]">
+            {{ question.title }}
+          </h2>
           <div
             v-for="(qa, index) in question.question_list"
             :key="index"
             class="mb-[35px]"
           >
             <h3 class="landing-font-22 font-bold mb-3">{{ qa.question }}</h3>
-            <p
-              class="landing-font-14"
-              style="color: #5A6176"
-            >
+            <p class="landing-font-14" style="color: #5a6176">
               {{ qa.answer }}
             </p>
-            <hr v-if="index!==question.question_list.length-1" class="opacity-50 mt-[35px]" style="color: #CFD6E4">
+            <hr
+              v-if="index !== question.question_list.length - 1"
+              class="opacity-50 mt-[35px]"
+              style="color: #cfd6e4"
+            >
           </div>
         </div>
       </div>
@@ -297,7 +340,8 @@ export default {
     }
   },
   async mounted () {
-    this.lockerPlans = await this.$axios.$get('resources/cystack_platform/pm/plans') || []
+    this.lockerPlans =
+      (await this.$axios.$get('resources/cystack_platform/pm/plans')) || []
     this.plans = this.plans.map(item => {
       const plan = this.lockerPlans.find(el => el.alias === item.alias)
       return {
@@ -311,19 +355,24 @@ export default {
     discountPercentage (plan) {
       const fullPrice = plan.price.usd * 12
       const discount = fullPrice - plan.yearly_price.usd
-      const discountPercentage = discount * 100 / fullPrice
+      const discountPercentage = (discount * 100) / fullPrice
       if (!Number.isNaN(discountPercentage)) {
-        return Math.ceil(discountPercentage)
+        return Math.round(discountPercentage)
       }
       return 0
     },
     choosePlan (alias) {
-      localStorage.setItem('trial_plan', alias === 'pm_free' ? 'pm_family' : alias)
+      localStorage.setItem(
+        'trial_plan',
+        alias === 'pm_free' ? 'pm_family' : alias
+      )
       localStorage.setItem('is_trial_promotion', true)
       if (this.$store.state.isLoggedIn) {
         this.$router.replace(this.localePath('/manage-plans'))
       } else {
-        this.$router.replace(this.localePath('/register?utm_source=plans-family-promotion'))
+        this.$router.replace(
+          this.localePath('/register?utm_source=plans-family-promotion')
+        )
       }
     }
   }
@@ -359,12 +408,12 @@ ul {
   margin: 1em 0 3em;
   color: white;
   border-radius: 20px;
-  background:#ff0000e0;
+  background: #ff0000e0;
 }
 
 /* creates triangle */
 .triangle-isosceles:after {
-  content: "";
+  content: '';
   display: block; /* reduce the damage in FF3.0 */
   position: absolute;
   bottom: -15px;
@@ -372,6 +421,6 @@ ul {
   width: 0;
   border-width: 15px 15px 0;
   border-style: solid;
-  border-color:#ff0000e0 transparent;
+  border-color: #ff0000e0 transparent;
 }
 </style>
