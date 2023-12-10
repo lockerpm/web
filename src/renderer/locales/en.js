@@ -5909,5 +5909,9 @@ module.exports = {
       desc: 'Experience unlimited Premium features for your institution with no payment required.',
       btn: 'Sign up for this offer'
     }
+  },
+  thank_you: {
+    title: 'Thank you!',
+    desc: ''
   }
 }
