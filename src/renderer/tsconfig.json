@@ -21,7 +21,6 @@
     },
     "types": ["@nuxt/types", "@types/node", "@nuxtjs/sentry"],
     "experimentalDecorators": true,
-    "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true
   },
   "exclude": [
