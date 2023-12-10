@@ -37,8 +37,8 @@
             <a
               :href="
                 locale === 'vi'
-                  ? 'https://support.locker.io/vi/articles/Nhan-uu-djai-cho-goi-djang-ky-Locker-fd847d8745c74666bad3caed8632231b'
-                  : 'https://support.locker.io/articles/Get-incentives-for-a-Locker-subscription-e4c2d7cc684d4d8d86d76d6e5bfe5d7a'
+                  ? 'https://support.locker.io/vi/locker-password-manager/get-started/get-incentives-for-a-locker-subscription'
+                  : 'https://support.locker.io/en/locker-password-manager/get-started/get-incentives-for-a-locker-subscription'
               "
               target="_blank"
               class="cursor-pointer"

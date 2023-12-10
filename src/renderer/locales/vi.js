@@ -5753,5 +5753,9 @@ module.exports = {
       desc: 'Trải nghiệm các tính năng Premium không giới hạn cho tổ chức của bạn mà không cần thanh toán',
       btn: 'Đăng ký ngay'
     }
+  },
+  thank_you: {
+    title: 'Thank you!',
+    desc: ''
   }
 }

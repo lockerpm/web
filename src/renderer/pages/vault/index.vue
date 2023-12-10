@@ -12,7 +12,8 @@ export default {
     if (this.$route.query.password && this.$route.query.nextStep === 'save') {
       await this.$refs.listCipher.$refs.chooseCipherType.confirmDialog('Login')
       setTimeout(async () => {
-        this.$refs.listCipher.$refs.chooseCipherType.$refs.addEditCipherDialog.cipher.login.password = this.$route.query.password
+        this.$refs.listCipher.$refs.chooseCipherType.$refs.addEditCipherDialog.cipher.login.password =
+          this.$route.query.password
       }, 500)
     }
   }

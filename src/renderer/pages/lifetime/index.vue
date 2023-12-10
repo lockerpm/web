@@ -557,7 +557,16 @@ export default {
           payload
         )
         this.clearInput()
-        this.isSuccessOpen = true
+
+        // For GA reasons, use a separate thankyou page instead
+        // this.isSuccessOpen = true
+        const action = `buy-lifetime-${
+          this.selectedPlan === 'pm_lifetime_family' ? 'family' : 'premium'
+        }`
+        const status = this.needCreateAccount ? 'account-created' : ''
+        this.$router.push(
+          this.localeRoute(`/thankyou?action=${action}&status=${status}`)
+        )
       } catch (error) {
         const errorData = error.response?.data
         let message =
