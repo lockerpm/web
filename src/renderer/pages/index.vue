@@ -10,8 +10,8 @@
               <a
                 :href="
                   locale === 'vi'
-                    ? 'https://support.locker.io/vi/articles/Passkeys-la-gi-Tao-passkeys-cho-tai-khoan-Locker-88eef2f1a9da47bb865f8a9ea78ed5cb'
-                    : 'https://support.locker.io/articles/What-are-passkeys-How-to-create-passkeys-for-a-Locker-account-d59668df96034b42859c05ed50149ba4'
+                    ? 'https://support.locker.io/vi/locker-general/login-unlock/log-in-to-a-cloud-account/log-in-to-your-account/what-are-passkeys-how-to-create-passkeys-with-locker'
+                    : 'https://support.locker.io/en/locker-general/login-unlock/log-in-to-a-cloud-account/log-in-to-your-account/what-are-passkeys-how-to-create-passkeys-with-locker'
                 "
                 target="_blank"
                 class="landing-font-16 text-center sm:text-left"
