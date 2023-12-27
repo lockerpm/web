@@ -7,7 +7,7 @@ export default {
   fetch ({ redirect, store, isDev, route }) {
     const environment = isDev ? 'dev_web' : process.env.environment
 
-    // Navigate to /lock if has user else to to login as usual
+    // (On premise) Navigate to /lock if has user else to to login as usual
     if (store.state.isOnPremise && store.state.isLoggedIn) {
       redirect(302, '/lock')
       return

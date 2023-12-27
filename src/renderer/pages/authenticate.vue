@@ -16,18 +16,10 @@ export default {
     this.loginByToken()
   },
   methods: {
-    updateLoginExtension (response) {
-      if (
-        response &&
-        response.success &&
-        this.$route.query.client === 'browser'
-      ) {
-        this.$store.commit('UPDATE_LOGIN_EXTENSION', true)
-      }
-    },
-
     async loginByToken () {
       this.$store.commit('UPDATE_LOADING', true)
+
+      // Set token
       const token =
         this.$route.query.token || this.$cookies.get('cs_locker_token')
       await this.$axios.setToken(token, 'Bearer')
@@ -37,6 +29,8 @@ export default {
         ...(this.environment === '' ? { secure: true } : { secure: false })
       })
       this.$store.commit('UPDATE_IS_LOGGEDIN', true)
+
+      // Login extension
       if (this.$route.query.client === 'browser' && token.toString()) {
         const extensionToken = token
         window.postMessage(
@@ -48,16 +42,19 @@ export default {
         )
       }
 
-      // end sendMessage
+      // Choose path to redirect
+      const BLACK_LIST_URLS = ['/register', '/login']
+      const returnUrl = this.$route.query.return_url
       if (
-        this.$route.query.return_url &&
-        isString(this.$route.query.return_url)
+        returnUrl &&
+        isString(returnUrl) &&
+        !BLACK_LIST_URLS.some(path => returnUrl.includes(path))
       ) {
         this.$router
-          .replace(this.localePath({ path: this.$route.query.return_url }))
+          .replace(this.localePath({ path: returnUrl }))
           .catch(() => {})
       } else {
-        this.$router.replace(this.localePath({ name: 'vault' })).catch(() => {})
+        this.$router.replace(this.localePath({ name: 'lock' })).catch(() => {})
       }
       this.$store.commit('UPDATE_LOADING', false)
     }
