@@ -1,3 +1,5 @@
+let isLanguageLoaded = false
+
 export default ({ store, app, i18n }) => {
   // Every time the route changes (fired on initialization too)
   app.router.beforeEach(async (toRoute, fromRoute, next) => {
@@ -22,11 +24,11 @@ export default ({ store, app, i18n }) => {
       store.commit('UPDATE_PATH', toRoute.fullPath)
       store.commit('UPDATE_PREVIOUS_PATH', fromRoute.fullPath)
     }
-    if (store.state.isLoggedIn) {
+    if (store.state.isLoggedIn && !isLanguageLoaded) {
       store.dispatch('LoadCurrentUser').then(res => {
         i18n.setLocale(res.language)
+        isLanguageLoaded = true
       })
-      // await store.dispatch('LoadCurrentUserPw')
     }
     next()
   })
