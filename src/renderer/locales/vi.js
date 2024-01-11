@@ -1026,7 +1026,7 @@ module.exports = {
       delete_account: 'Xóa tài khoản',
       delete_account_desc: 'Xoá vĩnh viễn tài khoản Locker của bạn',
       language: 'Ngôn ngữ',
-      vietnamese: 'Vietnamese',
+      vietnamese: 'Tiếng Việt',
       english: 'English',
       deauthorize_sessions: 'Hủy phiên',
       deauthorize_device: 'Đăng xuất khỏi {name} này',
