@@ -7,7 +7,7 @@
           <template v-if="getRouteBaseName() === 'vault-folders-folderId'">
             <nuxt-link
               class="font-medium hover:no-underline"
-              :to="localeRoute({ name: 'vault' })"
+              :to="localeRoute({ name: 'vault', hash: '#viewFolder' })"
             >
               {{ $t('sidebar.vault') }}
             </nuxt-link>
@@ -123,7 +123,76 @@
           /></span>
         </button>
       </div>
-      <!-- view folder button -->
+      <!-- view folder button end -->
+
+      <!-- folder actions -->
+      <div v-if="folder.id" class="hidden sm:flex">
+        <el-dropdown trigger="click" :hide-on-click="false">
+          <button class="btn btn-icon btn-xs btn-action">
+            <i class="fas fa-ellipsis-h" />
+          </button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="addEditFolder(folder, false)">
+              {{ $t('common.rename') }}
+            </el-dropdown-item>
+
+            <el-dropdown-item @click.native="shareFolder(folder)">
+              {{ $t('common.share') }}
+            </el-dropdown-item>
+
+            <el-dropdown-item @click.native="deleteFolder(folder)">
+              <span class="text-danger">{{ $t('common.delete') }}</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <!-- folder actions end -->
+
+      <!-- collection actions -->
+      <div
+        v-if="
+          collection.id &&
+            (canManageItem(organizations, collection) ||
+              isOwner(organizations, collection))
+        "
+        class="hidden sm:flex"
+      >
+        <el-dropdown trigger="click" :hide-on-click="false">
+          <button class="btn btn-icon btn-xs btn-action">
+            <i class="fas fa-ellipsis-h" />
+          </button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item
+              v-if="canManageItem(organizations, collection)"
+              @click.native="addEditFolder(collection, false)"
+            >
+              {{ $t('common.rename') }}
+            </el-dropdown-item>
+
+            <el-dropdown-item
+              v-if="isOwner(organizations, collection)"
+              @click.native="shareFolder(collection)"
+            >
+              {{ $t('common.share') }}
+            </el-dropdown-item>
+
+            <el-dropdown-item
+              v-if="isOwner(organizations, collection)"
+              @click.native="stopSharingFolder(collection)"
+            >
+              {{ $t('data.ciphers.stop_sharing') }}
+            </el-dropdown-item>
+
+            <el-dropdown-item
+              v-if="isOwner(organizations, collection)"
+              @click.native="deleteFolder(collection)"
+            >
+              <span class="text-danger">{{ $t('common.delete') }}</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <!-- collection actions end -->
     </div>
 
     <!-- number of items -->
@@ -131,13 +200,13 @@
       <span class="text-primary font-semibold">
         {{ itemsCount }}
       </span>
-      {{ $tc('type.0', ciphers.length) }}
+      {{ $tc('type.0', ciphers?.length) }}
     </div>
     <div v-if="folders && viewFolder" class="uppercase text-head-6">
       <span class="text-primary font-semibold">{{
-        folders.length + collections.length
+        folders?.length + collections?.length
       }}</span>
-      {{ $tc('type.Folder', folders.length + collections.length) }}
+      {{ $tc('type.Folder', folders?.length + collections?.length) }}
     </div>
     <!-- number of items end -->
 
@@ -201,6 +270,14 @@ export default {
       default: () => false
     },
     toggleViewFolder: {
+      type: Function,
+      default: () => () => {}
+    },
+    shareFolder: {
+      type: Function,
+      default: () => () => {}
+    },
+    deleteFolder: {
       type: Function,
       default: () => () => {}
     }
@@ -319,7 +396,7 @@ export default {
           return this.notDeletedCipherCount.ciphers[CipherType[this.type]]
         }
       }
-      return this.ciphers.length
+      return this.ciphers?.length
     }
   },
 
@@ -327,6 +404,26 @@ export default {
     '$store.state.tutorial.currentStepId' (newVal) {
       if (newVal !== 'add-pw-2') {
         this.addBtnDropdownVisible = false
+      }
+    },
+    folder (newVal, oldVal) {
+      const currentRoute = this.getRouteBaseName()
+      if (
+        oldVal.id &&
+        !newVal.id &&
+        currentRoute === 'vault-folders-folderId'
+      ) {
+        this.$router.replace('/vault')
+      }
+    },
+    collection (newVal, oldVal) {
+      const currentRoute = this.getRouteBaseName()
+      if (
+        oldVal.id &&
+        !newVal.id &&
+        currentRoute === 'vault-folders-folderId'
+      ) {
+        this.$router.replace('/vault')
       }
     }
   },
@@ -365,6 +462,10 @@ export default {
       } else {
         this.addEdit({}, this.type)
       }
+    },
+
+    async stopSharingFolder (folder) {
+      await this.stopShareFolder(folder)
     }
   }
 }

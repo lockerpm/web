@@ -137,7 +137,10 @@
               <template slot-scope="scope">
                 <span>
                   {{
-                    getCipherTypeName(scope.row.cipher_type || scope.row.type)
+                    getCipherTypeName(
+                      scope.row.cipher_type || scope.row.type,
+                      scope.row.item_type
+                    )
                   }}
                 </span>
               </template>
