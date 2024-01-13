@@ -166,7 +166,10 @@ Vue.mixin({
       })
     },
 
-    getCipherTypeName (cipherType) {
+    getCipherTypeName (cipherType, itemType) {
+      if (itemType && itemType === 'folder') {
+        return this.$tc('type.Folder', 1)
+      }
       if (CipherType[cipherType]) {
         return this.$tc(`type.${cipherType}`, 1)
       }

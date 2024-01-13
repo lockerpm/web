@@ -20,6 +20,8 @@
         :add-edit-folder="addEditFolder"
         :view-folder="viewFolder"
         :toggle-view-folder="toggleViewFolder"
+        :share-folder="shareFolder"
+        :delete-folder="deleteFolder"
       />
       <!-- Overview end -->
 
@@ -46,6 +48,7 @@
           :collections="collections"
           :organizations="organizations"
           :add-edit-folder="addEditFolder"
+          :share-folder="shareFolder"
           :delete-folder="deleteFolder"
         />
       </div>
@@ -85,6 +88,7 @@
     />
 
     <AddEditFolder ref="addEditFolder" :organizations="organizations" />
+    <ShareFolder ref="shareFolder" />
   </div>
 </template>
 
@@ -101,6 +105,7 @@ import ListHeader from './list-cipher-components/ListHeader.vue'
 import SortMenu from './list-cipher-components/SortMenu.vue'
 import ListFolderItems from './list-cipher-components/ListFolderItems.vue'
 import ListCipherItems from './list-cipher-components/ListCipherItems.vue'
+import ShareFolder from '@/components/folder/ShareFolder'
 
 export default {
   components: {
@@ -113,7 +118,8 @@ export default {
     ListHeader,
     SortMenu,
     ListFolderItems,
-    ListCipherItems
+    ListCipherItems,
+    ShareFolder
   },
   props: {
     deleted: {
@@ -164,7 +170,7 @@ export default {
     shouldRenderNoCipher () {
       const haveCipher = this.ciphers?.length
       if (this.getRouteBaseName() === 'vault') {
-        return this.folders && !this.folders.length && !haveCipher
+        return this.folders && !this.folders?.length && !haveCipher
       }
       if (this.getRouteBaseName() === 'vault-folders-folderId') {
         return false
@@ -184,6 +190,9 @@ export default {
   },
   async mounted () {
     this.context = 'VueContext'
+    if (window.location.href.includes('#viewFolder')) {
+      this.viewFolder = true
+    }
   },
   asyncComputed: {
     ciphers: {
@@ -296,7 +305,7 @@ export default {
           const ciphers = this.ciphers
             ? this.ciphers.filter(c => c.folderId === f.id)
             : []
-          f.ciphersCount = ciphers && ciphers.length
+          f.ciphersCount = ciphers && ciphers?.length
           f.ciphers = ciphers
         })
         return folders
@@ -317,7 +326,7 @@ export default {
           const ciphers =
             this.ciphers &&
             (this.ciphers.filter(c => c.collectionIds?.includes(f.id)) || [])
-          f.ciphersCount = ciphers && ciphers.length
+          f.ciphersCount = ciphers && ciphers?.length
           f.ciphers = ciphers
         })
         if (!this.$store.state.syncing) {
@@ -334,6 +343,16 @@ export default {
       this.$refs.addEditCipherDialog.openDialog(cloneDeep(cipher))
     },
     toggleViewFolder () {
+      try {
+        const currentUrl = window.location.href
+        if (this.viewFolder && currentUrl.includes('#viewFolder')) {
+          this.$router.replace({})
+        } else if (!currentUrl.includes('#viewFolder')) {
+          this.$router.replace({ hash: 'viewFolder' })
+        }
+      } catch (error) {
+        //
+      }
       this.viewFolder = !this.viewFolder
     },
     handleAddButton () {
@@ -359,6 +378,9 @@ export default {
     },
     addEditFolder (folder, shouldRedirect = false) {
       this.$refs.addEditFolder.openDialog(folder, shouldRedirect)
+    },
+    shareFolder (folder) {
+      this.$refs.shareFolder.openDialog(folder)
     },
     deleteFolder (folder) {
       this.$refs.addEditFolder.deleteFolder(folder)

@@ -128,6 +128,18 @@ Vue.mixin({
         )
         await this.$collectionService.upsert([res])
         await this.syncProfile()
+        const cipherRes = await this.$axios.$get(
+          `cystack_platform/pm/sync/ciphers?collection_id=${id}`,
+          {
+            params: {
+              paging: 0
+            }
+          }
+        )
+        if (cipherRes.length) {
+          const userId = await this.$userService.getUserId()
+          await this.$syncService.syncSomeCiphers(userId, cipherRes)
+        }
         this.$store.commit('UPDATE_SYNCED_CIPHERS')
       } catch (e) {
         const status = e.response?.status
