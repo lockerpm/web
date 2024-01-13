@@ -5,7 +5,7 @@
 export default {
   layout: 'authenticate',
   fetch ({ redirect, store, isDev, $ua, $cookies, route }) {
-    const queryUtmSource = route.query?.utm_source
+    // Generate URL for Locker ID
     const environment = isDev ? 'dev' : process.env.environment
     const query = `?SERVICE_URL=${
       store.state.currentPath !== '/'
@@ -15,6 +15,9 @@ export default {
       environment ? `&ENVIRONMENT=${environment}` : ''
     }`
     let url = `${process.env.idUrl}/register${query}`
+
+    // Set cookies for utm tracking
+    const queryUtmSource = route.query?.utm_source
     if (queryUtmSource) {
       url = `${url}&utm_source=${queryUtmSource}`
       $cookies.set('utm_source', queryUtmSource, {
@@ -26,6 +29,9 @@ export default {
         maxAge: 3600 * 24 * 30
       })
     }
+
+    // TODO: deprecating - Google is removing this
+    // Open dynamic link if user is using mobile device
     if ($ua.isFromIos() || $ua.isFromAndroidOs()) {
       const utmSource = queryUtmSource ? '' : $cookies.get('utm_source')
       const deeplink = utmSource ? `${url}&utm_source=${utmSource}` : url
@@ -37,9 +43,10 @@ export default {
         url
       )}${utmSource ? '&utm_source=' + utmSource : ''}&efr=1`
       redirect(302, dynamicLink)
-    } else {
-      redirect(302, url)
+      return
     }
+
+    redirect(302, url)
   }
 }
 </script>

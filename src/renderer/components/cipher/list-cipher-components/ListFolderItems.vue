@@ -65,7 +65,7 @@
 
                 <el-dropdown-item
                   v-if="isOwner(organizations, item)"
-                  @click.native="stopSharing(item)"
+                  @click.native="stopSharingFolder(item)"
                 >
                   {{ $t('data.ciphers.stop_sharing') }}
                 </el-dropdown-item>
@@ -141,16 +141,10 @@
         <!-- Folder end -->
       </div>
     </client-only>
-
-    <ShareFolder ref="shareFolder" />
   </div>
 </template>
 <script>
-import ShareFolder from '@/components/folder/ShareFolder'
-
 export default {
-  components: { ShareFolder },
-
   props: {
     collections: {
       type: Array,
@@ -168,6 +162,10 @@ export default {
       type: Function,
       default: () => () => {}
     },
+    shareFolder: {
+      type: Function,
+      default: () => () => {}
+    },
     deleteFolder: {
       type: Function,
       default: () => () => {}
@@ -175,11 +173,7 @@ export default {
   },
 
   methods: {
-    shareFolder (folder) {
-      this.$refs.shareFolder.openDialog(folder)
-    },
-
-    async stopSharing (folder) {
+    async stopSharingFolder (folder) {
       await this.stopShareFolder(folder)
     }
   }

@@ -30,6 +30,7 @@ export default {
 
   methods: {
     async loginWithoutToken (email, baseApi, avatar, requirePwl, hasPwl) {
+      // Set user info
       this.$store.commit('UPDATE_IS_LOGGEDIN', true)
       this.$store.commit('UPDATE_IS_LOGGEDIN_ON_PREMISE', false)
       this.$store.commit('UPDATE_USER', { email, avatar })
@@ -43,15 +44,19 @@ export default {
         requirePwl
       })
 
+      // Choose path to redirect
+      const BLACK_LIST_URLS = ['/register', '/login']
+      const returnUrl = this.$route.query.return_url
       if (
-        this.$route.query.return_url &&
-        isString(this.$route.query.return_url)
+        returnUrl &&
+        isString(returnUrl) &&
+        !BLACK_LIST_URLS.some(path => returnUrl.includes(path))
       ) {
         this.$router
-          .replace(this.localePath({ path: this.$route.query.return_url }))
+          .replace(this.localePath({ path: returnUrl }))
           .catch(() => {})
       } else {
-        this.$router.replace(this.localePath({ name: 'vault' })).catch(() => {})
+        this.$router.replace(this.localePath({ name: 'lock' })).catch(() => {})
       }
     }
   }

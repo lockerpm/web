@@ -339,11 +339,6 @@ Vue.mixin({
             path
           })
         )
-
-        // Show promo popup
-        if (!this.isLifeTimeUser && !this.isEnterpriseMember) {
-          this.$store.commit('UPDATE_NOTICE', { showCyberMonthPopup: true })
-        }
       } catch (e) {
         console.log(e)
         // Wrong master pw

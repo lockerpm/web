@@ -35,7 +35,7 @@
           </div>
           <div>
             <el-select
-              :value="language"
+              :value="locale"
               placeholder="Select"
               @change="changeLang"
             >
