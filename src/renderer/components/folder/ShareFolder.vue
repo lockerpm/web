@@ -25,35 +25,78 @@
 
     <!-- Select -->
     <div class="text-left">
-      <div class="grid grid-cols-4 gap-x-2 mb-4">
+      <!-- Add member/group -->
+      <div class="mb-4">
         <InputText
-          v-model="user.username"
-          label="Email"
+          v-model="searchInput"
+          :disabled="dialogLoading.addGroup || dialogLoading.addMember"
+          :label="$t('data.sharing.enter_email_or_group')"
           class="w-full col-span-3"
-          :error-text="!isMemberEmailInputValid && !!user.username"
-          @keyupEnter="addMember"
         />
-        <el-button
-          class="btn btn-outline-primary"
-          :loading="dialogLoading.addMember"
-          :disabled="!isMemberEmailInputValid"
-          style="margin-bottom: 0.625rem"
-          @click="addMember"
+
+        <el-popover
+          v-model="searchOptionsVisible"
+          placement="bottom"
+          trigger="manual"
+          width="100%"
+          style="width: 100%"
         >
-          {{ $t('data.folders.add_member') }}
-        </el-button>
+          <div style="margin: -12px; padding: 10px 0">
+            <div
+              v-if="showDefaultOption"
+              class="w-full hover:bg-black-100 text-black cursor-pointer"
+              style="padding: 11px 20px; transition: all ease 0.2s"
+              @click="addMember(searchInput)"
+            >
+              <p>@ &nbsp; {{ searchInput }}</p>
+            </div>
+            <div
+              v-for="item in searchOptions"
+              :key="item.id"
+              class="w-full hover:bg-black-100 text-black cursor-pointer"
+              style="padding: 11px 20px; transition: all ease 0.2s"
+              @click="
+                item.type === 'group'
+                  ? addGroup(item.id)
+                  : addMember(item.email)
+              "
+            >
+              <p v-if="item.type === 'group'">
+                <i class="fas fa-user-friends" /> &nbsp; {{ item.name }}
+              </p>
+              <p v-else>
+                <i class="el-icon-user-solid" /> &nbsp; {{ item.full_name }} ({{
+                  item.email
+                }})
+              </p>
+            </div>
+          </div>
+        </el-popover>
       </div>
+      <!-- Add member/group end -->
     </div>
     <!-- Select end -->
 
     <!-- Table -->
     <div>
-      <el-table :data="newMembers.concat(members)" style="width: 100%">
+      <el-table
+        :data="[...newMembers, ...newGroups, ...members, ...groups]"
+        style="width: 100%"
+      >
+        <!-- Name -->
         <el-table-column :label="$t('data.sharing.member')" width="200">
           <template slot-scope="scope">
-            {{ scope.row.email || scope.row.username }}
+            <div v-if="scope.row.type === 'group'">
+              <i class="fas fa-user-friends" /> &nbsp; {{ scope.row.name }}
+            </div>
+            <div v-else>
+              {{ scope.row.email || scope.row.username }}
+            </div>
           </template>
         </el-table-column>
+        <!-- Name end -->
+
+        <!-- Member role -->
         <el-table-column :label="$t('common.view')" width="100">
           <template slot-scope="scope">
             <el-radio
@@ -71,6 +114,9 @@
             </el-radio>
           </template>
         </el-table-column>
+        <!-- Member role end -->
+
+        <!-- Admin role -->
         <el-table-column :label="$t('common.edit')" width="100">
           <template slot-scope="scope">
             <el-radio
@@ -88,32 +134,51 @@
             </el-radio>
           </template>
         </el-table-column>
+        <!-- Admin role end -->
+
+        <!-- Status -->
         <el-table-column :label="$t('common.status')">
           <template slot-scope="scope">
-            <span v-if="scope.row.status === 'pending'" class="italic">
-              {{ shareInvitationStatus.pending }}
-            </span>
-            <span
-              v-else
-              class="label whitespace-normal"
-              :class="{
-                'label-primary-light': scope.row.status === 'confirmed',
-                'label-info': scope.row.status === 'accepted',
-                'label-warning-light': scope.row.status === 'invited',
-                'label-danger-light': scope.row.status === 'expired',
-                'label-success': !scope.row.status
-              }"
-            >
-              {{ shareInvitationStatus[`${scope.row.status || 'shared'}`] }}
-            </span>
-            <span v-if="scope.row.status === 'accepted'"><button
-              class="btn btn-outline-primary mt-2"
-              @click="$emit('confirm-user', { user: scope.row })"
-            >
-              {{ $t('common.confirm') }}
-            </button></span>
+            <template v-if="scope.row.type !== 'group'">
+              <!-- Pending -->
+              <span v-if="scope.row.status === 'pending'" class="italic">
+                {{ shareInvitationStatus.pending }}
+              </span>
+              <!-- Pending end -->
+
+              <!-- Other status -->
+              <span
+                v-else
+                class="label whitespace-normal"
+                :class="{
+                  'label-primary-light': scope.row.status === 'confirmed',
+                  'label-info': scope.row.status === 'accepted',
+                  'label-warning-light': scope.row.status === 'invited',
+                  'label-danger-light': scope.row.status === 'expired',
+                  'label-success': !scope.row.status
+                }"
+              >
+                {{ shareInvitationStatus[`${scope.row.status || 'shared'}`] }}
+              </span>
+              <!-- Other status end -->
+
+              <!-- Confirm user -->
+              <span v-if="scope.row.status === 'accepted'">
+                <!-- TODO -->
+                <button
+                  class="btn btn-outline-primary mt-2"
+                  @click="$emit('confirm-user', { user: scope.row })"
+                >
+                  {{ $t('common.confirm') }}
+                </button>
+              </span>
+              <!-- Confirm user end -->
+            </template>
           </template>
         </el-table-column>
+        <!-- Status end -->
+
+        <!-- Delete -->
         <el-table-column width="50">
           <template slot-scope="scope">
             <span class="cursor-pointer" @click="stopSharing(scope.row)">
@@ -121,6 +186,7 @@
             </span>
           </template>
         </el-table-column>
+        <!-- Delete end -->
       </el-table>
     </div>
     <!-- Table end -->
@@ -137,7 +203,7 @@
           :disabled="loading"
           @click="shareFolder()"
         >
-          {{ $t('common.save') }}
+          {{ isBelongToTeam ? $t('common.update') : $t('common.share') }}
         </button>
       </div>
     </div>
@@ -153,50 +219,41 @@ import { FolderRequest } from '../../jslib/src/models/request'
 
 export default {
   components: { InputText },
+
   data () {
     return {
       CipherType,
       folder: {
         collectionIds: [],
         organizationId: ''
-        // viewPassword: true
       },
       originFolder: {},
       loading: false,
       dialogVisible: false,
-      errors: {},
-      writeableCollections: [],
-      user: {
-        id: null,
-        username: '',
-        role: 'member'
-      },
       newMembers: [],
+      newGroups: [],
       orgKey: null,
       sharingKey: null,
       dialogLoading: {
-        addMember: false
-      }
+        addMember: false,
+        addGroup: false
+      },
+      searchOptionsVisible: false,
+      searchTimeout: null,
+      searchInput: '',
+      searchOptions: []
     }
   },
+
   computed: {
-    ownershipOptions () {
-      return this.teams.filter(e =>
-        ['owner', 'admin', 'manager'].includes(e.role)
-      )
+    isBelongToTeam () {
+      return this.originFolder.organizationId
     },
-    roleOptions () {
-      return [
-        // { label: 'Viewer', value: 'viewer' },
-        // { label: 'Editor', value: 'editor' },
-        // { label: 'Admin', value: 'admin' },
-        { label: this.$t('data.ciphers.viewable'), value: 'member' },
-        { label: this.$t('data.ciphers.editable'), value: 'admin' }
-      ]
-    },
+
     shareInvitationStatus () {
       return this.$t('data.sharing')
     },
+
     members () {
       const share = this.myShares.find(
         s => s.id === this.folder.organizationId
@@ -213,20 +270,56 @@ export default {
         }) || []
       )
     },
-    isMemberEmailInputValid () {
-      const emails = this.user.username
-        .split(',')
-        .map(item => item.trim())
-        .filter(item => item.length)
-      if (!emails.length) {
-        return false
-      }
-      return emails.every(this.validateEmail)
+
+    groups () {
+      const share = this.myShares.find(
+        s => s.id === this.folder.organizationId
+      ) || { groups: [] }
+      return (
+        share.groups.map(group => {
+          return {
+            ...group,
+            type: 'group',
+            key: null
+          }
+        }) || []
+      )
+    },
+
+    showDefaultOption () {
+      return (
+        !!this.searchInput &&
+        this.validateEmail(this.searchInput) &&
+        !this.searchOptions.length &&
+        !this.isSelf({ email: this.searchInput })
+      )
     }
   },
+
+  watch: {
+    searchInput (val) {
+      clearTimeout(this.searchTimeout)
+      if (val && val.trim()) {
+        this.searchOptionsVisible =
+          this.showDefaultOption || this.searchOptions.length > 0
+        this.searchTimeout = setTimeout(() => {
+          this.searchGroups(val)
+        }, 200)
+      } else {
+        this.searchOptionsVisible = false
+        this.searchOptions = []
+      }
+    }
+  },
+
   methods: {
     async openDialog (folder = {}) {
       this.dialogVisible = true
+      this.searchInput = ''
+      this.searchOptions = []
+      this.newMembers = []
+      this.newGroups = []
+      this.originFolder = { organizationId: '', ...folder }
       this.folder = { organizationId: '', ...folder }
       if (this.folder.organizationId) {
         this.orgKey = await this.$cryptoService.getOrgKey(
@@ -238,9 +331,17 @@ export default {
         this.orgKey = shareKey[1]
       }
     },
+
     closeDialog () {
+      this.newMembers = []
+      this.newGroups = []
+      this.dialogLoading = {
+        addMember: false,
+        addGroup: false
+      }
       this.dialogVisible = false
     },
+
     async getPublicKey (email) {
       const { public_key: publicKey } = await this.$axios.$post(
         'cystack_platform/pm/sharing/public_key',
@@ -248,13 +349,15 @@ export default {
       )
       return publicKey
     },
+
     async generateMemberKey (publicKey, orgKey) {
       const pk = Utils.fromB64ToArray(publicKey)
       const key = await this.$cryptoService.rsaEncrypt(orgKey.key, pk.buffer)
       return key.encryptedString
     },
+
     async shareFolder () {
-      if (!this.newMembers.length) {
+      if (!this.newMembers.length && !this.newGroups.length) {
         this.closeDialog()
         return
       }
@@ -284,7 +387,8 @@ export default {
             name: collectionName,
             ciphers
           },
-          members: this.newMembers
+          members: this.newMembers,
+          groups: this.newGroups
         }
         if (this.folder.organizationId) {
           const url = `cystack_platform/pm/sharing/${this.folder.organizationId}/members`
@@ -295,7 +399,6 @@ export default {
         }
         this.notify(this.$tc('data.notifications.share_success', 1), 'success')
         this.closeDialog()
-        this.newMembers = []
         this.$emit('shared-folder')
       } catch (e) {
         if (e.response && e.response.data && e.response.data.code === '7002') {
@@ -312,17 +415,13 @@ export default {
         this.loading = false
       }
     },
-    async addMember () {
-      if (!this.isMemberEmailInputValid) {
+
+    async addMember (email) {
+      this.searchInput = ''
+      if (!this.validateEmail(email) || this.isShared({ email })) {
         return
       }
-      const emails = this.user.username
-        .split(',')
-        .map(item => item.trim())
-        .filter(item => item.length)
-      if (!emails.length) {
-        return
-      }
+      const emails = [email]
       try {
         this.dialogLoading.addMember = true
         const members = await Promise.all(
@@ -341,16 +440,67 @@ export default {
           })
         )
         this.newMembers = this.newMembers.concat(members)
-        this.user.username = ''
       } catch (e) {
+        console.log(e)
         this.notify(this.$t('errors.something_went_wrong'), 'error')
       } finally {
         this.dialogLoading.addMember = false
       }
     },
+
+    async addGroup (id) {
+      this.searchInput = ''
+      const group = this.searchOptions.find(
+        o => o.type === 'group' && o.id === id
+      )
+      if (!group || this.isShared(group)) {
+        return
+      }
+      try {
+        this.dialogLoading.addGroup = true
+        const res = await this.$axios.$get(
+          `cystack_platform/pm/enterprises/user_groups/${id}/members`
+        )
+        const members = await Promise.all(
+          res.members
+            .filter(m => !!m.email)
+            .map(async m => {
+              const publicKey = m.public_key
+              const key = publicKey
+                ? await this.generateMemberKey(publicKey, this.orgKey)
+                : null
+              return {
+                username: m.email,
+                key
+              }
+            })
+        )
+        this.newGroups = [
+          ...this.newGroups,
+          {
+            id,
+            name: group.name,
+            role: 'member',
+            type: 'group',
+            isNew: true,
+            members
+          }
+        ]
+      } catch (e) {
+        console.log(e)
+        this.notify(this.$t('errors.something_went_wrong'), 'error')
+      } finally {
+        this.dialogLoading.addGroup = false
+      }
+    },
+
     async stopSharing (row) {
       if (row.status === 'pending') {
         this.newMembers = this.newMembers.filter(member => member !== row)
+        return
+      }
+      if (row.type === 'group' && row.isNew) {
+        this.newGroups = this.newGroups.filter(group => group !== row)
         return
       }
       try {
@@ -379,26 +529,30 @@ export default {
           }
         )
         this.notify(this.$t('data.notifications.stop_share_success'), 'success')
+
+        // Close dialog if is last member to refresh item orgId
+        if (this.members.length + this.groups.length <= 1) {
+          this.closeDialog()
+        }
+
         await this.getMyShares()
       } catch (error) {
         this.notify(this.$t('errors.something_went_wrong'), 'warning')
         console.log(error)
       }
     },
+
     async getMyShares () {
       this.$store.dispatch('LoadMyShares')
     },
+
     async updatePermission (row, role) {
-      if (row.id) {
+      if (row.id && !row.isNew) {
         try {
-          if (this.user.role === 'member-hide_passwords') {
-            this.user.role = 'member'
-            this.user.hide_passwords = true
-          } else {
-            this.user.hide_passwords = false
-          }
           await this.$axios.$put(
-            `cystack_platform/pm/sharing/${this.folder.organizationId}/members/${row.id}`,
+            `cystack_platform/pm/sharing/${this.cipher.organizationId}/${
+              row.type === 'group' ? 'groups' : 'members'
+            }/${row.id}`,
             {
               role
             }
@@ -416,6 +570,43 @@ export default {
       } else {
         row.role = role
       }
+    },
+
+    async searchGroups (query) {
+      if (!this.currentOrg.id) {
+        return
+      }
+      const res = await this.$axios.$post(
+        `cystack_platform/pm/enterprises/${this.currentOrg.id}/members_groups/search`,
+        {
+          query
+        }
+      )
+      this.searchOptions = [
+        ...res.members.filter(m => !this.isSelf(m)),
+        ...res.groups.map(g => ({ ...g, type: 'group' }))
+      ]
+      this.$nextTick(() => {
+        this.searchOptionsVisible =
+          this.showDefaultOption || this.searchOptions.length > 0
+      })
+    },
+
+    isShared (item) {
+      if (item.type === 'group') {
+        return (
+          !!this.groups.find(g => g.id === item.id) ||
+          !!this.newGroups.find(g => g.id === item.id)
+        )
+      }
+      return (
+        !!this.members.find(m => m.username === item.email) ||
+        !!this.newMembers.find(m => m.username === item.email)
+      )
+    },
+
+    isSelf (item) {
+      return item.email === this.currentUser.email
     }
   }
 }
