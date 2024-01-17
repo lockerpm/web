@@ -349,15 +349,6 @@ export default {
   },
 
   methods: {
-    handleClose (index) {
-      this.newMembers.splice(index, 1)
-    },
-
-    beforeDestroy () {
-      this.orgKey = null
-      this.sharingKey = null
-    },
-
     async openDialog (cipher = {}) {
       this.dialogVisible = true
       this.searchInput = ''
@@ -611,6 +602,7 @@ export default {
         this.getMyShares()
       } catch (error) {
         this.notify(this.$t('errors.something_went_wrong'), 'warning')
+        console.log(error)
       }
     },
 
