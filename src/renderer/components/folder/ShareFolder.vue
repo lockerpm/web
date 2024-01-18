@@ -550,7 +550,7 @@ export default {
       if (row.id && !row.isNew) {
         try {
           await this.$axios.$put(
-            `cystack_platform/pm/sharing/${this.cipher.organizationId}/${
+            `cystack_platform/pm/sharing/${this.folder.organizationId}/${
               row.type === 'group' ? 'groups' : 'members'
             }/${row.id}`,
             {
