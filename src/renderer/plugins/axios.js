@@ -16,7 +16,7 @@ export default function ({
 
     // Update token axios header
     if (token) {
-      request.headers.common.Authorization = 'Bearer ' + token
+      request.headers.Authorization = 'Bearer ' + token
     }
     if (deviceId) {
       request.headers['device-id'] = deviceId
