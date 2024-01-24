@@ -21,12 +21,12 @@ Vue.mixin({
     ) {
       const violations = []
       if (!this.enterprisePolicies && !policies) {
-        return violations
+        return []
       }
       const policy = policies
         ? policies[policy_type]
         : this.enterprisePolicies[policy_type]
-      if (policy && policy.enabled) {
+      if (policy && policy.enabled && policy.config) {
         if (
           policy.config.minLength &&
           password.length < policy.config.minLength
@@ -79,7 +79,7 @@ Vue.mixin({
         return []
       }
       const policy = this.enterprisePolicies[policy_type]
-      if (policy && policy.enabled) {
+      if (policy && policy.enabled && policy.config) {
         if (policy.config.minLength) {
           res.push(
             this.$t('data.password_policies.min_password_length', {
