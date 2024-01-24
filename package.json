@@ -11,13 +11,14 @@
     "lint": "node_modules/.bin/eslint --ext .js,.vue,.ts -f ./node_modules/eslint-friendly-formatter ./src",
     "lint:fix": "yarn run lint -- --fix",
     "preinstall": "node .electron-nuxt/check-engines.js",
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps && yarn patch",
     "dev-web": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 CS_ENV=web NODE_OPTIONS=--max_old_space_size=6096 nuxt ./src/renderer/ --port 3011",
     "build-web": "cross-env CS_ENV=web nuxt build ./src/renderer/",
     "start-web": "pm2 -v && pm2 start --no-daemon ecosystem.config.js",
     "sub:init": "git submodule update --init --recursive",
     "sub:update": "git submodule update --remote",
-    "sub:pull": "git submodule foreach git pull origin main"
+    "sub:pull": "git submodule foreach git pull origin main",
+    "patch": "npx patch-package"
   },
   "keywords": [],
   "author": "sonnh@cystack.net <sonnh@cystack.net>",
