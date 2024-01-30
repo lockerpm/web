@@ -162,13 +162,13 @@ export default {
       this.start = val.main
       if (val.main === 0) {
         this.start = this.getRemainingTime(this.otpData.period)
-        setTimeout(() => {
-          this.otp = getTOTP(this.otpData)
-        }, 100)
+      }
+      if (val.main <= 3 || val.main >= this.otpData.period - 3) {
+        this.otp = getTOTP(this.otpData)
       }
     },
     getRemainingTime (period = 30) {
-      return period + 1 - (Math.floor(new Date().getTime() / 1000) % period)
+      return period - (Math.floor(new Date().getTime() / 1000) % period)
     },
     changeOption (option) {
       this.option = option
