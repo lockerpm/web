@@ -22,7 +22,7 @@
     <el-dialog
       append-to-body
       :visible.sync="dialogVisible"
-      custom-class="max-w-[600px]"
+      custom-class="max-w-[620px]"
       width="90%"
     >
       <img
@@ -34,11 +34,10 @@
         v-for="(text, index) in $t('landing_banner.tet_holiday.details')"
         :key="index"
       >
-        <span
+        <p
           class="text-black"
           v-html="text"
         />
-        <br>
         <br>
       </span>
     </el-dialog>
