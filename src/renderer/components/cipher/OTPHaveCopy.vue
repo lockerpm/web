@@ -99,16 +99,15 @@ export default {
       this.start = this.getRemainingTime(this.otpData.period)
     },
     getRemainingTime (period = 30) {
-      // Better late 1 sec than early
-      return period + 1 - (Math.floor(new Date().getTime() / 1000) % period)
+      return period - (Math.floor(new Date().getTime() / 1000) % period)
     },
     countdown (val) {
       this.start = val.main
       if (val.main === 0) {
         this.start = this.getRemainingTime(this.otpData.period)
-        setTimeout(() => {
-          this.otp = getTOTP(this.otpData)
-        }, 100)
+      }
+      if (val.main <= 3 || val.main >= this.otpData.period - 3) {
+        this.otp = getTOTP(this.otpData)
       }
     }
   }

@@ -170,7 +170,7 @@ export default {
     shouldRenderNoCipher () {
       const haveCipher = this.ciphers?.length
       if (this.getRouteBaseName() === 'vault') {
-        return this.folders && !this.folders?.length && !haveCipher
+        return this.folders && !this.folders?.length && !haveCipher && !this.searchText
       }
       if (this.getRouteBaseName() === 'vault-folders-folderId') {
         return false

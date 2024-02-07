@@ -22,11 +22,11 @@
     <el-dialog
       append-to-body
       :visible.sync="dialogVisible"
-      custom-class="max-w-[600px]"
+      custom-class="max-w-[620px]"
       width="90%"
     >
       <img
-        src="https://s.cystack.net/resource/home/content/30174004/Frame-4044.png"
+        :src="locale === 'vi' ? 'https://s.cystack.net/resource/home/content/07104747/tet-closing-vi.png' : 'https://s.cystack.net/resource/home/content/07102022/tet-closing-en.png'"
         alt="Happy Lunar New Year"
         class="mt-6 mb-6"
       >
@@ -34,11 +34,10 @@
         v-for="(text, index) in $t('landing_banner.tet_holiday.details')"
         :key="index"
       >
-        <span
+        <p
           class="text-black"
           v-html="text"
         />
-        <br>
         <br>
       </span>
     </el-dialog>
