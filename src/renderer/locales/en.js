@@ -3498,16 +3498,22 @@ module.exports = {
     }
   },
   landing_banner: {
-    desc: 'Introducing a new Locker password manager for Firefox.',
     read_more: 'Learn More',
     tet_holiday: {
-      desc: 'Tet Holiday Closing Announcement',
+      desc: 'Announcement of holiday schedule for Lunar New Year 2024',
       read_more: 'Learn More',
       details: [
-        'Vietnamese Lunar New Year is around the corner. Locker would like to inform you about the schedule of New Year Holiday as following:',
-        'Our office will be closed to observe Tet Holiday 2023 from 12:30pm Thursday, January 19th, 2023 to Thursday, January 26th, 2023.<br>Business operation will resume as normal on Friday, January 27th, 2023.',
-        'Many thanks for your kind attention and being appreciative with this situation. On this occasion, we would like to thank you for your support and look forward to receiving your continuing assistance in 2023.<br>Wish you and your family a healthy, happy and successful new year.',
-        'Happy Tet 2023<br>Locker Team'
+        'Dear our valued users,',
+        'As we enter the lively celebrations of the Lunar New Year 2024, we want to send our warmest wishes to our valued community! 🥂',
+        'The Lunar New Year is a time of reflection, togetherness, and the anticipation of exciting prospects. We wish all our users and their families a year filled with abundance, good health, and happiness.',
+        'In celebration of this special occasion, our team will be taking a break to cherish the festivities with our family and friends. We believe in fostering a healthy work-life balance, and this break allows our team to recharge and return with renewed energy to serve you better.',
+        'Please kindly take note of the adjustment of our working days:',
+        '📆 <b>Holiday time</b>: February 8th, 2024 - February 14th, 2024',
+        '📆 <b>Return to work time</b>: February 15th, 2024',
+        'Please be advised that service response times may experience slight delays. We genuinely appreciate your understanding and patience.',
+        'Once again, Happy Lunar New Year and our best wishes for your prosperity in 2024! 🎉🐉',
+        'Sincerely,',
+        'Locker Team.'
       ]
     }
   },

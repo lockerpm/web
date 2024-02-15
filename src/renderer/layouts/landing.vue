@@ -1,6 +1,7 @@
 <template>
   <div>
     <TopBanner />
+    <!-- <TetHolidayClosing /> -->
 
     <Header />
 
@@ -49,6 +50,7 @@
 import Header from '../components/landing/Header'
 import Footer from '../components/landing/Footer'
 import TopBanner from '../components/landing/TopBanner'
+// import TetHolidayClosing from '../components/landing/TetHolidayClosing'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var
@@ -60,6 +62,7 @@ export default {
     Header,
     Footer,
     TopBanner
+    // TetHolidayClosing
   },
   data () {
     return {

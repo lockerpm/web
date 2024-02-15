@@ -3499,18 +3499,22 @@ module.exports = {
     }
   },
   landing_banner: {
-    desc: 'Ra mắt tiện ích quản lý mật khẩu trên Firefox.',
     read_more: 'Xem ngay',
     tet_holiday: {
-      desc: 'Thông báo nghỉ Tết Âm lịch Quý Mão 2023',
+      desc: 'Thông báo lịch nghỉ Tết Nguyên Đán 2024',
       read_more: 'Xem ngay',
       details: [
-        'Locker xin thông báo đến quý người dùng lịch nghỉ tết âm lịch như sau:',
-        'Từ: 12h30, Thứ Năm, 19/01/2023<br>Đến: Thứ Năm, 26/01/2023',
-        'Chúng tôi sẽ quay trở lại làm việc bình thường vào Thứ Sáu, 27/01/2023.',
-        'Nhân dịp này, chúng tôi xin gửi lời cảm ơn đến quý người dùng đã tin tưởng và ủng hộ Locker trong năm vừa qua và hy vọng sẽ tiếp tục nhận được sự quan tâm này trong năm 2023.',
-        'Xin kính chúc mọi người một năm mới mạnh khoẻ, hạnh phúc và thành công.',
-        'Đội ngũ Locker'
+        'Kính gửi người dùng Locker,',
+        'Lời đầu tiên, chúng tôi trân trọng gửi những lời chúc nồng nhiệt nhất đến cộng đồng Locker nhân dịp Tết Nguyên Đán 2024! 🥂',
+        'Tết Nguyên Đán là khoảng thời gian quý giá để cùng nhau nhìn lại một năm đã qua, cũng như sát cánh bên nhau và đón chờ những điều thú vị trong tương lai. Chúng tôi xin chúc tất cả mọi người một năm mới dồi dào sức khỏe và hạnh phúc.',
+        'Để kỷ niệm dịp đặc biệt này, đội ngũ Locker sẽ tận hưởng kì nghỉ dài mùa lễ hội bên gia đình và bạn bè. Chúng tôi tin việc cân bằng giữa công việc và cuộc sống một cách lành mạnh sẽ giúp đội ngũ chúng tôi có thể quay trở lại với nhiều nguồn năng lượng tích cực và phục vụ các bạn tốt hơn.',
+        'Thời gian làm việc của chúng tôi như sau:',
+        '📆 <b>Thời gian nghỉ lễ</b>: 08/2/2024 - 14/02/2024',
+        '📆 <b>Thời gian trở lại làm việc</b>: 15/02/2024',
+        'Xin lưu ý rằng thời gian phản hồi của dịch vụ có thể bị chậm trễ một chút. Mong các bạn thông cảm cho sự bất tiện này.',
+        'Một lần nữa, chúc mừng Tết Nguyên Đán 2024 và xin gửi những lời chúc tốt đẹp nhất tới toàn bộ cộng đồng người dùng Locker! 🎉🐉',
+        'Trân trọng,',
+        'Đội ngũ Locker.'
       ]
     }
   },
