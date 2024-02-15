@@ -171,7 +171,8 @@ module.exports = {
     yes: 'Có',
     you: 'Bạn',
     your_digital_vault: 'Kho dữ liệu số của bạn',
-    zip: 'Mã bưu chính'
+    zip: 'Mã bưu chính',
+    send: 'Gửi'
   },
   sidebar: {
     all: 'Tất cả',
