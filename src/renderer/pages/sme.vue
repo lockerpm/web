@@ -2,31 +2,37 @@
   <div>
     <!-- Header -->
     <section class="pt-10">
-      <div class="flex max-w-7xl mx-auto px-6">
-        <div class="lg:w-6/12 w-full">
-          <div style="margin-bottom: 120px">
-            <a href="/" target="_blank">
-              <img
-                class="h-12"
-                src="~/assets/images/logo/logo_black_with_text.svg"
-              >
-            </a>
-          </div>
-
-          <h1 class="font-semibold font-sans text-black landing-font-81 mb-8" v-html="$t('sme.header.title')" />
-          <p class="landing-font-20 mb-8">
-            {{ $t('sme.header.desc') }}
-          </p>
-
-          <div class="flex flex-wrap items-center mb-16">
-            <div class="bg-primary rounded-full px-9 py-3 text-white font-semibold landing-font-21 cursor-pointer hover:opacity-70 transition-opacity">
-              {{ $t('sme.header.btn') }}
+      <div class="relative w-full">
+        <div class="flex max-w-7xl mx-auto px-6 flex-wrap">
+          <div class="lg:w-1/2 w-full">
+            <div style="margin-bottom: 70px">
+              <a href="/" target="_blank">
+                <img
+                  class="h-12"
+                  src="~/assets/images/logo/logo_black_with_text.svg"
+                >
+              </a>
             </div>
-            <a href="#" class="text-primary font-medium ml-4 landing-font-21">
-              {{ $t('sme.header.trial') }}
-              <i class="el-icon-arrow-right" />
-            </a>
+
+            <h1 class="font-semibold font-sans text-black landing-font-81 mb-8" v-html="$t('sme.header.title')" />
+            <p class="landing-font-20 mb-8">
+              {{ $t('sme.header.desc') }}
+            </p>
+
+            <div class="flex flex-wrap items-center mb-16">
+              <div class="bg-primary rounded-full px-9 py-3 text-white font-semibold landing-font-21 cursor-pointer hover:opacity-70 transition-opacity">
+                {{ $t('sme.header.btn') }}
+              </div>
+              <a href="#" class="text-primary font-medium ml-4 landing-font-21">
+                {{ $t('sme.header.trial') }}
+                <i class="el-icon-arrow-right" />
+              </a>
+            </div>
           </div>
+        </div>
+
+        <div class="hidden lg:flex w-11/12 max-w-7xl absolute right-0 bottom-0">
+          <div ref="animationHero" />
         </div>
       </div>
 
@@ -162,10 +168,13 @@
 
     <!-- Hero -->
     <section class="bg-[#FAFAFA]">
-      <div class="flex max-w-7xl mx-auto px-6 py-10 items-center justify-between md:flex-row flex-col">
-        <h2 class="landing-font-81 text-black font-semibold max-w-[600px]">
-          {{ $t('sme.hero.title') }}
-        </h2>
+      <div class="flex max-w-7xl mx-auto px-6 py-10 items-center justify-between flex-wrap">
+        <div class="w-1/2">
+          <h2 class="landing-font-81 text-black font-semibold max-w-[600px]">
+            {{ $t('sme.hero.title') }}
+          </h2>
+        </div>
+        <div class="w-1/2" />
       </div>
     </section>
     <!-- Hero end -->
@@ -200,8 +209,29 @@
     <!-- News end -->
 
     <!-- Process -->
-    <section class="py-20 max-w-7xl mx-auto px-6">
-      <div />
+    <section class="max-w-7xl mx-auto px-6">
+      <div ref="animationProcess" class="hidden lg:flex" />
+      <div class="flex flex-col lg:hidden">
+        <h2 class="landing-font-54 font-semibold text-black mb-6">
+          {{ $t('sme.process.title') }}
+        </h2>
+        <div
+          v-for="(item, index) in $t('sme.process.items')"
+          :key="index"
+          class="rounded-2xl border border-primary flex flex-col items-center text-center p-5 mt-6"
+        >
+          <img
+            class="h-16 mb-4"
+            :src="require(`~/assets/images/pages/sme/process/process-${index + 1}.svg`)"
+          >
+          <h3 class="font-semibold text-black landing-font-21 mb-4">
+            {{ item.title }}
+          </h3>
+          <p class="text-black">
+            {{ item.desc }}
+          </p>
+        </div>
+      </div>
     </section>
     <!-- Process end -->
 
@@ -258,7 +288,10 @@
     <!-- Contact -->
     <section class="py-20 max-w-7xl mx-auto px-6">
       <div class="rounded-2xl bg-[#FAFAFA] flex items-center">
-        <div class="w-1/2 flex flex-col items-center p-10">
+        <div class="w-1/2 hidden lg:flex">
+          <div ref="animationContact" />
+        </div>
+        <div class="lg:w-1/2 w-full flex flex-col items-center p-10">
           <h2 class="landing-font-81 font-semibold text-black mb-3">
             {{ $t('sme.contact.title') }}
           </h2>
@@ -383,6 +416,20 @@ export default {
     currentYear () {
       return new Date().getFullYear()
     }
+  },
+  mounted () {
+    this.$lottie.loadAnimation({
+      container: this.$refs.animationHero,
+      path: '/img/animation/hero.json'
+    })
+    this.$lottie.loadAnimation({
+      container: this.$refs.animationProcess,
+      path: '/img/animation/process.json'
+    })
+    this.$lottie.loadAnimation({
+      container: this.$refs.animationContact,
+      path: '/img/animation/contact.json'
+    })
   }
 }
 </script>

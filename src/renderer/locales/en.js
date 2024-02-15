@@ -6001,6 +6001,35 @@ module.exports = {
       desc: 'Khám phá cách VinCSS tận hưởng khả năng quản lý mật khẩu an toàn lại và thuận tiện với Locker Password Manager, hướng tới mục tiêu loại bỏ hoàn toàn sự phụ thuộc vào mật khẩu trong tương lai.',
       btn: 'Tìm hiểu thêm'
     },
+    process: {
+      title: 'Quy trình làm việc',
+      items: [
+        {
+          title: 'Khởi động dự án',
+          desc: 'Trao đổi với khách hàng để hiểu về nhu cầu, phạm vi và mục tiêu của dự án.'
+        },
+        {
+          title: 'Lập kế hoạch',
+          desc: 'Thiết lập kế hoạch triển khai, nhân sự tham gia, chi phí và các yêu cầu cần thiết để triển khai dự án.'
+        },
+        {
+          title: 'Áp dụng',
+          desc: 'Triển khai giải pháp quản lý mật khẩu Locker cho doanh nghiệp.'
+        },
+        {
+          title: 'Báo cáo',
+          desc: 'Sau giai đoạn một, đội ngũ sẽ gửi báo cáo cho khách hàng về các chỉ số cải tiến thông qua hệ thống gửi tài liệu bảo mật của CyStack.'
+        },
+        {
+          title: 'Theo dõi',
+          desc: 'Trao đổi với khách hàng để đảm bảo mọi vấn đề đã được khắc phục, tư vấn các giải pháp để nâng cao tính an toàn cho toàn bộ hệ thống.'
+        },
+        {
+          title: 'Đóng dự án',
+          desc: 'Khách hàng thực hiện theo khuyến nghị từ CyStack. Lưu trữ, hoặc xóa các dữ liệu liên quan đến dự án và kết thúc dự án.'
+        }
+      ]
+    },
     why: {
       title: 'Vì sao Locker là lựa chọn hàng đầu cho doanh nghiệp Việt Nam?',
       table: {
