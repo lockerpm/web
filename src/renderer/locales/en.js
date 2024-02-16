@@ -75,7 +75,7 @@ module.exports = {
     invite: 'Invite',
     issue: 'issue | issues',
     item_name: 'Item name',
-    job_title: 'Job title (optional)',
+    job_title: 'Job title',
     job_title_placeholder: 'Your job title',
     joined: 'Joined at',
     last_name: 'Last name',
@@ -5922,6 +5922,8 @@ module.exports = {
     desc: ''
   },
   sme: {
+    title: 'Locker Password Manager | SME',
+    desc: '',
     header: {
       title: 'Giải pháp quản lý mật khẩu <span class="text-primary">dành cho doanh nghiệp</span>',
       desc: 'Locker Password Manager là trình quản lý mật khẩu đầu tiên tại Việt Nam giúp tối đa hóa Bảo mật và Hiệu suất cho doanh nghiệp của bạn.',
@@ -6067,7 +6069,25 @@ module.exports = {
     },
     contact: {
       title: 'Nhận tư vấn từ chuyên gia',
-      desc: 'Chúng tôi sẽ liên hệ với bạn sớm nhất để trao đổi sau khi nhận được thông tin từ bạn.'
+      desc: 'Chúng tôi sẽ liên hệ với bạn sớm nhất để trao đổi sau khi nhận được thông tin từ bạn.',
+      form: {
+        fullname: {
+          desc: 'Đầy đủ họ tên'
+        },
+        job: {
+          desc: 'Quản lý dự án'
+        },
+        company: {
+          desc: 'Công ty đang làm việc'
+        },
+        request_desc: {
+          label: 'Mô tả nhu cầu:',
+          desc: 'Hãy chia sẻ thêm về nhu cầu của bạn...'
+        },
+        message: {
+          invalid_data: 'Dữ liệu không hợp lệ'
+        }
+      }
     },
     questions: {
       title: 'Câu hỏi thường gặp',

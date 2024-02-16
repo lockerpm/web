@@ -75,7 +75,7 @@ module.exports = {
     invite: 'Mời',
     issue: 'vấn đề',
     item_name: 'Tên mục',
-    job_title: 'Chức vụ (không bắt buộc)',
+    job_title: 'Chức vụ',
     job_title_placeholder: 'Chức vụ của bạn',
     joined: 'Tham gia lúc',
     last_name: 'Họ',
@@ -5762,5 +5762,191 @@ module.exports = {
   thank_you: {
     title: 'Thank you!',
     desc: ''
+  },
+  sme: {
+    title: 'Locker - Trình quản lý mật khẩu cho doanh nghiệp',
+    desc: 'Locker là giải pháp quản lý mật khẩu hàng đầu cho doanh nghiệp Việt. Bảo mật thông tin, tăng năng suất làm việc nhờ chia sẻ mật khẩu dễ dàng. Trải nghiệm ngay!',
+    header: {
+      title: 'Giải pháp quản lý mật khẩu <span class="text-primary">dành cho doanh nghiệp</span>',
+      desc: 'Locker Password Manager là trình quản lý mật khẩu đầu tiên tại Việt Nam giúp tối đa hóa Bảo mật và Hiệu suất cho doanh nghiệp của bạn.',
+      btn: 'Bắt đầu ngay',
+      trial: '14 ngày dùng thử',
+      sliders: [
+        '<b>83%</b> số vụ vi phạm bảo mật nhắm vào doanh nghiệp với mục đích trục lợi bất chính.'
+      ]
+    },
+    customers: {
+      title: 'Giải pháp quản lý mật khẩu toàn diện',
+      descs: [
+        'Tăng cường bảo mật dữ liệu hệ thống',
+        'Chia sẻ mật khẩu trong đội nhóm nhanh chóng',
+        'Nâng cao và tối ưu hiệu suất làm việc'
+      ],
+      logo_desc: 'Khách hàng tiêu biểu của chúng tôi'
+    },
+    features: {
+      title: 'Tính năng quản lý mật khẩu thông minh',
+      staff: {
+        btn: 'Dành cho nhân viên',
+        items: [
+          {
+            title: 'Kho lưu trữ riêng',
+            desc: 'Lưu trữ tất cả trong một kho lưu trữ riêng tư và an toàn, từ thông tin xác thực đăng nhập đến ghi chú bảo mật.'
+          },
+          {
+            title: 'Tình trạng mật khẩu',
+            desc: 'Xác định và cảnh báo mật khẩu yếu, hoặc mật khẩu trùng lặp gây ra rủi ro bảo mật.'
+          },
+          {
+            title: 'Chia sẻ an toàn',
+            desc: 'Chia sẻ thông tin đăng nhập một cách đơn giản và an toàn với đồng nghiệp, nâng cao hiệu suất làm việc.'
+          },
+          {
+            title: 'Dò quét vi phạm dữ liệu',
+            desc: 'Thực hiện các biện pháp chủ động với tính năng dò quét vi phạm dữ liệu, đi trước tin tặc một bước.'
+          },
+          {
+            title: 'Truy cập đa nền tảng',
+            desc: 'Đồng bộ hoá và tự động điền thông tin đăng nhập trên nhiều nền tảng khác nhau, tiết kiệm thời gian và công sức.'
+          },
+          {
+            title: 'Hỗ trợ khách hàng 24/7',
+            desc: 'Nhận sự trợ giúp bất cứ khi nào - từ trung tâm hỗ trợ của chúng tôi.'
+          }
+        ]
+      },
+      admin: {
+        btn: 'Dành cho quản trị viên',
+        items: [
+          {
+            title: 'Bảng điều khiển quản trị',
+            desc: 'Thông tin chi tiết về hành vi, hoạt động sử dụng mật khẩu của từng thành viên. Quản lý công việc tập trung tại một nơi.'
+          },
+          {
+            title: 'Quản lý đội nhóm',
+            desc: 'Chia nhỏ đội nhóm của bạn để dễ dàng quản lý và chia sẻ tài liệu.'
+          },
+          {
+            title: 'Hoạt động đăng nhập',
+            desc: 'Theo dõi chi tiết nhật ký, lịch sử truy cập, các hoạt động được thực hiện trong hệ thống.'
+          },
+          {
+            title: 'Chính sách tuỳ chỉnh',
+            desc: 'Thiết lập bảo mật hiệu quả thông qua các chính sách về mật khẩu và quyền truy cập tuỳ chỉnh.'
+          }
+        ]
+      }
+    },
+    hero: {
+      title: 'Locker đồng hành cùng doanh nghiệp trong mọi lĩnh vực',
+      items: [
+        'Thương mại điện tử',
+        'Tài chính công nghệ',
+        'Ngân hàng',
+        'Marketing',
+        'Công nghệ y tế'
+      ],
+      items2: [
+        'Công nghệ giáo dục',
+        'Logistics',
+        'Bất động sản',
+        'Quản lý dịch vụ đám mây',
+        'Dịch vụ IT'
+      ]
+    },
+    news: {
+      title: 'VinCSS: Lộ trình giảm sự phụ thuộc vào mật khẩu với Locker Password Manager',
+      desc: 'Khám phá cách VinCSS tận hưởng khả năng quản lý mật khẩu an toàn lại và thuận tiện với Locker Password Manager, hướng tới mục tiêu loại bỏ hoàn toàn sự phụ thuộc vào mật khẩu trong tương lai.',
+      btn: 'Tìm hiểu thêm',
+      items: [
+        'Hỗ trợ nhanh chóng 24/7',
+        'Locker',
+        'Đối tác chiến lược của doanh nghiệp Việt Nam'
+      ]
+    },
+    process: {
+      title: 'Quy trình làm việc',
+      items: [
+        {
+          title: 'Khởi động dự án',
+          desc: 'Trao đổi với khách hàng để hiểu về nhu cầu, phạm vi và mục tiêu của dự án.'
+        },
+        {
+          title: 'Lập kế hoạch',
+          desc: 'Thiết lập kế hoạch triển khai, nhân sự tham gia, chi phí và các yêu cầu cần thiết để triển khai dự án.'
+        },
+        {
+          title: 'Áp dụng',
+          desc: 'Triển khai giải pháp quản lý mật khẩu Locker cho doanh nghiệp.'
+        },
+        {
+          title: 'Báo cáo',
+          desc: 'Sau giai đoạn một, đội ngũ sẽ gửi báo cáo cho khách hàng về các chỉ số cải tiến thông qua hệ thống gửi tài liệu bảo mật của CyStack.'
+        },
+        {
+          title: 'Theo dõi',
+          desc: 'Trao đổi với khách hàng để đảm bảo mọi vấn đề đã được khắc phục, tư vấn các giải pháp để nâng cao tính an toàn cho toàn bộ hệ thống.'
+        },
+        {
+          title: 'Đóng dự án',
+          desc: 'Khách hàng thực hiện theo khuyến nghị từ CyStack. Lưu trữ, hoặc xóa các dữ liệu liên quan đến dự án và kết thúc dự án.'
+        }
+      ]
+    },
+    why: {
+      title: 'Vì sao Locker là lựa chọn hàng đầu cho doanh nghiệp Việt Nam?',
+      table: {
+        other_pm: 'Trình quản lý mật khẩu khác',
+        items: [
+          'Hỗ trợ các trình duyệt và nền tảng quen thuộc (Cốc Cốc, Chrome, Firefox, Safari...)',
+          'Hỗ trợ khách hàng 24/7 hoàn toàn bằng tiếng Việt',
+          'Đảm bảo tính minh bạch với mã nguồn mở',
+          'Tính năng email ẩn danh đặc biệt giúp bảo mật danh tính của người dùng',
+          'Tuân thủ các quy định và tiêu chuẩn bảo mật tại Việt Nam',
+          'Cung cấp dịch vụ hỗ trợ kỹ thuật và cài đặt nhanh chóng trong phạm vi Việt Nam',
+          'Chi phí hợp lý, phù hợp với thị trường Việt Nam',
+          'Thường xuyên nâng cấp và cập nhật theo nhu cầu riêng của người dùng Việt Nam'
+        ]
+      }
+    },
+    contact: {
+      title: 'Nhận tư vấn từ chuyên gia',
+      desc: 'Chúng tôi sẽ liên hệ với bạn sớm nhất để trao đổi sau khi nhận được thông tin từ bạn.',
+      form: {
+        fullname: {
+          desc: 'Đầy đủ họ tên'
+        },
+        job: {
+          desc: 'Quản lý dự án'
+        },
+        company: {
+          desc: 'Công ty đang làm việc'
+        },
+        request_desc: {
+          label: 'Mô tả nhu cầu:',
+          desc: 'Hãy chia sẻ thêm về nhu cầu của bạn...'
+        },
+        message: {
+          invalid_data: 'Dữ liệu không hợp lệ'
+        }
+      }
+    },
+    questions: {
+      title: 'Câu hỏi thường gặp',
+      items: [
+        {
+          title: 'Trình quản lý mật khẩu Locker là gì?',
+          desc: 'Locker là trình quản lý mật khẩu giúp người dùng lưu trữ và bảo mật mật khẩu một cách an toàn. Ngoài khả năng lưu trữ dữ liệu đảm bảo tính bảo mật, Locker còn cung cấp thêm các tính năng hữu ích như tự động sinh mật khẩu mạnh, tự động điền mật khẩu khi đăng nhập, đồng bộ hóa trên nhiều thiết bị. Locker giúp người dùng tiết kiệm thời gian và giảm xáo trộn khi đăng nhập bằng cách lưu trữ và điền mật khẩu tự động, đồng thời tăng cường bảo mật bằng cách khuyến nghị việc sử dụng mật khẩu mạnh và khác nhau cho nhiều tài khoản.'
+        },
+        {
+          title: 'Tại sao nhóm của tôi nên dùng trình quản lý mật khẩu?',
+          desc: 'Trình quản lý mật khẩu Locker cung cấp nhiều tính năng giúp quản lý mật khẩu hiệu quả cho các nhóm, tổ chức và doanh nghiệp. Các tính năng bao gồm lưu trữ và chia sẻ mật khẩu an toàn, tự động điền mật khẩu khi đăng nhập, cho phép thiết lập chính sách và quy định bảo mật chung cho toàn bộ nhóm cũng như giám sát hoạt động của từng thành viên. Nhờ đó cải thiện được khả năng bảo mật, năng suất làm việc và hiệu quả hoạt động chung của nhóm.'
+        }
+      ]
+    },
+    cta: {
+      title: 'Trò chuyện cùng chuyên gia',
+      btn: 'Đặt lịch ngay'
+    }
   }
 }

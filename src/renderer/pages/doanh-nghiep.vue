@@ -3,7 +3,7 @@
     <!-- Header -->
     <section class="pt-10">
       <div class="relative w-full">
-        <div class="flex max-w-7xl mx-auto px-6 flex-wrap">
+        <div class="relative z-10 flex max-w-7xl mx-auto px-6 flex-wrap">
           <div class="lg:w-1/2 w-full">
             <div style="margin-bottom: 70px">
               <a href="/" target="_blank">
@@ -20,10 +20,10 @@
             </p>
 
             <div class="flex flex-wrap items-center mb-16">
-              <div class="bg-primary rounded-full px-9 py-3 mb-3 text-white font-semibold landing-font-21 cursor-pointer hover:opacity-70 transition-opacity">
+              <a href="#contact" class="bg-primary rounded-full px-9 py-3 mb-3 text-white hover:text-white font-semibold landing-font-21 cursor-pointer hover:opacity-70 transition-opacity">
                 {{ $t('sme.header.btn') }}
-              </div>
-              <a href="#" class="text-primary font-medium ml-4 mb-3 landing-font-21">
+              </a>
+              <a href="https://locker.io/vi/business/register" target="_blank" class="text-primary font-medium ml-4 mb-3 landing-font-21">
                 {{ $t('sme.header.trial') }}
                 <i class="el-icon-arrow-right" />
               </a>
@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <div class="hidden lg:flex w-11/12 max-w-7xl absolute right-0 bottom-0">
+        <div class="hidden lg:flex w-11/12 max-w-7xl absolute z-0 right-0 bottom-0">
           <div ref="animationHero" />
         </div>
       </div>
@@ -243,11 +243,16 @@
             {{ $t('sme.news.desc') }}
           </p>
           <div>
-            <div class="border border-primary rounded-full py-2 px-6 cursor-pointer">
-              <p class="text-primary font-medium">
-                {{ $t('sme.news.btn') }} &nbsp; <i class="el-icon-arrow-right" />
-              </p>
-            </div>
+            <a
+              href="https://cystack.net/vi/customers/vincss-decoding-tenacious-roadmap-to-passwordless-with-locker-password-manager"
+              target="_blank"
+            >
+              <div class="border border-primary rounded-full py-2 px-6 cursor-pointer">
+                <p class="text-primary font-medium">
+                  {{ $t('sme.news.btn') }} &nbsp; <i class="el-icon-arrow-right" />
+                </p>
+              </div>
+            </a>
           </div>
         </div>
         <!-- Content end -->
@@ -369,7 +374,7 @@
     <!-- Why end -->
 
     <!-- Contact -->
-    <section class="py-20 max-w-7xl mx-auto px-6">
+    <section id="contact" class="py-20 max-w-7xl mx-auto px-6">
       <div class="rounded-2xl bg-[#FAFAFA] flex items-center">
         <div class="w-1/2 hidden lg:flex">
           <div ref="animationContact" />
@@ -382,11 +387,7 @@
             {{ $t('sme.contact.desc') }}
           </p>
 
-          <div class="border rounded-2xl border-black-50 p-12 bg-white mb-8 w-full" />
-
-          <el-button type="primary" round class="w-full">
-            {{ $t('common.send') }}
-          </el-button>
+          <sme-contact-form />
         </div>
       </div>
     </section>
@@ -431,10 +432,10 @@
           {{ $t('sme.cta.title') }}
         </h2>
         <div class="flex flex-wrap items-center justify-center">
-          <div class="bg-primary rounded-full px-9 py-3 mb-3 text-white font-semibold landing-font-21 cursor-pointer hover:opacity-90 transition-opacity">
+          <a href="#contact" class="bg-primary rounded-full px-9 py-3 mb-3 text-white hover:text-white font-semibold landing-font-21 cursor-pointer hover:opacity-90 transition-opacity">
             {{ $t('sme.cta.btn') }}
-          </div>
-          <a href="#" class="text-white font-medium ml-4 mb-3 landing-font-21 hover:text-white">
+          </a>
+          <a href="https://locker.io/vi/business/register" target="_blank" class="text-white font-medium ml-4 mb-3 landing-font-21 hover:text-white">
             {{ $t('sme.header.trial') }}
             <i class="el-icon-arrow-right" />
           </a>
@@ -484,12 +485,15 @@
 </template>
 <script>
 import RunningText from '../components/landing/RunningText.vue'
+import SmeContactForm from '../components/pages/sme/SmeContactForm.vue'
 
 export default {
   components: {
-    RunningText
+    RunningText,
+    SmeContactForm
   },
   layout: 'authenticate',
+  middleware: ['onlyVi'],
   auth: false,
 
   data () {
@@ -497,6 +501,41 @@ export default {
       currentCustomer: 'vingroup',
       currentFeatureGroup: 'staff',
       intervalCustomer: null
+    }
+  },
+
+  head () {
+    const title = this.$t('sme.title')
+    const desc = this.$t('sme.desc')
+    return {
+      title,
+      meta: [
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: title
+        },
+        {
+          hid: 'twitter:title',
+          name: 'twitter:title',
+          content: title
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: desc
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: desc
+        },
+        {
+          hid: 'twitter:description',
+          name: 'twitter:description',
+          content: desc
+        }
+      ]
     }
   },
 
