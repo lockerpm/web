@@ -20,10 +20,10 @@
             </p>
 
             <div class="flex flex-wrap items-center mb-16">
-              <div class="bg-primary rounded-full px-9 py-3 text-white font-semibold landing-font-21 cursor-pointer hover:opacity-70 transition-opacity">
+              <div class="bg-primary rounded-full px-9 py-3 mb-3 text-white font-semibold landing-font-21 cursor-pointer hover:opacity-70 transition-opacity">
                 {{ $t('sme.header.btn') }}
               </div>
-              <a href="#" class="text-primary font-medium ml-4 landing-font-21">
+              <a href="#" class="text-primary font-medium ml-4 mb-3 landing-font-21">
                 {{ $t('sme.header.trial') }}
                 <i class="el-icon-arrow-right" />
               </a>
@@ -52,7 +52,7 @@
 
     <!-- Customers -->
     <section class="py-20 max-w-7xl mx-auto px-6">
-      <div class="w-10/12 mx-auto bg-[#FAFAFA] rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-4 p-12">
+      <div class="md:w-10/12 w-full mx-auto bg-[#FAFAFA] rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-4 p-12">
         <div class="md:pr-4">
           <h2 class="text-black landing-font-54 font-semibold mb-8">
             {{ $t('sme.customers.title') }}
@@ -182,21 +182,54 @@
     <!-- Hero -->
     <section class="bg-[#FAFAFA]">
       <div class="flex max-w-7xl mx-auto px-6 py-10 items-center justify-between flex-wrap">
-        <div class="w-1/2">
-          <h2 class="landing-font-81 text-black font-semibold max-w-[600px]">
+        <div class="md:w-1/2 w-full">
+          <h2 class="landing-font-81 text-black font-semibold max-w-[600px] mb-6 mr-0 md:mr-6 md:mb-0">
             {{ $t('sme.hero.title') }}
           </h2>
         </div>
-        <div class="w-1/2" />
+        <div class="md:w-1/4 w-1/2 flex flex-col h-[500px] overflow-hidden">
+          <running-text :vertical="true">
+            <div
+              v-for="(item, index) in $t('sme.hero.items')"
+              :key="index"
+              class="bg-white rounded-2xl p-6 flex flex-col items-center mb-6 mr-3"
+            >
+              <img
+                class="h-16 mb-3"
+                :src="require(`~/assets/images/pages/sme/hero/item-${index + 1}.svg`)"
+              >
+              <p class="font-medium text-black landing-font-24 text-center">
+                {{ item }}
+              </p>
+            </div>
+          </running-text>
+        </div>
+        <div class="md:w-1/4 w-1/2 flex flex-col h-[500px] overflow-hidden">
+          <running-text :vertical="true" :inverted="true">
+            <div
+              v-for="(item, index) in $t('sme.hero.items2')"
+              :key="index"
+              class="bg-white rounded-2xl p-6 flex flex-col items-center mb-6 ml-3"
+            >
+              <img
+                class="h-16 mb-3"
+                :src="require(`~/assets/images/pages/sme/hero/item2-${index + 1}.svg`)"
+              >
+              <p class="font-medium text-black landing-font-24 text-center">
+                {{ item }}
+              </p>
+            </div>
+          </running-text>
+        </div>
       </div>
     </section>
     <!-- Hero end -->
 
     <!-- News -->
     <section class="py-20 max-w-7xl mx-auto px-6">
-      <div class="w-10/12 mx-auto rounded-2xl border border-primary flex flex-wrap overflow-hidden">
+      <div class="md:w-10/12 w-full mx-auto rounded-2xl border border-primary flex flex-wrap overflow-hidden">
         <!-- Content -->
-        <div class="w-7/12 flex flex-col p-6 items-start">
+        <div class="md:w-7/12 w-full flex flex-col p-6 items-start">
           <h2 class="text-[36px] leading-[48px] font-semibold text-black mb-8">
             {{ $t('sme.news.title') }}
           </h2>
@@ -214,7 +247,7 @@
         <!-- Content end -->
 
         <!-- Img -->
-        <div class="w-5/12">
+        <div class="md:w-5/12 w-full">
           <img
             src="~/assets/images/pages/sme/news.png"
             class="w-full h-full object-cover"
@@ -251,7 +284,7 @@
     <!-- Process -->
     <section class="max-w-7xl mx-auto px-6">
       <div ref="animationProcess" class="hidden lg:flex" />
-      <div class="flex flex-col lg:hidden">
+      <div class="flex flex-col lg:hidden py-20">
         <h2 class="landing-font-54 font-semibold text-black mb-6">
           {{ $t('sme.process.title') }}
         </h2>
@@ -281,47 +314,49 @@
         {{ $t('sme.why.title') }}
       </h2>
 
-      <table>
-        <tbody>
-          <tr class="text-center">
-            <td />
-            <td class="py-8 bg-[#E9FFEC] rounded-tl-2xl rounded-tr-2xl px-6">
-              <p class="landing-font-24 font-semibold text-black">
-                Locker Password Manager
-              </p>
-            </td>
-            <td class="pr-4" />
-            <td class="py-8 bg-[#F5F5F5] rounded-tl-2xl rounded-tr-2xl px-6">
-              <p class="landing-font-24 font-semibold text-black">
-                {{ $t('sme.why.table.other_pm') }}
-              </p>
-            </td>
-          </tr>
-          <tr
-            v-for="(item, index) in $t('sme.why.table.items')"
-            :key="index"
-            class=" border-black-50"
-            :class="{'border-t': index !== 0}"
-          >
-            <td class="text-black py-3 pr-4 landing-font-16">
-              {{ item }}
-            </td>
-            <td
-              class="landing-font-21 bg-[#E9FFEC] text-center"
-              :class="index === $t('sme.why.table.items').length - 1 ? 'rounded-bl-2xl rounded-br-2xl' : ''"
+      <div class="overflow-y-scroll">
+        <table style="min-width: 500px">
+          <tbody>
+            <tr class="text-center">
+              <td />
+              <td class="py-8 bg-[#E9FFEC] rounded-tl-2xl rounded-tr-2xl px-6">
+                <p class="landing-font-24 font-semibold text-black">
+                  Locker Password Manager
+                </p>
+              </td>
+              <td class="pr-4" />
+              <td class="py-8 bg-[#F5F5F5] rounded-tl-2xl rounded-tr-2xl px-6">
+                <p class="landing-font-24 font-semibold text-black">
+                  {{ $t('sme.why.table.other_pm') }}
+                </p>
+              </td>
+            </tr>
+            <tr
+              v-for="(item, index) in $t('sme.why.table.items')"
+              :key="index"
+              class=" border-black-50"
+              :class="{'border-t': index !== 0}"
             >
-              <i class="el-icon-success text-primary" />
-            </td>
-            <td class="pr-4" />
-            <td
-              class="landing-font-21 bg-[#F5F5F5] text-center"
-              :class="index === $t('sme.why.table.items').length - 1 ? 'rounded-bl-2xl rounded-br-2xl' : ''"
-            >
-              <i class="el-icon-error text-danger" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td class="text-black py-3 pr-4 landing-font-16">
+                {{ item }}
+              </td>
+              <td
+                class="landing-font-21 bg-[#E9FFEC] text-center"
+                :class="index === $t('sme.why.table.items').length - 1 ? 'rounded-bl-2xl rounded-br-2xl' : ''"
+              >
+                <i class="el-icon-success text-primary" />
+              </td>
+              <td class="pr-4" />
+              <td
+                class="landing-font-21 bg-[#F5F5F5] text-center"
+                :class="index === $t('sme.why.table.items').length - 1 ? 'rounded-bl-2xl rounded-br-2xl' : ''"
+              >
+                <i class="el-icon-error text-danger" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
     <!-- Why end -->
 
@@ -352,12 +387,12 @@
     <!-- Questions -->
     <section id="faq" class="py-20 mb-20 max-w-7xl mx-auto px-6 border-black-50 border-t border-b">
       <div class="flex flex-wrap">
-        <div class="w-1/2">
+        <div class="md:w-1/2 w-full mb-6 md:mb-0">
           <h2 class="landing-font-54 font-semibold text-black">
             {{ $t('sme.questions.title') }}
           </h2>
         </div>
-        <div class="w-1/2">
+        <div class="md:w-1/2 w-full">
           <el-collapse accordion>
             <el-collapse-item
               v-for="(item, index) in $t('sme.questions.items')"
@@ -371,7 +406,7 @@
                   {{ item.title }}
                 </h3>
               </template>
-              <p class="landing-font-16 pl-14">
+              <p class="landing-font-16 md:pl-14 mt-4">
                 {{ item.desc }}
               </p>
             </el-collapse-item>
@@ -387,11 +422,11 @@
         <h2 class="landing-font-81 font-semibold text-white max-w-[658px] text-center mb-6">
           {{ $t('sme.cta.title') }}
         </h2>
-        <div class="flex flex-wrap items-center">
-          <div class="bg-primary rounded-full px-9 py-3 text-white font-semibold landing-font-21 cursor-pointer hover:opacity-90 transition-opacity">
+        <div class="flex flex-wrap items-center justify-center">
+          <div class="bg-primary rounded-full px-9 py-3 mb-3 text-white font-semibold landing-font-21 cursor-pointer hover:opacity-90 transition-opacity">
             {{ $t('sme.cta.btn') }}
           </div>
-          <a href="#" class="text-white font-medium ml-4 landing-font-21 hover:text-white">
+          <a href="#" class="text-white font-medium ml-4 mb-3 landing-font-21 hover:text-white">
             {{ $t('sme.header.trial') }}
             <i class="el-icon-arrow-right" />
           </a>
@@ -527,6 +562,16 @@ export default {
   font-size: 18px;
   line-height: 24px;
 }
+@media only screen and (max-width: 768px) {
+  .landing-font-81 {
+    font-size: 48px;
+    line-height: 60px;
+  }
+  .landing-font-54 {
+    font-size: 32px;
+    line-height: 44px;
+  }
+}
 #cta > div:first-of-type {
   background-image: url(~assets/images/pages/sme/cta-bg.png);
   background-repeat: no-repeat;
@@ -535,6 +580,11 @@ export default {
 </style>
 <style lang="scss">
 #faq {
+  .el-collapse-item__header {
+    height: auto !important;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
   .el-collapse-item__arrow {
     display: none !important;
   }

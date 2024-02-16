@@ -5996,7 +5996,18 @@ module.exports = {
     hero: {
       title: 'Locker đồng hành cùng doanh nghiệp trong mọi lĩnh vực',
       items: [
-        ''
+        'Thương mại điện tử',
+        'Tài chính công nghệ',
+        'Ngân hàng',
+        'Marketing',
+        'Công nghệ y tế'
+      ],
+      items2: [
+        'Công nghệ giáo dục',
+        'Logistics',
+        'Bất động sản',
+        'Quản lý dịch vụ đám mây',
+        'Dịch vụ IT'
       ]
     },
     news: {
