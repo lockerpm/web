@@ -37,7 +37,9 @@
       </div>
 
       <!-- Slider -->
-      <div class="flex full-width bg-primary text-white py-4 landing-font-24">
+      <div class="relative flex full-width bg-primary text-white py-4 landing-font-24">
+        <div class="opacity-layer-left" />
+        <div class="opacity-layer-right" />
         <running-text>
           <p
             v-for="(item, index) in $t('sme.header.sliders')"
@@ -187,7 +189,9 @@
             {{ $t('sme.hero.title') }}
           </h2>
         </div>
-        <div class="md:w-1/4 w-1/2 flex flex-col h-[500px] overflow-hidden">
+        <div class="md:w-1/4 w-1/2 flex flex-col h-[500px] overflow-hidden relative">
+          <div class="opacity-layer-top" />
+          <div class="opacity-layer-bottom" />
           <running-text :vertical="true">
             <div
               v-for="(item, index) in $t('sme.hero.items')"
@@ -204,7 +208,9 @@
             </div>
           </running-text>
         </div>
-        <div class="md:w-1/4 w-1/2 flex flex-col h-[500px] overflow-hidden">
+        <div class="md:w-1/4 w-1/2 flex flex-col h-[500px] overflow-hidden relative">
+          <div class="opacity-layer-top" />
+          <div class="opacity-layer-bottom" />
           <running-text :vertical="true" :inverted="true">
             <div
               v-for="(item, index) in $t('sme.hero.items2')"
@@ -256,7 +262,9 @@
         <!-- Img end -->
 
         <!-- Slider -->
-        <div class="w-full flex bg-primary py-6 text-white landing-font-24 font-semibold">
+        <div class="w-full relative flex bg-primary py-6 text-white landing-font-24 font-semibold">
+          <div class="opacity-layer-left" />
+          <div class="opacity-layer-right" />
           <running-text>
             <div class="flex items-center">
               <div
@@ -546,6 +554,42 @@ export default {
 }
 </script>
 <style scoped>
+.opacity-layer-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10%;
+  height: 100%;
+  z-index: 100;
+  background: linear-gradient(to right, rgba(38, 131, 52, 1), rgba(38, 131, 52, 0));
+}
+.opacity-layer-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10%;
+  height: 100%;
+  z-index: 100;
+  background: linear-gradient(to right, rgba(38, 131, 52, 0), rgba(38, 131, 52, 1));
+}
+.opacity-layer-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 15%;
+  z-index: 100;
+  background: linear-gradient(to bottom, rgba(250, 250, 250, 1), rgba(250, 250, 250, 0));
+}
+.opacity-layer-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 15%;
+  z-index: 100;
+  background: linear-gradient(to bottom, rgba(250, 250, 250, 0), rgba(250, 250, 250, 1));
+}
 .landing-font-81 {
   font-size: 64px;
   line-height: 80px;
