@@ -37,8 +37,14 @@
       </div>
 
       <!-- Slider -->
-      <div class="full-width bg-primary text-white py-4 landing-font-24">
-        <p v-for="(item, index) in $t('sme.header.sliders')" :key="index" v-html="item" />
+      <div class="flex full-width bg-primary text-white py-4 landing-font-24">
+        <running-text>
+          <p
+            v-for="(item, index) in $t('sme.header.sliders')"
+            :key="index"
+            v-html="item"
+          />
+        </running-text>
       </div>
       <!-- Slider end -->
     </section>
@@ -182,6 +188,7 @@
     <!-- News -->
     <section class="py-20 max-w-7xl mx-auto px-6">
       <div class="w-10/12 mx-auto rounded-2xl border border-primary flex flex-wrap overflow-hidden">
+        <!-- Content -->
         <div class="w-7/12 flex flex-col p-6 items-start">
           <h2 class="text-[36px] leading-[48px] font-semibold text-black mb-8">
             {{ $t('sme.news.title') }}
@@ -197,13 +204,39 @@
             </div>
           </div>
         </div>
+        <!-- Content end -->
 
+        <!-- Img -->
         <div class="w-5/12">
           <img
             src="~/assets/images/pages/sme/news.png"
             class="w-full h-full object-cover"
           >
         </div>
+        <!-- Img end -->
+
+        <!-- Slider -->
+        <div class="w-full flex bg-primary py-6 text-white landing-font-24 font-semibold">
+          <running-text>
+            <div class="flex items-center">
+              <div
+                v-for="(item, index) in $t('sme.news.items')"
+                :key="index"
+                class="flex items-center mx-4"
+              >
+                <div class="h-8 w-8 rounded-full bg-white flex items-center justify-center mr-4">
+                  <i
+                    class="text-primary el-icon-right"
+                  />
+                </div>
+                <p>
+                  {{ item }}
+                </p>
+              </div>
+            </div>
+          </running-text>
+        </div>
+        <!-- Slider end -->
       </div>
     </section>
     <!-- News end -->
@@ -400,7 +433,12 @@
   </div>
 </template>
 <script>
+import RunningText from '../components/landing/RunningText.vue'
+
 export default {
+  components: {
+    RunningText
+  },
   layout: 'authenticate',
   auth: false,
   data () {

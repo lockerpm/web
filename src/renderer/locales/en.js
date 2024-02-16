@@ -5999,7 +5999,12 @@ module.exports = {
     news: {
       title: 'VinCSS: Lộ trình giảm sự phụ thuộc vào mật khẩu với Locker Password Manager',
       desc: 'Khám phá cách VinCSS tận hưởng khả năng quản lý mật khẩu an toàn lại và thuận tiện với Locker Password Manager, hướng tới mục tiêu loại bỏ hoàn toàn sự phụ thuộc vào mật khẩu trong tương lai.',
-      btn: 'Tìm hiểu thêm'
+      btn: 'Tìm hiểu thêm',
+      items: [
+        'Hỗ trợ nhanh chóng 24/7',
+        'Locker',
+        'Đối tác chiến lược của doanh nghiệp Việt Nam'
+      ]
     },
     process: {
       title: 'Quy trình làm việc',
