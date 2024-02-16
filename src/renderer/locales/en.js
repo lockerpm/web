@@ -5994,7 +5994,10 @@ module.exports = {
       }
     },
     hero: {
-      title: 'Locker đồng hành cùng doanh nghiệp trong mọi lĩnh vực'
+      title: 'Locker đồng hành cùng doanh nghiệp trong mọi lĩnh vực',
+      items: [
+        ''
+      ]
     },
     news: {
       title: 'VinCSS: Lộ trình giảm sự phụ thuộc vào mật khẩu với Locker Password Manager',

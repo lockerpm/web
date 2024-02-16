@@ -74,21 +74,27 @@
         </div>
 
         <!-- Logos -->
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center mt-6 md:mt-0">
           <div class="flex items-center justify-between overflow-y-auto mb-10">
             <img
               v-for="(item, index) in customers"
               :key="item"
-              class="h-10 transition-all grayscale cursor-pointer"
-              :class="{ 'grayscale-[50%]': item === currentCustomer, 'ml-3': index !== 0 }"
-              :src="require(`~/assets/images/pages/sme/customers/${item}.png`)"
-              @click="currentCustomer = item"
+              class="h-10 transition-opacity grayscale cursor-pointer"
+              :class="{ 'opacity-50': item !== currentCustomer, 'ml-3': index !== 0 }"
+              :src="require(`~/assets/images/pages/sme/customers/${item}.svg`)"
+              @click="selectCustomer(item)"
+              @mouseover="selectCustomer(item)"
             >
           </div>
-          <img
-            class="w-full max-h-[200px] mb-10 transition-all object-cover"
-            :src="require(`~/assets/images/pages/sme/customers/${currentCustomer}.png`)"
-          >
+          <div class="relative w-full h-[200px]">
+            <img
+              v-for="item in customers"
+              :key="item"
+              class="w-full absolute transition-opacity max-h-[200px]"
+              :class="{ 'opacity-0': item !== currentCustomer }"
+              :src="require(`~/assets/images/pages/sme/customers/${item}.svg`)"
+            >
+          </div>
           <p class="italic text-center">
             {{ $t('sme.customers.logo_desc') }}
           </p>
@@ -99,42 +105,44 @@
     <!-- Customers end -->
 
     <!-- Features -->
-    <section class="py-20 max-w-7xl mx-auto px-6">
+    <section id="features" class="py-20 max-w-7xl mx-auto px-6">
       <h2 class="landing-font-81 text-black font-semibold max-w-[600px] mb-8">
         {{ $t('sme.features.title') }}
       </h2>
 
       <!-- Buttons -->
       <div class="flex justify-between items-center flex-wrap mb-16">
-        <div class="flex items-center">
+        <!-- Group -->
+        <div class="flex items-center flex-wrap">
           <div
-            class="flex items-center cursor-pointer px-6 py-4 rounded-full bg-[#FFC069] mr-3"
+            class="flex items-center cursor-pointer px-6 py-4 my-2 rounded-full bg-[#FFC069] mr-3 min-w-[270px]"
             :class="{ 'opacity-80': currentFeatureGroup !== 'staff' }"
-            @click="currentFeatureGroup = 'staff'"
+            @click="selectFeatureGroup('staff')"
           >
             <img
               class="h-6 mr-3 text-black"
               src="~/assets/images/pages/sme/features/staff-icon.svg"
             >
-            <p class="landing-font-20 font-semibold text-black">
+            <p class="landing-font-18 font-semibold text-black">
               {{ $t('sme.features.staff.btn') }}
             </p>
           </div>
 
           <div
-            class="flex items-center cursor-pointer px-6 py-4 rounded-full bg-[#69C0FF]"
+            class="flex items-center cursor-pointer px-6 py-4 rounded-full bg-[#69C0FF] min-w-[270px] my-2"
             :class="{ 'opacity-20': currentFeatureGroup !== 'admin' }"
-            @click="currentFeatureGroup = 'admin'"
+            @click="selectFeatureGroup('admin')"
           >
             <img
               class="h-6 mr-3 text-black"
               src="~/assets/images/pages/sme/features/admin-icon.svg"
             >
-            <p class="landing-font-20 font-semibold text-black">
+            <p class="landing-font-18 font-semibold text-black">
               {{ $t('sme.features.admin.btn') }}
             </p>
           </div>
         </div>
+        <!-- Group end -->
       </div>
       <!-- Buttons end -->
 
@@ -147,8 +155,7 @@
           [1024, 3],
           [1280, 4]
         ]"
-        :pagination-enabled="false"
-        navigation-enabled
+        pagination-active-color="#268334"
       >
         <slide v-for="(item, index) in $t(`sme.features.${currentFeatureGroup}.items`)" :key="index">
           <div
@@ -441,12 +448,15 @@ export default {
   },
   layout: 'authenticate',
   auth: false,
+
   data () {
     return {
       currentCustomer: 'vingroup',
-      currentFeatureGroup: 'staff'
+      currentFeatureGroup: 'staff',
+      intervalCustomer: null
     }
   },
+
   computed: {
     customers () {
       return ['vingroup', 'vincss', 'antsomi', 'vntrip', 'agribank', 'onemount']
@@ -455,19 +465,48 @@ export default {
       return new Date().getFullYear()
     }
   },
+
   mounted () {
-    this.$lottie.loadAnimation({
-      container: this.$refs.animationHero,
-      path: '/img/animation/hero.json'
-    })
-    this.$lottie.loadAnimation({
-      container: this.$refs.animationProcess,
-      path: '/img/animation/process.json'
-    })
-    this.$lottie.loadAnimation({
-      container: this.$refs.animationContact,
-      path: '/img/animation/contact.json'
-    })
+    this.autoSelectCustomer()
+    this.loadAnimation()
+  },
+
+  beforeDestroy () {
+    clearInterval(this.intervalCustomer)
+  },
+
+  methods: {
+    selectCustomer (val) {
+      this.currentCustomer = val
+      clearInterval(this.intervalCustomer)
+      this.autoSelectCustomer()
+    },
+
+    autoSelectCustomer () {
+      this.intervalCustomer = setInterval(() => {
+        const index = this.customers.findIndex(i => i === this.currentCustomer)
+        this.currentCustomer = this.customers[(index + 1) % this.customers.length]
+      }, 3000)
+    },
+
+    loadAnimation () {
+      this.$lottie.loadAnimation({
+        container: this.$refs.animationHero,
+        path: '/img/animation/hero.json'
+      })
+      this.$lottie.loadAnimation({
+        container: this.$refs.animationProcess,
+        path: '/img/animation/process.json'
+      })
+      this.$lottie.loadAnimation({
+        container: this.$refs.animationContact,
+        path: '/img/animation/contact.json'
+      })
+    },
+
+    selectFeatureGroup (val) {
+      this.currentFeatureGroup = val
+    }
   }
 }
 </script>
