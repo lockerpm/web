@@ -39,11 +39,7 @@
       </el-row>
       <p class="mt-6">
         <a
-          :href="
-            locale === 'vi'
-              ? 'https://support.locker.io/vi/articles/Master-Password-la-gi-1a351c28139449c39a46d0378730e3a5?content=Thay_doi_mat_khau_chinh'
-              : 'https://support.locker.io/articles/Master-Password-6557a15044fd4f2c9ff7327b74f82aea?content=Change_Master_Password'
-          "
+          :href="`https://support.locker.io/${locale}/locker-general/login-unlock/log-in-to-a-cloud-account/what-is-master-password`"
           target="_blank"
         >
           {{ $t('data.settings.learn_about_secure') }}

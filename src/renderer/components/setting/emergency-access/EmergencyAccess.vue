@@ -305,11 +305,7 @@
         </el-row>
         <p class="mt-6">
           <a
-            :href="
-              locale === 'vi'
-                ? 'https://support.locker.io/vi/articles/Thiet-lap-tinh-nang-Truy-cap-khan-cap-b54c0b4b560a466f92331b940bbc9244'
-                : 'https://support.locker.io/articles/Set-up-and-use-Emergency-Access-0e169439bb83453298ea430b22262214'
-            "
+            :href="`https://support.locker.io/${locale}/locker-general/security-for-locker-account/set-up-emergency-access`"
             target="_blank"
           >
             {{ $t('data.settings.learn_about_emergency_access') }}

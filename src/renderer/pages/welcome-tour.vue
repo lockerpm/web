@@ -104,9 +104,7 @@ export default {
           stepId: 'add-pw-1',
           actions: [],
           learnMore:
-            this.locale === 'vi'
-              ? 'https://support.locker.io/vi/articles/Nhap-va-xuat-du-lieu-a01c0fec83794ba88af5374b1ba8dd40'
-              : 'https://support.locker.io/articles/Import-and-Export-data-5ddd61fc597544f38361f47841eebccb'
+            `https://support.locker.io/${this.locale}/locker-password-manager/get-started/import-and-export`
         },
         {
           id: 'browse_items',
