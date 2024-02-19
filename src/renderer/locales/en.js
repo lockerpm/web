@@ -353,7 +353,7 @@ module.exports = {
       text1: 'By processing, you understand that Locker CANNOT see, retrieve, or re-issue your Master Password in case you forget it. Your Master Password is only yours to keep.',
       text2: 'You can learn more about Master Password ',
       link: 'here',
-      btn_next: 'I understand. Let’s get started!',
+      btn_next: 'I understand. Let\'s get started!',
       btn_back: 'Go back, I want to change my Master Password'
     }
   },
@@ -418,7 +418,7 @@ module.exports = {
       purge_success: 'Your vault has been purged!',
       purge_failed: 'Your vault has not been purged!',
       purge_title: 'Delete all account items',
-      purge_description: 'All items in Locker will be permanently deleted. Items that were shared with you (if any) won’t be deleted.',
+      purge_description: 'All items in Locker will be permanently deleted. Items that were shared with you (if any) won\'t be deleted.',
       delete_account_success: 'Your Locker account has been deleted!',
       delete_account_failed: 'Your Locker account has not been deleted!',
       delete_account_title: 'Delete Locker Account',
@@ -670,7 +670,7 @@ module.exports = {
         yearly_price: '1 year plan'
       },
       descriptions: {
-        pm_free: 'Secure passwords and enjoy Locker’s essential features.',
+        pm_free: 'Secure passwords and enjoy Locker\'s essential features.',
         pm_premium: 'Enhance experiences with additional utility features.',
         pm_family: 'Get the most out of Locker with unlimited storage.'
       },
@@ -910,7 +910,7 @@ module.exports = {
       add_recipient_emails_desc: 'You might add as many as you want.',
       share_type: 'Permission:',
       share_type_desc: 'Choose how you want to share. This can be edited later.',
-      share_instruction: 'After you send your share request, the assigned user(s) will have to accept your requests in their Sharing Center before they can use share item account. \nIf a person doesn’t have Locker account.They will be invited to create a new account via email.',
+      share_instruction: 'After you send your share request, the assigned user(s) will have to accept your requests in their Sharing Center before they can use share item account. \nIf a person doesn\'t have Locker account.They will be invited to create a new account via email.',
       stop_sharing: 'Stop sharing',
       edit_share_type: 'Edit permission',
       leave: 'Leave',
@@ -1054,7 +1054,7 @@ module.exports = {
       security_desc: 'Manage your security and privacy.',
       account_desc: 'Manage your profile details and account preferences.',
       import_export_desc: 'Import or Export locker files.',
-      delete_desc: 'You can delete your data and account. These actions are not reversable. We won’t be able to recover your data if you do this.',
+      delete_desc: 'You can delete your data and account. These actions are not reversable. We won\'t be able to recover your data if you do this.',
       plan_storage: 'Plan Storage',
       plan_storage_desc: 'See your inventory limits.',
       extra_security: 'Extra Security',
@@ -1098,7 +1098,7 @@ module.exports = {
           desc: 'Upgrade to Premium plan from only $1.29/month for UNLIMITED STORAGE and more.',
           learn_more: {
             text: 'Learn more about Premium Plan',
-            url: 'https://support.locker.io/articles/Upgrading-to-Premium-Plan-f22500ed98ab47b3beda3c2821d94936'
+            url: 'https://support.locker.io/en/locker-password-manager/general-features/plans-and-pricing/upgrading-to-premium-plan'
           },
           btn_text: 'Upgrade to Premium'
         },
@@ -1107,7 +1107,7 @@ module.exports = {
           desc: 'Item sharing is easier and safer with Locker Premium. Share item inside and outside Locker, and customize your shares.',
           learn_more: {
             text: 'Learn how to share your item',
-            url: 'https://support.locker.io/articles/Share-items-e9d141f20d0a46628722c0972f182c09'
+            url: 'https://support.locker.io/en/locker-password-manager/vault-management/item-management/share-items'
           },
           btn_text: 'Share Item Now'
         },
@@ -1116,7 +1116,7 @@ module.exports = {
           desc: 'Add your trusted contacts so they can access to your items in Emergency Cases!',
           learn_more: {
             text: 'Learn more about Emergency Access',
-            url: 'https://support.locker.io/articles/Set-up-and-use-Emergency-Access-0e169439bb83453298ea430b22262214'
+            url: 'https://support.locker.io/en/locker-general/security-for-locker-account/set-up-emergency-access'
           },
           btn_text: 'Add Trusted contacts'
         },
@@ -1125,7 +1125,7 @@ module.exports = {
           desc: 'Check and get informed if your data has been leaked in any breach!',
           learn_more: {
             text: 'Try scanning your email',
-            url: 'https://support.locker.io/articles/Set-up-and-use-Data-breach-scanner-8ca39c60951e4d35b50f5ec1fe4b5519'
+            url: 'https://support.locker.io/en/locker-password-manager/general-features/built-in-add-on-features/data-breach-scanner'
           },
           btn_text: 'Check Breached Data'
         },
@@ -1134,7 +1134,7 @@ module.exports = {
           desc: 'Identify any passwords that are weak, reused or exposed to safeguard your online accounts.',
           learn_more: {
             text: 'Learn more about Password Health',
-            url: 'https://support.locker.io/articles/Set-up-and-use-Password-Health-985b008bb1934e818c08332940e52cb4'
+            url: 'https://support.locker.io/en/locker-password-manager/general-features/built-in-add-on-features/password-health-checker'
           },
           btn_text: 'Identify Weak Password'
         },
@@ -1143,7 +1143,7 @@ module.exports = {
           desc: 'Generate unlimited aliases and keep your true email private. Come with extra security features!',
           learn_more: {
             text: 'Learn more about Private Email',
-            url: 'https://support.locker.io/articles/Set-up-and-use-Private-Email-acc5a7e1784d45f5a2c945d03dae2cf3'
+            url: 'https://support.locker.io/en/locker-maily/private-email-for-premium'
           },
           btn_text: 'Get Unlimited Aliases'
         },
@@ -1161,7 +1161,7 @@ module.exports = {
           desc: 'Keep your family and friends safe online with Locker Family Plan. Pay less, use more!',
           learn_more: {
             text: 'Learn more about Family Plan',
-            url: 'https://support.locker.io/articles/Upgrading-to-Family-Plan-f832b3db0cca4cd0b1a4819e177bb849'
+            url: 'https://support.locker.io/en/locker-password-manager/general-features/plans-and-pricing/upgrading-to-family-plan'
           },
           btn_text: 'See How'
         }
@@ -1295,17 +1295,17 @@ module.exports = {
       max_password_length: 'Maximum Password Length',
       max_password_length_desc: 'When turned on, you will be able to set maximum password length for all users in this workspace.',
       password_complexity: 'Password Complexity',
-      password_complexity_desc: 'When turned on, you will be able to set password composition for all user’s passwords.',
+      password_complexity_desc: 'When turned on, you will be able to set password composition for all user\'s passwords.',
       failed_login_attempts: 'Block Failed Login Attempts',
-      failed_login_attempts_desc: 'When turned on, you will be able to control users’ failed login attempts.',
+      failed_login_attempts_desc: 'When turned on, you will be able to control users\' failed login attempts.',
       min_password_length_rcm: 'At least 8 characters is recommended by CIS benchmark for password security.',
-      max_password_length_rcm: 'Maximum password length can’t be less than minimum password length.',
+      max_password_length_rcm: 'Maximum password length can\'t be less than minimum password length.',
       requires_lowercase: 'Requires lowercase letters (abc)',
       requires_uppercase: 'Requires uppercase letters (ABC)',
       requires_special: 'Requires special characters (@#!$%)',
       requires_number: 'Requires digits (0 1 2 3)',
       avoid_ambiguous: 'Avoid ambiguous characters (O vs 0, l vs I, etc).',
-      notice: '*Notice: these settings can only apply for future team’s shared passwords and cannot apply to the previous created passwords.',
+      notice: '*Notice: these settings can only apply for future team\'s shared passwords and cannot apply to the previous created passwords.',
       failed_login_how_many: 'How many failed login attempts do you allow?',
       failed_login_how_long: 'Block users when {failed_login_attempts} failed logins in how long?',
       failed_login_how_much_time: 'How much time before users can try again?',
@@ -1360,7 +1360,7 @@ module.exports = {
       grantee_recovery_initiated_info: 'You will be provided access after {day} day(s) or whenever the user manually approves the request.',
       grantor_recovery_initiated_info: 'The user will be provided access after {day} day(s) or whenever you manually approve the request.',
       invitation: 'Invitation to become an emergency contact',
-      invitation_details: 'You’ve been invited to become an emergency contact for ',
+      invitation_details: 'You\'ve been invited to become an emergency contact for ',
       access_type: 'Access type',
       status: {
         invited: 'Invited',
@@ -1387,7 +1387,7 @@ module.exports = {
       chromecsv_link: 'https://support.locker.io/en/locker-password-manager/get-started/import-and-export/import-data-from-google-chrome-to-locker',
       firefoxcsv_link: 'https://support.locker.io/en/locker-password-manager/get-started/import-and-export/import-data-from-mozilla-firefox-to-locker',
       '1password_link': 'https://support.locker.io/en/locker-password-manager/get-started/import-and-export/import-data-from-1password-to-locker',
-      keepassxcsv: 'Using the KeePassX desktop application, navigate to "Database" &rarr; "Export to CSV file" and save the CSV file.',
+      keepassxcsv_link: 'https://support.locker.io/en/locker-password-manager/get-started/import-and-export/import-data-from-keepassx-to-locker',
       aviracsv: 'In the Avira web vault, go to "Settings" &rarr; "My Data" &rarr; "Export data" and save the CSV file.',
       blurcsv: 'In the Blur web vault, click your username at the top and go to "Settings" &rarr; "Export Data", then click "Export CSV" for your "Accounts".',
       safeincloudxml: 'Using the SaveInCloud desktop application, navigate to "File" &rarr; "Export" &rarr; "As XML" and save the XML file.',
@@ -1535,13 +1535,13 @@ module.exports = {
         title: 'Join Organization',
         desc: 'Join your organization to continue using Locker',
         text1: 'This account is managed by <strong>{enterpriseName}</strong>.',
-        text2: 'Don’t worry. You will still be able to use your personal vault. However, {enterpriseName} can control certain aspects of your accounts, such as:',
+        text2: 'Don\'t worry. You will still be able to use your personal vault. However, {enterpriseName} can control certain aspects of your accounts, such as:',
         list: [
           'activate, deactivate, disable your account',
           'add you to their groups',
           'apply password policies to your account'
         ],
-        text3: 'All your vault data remains the same. {enterpriseName} can’t see your data or your Master Password.',
+        text3: 'All your vault data remains the same. {enterpriseName} can\'t see your data or your Master Password.',
         text4: 'You have to Request access from {enterpriseName} in order to continue using your Locker account.',
         subtitle: 'A user has invited you to join their organiztion on Locker.',
         oragnization: 'Oragnization',
@@ -1559,7 +1559,7 @@ module.exports = {
         decline: {
           title: 'If you do not wish to join this organization:',
           list: [
-            'Simply click “Decline”. You won’t be asked again.'
+            'Simply click “Decline”. You won\'t be asked again.'
           ]
         }
       },
@@ -1586,7 +1586,7 @@ module.exports = {
       password_requirement: 'Password requirements',
       password_requirement_desc: 'Your company has set best practices for your passwords.',
       password_requirement_policy_details: 'All password in your vault has to meet these requirements:',
-      password_requirement_note: 'Note that you will still be able to create new passwords that don’t meet the requirements. However your admins will be acknowledged about your violations. It is strongly recommended that you change your violated passwords for better security.<br>(*) shared passwords won’t be affected by this policy.',
+      password_requirement_note: 'Note that you will still be able to create new passwords that don\'t meet the requirements. However your admins will be acknowledged about your violations. It is strongly recommended that you change your violated passwords for better security.<br>(*) shared passwords won\'t be affected by this policy.',
       you_have_violated_items: 'You have {count} violated item | You have {count} violated items',
       master_password_requirement: 'Master password requirements',
       master_password_requirement_desc: 'Create a Master Password so no one can guess',
@@ -1682,13 +1682,13 @@ module.exports = {
         continue: 'Continue',
         go_to_plan: 'Go to Plans & Billing',
         congrats: 'Congrats',
-        congrats_desc: 'You’ve received 1 month of <b>{plan}</b> for free as the reward for <b>{action}</b>. Discontinue your billing cycle to start using your free month after the expiration of the current subscription.',
-        congrats_desc1: 'You’ve received <b>{percent}% discount</b> as the reward for <b>{action}</b>. Your current accumulated discount is {current_discount}%. Get code now or continue actions to get up to {remain_percent}% off.',
-        congrats_desc2: 'You’ve received <b>{percent}% discount</b> as the reward for <b>{action}</b>. Your current accumulated discount is {current_discount}%. Get code now.',
+        congrats_desc: 'You\'ve received 1 month of <b>{plan}</b> for free as the reward for <b>{action}</b>. Discontinue your billing cycle to start using your free month after the expiration of the current subscription.',
+        congrats_desc1: 'You\'ve received <b>{percent}% discount</b> as the reward for <b>{action}</b>. Your current accumulated discount is {current_discount}%. Get code now or continue actions to get up to {remain_percent}% off.',
+        congrats_desc2: 'You\'ve received <b>{percent}% discount</b> as the reward for <b>{action}</b>. Your current accumulated discount is {current_discount}%. Get code now.',
         resubmit: {
           title: 'Uh, oh!',
-          desc: 'The action <b>{action}</b> failed to be verified. This may be because your review hasn’t been visible, or you entered the wrong name. Please recheck when your review is visible on <b>{store}</b> and submit your display name again within the next 24 hours.',
-          desc1: 'Sorry, the action <b>{action}</b> was not completed because the review couldn’t be verified. Please attempt the action once more in order to claim the reward',
+          desc: 'The action <b>{action}</b> failed to be verified. This may be because your review hasn\'t been visible, or you entered the wrong name. Please recheck when your review is visible on <b>{store}</b> and submit your display name again within the next 24 hours.',
+          desc1: 'Sorry, the action <b>{action}</b> was not completed because the review couldn\'t be verified. Please attempt the action once more in order to claim the reward',
           desc2: 'or Contact <a>support@locker.io</a> for more detail.',
           desc3: 'The action <b>{action}</b> failed to be verified. Please attempt to install and log in on Desktop app once more in order to claim the reward.'
         }
@@ -1711,7 +1711,7 @@ module.exports = {
         header_btn: 'Download Locker desktop app',
         subtitle: 'Install and log in on Locker Desktop app to get a 5% off discount code for annual plan of Locker Premium or Family.',
         subtitle1_desc: "Steps to do:<br>(1) Install and log in on Locker desktop app<br>(2) Hit the <b>Yes, I confirm</b> button to confirm your action<br>(3) We'll verify and reward you within a minute",
-        subtitle1_desc1: 'Click to confirm that you’ve installed and logged in on Locker Desktop app. We’ll verify and reward you within a week.',
+        subtitle1_desc1: 'Click to confirm that you\'ve installed and logged in on Locker Desktop app. We\'ll verify and reward you within a week.',
         btn: 'Yes, I confirm',
         note: 'The action Desktop app Installation failed to be verified. Try installing and logging on Locker Desktop App again to claim a reward.'
       },
@@ -2279,11 +2279,11 @@ module.exports = {
       destails: [
         {
           detail_title: 'About biometric authentication',
-          detail_desc: 'Using biometrics is one of the most secure and convenient ways to store your logins. You don’t have to remember your passwords and hackers can hardly hack your accounts.'
+          detail_desc: 'Using biometrics is one of the most secure and convenient ways to store your logins. You don\'t have to remember your passwords and hackers can hardly hack your accounts.'
         },
         {
           detail_title: 'Log in with biometrics in Locker',
-          detail_desc1: 'To enable biometric logins for Locker, just go to your phone’s settings and allow Locker to scan your fingerprint or your face.<br><br>To enable Unlock with Biometrics for Locker in your mobile devices:<br><br>',
+          detail_desc1: 'To enable biometric logins for Locker, just go to your phone\'s settings and allow Locker to scan your fingerprint or your face.<br><br>To enable Unlock with Biometrics for Locker in your mobile devices:<br><br>',
           detail_ul: [
             'Open the Settings tab in the Menu.',
             'Scroll down to the Security section and turn on Unlock with Face ID/ Touch ID (iOS).'
@@ -2311,7 +2311,7 @@ module.exports = {
         },
         {
           detail_title: 'Add passwords manually',
-          detail_desc: 'In addition, you can always manually add passwords to your vault. Just open Locker and fill in the required fields to store your credentials. Next time you’re visiting that site, Locker will remember the details and automatically log you in.'
+          detail_desc: 'In addition, you can always manually add passwords to your vault. Just open Locker and fill in the required fields to store your credentials. Next time you\'re visiting that site, Locker will remember the details and automatically log you in.'
         },
         {
           detail_title: 'Where can I use this feature?',
@@ -2326,7 +2326,7 @@ module.exports = {
       details: [
         {
           detail_title: 'Login with just a click',
-          detail_desc: 'Fed up with having to manually enter credentials every time you log in to your favorite websites?<br><br>While some browsers such as Google Chrome offer autofill, they do not sync your credentials across platforms. The result is you have to enter your login credentials again and again when you switch platforms and devices. Such a hassle, isn’t it?<br><br>There is no need to waste your time on typing passwords - Locker does it for you! It comes with a best-in-class autofill service that can fill in usernames and passwords correctly, and of course, so much faster than manual typing.'
+          detail_desc: 'Fed up with having to manually enter credentials every time you log in to your favorite websites?<br><br>While some browsers such as Google Chrome offer autofill, they do not sync your credentials across platforms. The result is you have to enter your login credentials again and again when you switch platforms and devices. Such a hassle, isn\'t it?<br><br>There is no need to waste your time on typing passwords - Locker does it for you! It comes with a best-in-class autofill service that can fill in usernames and passwords correctly, and of course, so much faster than manual typing.'
         },
         {
           detail_title: 'How can I use this feature?',
@@ -2389,7 +2389,7 @@ module.exports = {
         },
         {
           detail_title: 'Generate, save and autofill with Locker',
-          detail_desc: 'One problem with strong passwords: they are difficult to remember and submit. That’s why many people sacrifice their security for convenience - they’d rather choose an easy-to-remember password instead of a long, complex one.<br><br>At Locker, we make sure you can use strong passwords in a convenient way. Once you generate a complex password with our built-in generator, you can copy or save it directly to your vault. Next time you’re using it, Locker will autofill for you so that you don’t have to remember a thing.'
+          detail_desc: 'One problem with strong passwords: they are difficult to remember and submit. That\'s why many people sacrifice their security for convenience - they\'d rather choose an easy-to-remember password instead of a long, complex one.<br><br>At Locker, we make sure you can use strong passwords in a convenient way. Once you generate a complex password with our built-in generator, you can copy or save it directly to your vault. Next time you\'re using it, Locker will autofill for you so that you don\'t have to remember a thing.'
         }
       ]
     },
@@ -2418,7 +2418,7 @@ module.exports = {
         },
         {
           detail_title: 'Implementing zero-knowledge in Locker',
-          detail_desc: 'Using zero-knowledge architecture in Locker means Locker will save the proof that you have the key (in this case your Master Password) to your vault, but not the key itself. Therefore, no one - not even Locker development team members - can view or edit your Master Password.<br><br>Zero-knowledge also makes sure that your encrypted data remains safe even if hackers breach Locker’s databases. Hackers cannot decrypt any encrypted data, nor can they view your Master Password for decryption. You are the ONLY one to have the Master Password, or in other words, the access to your vault.'
+          detail_desc: 'Using zero-knowledge architecture in Locker means Locker will save the proof that you have the key (in this case your Master Password) to your vault, but not the key itself. Therefore, no one - not even Locker development team members - can view or edit your Master Password.<br><br>Zero-knowledge also makes sure that your encrypted data remains safe even if hackers breach Locker\'s databases. Hackers cannot decrypt any encrypted data, nor can they view your Master Password for decryption. You are the ONLY one to have the Master Password, or in other words, the access to your vault.'
         }
       ],
       more_info: 'You can read more about our security techniques'
@@ -2474,7 +2474,7 @@ module.exports = {
     },
     detail3: {
       title: 'What to do when your email was leaked',
-      subtitle: 'Don’t panic! If your email was found in data breaches, here are what to do:',
+      subtitle: 'Don\'t panic! If your email was found in data breaches, here are what to do:',
       list: [
         'Change your password linked to that email as soon as possible to avoid possible consequences.',
         'Use a password generator to create a strong password for your account',
@@ -2905,7 +2905,7 @@ module.exports = {
           link: 'https://github.com/lockerpm/desktop-releases/releases/download/v1.4.47/locker-win-x64-1.4.47.exe'
         }
       ],
-      link: 'See what’s new in the latest version'
+      link: 'See what\'s new in the latest version'
     },
     section5: {
       title: 'Download Locker for iOS',
@@ -2917,7 +2917,7 @@ module.exports = {
           link: 'https://apps.apple.com/us/app/locker-password-manager/id1586927301'
         }
       ],
-      link: 'See what’s new in the latest version'
+      link: 'See what\'s new in the latest version'
     },
     section6: {
       title: 'Download Locker for Android',
@@ -2929,7 +2929,7 @@ module.exports = {
           link: 'https://play.google.com/store/apps/details?id=com.cystack.locker&pli=1'
         }
       ],
-      link: 'See what’s new in the latest version'
+      link: 'See what\'s new in the latest version'
     },
     section7: {
       title: 'Download Locker for Linux',
@@ -2947,7 +2947,7 @@ module.exports = {
           link: ''
         }
       ],
-      link: 'See what’s new in the latest version',
+      link: 'See what\'s new in the latest version',
       content: {
         title: 'Quas et eligendi',
         subtitle: 'Voluptates ipsa sunt officia iure nostrum consequatur. Consequuntur ab quis quia earum eos iste eaque necessitatibus. Est est sunt vel repudiandae et mollitia ipsam. Adipisci suscipit molestiae qui nesciunt nihil quae cum aut aliquid. Modi aut est iste eos dolor ut.',
@@ -3566,7 +3566,7 @@ module.exports = {
         {
           image: 'image-security-password2.png',
           title: 'How hackers crack your passwords',
-          desc: 'The most common way to hack your passwords is the brute-force technique. Simply put, hackers will use a computer program to keep stuffing words until it finds the correct answers. It may take as little as a fraction of seconds to crack common passwords such as ‘iloveyou’ or ‘123456’.'
+          desc: 'The most common way to hack your passwords is the brute-force technique. Simply put, hackers will use a computer program to keep stuffing words until it finds the correct answers. It may take as little as a fraction of seconds to crack common passwords such as ‘iloveyou\' or ‘123456\'.'
         }
       ]
     },
@@ -3636,7 +3636,7 @@ module.exports = {
         },
         {
           question: 'My password has been leaked. What should I do?',
-          answer: 'There is no such thing as an ‘uncrackable’ password, but you can enhance your online security by using strong, complex passwords. Make sure to avoid bad practices such as reusing passwords or using common combinations. Keep your credentials under control with our password generator, password health checker, and data breach scanner tools.'
+          answer: 'There is no such thing as an ‘uncrackable\' password, but you can enhance your online security by using strong, complex passwords. Make sure to avoid bad practices such as reusing passwords or using common combinations. Keep your credentials under control with our password generator, password health checker, and data breach scanner tools.'
         }
       ]
     }
@@ -3877,7 +3877,7 @@ module.exports = {
     help_box: {
       title: 'Have any question?',
       detail: 'Read more about Master Password here: ',
-      link: 'https://support.locker.io/articles/Master-Password-6557a15044fd4f2c9ff7327b74f82aea'
+      link: 'https://support.locker.io/en/locker-general/login-unlock/log-in-to-a-cloud-account/what-is-master-password'
     }
   },
   landing_affiliate: {
@@ -3907,7 +3907,7 @@ module.exports = {
         {
           icon: 'why-3.svg',
           title: 'Tools and Materials Provided',
-          desc: 'We strive to help you generate the most leads possible with our available resources - effective promo marketing materials, specialized banners and landing pages, optimization advice about design and content. You’ll also get a personal dashboard that presents detailed insights into your sales performance.'
+          desc: 'We strive to help you generate the most leads possible with our available resources - effective promo marketing materials, specialized banners and landing pages, optimization advice about design and content. You\'ll also get a personal dashboard that presents detailed insights into your sales performance.'
         },
         {
           icon: 'why-4.svg',
@@ -4025,7 +4025,7 @@ module.exports = {
       },
       hard_sol: {
         title: 'Easy-to-do yet hard-to-apply solution',
-        desc: 'Setting a difficult password for each account is always recommended, but remembering these passwords is virtually impossible for users. That’s why people come back to weak and reused passwords every time.'
+        desc: 'Setting a difficult password for each account is always recommended, but remembering these passwords is virtually impossible for users. That\'s why people come back to weak and reused passwords every time.'
       },
       pitch: {
         title: '<span class="text-green">Locker</span> is the perfect solution for you',
@@ -4039,7 +4039,7 @@ module.exports = {
       }
     },
     trial: {
-      desc: 'We’re going to make this a complete <span class="font-bold">RISK FREE DECISION</span> for you!<br><br>If you purchase a <span class="font-bold">Locker Premium Plan</span> and you can tell it does not save your life...<br><br>We will <span class="font-bold">refund</span> all your money and you can still <span class="font-bold">keep using</span> Locker account that you created!'
+      desc: 'We\'re going to make this a complete <span class="font-bold">RISK FREE DECISION</span> for you!<br><br>If you purchase a <span class="font-bold">Locker Premium Plan</span> and you can tell it does not save your life...<br><br>We will <span class="font-bold">refund</span> all your money and you can still <span class="font-bold">keep using</span> Locker account that you created!'
     },
     compability: {
       desc: 'Compatibale with:',
@@ -4604,7 +4604,7 @@ module.exports = {
       ]
     },
     plans: {
-      title: 'Pick the plan that’s right for your business',
+      title: 'Pick the plan that\'s right for your business',
       learn_more: 'Learn more about plan',
       desc1: 'Employees enjoy the features millions of Locker users love, while you get the admin tools you need: login monitoring, plan member management and reporting, policy management, and directory integration.',
       price1_1: '$8/user',
@@ -4633,7 +4633,7 @@ module.exports = {
         },
         {
           title: 'Why choose Locker for Business?',
-          desc: 'There are four main reasons why you should choose Locker for Business:<br><b>Security.</b> We implement the best security measures, including advanced encryption and zero-knowledge architecture to ensure whatever your employees save in the vault stays safe from outsiders.<br><b>Features.</b> We provide a wide range of security tools for both employees and administrators. These intuitive features will set your business up for security success without compromising convenience.<br><b>Scalability.</b> We know that businesses require flexible and scalable products. That’s why we ensure Locker can quickly adjust to fit your needs.<br><b>Price.</b> We believe that security is for everyone. To make it possible, we strive to provide a password management solution that all businesses can afford.'
+          desc: 'There are four main reasons why you should choose Locker for Business:<br><b>Security.</b> We implement the best security measures, including advanced encryption and zero-knowledge architecture to ensure whatever your employees save in the vault stays safe from outsiders.<br><b>Features.</b> We provide a wide range of security tools for both employees and administrators. These intuitive features will set your business up for security success without compromising convenience.<br><b>Scalability.</b> We know that businesses require flexible and scalable products. That\'s why we ensure Locker can quickly adjust to fit your needs.<br><b>Price.</b> We believe that security is for everyone. To make it possible, we strive to provide a password management solution that all businesses can afford.'
         },
         {
           title: 'Can I get a demo?',
@@ -4642,7 +4642,7 @@ module.exports = {
       ]
     },
     cta: {
-      title: 'Not sure what Locker for Business is best for you? Let’s chat about it.',
+      title: 'Not sure what Locker for Business is best for you? Let\'s chat about it.',
       button: 'Talk to us'
     },
     register: {
@@ -4742,7 +4742,7 @@ module.exports = {
       },
       hard_sol: {
         title: 'Easy-to-do yet hard-to-apply solution',
-        desc: 'Setting a difficult password for each account is always recommended, but remembering these passwords is virtually impossible for users. That’s why people come back to weak and reused passwords every time.'
+        desc: 'Setting a difficult password for each account is always recommended, but remembering these passwords is virtually impossible for users. That\'s why people come back to weak and reused passwords every time.'
       }
     },
     simplified: {
@@ -4788,7 +4788,7 @@ module.exports = {
       ]
     },
     leading: {
-      title: 'As a leading security company, we want to create an absolutely secure password manager. That’s why we have taken our security to the next level.',
+      title: 'As a leading security company, we want to create an absolutely secure password manager. That\'s why we have taken our security to the next level.',
       items: [
         {
           title: 'Periodic pentesting',
@@ -4920,7 +4920,7 @@ module.exports = {
           date_comment: 'Apr 26, 2022'
         },
         {
-          desc: 'A big thanks to the Locker team for making such an awesome product. Having to reset passwords too many times really made me frustrated, and Locker came as a life saver! It is easy and simple to use, and the best part is it saves and automatically fills all my passwords so I don’t have to remember any.',
+          desc: 'A big thanks to the Locker team for making such an awesome product. Having to reset passwords too many times really made me frustrated, and Locker came as a life saver! It is easy and simple to use, and the best part is it saves and automatically fills all my passwords so I don\'t have to remember any.',
           author: 'Stephanie Nguyen',
           date_comment: 'Apr 26, 2022'
         }
@@ -4987,7 +4987,7 @@ module.exports = {
         title: 'Use strong passwords',
         content1: 'A strong password is one that contains at least 12 characters, including special characters, without personally identifiable information. Hackers will find it difficult to crack accounts using strong passwords with common password cracking techniques. In other words, your account will be more secure with strong passwords.',
         content2: 'You can',
-        link1: 'check your password’s strength',
+        link1: 'check your password\'s strength',
         content3: 'and',
         link2: 'create strong passwords',
         content4: 'manually, or use the password manager Locker to do both without hassles.',
@@ -4995,9 +4995,9 @@ module.exports = {
       },
       detail2: {
         title: 'Set unique passwords for different accounts',
-        content: 'Set different passwords for accounts to minimize the risks of all accounts being hacked when a hacker finds their ways into one of your accounts.<br> However, it’s difficult to remember all your passwords. Here are some ways to do it:',
+        content: 'Set different passwords for accounts to minimize the risks of all accounts being hacked when a hacker finds their ways into one of your accounts.<br> However, it\'s difficult to remember all your passwords. Here are some ways to do it:',
         list: [
-          'Note down your passwords and keep them under lock and key. The negative aspect to this is that you can’t always view your passwords or bring them with you.',
+          'Note down your passwords and keep them under lock and key. The negative aspect to this is that you can\'t always view your passwords or bring them with you.',
           'Use a password manager like Locker. Locker saves your passwords and automatically logs you into your accounts. You can access Locker anywhere, anytime, even without an Internet connection.'
         ],
         btn_text: 'Protect your accounts now!'
@@ -5115,7 +5115,7 @@ module.exports = {
         },
         {
           title: 'Deals',
-          desc: 'Want to get a promo code but worried about spam all over your inbox?<br>Don’t let the deals slip away! Use the email alias to sign up and turn it off after redeeming the code.'
+          desc: 'Want to get a promo code but worried about spam all over your inbox?<br>Don\'t let the deals slip away! Use the email alias to sign up and turn it off after redeeming the code.'
         },
         {
           title: 'Social Networks',
@@ -5166,7 +5166,7 @@ module.exports = {
         },
         {
           q: 'Why should I use an email alias?',
-          a: 'First off, email aliases help protect the privacy of your primary email address. It works best when you need to sign up for online services and don’t want your email inbox to be filled with spam afterward.<br>Second, email aliases allow you to customize your username for different purposes, while still managing all inboxes from one place.<br>For example, a user named Mark may need multiple email addresses: <ul><li><span class="text-primary">mark.james@maily.org</span> - The primary address for compliance purposes, with his first and last name in the email address</li><li> <span class="text-primary">mark@maily.org</span> - The alias for communicating with customers as it is easy to remember</li><li><span class="text-primary">mark@sales.maily.org</span> - The alias for communicating with another  department of the organization</li></ul>'
+          a: 'First off, email aliases help protect the privacy of your primary email address. It works best when you need to sign up for online services and don\'t want your email inbox to be filled with spam afterward.<br>Second, email aliases allow you to customize your username for different purposes, while still managing all inboxes from one place.<br>For example, a user named Mark may need multiple email addresses: <ul><li><span class="text-primary">mark.james@maily.org</span> - The primary address for compliance purposes, with his first and last name in the email address</li><li> <span class="text-primary">mark@maily.org</span> - The alias for communicating with customers as it is easy to remember</li><li><span class="text-primary">mark@sales.maily.org</span> - The alias for communicating with another  department of the organization</li></ul>'
         },
         {
           q: 'Is an email alias permanent?',
@@ -5329,7 +5329,7 @@ module.exports = {
             plans: [false, true]
           },
           {
-            label: 'Advanced MFA( extends passwordless authentication to all endpoints – workstations, VPNs, identity providers – by combining biometric and contextual policies)',
+            label: 'Advanced MFA( extends passwordless authentication to all endpoints - workstations, VPNs, identity providers - by combining biometric and contextual policies)',
             plans: [false, true]
           }
         ]
@@ -5343,7 +5343,7 @@ module.exports = {
   tutorial: {
     welcome: {
       title: 'Welcome to Locker',
-      desc: 'We will guide you through Locker’s most essential features in just 3 minutes.',
+      desc: 'We will guide you through Locker\'s most essential features in just 3 minutes.',
       start: 'Let\'s get started',
       skip: 'Skip tutorial'
     },
@@ -5387,7 +5387,7 @@ module.exports = {
           detail: {
             step1: {
               title: '2. Import a file',
-              text: 'You can export passwords from your browser or other password manager and import to Locker.<br><a href="https://support.locker.io/articles/Import-and-Export-data-5ddd61fc597544f38361f47841eebccb" target="_blank">Learn how to export files from browsers or other password manager <i class="el-icon-right"></i></a><br>First, select the format of the file you would like to import.'
+              text: 'You can export passwords from your browser or other password manager and import to Locker.<br><a href="https://support.locker.io/en/locker-password-manager/get-started/import-and-export" target="_blank">Learn how to export files from browsers or other password manager <i class="el-icon-right"></i></a><br>First, select the format of the file you would like to import.'
             },
             step2: {
               title: '2. Import a file',

@@ -1098,7 +1098,7 @@ module.exports = {
           desc: 'Nâng cấp lên gói Premium chỉ từ $1,29/tháng để có BỘ LƯU TRỮ KHÔNG GIỚI HẠN và hơn thế nữa.',
           learn_more: {
             text: 'Tìm hiểu thêm về Gói Premium',
-            url: 'https://support.locker.io/articles/Goi-Premium-2090d380ea854125bca316c293a4fad9'
+            url: 'https://support.locker.io/vi/locker-password-manager/general-features/plans-and-pricing/upgrading-to-premium-plan'
           },
           btn_text: 'Nâng cấp lên Premium'
         },
@@ -1107,7 +1107,7 @@ module.exports = {
           desc: 'Chia sẻ mật khẩu dễ dàng và an toàn hơn với Locker Premium. Chia sẻ mục bên trong và bên ngoài Locker, đồng thời tùy chỉnh mục chia sẻ của bạn.',
           learn_more: {
             text: 'Tìm hiểu cách chia sẻ mục của bạn',
-            url: 'https://support.locker.io/vi/articles/Chia-se-danh-muc-3d7c8fd00a1046178c0c5382a8853fbb'
+            url: 'https://support.locker.io/en/locker-password-manager/vault-management/item-management/share-items'
           },
           btn_text: 'Chia sẻ ngay'
         },
@@ -1116,7 +1116,7 @@ module.exports = {
           desc: 'Thêm các liên hệ đáng tin cậy của bạn để họ có thể truy cập vào kho của bạn trong trường hợp khẩn cấp!',
           learn_more: {
             text: 'Tìm hiểu thêm về Liên hệ khẩn cấp',
-            url: 'https://support.locker.io/vi/articles/Thiet-lap-tinh-nang-Truy-cap-khan-cap-b54c0b4b560a466f92331b940bbc9244'
+            url: 'https://support.locker.io/vi/locker-general/security-for-locker-account/set-up-emergency-access'
           },
           btn_text: 'Thêm liên hệ'
         },
@@ -1125,7 +1125,7 @@ module.exports = {
           desc: 'Kiểm tra và nhận thông báo nếu dữ liệu của bạn bị rò rỉ trong bất kỳ vi phạm nào!',
           learn_more: {
             text: 'Thử quét email của bạn',
-            url: 'https://support.locker.io/vi/articles/Su-dung-tinh-nang-Canh-bao-ro-ri-du-lieu-4d498b1778704fa489ce26f8945b6eff'
+            url: 'https://support.locker.io/vi/locker-password-manager/general-features/built-in-add-on-features/data-breach-scanner'
           },
           btn_text: 'Kiểm tra dữ liệu'
         },
@@ -1134,7 +1134,7 @@ module.exports = {
           desc: 'Xác định mọi mật khẩu yếu, được sử dụng lại hoặc bị lộ để bảo vệ tài khoản trực tuyến của bạn.',
           learn_more: {
             text: 'Tìm hiểu thêm về Sức khỏe mật khẩu',
-            url: 'https://support.locker.io/vi/articles/Su-dung-tinh-nang-Suc-khoe-mat-khau-67d0722e4d1048acbf72de3aa46a082e'
+            url: 'https://support.locker.io/vi/locker-password-manager/general-features/built-in-add-on-features/password-health-checker'
           },
           btn_text: 'Phát hiện mật khẩu yếu'
         },
@@ -1143,7 +1143,7 @@ module.exports = {
           desc: 'Tạo ẩn danh không giới hạn và giữ email thật của bạn ở chế độ riêng tư. Đi kèm với các tính năng bảo mật bổ sung!',
           learn_more: {
             text: 'Tìm hiểu thêm về Email ẩn danh',
-            url: 'https://support.locker.io/vi/articles/Su-dung-tinh-nang-Email-an-danh-fd4e066b90ad4464bbb0314b5191ada3'
+            url: 'https://support.locker.io/vi/locker-maily/private-email-for-premium'
           },
           btn_text: 'Tạo email ẩn danh'
         },
@@ -1161,7 +1161,7 @@ module.exports = {
           desc: 'Giữ an toàn cho gia đình và bạn bè của bạn khi trực tuyến với Locker Family Plan. Trả ít hơn, sử dụng nhiều hơn!',
           learn_more: {
             text: 'Tìm hiểu thêm về gói Family',
-            url: 'https://support.locker.io/vi/articles/Goi-Family-d570fc79895e4011bf3ba07ca8de3f9a'
+            url: 'https://support.locker.io/vi/locker-password-manager/general-features/plans-and-pricing/upgrading-to-family-plan'
           },
           btn_text: 'Tìm hiểu ngay'
         }
@@ -1389,7 +1389,7 @@ module.exports = {
       chromecsv_link: 'https://support.locker.io/vi/locker-password-manager/get-started/import-and-export/import-data-from-google-chrome-to-locker',
       firefoxcsv_link: 'https://support.locker.io/vi/locker-password-manager/get-started/import-and-export/import-data-from-mozilla-firefox-to-locker',
       '1password_link': 'https://support.locker.io/vi/locker-password-manager/get-started/import-and-export/import-data-from-1password-to-locker',
-      keepassxcsv: 'Sử dụng ứng dụng desktop KeePassX, điều hướng đến "Cơ sở dữ liệu" &rarr; "Xuất sang tệp CSV" và lưu tệp CSV.',
+      keepassxcsv: 'https://support.locker.io/vi/locker-password-manager/get-started/import-and-export/import-data-from-keepassx-to-locker',
       aviracsv: 'Trong kho lưu trữ web Avira, đi tới "Cài đặt" &rarr; "Dữ liệu của tôi" &rarr; "Xuất dữ liệu" và lưu tệp CSV. ',
       blurcsv: 'Trong kho lưu web Blur, nhấp vào tên người dùng của bạn ở trên cùng và đi tới "Cài đặt" &rarr; "Xuất dữ liệu", sau đó nhấp vào "Xuất CSV" cho "Tài khoản" của bạn. ',
       safeincloudxml: 'Sử dụng ứng dụng máy tính để bàn SaveInCloud, điều hướng đến "Tệp" &rarr; "Xuất" &rarr; "Dưới dạng XML" và lưu tệp XML. ',
@@ -3567,7 +3567,7 @@ module.exports = {
         {
           image: 'image-security-password2.png',
           title: 'Cách tội phạm mạng đánh cắp mật khẩu của bạn',
-          desc: 'Một thủ thuật phổ biến nhất mà tội phạm mạng sử dụng để đánh cắp Master Password là kỹ thuật brute-force, hay còn gọi là tấn công từ điển. Cụ thể, tội phạm mạng sẽ chạy một chương trình máy tính để thử kết hợp các từ, cụm từ và số khác nhau cho đến khi dò được mật khẩu đúng. Các mật khẩu dễ đoán nhất như ‘anhyeuem’ hay ‘123456’ có thể bị phá chỉ trong chưa đầy một giây.'
+          desc: 'Một thủ thuật phổ biến nhất mà tội phạm mạng sử dụng để đánh cắp Master Password là kỹ thuật brute-force, hay còn gọi là tấn công từ điển. Cụ thể, tội phạm mạng sẽ chạy một chương trình máy tính để thử kết hợp các từ, cụm từ và số khác nhau cho đến khi dò được mật khẩu đúng. Các mật khẩu dễ đoán nhất như ‘anhyeuem\' hay ‘123456\' có thể bị phá chỉ trong chưa đầy một giây.'
         }
       ]
     },
@@ -3881,7 +3881,7 @@ module.exports = {
     help_box: {
       title: 'Bạn có thắc mắc?',
       detail: 'Xem thêm về Master Password tại đây: ',
-      link: 'https://support.locker.io/vi/articles/Master-Password-la-gi-1a351c28139449c39a46d0378730e3a5'
+      link: 'https://support.locker.io/vi/locker-general/login-unlock/log-in-to-a-cloud-account/what-is-master-password'
     }
   },
   landing_affiliate: {
@@ -4752,7 +4752,7 @@ module.exports = {
       ]
     },
     leading: {
-      title: 'As a leading security company, we want to create an absolutely secure password manager. That’s why we have taken our security to the next level.',
+      title: 'As a leading security company, we want to create an absolutely secure password manager. That\'s why we have taken our security to the next level.',
       items: [
         {
           title: 'Periodic pentesting',
@@ -5229,7 +5229,7 @@ module.exports = {
           detail: {
             step1: {
               title: '2. Nhập từ tệp',
-              text: 'Bạn có thể xuất mật khẩu từ trình duyệt của mình hoặc trình quản lý mật khẩu khác và nhập vào Locker.<br><a href="https://support.locker.io/vi/articles/Nhap-va-xuat-du-lieu-a01c0fec83794ba88af5374b1ba8dd40" target="_blank">Tìm hiểu cách xuất tệp từ trình duyệt hoặc trình quản lý mật khẩu khác <i class="el-icon-right"></i></a><br>Đầu tiên, chọn định dạng của tệp bạn muốn nhập.'
+              text: 'Bạn có thể xuất mật khẩu từ trình duyệt của mình hoặc trình quản lý mật khẩu khác và nhập vào Locker.<br><a href="https://support.locker.io/vi/locker-password-manager/get-started/import-and-export" target="_blank">Tìm hiểu cách xuất tệp từ trình duyệt hoặc trình quản lý mật khẩu khác <i class="el-icon-right"></i></a><br>Đầu tiên, chọn định dạng của tệp bạn muốn nhập.'
             },
             step2: {
               title: '2. Nhập từ tệp',
