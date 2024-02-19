@@ -105,6 +105,8 @@ export default {
     getNotionData () {
       this.$axios.$get(`${process.env.baseUrl}/api/top-banner`).then(res => {
         this.notionData = res.data
+      }).catch(e => {
+        console.log('top banner notion err', e)
       })
     },
     changeTextBaseOnParam () {
