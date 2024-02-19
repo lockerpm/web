@@ -161,19 +161,21 @@
       >
         <slide v-for="(item, index) in $t(`sme.features.${currentFeatureGroup}.items`)" :key="index">
           <div
-            class="border rounded border-black-50 py-6 px-6 h-full flex flex-col items-center text-center"
+            class="border rounded border-black-50 py-6 px-6 h-full flex text-center"
             :class="{ 'ml-8': index !== 0 }"
           >
-            <img
-              class="h-16"
-              :src="require(`~/assets/images/pages/sme/features/${currentFeatureGroup}-${index + 1}.svg`)"
-            >
-            <h3 class="font-semibold text-black landing-font-24 my-3">
-              {{ item.title }}
-            </h3>
-            <p class="text-black flex-1">
-              {{ item.desc }}
-            </p>
+            <div class="flex flex-col items-center">
+              <img
+                class="h-16"
+                :src="require(`~/assets/images/pages/sme/features/${currentFeatureGroup}-${index + 1}.svg`)"
+              >
+              <h3 class="font-semibold text-black landing-font-24 my-3">
+                {{ item.title }}
+              </h3>
+              <p class="text-black flex-1">
+                {{ item.desc }}
+              </p>
+            </div>
           </div>
         </slide>
       </carousel>

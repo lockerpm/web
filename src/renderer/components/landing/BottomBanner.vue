@@ -87,6 +87,8 @@ export default {
     getNotionData () {
       this.$axios.$get(`${process.env.baseUrl}/api/bottom-banner`).then(res => {
         this.notionData = res.data
+      }).catch(e => {
+        console.log('bottom banner notion err', e)
       })
     },
     changeTextBaseOnParam () {
