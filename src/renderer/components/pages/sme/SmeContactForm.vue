@@ -70,7 +70,15 @@
       </el-form>
     </div>
 
-    <el-button type="primary" round class="w-full" :loading="loading" @click="submitForm">
+    <el-button
+      type="primary"
+      round
+      class="w-full"
+      :loading="loading"
+      :disabled="loading"
+      style="font-size: 18px; line-height: 24px;"
+      @click="submitForm"
+    >
       {{ $t('common.send') }}
     </el-button>
   </div>
@@ -156,7 +164,7 @@ export default {
           utm_content: this.$cookies.get('utm_content')
         }
         this.loading = true
-        await this.this.$axios.post(
+        await this.$axios.post(
           'https://tracking.cystack.net/v1/activities',
           payload
         )
