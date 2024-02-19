@@ -1,11 +1,11 @@
 <template>
   <div>
     <!-- Header -->
-    <section class="pt-10">
+    <section id="header" class="pt-10">
       <div class="relative w-full">
         <div class="relative z-10 flex max-w-7xl mx-auto px-6 flex-wrap">
           <div class="lg:w-1/2 w-full">
-            <div style="margin-bottom: 70px">
+            <div class="logo-container">
               <a href="/" target="_blank">
                 <img
                   class="h-12"
@@ -19,7 +19,7 @@
               {{ $t('sme.header.desc') }}
             </p>
 
-            <div class="flex flex-wrap items-center mb-16">
+            <div class="btn-container flex flex-wrap items-center mb-16">
               <a href="#contact" class="bg-primary rounded-full px-9 py-3 mb-3 text-white hover:text-white font-semibold landing-font-21 cursor-pointer hover:opacity-70 transition-opacity">
                 {{ $t('sme.header.btn') }}
               </a>
@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <div class="hidden lg:flex w-11/12 max-w-7xl absolute z-0 right-0 bottom-0">
+        <div class="hidden lg:flex w-11/12 absolute z-0 right-0 bottom-0">
           <div ref="animationHero" />
         </div>
       </div>
@@ -429,15 +429,15 @@
 
     <!-- CTA -->
     <section id="cta" class="pt-20 pb-6 bg-primary">
-      <div class="max-w-7xl mx-auto px-6 rounded-2xl flex flex-col items-center mb-12 py-20">
-        <h2 class="landing-font-81 font-semibold text-white max-w-[658px] text-center mb-6">
+      <div class="max-w-7xl mx-auto px-6 rounded-2xl flex flex-col items-center mb-12 py-24">
+        <h2 class="landing-font-81 font-semibold text-white max-w-[658px] text-center mb-6 mt-16">
           {{ $t('sme.cta.title') }}
         </h2>
-        <div class="flex flex-wrap items-center justify-center">
+        <div class="flex flex-wrap items-center justify-center mb-12">
           <a href="#contact" class="bg-primary rounded-full px-9 py-3 mb-3 text-white hover:text-white font-semibold landing-font-21 cursor-pointer hover:opacity-90 transition-opacity">
             {{ $t('sme.cta.btn') }}
           </a>
-          <a href="https://locker.io/vi/business/register" target="_blank" class="text-white font-medium ml-4 mb-3 landing-font-21 hover:text-white">
+          <a href="https://locker.io/vi/business/register" target="_blank" class="text-white font-medium ml-4 landing-font-21 hover:text-white">
             {{ $t('sme.header.trial') }}
             <i class="el-icon-arrow-right" />
           </a>
@@ -655,6 +655,17 @@ export default {
   .landing-font-54 {
     font-size: 32px;
     line-height: 44px;
+  }
+}
+#header .logo-container {
+    margin-bottom: 70px;
+  }
+@media only screen and (min-width: 1581px) {
+  #header .logo-container {
+    margin-bottom: 20%;
+  }
+  #header .btn-container {
+    margin-bottom: 20%;
   }
 }
 #cta > div:first-of-type {

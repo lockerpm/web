@@ -70,7 +70,15 @@
       </el-form>
     </div>
 
-    <el-button type="primary" round class="w-full" :loading="loading" @click="submitForm">
+    <el-button
+      type="primary"
+      round
+      class="w-full"
+      :loading="loading"
+      :disabled="loading"
+      style="font-size: 18px; line-height: 24px;"
+      @click="submitForm"
+    >
       {{ $t('common.send') }}
     </el-button>
   </div>
