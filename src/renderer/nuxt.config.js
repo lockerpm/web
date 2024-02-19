@@ -88,7 +88,8 @@ module.exports = {
     { ssr: true, src: '@/plugins/ui/element.js' },
     { ssr: true, src: '@/plugins/ui/fontawesome.js' },
     { ssr: true, src: '@/plugins/ui/katex.js' },
-    { ssr: true, src: '@/plugins/ui/vee.js' }
+    { ssr: true, src: '@/plugins/ui/vee.js' },
+    { ssr: false, src: '@/plugins/ui/lottie.js' }
   ],
   buildModules: [
     '@nuxt/typescript-build',
