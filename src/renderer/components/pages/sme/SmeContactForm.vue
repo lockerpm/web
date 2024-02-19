@@ -164,7 +164,7 @@ export default {
           utm_content: this.$cookies.get('utm_content')
         }
         this.loading = true
-        await this.this.$axios.post(
+        await this.$axios.post(
           'https://tracking.cystack.net/v1/activities',
           payload
         )
