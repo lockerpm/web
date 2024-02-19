@@ -295,7 +295,7 @@
     <!-- News end -->
 
     <!-- Process -->
-    <section class="max-w-7xl mx-auto px-6">
+    <section class="max-w-7xl lg:max-w-full mx-auto px-6 lg:px-0">
       <div ref="animationProcess" class="hidden lg:flex" />
       <div class="flex flex-col lg:hidden py-20">
         <h2 class="landing-font-54 font-semibold text-black mb-6">
@@ -375,15 +375,15 @@
 
     <!-- Contact -->
     <section id="contact" class="py-20 max-w-7xl mx-auto px-6">
-      <div class="rounded-2xl bg-[#FAFAFA] flex items-center">
-        <div class="w-1/2 hidden lg:flex">
+      <div class="rounded-2xl bg-[#FAFAFA] flex overflow-hidden items-start">
+        <div class="w-7/12 hidden lg:flex">
           <div ref="animationContact" />
         </div>
-        <div class="lg:w-1/2 w-full flex flex-col items-center p-10">
+        <div class="lg:w-5/12 w-full flex flex-col items-center p-10">
           <h2 class="landing-font-81 font-semibold text-black mb-3">
             {{ $t('sme.contact.title') }}
           </h2>
-          <p class="landing-font-16 mb-8">
+          <p class="landing-font-16 mb-4">
             {{ $t('sme.contact.desc') }}
           </p>
 

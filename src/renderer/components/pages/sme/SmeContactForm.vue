@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full">
-    <div class="border rounded-2xl border-black-50 p-8 bg-white mb-8 w-full">
+  <div id="sme-form" class="w-full">
+    <div class="border rounded-2xl border-black-50 p-6 bg-white mb-8 w-full">
       <el-form
         ref="smeForm"
         :show-message="false"
@@ -96,7 +96,7 @@ export default {
   computed: {
     rules () {
       function validatePhoneNumber (_, value, callback) {
-        const phoneRegex = /^\d{10}$/
+        const phoneRegex = /^\d{6,}$/
         if (!phoneRegex.test(value)) {
           callback(new Error('Invalid phone'))
           return
@@ -170,3 +170,10 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+#sme-form {
+  .el-form-item {
+    margin-bottom: 0;
+  }
+}
+</style>
