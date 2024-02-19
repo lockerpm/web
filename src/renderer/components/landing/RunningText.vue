@@ -30,7 +30,7 @@ export default {
   /* min-width: 100%; */
   white-space: nowrap;
   display: inline-block;
-  animation: horizontal-animation 8s linear infinite;
+  animation: horizontal-animation 15s linear infinite;
 
   .content {
     min-width: 100%;
@@ -39,11 +39,11 @@ export default {
 }
 
 .running-vertical {
-  animation: vertical-animation 8s linear infinite;
+  animation: vertical-animation 15s linear infinite;
 }
 
 .running-vertical-inverted {
-  animation: vertical-inverted-animation 8s linear infinite;
+  animation: vertical-inverted-animation 15s linear infinite;
 }
 
 @keyframes horizontal-animation {
