@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div id="doanh-nghiep">
     <!-- Header -->
     <section id="header" class="pt-10">
       <div class="relative w-full">
         <div class="relative z-10 flex max-w-9xl mx-auto px-6 flex-wrap">
-          <div class="lg:w-1/2 w-full lg:max-w-[45rem] text-center flex flex-col items-center lg:items-start lg:text-left">
+          <div class="lg:w-1/2 w-full lg:max-w-[46rem] text-center flex flex-col items-center lg:items-start lg:text-left">
             <div class="logo-container">
               <a href="/" target="_blank">
                 <img
@@ -69,7 +69,7 @@
               class="h-12 mr-3"
               :src="require(`~/assets/images/pages/sme/customers/desc-${index + 1}.svg`)"
             >
-            <p class=" landing-font-18">
+            <p class="landing-font-21">
               {{ item }}
             </p>
           </div>
@@ -108,7 +108,7 @@
 
     <!-- Features -->
     <section id="features" class="py-20 max-w-9xl mx-auto px-6">
-      <h2 class="landing-font-81 text-black font-semibold max-w-[48rem] mb-8">
+      <h2 class="landing-font-81 text-black font-semibold max-w-[51rem] mb-8">
         {{ $t('sme.features.title') }}
       </h2>
 
@@ -125,7 +125,7 @@
               class="h-6 mr-3 text-black"
               src="~/assets/images/pages/sme/features/staff-icon.svg"
             >
-            <p class="landing-font-18 font-semibold text-black">
+            <p class="landing-font-21 font-semibold text-black">
               {{ $t('sme.features.staff.btn') }}
             </p>
           </div>
@@ -139,7 +139,7 @@
               class="h-6 mr-3 text-black"
               src="~/assets/images/pages/sme/features/admin-icon.svg"
             >
-            <p class="landing-font-18 font-semibold text-black">
+            <p class="landing-font-21 font-semibold text-black">
               {{ $t('sme.features.admin.btn') }}
             </p>
           </div>
@@ -165,8 +165,8 @@
       >
         <slide v-for="(item, index) in $t(`sme.features.${currentFeatureGroup}.items`)" :key="index">
           <div
-            class="border rounded border-black-50 py-6 px-6 h-full flex text-center"
-            :class="{ 'ml-8': index !== 0 }"
+            class="border rounded border-black-50 py-6 px-6 h-full flex text-center mx-4"
+            :class="{ 'ml-0': index === 0 }"
           >
             <div class="flex flex-col items-center">
               <img
@@ -176,7 +176,7 @@
               <h3 class="font-semibold text-black landing-font-24 my-3">
                 {{ item.title }}
               </h3>
-              <p class="text-black flex-1">
+              <p class="text-black landing-font-18 flex-1">
                 {{ item.desc }}
               </p>
             </div>
@@ -190,7 +190,7 @@
     <!-- Hero -->
     <section class="bg-[#FAFAFA]">
       <div class="flex max-w-9xl mx-auto px-6 py-10 items-center justify-between flex-wrap">
-        <div class="lg:w-7/12 w-full mb-8 lg:mb-0">
+        <div class="lg:w-7/12 w-full mb-8 lg:mb-0 text-center lg:text-left">
           <h2 class="landing-font-81 text-black font-semibold max-w-[48rem] mb-6 mr-0 md:mr-6 md:mb-0">
             {{ $t('sme.hero.title') }}
           </h2>
@@ -247,7 +247,7 @@
           <h2 class="text-[2.25rem] leading-[3rem] font-semibold text-black mb-8">
             {{ $t('sme.news.title') }}
           </h2>
-          <p class="mb-8">
+          <p class="mb-8 landing-font-18">
             {{ $t('sme.news.desc') }}
           </p>
           <div>
@@ -256,7 +256,7 @@
               target="_blank"
             >
               <div class="border border-primary rounded-full py-2 px-6 cursor-pointer">
-                <p class="text-primary font-medium">
+                <p class="text-primary font-medium landing-font-21">
                   {{ $t('sme.news.btn') }} &nbsp; <i class="el-icon-arrow-right" />
                 </p>
               </div>
@@ -321,7 +321,7 @@
           <h3 class="font-semibold text-black landing-font-21 mb-4">
             {{ item.title }}
           </h3>
-          <p class="text-black">
+          <p class="text-black landing-font-16">
             {{ item.desc }}
           </p>
         </div>
@@ -358,7 +358,7 @@
               class=" border-black-50"
               :class="{'border-t': index !== 0}"
             >
-              <td class="text-black py-3 pr-4 landing-font-16">
+              <td class="text-black py-3 pr-4 landing-font-21 font-medium">
                 {{ item }}
               </td>
               <td
@@ -642,7 +642,7 @@ export default {
   background: linear-gradient(to bottom, rgba(250, 250, 250, 0), rgba(250, 250, 250, 1));
 }
 .landing-font-81 {
-  font-size: 5rem;
+  font-size: 4.9rem;
   line-height: 6rem;
 }
 .landing-font-54 {
@@ -650,16 +650,16 @@ export default {
   line-height: 4rem;
 }
 .landing-font-24 {
-  font-size: 20px;
-  line-height: 26px;
+  font-size: 24px;
+  line-height: 32px;
 }
 .landing-font-22 {
   font-size: 1.38rem;
   line-height: 2rem;
 }
 .landing-font-21 {
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 21px;
+  line-height: 32px;
 }
 @media only screen and (max-width: 768px) {
   .landing-font-81 {
@@ -718,6 +718,11 @@ export default {
     .el-icon-minus {
       display: inline-block;
     }
+  }
+}
+#doanh-nghiep {
+  * {
+    font-family: "SVN-Avenir Next", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 }
 </style>

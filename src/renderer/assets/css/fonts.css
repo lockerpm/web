@@ -1,0 +1,120 @@
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-Black.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-BlackItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-Demi.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-DemiItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-Heavy.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-HeavyItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-ThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-UltraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SVN-Avenir Next';
+  src: url('~/assets/fonts/SVN-AvenirNext/SVN-AvenirNext-UltraLightItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
+}
