@@ -65,7 +65,7 @@
           :placeholder="$t('sme.contact.form.request_desc.desc')"
           prop="note"
         >
-          <el-input v-model="formData.note" type="textarea" :rows="3" />
+          <el-input v-model="formData.note" type="textarea" :rows="2" />
         </el-form-item>
       </el-form>
     </div>

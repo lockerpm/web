@@ -118,6 +118,7 @@ module.exports = {
     jit: true
   },
   css: [
+    '@/assets/css/fonts.css',
     '@/assets/css/app.scss',
     '~/static/assets/css/notion-overwrite.css',
     '@/assets/flags/flags.css'
