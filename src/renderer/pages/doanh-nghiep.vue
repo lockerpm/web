@@ -512,7 +512,7 @@
       </div>
 
       <div
-        class="md:flex md:items-centerlanding-font-12 text-white max-w-9xl mx-auto px-6"
+        class="md:flex md:items-centerlanding-font-12 text-white max-w-9xl mx-auto"
       >
         <div class="flex items-center">
           <div v-if="locale === 'vi'">Một sản phẩm của</div>
@@ -768,7 +768,7 @@ export default {
 }
 #doanh-nghiep {
   * {
-    font-family: "SVN-Avenir Next", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Avenir Next', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 }
 </style>
