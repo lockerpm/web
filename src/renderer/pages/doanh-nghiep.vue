@@ -32,7 +32,12 @@
         </div>
 
         <div class="hidden lg:flex w-11/12 absolute z-0 right-0 bottom-0">
-          <div ref="animationHero" />
+          <lottie-vue-player
+            autoplay
+            loop
+            src="/img/animation/hero.json"
+            style="width: 100%; height: auto"
+          />
         </div>
       </div>
 
@@ -148,43 +153,86 @@
       </div>
       <!-- Buttons end -->
 
-      <!-- Carousel -->
-      <carousel
-        :per-page-custom="[
-          [0, 1],
-          [480, 1],
-          [768, 2],
-          [1024, 3],
-          [1280, 4]
-        ]"
-        pagination-active-color="#268334"
-        autoplay
-        loop
-        :pagination-enabled="false"
-        :autoplay-timeout="3000"
-        :scroll-per-page="false"
-      >
-        <slide v-for="(item, index) in $t(`sme.features.${currentFeatureGroup}.items`)" :key="index">
-          <div
-            class="border rounded border-black-50 py-6 px-6 h-full flex text-center mx-4"
-            :class="{ 'ml-0': index === 0 }"
-          >
-            <div class="flex flex-col items-center">
-              <img
-                class="h-16"
-                :src="require(`~/assets/images/pages/sme/features/${currentFeatureGroup}-${index + 1}.svg`)"
-              >
-              <h3 class="font-semibold text-black landing-font-22 my-3">
-                {{ item.title }}
-              </h3>
-              <p class="text-black landing-font-16 flex-1">
-                {{ item.desc }}
-              </p>
+      <!-- Carousel staff -->
+      <div :class="{ 'hidden': currentFeatureGroup !== 'staff' }">
+        <carousel
+          :per-page-custom="[
+            [0, 1],
+            [480, 1],
+            [768, 2],
+            [1024, 3],
+            [1280, 4]
+          ]"
+          pagination-active-color="#268334"
+          autoplay
+          loop
+          :pagination-enabled="false"
+          :autoplay-timeout="3000"
+          :scroll-per-page="false"
+        >
+          <slide v-for="(item, index) in $t('sme.features.staff.items')" :key="index">
+            <div
+              class="border rounded border-black-50 py-6 px-6 h-full flex text-center mx-4"
+              :class="{ 'ml-0': index === 0 }"
+            >
+              <div class="flex flex-col items-center">
+                <img
+                  class="h-16"
+                  :src="require(`~/assets/images/pages/sme/features/staff-${index + 1}.svg`)"
+                >
+                <h3 class="font-semibold text-black landing-font-22 my-3">
+                  {{ item.title }}
+                </h3>
+                <p class="text-black landing-font-16 flex-1">
+                  {{ item.desc }}
+                </p>
+              </div>
             </div>
-          </div>
-        </slide>
-      </carousel>
-      <!-- Carousel end -->
+          </slide>
+        </carousel>
+      </div>
+      <!-- Carousel staff end -->
+
+      <!-- Carousel admin -->
+      <div :class="{ 'hidden': currentFeatureGroup !== 'admin' }">
+        <carousel
+          :per-page-custom="[
+            [0, 1],
+            [480, 1],
+            [768, 2],
+            [1024, 3],
+            [1280, 4]
+          ]"
+          pagination-active-color="#268334"
+          autoplay
+          loop
+          :pagination-enabled="false"
+          :autoplay-timeout="3000"
+          :scroll-per-page="false"
+        >
+          <slide v-for="(item, index) in $t('sme.features.admin.items')" :key="index">
+            <div
+              class="border rounded border-black-50 py-6 px-6 h-full flex text-center mx-4"
+              :class="{ 'ml-0': index === 0 }"
+            >
+              <div class="flex flex-col items-center">
+                <img
+                  class="h-16"
+                  :src="require(`~/assets/images/pages/sme/features/admin-${index + 1}.svg`)"
+                >
+                <h3 class="font-semibold text-black landing-font-22 my-3">
+                  {{ item.title }}
+                </h3>
+                <p class="text-black landing-font-16 flex-1">
+                  {{ item.desc }}
+                </p>
+              </div>
+            </div>
+          </slide>
+        </carousel>
+      </div>
+
+      <!-- Carousel admin end -->
     </section>
     <!-- Features end -->
 
@@ -305,7 +353,14 @@
 
     <!-- Process -->
     <section class="max-w-9xl lg:max-w-full mx-auto px-6 lg:px-0">
-      <div ref="animationProcess" class="hidden lg:flex" />
+      <div class="hidden lg:flex">
+        <lottie-vue-player
+          autoplay
+          loop
+          src="/img/animation/process.json"
+          style="width: 100%; height: auto"
+        />
+      </div>
       <div class="flex flex-col lg:hidden py-20">
         <h2 class="landing-font-54 font-semibold text-black mb-6">
           {{ $t('sme.process.title') }}
@@ -385,10 +440,15 @@
     <!-- Contact -->
     <section id="contact" class="py-20 max-w-9xl mx-auto px-6">
       <div class="rounded-2xl bg-[#FAFAFA] flex overflow-hidden items-start">
-        <div class="w-7/12 hidden lg:flex">
-          <div ref="animationContact" />
+        <div class="w-7/12 2xl:w-1/2 hidden lg:flex">
+          <lottie-vue-player
+            autoplay
+            loop
+            src="/img/animation/contact.json"
+            style="width: 100%; height: auto"
+          />
         </div>
-        <div class="lg:w-5/12 w-full flex flex-col items-center p-10 text-center lg:text-left">
+        <div class="lg:w-5/12 2xl:w-1/2 w-full flex flex-col items-center lg:items-start p-10 text-center lg:text-left">
           <h2 class="landing-font-81 font-semibold text-black mb-3">
             {{ $t('sme.contact.title') }}
           </h2>
@@ -559,7 +619,6 @@ export default {
 
   mounted () {
     this.autoSelectCustomer()
-    this.loadAnimation()
     this.$i18n.setLocale('vi')
   },
 
@@ -579,21 +638,6 @@ export default {
         const index = this.customers.findIndex(i => i === this.currentCustomer)
         this.currentCustomer = this.customers[(index + 1) % this.customers.length]
       }, 3000)
-    },
-
-    loadAnimation () {
-      this.$lottie.loadAnimation({
-        container: this.$refs.animationHero,
-        path: '/img/animation/hero.json'
-      })
-      this.$lottie.loadAnimation({
-        container: this.$refs.animationProcess,
-        path: '/img/animation/process.json'
-      })
-      this.$lottie.loadAnimation({
-        container: this.$refs.animationContact,
-        path: '/img/animation/contact.json'
-      })
     },
 
     selectFeatureGroup (val) {
@@ -643,7 +687,7 @@ export default {
   background: linear-gradient(to bottom, rgba(250, 250, 250, 0), rgba(250, 250, 250, 1));
 }
 .landing-font-81 {
-  font-size: 4.9rem;
+  font-size: 4.8rem;
   line-height: 6rem;
 }
 .landing-font-54 {

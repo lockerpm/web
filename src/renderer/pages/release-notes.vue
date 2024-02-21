@@ -17,21 +17,25 @@ export default {
 
   scrollToTop: true,
 
-  async asyncData ({ $notion }) {
-    const [vi, en] = await Promise.all([
-      $notion.getPageBlocks('65b0656c-2496-4e35-ae16-ae5bd0fd4993'),
-      $notion.getPageBlocks('c33126d163e34dd0b90e28d0b74e0a3d')
-    ])
-    return { blockMap: { vi, en } }
-  },
+  // async asyncData ({ $notion }) {
+  //   const [vi, en] = await Promise.all([
+  //     $notion.getPageBlocks('65b0656c-2496-4e35-ae16-ae5bd0fd4993'),
+  //     $notion.getPageBlocks('c33126d163e34dd0b90e28d0b74e0a3d')
+  //   ])
+  //   return { blockMap: { vi, en } }
+  // },
 
   data () {
     return {
       blockMap: {
-        vi: null,
-        en: null
+        vi: {},
+        en: {}
       }
     }
+  },
+
+  fetch ({ redirect, i18n }) {
+    redirect(301, `https://support.locker.io/${i18n.locale}/locker-general/release-notes`)
   },
 
   head () {
