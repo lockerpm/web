@@ -161,7 +161,8 @@
         autoplay
         loop
         :pagination-enabled="false"
-        :autoplay-timeout="4000"
+        :autoplay-timeout="3000"
+        :scroll-per-page="false"
       >
         <slide v-for="(item, index) in $t(`sme.features.${currentFeatureGroup}.items`)" :key="index">
           <div
@@ -173,10 +174,10 @@
                 class="h-16"
                 :src="require(`~/assets/images/pages/sme/features/${currentFeatureGroup}-${index + 1}.svg`)"
               >
-              <h3 class="font-semibold text-black landing-font-24 my-3">
+              <h3 class="font-semibold text-black landing-font-22 my-3">
                 {{ item.title }}
               </h3>
-              <p class="text-black landing-font-18 flex-1">
+              <p class="text-black landing-font-16 flex-1">
                 {{ item.desc }}
               </p>
             </div>
@@ -209,7 +210,7 @@
                   class="h-16 mb-3"
                   :src="require(`~/assets/images/pages/sme/hero/item-${index + 1}.svg`)"
                 >
-                <p class="font-medium text-black landing-font-24 text-center">
+                <p class="font-medium text-black landing-font-22 text-center">
                   {{ item }}
                 </p>
               </div>
@@ -228,7 +229,7 @@
                   class="h-16 mb-3"
                   :src="require(`~/assets/images/pages/sme/hero/item2-${index + 1}.svg`)"
                 >
-                <p class="font-medium text-black landing-font-24 text-center">
+                <p class="font-medium text-black landing-font-22 text-center">
                   {{ item }}
                 </p>
               </div>
@@ -247,7 +248,7 @@
           <h2 class="text-[2.25rem] leading-[3rem] font-semibold text-black mb-8">
             {{ $t('sme.news.title') }}
           </h2>
-          <p class="mb-8 landing-font-18">
+          <p class="mb-8 landing-font-16">
             {{ $t('sme.news.desc') }}
           </p>
           <div>
@@ -358,7 +359,7 @@
               class=" border-black-50"
               :class="{'border-t': index !== 0}"
             >
-              <td class="text-black py-3 pr-4 landing-font-21 font-medium">
+              <td class="text-black py-3 pr-4 landing-font-18 font-medium">
                 {{ item }}
               </td>
               <td
@@ -434,7 +435,7 @@
     <!-- Questions end -->
 
     <!-- CTA -->
-    <section id="cta" class="pt-20 pb-6 bg-primary">
+    <section id="cta" class="pt-20 pb-6 bg-primary px-6">
       <div class="max-w-9xl mx-auto px-6 rounded-2xl flex flex-col items-center mb-12 py-24">
         <h2 class="landing-font-81 font-semibold text-white max-w-[658px] text-center mb-6 mt-16">
           {{ $t('sme.cta.title') }}
@@ -658,8 +659,8 @@ export default {
   line-height: 2rem;
 }
 .landing-font-21 {
-  font-size: 21px;
-  line-height: 32px;
+  font-size: 1.3rem;
+  line-height: 2rem;
 }
 @media only screen and (max-width: 768px) {
   .landing-font-81 {
@@ -693,6 +694,7 @@ export default {
   background-image: url(~assets/images/pages/sme/cta-bg.png);
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
 }
 </style>
 <style lang="scss">

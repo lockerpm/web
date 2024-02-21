@@ -169,6 +169,7 @@ export default {
           payload
         )
         this.notify(this.$t('landing_contact.messages.request_has_been_sent'), 'success')
+        this.$refs.smeForm.resetFields()
       } catch (error) {
         console.log(error)
       } finally {
