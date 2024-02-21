@@ -148,43 +148,86 @@
       </div>
       <!-- Buttons end -->
 
-      <!-- Carousel -->
-      <carousel
-        :per-page-custom="[
-          [0, 1],
-          [480, 1],
-          [768, 2],
-          [1024, 3],
-          [1280, 4]
-        ]"
-        pagination-active-color="#268334"
-        autoplay
-        loop
-        :pagination-enabled="false"
-        :autoplay-timeout="3000"
-        :scroll-per-page="false"
-      >
-        <slide v-for="(item, index) in $t(`sme.features.${currentFeatureGroup}.items`)" :key="index">
-          <div
-            class="border rounded border-black-50 py-6 px-6 h-full flex text-center mx-4"
-            :class="{ 'ml-0': index === 0 }"
-          >
-            <div class="flex flex-col items-center">
-              <img
-                class="h-16"
-                :src="require(`~/assets/images/pages/sme/features/${currentFeatureGroup}-${index + 1}.svg`)"
-              >
-              <h3 class="font-semibold text-black landing-font-22 my-3">
-                {{ item.title }}
-              </h3>
-              <p class="text-black landing-font-16 flex-1">
-                {{ item.desc }}
-              </p>
+      <!-- Carousel staff -->
+      <div :class="{ 'hidden': currentFeatureGroup !== 'staff' }">
+        <carousel
+          :per-page-custom="[
+            [0, 1],
+            [480, 1],
+            [768, 2],
+            [1024, 3],
+            [1280, 4]
+          ]"
+          pagination-active-color="#268334"
+          autoplay
+          loop
+          :pagination-enabled="false"
+          :autoplay-timeout="3000"
+          :scroll-per-page="false"
+        >
+          <slide v-for="(item, index) in $t('sme.features.staff.items')" :key="index">
+            <div
+              class="border rounded border-black-50 py-6 px-6 h-full flex text-center mx-4"
+              :class="{ 'ml-0': index === 0 }"
+            >
+              <div class="flex flex-col items-center">
+                <img
+                  class="h-16"
+                  :src="require(`~/assets/images/pages/sme/features/staff-${index + 1}.svg`)"
+                >
+                <h3 class="font-semibold text-black landing-font-22 my-3">
+                  {{ item.title }}
+                </h3>
+                <p class="text-black landing-font-16 flex-1">
+                  {{ item.desc }}
+                </p>
+              </div>
             </div>
-          </div>
-        </slide>
-      </carousel>
-      <!-- Carousel end -->
+          </slide>
+        </carousel>
+      </div>
+      <!-- Carousel staff end -->
+
+      <!-- Carousel admin -->
+      <div :class="{ 'hidden': currentFeatureGroup !== 'admin' }">
+        <carousel
+          :per-page-custom="[
+            [0, 1],
+            [480, 1],
+            [768, 2],
+            [1024, 3],
+            [1280, 4]
+          ]"
+          pagination-active-color="#268334"
+          autoplay
+          loop
+          :pagination-enabled="false"
+          :autoplay-timeout="3000"
+          :scroll-per-page="false"
+        >
+          <slide v-for="(item, index) in $t('sme.features.admin.items')" :key="index">
+            <div
+              class="border rounded border-black-50 py-6 px-6 h-full flex text-center mx-4"
+              :class="{ 'ml-0': index === 0 }"
+            >
+              <div class="flex flex-col items-center">
+                <img
+                  class="h-16"
+                  :src="require(`~/assets/images/pages/sme/features/admin-${index + 1}.svg`)"
+                >
+                <h3 class="font-semibold text-black landing-font-22 my-3">
+                  {{ item.title }}
+                </h3>
+                <p class="text-black landing-font-16 flex-1">
+                  {{ item.desc }}
+                </p>
+              </div>
+            </div>
+          </slide>
+        </carousel>
+      </div>
+
+      <!-- Carousel admin end -->
     </section>
     <!-- Features end -->
 
