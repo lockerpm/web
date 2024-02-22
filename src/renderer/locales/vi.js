@@ -2622,6 +2622,11 @@ module.exports = {
         }
       }
     },
+    ad: {
+      title: 'Mua Locker Premium và nhận gói năm Internxt 5TB với mức giảm giá',
+      title2: '75%',
+      desc: '* Áp dụng cho đăng ký hàng năm của gói Locker Premium hoặc Family.'
+    },
     plan_table: {
       table: [
         {
@@ -3325,12 +3330,13 @@ module.exports = {
             // },
             {
               name: 'Câu hỏi thường gặp',
-              link: 'https://support.locker.io/vi/categories/Cau-hoi-thuong-gap-5a3a9c59de13499db8786b4c5d786b64',
+              link: 'https://support.locker.io/vi/locker-password-manager/frequently-asked-questions',
               external: true
             },
             {
               name: 'Ghi chú phát hành',
-              link: 'release-notes'
+              external: true,
+              link: 'https://support.locker.io/vi/locker-general/release-notes'
             },
             {
               name: 'Tài liệu API',
@@ -3340,6 +3346,11 @@ module.exports = {
             {
               name: 'Báo cáo đánh giá bảo mật',
               link: 'https://s.locker.io/audit_reports/Locker_Audit_Report_By_CyStack_VI.pdf',
+              external: true
+            },
+            {
+              name: 'Lộ trình sản phẩm',
+              link: 'https://cystack.notion.site/a4c2ba7964dd4461a7d9e3dc8fea5a0c?v=f1e7954c7a1c40e38eb66253bed5dce0&pvs=74',
               external: true
             },
             {
@@ -3374,11 +3385,6 @@ module.exports = {
             {
               name: 'Báo cáo lỗ hổng',
               link: 'https://whitehub.net/programs/locker/',
-              external: true
-            },
-            {
-              name: 'Product Roadmap',
-              link: 'https://www.notion.so/cystack/a4c2ba7964dd4461a7d9e3dc8fea5a0c?v=f1e7954c7a1c40e38eb66253bed5dce0&pvs=4',
               external: true
             }
           ]

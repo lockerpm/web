@@ -2622,6 +2622,11 @@ module.exports = {
         }
       }
     },
+    ad: {
+      title: 'Buy Locker Premium and get Internxt 5TB annual plan at',
+      title2: '75% OFF',
+      desc: '* Applicable to annual subscriptions of Locker Premium or Family plan.'
+    },
     plan_table: {
       table: [
         {
@@ -3317,7 +3322,6 @@ module.exports = {
             {
               name: 'Whitepaper',
               link: 'whitepaper'
-              // external: true
             },
             // {
             //   name: 'Market comparison',
@@ -3325,12 +3329,13 @@ module.exports = {
             // },
             {
               name: 'FAQs',
-              link: 'https://support.locker.io/categories/Frequently-Asked-Questions-c52ca573a0224e11a94cef6bd2699e28',
+              link: 'https://support.locker.io/en/locker-password-manager/frequently-asked-questions',
               external: true
             },
             {
               name: 'Release notes',
-              link: 'release-notes'
+              external: true,
+              link: 'https://support.locker.io/en/locker-general/release-notes'
             },
             {
               name: 'API References',
@@ -3344,7 +3349,7 @@ module.exports = {
             },
             {
               name: 'Product Roadmap',
-              link: 'https://www.notion.so/cystack/a4c2ba7964dd4461a7d9e3dc8fea5a0c?v=f1e7954c7a1c40e38eb66253bed5dce0&pvs=4',
+              link: 'https://cystack.notion.site/a4c2ba7964dd4461a7d9e3dc8fea5a0c?v=f1e7954c7a1c40e38eb66253bed5dce0&pvs=74',
               external: true
             },
             {
