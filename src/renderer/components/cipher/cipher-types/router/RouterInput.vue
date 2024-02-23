@@ -128,6 +128,9 @@ export default {
     fillWifiPassword (p) {
       this.router.wifiPassword = p
     },
+
+    // Methods to be called by ref
+
     loadData (data) {
       this.router = { ...data }
     },

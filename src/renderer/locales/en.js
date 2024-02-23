@@ -3321,7 +3321,8 @@ module.exports = {
             },
             {
               name: 'Whitepaper',
-              link: 'whitepaper'
+              link: 'https://support.locker.io/en/locker-whitepaper',
+              external: true
             },
             // {
             //   name: 'Market comparison',

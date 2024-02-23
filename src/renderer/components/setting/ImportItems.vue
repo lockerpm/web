@@ -122,6 +122,7 @@ export default {
   components: {
     Instructions
   },
+
   data () {
     return {
       format: 'lockerjson',
@@ -134,6 +135,7 @@ export default {
       collapsed: false
     }
   },
+
   asyncComputed: {
     ciphers: {
       async get () {
@@ -169,6 +171,7 @@ export default {
       ]
     }
   },
+
   computed: {
     featuredImportOptions () {
       return this.$importService.featuredImportOptions
@@ -211,18 +214,9 @@ export default {
       return this.$route.params.teamId
     }
   },
+
   methods: {
-    padNumber (num, width, padCharacter = '0') {
-      const numString = num.toString()
-      return numString.length >= width
-        ? numString
-        : new Array(width - numString.length + 1).join(padCharacter) + numString
-    },
-    handleFile (e) {
-      if (e.target && e.target.files && e.target.files.length) {
-        this.file = e.target.files[0]
-      }
-    },
+    // Starting point - import button handler
     async importData () {
       this.loading = true
       const importer = this.$importService.getImporter(this.format, this.teamId)
@@ -337,11 +331,20 @@ export default {
       }
       this.loading = false
     },
+
+    // Select file
+    handleFile (e) {
+      if (e.target && e.target.files && e.target.files.length) {
+        this.file = e.target.files[0]
+      }
+    },
+
+    // Get content from file
     getFileContents (file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
         reader.readAsText(file, 'utf-8')
-        reader.onload = evt => {
+        reader.onload = async evt => {
           if (this.format === 'lastpasscsv' && file.type === 'text/html') {
             const parser = new DOMParser()
             const doc = parser.parseFromString(evt.target.result, 'text/html')
@@ -354,6 +357,24 @@ export default {
             return
           }
 
+          if (this.format === '1password1pux') {
+            const zip = new JSZip()
+            try {
+              const contents = await zip.loadAsync(file)
+              if (!contents.files['export.data']) {
+                reject(Error('Error'))
+                return
+              }
+              const fileData = await contents.files['export.data'].async('string')
+              resolve(fileData)
+              return
+            } catch (error) {
+              console.log(error)
+              reject(Error('Error unzipping file'))
+              return
+            }
+          }
+
           resolve(evt.target.result)
         }
         reader.onerror = () => {
@@ -361,6 +382,7 @@ export default {
         }
       })
     },
+
     badData (c) {
       return (
         (c.name == null || c.name === '--') &&
@@ -369,6 +391,8 @@ export default {
         Utils.isNullOrWhitespace(c.login.password)
       )
     },
+
+    // Send api
     async postImport (importResult) {
       let request = new ImportCiphersRequest()
       if (this.teamId) {
@@ -485,6 +509,7 @@ export default {
         totalCipherImport: request.ciphers.length
       }
     },
+
     handleServerError (errorResponse, importResult) {
       if (errorResponse.validationErrors == null) {
         return new Error(errorResponse.message)

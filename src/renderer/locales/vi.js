@@ -3321,8 +3321,8 @@ module.exports = {
             },
             {
               name: 'Whitepaper',
-              link: 'whitepaper'
-              // external: true
+              link: 'https://support.locker.io/vi/locker-whitepaper',
+              external: true
             },
             // {
             //   name: 'So sánh các Trình quản lý mật khẩu',
