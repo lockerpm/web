@@ -96,6 +96,8 @@ export default {
       this.database.password = p
     },
 
+    // Methods to be called by ref
+
     loadData (data) {
       this.database = { ...data }
     },

@@ -96,6 +96,8 @@ export default {
       this.server.password = p
     },
 
+    // Methods to be called by ref
+
     loadData (data) {
       this.server = { ...data }
     },
