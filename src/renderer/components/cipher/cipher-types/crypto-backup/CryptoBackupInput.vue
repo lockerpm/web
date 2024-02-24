@@ -169,6 +169,8 @@ export default {
       })
     },
 
+    // Methods to be called by ref
+
     loadData (data) {
       this.cryptoWallet = { ...data }
     },
