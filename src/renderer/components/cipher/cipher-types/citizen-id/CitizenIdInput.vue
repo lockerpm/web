@@ -108,6 +108,8 @@ export default {
   },
 
   methods: {
+    // Methods to be called by ref
+
     loadData (data) {
       this.citizenId = { ...data }
     },

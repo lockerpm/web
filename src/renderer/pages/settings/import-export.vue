@@ -19,6 +19,16 @@ export default {
   components: {
     ImportItems,
     ExportItems
+  },
+  head () {
+    return {
+      script: [
+        {
+          src: 'https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js',
+          async: true
+        }
+      ]
+    }
   }
 }
 </script>
