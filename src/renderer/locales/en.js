@@ -6109,5 +6109,13 @@ module.exports = {
       title: 'Trò chuyện cùng chuyên gia',
       btn: 'Đặt lịch ngay'
     }
+  },
+  purchase: {
+    title: 'Locker Password Manager | Subscription',
+    desc: 'Secure your passwords with the lowest price & highest quality ever!',
+    header: {
+      title: 'Subscribe to Locker',
+      desc2: 'Locker offers 30-day money back guarantee for any reason (applicable to annual subscriptions). Contact contact@locker.io to process the money back guarantee or for further support.'
+    }
   }
 }
