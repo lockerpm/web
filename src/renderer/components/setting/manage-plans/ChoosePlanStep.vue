@@ -36,6 +36,32 @@
     </div>
     <!-- Step title end-->
 
+    <!-- Ad -->
+    <div class="max-w-3xl mx-auto px-6 my-6">
+      <a
+        href="https://internxt.com/pricing"
+        target="_blank"
+      >
+        <div
+          class="w-full rounded-full px-8 md:px-6 py-2 flex items-center justify-between"
+          style="background: linear-gradient(270deg, #BED5FF -10.54%, #FFF 130.94%);"
+        >
+          <div>
+            <p class="font-semibold text-black landing-font-16 mb-0.5">
+              {{ $t('plan.ad.title') }} <span class="text-danger font-bold">{{ $t('plan.ad.title2') }}</span>
+            </p>
+            <p class="text-[#858585] italic text-xs">
+              {{ $t('plan.ad.desc') }}
+            </p>
+          </div>
+          <div class="hidden md:flex">
+            <i class="el-icon-right text-black text-[24px]" />
+          </div>
+        </div>
+      </a>
+    </div>
+    <!-- Ad end -->
+
     <!-- Choose a plan -->
     <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-3">
       <div
