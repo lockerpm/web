@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="text-[18px] font-semibold mb-6">
+    <h2 v-if="!noHeader" class="text-[18px] font-semibold mb-6">
       {{ $t('data.plans.payment_step.step_1') }}
     </h2>
 
@@ -73,6 +73,10 @@ import { PlanPeriod } from '../../../../constants'
 
 export default {
   props: {
+    noHeader: {
+      type: Boolean,
+      default: () => false
+    },
     selectedPeriod: {
       type: Object,
       default: () => ({})
