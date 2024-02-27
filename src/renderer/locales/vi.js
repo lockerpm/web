@@ -2625,7 +2625,8 @@ module.exports = {
     ad: {
       title: 'Mua Locker Premium và nhận gói năm Internxt 5TB với mức giảm giá',
       title2: '75%',
-      desc: '* Áp dụng cho đăng ký hàng năm của gói Locker Premium hoặc Family.'
+      desc: '* Áp dụng cho đăng ký hàng năm của gói Locker Premium hoặc Family.',
+      desc2: 'Sau khi mua Locker thành công, bạn sẽ nhận được hướng dẫn qua email.'
     },
     plan_table: {
       table: [

@@ -19,7 +19,8 @@
               {{ $t('plan.ad.title') }} <span class="text-danger font-bold">{{ $t('plan.ad.title2') }}</span>
             </p>
             <p class="text-[#858585] italic text-xs">
-              {{ $t('plan.ad.desc') }}
+              {{ $t('plan.ad.desc') }} <br>
+              {{ $t('plan.ad.desc2') }}
             </p>
           </div>
           <div class="hidden md:flex">
