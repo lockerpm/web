@@ -343,7 +343,7 @@ export default {
       } else {
         this.$router.push(
           this.localeRoute(
-            `/payment?plan=${alias}&period=${this.selectedPeriod}`
+            `/purchase?plan=${alias}&period=${this.selectedPeriod}`
           )
         )
       }

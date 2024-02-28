@@ -5957,5 +5957,18 @@ module.exports = {
       title: 'Trò chuyện cùng chuyên gia',
       btn: 'Đặt lịch ngay'
     }
+  },
+  purchase: {
+    title: 'Trình quản lý mật khẩu Locker | Premium',
+    desc: 'Bảo vệ mật khẩu của bạn ở mức độ cao nhất với mức giá rẻ nhất!',
+    header: {
+      title: 'Đăng ký Locker',
+      desc2: 'Locker đảm bảo hoàn lại tiền trong vòng 30 ngày kể từ ngày mua vì bất kỳ lý do gì (áp dụng cho gói năm). Hãy liên hệ contact@locker.io để tiến hành yêu cầu hoàn tiền hoặc để được hỗ trợ thêm.'
+    },
+    success: {
+      title: 'Thanh toán thành công!',
+      desc: 'Cảm ơn, tài khoản của bạn đã được nâng cấp.',
+      desc2: 'Chúng tôi đã gửi hóa đơn đến email của bạn.'
+    }
   }
 }
