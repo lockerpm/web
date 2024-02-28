@@ -35,35 +35,49 @@ export default {
   computed: {
     content () {
       const { action, status } = this.$route.query
+      const needCreateAccount = status === 'account-created'
+
+      const res = {
+        title: this.$t('thank_you.title'),
+        desc: this.$t('thank_you.desc'),
+        desc2: '',
+        goToVault: false
+      }
+
       switch (action) {
       case 'buy-lifetime-family':
       case 'buy-lifetime-premium': {
-        const needCreateAccount = status === 'account-created'
         const isFamily = action === 'buy-lifetime-family'
+        res.title = this.$t('promo.buy13.form.success.title')
         if (needCreateAccount) {
-          return {
-            title: this.$t('promo.buy13.form.success.title'),
-            desc: this.$t('promo.buy13.form.success.desc_1_new').replace(
-              'Premium',
-              isFamily ? 'Family' : 'Premium'
-            ),
-            desc2: this.$t('promo.buy13.form.success.desc_2_new')
-          }
+          res.desc = this.$t('promo.buy13.form.success.desc_1_new').replace(
+            'Premium',
+            isFamily ? 'Family' : 'Premium'
+          )
+          res.desc2 = this.$t('promo.buy13.form.success.desc_2_new')
+        } else {
+          res.desc = this.$t('promo.buy13.form.success.desc_1')
+          res.desc2 = this.$t('promo.buy13.form.success.desc_2')
+          res.goToVault = true
         }
-        return {
-          title: this.$t('promo.buy13.form.success.title'),
-          desc: this.$t('promo.buy13.form.success.desc_1'),
-          desc2: this.$t('promo.buy13.form.success.desc_2'),
-          goToVault: true
-        }
+        break
       }
+
+      case 'buy-premium-monthly':
+      case 'buy-premium-yearly':
+      case 'buy-family-monthly':
+      case 'buy-family-yearly': {
+        res.title = this.$t('purchase.success.title')
+        res.desc = this.$t('purchase.success.desc')
+        res.desc2 = this.$t('purchase.success.desc2')
+        res.goToVault = !needCreateAccount
+        break
+      }
+
       default:
-        return {
-          title: this.$t('thank_you.title'),
-          desc: this.$t('thank_you.desc'),
-          goToVault: false
-        }
       }
+
+      return res
     }
   },
   mounted () {

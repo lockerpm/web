@@ -6116,6 +6116,11 @@ module.exports = {
     header: {
       title: 'Subscribe to Locker',
       desc2: 'Locker offers 30-day money back guarantee for any reason (applicable to annual subscriptions). Contact contact@locker.io to process the money back guarantee or for further support.'
+    },
+    success: {
+      title: 'Payment successful!',
+      desc: 'Thank you, now your account has been upgraded.',
+      desc2: 'We have sent you an invoice to your email address.'
     }
   }
 }
