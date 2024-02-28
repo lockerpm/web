@@ -545,7 +545,8 @@ export default {
           token_card: tokenId,
           request_code: token,
           promo_code: this.form.promo_code,
-          plan_alias: this.selectedPlan
+          plan_alias: this.selectedPlan,
+          utm_source: `${this.$cookies.get('utm_campaign')}__${this.$cookies.get('utm_source')}`
         }
         if (this.needCreateAccount) {
           payload.full_name = this.form.fullName
