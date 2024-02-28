@@ -2,7 +2,7 @@
   <div>
     <!-- Purchase content -->
     <section class="full-width pt-32 pb-12">
-      <div v-loading="loading.all" class="w-full max-w-9xl mx-auto px-6">
+      <div v-loading="loading.all" class="w-full max-w-7xl mx-auto px-6">
         <div class="mb-12">
           <h1 class="font-bold text-black landing-font-38 mr-[38px]">
             {{ $t('purchase.header.title') }}
@@ -12,7 +12,7 @@
         <div class="flex flex-wrap">
           <!-- Left -->
           <div
-            class="w-full md:w-7/12 flex flex-col pr-0 md:pr-12 mb-12 md:mb-0"
+            class="w-full md:w-8/12 flex flex-col pr-0 md:pr-12 mb-12 md:mb-0"
           >
             <!-- Logo -->
             <div class="flex items-center mb-8">
@@ -159,7 +159,7 @@
           <!-- Left end -->
 
           <!-- Right -->
-          <div class="w-full md:w-5/12">
+          <div class="w-full md:w-4/12">
             <div class="rounded border border-black-50 p-8">
               <!-- Need create account? -->
               <el-checkbox v-model="needCreateAccount" class="mb-6 w-full">
@@ -457,7 +457,20 @@ export default {
     this.$recaptcha.init()
     this.calcPrice()
     this.getPlans().then(() => {
-      this.selectedPlan = this.plans.find(p => p.alias === 'pm_premium')
+      const selectedPlan = this.$route.query.plan
+      const period = this.$route.query.period
+      const code = this.$route.query.code
+      if (period) {
+        this.selectedPlanDuration = period
+      }
+      if (selectedPlan && this.plans.find(p => p.alias === selectedPlan)) {
+        this.selectedPlan = this.plans.find(p => p.alias === selectedPlan)
+      } else {
+        this.selectedPlan = this.plans.find(p => p.alias === 'pm_premium')
+      }
+      if (code) {
+        this.form.promo_code = code
+      }
     })
   },
 
@@ -532,7 +545,8 @@ export default {
           request_code: token,
           promo_code: this.form.promo_code,
           plan_alias: this.selectedPlan.alias,
-          duration: this.selectedPlanDuration
+          duration: this.selectedPlanDuration,
+          utm_source: `${this.$cookies.get('utm_campaign')}__${this.$cookies.get('utm_source')}`
         }
         if (this.needCreateAccount) {
           payload.full_name = this.form.fullName
@@ -586,7 +600,4 @@ export default {
 }
 </script>
 <style lang="scss">
-.max-w-9xl {
-  max-width: 105rem;
-}
 </style>
