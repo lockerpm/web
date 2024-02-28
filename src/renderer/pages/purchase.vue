@@ -1,17 +1,18 @@
 <template>
   <div>
-    <section class="pt-32 pb-12 bg-[#F5F6F7] full-width">
-      <div class="w-full max-w-6xl mx-auto px-6">
+    <!-- Purchase content -->
+    <section class="full-width pt-32 pb-12">
+      <div v-loading="loading.all" class="w-full max-w-7xl mx-auto px-6">
         <div class="mb-12">
           <h1 class="font-bold text-black landing-font-38 mr-[38px]">
-            {{ $t('promo.lifetime.header.title') }}
+            {{ $t('purchase.header.title') }}
           </h1>
         </div>
 
         <div class="flex flex-wrap">
           <!-- Left -->
           <div
-            class="w-full md:w-6/12 flex flex-col pr-0 md:pr-12 mb-12 md:mb-0"
+            class="w-full md:w-8/12 flex flex-col pr-0 md:pr-12 mb-12 md:mb-0"
           >
             <!-- Logo -->
             <div class="flex items-center mb-8">
@@ -31,40 +32,17 @@
               <p class="font-semibold mb-6">
                 {{ $t('promo.lifetime.header.choose_subscription') }}
               </p>
-              <el-radio-group v-model="selectedPlan">
-                <div class="mb-3">
-                  <el-radio label="pm_lifetime_premium">
-                    Lifetime Premium (1 {{ $t('common.user') }})
-                  </el-radio>
-                </div>
 
-                <div>
-                  <el-radio label="pm_lifetime_family">
-                    Lifetime Family (6 {{ $t('common.users') }})
-                  </el-radio>
-                </div>
-              </el-radio-group>
+              <plan-review
+                no-header
+                :selected-period="selectedPeriod"
+                :switch-period="duration => (selectedPlanDuration = duration)"
+                :plans="plans"
+                :selected-plan="selectedPlan"
+                :switch-plan="plan => (selectedPlan = plan)"
+              />
             </div>
             <!-- Choose subscription end -->
-
-            <!-- Discount from premium to family desc -->
-            <div v-if="selectedPlan === 'pm_lifetime_family'" class="mb-6">
-              <div class="relative px-5 py-1 max-w-[400px]">
-                <img
-                  src="~assets/images/landing/lifetime/subtract.png"
-                  class="absolute w-full h-full z-0 object-fill left-0 top-0"
-                >
-                <div class="z-10 relative">
-                  <p
-                    class="text-white italic text-xs text-center font-medium"
-                    v-html="
-                      $t('promo.lifetime.header.discount_for_lifetime_premium')
-                    "
-                  />
-                </div>
-              </div>
-            </div>
-            <!-- Discount from premium to family desc end -->
 
             <!-- Invoice -->
             <div class="mb-8">
@@ -80,7 +58,7 @@
                   {{ $t('promo.lifetime.header.duration') }}
                 </p>
                 <p class="text-right">
-                  {{ $t('promo.lifetime.header.unlimited') }}
+                  {{ selectedPeriod.value }} {{ $tc('common.month', selectedPeriod.value) }}
                 </p>
               </div>
 
@@ -111,8 +89,8 @@
                   />
                   <el-button
                     type="primary"
-                    :loading="loadingCalc"
-                    :disabled="!form.promo_code || loadingCalc"
+                    :loading="loading.calc"
+                    :disabled="!form.promo_code || loading.calc"
                     @click="calcPrice"
                   >
                     {{ $t('common.apply') }}
@@ -136,10 +114,22 @@
             <!-- Desc -->
             <div class="flex-1 mb-6">
               <p>
-                {{ $t('promo.lifetime.header.desc1') }}
+                <span
+                  v-html="
+                    $t('data.billing.plan_details[1]', {
+                      duration: result.duration || 'yearly',
+                      price: result.next_billing_payment
+                        ? result.next_billing_payment
+                        : result.price || 0,
+                      currency: result.currency || 'USD',
+                      next_bill: nextBill || ''
+                    })
+                  "
+                />
+                {{ $t('data.billing.plan_details[2]') }}
                 <br>
                 <br>
-                {{ $t('promo.lifetime.header.desc2') }}
+                {{ $t('purchase.header.desc2') }}
               </p>
             </div>
             <!-- Desc end -->
@@ -164,101 +154,105 @@
                 target="_blank"
               >{{ $t('common.privacy') }}</a>
             </div>
-            <!-- Footer end-->
+          <!-- Footer end-->
           </div>
           <!-- Left end -->
 
           <!-- Right -->
-          <div class="w-full md:w-6/12 rounded bg-white p-8">
-            <!-- Need create account? -->
-            <el-checkbox v-model="needCreateAccount" class="mb-6 w-full">
-              {{ $t('promo.buy13.form.need_create_account') }}
-            </el-checkbox>
-            <!-- Need create account? end -->
+          <div class="w-full md:w-4/12">
+            <div class="rounded border border-black-50 p-8">
+              <!-- Need create account? -->
+              <el-checkbox v-model="needCreateAccount" class="mb-6 w-full">
+                {{ $t('promo.buy13.form.need_create_account') }}
+              </el-checkbox>
+              <!-- Need create account? end -->
 
-            <p
-              v-if="!needCreateAccount"
-              class="landing-font-18 font-semibold mb-4 text-black"
-            >
-              {{ $t('promo.buy13.form.pay_with_card') }}
-            </p>
-
-            <div class="mb-4">
-              <p class="text-black mb-2">
-                <span class="text-danger">*</span>
-                {{ needCreateAccount ? 'Email' : 'Locker Email' }}
+              <p
+                v-if="!needCreateAccount"
+                class="landing-font-18 font-semibold mb-4 text-black"
+              >
+                {{ $t('promo.buy13.form.pay_with_card') }}
               </p>
-              <el-input
-                v-model="form.email"
-                @blur="calcPriceWithEmail"
-                @keyup.native.enter="calcPriceWithEmail"
-              />
-            </div>
 
-            <template v-if="needCreateAccount">
-              <!-- Password -->
               <div class="mb-4">
                 <p class="text-black mb-2">
                   <span class="text-danger">*</span>
-                  {{ $t('promo.buy13.form.create_pw') }}
+                  {{ needCreateAccount ? 'Email' : 'Locker Email' }}
                 </p>
-                <el-input v-model="form.password" type="password" />
+                <el-input
+                  v-model="form.email"
+                  @blur="calcPriceWithEmail"
+                  @keyup.native.enter="calcPriceWithEmail"
+                />
               </div>
-              <!-- Password end -->
 
-              <!-- Confirm Password -->
-              <div class="mb-4">
-                <p class="text-black mb-2">
-                  <span class="text-danger">*</span>
-                  {{ $t('promo.buy13.form.confirm_pw') }}
-                </p>
-                <el-input v-model="form.confirmPassword" type="password" />
-              </div>
-              <!-- Confirm Password end -->
+              <template v-if="needCreateAccount">
+                <!-- Password -->
+                <div class="mb-4">
+                  <p class="text-black mb-2">
+                    <span class="text-danger">*</span>
+                    {{ $t('promo.buy13.form.create_pw') }}
+                  </p>
+                  <el-input v-model="form.password" type="password" />
+                </div>
+                <!-- Password end -->
 
-              <!-- Fullname -->
-              <div class="mb-4">
-                <p class="text-black mb-2">
-                  <span class="text-danger">*</span>
-                  {{ $t('common.fullname') }}
-                </p>
-                <el-input v-model="form.fullName" />
-              </div>
-              <!-- Fullname end -->
-            </template>
+                <!-- Confirm Password -->
+                <div class="mb-4">
+                  <p class="text-black mb-2">
+                    <span class="text-danger">*</span>
+                    {{ $t('promo.buy13.form.confirm_pw') }}
+                  </p>
+                  <el-input v-model="form.confirmPassword" type="password" />
+                </div>
+                <!-- Confirm Password end -->
 
-            <p
-              v-if="needCreateAccount"
-              class="landing-font-18 font-semibold mb-4 text-black"
-            >
-              {{ $t('promo.buy13.form.pay_with_card') }}
-            </p>
-
-            <stripe-form
-              :email="form.email"
-              :is-btn-disable="isBtnDisabled"
-              :on-add-card-success="handleAddCardDone"
-            >
-              <template #before-submit>
-                <!-- Agree? -->
-                <el-checkbox
-                  v-if="needCreateAccount"
-                  v-model="form.agreed"
-                  class="mt-4 w-full"
-                >
-                  <span
-                    class="flex flex-wrap gap-1"
-                    v-html="$t('common.agree_terms')"
-                  />
-                </el-checkbox>
-                <!-- Agree? end -->
+                <!-- Fullname -->
+                <div class="mb-4">
+                  <p class="text-black mb-2">
+                    <span class="text-danger">*</span>
+                    {{ $t('common.fullname') }}
+                  </p>
+                  <el-input v-model="form.fullName" />
+                </div>
+                <!-- Fullname end -->
               </template>
-            </stripe-form>
+
+              <p
+                v-if="needCreateAccount"
+                class="landing-font-18 font-semibold mb-4 text-black"
+              >
+                {{ $t('promo.buy13.form.pay_with_card') }}
+              </p>
+
+              <stripe-form
+                :email="form.email"
+                :is-btn-disable="isBtnDisabled"
+                :on-add-card-success="handleAddCardDone"
+              >
+                <template #before-submit>
+                  <!-- Agree? -->
+                  <el-checkbox
+                    v-if="needCreateAccount"
+                    v-model="form.agreed"
+                    class="mt-4 w-full"
+                  >
+                    <span
+                      class="flex flex-wrap gap-1"
+                      v-html="$t('common.agree_terms')"
+                    />
+                  </el-checkbox>
+                  <!-- Agree? end -->
+                </template>
+              </stripe-form>
+            </div>
           </div>
-          <!-- Right end -->
+
+        <!-- Right end -->
         </div>
       </div>
     </section>
+    <!-- Purchase content end -->
 
     <!-- Testimonials -->
     <Testimonials />
@@ -317,74 +311,22 @@
     <!-- Platforms -->
     <AvailablePlatforms />
     <!-- Platforms end -->
-
-    <!-- Success dialog -->
-    <el-dialog
-      :visible.sync="isSuccessOpen"
-      width="90%"
-      custom-class="success-dialog"
-    >
-      <div class="flex flex-col items-center text-center">
-        <p class="text-primary landing-font-48 mb-6">
-          <i class="el-icon-success" />
-        </p>
-        <p class="landing-font-28 font-semibold mb-6">
-          {{ $t('promo.buy13.form.success.title') }}
-        </p>
-
-        <template v-if="needCreateAccount">
-          <p>
-            {{
-              $t('promo.buy13.form.success.desc_1_new').replace(
-                'Premium',
-                selectedPlan === 'pm_lifetime_family' ? 'Family' : 'Premium'
-              )
-            }}
-          </p>
-          <p class="mb-6">
-            {{ $t('promo.buy13.form.success.desc_2_new') }}
-          </p>
-        </template>
-        <template v-else>
-          <p>
-            {{ $t('promo.buy13.form.success.desc_1') }}
-          </p>
-          <p class="mb-6">
-            {{ $t('promo.buy13.form.success.desc_2') }}
-          </p>
-        </template>
-
-        <el-button
-          v-if="!needCreateAccount"
-          type="primary"
-          plain
-          @click="goToLogin"
-        >
-          {{ $t('common.login') }}
-        </el-button>
-      </div>
-    </el-dialog>
-    <!-- Success dialog end -->
-
-    <!-- Promo dialog -->
-    <review-reward-popup />
-    <!-- Promo dialog end -->
   </div>
 </template>
-
 <script>
 import debounce from 'lodash/debounce'
-import ReviewRewardPopup from '../../components/pages/lifetime/ReviewRewardPopup.vue'
+import { PlanPeriod } from '../constants'
+import StripeForm from '~/components/upgrade/StripeForm.vue'
+import PlanReview from '~/components/setting/manage-plans/payment/PlanReview.vue'
 import AvailablePlatforms from '~/components/pages/landing/AvailablePlatforms.vue'
 import Testimonials from '~/components/pages/landing/Testimonials.vue'
-import StripeForm from '~/components/upgrade/StripeForm.vue'
 
 export default {
   components: {
-    AvailablePlatforms,
-    Testimonials,
     StripeForm,
-    ReviewRewardPopup
+    PlanReview,
+    AvailablePlatforms,
+    Testimonials
   },
 
   layout: 'landing',
@@ -392,8 +334,10 @@ export default {
   data () {
     return {
       needCreateAccount: false,
-      isSuccessOpen: false,
-      loadingCalc: false,
+      loading: {
+        all: false,
+        calc: false
+      },
       form: {
         email: '',
         password: '',
@@ -403,7 +347,14 @@ export default {
         promo_code: ''
       },
       result: {},
-      selectedPlan: 'pm_lifetime_premium'
+      plans: [],
+      selectedPlan: {
+        half_yearly_price: {},
+        price: {},
+        yearly_price: {},
+        name: ''
+      },
+      selectedPlanDuration: PlanPeriod.YEARLY
     }
   },
 
@@ -458,12 +409,41 @@ export default {
       return !this.form.email
     },
 
+    selectedPeriod () {
+      switch (this.selectedPlanDuration) {
+      case PlanPeriod.YEARLY:
+        return {
+          label: 'yearly_price',
+          value: 12,
+          duration: 'yearly'
+        }
+      default:
+        return {
+          label: 'price',
+          value: 1,
+          duration: 'monthly'
+        }
+      }
+    },
+
     discountPercentage () {
       const res = (this.result.discount * 100) / this.result.total_price
       if (!Number.isNaN(res)) {
         return Math.round(res)
       }
       return 0
+    },
+
+    nextBill () {
+      const now = new Date().getTime()
+      const nextBill = this.result.next_billing_time
+        ? this.$moment(this.result.next_billing_time * 1000).format(
+          'DD MMM YYYY'
+        )
+        : this.result.duration === 'yearly'
+          ? this.$moment(now).add(1, 'years').format('DD MMM YYYY')
+          : this.$moment(now).add(1, 'months').format('DD MMM YYYY')
+      return nextBill
     }
   },
 
@@ -476,9 +456,31 @@ export default {
   mounted () {
     this.$recaptcha.init()
     this.calcPrice()
+    this.getPlans().then(() => {
+      const selectedPlan = this.$route.query.plan
+      const period = this.$route.query.period
+      const code = this.$route.query.code
+      if (period) {
+        this.selectedPlanDuration = period
+      }
+      if (selectedPlan && this.plans.find(p => p.alias === selectedPlan)) {
+        this.selectedPlan = this.plans.find(p => p.alias === selectedPlan)
+      } else {
+        this.selectedPlan = this.plans.find(p => p.alias === 'pm_premium')
+      }
+      if (code) {
+        this.form.promo_code = code
+      }
+    })
   },
 
   methods: {
+    async getPlans () {
+      this.loading.all = true
+      this.plans = await this.$axios.$get('resources/cystack_platform/pm/plans')
+      this.loading.all = false
+    },
+
     clearInput () {
       this.form = {
         email: '',
@@ -496,20 +498,17 @@ export default {
       }
     },
 
-    goToLogin () {
-      this.$router.push('/vault')
-    },
-
     calcPrice: debounce(function () {
-      if (this.loadingCalc) {
+      if (this.loading.calc) {
         return
       }
-      this.loadingCalc = true
+      this.loading.calc = true
       this.result = {}
-      const url = 'cystack_platform/pm/lifetime/payments/calc'
+      const url = 'cystack_platform/pm/subscription/payments/calc'
       this.$axios
         .$post(url, {
-          plan_alias: this.selectedPlan,
+          plan_alias: this.selectedPlan.alias,
+          duration: this.selectedPlanDuration,
           promo_code: this.form.promo_code,
           currency: 'USD',
           email: this.form.email
@@ -527,7 +526,7 @@ export default {
           }
         })
         .then(() => {
-          this.loadingCalc = false
+          this.loading.calc = false
         })
     }, 300),
 
@@ -545,7 +544,8 @@ export default {
           token_card: tokenId,
           request_code: token,
           promo_code: this.form.promo_code,
-          plan_alias: this.selectedPlan,
+          plan_alias: this.selectedPlan.alias,
+          duration: this.selectedPlanDuration,
           utm_source: `${this.$cookies.get('utm_campaign')}__${this.$cookies.get('utm_source')}`
         }
         if (this.needCreateAccount) {
@@ -554,16 +554,13 @@ export default {
           payload.country = country
         }
         await this.$axios.$post(
-          '/cystack_platform/pm/lifetime/payments/plan',
+          '/cystack_platform/pm/subscription/payments/plan',
           payload
         )
         this.clearInput()
 
         // For GA reasons, use a separate thankyou page instead
-        // this.isSuccessOpen = true
-        const action = `buy-lifetime-${
-          this.selectedPlan === 'pm_lifetime_family' ? 'family' : 'premium'
-        }`
+        const action = `buy-${this.selectedPlan.alias.replace('pm_', '')}-${this.selectedPlanDuration}`
         const status = this.needCreateAccount ? 'account-created' : ''
         this.$router.push(
           this.localeRoute(`/thankyou?action=${action}&status=${status}`)
@@ -591,11 +588,6 @@ export default {
           )
         }
 
-        // Already lifetime
-        if (errorData?.code === '7017') {
-          message = this.$t('lifetime.redeem_page.form.error.already_lifetime')
-        }
-
         // Invalid data
         if (errorData?.code === '0004') {
           message = this.$t('lifetime.redeem_page.form.error.invalid_data')
@@ -607,9 +599,5 @@ export default {
   }
 }
 </script>
-
-<style>
-.success-dialog {
-  max-width: 612px;
-}
+<style lang="scss">
 </style>
