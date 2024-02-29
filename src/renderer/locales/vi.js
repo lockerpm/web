@@ -1744,8 +1744,8 @@ module.exports = {
     }
   },
   landing: {
-    title: 'Tận hưởng trải nghiệm Internet an toàn và liền mạch với Locker. Lưu mật khẩu khi bạn duyệt và truy cập kho tiền của mình bất cứ khi nào bạn cần, trên mọi thiết bị.',
-    head_title: 'Locker Password Manager - Your Digital Vault',
+    title: 'Trải nghiệm Internet an toàn và liền mạch với Locker. Lưu mật khẩu trong khi duyệt web và truy cập vào kho lưu trữ của bạn bất cứ khi nào bạn cần, trên bất kỳ thiết bị nào.',
+    head_title: 'Trình quản lý mật khẩu Locker - Kho dữ liệu kỹ thuật số của bạn',
     section1: {
       link: 'Khám phá tính năng passkeys tại Locker',
       title: 'Tận hưởng trải nghiệm sử dụng internet an toàn và liền mạch',

@@ -32,12 +32,12 @@ module.exports = {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: 'https://locker.io/preview.png'
+        content: 'https://locker.io/preview-en.png'
       },
       {
         hid: 'twitter:image',
         name: 'twitter:image',
-        content: 'https://locker.io/preview.png'
+        content: 'https://locker.io/preview-en.png'
       },
       {
         hid: 'twitter:card',
