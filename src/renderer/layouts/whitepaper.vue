@@ -215,11 +215,6 @@ export default {
           content: this.locale === 'vi' ? 'vi_VN' : 'en_US'
         },
         {
-          hid: 'og:locale:alternate',
-          property: 'og:locale:alternate',
-          content: this.locale === 'vi' ? 'en' : 'vi'
-        },
-        {
           hid: 'twitter:title',
           name: 'twitter:title',
           content: 'Whitepaper - Locker Password Manager'
