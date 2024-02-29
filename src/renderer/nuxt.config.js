@@ -30,6 +30,16 @@ module.exports = {
         content: '0sr0e0pcpy6rzcr5fm0lundi04suai'
       },
       {
+        hid: 'og:type',
+        property: 'og:type',
+        content: 'website'
+      },
+      {
+        hid: 'og:site_name',
+        property: 'og:site_name',
+        content: 'Locker'
+      },
+      {
         hid: 'og:image',
         property: 'og:image',
         content: 'https://locker.io/preview-en.png'
