@@ -212,7 +212,7 @@ export default {
         {
           hid: 'og:locale',
           property: 'og:locale',
-          content: this.locale === 'vi' ? 'vi' : 'en'
+          content: this.locale === 'vi' ? 'vi_VN' : 'en_US'
         },
         {
           hid: 'og:locale:alternate',
