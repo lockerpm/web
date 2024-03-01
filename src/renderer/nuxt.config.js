@@ -24,7 +24,7 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: 'Enjoy a secure and seamless Internet experience with Locker. Save passwords as you browse and access your vault whenever you need, on any device.' },
       {
         name: 'facebook-domain-verification',
         content: '0sr0e0pcpy6rzcr5fm0lundi04suai'
