@@ -6128,5 +6128,58 @@ module.exports = {
       desc: 'Thank you, now your account has been upgraded.',
       desc2: 'We have sent you an invoice to your email address.'
     }
+  },
+  new_landing: {
+    secrets: {
+      header: {
+        news: {
+          label: 'Latest news',
+          content: 'Introducing a new Locker Password Manager for Firefox 🎉'
+        },
+        title: 'Where your secrets stay safe',
+        desc: 'Protect your secrets and sensitive data by securely storing and controlling access to tokens, passwords, certificates, and encryption keys via Locker UI, CLI, or SDK.',
+        btn: 'Create an account'
+      },
+      customers: {
+        title: 'Businesses that trusted us'
+      },
+      next_gen: {
+        title: 'Locker: The next-generation secrets management solution',
+        desc: 'Locker Secrets Manager streamlines the storage, management and collaboration of SSH keys, API tokens, database credentials, or other infrastructure secrets throughout the software development lifecycle with the power of end-to-end, zero-knowledge encryption & zero-trust model. It is delivered as a command line tool and programming SDKs integrated into developer source code.s'
+      },
+      features: {
+        title: 'Our features',
+        comming: 'Coming soon',
+        btn: 'Explore all features',
+        items: [
+          {
+            title: 'Encrypted secrets storage',
+            desc: 'Store your secrets within one encrypted vault to protect them from internal and external data risks.'
+          },
+          {
+            title: 'Developer tools for seamless integration',
+            desc: 'Boost the software development process, and enhance your CI/CD workflow with Locker CLI and SDKs. Locker SM supports all popular programming languages: Python, .Net, NodeJS, GoLang,…'
+          },
+          {
+            title: 'Automatic secrets rotation',
+            desc: 'Automate the rotation of secrets regularly and schedule the secret expiration to ensure continued security.',
+            comming: '1'
+          },
+          {
+            title: 'Collaboration',
+            desc: 'Create co-workspaces, and securely share secrets with role-based access control to allow different team members or systems to access only what they need.'
+          },
+          {
+            title: 'Access Control',
+            desc: 'Audit and monitor access to secrets from one centralized dashboard, providing visibility into what is accessed, from where and when.'
+          },
+          {
+            title: 'Secrets detector',
+            desc: 'Scan your source code to detect hard-coded secrets and replace them instantly.',
+            comming: '1'
+          }
+        ]
+      }
+    }
   }
 }
