@@ -3351,7 +3351,7 @@ module.exports = {
             },
             {
               name: 'Product Roadmap',
-              link: 'https://cystack.notion.site/a4c2ba7964dd4461a7d9e3dc8fea5a0c?v=f1e7954c7a1c40e38eb66253bed5dce0&pvs=74',
+              link: 'https://cystack.notion.site/Locker-Password-Manager-Roadmap-2024-d86f8ff0fed24b9388c8533c8101aa4f',
               external: true
             },
             {
