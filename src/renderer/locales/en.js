@@ -2622,12 +2622,6 @@ module.exports = {
         }
       }
     },
-    ad: {
-      title: 'Buy Locker Premium and get Internxt 5TB annual plan at',
-      title2: '75% OFF',
-      desc: '* Applicable to annual subscriptions of Locker Premium or Family plan.',
-      desc2: 'After purchasing Locker successfully, you will receive the instructions via email.'
-    },
     plan_table: {
       table: [
         {
