@@ -6111,7 +6111,7 @@ module.exports = {
     }
   },
   purchase: {
-    title: 'Locker Password Manager | Subscription',
+    title: 'Locker Password Manager | Purchase',
     desc: 'Secure your passwords with the lowest price & highest quality ever!',
     header: {
       title: 'Subscribe to Locker',

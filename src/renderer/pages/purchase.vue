@@ -359,8 +359,8 @@ export default {
   },
 
   head () {
-    const title = this.$t('promo.lifetime.title')
-    const desc = this.$t('promo.lifetime.desc')
+    const title = this.$t('purchase.title')
+    const desc = this.$t('purchase.desc')
     return {
       title,
       meta: [
