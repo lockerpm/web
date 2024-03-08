@@ -5953,7 +5953,7 @@ module.exports = {
     }
   },
   purchase: {
-    title: 'Trình quản lý mật khẩu Locker | Premium',
+    title: 'Trình quản lý mật khẩu Locker | Mua ngay',
     desc: 'Bảo vệ mật khẩu của bạn ở mức độ cao nhất với mức giá rẻ nhất!',
     header: {
       title: 'Đăng ký Locker',
