@@ -20,21 +20,24 @@
       <!-- Logo end -->
 
       <!-- Plan storage -->
-      <div v-if="isFreePlan && !isEnterpriseMember" class="mt-4 px-[20px]">
-        <div class="mb-3 flex items-center">
-          <img src="~/assets/images/icons/flash_success.svg">
-          <p class="text-white font-semibold ml-3">
-            {{ $t('data.settings.plan_storage') }}
-          </p>
+      <nuxt-link v-if="isFreePlan && !isEnterpriseMember" :to="localeRoute('/settings/plans-billing')">
+        <div class="mt-4 px-[20px]">
+          <div class="mb-3 flex items-center">
+            <img src="~/assets/images/icons/flash_success.svg">
+            <p class="text-white font-semibold ml-3">
+              {{ $t('data.settings.plan_storage') }}
+            </p>
+          </div>
+          <el-progress
+            :show-text="false"
+            :percentage="storagePercentage * 100"
+            :status="getPercentageStatus(storagePercentage)"
+            :stroke-width="5"
+          />
+          <hr class="border-[#394452] mt-5">
         </div>
-        <el-progress
-          :show-text="false"
-          :percentage="storagePercentage * 100"
-          :status="getPercentageStatus(storagePercentage)"
-          :stroke-width="5"
-        />
-        <hr class="border-[#394452] mt-5">
-      </div>
+      </nuxt-link>
+
       <!-- Plan storage end -->
 
       <!-- Menu -->

@@ -87,6 +87,7 @@ export const CipherMapper = (() => {
     type: CipherType.TOTP,
     noMenu: true,
     hideFromCipherList: true,
+    freeLimit: 10,
     csvTypeName: 'totp',
     group: 'other'
   }
