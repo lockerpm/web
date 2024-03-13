@@ -42,7 +42,7 @@
                       ? item.Logo[0].url
                       : `/img/index/${item.Source.replaceAll(' ', '')}.svg`
                   "
-                  alt="item.Source"
+                  :alt="item.Source"
                   class="h-6"
                 >
               </div>
