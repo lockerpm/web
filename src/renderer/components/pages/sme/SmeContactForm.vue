@@ -84,6 +84,8 @@
   </div>
 </template>
 <script>
+import { v1 as uuidv1 } from 'uuid'
+
 export default {
   data () {
     return {
