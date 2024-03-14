@@ -317,6 +317,12 @@ export default {
         this.isOpen = false
         this.isSuccessOpen = true
         this.trackConversation(payload.email)
+
+        // GA tracking
+        this.trackGAPurchase({
+          planId: 'buy-1-get-3',
+          value: 4.99
+        })
       } catch (error) {
         const errorData = error.response?.data
         let message =

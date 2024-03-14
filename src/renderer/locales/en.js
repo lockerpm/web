@@ -2622,11 +2622,6 @@ module.exports = {
         }
       }
     },
-    ad: {
-      title: 'Buy Locker Premium and get Internxt 5TB annual plan at',
-      title2: '75% OFF',
-      desc: '* Applicable to annual subscriptions of Locker Premium or Family plan.'
-    },
     plan_table: {
       table: [
         {
@@ -3350,7 +3345,7 @@ module.exports = {
             },
             {
               name: 'Product Roadmap',
-              link: 'https://cystack.notion.site/a4c2ba7964dd4461a7d9e3dc8fea5a0c?v=f1e7954c7a1c40e38eb66253bed5dce0&pvs=74',
+              link: 'https://cystack.notion.site/Locker-Password-Manager-Roadmap-2024-d86f8ff0fed24b9388c8533c8101aa4f',
               external: true
             },
             {
@@ -6116,7 +6111,7 @@ module.exports = {
     }
   },
   purchase: {
-    title: 'Locker Password Manager | Subscription',
+    title: 'Locker Password Manager | Purchase',
     desc: 'Secure your passwords with the lowest price & highest quality ever!',
     header: {
       title: 'Subscribe to Locker',

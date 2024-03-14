@@ -309,6 +309,8 @@
 </template>
 
 <script>
+import { v1 as uuidv1 } from 'uuid'
+
 export default {
   layout: 'landing',
   data () {
@@ -370,6 +372,8 @@ export default {
         ...this.form,
         request_code: await this.$recaptcha.execute('homepage')
       }
+
+      // Send api
       try {
         await this.$axios.$post(
           '/cystack_platform/pm/affiliate_submissions',
@@ -383,8 +387,40 @@ export default {
         this.dialogStep = 2
       } catch (error) {
         this.notify(this.$t('landing_contact.messages.error_occurred'), 'error')
+        return
+      } finally {
+        this.isLoading = false
       }
-      this.isLoading = false
+
+      // Forward to CRM to forward to email
+      const formId = 'locker-affiliate'
+      const content = {
+        ...payload,
+        recaptcha_token: payload.request_code
+      }
+      delete content.request_code
+      let source
+      try {
+        source = window.location.href
+      } catch (e) {
+        source = 'https://locker.io' + this.$route.fullPath
+      }
+      const payload2 = {
+        form_id: formId,
+        source,
+        content,
+        customer_id: this.$cookies.get('customer_id') || uuidv1(),
+        language: this.locale,
+        utm_source: this.$cookies.get('utm_source'),
+        utm_medium: this.$cookies.get('utm_medium'),
+        utm_campaign: this.$cookies.get('utm_campaign'),
+        utm_term: this.$cookies.get('utm_term'),
+        utm_content: this.$cookies.get('utm_content')
+      }
+      this.$axios.post(
+        'https://tracking.cystack.net/v1/activities',
+        payload2
+      )
     }
   }
 }

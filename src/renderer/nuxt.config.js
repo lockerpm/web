@@ -24,20 +24,30 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: 'Enjoy a secure and seamless Internet experience with Locker. Save passwords as you browse and access your vault whenever you need, on any device.' },
       {
         name: 'facebook-domain-verification',
         content: '0sr0e0pcpy6rzcr5fm0lundi04suai'
       },
       {
+        hid: 'og:type',
+        property: 'og:type',
+        content: 'website'
+      },
+      {
+        hid: 'og:site_name',
+        property: 'og:site_name',
+        content: 'Locker'
+      },
+      {
         hid: 'og:image',
         property: 'og:image',
-        content: 'https://locker.io/preview.png'
+        content: 'https://locker.io/preview-en.png'
       },
       {
         hid: 'twitter:image',
         name: 'twitter:image',
-        content: 'https://locker.io/preview.png'
+        content: 'https://locker.io/preview-en.png'
       },
       {
         hid: 'twitter:card',
@@ -82,6 +92,7 @@ module.exports = {
     { ssr: true, src: '@/plugins/mixins/cipher/crud.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/crudFolder.js' },
     { ssr: true, src: '@/plugins/onpremise/mixins.js' },
+    { ssr: false, src: '@/plugins/mixins/ga.js' },
 
     // UI
     { ssr: false, src: '@/plugins/ui/client-only.js' },

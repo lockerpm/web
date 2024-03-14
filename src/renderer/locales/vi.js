@@ -311,7 +311,7 @@ module.exports = {
     2: 'Ghi chú | Ghi chú',
     3: 'Thẻ | Thẻ',
     4: 'Định danh | Định danh',
-    5: 'OTP | OTPs',
+    5: 'OTP | OTP',
     0: 'Mục | Mục',
     null: 'Mục | Mục',
     6: 'Tài khoản Crypto | Tài khoản Crypto',
@@ -1744,8 +1744,8 @@ module.exports = {
     }
   },
   landing: {
-    title: 'Tận hưởng trải nghiệm Internet an toàn và liền mạch với Locker. Lưu mật khẩu khi bạn duyệt và truy cập kho tiền của mình bất cứ khi nào bạn cần, trên mọi thiết bị.',
-    head_title: 'Locker Password Manager - Your Digital Vault',
+    title: 'Trải nghiệm Internet an toàn và liền mạch với Locker. Lưu mật khẩu trong khi duyệt web và truy cập vào kho lưu trữ của bạn bất cứ khi nào bạn cần, trên bất kỳ thiết bị nào.',
+    head_title: 'Trình quản lý mật khẩu Locker - Kho dữ liệu kỹ thuật số của bạn',
     section1: {
       link: 'Khám phá tính năng passkeys tại Locker',
       title: 'Tận hưởng trải nghiệm sử dụng internet an toàn và liền mạch',
@@ -2622,11 +2622,6 @@ module.exports = {
         }
       }
     },
-    ad: {
-      title: 'Mua Locker Premium và nhận gói năm Internxt 5TB với mức giảm giá',
-      title2: '75%',
-      desc: '* Áp dụng cho đăng ký hàng năm của gói Locker Premium hoặc Family.'
-    },
     plan_table: {
       table: [
         {
@@ -3350,7 +3345,7 @@ module.exports = {
             },
             {
               name: 'Lộ trình sản phẩm',
-              link: 'https://cystack.notion.site/a4c2ba7964dd4461a7d9e3dc8fea5a0c?v=f1e7954c7a1c40e38eb66253bed5dce0&pvs=74',
+              link: 'https://cystack.notion.site/Locker-Password-Manager-Roadmap-2024-d86f8ff0fed24b9388c8533c8101aa4f',
               external: true
             },
             {
@@ -5958,7 +5953,7 @@ module.exports = {
     }
   },
   purchase: {
-    title: 'Trình quản lý mật khẩu Locker | Premium',
+    title: 'Trình quản lý mật khẩu Locker | Mua ngay',
     desc: 'Bảo vệ mật khẩu của bạn ở mức độ cao nhất với mức giá rẻ nhất!',
     header: {
       title: 'Đăng ký Locker',

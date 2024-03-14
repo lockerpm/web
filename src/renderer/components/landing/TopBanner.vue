@@ -1,6 +1,6 @@
 <template>
   <div
-    v-show="visible && notionData && notionData.length"
+    v-show="visible && realData.length"
     class="banner-container"
   >
     <div class="max-w-6xl mx-auto">
@@ -87,6 +87,9 @@ export default {
   },
   computed: {
     realData () {
+      if (!this.notionData?.length) {
+        return []
+      }
       return this.notionData.filter(
         data =>
           data?.Status === 'Active' &&

@@ -34,6 +34,18 @@
       </div>
       <!-- Lifetime end -->
 
+      <!-- Ad -->
+      <div class="max-w-6xl mx-auto my-6">
+        <a
+          href="https://internxt.com/pricing"
+          target="_blank"
+        >
+          <img src="~assets/images/landing/internxt-banner.svg" alt="Internxt x Locker" class="w-full hidden md:block">
+          <img src="~assets/images/landing/internxt-banner-mobile.svg" alt="Internxt x Locker" class="w-full block md:hidden">
+        </a>
+      </div>
+      <!-- Ad end -->
+
       <!-- Plan selector -->
       <div class="flex flex-col mb-6 items-center">
         <div

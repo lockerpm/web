@@ -359,8 +359,8 @@ export default {
   },
 
   head () {
-    const title = this.$t('promo.lifetime.title')
-    const desc = this.$t('promo.lifetime.desc')
+    const title = this.$t('purchase.title')
+    const desc = this.$t('purchase.desc')
     return {
       title,
       meta: [
@@ -558,6 +558,14 @@ export default {
           payload
         )
         this.clearInput()
+
+        // GA tracking
+        this.trackGAPurchase({
+          planId: `${payload.plan_alias}_${payload.duration}`,
+          value: this.result.price,
+          currency: this.result.currency,
+          coupon: payload.promo_code
+        })
 
         // For GA reasons, use a separate thankyou page instead
         const action = `buy-${this.selectedPlan.alias.replace('pm_', '')}-${this.selectedPlanDuration}`

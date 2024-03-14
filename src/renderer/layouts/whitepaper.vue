@@ -205,29 +205,14 @@ export default {
           content: 'Whitepaper - Locker Password Manager'
         },
         {
-          hid: 'og:url',
-          property: 'og:url',
-          content: `${process.env.baseUrl}${this.$route.fullPath}`
-        },
-        {
           hid: 'og:locale',
           property: 'og:locale',
-          content: this.locale === 'vi' ? 'vi' : 'en'
-        },
-        {
-          hid: 'og:locale:alternate',
-          property: 'og:locale:alternate',
-          content: this.locale === 'vi' ? 'en' : 'vi'
+          content: this.locale === 'vi' ? 'vi_VN' : 'en_US'
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
           content: 'Whitepaper - Locker Password Manager'
-        },
-        {
-          hid: 'twitter:url',
-          name: 'twitter:url',
-          content: `${process.env.baseUrl}${this.$route.fullPath}`
         },
         {
           hid: 'description',
@@ -244,9 +229,6 @@ export default {
           name: 'twitter:description',
           content: this.$t('landing.title')
         }
-      ],
-      link: [
-        { rel: 'alternate', hreflang: this.locale, href: this.getAlternatePath(this.locale) }
       ]
     }
   },

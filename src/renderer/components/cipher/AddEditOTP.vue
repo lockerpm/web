@@ -182,8 +182,10 @@ export default {
         this.closeDialog()
         this.$emit('updated-cipher')
       } catch (e) {
-        if (e.response && e.response.data && e.response.data.code === '3003') {
-          this.notify(this.$t('errors.3003'), 'error')
+        if (e.response?.data?.code && this.$t(`errors.${e.response.data.code}`)) {
+          this.notify(this.$t(`errors.${e.response.data.code}`, {
+            type: this.$tc(`type.${this.type}`, 1)
+          }), 'warning')
         } else {
           this.notify(
             this.$tc('data.notifications.update_failed', 1, {
@@ -210,12 +212,21 @@ export default {
         )
         this.closeDialog()
       } catch (e) {
-        this.notify(
-          this.$tc('data.notifications.create_failed', 1, {
-            type: this.$t(`type.${CipherType.TOTP}`, 1)
-          }),
-          'warning'
-        )
+        if (e.response?.data?.code && this.$t(`errors.${e.response.data.code}`)) {
+          this.notify(this.$t(`errors.${e.response.data.code}`, {
+            type: this.$tc(`type.${this.type}`, 1)
+          }), 'warning')
+          if (e.response.data.code === '5002') {
+            this.$store.commit('UPDATE_NOTICE', { showPleaseUpgrade: true })
+          }
+        } else {
+          this.notify(
+            this.$tc('data.notifications.create_failed', 1, {
+              type: this.$t(`type.${CipherType.TOTP}`, 1)
+            }),
+            'warning'
+          )
+        }
       } finally {
         this.loading = false
       }
@@ -249,8 +260,10 @@ export default {
             this.closeDialog()
             this.$emit('reset-selection')
           } catch (e) {
-            if (e.response && e.response.data && e.response.code === '5001') {
-              this.notify(this.$t('errors.5001'), 'error')
+            if (e.response?.data?.code && this.$t(`errors.${e.response.data.code}`)) {
+              this.notify(this.$t(`errors.${e.response.data.code}`, {
+                type: this.$tc(`type.${this.type}`, 1)
+              }), 'warning')
             } else {
               this.notify(
                 this.$tc('data.notifications.delete_failed', ids.length, {
@@ -259,7 +272,6 @@ export default {
                 'warning'
               )
             }
-            console.log(e)
           } finally {
             this.loading = false
           }

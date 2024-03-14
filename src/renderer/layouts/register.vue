@@ -35,39 +35,19 @@ export default {
       title: this.$t(`${this.mappings}.head_title`),
       meta: [
         {
-          hid: 'viewport',
-          name: 'viewport',
-          content: 'width=device-width, initial-scale=1'
-        },
-        {
           hid: 'og:title',
           property: 'og:title',
           content: this.$t(`${this.mappings}.head_title`)
         },
         {
-          hid: 'og:url',
-          property: 'og:url',
-          content: `${process.env.baseUrl}${this.$route.fullPath}`
-        },
-        {
           hid: 'og:locale',
           property: 'og:locale',
-          content: this.locale === 'vi' ? 'vi' : 'en'
-        },
-        {
-          hid: 'og:locale:alternate',
-          property: 'og:locale:alternate',
-          content: this.locale === 'vi' ? 'en' : 'vi'
+          content: this.locale === 'vi' ? 'vi_VN' : 'en_US'
         },
         {
           hid: 'twitter:title',
           name: 'twitter:title',
           content: this.$t(`${this.mappings}.head_title`)
-        },
-        {
-          hid: 'twitter:url',
-          name: 'twitter:url',
-          content: `${process.env.baseUrl}${this.$route.fullPath}`
         },
         {
           hid: 'description',
@@ -84,14 +64,6 @@ export default {
           name: 'twitter:description',
           content: this.$t('landing.title')
         }
-      ],
-      link: [
-        {
-          rel: 'alternate',
-          hreflang: this.locale,
-          href: this.getAlternatePath(this.locale)
-        }
-        // { rel: 'alternate', hreflang: 'vi', href: this.getAlternatePath('vi') }
       ]
     }
   },
