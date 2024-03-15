@@ -39,7 +39,7 @@
     <!-- Ad -->
     <div class="max-w-6xl mx-auto my-6">
       <a
-        href="https://internxt.com/pricing"
+        href="https://internxt.com/locker"
         target="_blank"
       >
         <img src="~assets/images/landing/internxt-banner.svg" alt="Internxt x Locker" class="w-full hidden md:block">
