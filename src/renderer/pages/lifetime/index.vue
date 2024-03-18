@@ -564,7 +564,8 @@ export default {
           planId: payload.plan_alias,
           value: this.result.price,
           currency: this.result.currency,
-          coupon: payload.promo_code
+          coupon: payload.promo_code,
+          discount: this.result.discount
         })
 
         // For GA reasons, use a separate thankyou page instead

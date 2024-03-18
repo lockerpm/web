@@ -269,7 +269,8 @@ export default {
           planId: `${payload.plan_alias}_${payload.duration}`,
           value: this.result.price,
           currency: this.result.currency,
-          coupon: payload.promo_code
+          coupon: payload.promo_code,
+          discount: this.result.discount
         })
 
         this.$store.dispatch('LoadCurrentPlan')

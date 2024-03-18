@@ -8,7 +8,7 @@ Vue.mixin({
      * @param { planId: string; value: number; currency?: string; coupon?: string } params
      */
     trackGAPurchase (params) {
-      const { planId, value, currency, coupon } = params
+      const { planId, value, currency, coupon, discount } = params
 
       function capitalize (str) {
         return str.charAt(0).toUpperCase() + str.slice(1)
@@ -31,7 +31,10 @@ Vue.mixin({
               items: [
                 {
                   item_id: planId,
-                  item_name: planName
+                  item_name: planName,
+                  price: value,
+                  quantity: 1,
+                  discount: discount || undefined
                 }
               ]
             }
