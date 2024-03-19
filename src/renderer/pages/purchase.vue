@@ -559,6 +559,15 @@ export default {
         )
         this.clearInput()
 
+        // GA tracking
+        this.trackGAPurchase({
+          planId: `${payload.plan_alias}_${payload.duration}`,
+          value: this.result.price,
+          currency: this.result.currency,
+          coupon: payload.promo_code,
+          discount: this.result.discount
+        })
+
         // For GA reasons, use a separate thankyou page instead
         const action = `buy-${this.selectedPlan.alias.replace('pm_', '')}-${this.selectedPlanDuration}`
         const status = this.needCreateAccount ? 'account-created' : ''
