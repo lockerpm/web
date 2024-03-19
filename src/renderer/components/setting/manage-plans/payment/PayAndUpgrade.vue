@@ -251,7 +251,7 @@ export default {
           this.selectedPlan.alias === 'pm_family' ? this.familyMembers : []
         const numberMembers = this.selectedPlan.alias === 'pm_family' ? 6 : 1
 
-        await this.$axios.$post('cystack_platform/pm/payments/plan', {
+        const payload = {
           plan_alias: this.selectedPlan.alias,
           duration: this.selectedPeriod.duration,
           payment_method: 'card',
@@ -261,12 +261,29 @@ export default {
           key: orgKey,
           collection_name: collectionName,
           family_members: familyMembers
+        }
+        await this.$axios.$post('cystack_platform/pm/payments/plan', payload)
+
+        // GA tracking
+        this.trackGAPurchase({
+          planId: `${payload.plan_alias}_${payload.duration}`,
+          value: this.result.price,
+          currency: this.result.currency,
+          coupon: payload.promo_code,
+          discount: this.result.discount
         })
+
         this.$store.dispatch('LoadCurrentPlan')
         this.onDone(this.result)
         this.notify(this.$t('data.notifications.upgrade_success'), 'success')
-      } catch {
-        this.notify(this.$t('data.notifications.error_occurred'), 'warning')
+      } catch (e) {
+        if (e.response?.data?.code && this.$t(`errors.${e.response.data.code}`)) {
+          this.notify(this.$t(`errors.${e.response.data.code}`), 'warning')
+        } else if (e.response?.data?.message) {
+          this.notify(e.response.data.message, 'warning')
+        } else {
+          this.notify(this.$t('data.notifications.error_occurred'), 'warning')
+        }
       } finally {
         this.loading = false
       }

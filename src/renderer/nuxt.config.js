@@ -92,6 +92,7 @@ module.exports = {
     { ssr: true, src: '@/plugins/mixins/cipher/crud.js' },
     { ssr: true, src: '@/plugins/mixins/cipher/crudFolder.js' },
     { ssr: true, src: '@/plugins/onpremise/mixins.js' },
+    { ssr: false, src: '@/plugins/mixins/ga.js' },
 
     // UI
     { ssr: false, src: '@/plugins/ui/client-only.js' },

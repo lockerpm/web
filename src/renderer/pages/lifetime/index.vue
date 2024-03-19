@@ -559,6 +559,15 @@ export default {
         )
         this.clearInput()
 
+        // GA tracking
+        this.trackGAPurchase({
+          planId: payload.plan_alias,
+          value: this.result.price,
+          currency: this.result.currency,
+          coupon: payload.promo_code,
+          discount: this.result.discount
+        })
+
         // For GA reasons, use a separate thankyou page instead
         // this.isSuccessOpen = true
         const action = `buy-lifetime-${
