@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import _ from 'lodash'
 
 Vue.mixin({
   data () {
@@ -126,6 +127,7 @@ Vue.mixin({
         )
         const enterprisePolicies = {}
         res.forEach(element => {
+          element.config = _.mapKeys(element.config, (_value, key) => _.camelCase(key))
           enterprisePolicies[element.policy_type] = element
         })
         this.$store.commit('UPDATE_ENTERPRISE_POLICIES', enterprisePolicies)

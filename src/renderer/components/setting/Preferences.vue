@@ -41,6 +41,7 @@
             >
               <el-option :label="$t('data.settings.vietnamese')" value="vi" />
               <el-option :label="$t('data.settings.english')" value="en" />
+              <el-option :label="$t('data.settings.dont_find_lang')" value="new" />
             </el-select>
           </div>
         </div>

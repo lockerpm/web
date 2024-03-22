@@ -293,6 +293,9 @@ export default {
           case 'collection_update':
             this.syncSingleCollection(data.data.id)
             break
+          case 'enterprise_policy_update':
+            this.loadEnterprisePolicies()
+            break
           default:
             this.getSyncData()
             this.getShareInvitations()

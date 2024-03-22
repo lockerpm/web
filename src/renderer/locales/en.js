@@ -1094,6 +1094,7 @@ module.exports = {
       learn_two_factor_authentication: 'Learn how to turn on 2FA for Locker account',
       lock_desc: 'Immediately lock your vault',
       current_device: 'Current device',
+      dont_find_lang: 'Don\'t find your language',
       extra_features: {
         feat1: {
           title: 'Out of space to store your passwords?',
@@ -3357,6 +3358,11 @@ module.exports = {
             {
               name: 'Education Pack',
               link: 'education'
+            },
+            {
+              name: 'App Translation',
+              link: 'https://cystack.notion.site/Locker-Translation-Guide-bb4e4fc4c23d4bbc994375035b124829',
+              external: true
             }
           ]
         }
@@ -3960,7 +3966,7 @@ module.exports = {
         },
         {
           q: 'How much is the commission rate?',
-          a: 'We offer one of the highest commission rates in the password manager industry. For every 1-month offer, we pay 50% commission for each user you refer. For every 1-year offer, we pay 35% commission for each user you refer.'
+          a: 'We offer one of the highest commission rates in the password manager industry. We pay 30% commission for each user you refer, including both 1-month and 1-year offers.'
         },
         {
           q: 'How does payment work?',

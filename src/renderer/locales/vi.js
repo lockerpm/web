@@ -1094,6 +1094,7 @@ module.exports = {
       learn_two_factor_authentication: 'Tìm hiểu cách bật 2FA cho tài khoản Locker',
       lock_desc: 'Khóa ngay kho của bạn',
       current_device: 'Thiết bị hiện tại',
+      dont_find_lang: 'Không tìm thấy ngôn ngữ của bạn',
       extra_features: {
         feat1: {
           title: 'Hết dung lượng để lưu trữ mật khẩu của bạn?',
@@ -3357,6 +3358,11 @@ module.exports = {
             {
               name: 'Education Pack',
               link: 'education'
+            },
+            {
+              name: 'Dịch ứng dụng',
+              link: 'https://cystack.notion.site/Locker-Translation-Guide-bb4e4fc4c23d4bbc994375035b124829',
+              external: true
             }
           ]
         }
@@ -3892,7 +3898,7 @@ module.exports = {
     banner: {
       title: 'Tham gia chương trình tiếp thị',
       title2: 'Locker Affiliate',
-      desc: 'Trở thành đối tác của trình quản lý mật khẩu Locker và nhận hoa hồng lên đến 50% với mỗi người dùng bạn giới thiệu!',
+      desc: 'Trở thành đối tác của trình quản lý mật khẩu Locker và nhận hoa hồng lên đến 30% với mỗi người dùng bạn giới thiệu!',
       button: {
         text: 'Đăng ký ngay',
         link: '/'
@@ -3964,7 +3970,7 @@ module.exports = {
         },
         {
           q: 'Hoa hồng của chương trình tiếp thị liên kết Locker Affiliate là bao nhiêu?',
-          a: 'Mức hoa hồng cho mỗi người dùng tải, sử dụng ứng dụng, và gia hạn gói theo tháng là 50%. Mức hoa hồng cho mỗi người dùng tải, sử dụng ứng dụng, và gia hạn gói theo năm là 35%.'
+          a: 'Mức hoa hồng cho mỗi người dùng tải, sử dụng ứng dụng, và gia hạn gói là 30%, áp dụng với cả gói tháng và gói năm.'
         },
         {
           q: 'Quy trình nhận thanh toán từ Locker Affiliate như thế nào?',
