@@ -1093,6 +1093,7 @@ module.exports = {
       two_factor_authentication_des: 'Tăng cường bảo mật bằng cách thiết lập 2FA cho tài khoản Locker của bạn.',
       learn_two_factor_authentication: 'Tìm hiểu cách bật 2FA cho tài khoản Locker',
       lock_desc: 'Khóa ngay kho của bạn',
+      current_device: 'Thiết bị hiện tại',
       extra_features: {
         feat1: {
           title: 'Hết dung lượng để lưu trữ mật khẩu của bạn?',

@@ -103,33 +103,43 @@ Vue.mixin({
   methods: {
     parseNotesOfNewTypes (originalCipher) {
       const cipher = cloneDeep(originalCipher)
+      let parsedData
       try {
         if (cipher.type === CipherType.CryptoWallet) {
-          cipher.cryptoWallet = toCryptoWalletData(cipher.notes)
+          parsedData = toCryptoWalletData(cipher.notes)
+          cipher.cryptoWallet = parsedData
         }
         if (cipher.type === CipherType.DriverLicense) {
-          cipher.driverLicense = toDriverLicenseData(cipher.notes)
+          parsedData = toDriverLicenseData(cipher.notes)
+          cipher.driverLicense = parsedData
         }
         if (cipher.type === CipherType.CitizenID) {
-          cipher.citizenId = toCitizenIdData(cipher.notes)
+          parsedData = toCitizenIdData(cipher.notes)
+          cipher.citizenId = parsedData
         }
         if (cipher.type === CipherType.Passport) {
-          cipher.passport = toPassportData(cipher.notes)
+          parsedData = toPassportData(cipher.notes)
+          cipher.passport = parsedData
         }
         if (cipher.type === CipherType.SocialSecurityNumber) {
-          cipher.ssn = toSocialSecurityNumberData(cipher.notes)
+          parsedData = toSocialSecurityNumberData(cipher.notes)
+          cipher.ssn = parsedData
         }
         if (cipher.type === CipherType.WirelessRouter) {
-          cipher.router = toWirelessRouterData(cipher.notes)
+          parsedData = toWirelessRouterData(cipher.notes)
+          cipher.router = parsedData
         }
         if (cipher.type === CipherType.Server) {
-          cipher.server = toServerData(cipher.notes)
+          parsedData = toServerData(cipher.notes)
+          cipher.server = parsedData
         }
         if (cipher.type === CipherType.APICipher) {
-          cipher.api = toApiCipherData(cipher.notes)
+          parsedData = toApiCipherData(cipher.notes)
+          cipher.api = parsedData
         }
         if (cipher.type === CipherType.Database) {
-          cipher.database = toApiCipherData(cipher.notes)
+          parsedData = toApiCipherData(cipher.notes)
+          cipher.database = parsedData
         }
       } catch (error) {
         //
@@ -153,74 +163,47 @@ Vue.mixin({
       // Change type to Note for new cipher types to encrypt first
       if (cipher.type === CipherType.CryptoWallet) {
         if (cipher.cryptoWallet) {
-          cipher.notes = JSON.stringify({
-            ...cipher.cryptoWallet,
-            notes: cipher.notes
-          })
+          cipher.notes = JSON.stringify(cipher.cryptoWallet)
         }
       }
       if (cipher.type === CipherType.DriverLicense) {
         if (cipher.driverLicense) {
-          cipher.notes = JSON.stringify({
-            ...cipher.driverLicense,
-            notes: cipher.notes
-          })
+          cipher.notes = JSON.stringify(cipher.driverLicense)
         }
       }
       if (cipher.type === CipherType.CitizenID) {
         if (cipher.citizenId) {
-          cipher.notes = JSON.stringify({
-            ...cipher.citizenId,
-            notes: cipher.notes
-          })
+          cipher.notes = JSON.stringify(cipher.citizenId)
         }
       }
       if (cipher.type === CipherType.Passport) {
         if (cipher.passport) {
-          cipher.notes = JSON.stringify({
-            ...cipher.passport,
-            notes: cipher.notes
-          })
+          cipher.notes = JSON.stringify(cipher.passport)
         }
       }
       if (cipher.type === CipherType.SocialSecurityNumber) {
         if (cipher.ssn) {
-          cipher.notes = JSON.stringify({
-            ...cipher.ssn,
-            notes: cipher.notes
-          })
+          cipher.notes = JSON.stringify(cipher.ssn)
         }
       }
       if (cipher.type === CipherType.WirelessRouter) {
         if (cipher.router) {
-          cipher.notes = JSON.stringify({
-            ...cipher.router,
-            notes: cipher.notes
-          })
+          cipher.notes = JSON.stringify(cipher.router)
         }
       }
       if (cipher.type === CipherType.Server) {
         if (cipher.server) {
-          cipher.notes = JSON.stringify({
-            ...cipher.server,
-            notes: cipher.notes
-          })
+          cipher.notes = JSON.stringify(cipher.server)
         }
       }
       if (cipher.type === CipherType.APICipher) {
         if (cipher.api) {
-          cipher.notes = JSON.stringify({
-            ...cipher.api,
-            notes: cipher.notes
-          })
+          cipher.notes = JSON.stringify(cipher.api)
         }
       }
       if (cipher.type === CipherType.Database) {
         if (cipher.database) {
-          cipher.notes = JSON.stringify({
-            ...cipher.database,
-            notes: cipher.notes
-          })
+          cipher.notes = JSON.stringify(cipher.database)
         }
       }
       if (this.newCipherTypes.includes(cipher.type)) {

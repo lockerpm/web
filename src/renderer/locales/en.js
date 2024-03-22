@@ -1093,6 +1093,7 @@ module.exports = {
       two_factor_authentication_des: 'Create an additional layer of security by setting up 2FA for your Locker account.',
       learn_two_factor_authentication: 'Learn how to turn on 2FA for Locker account',
       lock_desc: 'Immediately lock your vault',
+      current_device: 'Current device',
       extra_features: {
         feat1: {
           title: 'Out of space to store your passwords?',

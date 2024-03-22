@@ -256,6 +256,8 @@ export default {
             .map(m => m.type)
             .includes(cipher.type)
         )
+
+        // Parse notes of new type to data
         result = result.map(item => {
           const i = this.parseNotesOfNewTypes(item)
           i.checked = false
