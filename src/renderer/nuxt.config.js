@@ -55,7 +55,7 @@ module.exports = {
         content: 'summary_large_image'
       }
     ],
-    link: [{ rel: 'icon', type: 'shortcut icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'shortcut icon', href: '/favicon-1.svg' }],
     script: [
       { src: '/js/intercom.js' },
       ...(process.env.NODE_ENV === 'production'

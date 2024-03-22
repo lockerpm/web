@@ -99,11 +99,17 @@ Vue.mixin({
   },
   methods: {
     changeLang (value) {
-      this.setupMomentLocale(value)
-      this.$store.dispatch('SetLang', value).then(() => {
-        this.$i18n.setLocale(value)
-        this.$router.push(this.switchLocalePath(value))
-      })
+      if (value === 'new') {
+        if (process.client) {
+          window.open('https://cystack.notion.site/Locker-Translation-Guide-bb4e4fc4c23d4bbc994375035b124829', '_blank')
+        }
+      } else {
+        this.setupMomentLocale(value)
+        this.$store.dispatch('SetLang', value).then(() => {
+          this.$i18n.setLocale(value)
+          this.$router.push(this.switchLocalePath(value))
+        })
+      }
     },
 
     setupMomentLocale (value) {

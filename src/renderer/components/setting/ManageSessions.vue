@@ -37,6 +37,9 @@
               <div class="text-black-600">
                 {{ getClientInfo(item).name }}
               </div>
+              <p v-if="item.device_identifier === currentDevice">
+                ({{ $t('data.settings.current_device') }})
+              </p>
             </div>
           </div>
           <!-- Info -->
@@ -88,11 +91,13 @@ export default {
       loading: false,
       collapsed: false,
       listDevices: [],
-      selectedDevice: {}
+      selectedDevice: {},
+      currentDevice: ''
     }
   },
   computed: {},
   async mounted () {
+    this.currentDevice = this.$cookies.get('device_id')
     const locked = await this.$vaultTimeoutService.isLocked()
     if (!locked) {
       await Promise.all([this.getListDevices()])
@@ -152,6 +157,9 @@ export default {
       this.listDevices = this.listDevices.filter(
         d => d.device_identifier !== deviceId
       )
+      if (deviceId === this.currentDevice) {
+        this.getListDevices()
+      }
     }
   }
 }

@@ -566,30 +566,39 @@ export default {
     loadCipherDataFromComponents () {
       if (this.cipher.type === CipherType.CryptoWallet) {
         this.cipher.cryptoWallet = this.$refs.cryptoBackupInput.getData()
+        this.cipher.cryptoWallet.notes = this.cipher.notes
       }
       if (this.cipher.type === CipherType.DriverLicense) {
         this.cipher.driverLicense = this.$refs.driverLicenseInput.getData()
+        this.cipher.driverLicense.notes = this.cipher.notes
       }
       if (this.cipher.type === CipherType.CitizenID) {
         this.cipher.citizenId = this.$refs.citizenIdInput.getData()
+        this.cipher.citizenId.notes = this.cipher.notes
       }
       if (this.cipher.type === CipherType.Passport) {
         this.cipher.passport = this.$refs.passportInput.getData()
+        this.cipher.passport.notes = this.cipher.notes
       }
       if (this.cipher.type === CipherType.SocialSecurityNumber) {
         this.cipher.ssn = this.$refs.ssnInput.getData()
+        this.cipher.ssn.notes = this.cipher.notes
       }
       if (this.cipher.type === CipherType.WirelessRouter) {
         this.cipher.router = this.$refs.routerInput.getData()
+        this.cipher.router.notes = this.cipher.notes
       }
       if (this.cipher.type === CipherType.Server) {
         this.cipher.server = this.$refs.serverInput.getData()
+        this.cipher.server.notes = this.cipher.notes
       }
       if (this.cipher.type === CipherType.APICipher) {
         this.cipher.api = this.$refs.apiInput.getData()
+        this.cipher.api.notes = this.cipher.notes
       }
       if (this.cipher.type === CipherType.Database) {
         this.cipher.database = this.$refs.databaseInput.getData()
+        this.cipher.database.notes = this.cipher.notes
       }
     },
 

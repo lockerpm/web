@@ -179,7 +179,7 @@
                   class="mb-2"
                   style="list-style-type: circle; margin-left: 20px"
                 >
-                  <li v-for="(item, index) in pwPolicies" :key="index">
+                  <li v-for="(item, index) in masterPwPolicies" :key="index">
                     {{ item }}
                   </li>
                 </ul>
@@ -388,6 +388,7 @@ export default {
       isMasterPwViolated: false,
       loading: false,
       pwPolicies: [],
+      masterPwPolicies: [],
       blockedTimes: 0
     }
   },
@@ -433,18 +434,10 @@ export default {
       }
     },
     '$store.state.syncedCiphersToggle' () {
-      this.$cipherService.getAllDecrypted().then(result => {
-        this.ciphers = result
-        this.loading = true
-        setTimeout(() => {
-          this.violatedPasswords = this.getViolatedPasswordCiphers()
-          this.getMasterPwViolations()
-          this.getPwPolicies()
-          this.getMasterPwPolicies()
-          this.getViolations()
-          this.loading = false
-        }, 100)
-      })
+      this.checkAllPwPolicies()
+    },
+    '$store.state.enterprisePolicies' () {
+      this.checkAllPwPolicies()
     }
   },
 
@@ -452,19 +445,25 @@ export default {
     if (!this.isEnterpriseMember) {
       this.$router.push('/vault')
     }
-    this.loading = true
-    this.ciphers = await this.$cipherService.getAllDecrypted()
-    setTimeout(() => {
-      this.violatedPasswords = this.getViolatedPasswordCiphers()
-      this.getMasterPwViolations()
-      this.getPwPolicies()
-      this.getMasterPwPolicies()
-      this.getViolations()
-      this.loading = false
-    }, 300)
+    this.checkAllPwPolicies()
   },
 
   methods: {
+    checkAllPwPolicies () {
+      this.loading = true
+      this.$cipherService.getAllDecrypted().then(result => {
+        this.ciphers = result
+        setTimeout(() => {
+          this.violatedPasswords = this.getViolatedPasswordCiphers()
+          this.getMasterPwViolations()
+          this.getPwPolicies()
+          this.getMasterPwPolicies()
+          this.getViolations()
+          this.loading = false
+        }, 300)
+      })
+    },
+
     go (route) {
       this.$router.push(this.localeRoute(route))
     },
@@ -515,7 +514,7 @@ export default {
     },
 
     getMasterPwPolicies () {
-      this.pwPolicies = this.listPasswordPolicy('master_password_requirement')
+      this.masterPwPolicies = this.listPasswordPolicy('master_password_requirement')
     },
 
     async getViolations () {
