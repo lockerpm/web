@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Header -->
     <section
       class="full-width h-auto bg-no-repeat bg-cover"
       :style="{
@@ -59,6 +60,9 @@
         </div>
       </div>
     </section>
+    <!-- Header end -->
+
+    <!-- Make money -->
     <section class="py-[120px]">
       <div class="w-full">
         <h2
@@ -97,6 +101,9 @@
         </div>
       </div>
     </section>
+    <!-- Make money end -->
+
+    <!-- Steps -->
     <section class="py-[120px]">
       <div class="w-full">
         <h2
@@ -131,6 +138,14 @@
               >
                 {{ item.desc }}
               </div>
+              <div v-if="index === 0" class="mt-6 flex justify-center">
+                <div
+                  class="landing-btn cursor-pointer"
+                  @click="dialogFormVisible = true"
+                >
+                  {{ item.title }}
+                </div>
+              </div>
             </div>
             <div
               v-if="index !== 2"
@@ -156,6 +171,9 @@
         </div>
       </div>
     </section>
+    <!-- Steps end -->
+
+    <!-- CTA -->
     <section class="py-[120px]">
       <div class="bg-[#f5f6f7] px-6 py-16">
         <div class="font-bold landing-font-38 text-black text-center">
@@ -175,6 +193,9 @@
         </div>
       </div>
     </section>
+    <!-- CTA end -->
+
+    <!-- FAQ -->
     <section class="py-[120px] full-width h-auto questions">
       <div class="landing-font-38 font-bold text-center mb-[72px]">
         {{ $t('landing_affiliate.faqs.title') }}
@@ -200,6 +221,9 @@
         </el-collapse>
       </div>
     </section>
+    <!-- FAQ end -->
+
+    <!-- Contact -->
     <div class="mb-[90px] py-6 px-8 bg-[#E8E8E9] flex gap-x-6 rounded">
       <img src="~/assets/images/landing/master-password/help.svg">
       <div class="font-semibold max-w-4/5 overflow-hidden overflow-ellipsis">
@@ -214,6 +238,9 @@
         </div>
       </div>
     </div>
+    <!-- Contact end -->
+
+    <!-- Form -->
     <el-dialog
       :title="$t('landing_affiliate.banner.button.text')"
       :visible.sync="dialogFormVisible"
@@ -281,12 +308,12 @@
           </div>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">Cancel</el-button>
+          <el-button @click="dialogFormVisible = false">{{ $t('common.cancel') }}</el-button>
           <el-button
             type="primary"
             :loading="isLoading"
             @click.prevent="submit"
-          >Submit</el-button>
+          >{{ $t('common.submit') }}</el-button>
         </span>
       </template>
       <template v-else>
@@ -305,6 +332,7 @@
         </div>
       </template>
     </el-dialog>
+    <!-- Form end -->
   </div>
 </template>
 
