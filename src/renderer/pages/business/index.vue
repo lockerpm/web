@@ -339,7 +339,7 @@
       <div class="self-center">
         <button
           class="landing-btn !bg-white !text-primary"
-          @click="openIntercom"
+          @click="openChat"
         >
           {{ $t('business.cta.button') }}
         </button>

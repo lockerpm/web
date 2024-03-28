@@ -33,6 +33,7 @@ module.exports = {
     confirm_password: 'Xác nhận mật khẩu',
     confirm_password_placeholder: 'Nhập lại mật khẩu',
     confirmed: 'Đã xác nhận',
+    contact_us: 'Liên hệ',
     continue: 'Tiếp tục',
     copied: 'Sao chép vào bộ nhớ tạm',
     copy: 'Sao chép',
@@ -3199,6 +3200,7 @@ module.exports = {
     terms: 'Điều khoản',
     policy: 'Chính sách',
     join: 'Tham gia cộng đồng của chúng tôi',
+    a_product_of: 'Một sản phẩm của',
     menu: [
       [
         {

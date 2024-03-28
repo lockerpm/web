@@ -515,12 +515,9 @@
         class="md:flex md:items-centerlanding-font-12 text-white max-w-9xl mx-auto"
       >
         <div class="flex items-center">
-          <div v-if="locale === 'vi'">Một sản phẩm của</div>
-          <div v-else>A product of</div>
+          <div>{{ $t('landing_footer.a_product_of') }}</div>
           <a
-            :href="
-              locale === 'vi' ? 'https://cystack.net/vi' : 'https://cystack.net'
-            "
+            :href="`https://cystack.net/${locale}`"
             target="_blank"
           >
             <img
