@@ -79,7 +79,7 @@
                 <div class="mt-12">
                   <button
                     class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium"
-                    @click="openIntercom"
+                    @click="openChat"
                   >
                     {{ $t('business.plans.contact_us') }}
                   </button>
@@ -158,7 +158,7 @@
               <div class="text-center">
                 <button
                   class="landing-btn !text-black !bg-[#E8E8E9] !hover:bg-[#E8E8E9] !font-medium"
-                  @click="openIntercom"
+                  @click="openChat"
                 >
                   {{ $t('business.plans.contact_us') }}
                 </button>

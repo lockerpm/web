@@ -118,6 +118,15 @@ export default {
     },
 
     locked (newValue) {
+      const userChatwoot = this.$store.state.userChatwoot
+      if (userChatwoot.user_hash) {
+        window.$chatwoot?.setUser(userChatwoot.email, {
+          name: userChatwoot.name,
+          email: userChatwoot.email,
+          identifier_hash: userChatwoot.user_hash
+        })
+        window.$chatwoot?.setLocale(userChatwoot.language_override)
+      }
       if (newValue === true) {
         clearInterval(this.intervalGet)
         this.$router.push(this.localeRoute({ name: 'lock' }))

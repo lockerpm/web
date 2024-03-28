@@ -104,6 +104,7 @@ Vue.mixin({
           window.open('https://cystack.notion.site/Locker-Translation-Guide-bb4e4fc4c23d4bbc994375035b124829', '_blank')
         }
       } else {
+        window.$chatwoot?.setLocale(value)
         this.setupMomentLocale(value)
         this.$store.dispatch('SetLang', value).then(() => {
           this.$i18n.setLocale(value)
@@ -182,12 +183,6 @@ Vue.mixin({
       await this.$cookies.remove('cs_locker_token')
       this.$store.commit('CLEAR_ALL_DATA')
       this.$router.push(this.localeRoute({ name: 'index' }))
-      window.Intercom('shutdown')
-      window.intercomSettings = {
-        app_id: 'hjus3ol6',
-        api_base: 'https://hjus3ol6.intercom-messenger.com'
-      }
-      window.Intercom('boot', { app_id: 'hjus3ol6' })
     },
 
     async lock () {
@@ -425,10 +420,8 @@ Vue.mixin({
       }
     },
 
-    openIntercom () {
-      if (window.Intercom) {
-        window.Intercom('show')
-      }
+    openChat () {
+      window.$chatwoot?.toggle('open')
     },
 
     filterPassword (value, showPassword) {

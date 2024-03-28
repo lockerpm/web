@@ -49,9 +49,10 @@
           </div>
           <div class="mt-12 landing-font-16">
             {{ $t('business.register.support_text') }}
-            <span><a class="text-info" @click.prevent="openIntercom">{{
-              locale === 'vi' ? 'Liên hệ' : 'Contact us'
-            }}</a></span>
+            <span>
+              <a class="text-info" @click.prevent="openChat">
+                {{ $t('common.contact_us') }}
+              </a></span>
           </div>
         </div>
         <div class="w-full md:w-1/2 md:pl-5 pl-0 md:mt-0 mt-8">
