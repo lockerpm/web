@@ -295,11 +295,13 @@ export const actions = {
       console.log('Ignore Chatwoot')
       return
     }
-    return this.$axios
-      .$get('cystack_platform/pm/users/me/chatwoot')
-      .then(res => {
-        commit('UPDATE_USER_CHATWOOT', res)
-      }).catch(() => {})
+    return {}
+    // TODO
+    // return this.$axios
+    //   .$get('cystack_platform/pm/users/me/chatwoot')
+    //   .then(res => {
+    //     commit('UPDATE_USER_CHATWOOT', res)
+    //   }).catch(() => {})
   },
   LoadNotification ({ commit }) {
     // const user = context.state.user
