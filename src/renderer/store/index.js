@@ -10,7 +10,7 @@ export const state = () => ({
     unread_count: 0,
     count: 0
   },
-  userIntercom: {},
+  userChatwoot: {},
   userPw: {},
   currentPlan: {},
   extensionLoggedIn: false,
@@ -118,8 +118,8 @@ export const mutations = {
   UPDATE_USER_PW (state, user) {
     state.userPw = user
   },
-  UPDATE_USER_INTERCOM (state, userIntercom) {
-    state.userIntercom = userIntercom
+  UPDATE_USER_CHATWOOT (state, userChatwoot) {
+    state.userChatwoot = userChatwoot
   },
   UPDATE_PATH (state, target) {
     state.currentPath = target
@@ -256,11 +256,6 @@ export const actions = {
       if (state.isLoggedIn) {
         const data = Object.assign({}, state.user)
         data.language = payload
-        // eslint-disable-next-line no-undef
-        // if (Intercom) {
-        //   // eslint-disable-next-line no-undef
-        //   Intercom('update', { language_override: payload })
-        // }
         this.$axios.$put('me', data)
       }
       resolve(payload)
@@ -295,23 +290,16 @@ export const actions = {
       return res
     })
   },
-  LoadCurrentIntercom ({ commit, state }) {
+  LoadCurrentChatwoot ({ commit, state }) {
     if (state.isOnPremise) {
-      console.log('Ignore Intercom')
+      console.log('Ignore Chatwoot')
       return
     }
     return this.$axios
-      .$get('cystack_platform/pm/users/me/intercom')
+      .$get('cystack_platform/pm/users/me/chatwoot')
       .then(res => {
-        window.intercomSettings = res
-        commit('UPDATE_USER_INTERCOM', res)
-        try {
-          // eslint-disable-next-line no-undef
-          Intercom('update')
-        } catch (error) {
-          // Intercom not loaded yet -> ignore
-        }
-      })
+        commit('UPDATE_USER_CHATWOOT', res)
+      }).catch(() => {})
   },
   LoadNotification ({ commit }) {
     // const user = context.state.user

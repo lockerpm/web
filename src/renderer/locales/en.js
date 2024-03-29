@@ -33,6 +33,7 @@ module.exports = {
     confirm_password: 'Confirm password',
     confirm_password_placeholder: 'Enter confirm password',
     confirmed: 'Confirmed',
+    contact_us: 'Contact us',
     continue: 'Continue',
     copied: 'Copied to clipboard',
     copy: 'Copy',
@@ -3199,6 +3200,7 @@ module.exports = {
     terms: 'Terms',
     policy: 'Privacy Policy',
     join: 'Join our Community',
+    a_product_of: 'A product of',
     menu: [
       [
         {
