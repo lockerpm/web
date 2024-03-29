@@ -299,7 +299,7 @@ export const actions = {
       .$get('cystack_platform/pm/users/me/chatwoot')
       .then(res => {
         commit('UPDATE_USER_CHATWOOT', res)
-      })
+      }).catch(() => {})
   },
   LoadNotification ({ commit }) {
     // const user = context.state.user
