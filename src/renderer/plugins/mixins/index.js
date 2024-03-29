@@ -183,6 +183,7 @@ Vue.mixin({
       await this.$cookies.remove('cs_locker_token')
       this.$store.commit('CLEAR_ALL_DATA')
       this.$router.push(this.localeRoute({ name: 'index' }))
+      window.$chatwoot?.reset()
     },
 
     async lock () {
