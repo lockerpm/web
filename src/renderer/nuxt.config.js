@@ -57,7 +57,7 @@ module.exports = {
     ],
     link: [{ rel: 'icon', type: 'shortcut icon', href: '/favicon-1.svg' }],
     script: [
-      { src: '/js/intercom.js' },
+      { src: '/js/chatwoot.js' },
       ...(process.env.NODE_ENV === 'production'
         ? [
           {
