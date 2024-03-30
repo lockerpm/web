@@ -3751,7 +3751,7 @@ module.exports = {
       subtitle: 'Refer a friend to try Locker and you both will get <br> 1 month of Premium for free. Together, we can build a safer community.',
       btn_refer: {
         text: 'Refer now',
-        link: '/settings/referral'
+        link: '/rewards#referral'
       }
     },
     how_referral_works: {
