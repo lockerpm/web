@@ -3752,7 +3752,7 @@ module.exports = {
       subtitle: 'Giới thiệu bạn mới để cùng nhận ưu đãi 1 tháng Premium miễn phí. Thêm bạn, thêm ưu đãi.',
       btn_refer: {
         text: 'Giới thiệu ngay!',
-        link: '/settings/referral'
+        link: '/rewards#referral'
       }
     },
     how_referral_works: {
