@@ -36,18 +36,6 @@
     </div>
     <!-- Step title end-->
 
-    <!-- Ad -->
-    <div class="max-w-6xl mx-auto my-6">
-      <a
-        href="https://internxt.com/locker"
-        target="_blank"
-      >
-        <img src="~assets/images/landing/internxt-banner.svg" alt="Internxt x Locker" class="w-full hidden md:block">
-        <img src="~assets/images/landing/internxt-banner-mobile.svg" alt="Internxt x Locker" class="w-full block md:hidden">
-      </a>
-    </div>
-    <!-- Ad end -->
-
     <!-- Choose a plan -->
     <div class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-3">
       <div
@@ -320,8 +308,28 @@ export default {
     },
 
     isCurrentPlan (plan) {
+      // Lifetime premium == premium
+      if (
+        this.currentPlan.alias === 'pm_lifetime_premium' &&
+        plan.alias === 'pm_premium'
+      ) {
+        return true
+      }
+
+      // Lifetime family == family
+      if (
+        this.currentPlan.alias === 'pm_lifetime_family' &&
+        plan.alias === 'pm_family'
+      ) {
+        return true
+      }
+
+      // Others
+      if (this.currentPlan.alias !== plan.alias) {
+        return false
+      }
       return (
-        this.currentPlan.alias === plan.alias &&
+        plan.alias === 'pm_free' ||
         this.currentPlan.duration === this.selectedPeriod.duration
       )
     },
@@ -369,26 +377,39 @@ export default {
 
     getBtnText (plan) {
       if (
-        this.currentPlan.alias === plan.alias &&
-        this.currentPlan.duration === this.selectedPeriod.duration
+        this.currentPlan.alias === plan.alias
       ) {
-        if (this.currentPlan.is_trailing) {
-          return this.$t('data.plans.purchase_now')
+        // Free is free, not related to period
+        if (plan.alias === 'pm_free') {
+          return this.$t('data.plans.current_plan')
         }
-        return this.$t('data.plans.current_plan')
+
+        // Other plans are related to period
+        if (this.currentPlan.duration === this.selectedPeriod.duration) {
+          if (this.currentPlan.is_trailing) {
+            return this.$t('data.plans.purchase_now')
+          }
+          return this.$t('data.plans.current_plan')
+        }
       }
+
+      // Lifetime premium == premium
       if (
         this.currentPlan.alias === 'pm_lifetime_premium' &&
         plan.alias === 'pm_premium'
       ) {
         return this.$t('data.plans.current_plan')
       }
+
+      // Lifetime family == family
       if (
         this.currentPlan.alias === 'pm_lifetime_family' &&
         plan.alias === 'pm_family'
       ) {
         return this.$t('data.plans.current_plan')
       }
+
+      // Either start trial or choose this plan
       return !this.currentPlan.personal_trial_applied
         ? this.$t('data.plans.start_trial')
         : this.$t('data.plans.choose_this_plan')
