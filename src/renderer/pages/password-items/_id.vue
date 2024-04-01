@@ -1,5 +1,5 @@
 <template>
-  <DetailCipher type="Login" route-name="passwords" />
+  <DetailCipher type="Login" route-name="password-items" />
 </template>
 
 <script>

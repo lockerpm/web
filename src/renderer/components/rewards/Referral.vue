@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="referral">
     <el-collapse v-model="collapse" class="mb-8">
       <el-collapse-item class="setting-wrapper" name="collapse">
         <!-- Header -->
@@ -146,6 +146,9 @@ export default {
   },
   created () {
     this.getReferrals()
+    if (window.location.hash === '#referral') {
+      this.collapse = ['collapse']
+    }
   },
   methods: {
     getReferrals () {
