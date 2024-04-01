@@ -1,6 +1,6 @@
 <template>
   <ListCipher
-    route-name="passwords"
+    route-name="password-items"
     :filter="
       c => [CipherType.Login, CipherType.MasterPassword].includes(c.type)
     "

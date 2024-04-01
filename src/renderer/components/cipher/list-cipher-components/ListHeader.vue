@@ -239,7 +239,7 @@ export default {
   props: {
     routeName: {
       type: String,
-      default: 'passwords'
+      default: 'password-items'
     },
     ciphers: {
       type: Array,

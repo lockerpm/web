@@ -22,7 +22,7 @@
           </template>
           <template v-else>
             <el-breadcrumb-item :to="localeRoute({ name: routeName })">
-              {{ $t(`sidebar.${routeName}`) }}
+              {{ $t(`sidebar.${routeName === 'password-items' ? 'passwords' : routeName}`) }}
             </el-breadcrumb-item>
           </template>
           <el-breadcrumb-item>
@@ -491,7 +491,7 @@ export default {
     },
     routeName: {
       type: String,
-      default: 'passwords'
+      default: 'password-items'
     }
   },
   data () {

@@ -41,7 +41,7 @@ export const CipherMapper = (() => {
 
   res[CipherType.Login] = {
     type: CipherType.Login,
-    routeName: 'passwords',
+    routeName: 'password-items',
     label: 'passwords',
     friendlyName: 'Login',
     freeLimit: 100,
@@ -50,7 +50,7 @@ export const CipherMapper = (() => {
   }
   res[CipherType.MasterPassword] = {
     type: CipherType.MasterPassword,
-    routeName: 'passwords',
+    routeName: 'password-items',
     label: 'passwords',
     noMenu: true,
     noCreate: true,

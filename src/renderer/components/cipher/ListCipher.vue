@@ -128,7 +128,7 @@ export default {
     },
     routeName: {
       type: String,
-      default: 'passwords'
+      default: 'password-items'
     },
     filter: {
       type: Function,

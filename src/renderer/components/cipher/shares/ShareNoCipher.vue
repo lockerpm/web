@@ -69,7 +69,7 @@ export default {
     },
     type () {
       switch (this.getRouteBaseName()) {
-      case 'passwords':
+      case 'password-items':
         return 'Login'
       case 'notes':
         return 'SecureNote'
