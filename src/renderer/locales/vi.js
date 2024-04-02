@@ -2857,7 +2857,7 @@ module.exports = {
         {
           button: 'Tải Locker trên Mac Ventura',
           note: '*Yêu cầu phiên bản macOS Ventura (arm64) 10.11 hoặc cao hơn',
-          link: 'https://github.com/lockerpm/desktop-releases/releases/download/v1.4.47/locker-mac-arm64-1.4.47.dmg'
+          link: 'https://s.locker.io/download/locker-mac-arm64-1.4.17-prod.dmg'
         }
       ],
       link: 'Xem ngay có gì trong phiên bản mới nhất.'
@@ -2906,7 +2906,7 @@ module.exports = {
         {
           button: 'Tải Locker trên Windows',
           note: '*Yêu cầu phiên bản Windows x64 10 hoặc cao hơn',
-          link: 'https://github.com/lockerpm/desktop-releases/releases/download/v1.4.47/locker-win-x64-1.4.47.exe'
+          link: 'https://s.locker.io/download/locker-win-x64-1.4.37-prod.exe'
         }
       ],
       link: 'Xem ngay có gì trong phiên bản mới nhất'
