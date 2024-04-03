@@ -14,6 +14,6 @@
 })(document, 'script')
 
 window.chatwootSettings = {
-  baseDomain: '.locker.io',
-  darkMode: 'auto'
+  baseDomain: '.locker.io'
+  // darkMode: 'auto'
 }
