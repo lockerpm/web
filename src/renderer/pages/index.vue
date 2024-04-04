@@ -446,21 +446,35 @@ export default {
 
   layout: 'landing',
 
+  asyncData () {
+    try {
+      if (window?.sessionStorage?.getItem('isIframe')) {
+        const DOMAINS = [
+          'https://locker.io',
+          'https://staging.locker.io',
+          'https://demo.locker.io:3011',
+          'http://localhost:3000',
+          'https://sm.locker.io'
+        ]
+        DOMAINS.forEach(domain => {
+          window.parent.postMessage(
+            {
+              event: 'home'
+            },
+            domain
+          )
+        })
+      }
+    } catch (error) {
+      //
+    }
+  },
+
   data () {
     return {
       videoId: 'kAutqE2ATfU',
       dialogVisible: false,
       posts: []
-    }
-  },
-
-  fetch () {
-    try {
-      if (window?.isIframe) {
-        this.postIframeMessage('home')
-      }
-    } catch (error) {
-      //
     }
   },
 
