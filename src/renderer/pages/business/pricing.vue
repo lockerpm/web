@@ -108,7 +108,7 @@
               <td />
               <td />
             </tr>
-            <tr v-for="(item, idx) in feature.features" :key="idx">
+            <tr v-for="(item, idx) in feature.features" :key="`sub_${idx}`">
               <td
                 class="pl-6 landing-font-16 pb-5 font-semibold"
                 style="color: #5a6176"
@@ -117,7 +117,7 @@
               </td>
               <td
                 v-for="(plan, ind) in item.plans"
-                :key="ind"
+                :key="`sub_sub_${ind}`"
                 class="text-center pb-5"
               >
                 <img
