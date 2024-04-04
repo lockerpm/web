@@ -1,20 +1,6 @@
 const queryParams = new URLSearchParams(window.location.href.split('?')[1])
 const isIframe = queryParams.get('mode') === 'iframe'
-window.isIframe = true
-
-function readCookie (name) {
-  const nameEQ = name + '='
-  const ca = document.cookie.split(';')
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i]
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length)
-    if (c.indexOf(nameEQ) === 0) {
-      const value = c.substring(nameEQ.length, c.length)
-      return value === 'null' ? '' : value
-    }
-  }
-  return ''
-}
+window.sessionStorage.setItem('isIframe', '1')
 
 const postToParent = (event, url) => {
   if (!isIframe) {
@@ -27,17 +13,18 @@ const postToParent = (event, url) => {
     'http://localhost:3000',
     'https://sm.locker.io'
   ]
-  DOMAINS.forEach(domain => {
-    window.parent.postMessage(
-      {
-        event,
-        value: url,
-        html: document.documentElement.outerHTML,
-        locale: readCookie('i18n_redirected')
-      },
-      domain
-    )
-  })
+  setTimeout(() => {
+    DOMAINS.forEach(domain => {
+      window.parent.postMessage(
+        {
+          event,
+          value: url,
+          html: document.documentElement.outerHTML
+        },
+        domain
+      )
+    })
+  }, 100)
 }
 
 history.pushState = (f => function pushState () {
