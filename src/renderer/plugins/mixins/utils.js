@@ -40,6 +40,19 @@ Vue.mixin({
         }
       }
       return camelCaseObj
+    },
+
+    postIframeMessage (event, value) {
+      const DOMAINS = ['https://locker.io', 'https://staging.locker.io', 'https://demo.locker.io:3011', 'http://localhost:3000', 'https://sm.locker.io']
+      DOMAINS.forEach(domain => {
+        window.parent.postMessage(
+          {
+            event,
+            value
+          },
+          domain
+        )
+      })
     }
   }
 })

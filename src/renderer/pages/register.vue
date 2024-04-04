@@ -4,7 +4,7 @@
 <script>
 export default {
   layout: 'authenticate',
-  fetch ({ redirect, store, isDev, $ua, $cookies, route }) {
+  asyncData ({ redirect, store, isDev, $ua, $cookies, route }) {
     // Generate URL for Locker ID
     const environment = isDev ? 'dev' : process.env.environment
     const query = `?SERVICE_URL=${
@@ -46,7 +46,28 @@ export default {
       return
     }
 
-    redirect(302, url)
+    let isIframe = false
+    try {
+      if (window) {
+        isIframe = window.isIframe
+      }
+    } catch (error) {
+      isIframe = route.query.mode === 'iframe'
+    }
+
+    if (!isIframe) {
+      redirect(302, url)
+    } else {
+      return {
+        url,
+        isIframe
+      }
+    }
+  },
+  mounted () {
+    if (this.isIframe && this.url) {
+      this.postIframeMessage('external', this.url)
+    }
   }
 }
 </script>

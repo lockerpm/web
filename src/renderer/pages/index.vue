@@ -454,6 +454,16 @@ export default {
     }
   },
 
+  fetch () {
+    try {
+      if (window?.isIframe) {
+        this.postIframeMessage('home')
+      }
+    } catch (error) {
+      //
+    }
+  },
+
   mounted () {
     this.getBlogs()
   },
