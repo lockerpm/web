@@ -37,5 +37,5 @@ window.addEventListener('popstate', () => {
 })
 
 window.addEventListener('locationchange', () => {
-  postToParent(window.location.href)
+  postToParent('url', window.location.href)
 })
