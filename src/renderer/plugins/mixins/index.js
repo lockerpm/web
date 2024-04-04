@@ -104,6 +104,7 @@ Vue.mixin({
           window.open('https://cystack.notion.site/Locker-Translation-Guide-bb4e4fc4c23d4bbc994375035b124829', '_blank')
         }
       } else {
+        this.postIframeMessage('changeLang', value)
         window.$chatwoot?.setLocale(value)
         this.setupMomentLocale(value)
         this.$store.dispatch('SetLang', value).then(() => {

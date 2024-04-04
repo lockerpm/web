@@ -26,7 +26,7 @@ export default {
     let isIframe = false
     try {
       if (window) {
-        isIframe = window.isIframe
+        isIframe = !!window.sessionStorage.getItem('isIframe')
       }
     } catch (error) {
       isIframe = route.query.mode === 'iframe'
