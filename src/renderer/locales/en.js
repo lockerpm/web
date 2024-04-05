@@ -2852,12 +2852,12 @@ module.exports = {
         {
           button: 'Download Locker for Mac Catalina',
           note: '*Requires macOS Catalina (x64) 10.11 or later',
-          link: 'https://s.locker.io/download/locker-mac-x64-1.4.47.dmg'
+          link: 'https://s.locker.io/download/locker-mac-x64-1.4.27-prod.dmg'
         },
         {
           button: 'Download Locker for Mac Ventura',
           note: '*Requires macOS Ventura (arm64) 10.11 or later',
-          link: 'https://s.locker.io/download/locker-mac-arm64-1.4.17-prod.dmg'
+          link: 'https://s.locker.io/download/locker-mac-arm64-1.4.55-release.dmg'
         }
       ],
       link: 'See what\'s new in the latest version'
@@ -2906,7 +2906,7 @@ module.exports = {
         {
           button: 'Download Locker for Windows',
           note: '*Requires Windows x64 10 or later',
-          link: 'https://s.locker.io/download/locker-win-x64-1.4.37-prod.exe'
+          link: 'https://s.locker.io/download/locker-win-x64-1.4.41-prod.exe'
         }
       ],
       link: 'See what\'s new in the latest version'
