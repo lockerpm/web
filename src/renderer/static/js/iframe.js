@@ -1,6 +1,8 @@
 const queryParams = new URLSearchParams(window.location.href.split('?')[1])
 const isIframe = queryParams.get('mode') === 'iframe'
-window.sessionStorage.setItem('isIframe', '1')
+if (isIframe) {
+  window.sessionStorage.setItem('isIframe', '1')
+}
 
 const postToParent = (event, url) => {
   if (!isIframe) {
