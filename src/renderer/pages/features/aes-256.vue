@@ -46,10 +46,10 @@
             {{ $t('features.aes_256.more_info') }}
             <p class="landing-font-16">
               <span class="text-green">
-                <a v-if="locale==='en'" href="https://locker.io/blog/can-locker-access-and-read-your-data">
+                <a v-if="locale==='en'" target="_blank" href="https://locker.io/blog/can-locker-access-and-read-your-data">
                   &nbsp;here
                 </a>
-                <a v-else href="https://locker.io/blog/can-locker-access-and-read-your-data">
+                <a v-else target="_blank" href="https://locker.io/blog/can-locker-access-and-read-your-data">
                   &nbsp;tại đây
                 </a>
               </span>
