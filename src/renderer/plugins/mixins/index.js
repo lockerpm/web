@@ -182,6 +182,7 @@ Vue.mixin({
       await this.$cryptoService.clearKeys()
       await this.$userService.clear()
       await this.$cookies.remove('cs_locker_token')
+      this.postIframeMessage('logout')
       this.$store.commit('CLEAR_ALL_DATA')
       this.$router.push(this.localeRoute({ name: 'index' }))
       window.$chatwoot?.reset()

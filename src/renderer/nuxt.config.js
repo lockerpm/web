@@ -157,7 +157,7 @@ module.exports = {
     environment: process.env.CS_ENVIRONMENT || '',
     wsUrl: process.env.WS_URL || 'wss://api.locker.io/ws',
     desktopWsUrl: process.env.DESKTOP_WS_URL || 'ws://localhost:1040',
-    logoUrl: process.env.LOGO_URL || 'https://old.locker.io/logo/',
+    logoUrl: process.env.LOGO_URL || 'https://locker.io/logo/',
     blogUrl:
       process.env.BLOG_API_URL ||
       'https://blog.cystack.org/locker/wp-json/wp/v2',
