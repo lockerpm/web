@@ -16,7 +16,7 @@ ARG SENTRY_DSN
 
 ENV CS_ENVIRONMENT=staging
 
-ENV BASE_URL=https://staging.locker.io
+ENV BASE_URL=https://old-staging.locker.io
 
 ENV BASE_ID_URL=https://id-staging.locker.io
 
