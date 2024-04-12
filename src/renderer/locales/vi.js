@@ -2852,12 +2852,12 @@ module.exports = {
         {
           button: 'Tải Locker trên Mac Catalina',
           note: '*Yêu cầu phiên bản macOS Catalina (x64) 10.11 hoặc cao hơn',
-          link: 'https://s.locker.io/download/locker-mac-x64-1.4.27-prod.dmg'
+          link: 'https://s.locker.io/download/locker-mac-x64-2.0.3-release.dmg'
         },
         {
           button: 'Tải Locker trên Mac Ventura',
           note: '*Yêu cầu phiên bản macOS Ventura (arm64) 10.11 hoặc cao hơn',
-          link: 'https://s.locker.io/download/locker-mac-arm64-1.4.55-release.dmg'
+          link: 'https://s.locker.io/download/locker-mac-arm64-2.0.3-release.dmg'
         }
       ],
       link: 'Xem ngay có gì trong phiên bản mới nhất.'
@@ -2906,7 +2906,7 @@ module.exports = {
         {
           button: 'Tải Locker trên Windows',
           note: '*Yêu cầu phiên bản Windows x64 10 hoặc cao hơn',
-          link: 'https://s.locker.io/download/locker-win-x64-1.4.41-prod.exe'
+          link: 'https://s.locker.io/download/locker-win-x64-2.0.3-release.exe'
         }
       ],
       link: 'Xem ngay có gì trong phiên bản mới nhất'
