@@ -4,423 +4,123 @@
       class="full-width pt-28 bg-[#EEF4ED] w-[100%] relative pb-[100px] px-5 md:px-20 overflow-inherit mb-[60px] min-h-[744px]"
     >
       <transition name="fade" mode="out-in">
-        <!-- Macos -->
-        <section v-if="chosen == 'macos'" id="macos" key="1" class="animation">
-          <h1
-            class="text-center font-bold text-black landing-font-42 mb-[12px]"
-          >
-            {{ $t('download.section1.title') }}
-          </h1>
-          <h2
-            class="text-center font-normal text-black-600 landing-font-20 mb-[35px]"
-          >
-            {{ $t('download.section1.subtitle') }}
-          </h2>
-          <div
-            class="grid gap-x-3 items-center max-w-[1010px] mx-auto justify-items-center justify-center min-h-[380px] md:flex md:justify-between"
-          >
-            <div class="min-w-[310px] max-w-[310px] relative">
-              <div>
-                <button class="button-download bg-tag1" @click="toggleList()">
-                  <span>
-                    {{ $t('download.section2.button') }}
-                  </span>
-                  <img
-                    src="~/assets/images/landing/download2/down.svg"
-                    alt=""
-                    class="rotate-icon"
-                  >
-                </button>
-                <div
-                  class="grid gap-y-[12px] dropdown"
-                  :class="listDownload ? 'show ' : ''"
-                >
-                  <a
-                    v-for="(item, id) in $t('download.section2.list')"
-                    :key="id"
-                    :class="id == 0 ? 'mt-[32px]' : ''"
-                    :target="item.link ? '_blank' : ''"
-                    :href="item.link || ':;'"
-                  >
-                    <button
-                      :class="
-                        item.link ? 'button-download bg-tag1' : 'button-disable'
-                      "
-                    >
-                      <span>
-                        {{ item.button }}
-                      </span>
-                      <img
-                        v-if="item.link"
-                        src="~/assets/images/landing/download2/download.svg"
-                        alt=""
-                      >
-                      <img
-                        v-else
-                        src="~/assets/images/landing/download2/download-disable.svg"
-                        alt=""
-                      >
-                    </button>
-                    <p
-                      class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
-                    >
-                      {{ item.note }}
-                    </p>
-                  </a>
-                </div>
-                <div class="flex my-[32px]">
-                  <a
-                    href="https://locker.io/release-notes"
-                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
-                    target="_blank"
-                  >
-                    {{ $t('download.section2.link') }}
-                  </a>
-                  <img
-                    src="~/assets/images/landing/download2/right-blue.svg"
-                    alt=""
-                  >
-                </div>
-              </div>
-            </div>
-            <img
-              src="~/assets/images/landing/download2/section2.png"
-              alt=""
-              class="max-w-[550px] w-[100%] sm:w-3/5 object-contain"
-            >
-          </div>
-        </section>
-        <!-- Windows -->
-        <section
-          v-if="chosen == 'windows'"
-          id="windows"
-          key="2"
-          class="animation"
+        <!-- Not browser -->
+        <template
+          v-for="item in platforms"
         >
-          <h1
-            class="text-center font-bold text-black landing-font-42 mb-[12px]"
+          <section
+            v-if="chosen === item.key"
+            :id="item.key"
+            :key="item.key"
+            class="animation"
           >
-            {{ $t('download.section4.title') }}
-          </h1>
-          <h2
-            class="text-center font-normal text-black-600 landing-font-20 mb-[35px]"
-          >
-            {{ $t('download.section4.subtitle') }}
-          </h2>
-          <div
-            class="grid justify-center md:justify-between gap-x-3 items-center max-w-[1010px] justify-items-center mx-auto min-h-[380px] md:flex"
-          >
-            <div class="min-w-[310px] max-w-[310px] relative">
-              <div>
-                <div class="grid gap-y-[32px]">
-                  <a
-                    v-for="(item, id) in $t('download.section4.list')"
-                    :key="id"
-                    :target="item.link ? '_blank' : ''"
-                    :href="item.link || ':;'"
+            <h1
+              class="text-center font-bold text-black landing-font-42 mb-[12px]"
+            >
+              {{ item.data.title }}
+            </h1>
+            <h2
+              class="text-center font-normal text-black-600 landing-font-20 mb-[35px]"
+            >
+              {{ item.data.subtitle }}
+            </h2>
+            <div
+              class="grid gap-x-3 items-center max-w-[1010px] mx-auto justify-items-center justify-center min-h-[380px] md:flex md:justify-between"
+            >
+              <!-- Download buttons -->
+              <div class="min-w-[310px] max-w-[310px] relative">
+                <div>
+                  <button v-if="item.data.button" class="button-download bg-tag1" @click="toggleList()">
+                    <span>
+                      {{ item.data.button }}
+                    </span>
+                    <i class="el-icon-arrow-down rotate-icon right" />
+                  </button>
+
+                  <div
+                    class="grid gap-y-[12px] dropdown"
+                    :class="{ 'show': listDownload || !item.data.button }"
                   >
-                    <button
-                      :class="
-                        item.link ? 'button-download bg-tag2' : 'button-disable'
-                      "
+                    <a
+                      v-for="(btn, id) in item.data.list"
+                      :key="id"
+                      :class="{
+                        'mt-[32px]': id === 0,
+                        'pointer-events-none': !btn.link
+                      }"
+                      target="_blank"
+                      :href="btn.link || '#'"
                     >
-                      <span>
-                        {{ item.button }}
-                      </span>
-                      <img
-                        v-if="item.link"
-                        src="~/assets/images/landing/download2/download.svg"
-                        alt=""
+                      <button
+                        :class="
+                          btn.link ? 'button-download bg-tag1' : 'button-disable'
+                        "
                       >
-                      <img
-                        v-else
-                        src="~/assets/images/landing/download2/download-disable.svg"
-                        alt=""
+                        <span>
+                          {{ btn.button }}
+                        </span>
+                        <img
+                          v-if="btn.link"
+                          src="~/assets/images/landing/download2/download.svg"
+                          alt=""
+                        >
+                        <img
+                          v-else
+                          src="~/assets/images/landing/download2/download-disable.svg"
+                          alt=""
+                        >
+                      </button>
+                      <p
+                        class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
                       >
-                    </button>
-                    <p
-                      class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
+                        {{ btn.note }}
+                      </p>
+                    </a>
+                  </div>
+
+                  <!-- See what's new -->
+                  <div class="flex my-[32px]">
+                    <a
+                      href="https://locker.io/release-notes"
+                      class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
+                      target="_blank"
                     >
-                      {{ item.note }}
-                    </p>
-                  </a>
-                </div>
-                <div class="flex my-[32px]">
-                  <a
-                    href="https://locker.io/release-notes"
-                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
-                    target="_blank"
-                  >
-                    {{ $t('download.section2.link') }}
-                  </a>
-                  <img
-                    src="~/assets/images/landing/download2/right-blue.svg"
-                    alt=""
-                  >
+                      {{ $t('download.see_what_new') }} <i class="el-icon-right" />
+                    </a>
+                  </div>
+                  <!-- See what's new end -->
                 </div>
               </div>
+              <!-- Download buttons end -->
+
+              <!-- Image -->
+              <img
+                :src="require(`~/assets/images/landing/download2/${item.img.name}`)"
+                :alt="item.key"
+                class="w-[100%] sm:w-3/5 object-contain"
+                :style="`max-width: ${item.img.width}`"
+              >
+              <!-- Image -->
             </div>
-            <img
-              src="~/assets/images/landing/download2/section3.png"
-              alt=""
-              class="max-w-[620px] w-[100%] sm:w-3/5 object-contain"
-            >
-          </div>
-        </section>
-        <!-- ios -->
-        <section v-if="chosen == 'ios'" id="ios" key="3" class="animation">
+          </section>
+        </template>
+        <!-- Not browser end -->
+
+        <!-- Browser -->
+        <section v-if="chosen === 'web-browser'" id="web-browser" key="web-browser">
           <h1
             class="text-center font-bold text-black landing-font-42 mb-[12px]"
           >
-            {{ $t('download.section5.title') }}
-          </h1>
-          <h2
-            class="text-center font-normal text-black-600 landing-font-20 mb-[35px]"
-          >
-            {{ $t('download.section5.subtitle') }}
-          </h2>
-          <div
-            class="grid justify-center md:justify-between gap-x-3 items-center justify-items-center max-w-[1010px] min-h-[380px] mx-auto md:flex"
-          >
-            <div class="max-w-[310px] relative">
-              <div>
-                <div class="grid gap-y-[32px]">
-                  <a
-                    v-for="(item, id) in $t('download.section5.list')"
-                    :key="id"
-                    :target="item.link ? '_blank' : ''"
-                    :href="item.link || ':;'"
-                  >
-                    <button
-                      :class="
-                        item.link
-                          ? 'button-download button-ios'
-                          : 'button-disable'
-                      "
-                    >
-                      <span>
-                        {{ item.button }}
-                      </span>
-                      <img
-                        v-if="item.link"
-                        src="~/assets/images/landing/download2/download.svg"
-                        alt=""
-                      >
-                      <img
-                        v-else
-                        src="~/assets/images/landing/download2/download-disable.svg"
-                        alt=""
-                      >
-                    </button>
-                    <p
-                      class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
-                    >
-                      {{ item.note }}
-                    </p>
-                  </a>
-                </div>
-                <div class="flex my-[32px]">
-                  <a
-                    href="https://locker.io/release-notes"
-                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
-                    target="_blank"
-                  >
-                    {{ $t('download.section2.link') }}
-                  </a>
-                  <img
-                    src="~/assets/images/landing/download2/right-blue.svg"
-                    alt=""
-                  >
-                </div>
-              </div>
-            </div>
-            <img
-              src="~/assets/images/landing/download2/section6.png"
-              alt=""
-              class="max-w-[440px] w-[100%] sm:w-3/5 object-contain"
-            >
-          </div>
-        </section>
-        <!-- android -->
-        <section
-          v-if="chosen == 'android'"
-          id="android"
-          key="4"
-          class="animation"
-        >
-          <h1
-            class="text-center font-bold text-black landing-font-42 mb-[12px]"
-          >
-            {{ $t('download.section6.title') }}
-          </h1>
-          <h2
-            class="text-center font-normal text-black-600 landing-font-20 mb-[35px]"
-          >
-            {{ $t('download.section6.subtitle') }}
-          </h2>
-          <div
-            class="grid justify-center md:justify-between gap-x-3 items-center justify-items-center max-w-[1010px] mx-auto md:flex"
-          >
-            <div class="min-w-[310px] max-w-[310px] relative">
-              <div>
-                <div class="grid gap-y-[32px]">
-                  <a
-                    v-for="(item, id) in $t('download.section6.list')"
-                    :key="id"
-                    :target="item.link ? '_blank' : ''"
-                    :href="item.link || ':;'"
-                  >
-                    <button
-                      :class="
-                        item.link
-                          ? 'button-download button-android'
-                          : 'button-disable'
-                      "
-                    >
-                      <span>
-                        {{ item.button }}
-                      </span>
-                      <img
-                        v-if="item.link"
-                        src="~/assets/images/landing/download2/download.svg"
-                        alt=""
-                      >
-                      <img
-                        v-else
-                        src="~/assets/images/landing/download2/download-disable.svg"
-                        alt=""
-                      >
-                    </button>
-                    <p
-                      class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
-                    >
-                      {{ item.note }}
-                    </p>
-                  </a>
-                </div>
-                <div class="flex my-[32px]">
-                  <a
-                    href="https://locker.io/release-notes"
-                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
-                    target="_blank"
-                  >
-                    {{ $t('download.section2.link') }}
-                  </a>
-                  <img
-                    src="~/assets/images/landing/download2/right-blue.svg"
-                    alt=""
-                  >
-                </div>
-              </div>
-            </div>
-            <img
-              src="~/assets/images/landing/download2/section7.png"
-              alt=""
-              class="max-w-[430px] w-[100%] sm:w-3/5 object-contain"
-            >
-          </div>
-        </section>
-        <!-- linux -->
-        <section v-if="chosen == 'linux'" id="linux" key="5" class="animation">
-          <h1
-            class="text-center font-bold text-black landing-font-42 mb-[12px]"
-          >
-            {{ $t('download.section7.title') }}
-          </h1>
-          <h2
-            class="text-center font-normal text-black-600 landing-font-20 mb-[35px]"
-          >
-            {{ $t('download.section7.subtitle') }}
-          </h2>
-          <div
-            class="grid justify-between gap-x-3 items-center justify-items-center max-w-[1010px] min-h-[380px] mx-auto md:flex"
-          >
-            <div class="min-w-[310px] max-w-[310px] relative">
-              <div>
-                <button class="button-download bg-tag3" @click="toggleList()">
-                  <span>
-                    {{ $t('download.section7.button') }}
-                  </span>
-                  <img
-                    src="~/assets/images/landing/download2/down.svg"
-                    alt=""
-                    class="rotate-icon"
-                  >
-                </button>
-                <div
-                  class="grid gap-y-[12px] dropdown"
-                  :class="listDownload ? 'show ' : ''"
-                >
-                  <a
-                    v-for="(item, id) in $t('download.section7.list')"
-                    :key="id"
-                    :class="id == 0 ? 'mt-[32px]' : ''"
-                    :target="item.link ? '_blank' : ''"
-                    :href="item.link || ':;'"
-                  >
-                    <button
-                      :class="
-                        item.link ? 'button-download bg-tag3' : 'button-disable'
-                      "
-                    >
-                      <span>
-                        {{ item.button }}
-                      </span>
-                      <img
-                        v-if="item.link"
-                        src="~/assets/images/landing/download2/download.svg"
-                        alt=""
-                      >
-                      <img
-                        v-else
-                        src="~/assets/images/landing/download2/download-disable.svg"
-                        alt=""
-                      >
-                    </button>
-                    <p
-                      class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
-                    >
-                      {{ item.note }}
-                    </p>
-                  </a>
-                </div>
-                <div class="flex my-[32px]">
-                  <a
-                    href="https://locker.io/release-notes"
-                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
-                    target="_blank"
-                  >
-                    {{ $t('download.section2.link') }}
-                  </a>
-                  <img
-                    src="~/assets/images/landing/download2/right-blue.svg"
-                    alt=""
-                  >
-                </div>
-              </div>
-            </div>
-            <img
-              src="~/assets/images/landing/download2/linux-image.png"
-              alt=""
-              class="max-w-[637px] w-[100%] sm:w-3/5 object-contain"
-            >
-          </div>
-        </section>
-        <!-- web browser -->
-        <section v-if="chosen == 'web-browser'" id="web-browser" key="6">
-          <h1
-            class="text-center font-bold text-black landing-font-42 mb-[12px]"
-          >
-            {{ $t('download.section3.title') }}
+            {{ $t('download.browser.title') }}
           </h1>
           <h2
             class="text-center font-normal text-black-600 landing-font-20 mb-[10px]"
           >
-            {{ $t('download.section3.subtitle') }}
+            {{ $t('download.browser.subtitle') }}
           </h2>
           <div class="flex flex-wrap justify-center gap-x-3">
             <div
-              v-for="item in $t('download.section3.list')"
+              v-for="item in $t('download.browser.list')"
               :key="item.name"
               class="w-[135px] mt-6 text-webkit"
             >
@@ -437,7 +137,7 @@
                 <button
                   class="mt-3 py-[3px] px-[20px] font-semibold text-[#FFFFFF] bg-[#62AD56] rounded-sm hover:bg-[#2D702C]"
                 >
-                  {{ $t('download.section3.install') }}
+                  {{ $t('download.browser.install') }}
                 </button>
               </a>
               <button
@@ -454,20 +154,20 @@
             class="max-w-[600px] mb-[-100px] w-[100%] mx-auto"
           >
         </section>
+        <!-- Browser end -->
       </transition>
-      <!-- icons -->
+
+      <!-- Selector -->
       <div
         class="absolute bottom-[-78px] max-w-[1121px] rounded-[16px] absolute-center card-section1 mx-4 px-[20px] py-[19px] md:px-[84px]"
       >
         <div class="flex overflow-x-auto justify-start lg:justify-center">
           <a
-            v-for="item in $t('download.section1.card')"
-            :key="item.title"
-            href="#anchor"
-            :custom-href="'#' + item.link"
+            v-for="item in selectors"
+            :key="item.link"
+            :href="`#${item.link}`"
             class="py-5 mx-2 min-w-[124px] rounded-sm link-contain"
             :class="chosen == item.link ? 'bg-[#E3EDE6]' : 'hover:bg-[#E3EDE6]'"
-            @click="setChosen(item.link)"
           >
             <div class="block w-fit mx-auto h-[40px]">
               <img
@@ -491,6 +191,7 @@
           </a>
         </div>
       </div>
+      <!-- Selector end -->
     </section>
   </div>
 </template>
@@ -498,65 +199,154 @@
 <script>
 export default {
   layout: 'landing',
+
   data () {
     return {
       chosen: '',
-      listDownload: false
+      listDownload: false,
+      notionData: []
     }
   },
-  mounted () {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault()
-        const customHref = anchor.getAttribute('custom-href')
-        const target = document.querySelector('#anchor')
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' })
-          const newUrl =
-            window.location.origin + window.location.pathname + customHref
-          history.pushState({}, '', newUrl)
+
+  computed: {
+    selectors () {
+      return [
+        {
+          title: 'macOS',
+          imageSrc: 'macOS.svg',
+          hover: 'hover-macOS.svg',
+          link: 'macos'
+        },
+        {
+          title: 'Windows',
+          imageSrc: 'windows.svg',
+          hover: 'hover-windows.svg',
+          link: 'windows'
+        },
+        {
+          title: 'iOS',
+          imageSrc: 'iOS.svg',
+          hover: 'hover-iOS.svg',
+          link: 'ios'
+        },
+        {
+          title: 'Android',
+          imageSrc: 'android.svg',
+          hover: 'hover-Android.svg',
+          link: 'android'
+        },
+        {
+          title: 'Linux',
+          imageSrc: 'linux.svg',
+          hover: 'hover-linux.svg',
+          link: 'linux'
+        },
+        {
+          title: 'Web Browser',
+          imageSrc: 'webBrowser.svg',
+          hover: 'hover-web-browser.svg',
+          link: 'web-browser'
+        }
+      ]
+    },
+
+    platforms () {
+      const keys = [
+        'macos',
+        'windows',
+        'ios',
+        'android',
+        'linux'
+      ]
+      const imgs = {
+        macos: {
+          name: 'section2.png',
+          width: '550px'
+        },
+        windows: {
+          name: 'section3.png',
+          width: '620px'
+        },
+        ios: {
+          name: 'section6.png',
+          width: '440px'
+        },
+        android: {
+          name: 'section7.png',
+          width: '430px'
+        },
+        linux: {
+          name: 'linux-image.png',
+          width: '637px'
+        }
+      }
+      return keys.map(key => {
+        const obj = { ...this.$t(`download.${key}`) }
+        obj.list.forEach(btn => {
+          const notionItem = this.notionData.find(item => item.Tag === btn.tag)
+          if (notionItem) {
+            btn.link = notionItem.Link
+          }
+        })
+        return {
+          key,
+          img: imgs[key],
+          data: obj
         }
       })
-    })
-    const currentAnchor = this.$route.hash
-    if (currentAnchor) {
-      switch (currentAnchor) {
-      case '#windows':
-        this.chosen = 'windows'
-        break
-      case '#android':
-        this.chosen = 'android'
-        break
-      case '#ios':
-        this.chosen = 'ios'
-        break
-      case '#linux':
-        this.chosen = 'linux'
-        break
-      case '#web-browser':
-        this.chosen = 'web-browser'
-        break
-      default:
-        this.chosen = 'macos'
-      }
-    } else {
-      const os = this.$ua.os()
-      this.chosen = 'macos'
-      if (os.includes('Windows')) this.chosen = 'windows'
-      if (os.includes('iPad') || os.includes('iPhone')) this.chosen = 'ios'
-      if (os.includes('Android')) this.chosen = 'android'
-      if (os.includes('Linux')) this.chosen = 'linux'
     }
   },
+
+  mounted () {
+    this.getNotionData()
+    this.onHashChange()
+    window.addEventListener('hashchange', this.onHashChange)
+  },
+
+  beforeDestroy () {
+    window.removeEventListener('hashchange', this.onHashChange)
+  },
+
   methods: {
-    setChosen (link) {
-      this.chosen = link
+    onHashChange () {
       this.listDownload = false
+      const target = document.querySelector('#anchor')
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' })
+      }
+      let currentAnchor = this.$route.hash.replace('#', '')
+      const validPlatforms = ['windows', 'android', 'ios', 'linux', 'web-browser', 'macos']
+      if (currentAnchor && validPlatforms.includes(currentAnchor)) {
+        this.chosen = currentAnchor
+      } else {
+        const os = this.$ua.os()
+        if (os.includes('Windows')) {
+          currentAnchor = 'windows'
+        } else if (os.includes('iPad') || os.includes('iPhone')) {
+          currentAnchor = 'ios'
+        } else if (os.includes('Android')) {
+          currentAnchor = 'android'
+        } else if (os.includes('Linux')) {
+          currentAnchor = 'linux'
+        } else {
+          currentAnchor = 'macos'
+        }
+        this.chosen = currentAnchor
+      }
     },
+
     toggleList () {
       this.listDownload = !this.listDownload
       const icon = document.querySelector('.rotate-icon')
       icon.classList.toggle('rotate')
+    },
+
+    getNotionData () {
+      this.$axios.$get(`${process.env.baseUrl}/api/download`).then(res => {
+        this.notionData = res.data
+      }).catch(e => {
+        console.log('download notion err', e)
+      })
     }
   }
 }
@@ -689,7 +479,7 @@ export default {
 .dropdown {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 1s ease-out; /* tạo hiệu ứng từ trên xuống dưới */
+  transition: max-height .5s ease; /* tạo hiệu ứng từ trên xuống dưới */
 }
 
 .dropdown.show {

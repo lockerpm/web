@@ -296,6 +296,10 @@ module.exports = {
     {
       path: '/api/bottom-banner',
       handler: '~/server-middleware/bottomBanner.js'
+    },
+    {
+      path: '/api/download',
+      handler: '~/server-middleware/download.js'
     }
   ]
 }
