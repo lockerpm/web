@@ -2802,49 +2802,8 @@ module.exports = {
   download: {
     head_title: 'Tải về - Locker Password Manager',
     coming: 'Sắp ra mắt',
-    section1: {
-      title: 'Tải Locker trên Mac',
-      subtitle: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
-      card: [
-        {
-          title: 'macOS',
-          imageSrc: 'macOS.svg',
-          hover: 'hover-macOS.svg',
-          link: 'macos'
-        },
-        {
-          title: 'Windows',
-          imageSrc: 'windows.svg',
-          hover: 'hover-windows.svg',
-          link: 'windows'
-        },
-        {
-          title: 'iOS',
-          imageSrc: 'iOS.svg',
-          hover: 'hover-iOS.svg',
-          link: 'ios'
-        },
-        {
-          title: 'Android',
-          imageSrc: 'android.svg',
-          hover: 'hover-Android.svg',
-          link: 'android'
-        },
-        {
-          title: 'Linux',
-          imageSrc: 'linux.svg',
-          hover: 'hover-linux.svg',
-          link: 'linux'
-        },
-        {
-          title: 'Web Browser',
-          imageSrc: 'webBrowser.svg',
-          hover: 'hover-web-browser.svg',
-          link: 'web-browser'
-        }
-      ]
-    },
-    section2: {
+    see_what_new: 'Xem ngay có gì trong phiên bản mới nhất',
+    macos: {
       title: 'Tải Locker trên Mac',
       subtitle: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
       button: 'Tải Locker trên Mac',
@@ -2852,17 +2811,16 @@ module.exports = {
         {
           button: 'Tải Locker trên Mac Catalina',
           note: '*Yêu cầu phiên bản macOS Catalina (x64) 10.11 hoặc cao hơn',
-          link: 'https://s.locker.io/download/locker-mac-x64-2.0.3-release.dmg'
+          tag: 'mac-x64'
         },
         {
           button: 'Tải Locker trên Mac Ventura',
           note: '*Yêu cầu phiên bản macOS Ventura (arm64) 10.11 hoặc cao hơn',
-          link: 'https://s.locker.io/download/locker-mac-arm64-2.0.3-release.dmg'
+          tag: 'mac-arm64'
         }
-      ],
-      link: 'Xem ngay có gì trong phiên bản mới nhất.'
+      ]
     },
-    section3: {
+    browser: {
       title: 'Cài đặt tiện ích Locker cho trình duyệt',
       subtitle: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
       install: 'Cài đặt',
@@ -2899,19 +2857,18 @@ module.exports = {
         }
       ]
     },
-    section4: {
+    windows: {
       title: 'Tải Locker trên Windows',
       subtitle: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
       list: [
         {
           button: 'Tải Locker trên Windows',
           note: '*Yêu cầu phiên bản Windows x64 10 hoặc cao hơn',
-          link: 'https://s.locker.io/download/locker-win-x64-2.0.3-release.exe'
+          tag: 'win'
         }
-      ],
-      link: 'Xem ngay có gì trong phiên bản mới nhất'
+      ]
     },
-    section5: {
+    ios: {
       title: 'Tải Locker trên iOS',
       subtitle: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
       list: [
@@ -2920,10 +2877,9 @@ module.exports = {
           note: '*Yêu cầu phiên bản iOS 12 hoặc cao hơn',
           link: 'https://apps.apple.com/us/app/locker-password-manager/id1586927301'
         }
-      ],
-      link: 'Xem ngay có gì trong phiên bản mới nhất'
+      ]
     },
-    section6: {
+    android: {
       title: 'Tải Locker trên Android',
       subtitle: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
       list: [
@@ -2932,10 +2888,9 @@ module.exports = {
           note: '*Yêu cầu phiên bản Android 8.0 hoặc cao hơn',
           link: 'https://play.google.com/store/apps/details?id=com.cystack.locker&pli=1'
         }
-      ],
-      link: 'Xem ngay có gì trong phiên bản mới nhất'
+      ]
     },
-    section7: {
+    linux: {
       title: 'Tải Locker trên Linux',
       subtitle: 'Truy cập, chỉnh sửa, tự động điền mật khẩu mọi lúc, mọi nơi.',
       button: 'Tải Locker trên Linux',
@@ -2943,20 +2898,14 @@ module.exports = {
         {
           button: 'Tải xuống .deb',
           note: 'Dành cho Ubuntu, Debian, Linux Mint, etc',
-          link: 'https://github.com/lockerpm/desktop-releases/releases/download/v1.4.47/locker-linux-amd64-1.4.47.deb'
+          tag: 'linux-deb'
         },
         {
           button: 'Tải xuống .rpm',
           note: 'Dành cho Fedora, CentOS, RHEL, openSUSE, etc',
-          link: ''
+          tag: 'linux-rpm'
         }
-      ],
-      link: 'Xem ngay có gì trong phiên bản mới nhất'
-      // content: {
-      //   title: 'Quas et eligendi',
-      //   subtitle: 'Voluptates ipsa sunt officia iure nostrum consequatur. Consequuntur ab quis quia earum eos iste eaque necessitatibus. Est est sunt vel repudiandae et mollitia ipsam. Adipisci suscipit molestiae qui nesciunt nihil quae cum aut aliquid. Modi aut est iste eos dolor ut.',
-      //   link: 'Get to know Locker for Linux'
-      // }
+      ]
     }
   },
   security: {
