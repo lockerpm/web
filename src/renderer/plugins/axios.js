@@ -122,7 +122,11 @@ export default function ({
           currentPath &&
           !route.name.startsWith('all___')
         ) {
-          redirect(302, '/login')
+          const queryObj = new URLSearchParams()
+          Object.keys(route.query).forEach(k => {
+            queryObj.append(k, route.query[k])
+          })
+          redirect(302, `/login?${queryObj.toString()}`)
         }
       }
       if (err.response.status === 403) {
