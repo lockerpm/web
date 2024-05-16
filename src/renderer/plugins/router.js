@@ -7,6 +7,10 @@ export default ({ store, app, i18n }) => {
       if (app.$cookies.get('i18n_redirected') !== 'vi') {
         i18n.setLocale('vi')
       }
+    } else if (toRoute.path.startsWith('/zh')) {
+      if (app.$cookies.get('i18n_redirected') !== 'zh') {
+        i18n.setLocale('zh')
+      }
     }
 
     if (

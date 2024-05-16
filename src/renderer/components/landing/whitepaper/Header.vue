@@ -186,13 +186,11 @@ export default {
     setLocale (locale) {
       this.changeLang(locale)
       setTimeout(() => {
-        if (locale === 'en') {
-          window.location.replace('/whitepaper')
-          return
-        }
         if (locale === 'vi') {
           window.location.replace('/vi/whitepaper')
+          return
         }
+        window.location.replace('/whitepaper')
       }, 200)
     }
   }

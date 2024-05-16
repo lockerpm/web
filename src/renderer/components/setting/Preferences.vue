@@ -39,8 +39,9 @@
               placeholder="Select"
               @change="changeLang"
             >
-              <el-option :label="$t('data.settings.vietnamese')" value="vi" />
-              <el-option :label="$t('data.settings.english')" value="en" />
+              <el-option label="Tiếng Việt" value="vi" />
+              <el-option label="English" value="en" />
+              <el-option label="繁體中文" value="zh" />
               <el-option :label="$t('data.settings.dont_find_lang')" value="new" />
             </el-select>
           </div>

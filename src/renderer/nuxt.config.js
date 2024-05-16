@@ -7,6 +7,8 @@ import path from 'path'
 import fs from 'fs'
 import viVee from 'vee-validate/dist/locale/vi.json'
 import enVee from 'vee-validate/dist/locale/en.json'
+// import zhVee from 'vee-validate/dist/locale/zh_CN.json'
+import zhVee from 'vee-validate/dist/locale/zh_TW.json'
 import axios from 'axios'
 import cheerio from 'cheerio'
 
@@ -135,7 +137,7 @@ module.exports = {
     '@/assets/flags/flags.css'
   ],
   i18n: {
-    locales: ['en', 'vi'],
+    locales: ['en', 'vi', 'zh'],
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
     vuex: {
@@ -145,7 +147,8 @@ module.exports = {
       fallbackLocale: 'en',
       messages: {
         en: { ...require('./locales/en.js'), ...enVee },
-        vi: { ...require('./locales/vi.js'), ...viVee }
+        vi: { ...require('./locales/vi.js'), ...viVee },
+        zh: { ...require('./locales/zh.json'), ...zhVee }
       }
     }
   },
@@ -194,7 +197,7 @@ module.exports = {
   router: {},
   moment: {
     defaultLocale: 'en',
-    locales: ['vi']
+    locales: ['vi', 'zh-tw']
   },
   build: {
     transpile: ['vee-validate/dist/rules'],

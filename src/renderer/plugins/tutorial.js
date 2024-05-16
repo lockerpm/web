@@ -34,7 +34,17 @@ export default async ({ store, i18n, $axios, redirect }, inject) => {
     tour.hide()
     store.commit('UPDATE_TUTORIAL', { currentStepId: 'add-pw-1' })
     _closeModals()
-    redirect(302, `${store.state.i18n.locale === 'vi' ? '/vi' : ''}/vault`)
+    const locale = (() => {
+      switch (store.state.i18n.locale) {
+      case 'vi':
+        return '/vi'
+      case 'zh':
+        return '/zh'
+      default:
+        return ''
+      }
+    })()
+    redirect(302, `${locale}/vault`)
     setTimeout(() => {
       store.commit('UPDATE_TUTORIAL', { isActive: true })
       tour.show('add-pw-1')
@@ -44,9 +54,19 @@ export default async ({ store, i18n, $axios, redirect }, inject) => {
   const _startFromImport = () => {
     tour.hide()
     store.commit('UPDATE_TUTORIAL', { currentStepId: 'import-1' })
+    const locale = (() => {
+      switch (store.state.i18n.locale) {
+      case 'vi':
+        return '/vi'
+      case 'zh':
+        return '/zh'
+      default:
+        return ''
+      }
+    })()
     redirect(
       302,
-      `${store.state.i18n.locale === 'vi' ? '/vi' : ''}/settings/import-export`
+      `${locale}/settings/import-export`
     )
     setTimeout(() => {
       store.commit('UPDATE_TUTORIAL', { isActive: true })

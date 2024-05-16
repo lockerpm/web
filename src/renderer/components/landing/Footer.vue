@@ -131,30 +131,19 @@
             <div class="w-full">
               <!-- Language switcher -->
               <div
-                :class="locale === 'vi' ? 'opacity-06' : ''"
-                :style="{ paddingLeft: locale === 'vi' ? '22px' : '0px' }"
+                v-for="item in languages"
+                :key="item.id"
+                :class="locale !== item.id ? 'opacity-06' : ''"
+                :style="{ paddingLeft: locale !== item.id ? '22px' : '0px' }"
                 class="text-sm text-black-600 font-normal hover:text-green"
                 style="cursor: pointer"
-                @click="setLocale('en')"
+                @click="setLocale(item.id)"
               >
                 <span
-                  v-show="locale !== 'vi'"
+                  v-show="locale === item.id"
                   class="mr-2"
-                ><i class="fas fa-location-arrow" /></span>English
+                ><i class="fas fa-location-arrow" /></span>{{ item.name }}
               </div>
-              <div
-                :class="locale === 'en' ? 'opacity-06' : ''"
-                :style="{ paddingLeft: locale !== 'vi' ? '22px' : '0px' }"
-                class="text-sm text-black-600 font-normal hover:text-green"
-                style="margin-top: 11px; cursor: pointer"
-                @click="setLocale('vi')"
-              >
-                <span
-                  v-show="locale === 'vi'"
-                  class="mr-2"
-                ><i class="fas fa-location-arrow" /></span>Vietnamese
-              </div>
-
               <!-- Language switcher end -->
             </div>
           </div>
@@ -209,6 +198,22 @@ export default {
   computed: {
     currentYear () {
       return new Date().getFullYear()
+    },
+    languages () {
+      return [
+        {
+          id: 'en',
+          name: 'English'
+        },
+        {
+          id: 'vi',
+          name: 'Tiếng Việt'
+        }
+        // {
+        //   id: 'zh',
+        //   name: '繁體中文'
+        // }
+      ]
     }
   },
   mounted () {
@@ -218,7 +223,7 @@ export default {
     setLocale (locale) {
       this.changeLang(locale)
       setTimeout(() => {
-        if (this.$route.path.startsWith('/vi/blog') && locale === 'en') {
+        if (this.$route.path.startsWith('/vi/blog') && locale !== 'vi') {
           this.$router.push('/blog')
           return
         }
@@ -226,7 +231,7 @@ export default {
           this.$router.push('/vi/blog')
           return
         }
-        if (this.$route.path.startsWith('/vi/whitepaper') && locale === 'en') {
+        if (this.$route.path.startsWith('/vi/whitepaper') && locale !== 'vi') {
           window.location.replace('/whitepaper')
           return
         }
