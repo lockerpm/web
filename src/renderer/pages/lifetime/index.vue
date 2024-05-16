@@ -497,7 +497,7 @@ export default {
     },
 
     goToLogin () {
-      this.$router.push('/vault')
+      this.$router.push(this.localePath('/vault'))
     },
 
     calcPrice: debounce(function () {

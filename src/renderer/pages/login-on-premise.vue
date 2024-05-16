@@ -21,7 +21,7 @@ export default {
     // this.clearOnPremiseCookies()
 
     if (!email || !baseApi) {
-      this.$router.push('/')
+      this.$router.push(this.localeRoute({ path: '/' }))
       return
     }
 

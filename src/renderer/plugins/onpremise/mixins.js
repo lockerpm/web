@@ -16,7 +16,7 @@ Vue.mixin({
         return true
       } catch (e) {
         this.$store.commit('CLEAR_ALL_DATA')
-        this.$router.push('/')
+        this.$router.push(this.localePath('/'))
         this.$axios.setToken(false)
         return false
       }

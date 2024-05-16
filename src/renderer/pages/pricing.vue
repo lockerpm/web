@@ -65,7 +65,7 @@
             <p class="landing-font-20 text-black-600 mb-4">
               {{ $t('plan.private_email.desc') }}
             </p>
-            <el-button type="primary" @click="$router.push('/register')">
+            <el-button type="primary" @click="$router.push(localeRoute('/register'))">
               {{ $t('plan.private_email.btn') }}
             </el-button>
           </div>

@@ -203,7 +203,7 @@ export default {
   watch: {
     isPremiumFeaturesAvailable (newValue) {
       if (!newValue) {
-        this.$router.push('/vault')
+        this.$router.push(this.localePath('/vault'))
       }
     },
     '$store.state.syncedCiphersToggle' () {
@@ -220,7 +220,7 @@ export default {
   },
   async mounted () {
     if (!this.isPremiumFeaturesAvailable) {
-      this.$router.push('/vault')
+      this.$router.push(this.localePath('/vault'))
     }
     this.loading = true
     this.ciphers = await this.$cipherService.getAllDecrypted()
