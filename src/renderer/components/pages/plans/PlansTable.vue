@@ -142,11 +142,11 @@ export default {
     },
     startTrialPlan (alias) {
       localStorage.setItem('trial_plan', alias)
-      this.$router.push('/register')
+      this.$router.push(this.localeRoute({ path: '/register' }))
     },
     choosePlan (alias) {
       if (alias === 'pm_free') {
-        this.$router.push('/register')
+        this.$router.push(this.localeRoute({ path: '/register' }))
       } else {
         this.$router.push(this.localeRoute(`/payment?plan=${alias}`))
       }

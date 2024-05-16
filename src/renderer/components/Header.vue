@@ -265,7 +265,7 @@ export default {
       }
     },
     startTutorial () {
-      this.$router.push({ path: '/welcome-tour' })
+      this.$router.push(this.localePath({ path: '/welcome-tour' }))
     },
     showTutorialLastStep () {
       if (

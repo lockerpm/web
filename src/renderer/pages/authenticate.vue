@@ -1,11 +1,15 @@
 <template>
-  <div />
+  <BusyOverlay />
 </template>
 
 <script>
 import isString from 'lodash/isString'
+import BusyOverlay from '@/components/BusyOverlay'
 
 export default {
+  components: {
+    BusyOverlay
+  },
   layout: 'authenticate',
   data () {
     return {}

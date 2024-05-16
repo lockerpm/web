@@ -92,7 +92,7 @@ export default {
 
     async startTutorial () {
       this.closeDialog()
-      this.$router.push({ path: '/welcome-tour' })
+      this.$router.push(this.localePath({ path: '/welcome-tour' }))
     },
 
     openExtension () {

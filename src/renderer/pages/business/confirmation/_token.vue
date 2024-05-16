@@ -104,7 +104,7 @@ export default {
   methods: {
     async goNext () {
       clearInterval(this.intervalTimer)
-      this.$router.push('/vault')
+      this.$router.push(this.localePath('/vault'))
     },
     backHome () {
       this.$router.push(this.localePath('/business/register'))

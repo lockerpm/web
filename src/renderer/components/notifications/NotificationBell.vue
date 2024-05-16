@@ -180,9 +180,7 @@ export default {
         break
       }
       default:
-        this.$router.push({
-          path: '/vault'
-        })
+        this.$router.push(this.localePath({ path: '/vault' }))
         break
       }
     },

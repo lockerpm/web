@@ -430,7 +430,7 @@ export default {
   watch: {
     isEnterpriseMember (newValue) {
       if (!newValue) {
-        this.$router.push('/vault')
+        this.$router.push(this.localePath('/vault'))
       }
     },
     '$store.state.syncedCiphersToggle' () {
@@ -443,7 +443,7 @@ export default {
 
   async mounted () {
     if (!this.isEnterpriseMember) {
-      this.$router.push('/vault')
+      this.$router.push(this.localePath('/vault'))
     }
     this.checkAllPwPolicies()
   },

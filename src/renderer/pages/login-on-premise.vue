@@ -1,12 +1,15 @@
 <template>
-  <div v-loading="true" style="height: 100vh; width: 100vw" />
+  <BusyOverlay />
 </template>
 <script>
 import isString from 'lodash/isString'
+import BusyOverlay from '@/components/BusyOverlay'
 
 export default {
+  components: {
+    BusyOverlay
+  },
   layout: 'authenticate',
-
   async mounted () {
     const email = this.$cookies.get('on_premise_email')
     const avatar = this.$cookies.get('on_premise_avatar')
@@ -18,7 +21,7 @@ export default {
     // this.clearOnPremiseCookies()
 
     if (!email || !baseApi) {
-      this.$router.push('/')
+      this.$router.push(this.localeRoute({ path: '/' }))
       return
     }
 
