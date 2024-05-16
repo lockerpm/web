@@ -37,6 +37,8 @@
           </div>
         </template>
 
+        <BusyOverlay v-else />
+
         <LockedUntilPay />
 
         <PremiumDialog />
@@ -60,6 +62,7 @@ import PaymentFailedWarning from '../components/notice/PaymentFailedWarning'
 import TrialAboutToExpireWarning from '../components/notice/TrialAboutToExpireWarning'
 import PremiumDialog from '../components/upgrade/PremiumDialog.vue'
 import BottomBanner from '../components/landing/BottomBanner.vue'
+import BusyOverlay from '@/components/BusyOverlay'
 
 if (process.env.CS_ENV !== 'web') {
   // eslint-disable-next-line no-var, @typescript-eslint/no-unused-vars
@@ -81,7 +84,8 @@ export default {
     PremiumDialog,
     Header,
     SideBarMenu,
-    BottomBanner
+    BottomBanner,
+    BusyOverlay
   },
 
   middleware: [
