@@ -40,7 +40,7 @@
     "country": "國家",
     "created": "建立於",
     "created_date": "建立日期",
-    "cystack_address": "地址：Tan Hong Ha Complex, 317 Truong Chinh Street, Thanh Xuan District, Hanoi, Vietnam",
+    "cystack_address": "地址:Tan Hong Ha Complex, 317 Truong Chinh Street, Thanh Xuan District, Hanoi, Vietnam",
     "decline": "拒絕",
     "delete": "刪除",
     "delete_account": "刪除帳戶",
@@ -333,7 +333,7 @@
     "confirm_master_password": "確認主密碼",
     "master_password_hint": "提示(選填) ",
     "create_button": "建立密碼",
-    "note": "注意：忘記或遺失主密碼時,Locker 無法檢視、儲存、或再次發放主密碼。",
+    "note": "注意:忘記或遺失主密碼時,Locker 無法檢視、儲存、或再次發放主密碼。",
     "confirm_nodal": {
       "title": "重要事項",
       "text1": "繼續代表您了解 Locker 無法檢視、儲存、或再次發放您遺失的主密碼。主密碼的保管是您個人的責任。",
@@ -458,7 +458,7 @@
       "select_appropriate_file": "請選擇正確的檔案",
       "import_failed": "資料匯入失敗",
       "import_success": "已匯入 {foldersCount} 個資料夾,{ciphersCount}/{total} 個項目",
-      "confirm_invite_user": "您確定要邀請以下使用者嗎：",
+      "confirm_invite_user": "您確定要邀請以下使用者嗎:",
       "leave_share": "您確定要退出這個分享群組嗎？",
       "share_success": "已分享此項目!| 已分享這些項目!",
       "share_failed": "分享此項目失敗!| 分享這些項目失敗!",
@@ -573,7 +573,7 @@
         "select_format": "選取匯入檔案格式",
         "select_file": "選取匯入檔案",
         "description": "輸入成員的電子信箱以發送邀請。可輸入多個電子信箱,以英文逗號( , )隔開。若成員沒有 Locker 帳戶,會被引導至帳戶建立頁面。若成員已擁有 Locker 帳戶,則現有帳戶會被加入您的群組。",
-        "warning": "** 注意：請輸入欲邀請成員的正確電子信箱。輸入錯誤的電子信箱可能造成惡意人士存取群組資料的風險。",
+        "warning": "** 注意:請輸入欲邀請成員的正確電子信箱。輸入錯誤的電子信箱可能造成惡意人士存取群組資料的風險。",
         "csv_template": "上傳檔案前,請根據<a href=\"/assets/example-import-user.csv\">此處的範本</a>,將 .csv 檔案排版。",
         "xlsx_template": "上傳檔案前,請根據<a href=\"/assets/example-import-user.xlsx\">此處的範本</a>,將 .xlsx 檔案排版。"
       }
@@ -636,9 +636,9 @@
         "family_members": "家庭成員(最多 6 位成員)"
       },
       "payment_step": {
-        "step_1": "步驟 1：確認選擇的方案",
-        "step_2": "步驟 2：輸入付款資料",
-        "step_3": "步驟 3：付款與升級",
+        "step_1": "步驟 1:確認選擇的方案",
+        "step_2": "步驟 2:輸入付款資料",
+        "step_3": "步驟 3:付款與升級",
         "family": {
           "invite_member": "開始邀請成員",
           "invite_member_desc": "輸入他們的電子信箱。你也可以之後在設定 > 管理成員中邀請。",
@@ -693,7 +693,7 @@
       "change_btn": "更換信用卡",
       "add_btn": "新增信用卡",
       "not_have": "此帳戶尚無信用卡資料。",
-      "billed_to": "此帳戶的帳單寄至：",
+      "billed_to": "此帳戶的帳單寄至:",
       "card_ending": "以 {name} 名義結尾的信用卡,末四碼為",
       "billing_information": "帳單資訊",
       "confirm_delete_card": "移除付款資訊",
@@ -836,11 +836,11 @@
       "selected_items": "已選取的項目",
       "generate_random_password": "隨機產生密碼",
       "show_password": "顯示密碼",
-      "choose_file_folder": "選擇項目：",
+      "choose_file_folder": "選擇項目:",
       "choose_file_folder_desc": "您可以選擇任意數量的項目。",
-      "add_recipient_emails": "新增收件者電子郵件：",
+      "add_recipient_emails": "新增收件者電子郵件:",
       "add_recipient_emails_desc": "您可以加入任意數量的電子郵件。",
-      "share_type": "分享型態：",
+      "share_type": "分享型態:",
       "share_type_desc": "選擇您要如何分享。可以在之後編輯此設定。",
       "share_instruction": "發出分享請求後,被指派的使用者必須同意後,才能使用分享帳戶。\n若對方尚未有 Locker 帳戶,將會透過電子郵件邀請對方建立新帳戶。",
       "stop_sharing": "停止分享",
@@ -849,7 +849,7 @@
       "recovery_email": "救援電子郵件",
       "additional_info": "其他資料",
       "seed": "助記詞",
-      "seed_phrase_desc": "注意：助記詞(或稱回復詞)通常是 12 至 24 個隨機英文字組成的片語。這是加密錢包中最敏感的資料。",
+      "seed_phrase_desc": "注意:助記詞(或稱回復詞)通常是 12 至 24 個隨機英文字組成的片語。這是加密錢包中最敏感的資料。",
       "card_details": "卡片資訊",
       "contact_info": "聯絡資訊",
       "only_use": "僅使用",
@@ -1166,7 +1166,7 @@
       "breach_affected_users": "波及的使用者數",
       "breach_occurred": "洩漏事件日期",
       "breach_reported": "洩漏事件通報日期",
-      "relay_your_root_email": "您的原始電子信箱：",
+      "relay_your_root_email": "您的原始電子信箱:",
       "relay_desc_1": "所有寄到別名的信件都會轉寄至您的原始電子信箱。",
       "relay_desc_2": "您可以透過別名回信給寄件人。",
       "relay_desc_3": "最多可同時產生及使用 5 個別名。",
@@ -1241,7 +1241,7 @@
       "requires_special": "須包含特殊符號(@#!$%)",
       "requires_number": "須包含數字(0 1 2 3)",
       "avoid_ambiguous": "避免相似的字符(像是 O 和 0,l 和 I……等等)",
-      "notice": "提示：這些設定只會套用於未來團隊共享的密碼,先前建立的密碼不受影響。",
+      "notice": "提示:這些設定只會套用於未來團隊共享的密碼,先前建立的密碼不受影響。",
       "failed_login_how_many": "允許多次登入失敗？",
       "failed_login_how_long": "在多久時間內,連續 {failed_login_attempts} 次登入失敗後封鎖使用者？",
       "failed_login_how_much_time": "需隔多久後使用者方可再次登入？",
@@ -1296,7 +1296,7 @@
       "grantee_recovery_initiated_info": "{day} 天後,或是對方手動核准後,將授予您存取權限。",
       "grantor_recovery_initiated_info": "{day} 天後,或是您手動核准申請後,對方將能存取您的帳戶。",
       "invitation": "成為緊急聯絡人邀請",
-      "invitation_details": "您受邀成為以下聯絡人的緊急聯絡人：",
+      "invitation_details": "您受邀成為以下聯絡人的緊急聯絡人:",
       "access_type": "存取權限類型",
       "status": {
         "invited": "已邀請",
@@ -1317,7 +1317,7 @@
       "ninetyDays": "90 天"
     },
     "instructions": {
-      "see_details": "請至我們的說明網頁查看詳細操作說明：",
+      "see_details": "請至我們的說明網頁查看詳細操作說明:",
       "bitwarden_link": "https://support.locker.io/en/locker-password-manager/get-started/import-and-export/import-data-from-bitwarden-to-locker",
       "lastpasscsv_link": "https://support.locker.io/en/locker-password-manager/get-started/import-and-export/import-data-from-lastpass-to-locker",
       "chromecsv_link": "https://support.locker.io/en/locker-password-manager/get-started/import-and-export/import-data-from-google-chrome-to-locker",
@@ -1341,7 +1341,7 @@
       "stickypasswordxml": "開啟 Sticky Password 桌面應用程式,於右上角點選「Menu」→「Export」→「Export all」。選擇非加密的 XML 格式,並儲存 XML 檔案。",
       "truekeycsv": "開啟 True Key 桌面應用程式,點選右上角的齒輪圖示,並前往「App Settings」。點選「Export」按鈕,輸入您的密碼,然後儲存 CSV 檔案。",
       "clipperzhtml": "登入 Clipperz 網頁應用程式(clipperz.is/app)。點選右上角的漢堡圖示展開導覽選單。前往「Data」→「Export」。點選「download HTML+JSON」按鈕來儲存 HTML 檔案。",
-      "roboformcsv": "開啟 RoboForm Editor 桌面應用程式,點選左上角的「RoboForm」→「Options」→「Account & Data」,然後點選「Export」按鈕。選擇所有項目,將「Format」改為「CSV file」後,再點選「Export」按鈕來儲存 CSV 檔案。注意：RoboForm 只能匯出登入資料,不能匯出其他項目。",
+      "roboformcsv": "開啟 RoboForm Editor 桌面應用程式,點選左上角的「RoboForm」→「Options」→「Account & Data」,然後點選「Export」按鈕。選擇所有項目,將「Format」改為「CSV file」後,再點選「Export」按鈕來儲存 CSV 檔案。注意:RoboForm 只能匯出登入資料,不能匯出其他項目。",
       "passboltcsv": "登入 Passbolt 網頁版保險庫,前往「Passwords」列表。選擇您想匯出的資料並點選列表上方的「Export」按鈕。選擇「csv (lastpass)」格式,再點選「Export」按鈕。",
       "ascendocsv": "開啟 Ascendo DataVault 桌面應用程式,點選「Tools」→「Export」。接著在跳出的視窗裡選擇「All Items (DVX, CSV)」選項,然後點選「OK」按鈕來儲存 CSV 檔案。",
       "passwordbossjson": "開啟 Password Boss 桌面應用程式,點選「File」→「Export data」→「Password Boss JSON - not encrypted」,然後儲存 JSON 檔案。",
@@ -1425,7 +1425,7 @@
           },
           "no_item": {
             "title": "抱歉,沒有可檢視的項目",
-            "desc": "可能是以下其中一個狀況：",
+            "desc": "可能是以下其中一個狀況:",
             "reasons": [
               "檢視項目的連結已過期或使用次數已達上限。",
               "擁有者已停止共享此項目。",
@@ -1461,7 +1461,7 @@
       "unknown_tooltip": "這個人還沒有 Locker 帳戶,但只要用這個電子郵件建立帳戶就能立即有 Premium 資格。",
       "learn_more": "了解更多",
       "number_member_detail": "{currentNumber}/{planMember} 位使用者",
-      "bill_annually_desc": "*註：僅限年繳。月繳價格為 {monthlyPrice} / 月 / 6 位使用者。",
+      "bill_annually_desc": "*註:僅限年繳。月繳價格為 {monthlyPrice} / 月 / 6 位使用者。",
       "mo_per_6_users": "/ 月 / 6 位使用者*"
     },
     "enterprise": {
@@ -1471,7 +1471,7 @@
         "title": "加入團隊",
         "desc": "加入您的團隊後方可繼續使用 Locker。",
         "text1": "此帳戶是由 <strong>{enterpriseName}</strong> 管理。",
-        "text2": "別擔心,您還是可以使用個人保險庫。但是,{enterpriseName} 會有權限控管您帳戶的某些設定,像是：",
+        "text2": "別擔心,您還是可以使用個人保險庫。但是,{enterpriseName} 會有權限控管您帳戶的某些設定,像是:",
         "list": [
           "啟用、停用、或禁用您的帳戶",
           "將您加到團隊中",
@@ -1483,7 +1483,7 @@
         "oragnization": "團隊",
         "inviter": "邀請者",
         "accept": {
-          "title": "若您同意邀請：",
+          "title": "若您同意邀請:",
           "list": [
             "您的帳戶會升級成企業用戶方案",
             "您的帳戶會屬於這個團隊",
@@ -1493,7 +1493,7 @@
           ]
         },
         "decline": {
-          "title": "若您不想加入這個團隊：",
+          "title": "若您不想加入這個團隊:",
           "list": [
             "按一下「拒絕」就好。不會再跳出詢問視窗。"
           ]
@@ -1521,12 +1521,12 @@
       "policy_details": "設定內容",
       "password_requirement": "密碼需求",
       "password_requirement_desc": "您的公司已為您的密碼設定最佳安全實踐方式。",
-      "password_requirement_policy_details": "您保險庫中的所有密碼都必需符合這些需求：",
+      "password_requirement_policy_details": "您保險庫中的所有密碼都必需符合這些需求:",
       "password_requirement_note": "請注意,您還是能建立不符合需求的新密碼。但是,管理員會知悉這些違規狀況。強烈建議您為提升安全性修改這些違規的密碼。<br>(*)共享的密碼不受此規範影響。",
       "you_have_violated_items": "您有 {count} 個違規項目",
       "master_password_requirement": "主密碼需求",
       "master_password_requirement_desc": "建立一組旁人猜不出的主密碼",
-      "master_password_requirement_policy_details": "您的主密碼需要符合：",
+      "master_password_requirement_policy_details": "您的主密碼需要符合:",
       "need_to_change_master_pw": "您需要修改主密碼",
       "block_failed_logins": "封鎖多次登入失敗",
       "block_failed_logins_desc": "在指定時間內封鎖多次登入失敗,以防止暴力破解攻擊。",
@@ -1549,7 +1549,7 @@
     "welcome_business": {
       "title": "歡迎使用 Locker 企業版!",
       "content": {
-        "text_1": "使用 Locker 企業版,您可以：",
+        "text_1": "使用 Locker 企業版,您可以:",
         "list": [
           "邀請成員加入 Locker",
           "建立、管理共用資料夾,提升協作效率",
@@ -1638,7 +1638,7 @@
       "ext_installation": {
         "title": "瀏覽器擴充套件安裝與評論",
         "subtitle": "在兩個瀏覽器上安裝、登入 Locker 擴充套件,並在套件商店留言,可獲得 Locker Premium/Family 一個月免費使用。",
-        "subtitle1_desc": "執行步驟：<br>(1) 在兩個不同的瀏覽器上安裝並登入 Locker 擴充套件<br>(2) 在套件商店裡給評價與評論<br>(3) 勾選已完成的商店,輸入使用者名稱/信箱<br>(4) 按下發送按鈕",
+        "subtitle1_desc": "執行步驟:<br>(1) 在兩個不同的瀏覽器上安裝並登入 Locker 擴充套件<br>(2) 在套件商店裡給評價與評論<br>(3) 勾選已完成的商店,輸入使用者名稱/信箱<br>(4) 按下發送按鈕",
         "btn": "發送",
         "input_placeholder": "輸入顯示名稱"
       },
@@ -1646,7 +1646,7 @@
         "title": "安裝桌面程式",
         "header_btn": "下載 Locker 桌面應用程式",
         "subtitle": "在 Locker 桌面應用程式安裝並登入,可獲取 Locker Premium 或 Family 年繳方案的 5% 折扣碼",
-        "subtitle1_desc": "執行步驟：<br>(1) 在電腦上安裝並登入 Locker 桌面應用程式<br>(2) 按下「是,我確認」按鈕來確認完成此操作<br>(3) 我們會立刻進行驗證,並給予您獎勵",
+        "subtitle1_desc": "執行步驟:<br>(1) 在電腦上安裝並登入 Locker 桌面應用程式<br>(2) 按下「是,我確認」按鈕來確認完成此操作<br>(3) 我們會立刻進行驗證,並給予您獎勵",
         "subtitle1_desc1": "按下確認已在電腦上完成 Locker 桌面應用程式安裝與登入,我們會在一個星期內為您進行驗證和發送獎勵",
         "btn": "是,我確認",
         "note": "我們無法驗證您已完成「安裝桌面程式」的動作,請重新安裝、登入 Locker 桌面應用程式後,再獲得獎勵"
@@ -1655,7 +1655,7 @@
         "title": "App Store 評分與評論",
         "header_btn": "撰寫評論",
         "subtitle": "為 Locker 在 App Store 上給評價和留下評論,可獲取 Locker Premium 或 Family 年繳方案的 5% 折扣碼。",
-        "subtitle1_desc": "執行步驟：<br>(1) 為 Locker 在 App Store 上給評價和留言<br>(2) 在評價後的 24 小時內,在此欄位輸入你在 App Store 評論上的顯示名稱(或是複製貼上也可)<br>(3) 我們將為你進行驗證並於一分鐘內給你獎勵",
+        "subtitle1_desc": "執行步驟:<br>(1) 為 Locker 在 App Store 上給評價和留言<br>(2) 在評價後的 24 小時內,在此欄位輸入你在 App Store 評論上的顯示名稱(或是複製貼上也可)<br>(3) 我們將為你進行驗證並於一分鐘內給你獎勵",
         "input_placeholder": "輸入您的顯示名稱",
         "btn": "發送"
       },
@@ -1663,7 +1663,7 @@
         "title": "Google Play 評分與評論",
         "header_btn": "撰寫評論",
         "subtitle": "為 Locker 在 Google Play 上給評價和留下評論,可獲取 Locker Premium 或 Family 年繳方案的 5% 折扣碼。",
-        "subtitle1_desc": "執行步驟：<br>(1) 為 Locker 在 Google Play 上給評價和留言<br>(2) 在評價後的 24 小時內,在此欄位輸入你在 Google Play 評論上的顯示名稱(或是複製貼上也可)<br>(3) 我們將為你進行驗證並於一分鐘內給你獎勵",
+        "subtitle1_desc": "執行步驟:<br>(1) 為 Locker 在 Google Play 上給評價和留言<br>(2) 在評價後的 24 小時內,在此欄位輸入你在 Google Play 評論上的顯示名稱(或是複製貼上也可)<br>(3) 我們將為你進行驗證並於一分鐘內給你獎勵",
         "input_placeholder": "輸入您的顯示名稱",
         "btn": "發送"
       },
@@ -1671,7 +1671,7 @@
         "title": "Capterra 評分與評論",
         "header_btn": "在 Capterra 上撰寫評論",
         "subtitle": "為 Locker 在 Capterra 上留下評論,可獲得 Locker Premium 或 Family 年繳方案的 5% 折扣碼。",
-        "subtitle1_desc": "執行步驟：<br>(1) 為 Locker 在 Capterra 上給評價與留言<br>(2) 在評價後的 24 小時內,在此欄位輸入你在 Capterra 評論上的顯示名稱(或是複製貼上也可)<br>(3) 我們將為你進行驗證並於一分鐘內給你獎勵",
+        "subtitle1_desc": "執行步驟:<br>(1) 為 Locker 在 Capterra 上給評價與留言<br>(2) 在評價後的 24 小時內,在此欄位輸入你在 Capterra 評論上的顯示名稱(或是複製貼上也可)<br>(3) 我們將為你進行驗證並於一分鐘內給你獎勵",
         "input_placeholder": "輸入您的顯示名稱",
         "btn": "發送"
       }
@@ -1730,7 +1730,7 @@
     },
     "extension": {
       "title": "6. 網頁存密碼超方便",
-      "desc": "使用 Locker 瀏覽器擴充套件,您可以：",
+      "desc": "使用 Locker 瀏覽器擴充套件,您可以:",
       "list": [
         "邊瀏覽網頁邊儲存帳號與密碼",
         "一鍵安全填入登入資訊",
