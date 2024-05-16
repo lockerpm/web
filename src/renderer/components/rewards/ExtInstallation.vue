@@ -79,7 +79,7 @@
                 <button
                   class="mt-3 py-[3px] px-[20px] font-semibold text-[#FFFFFF] bg-[#62AD56] rounded-sm hover:bg-[#2D702C]"
                 >
-                  {{ $t('download.section3.install') }}
+                  {{ $t('download.browser.install') }}
                 </button>
               </a>
               <button
@@ -164,7 +164,7 @@ export default {
   data () {
     return {
       collapse: [],
-      allBrowsers: this.$t('download.section3.list').map(b => ({
+      allBrowsers: this.$t('download.browser.list').map(b => ({
         ...b,
         value: b.name.toLowerCase(),
         displayName: null

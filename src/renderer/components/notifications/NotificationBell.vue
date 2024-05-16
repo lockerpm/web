@@ -51,7 +51,7 @@
               <div v-if="locale === 'vi'" class="font-semibold">
                 {{ item.title.vi }}
               </div>
-              <div v-if="locale === 'en'" class="font-semibold">
+              <div v-else class="font-semibold">
                 {{ item.title.en }}
               </div>
               <el-button

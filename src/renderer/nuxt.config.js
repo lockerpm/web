@@ -7,6 +7,8 @@ import path from 'path'
 import fs from 'fs'
 import viVee from 'vee-validate/dist/locale/vi.json'
 import enVee from 'vee-validate/dist/locale/en.json'
+// import zhVee from 'vee-validate/dist/locale/zh_CN.json'
+import zhVee from 'vee-validate/dist/locale/zh_TW.json'
 import axios from 'axios'
 import cheerio from 'cheerio'
 
@@ -42,12 +44,12 @@ module.exports = {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: 'https://locker.io/preview-en.png'
+        content: 'https://old.locker.io/preview-en.png'
       },
       {
         hid: 'twitter:image',
         name: 'twitter:image',
-        content: 'https://locker.io/preview-en.png'
+        content: 'https://old.locker.io/preview-en.png'
       },
       {
         hid: 'twitter:card',
@@ -57,6 +59,7 @@ module.exports = {
     ],
     link: [{ rel: 'icon', type: 'shortcut icon', href: '/favicon-1.svg' }],
     script: [
+      { src: '/js/iframe.js' },
       { src: '/js/chatwoot.js' },
       ...(process.env.NODE_ENV === 'production'
         ? [
@@ -134,7 +137,7 @@ module.exports = {
     '@/assets/flags/flags.css'
   ],
   i18n: {
-    locales: ['en', 'vi'],
+    locales: ['en', 'vi', 'zh'],
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
     vuex: {
@@ -144,14 +147,15 @@ module.exports = {
       fallbackLocale: 'en',
       messages: {
         en: { ...require('./locales/en.js'), ...enVee },
-        vi: { ...require('./locales/vi.js'), ...viVee }
+        vi: { ...require('./locales/vi.js'), ...viVee },
+        zh: { ...require('./locales/zh.json'), ...zhVee }
       }
     }
   },
   env: {
     CS_ENV: 'web',
     nodeEnv: process.env.NODE_ENV,
-    baseUrl: process.env.BASE_URL || 'https://locker.io',
+    baseUrl: process.env.BASE_URL || 'https://old.locker.io',
     idUrl: process.env.BASE_ID_URL || 'https://id.locker.io',
     environment: process.env.CS_ENVIRONMENT || '',
     wsUrl: process.env.WS_URL || 'wss://api.locker.io/ws',
@@ -193,7 +197,7 @@ module.exports = {
   router: {},
   moment: {
     defaultLocale: 'en',
-    locales: ['vi']
+    locales: ['vi', 'zh-tw']
   },
   build: {
     transpile: ['vee-validate/dist/rules'],
@@ -295,6 +299,10 @@ module.exports = {
     {
       path: '/api/bottom-banner',
       handler: '~/server-middleware/bottomBanner.js'
+    },
+    {
+      path: '/api/download',
+      handler: '~/server-middleware/download.js'
     }
   ]
 }

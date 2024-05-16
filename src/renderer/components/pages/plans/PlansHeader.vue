@@ -230,7 +230,7 @@
                 class="w-full"
                 @click="choosePlan(item.alias)"
               >
-                {{ $t('data.plans.purchase_now') }}
+                {{ item.alias === 'pm_free' ? $t('common.sign_up') : $t('data.plans.purchase_now') }}
               </el-button>
               <!-- Button end -->
             </div>

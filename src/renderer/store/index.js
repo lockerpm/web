@@ -255,7 +255,12 @@ export const actions = {
     return new Promise(resolve => {
       if (state.isLoggedIn) {
         const data = Object.assign({}, state.user)
-        data.language = payload
+        if (['en', 'vi'].includes(payload)) {
+          data.language = payload
+        } else {
+          data.language = 'en'
+        }
+        data.customer_language = payload
         this.$axios.$put('me', data)
       }
       resolve(payload)
@@ -270,7 +275,7 @@ export const actions = {
     }
     return this.$axios.$get('me').then(res => {
       commit('UPDATE_USER', res)
-      commit('SET_LANG', res.language)
+      commit('SET_LANG', res.customer_language || res.language)
       return res
     })
   },
@@ -295,13 +300,11 @@ export const actions = {
       console.log('Ignore Chatwoot')
       return
     }
-    return {}
-    // TODO
-    // return this.$axios
-    //   .$get('cystack_platform/pm/users/me/chatwoot')
-    //   .then(res => {
-    //     commit('UPDATE_USER_CHATWOOT', res)
-    //   }).catch(() => {})
+    return this.$axios
+      .$get('cystack_platform/pm/users/me/chatwoot')
+      .then(res => {
+        commit('UPDATE_USER_CHATWOOT', res)
+      }).catch(() => {})
   },
   LoadNotification ({ commit }) {
     // const user = context.state.user

@@ -14,7 +14,7 @@ ENV NODE_ENV=production
 
 ARG SENTRY_DSN
 
-ENV BASE_URL=https://locker.io
+ENV BASE_URL=https://old.locker.io
 
 ENV BASE_ID_URL=https://id.locker.io
 

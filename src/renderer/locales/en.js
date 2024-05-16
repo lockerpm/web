@@ -2802,67 +2802,25 @@ module.exports = {
   download: {
     head_title: 'Download - Locker Password Manager',
     coming: 'Coming soon',
-    section1: {
-      title: 'Download Locker for Mac',
-      subtitle: 'Access, save, sync, and log in automatically anywhere, anytime.',
-      card: [
-        {
-          title: 'macOS',
-          imageSrc: 'macOS.svg',
-          hover: 'hover-macOS.svg',
-          link: 'macos'
-        },
-        {
-          title: 'Windows',
-          imageSrc: 'windows.svg',
-          hover: 'hover-windows.svg',
-          link: 'windows'
-        },
-        {
-          title: 'iOS',
-          imageSrc: 'iOS.svg',
-          hover: 'hover-iOS.svg',
-          link: 'ios'
-        },
-        {
-          title: 'Android',
-          imageSrc: 'android.svg',
-          hover: 'hover-Android.svg',
-          link: 'android'
-        },
-        {
-          title: 'Linux',
-          imageSrc: 'linux.svg',
-          hover: 'hover-linux.svg',
-          link: 'linux'
-        },
-        {
-          title: 'Web Browser',
-          imageSrc: 'webBrowser.svg',
-          hover: 'hover-web-browser.svg',
-          link: 'web-browser'
-        }
-      ]
-    },
-    section2: {
+    see_what_new: 'See what\'s new in the latest version',
+    macos: {
       title: 'Download Locker for Mac',
       subtitle: 'Access, save, sync, and log in automatically anywhere, anytime.',
       button: 'Download Locker for Mac',
       list: [
         {
-          button: 'Download Locker for Mac Catalina',
+          button: 'Download Locker for Mac Intel',
           note: '*Requires macOS Catalina (x64) 10.11 or later',
-          link: 'https://s.locker.io/download/locker-mac-x64-1.4.47.dmg'
+          tag: 'mac-x64'
         },
         {
-          button: 'Download Locker for Mac Ventura',
+          button: 'Download Locker for Mac M1',
           note: '*Requires macOS Ventura (arm64) 10.11 or later',
-          link: 'https://github.com/lockerpm/desktop-releases/releases/download/v1.4.47/locker-mac-arm64-1.4.47.dmg'
+          tag: 'mac-arm64'
         }
-      ],
-      link: 'See what\'s new in the latest version'
+      ]
     },
-    section3: {
+    browser: {
       title: 'Install the Locker browser extension',
       subtitle: 'Access, save, sync, and log in automatically anywhere, anytime.',
       install: 'Install',
@@ -2899,19 +2857,18 @@ module.exports = {
         }
       ]
     },
-    section4: {
+    windows: {
       title: 'Download Locker for Windows',
       subtitle: 'Access, save, sync, and log in automatically anywhere, anytime.',
       list: [
         {
           button: 'Download Locker for Windows',
           note: '*Requires Windows x64 10 or later',
-          link: 'https://github.com/lockerpm/desktop-releases/releases/download/v1.4.47/locker-win-x64-1.4.47.exe'
+          tag: 'win'
         }
-      ],
-      link: 'See what\'s new in the latest version'
+      ]
     },
-    section5: {
+    ios: {
       title: 'Download Locker for iOS',
       subtitle: 'Access, save, sync, and log in automatically anywhere, anytime.',
       list: [
@@ -2920,10 +2877,9 @@ module.exports = {
           note: '*Requires iOS 12 or newer',
           link: 'https://apps.apple.com/us/app/locker-password-manager/id1586927301'
         }
-      ],
-      link: 'See what\'s new in the latest version'
+      ]
     },
-    section6: {
+    android: {
       title: 'Download Locker for Android',
       subtitle: 'Access, save, sync, and log in automatically anywhere, anytime.',
       list: [
@@ -2932,10 +2888,9 @@ module.exports = {
           note: '*Requires Android 8.0 or later',
           link: 'https://play.google.com/store/apps/details?id=com.cystack.locker&pli=1'
         }
-      ],
-      link: 'See what\'s new in the latest version'
+      ]
     },
-    section7: {
+    linux: {
       title: 'Download Locker for Linux',
       subtitle: 'Access, save, sync, and log in automatically anywhere, anytime.',
       button: 'Download Locker for Linux',
@@ -2943,20 +2898,14 @@ module.exports = {
         {
           button: 'Download .deb',
           note: 'For Ubuntu, Debian, Linux Mint, etc',
-          link: 'https://github.com/lockerpm/desktop-releases/releases/download/v1.4.47/locker-linux-amd64-1.4.47.deb'
+          tag: 'linux-deb'
         },
         {
           button: 'Download .rpm',
           note: 'For Fedora, CentOS, RHEL, openSUSE, etc',
-          link: ''
+          tag: 'linux-rpm'
         }
-      ],
-      link: 'See what\'s new in the latest version',
-      content: {
-        title: 'Quas et eligendi',
-        subtitle: 'Voluptates ipsa sunt officia iure nostrum consequatur. Consequuntur ab quis quia earum eos iste eaque necessitatibus. Est est sunt vel repudiandae et mollitia ipsam. Adipisci suscipit molestiae qui nesciunt nihil quae cum aut aliquid. Modi aut est iste eos dolor ut.',
-        link: 'Get to know Locker for Linux'
-      }
+      ]
     }
   },
   security: {

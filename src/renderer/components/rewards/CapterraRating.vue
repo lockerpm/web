@@ -64,7 +64,7 @@
           </div>
           <Steps :steps="steps" />
           <div class="mb-4 text-black-500">
-            <div v-html="$t('data.rewards.capterra_rating.subtitle1_desc')"/>
+            <div v-html="$t('data.rewards.capterra_rating.subtitle1_desc')" />
           </div>
           <div v-if="currentStep.key < 3" class="flex items-center w-full">
             <div style="width: 355px" class="mr-2">

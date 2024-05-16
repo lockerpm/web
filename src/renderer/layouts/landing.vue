@@ -72,6 +72,16 @@ export default {
   },
   head () {
     // this.$i18n.locale = this.lang
+    const locale = (() => {
+      switch (this.locale) {
+      case 'vi':
+        return 'vi_VN'
+      case 'zh':
+        return 'zh_TW'
+      default:
+        return 'en_US'
+      }
+    })()
     return {
       htmlAttrs: {
         lang: this.locale
@@ -87,7 +97,7 @@ export default {
         {
           hid: 'og:locale',
           property: 'og:locale',
-          content: this.locale === 'vi' ? 'vi_VN' : 'en_US'
+          content: locale
         },
         {
           hid: 'twitter:title',

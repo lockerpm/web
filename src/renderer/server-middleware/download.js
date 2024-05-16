@@ -5,7 +5,7 @@ app.use(bodyParser.json())
 app.get('/', async (_, res) => {
   try {
     const pageData = await axios.get(
-      'https://notion.cystack.workers.dev/v1/table/bc0065872717477b828ec880194b2370'
+      'https://notion.cystack.workers.dev/v1/table/81583cba4cae44ba906a4bc12c4007cf'
     )
     res.json({ data: pageData.data })
   } catch (error) {

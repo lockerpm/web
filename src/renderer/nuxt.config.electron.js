@@ -40,7 +40,7 @@ module.exports = {
   },
   css: ['@/assets/css/app.scss'],
   i18n: {
-    locales: ['en', 'vi'],
+    locales: ['en', 'vi', 'cn'],
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
     vuex: {
@@ -50,7 +50,8 @@ module.exports = {
       fallbackLocale: 'en',
       messages: {
         en: require('./locales/en.js'),
-        vi: require('./locales/vi.js')
+        vi: require('./locales/vi.js'),
+        cn: require('./locales/cn.json')
       }
     }
   },

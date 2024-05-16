@@ -36,7 +36,7 @@
         <div class="mx-9 pt-6 flex flex-wrap">
           <div class="w-full sm:w-1/2">
             <p v-if="locale === 'vi'" class="landing-font-16 font-semibold">Mật khẩu mạnh:</p>
-            <p v-if="locale === 'en'" class="landing-font-16 font-semibold">Strength:</p>
+            <p v-else class="landing-font-16 font-semibold">Strength:</p>
             <div style="margin-left: 130px; transform: translateY(-23px);">
               <PasswordStrength
                 v-if="password"
