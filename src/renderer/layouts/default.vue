@@ -141,7 +141,7 @@ export default {
         this.$store.dispatch('LoadTeams')
         this.getSyncData()
         this.syncQuickShares()
-        this.$refs.emergencyAccessInvitations.getEmergencyAccessInvitations()
+        this.$refs.emergencyAccessInvitations?.getEmergencyAccessInvitations()
         this.reconnectSocket()
         this.getShareInvitations()
         this.getMyShares()
@@ -318,7 +318,7 @@ export default {
           break
         }
         case 'emergency_access':
-          this.$refs.emergencyAccessInvitations.getEmergencyAccessInvitations()
+          this.$refs.emergencyAccessInvitations?.getEmergencyAccessInvitations()
           break
         case 'quick_share':
           switch (data.type) {
