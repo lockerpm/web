@@ -473,7 +473,33 @@
       "mark_all_as_read": "全部標為已讀",
       "no_notifications": "沒有新的通知",
       "switch_plan": "選擇前往以進到付款頁面。完成購買後,您目前方案 {currentPlan}({currentPeriod})將被取消。您的方案將會更新為 {chosenPlan}({chosenPeriod})。",
-      "purchase_plan": "選擇執行以進入付款頁面。完成購買後,將會為您目前方案延長 {duration}。選擇取消則會關閉此提示視窗。"
+      "purchase_plan": "選擇執行以進入付款頁面。完成購買後,將會為您目前方案延長 {duration}。選擇取消則會關閉此提示視窗。",
+      "app_noti": {
+        "item_sharing": {
+          "100001": "{recipient_name} 已接受您分享的項目",
+          "100002": "{recipient_name} 已拒絕您分享的項目",
+          "100003": "{owner_name} 已與您分享一個 {cipher_type} 項目",
+          "100004": "有使用者透過您建立的共享邀請註冊了 Locker 帳戶。請確認您的分享請求。",
+          "100006": "{owner_name} 已確認與您共享一個 {cipher_type} 項目"
+        },
+        "member_to_group_share": {
+          "100005": "{member_joined_text} 群組 {group_name} (您之前的分享目標)。點擊確認共享，讓他們可以看到共享項目。"
+        },
+        "payment": {
+          "100007": "您的帳單 {payment_id} 付款成功",
+          "100008": "Locker 無法處理您的帳戶付款，帳戶已降級"
+        },
+        "emergency_access": {
+          "100009": "使用者 {grantor_name} ({grantor_email}) 邀請您成為緊急聯絡人",
+          "100010": "使用者 {grantee_name} ({grantee_email}) 接受了您的邀請。請確認他們的身分，並設定為您的緊急聯絡人。",
+          "100011": "使用者 {grantee_name} ({grantee_email}) 接受了您的緊急聯絡人邀請",
+          "100012": "使用者 {grantee_name} ({grantee_email}) 拒絕了您的緊急聯絡人邀請",
+          "100013": "您已成為使用者 {grantor_name} ({grantor_email}) 的緊急聯絡人",
+          "100014": "使用者 {grantee_name} ({grantee_email}) 申請 {request} 您的保存庫項目",
+          "100015": "使用者 {grantor_name} ({grantor_email})  接受了您的緊急申請",
+          "100016": "使用者 {grantor_name} ({grantor_email}) 拒絕了您的緊急申請"
+        }
+      }
     },
     "profile_menu": {
       "lock": "鎖定帳戶",

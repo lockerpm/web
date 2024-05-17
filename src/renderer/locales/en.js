@@ -489,7 +489,33 @@ module.exports = {
       mark_all_as_read: 'Mark all as read',
       no_notifications: 'No new notifications',
       switch_plan: 'Choose Proceed to move to Payment page. After you purchase, your current plan {currentPlan} ({currentPeriod}) will be cancel. Your plan will be updated to {chosenPlan} ({chosenPeriod}).',
-      purchase_plan: 'Choose Proceed to move to Payment page. After you purchase, {duration} will be added to your current plan. Choose Cancel to close the pop-up.'
+      purchase_plan: 'Choose Proceed to move to Payment page. After you purchase, {duration} will be added to your current plan. Choose Cancel to close the pop-up.',
+      app_noti: {
+        item_sharing: {
+          100001: '{recipient_name} has accepted the item you share',
+          100002: '{recipient_name} has rejected the item you share',
+          100003: '{owner_name} has shared a {cipher_type} with you',
+          100004: 'A user has registered a Locker account via your sharing request. Please confirm your sharing request',
+          100006: '{owner_name} has confirmed to share a {cipher_type} with you'
+        },
+        member_to_group_share: {
+          100005: '{member_joined_text} group {group_name} that you shared your items with. Click to confirm sharing so they can see shared items.'
+        },
+        payment: {
+          100007: 'Your invoice {payment_id} was paid successfully',
+          100008: "Locker couldn't proceed payment on your account. Your account was downgraded"
+        },
+        emergency_access: {
+          100009: 'The user {grantor_name} ({grantor_email}) has invited you as his/her Emergency Contact',
+          100010: 'The user {grantee_name} ({grantee_email}) has accepted your invitation. Please confirm his/her identity as your new Emergency Access',
+          100011: 'User {grantee_name} ({grantee_email}) has accepted your Emergency Contact invitation',
+          100012: 'User {grantee_name} ({grantee_email}) has declined your Emergency Contact invitation',
+          100013: 'You are now Emergency Contact of the user {grantor_name} ({grantor_email})',
+          100014: 'User {grantee_name} ({grantee_email}) has requested to {request} your vault items',
+          100015: 'User {grantor_name} ({grantor_email}) has accepted your Emergency Request',
+          100016: 'User {grantor_name} ({grantor_email}) has declined your Emergency Request'
+        }
+      }
     },
     profile_menu: {
       lock: 'Lock your account',

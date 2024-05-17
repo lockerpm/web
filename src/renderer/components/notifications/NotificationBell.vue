@@ -48,12 +48,12 @@
 
             <!-- Body -->
             <div class="landing-font-14 px-4 flex-1">
-              <div v-if="locale === 'vi'" class="font-semibold">
-                {{ item.title.vi }}
+              <!-- Content -->
+              <div class="font-semibold">
+                {{ getNotiContent(item) }}
               </div>
-              <div v-else class="font-semibold">
-                {{ item.title.en }}
-              </div>
+              <!-- Content end -->
+
               <el-button
                 v-if="item.type === 'member_to_group_share'"
                 size="small"
@@ -131,6 +131,38 @@ export default {
       default:
         return require('~/assets/images/icons/noti_marketing.svg')
       }
+    },
+
+    getNotiContent (item) {
+      const cipherTypeMap = {
+        password: '1',
+        note: '2',
+        card: '3',
+        identity: '4',
+        totp: '5',
+        'crypto account': '6',
+        'crypto wallet': '7',
+        'driver license': '9',
+        'citizen id': '10',
+        passport: '11',
+        'social secure number': '12',
+        'wireless router': '13',
+        server: '14',
+        api: '15',
+        database: '16',
+        folder: 'Folder',
+        item: '0'
+      }
+      if (item.notification_code) {
+        if (this.$t(`data.notifications.app_noti.${item.type}.${item.notification_code}`)) {
+          const data = { ...item.metadata }
+          if (data?.cipher_type) {
+            data.cipher_type = cipherTypeMap[data.cipher_type] ? this.$tc(`type.${cipherTypeMap[data.cipher_type]}`, 1) : data.cipher_type
+          }
+          return this.$t(`data.notifications.app_noti.${item.type}.${item.notification_code}`, data)
+        }
+      }
+      return this.locale === 'vi' ? item.title.vi : item.title.en
     },
 
     async handleNotiClick (item) {
