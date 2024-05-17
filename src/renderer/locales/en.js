@@ -1078,6 +1078,16 @@ module.exports = {
       referral_details: 'When invited (your friend creates Master Password successfully), both you and your friends will receive 1 month of Locker Premium for Free',
       notifications: 'Notifications',
       email_notifications: 'Email notifications',
+      email_notifications_items: {
+        change_master_password: 'Master Password Change',
+        login_new_device: 'Login with new devic',
+        item_sharing: 'Item sharing',
+        emergency_access: 'Emergency Access',
+        data_breach: 'Data Breach',
+        password_tip_trick: 'Password tips & tricks',
+        marketing: 'Marketing & Promotion',
+        other: 'Other'
+      },
       system_email: 'System email',
       master_password_change: 'Master password change',
       login_with_new_device: 'Login with new devices',

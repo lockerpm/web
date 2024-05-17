@@ -1008,6 +1008,16 @@
       "referral_details": "好友成功建立主密碼後,您和您的好友就能各自獲得 1 個月免費 Locker Premium",
       "notifications": "通知",
       "email_notifications": "電子郵件通知",
+      "email_notifications_items": {
+        "change_master_password": "更改主密碼",
+        "login_new_device": "使用新裝置登入",
+        "item_sharing": "共享項目",
+        "emergency_access": "緊急存取",
+        "data_breach": "資料洩漏掃描",
+        "password_tip_trick": "密碼提示和技巧",
+        "marketing": "行銷和促銷電子郵件",
+        "other": "其他的"
+      },
       "system_email": "系統通知",
       "master_password_change": "已更換主密碼",
       "login_with_new_device": "已從新裝置登入",

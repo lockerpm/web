@@ -1078,6 +1078,16 @@ module.exports = {
       referral_details: 'Khi được mời (bạn của bạn tạo Master Password thành công), cả bạn và bạn bè của bạn sẽ nhận được 1 tháng Locker Premium miễn phí',
       notifications: 'Thông báo',
       email_notifications: 'Email thông báo',
+      email_notifications_items: {
+        change_master_password: 'Thay đổi Mật khẩu chính',
+        login_new_device: 'Đăng nhập trên thiết bị mới',
+        item_sharing: 'Chia sẻ mục',
+        emergency_access: 'Truy cập khẩn cấp',
+        data_breach: 'Cảnh báo rò rỉ dữ liệu',
+        password_tip_trick: 'Mẹo và thủ thật mật khẩu',
+        marketing: 'Tiếp thị & Khuyến mại',
+        other: 'Khác'
+      },
       system_email: 'Email hệ thống',
       master_password_change: 'Thay đổi Master Password',
       login_with_new_device: 'Đăng nhập với thiết bị mới',
