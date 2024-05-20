@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       :visible="showTutorial"
-      custom-class="locker-tutorial-dialog max-w-[450px]"
+      custom-class="locker-tutorial-dialog !max-w-[450px]"
       width="100%"
       :close-on-press-escape="false"
       :close-on-click-modal="false"
@@ -27,7 +27,7 @@
 
     <el-dialog
       :visible="showTutorialStep6"
-      custom-class="locker-tutorial-dialog max-w-[500px]"
+      custom-class="locker-tutorial-dialog !max-w-[500px]"
       width="100%"
       :close-on-press-escape="false"
       :close-on-click-modal="false"
@@ -92,7 +92,7 @@ export default {
 
     async startTutorial () {
       this.closeDialog()
-      this.$router.push({ path: '/welcome-tour' })
+      this.$router.push(this.localePath({ path: '/welcome-tour' }))
     },
 
     openExtension () {

@@ -169,13 +169,14 @@ export default {
     },
     shouldRenderNoCipher () {
       const haveCipher = this.ciphers?.length
-      if (this.getRouteBaseName() === 'vault') {
-        return this.folders && !this.folders?.length && !haveCipher && !this.searchText
+      const routeName = this.getRouteBaseName()
+      if (routeName === 'vault') {
+        return !this.folders?.length && !this.collections?.length && !haveCipher && !this.searchText
       }
-      if (this.getRouteBaseName() === 'vault-folders-folderId') {
+      if (routeName === 'vault-folders-folderId') {
         return false
       }
-      if (this.getRouteBaseName() === 'vault-tfolders-tfolderId') {
+      if (routeName === 'vault-tfolders-tfolderId') {
         return false
       }
       return !haveCipher && !this.searchText

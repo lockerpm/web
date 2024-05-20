@@ -1,8 +1,13 @@
 <template>
-  <div />
+  <BusyOverlay />
 </template>
 <script>
+import BusyOverlay from '@/components/BusyOverlay'
+
 export default {
+  components: {
+    BusyOverlay
+  },
   layout: 'authenticate',
   asyncData ({ redirect, store, isDev, route }) {
     const environment = isDev ? 'dev_web' : process.env.environment

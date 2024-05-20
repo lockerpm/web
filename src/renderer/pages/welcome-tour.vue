@@ -104,7 +104,7 @@ export default {
           stepId: 'add-pw-1',
           actions: [],
           learnMore:
-            `https://support.locker.io/${this.locale}/locker-password-manager/get-started/import-and-export`
+            `https://support.locker.io/${this.locale === 'vi' ? 'vi' : 'en'}/locker-password-manager/get-started/import-and-export`
         },
         {
           id: 'browse_items',

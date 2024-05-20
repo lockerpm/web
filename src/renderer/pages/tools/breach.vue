@@ -168,13 +168,13 @@ export default {
   watch: {
     isPremiumFeaturesAvailable (newValue) {
       if (!newValue) {
-        this.$router.push('/vault')
+        this.$router.push(this.localePath('/vault'))
       }
     }
   },
   mounted () {
     if (!this.isPremiumFeaturesAvailable) {
-      this.$router.push('/vault')
+      this.$router.push(this.localePath('/vault'))
     }
   },
   methods: {

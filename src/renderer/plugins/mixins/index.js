@@ -156,6 +156,8 @@ Vue.mixin({
             dow: 1 // Monday is the first day of the week.
           }
         })
+      } else if (value === 'zh') {
+        this.$moment.locale('zh-tw')
       } else {
         this.$moment.locale('en')
       }

@@ -60,24 +60,19 @@
         <div class="hidden md:block sticky bottom-0 px-5 py-3 mr-[1px] border-t-[1px] border-r-[1px] border-solid border-[#C5C5C8]">
           <!-- Language switcher -->
           <div
-            :class="locale==='vi'?'opacity-06':''"
-            :style="{paddingLeft: locale==='vi'?'34px': '12px'}"
+            v-for="item in languages"
+            :key="item.id"
+            :class="locale !== item.id ? 'opacity-06' : ''"
+            :style="{ paddingLeft: locale !== item.id ? '22px' : '0px' }"
             class="text-sm text-black-600 font-normal hover:text-green"
-            style="cursor: pointer;"
-            @click="setLocale('en')"
+            style="cursor: pointer"
+            @click="setLocale(item.id)"
           >
-            <span v-show="locale!=='vi'" class="mr-2"><i class="fas fa-location-arrow" /></span>English
+            <span
+              v-show="locale === item.id"
+              class="mr-2"
+            ><i class="fas fa-location-arrow" /></span>{{ item.name }}
           </div>
-          <div
-            :class="locale==='en'?'opacity-06':''"
-            :style="{paddingLeft: locale!=='vi'?'34px': '12px'}"
-            class="text-sm text-black-600 font-normal hover:text-green"
-            style="margin-top: 11px; cursor: pointer;"
-            @click="setLocale('vi')"
-          >
-            <span v-show="locale==='vi'" class="mr-2"><i class="fas fa-location-arrow" /></span>Vietnamese
-          </div>
-
           <!-- Language switcher end -->
         </div>
       </div>
@@ -235,6 +230,22 @@ export default {
   computed: {
     language () {
       return this.$store.state.user.language
+    },
+    languages () {
+      return [
+        {
+          id: 'en',
+          name: 'English'
+        },
+        {
+          id: 'vi',
+          name: 'Tiếng Việt'
+        }
+        // {
+        //   id: 'zh',
+        //   name: '繁體中文'
+        // }
+      ]
     }
   },
   watch: {

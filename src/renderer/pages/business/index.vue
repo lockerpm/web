@@ -18,12 +18,9 @@
             />
             <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
               <div class="mb-4 sm:mb-0">
-                <a
-                  href="#register-section"
-                  class="landing-btn w-full sm:w-auto mb-1"
-                >
+                <nuxt-link :to="localePath('/business/register')" class="landing-btn w-full sm:w-auto mb-1">
                   {{ $t('business.welcome.start') }}
-                </a>
+                </nuxt-link>
               </div>
               <div>
                 <a
@@ -330,15 +327,17 @@
         </el-collapse>
       </div>
     </section>
+
     <div
-      class="bg-[#69A757] rounded-2xl md:py-16 py-8 md:px-[94px] px-8 md:flex block justify-between mb-16"
+      class="bg-[#69A757] rounded-2xl md:py-16 py-8 md:px-[94px] px-8 flex flex-col md:flex-row flex-wrap items-center mb-16"
     >
-      <div class="text-white landing-font-42 font-semibold flex-grow">
+      <div class="text-white landing-font-42 font-semibold flex-1 md:w-auto md:mr-8 text-center md:text-left">
         {{ $t('business.cta.title') }}
       </div>
-      <div class="self-center">
+      <div class="mt-8 md:mt-0">
         <button
           class="landing-btn !bg-white !text-primary"
+          style="min-width: 170px"
           @click="openChat"
         >
           {{ $t('business.cta.button') }}

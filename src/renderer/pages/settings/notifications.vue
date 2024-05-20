@@ -15,7 +15,7 @@
         >
           <div>
             <div class="setting-title">
-              {{ locale === 'vi' ? item.category.name_vi : item.category.name }}
+              {{ $t(`data.settings.email_notifications_items.${item.category.id}`) || (locale === 'vi' ? item.category.name_vi : item.category.name) }}
             </div>
           </div>
           <div>

@@ -69,8 +69,7 @@ export default {
       .$post('cystack_platform/pm/payments/trial/enterprise', {
         token: params.token
       })
-      .then(res => {
-        console.log(res)
+      .then(() => {
         return {
           token: { valid: true }
         }
@@ -84,8 +83,7 @@ export default {
   data () {
     return {
       token: {
-        valid: null,
-        key: ''
+        valid: null
       },
       seconds: 10,
       intervalTimer: null
@@ -104,7 +102,7 @@ export default {
   methods: {
     async goNext () {
       clearInterval(this.intervalTimer)
-      this.$router.push('/vault')
+      this.$router.push(this.localePath('/vault'))
     },
     backHome () {
       this.$router.push(this.localePath('/business/register'))

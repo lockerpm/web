@@ -489,7 +489,33 @@ module.exports = {
       mark_all_as_read: 'Đánh dấu tất cả đã đọc',
       no_notifications: 'Không có thông báo mới',
       switch_plan: 'Chọn Tiếp tục để chuyển sang trang thanh toán. Sau khi bạn thanh toán, gói {currentPlan} ({currentPeriod}) hiện tại sẽ bị huỷ. Gói của bạn sẽ được cập nhật thành {chosenPlan} ({chosenPeriod}).',
-      purchase_plan: 'Chọn Tiếp tục để chuyển sang trang thanh toán. Sau khi bạn thanh toán, tài khoàn của bạn sẽ có thêm {duration} sử dụng. Chọn Huỷ bỏ để đóng pop-up.'
+      purchase_plan: 'Chọn Tiếp tục để chuyển sang trang thanh toán. Sau khi bạn thanh toán, tài khoàn của bạn sẽ có thêm {duration} sử dụng. Chọn Huỷ bỏ để đóng pop-up.',
+      app_noti: {
+        item_sharing: {
+          100001: '{recipient_name} đã chấp nhận item bạn chia sẻ',
+          100002: '{recipient_name} đã từ chối item bạn chia sẻ',
+          100003: '{owner_name} vừa chia sẻ một {cipher_type} với bạn',
+          100004: 'Một user vừa đăng ký tài khoản quả yêu cầu chia sẻ của bạn. Vui lòng xác nhận lại để họ có thể sử dụng item',
+          100006: '{owner_email} vừa xác nhận chia sẻ một {cipher_type} với bạn'
+        },
+        member_to_group_share: {
+          100005: '{member_joined_text} nhóm {group_name} mà bạn đã chia sẻ item. Vui lòng xác nhận để họ có thể sử dụng item được chia sẻ.'
+        },
+        payment: {
+          100007: 'Hóa đơn {payment_id} đã được thanh toán thành công',
+          100008: 'Locker không thể tiến hành thanh toán. Tài khoản của bạn đã bị hạ cấp gói'
+        },
+        emergency_access: {
+          100009: 'Người dùng {grantor_name} ({grantor_email}) vừa mời bạn làm Liên hệ khẩn cấp của anh/cô ấy',
+          100010: 'Người dùng {grantee_name} ({grantee_email}) vừa chấp nhận lời mời của bạn. Vui lòng xác nhận lại danh tính Liên hệ khẩn cấp của bạn',
+          100011: 'Người dùng {grantee_name} ({grantee_email}) đã chấp nhận trở thành Liên hệ khẩn cấp của bạn',
+          100012: 'Người dùng {grantee_name} ({grantee_email}) đã từ chối trở thành Liên hệ khẩn cấp của bạn',
+          100013: 'Bạn đã trở thành Liên hệ khẩn cấp của user {grantor_name} ({grantor_email})',
+          100014: 'Người dùng {grantee_name} ({grantee_email}) vừa yêu cầu quyền {request} vault của bạn',
+          100015: 'Người dùng {grantor_name} ({grantor_email}) vừa chấp nhận Liên hệ khẩn cấp của bạn',
+          100016: 'Người dùng {grantor_name} ({grantor_email}) vừa từ chối Liên hệ khẩn cấp của bạn'
+        }
+      }
     },
     profile_menu: {
       lock: 'Khóa tài khoản',
@@ -1078,6 +1104,16 @@ module.exports = {
       referral_details: 'Khi được mời (bạn của bạn tạo Master Password thành công), cả bạn và bạn bè của bạn sẽ nhận được 1 tháng Locker Premium miễn phí',
       notifications: 'Thông báo',
       email_notifications: 'Email thông báo',
+      email_notifications_items: {
+        change_master_password: 'Thay đổi Mật khẩu chính',
+        login_new_device: 'Đăng nhập trên thiết bị mới',
+        item_sharing: 'Chia sẻ mục',
+        emergency_access: 'Truy cập khẩn cấp',
+        data_breach: 'Cảnh báo rò rỉ dữ liệu',
+        password_tip_trick: 'Mẹo và thủ thật mật khẩu',
+        marketing: 'Tiếp thị & Khuyến mại',
+        other: 'Khác'
+      },
       system_email: 'Email hệ thống',
       master_password_change: 'Thay đổi Master Password',
       login_with_new_device: 'Đăng nhập với thiết bị mới',

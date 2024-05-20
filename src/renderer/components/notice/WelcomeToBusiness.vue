@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="visible"
-    custom-class="locker-dialog max-w-[600px]"
+    custom-class="locker-dialog !max-w-[600px]"
     width="100%"
     @close="onNormalClose"
   >

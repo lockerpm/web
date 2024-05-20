@@ -377,13 +377,13 @@ export default {
   methods: {
     async getData () {
       this.loading = true
-      const text_email = document.getElementById('input-email')
+      const textEmail = document.getElementById('input-email')
       try {
         const moutains = await this.$axios
           .$post(
             'https://api.locker.io/v3/cystack_platform/pm/tools/public/breach',
             {
-              email: text_email.value
+              email: textEmail.value
             }
           )
           .then(res => {
@@ -392,7 +392,7 @@ export default {
           })
         return { moutains }
       } catch (e) {
-        if (e.request.status == 400) {
+        if (e.request.status === 400) {
           this.notify(this.$tc('errors.0004', 1), 'error')
         } else {
           this.notify(this.$tc('errors.oops', 1), 'error')
