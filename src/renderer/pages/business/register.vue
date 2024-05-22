@@ -353,6 +353,7 @@ export default {
               'cystack_platform/pm/payments/trial/enterprise',
               {
                 email: this.newuser.email,
+                enterprise_name: this.newuser.organization,
                 request_code: token
               }
             )
@@ -361,7 +362,7 @@ export default {
             if (
               error.response &&
               error.response.data &&
-              ['7103', '7015'].includes(error.response.data.code)
+              ['7013', '7015'].includes(error.response.data.code)
             ) {
               this.notify(
                 this.$t(`errors.${error.response.data.code}`, {

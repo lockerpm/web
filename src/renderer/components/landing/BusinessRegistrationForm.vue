@@ -290,7 +290,7 @@ export default {
               this.$router.push(this.localePath(`/business/register?submitted=1&email=${this.newuser.email}`))
             }, 500)
           } catch (error) {
-            if (error.response && error.response.data && ['7103', '7015'].includes(error.response.data.code)) {
+            if (error.response && error.response.data && ['7013', '7015'].includes(error.response.data.code)) {
               this.notify(this.$t(`errors.${error.response.data.code}`, { email: this.newuser.email }), 'warning')
             } else if (error.response && error.response.data && error.response.data.code === '0004' && error.response.data.email) {
               this.$message({
