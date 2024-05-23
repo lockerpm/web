@@ -3235,10 +3235,6 @@ module.exports = {
           category: 'Business',
           items: [
             {
-              name: 'Features',
-              link: 'business'
-            },
-            {
               name: 'Pricing',
               link: 'business/pricing'
             },

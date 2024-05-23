@@ -3235,10 +3235,6 @@ module.exports = {
           category: 'Doanh nghiệp',
           items: [
             {
-              name: 'Tính năng',
-              link: 'business'
-            },
-            {
               name: 'Bảng giá',
               link: 'business/pricing'
             },
