@@ -55,7 +55,7 @@ export default {
   },
   mounted () {
     this.postMessage()
-    this.interval = setInterval(this.postMessage, 500)
+    this.interval = setInterval(this.postMessage, 1000)
   },
   beforeDestroy () {
     clearInterval(this.interval)
