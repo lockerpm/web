@@ -23,7 +23,11 @@ export default {
       externalContent: ''
     }
   },
-  mounted () {
+  async mounted () {
+    if (this.$store.state.isLoggedIn) {
+      await this.$store.dispatch('LoadCurrentUser')
+    }
+
     // Set lang based on user language
     if (this.currentUser?.language && this.currentUser.language !== this.locale) {
       const value = this.currentUser.language
