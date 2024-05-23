@@ -201,7 +201,7 @@ export default {
     InputText
   },
   data () {
-    const phoneNotRequiredValidator = (rule, value, callback) => {
+    const phoneNotRequiredValidator = (_, value, callback) => {
       for (const i in value) {
         if (isNaN(value[i])) {
           return callback(new Error('Please input digits'))
@@ -337,7 +337,7 @@ export default {
         full_name: this.fullName,
         request_code: token
       })
-        .then(async response => {
+        .then(async () => {
           this.enterPasswordVisible = false
           localStorage.setItem('trial_plan', 'pm_enterprise')
           setTimeout(() => {
