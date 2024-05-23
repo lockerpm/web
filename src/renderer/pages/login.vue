@@ -46,9 +46,25 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      isIframe: false,
+      url: '',
+      interval: null
+    }
+  },
   mounted () {
-    if (this.isIframe && this.url) {
-      this.postIframeMessage('external', this.url)
+    this.postMessage()
+    this.interval = setInterval(this.postMessage, 500)
+  },
+  beforeDestroy () {
+    clearInterval(this.interval)
+  },
+  methods: {
+    postMessage () {
+      if (this.isIframe && this.url) {
+        this.postIframeMessage('external', this.url)
+      }
     }
   }
 }
