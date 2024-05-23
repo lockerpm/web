@@ -47,8 +47,7 @@ export default {
       )}&isi=1586927301&ibi=com.cystack.lockerapp&ifl=${encodeURIComponent(
         url
       )}${utmSource ? '&utm_source=' + utmSource : ''}&efr=1`
-      redirect(302, dynamicLink)
-      return
+      url = dynamicLink
     }
 
     let isIframe = false
@@ -69,9 +68,25 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      isIframe: false,
+      url: '',
+      interval: null
+    }
+  },
   mounted () {
-    if (this.isIframe && this.url) {
-      this.postIframeMessage('external', this.url)
+    this.postMessage()
+    this.interval = setInterval(this.postMessage, 500)
+  },
+  beforeDestroy () {
+    clearInterval(this.interval)
+  },
+  methods: {
+    postMessage () {
+      if (this.isIframe && this.url) {
+        this.postIframeMessage('external', this.url)
+      }
     }
   }
 }
