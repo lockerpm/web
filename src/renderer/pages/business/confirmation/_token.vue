@@ -112,7 +112,8 @@ export default {
   methods: {
     async goNext () {
       clearInterval(this.intervalTimer)
-      this.$router.push(this.localePath('/vault'))
+      // this.$router.push(this.localePath('/vault'))
+      window.location = 'https://passwords.locker.io'
     },
     backHome () {
       this.$router.push(this.localePath('/business/register'))
