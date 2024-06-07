@@ -497,7 +497,8 @@ export default {
     },
 
     goToLogin () {
-      this.$router.push(this.localePath('/vault'))
+      // this.$router.push(this.localePath('/vault'))
+      window.location = 'https://passwords.locker.io'
     },
 
     calcPrice: debounce(function () {

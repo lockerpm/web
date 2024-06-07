@@ -30,9 +30,7 @@
       <!-- Right actions -->
       <div class="hidden sm:flex lg:ml-16 lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
         <template v-if="isLoggedIn">
-          <nuxt-link :to="localeRoute({name: 'vault'})" class="landing-btn">
-            My Vault
-          </nuxt-link>
+          <a href="https://passwords.locker.io" class="landing-btn">My Vault</a>
         </template>
         <template v-else>
           <nuxt-link
@@ -89,9 +87,7 @@
           </div>
           <template v-if="isLoggedIn">
             <li class="sm:hidden">
-              <nuxt-link :to="localeRoute({name: 'vault'})" class="inline-block nav-item text-black landing-transition">
-                My Vault
-              </nuxt-link>
+              <a href="https://passwords.locker.io" class="inline-block nav-item text-black landing-transition">My Vault</a>
             </li>
           </template>
           <template v-else>
