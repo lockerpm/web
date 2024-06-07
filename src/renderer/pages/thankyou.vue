@@ -96,7 +96,8 @@ export default {
   },
   methods: {
     goToVault () {
-      this.$router.push(this.localeRoute('/vault'))
+      // this.$router.push(this.localeRoute('/vault'))
+      window.location = 'https://passwords.locker.io'
     }
   }
 }
