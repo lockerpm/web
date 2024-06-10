@@ -390,7 +390,11 @@ export default {
 
     yay () {
       this.showSuccessDialog = false
-      window.open('/', '_blank')
+      let url = 'https://locker.io'
+      if (this.locale !== 'en') {
+        url += `/${this.locale}`
+      }
+      window.open(url, '_blank')
     }
   }
 }
