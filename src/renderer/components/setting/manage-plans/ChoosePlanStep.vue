@@ -292,7 +292,8 @@ export default {
       try {
         this.loading[plan.alias] = true
         await this.$axios.$post('cystack_platform/pm/payments/trial', {
-          trial_plan: plan.alias
+          trial_plan: plan.alias,
+          maxAge: 3600 * 24
         })
         this.loading[plan.alias] = false
         this.$store.dispatch('LoadCurrentPlan')

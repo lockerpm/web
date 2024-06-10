@@ -339,7 +339,10 @@ export default {
       })
         .then(async () => {
           this.enterPasswordVisible = false
-          localStorage.setItem('trial_plan', 'pm_enterprise')
+          this.$cookies.set('trial_plan', 'pm_enterprise', {
+            domain: 'locker.io',
+            maxAge: 3600 * 24
+          })
           setTimeout(() => {
             this.$router.push(this.localePath(`/business/register?submitted=1&email=${this.newuser.email}`))
           }, 500)

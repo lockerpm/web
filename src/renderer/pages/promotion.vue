@@ -163,14 +163,14 @@
       <div class="mt-[70px]">
         <div class="grid md:grid-cols-3 grid-cols-1 gap-x-[120px] gap-y-6">
           <div v-for="(item, index) in $t('promotion.simplified.items').slice(0,3)" :key="index">
-            <img class="mx-auto mb-[6px]" :src="require(`~/assets/images/landing/promotion/icon-simplified-${index+1}.svg`)"></img>
+            <img class="mx-auto mb-[6px]" :src="require(`~/assets/images/landing/promotion/icon-simplified-${index+1}.svg`)">
             <div class="landing-font-20 font-semibold mb-2">{{ item.title }}</div>
             <div>{{ item.desc }}</div>
           </div>
         </div>
         <div class="grid md:grid-cols-2 grid-cols-1 gap-y-6 mt-14">
           <div v-for="(item, index) in $t('promotion.simplified.items').slice(3)" :key="index" class="max-w-[340px] mx-auto">
-            <img class="mx-auto mb-[6px]" :src="require(`~/assets/images/landing/promotion/icon-simplified-${index+4}.svg`)"></img>
+            <img class="mx-auto mb-[6px]" :src="require(`~/assets/images/landing/promotion/icon-simplified-${index+4}.svg`)">
             <div class="landing-font-20 font-semibold mb-2">{{ item.title }}</div>
             <div>{{ item.desc }}</div>
           </div>
@@ -478,8 +478,14 @@ export default {
   },
   methods: {
     choosePlan (alias) {
-      this.$cookies.set('trial_plan', alias)
-      this.$cookies.set('is_trial_promotion', true)
+      this.$cookies.set('trial_plan', alias, {
+        domain: 'locker.io',
+        maxAge: 3600 * 24
+      })
+      this.$cookies.set('is_trial_promotion', true, {
+        domain: 'locker.io',
+        maxAge: 3600 * 24
+      })
       if (this.$store.state.isLoggedIn) {
         this.$router.replace(this.localePath('/manage-plans'))
       } else {

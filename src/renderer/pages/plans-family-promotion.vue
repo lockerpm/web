@@ -362,11 +362,14 @@ export default {
       return 0
     },
     choosePlan (alias) {
-      localStorage.setItem(
-        'trial_plan',
-        alias === 'pm_free' ? 'pm_family' : alias
-      )
-      localStorage.setItem('is_trial_promotion', true)
+      this.$cookies.set('trial_plan', alias === 'pm_free' ? 'pm_family' : alias, {
+        domain: 'locker.io',
+        maxAge: 3600 * 24
+      })
+      this.$cookies.set('is_trial_promotion', true, {
+        domain: 'locker.io',
+        maxAge: 3600 * 24
+      })
       if (this.$store.state.isLoggedIn) {
         this.$router.replace(this.localePath('/manage-plans'))
       } else {
