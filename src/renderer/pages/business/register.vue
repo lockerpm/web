@@ -426,7 +426,10 @@ export default {
         .then(async () => {
           this.enterPasswordVisible = false
           this.submitted = true
-          localStorage.setItem('trial_plan', 'pm_enterprise')
+          this.$cookies.set('trial_plan', 'pm_enterprise', {
+            domain: 'locker.io',
+            maxAge: 3600 * 24
+          })
         })
         .catch(err => {
           if (err.response) {

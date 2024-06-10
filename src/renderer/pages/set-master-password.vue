@@ -311,11 +311,11 @@ export default {
             encrypted_private_key: keys[1].encryptedString
           },
           score: this.passwordStrength.score,
-          trial_plan: localStorage.getItem('trial_plan'),
-          is_trial_promotion: localStorage.getItem('is_trial_promotion')
+          trial_plan: this.$cookies.get('trial_plan'),
+          is_trial_promotion: !!this.$cookies.get('is_trial_promotion')
         })
-        localStorage.removeItem('trial_plan')
-        localStorage.removeItem('is_trial_promotion')
+        this.$cookies.remove('trial_plan')
+        this.$cookies.remove('is_trial_promotion')
         this.notify(this.$t('master_password.create_success'), 'success')
         this.$store.commit('UPDATE_USER_PW', {
           ...this.$store.state.userPw,
