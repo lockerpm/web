@@ -42,7 +42,7 @@
           Open-source
         </a>
 
-        <template v-if="isLoggedIn">
+        <template v-if="showMyVaultBtn">
           <a href="https://passwords.locker.io" class="landing-btn">My Vault</a>
         </template>
         <template v-else>
@@ -133,7 +133,7 @@
               </a>
             </li>
 
-            <template v-if="isLoggedIn">
+            <template v-if="showMyVaultBtn">
               <li class="sm:hidden">
                 <a href="https://passwords.locker.io" class="inline-block nav-item text-black landing-transition">My Vault</a>
               </li>
@@ -171,6 +171,9 @@ export default {
   computed: {
     language () {
       return this.$store.state.user.language
+    },
+    showMyVaultBtn () {
+      return this.isLoggedIn || !!this.$cookies.get('cs_locker_token')
     }
   },
 
