@@ -1,11 +1,14 @@
 <template>
   <nuxt-link :to="localePath(`/blog/${post.slug}`)" class="hover:no-underline">
     <div class="flex post-card">
+      <!-- Featured img -->
       <div class="post-img">
         <img :src="post.featured_image" :alt="post.title.rendered">
       </div>
+      <!-- Featured img end -->
 
       <div style="padding: 0 14px 20px 16px">
+        <!-- Categories -->
         <div class="flex" style="margin: 12px 0px 12px; flex-wrap: wrap">
           <nobr
             v-for="item in post_categories"
@@ -17,10 +20,14 @@
             </p>
           </nobr>
         </div>
+        <!-- Categories end -->
+
         <h3
           class="landing-font-22 text-black-800 font-bold post-title line-clamp-2"
           v-html="post.title.rendered"
         />
+
+        <!-- Author -->
         <div class="flex">
           <img
             v-if="post.user && post.user.avatar_urls"
@@ -42,6 +49,7 @@
             </p>
           </div>
         </div>
+        <!-- Author end -->
       </div>
     </div>
   </nuxt-link>
@@ -49,9 +57,11 @@
 
 <script>
 export default {
-  props: ['post'],
-  data () {
-    return {}
+  props: {
+    post: {
+      type: Object,
+      default: () => ({})
+    }
   },
   computed: {
     post_categories () {

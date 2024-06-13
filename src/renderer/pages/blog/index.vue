@@ -1,90 +1,118 @@
 <template>
   <div id="blog" class="pb-25 pt-20">
-    <section class="full-width min-w-[380px] h-auto pt-20 pb-24" style="background-color: #F3F5F8;">
+    <!-- Header -->
+    <section class="full-width min-w-[380px] h-auto md:pt-20 pb-24" style="background-color: #F3F5F8;">
       <div class="blog-intro max-w-6xl px-6 mx-auto flex flex-wrap h-auto">
-        <div class="w-full md:w-1/2 mt-12">
-          <h1 class="landing-font-44 text-black-800 font-bold mb-5">
+        <div class="w-full md:w-1/2 mt-12 md:pr-6 pr-0">
+          <h1 class="landing-font-44 text-black-800 font-bold mb-5 text-center md:text-left">
             {{ $t('blog.intro') }}
           </h1>
-          <p class="landing-font-16 text-black-600 mb-8">
+          <p class="landing-font-16 text-black-600 mb-8 text-center md:text-left">
             {{ $t('blog.desc') }}
           </p>
           <div class="w-full flex" style="margin-left: 0px; flex-wrap: nowrap;">
-            <el-form ref="form" :rules="rules" :inline="true" :model="form" class="w-10/12">
-              <el-form-item prop="email" style="width:62%">
-                <el-input
-                  v-model="form.email"
-                  :placeholder="`${$t('blog.enter_email')}`"
-                  type="email"
-                  clearable
-                />
-              </el-form-item>
-              <el-form-item style="width: 29%">
-                <button class="blog-btn text-14 text-white" style="transform: translateX(-20px)" @click.prevent="subscribeBlog()">
+            <el-form ref="form" :rules="rules" :inline="true" :model="form" class="w-full flex">
+              <div style="flex: 1">
+                <el-form-item prop="email" class="w-full">
+                  <el-input
+                    v-model="form.email"
+                    :placeholder="`${$t('blog.enter_email')}`"
+                    type="email"
+                    clearable
+                  />
+                </el-form-item>
+              </div>
+              <el-form-item>
+                <button class="blog-btn text-14 text-white" style="transform: translateX(-5px)" @click.prevent="subscribeBlog()">
                   {{ $t('blog.subscription') }}
                 </button>
               </el-form-item>
             </el-form>
           </div>
         </div>
-        <div class="w-full md:w-1/2" style="margin-top: 40px; margin-left:auto; max-height: 325px">
+
+        <div class="w-full md:w-1/2 flex justify-center" style="margin-top: 40px; margin-left:auto; max-height: 325px">
           <img src="~/assets/images/landing/blog/intro-img.svg">
         </div>
       </div>
     </section>
+    <!-- Header end -->
 
+    <!-- Body -->
     <section id="blog-body" class="py-20">
+      <!-- Nav -->
       <div class="w-full pb-0">
         <div class="projects-catalog">
-          <div id="imageSlider1" class="catalog-slider flex justify-between">
-            <span class="landing-font-16 md:hidden" style="padding: 6px 20px 5px 0px; cursor: pointer" @click="showPre()"><i class="fas fa-angle-left" /></span>
-            <div class="catalog-cover" style="width: 70%">
+          <div id="imageSlider1" class="catalog-slider flex flex-col md:flex-row justify-between">
+            <!-- Categories list -->
+            <div class="catalog-cover w-full flex justify-between md:w-[75%]">
+              <!-- (Mobile) Scroll left -->
+              <span class="landing-font-16 md:hidden" style="padding: 6px 20px 5px; cursor: pointer" @click="showPre()"><i class="fas fa-angle-left" /></span>
+              <!-- (Mobile) Scroll left end -->
+
               <ul id="sliderWrapper1" class="catalog-list corporate-projects">
                 <li
-                  v-for="(item, index) in blog_categories"
+                  v-for="(item, index) in blog_categories.filter(item => !['280', '281'].includes(item.id))"
                   :key="index"
-                  :class="item.id===category?'text-primary':''"
+                  :class="item.id === category ? 'text-primary' : ''"
                   class="catalog-item landing-transition landing-font-16 font-bold uppercase"
                   @click="category=item.id"
                 >
                   {{ item.label }}
                 </li>
               </ul>
+
+              <!-- (Mobile) Scroll right -->
+              <span class="landing-font-16 md:hidden" style="padding: 6px 20px 5px; cursor: pointer" @click="showNext"><i class="fas fa-angle-right" /></span>
+            <!-- (Mobile) Scroll right end -->
             </div>
-            <span class="landing-font-16 md:hidden" style="padding: 6px 20px 5px; cursor: pointer" @click="showNext"><i class="fas fa-angle-right" /></span>
-            <el-input
-              v-model="query"
-              :placeholder="`${$t('blog.search')}`"
-              style="margin-bottom: 7px; width: 15%;"
-              @input="searchPosts"
-            >
-              <i
-                slot="suffix"
-                class="el-icon-search el-input__icon text-20 font-weight-700 text-black"
-              />
-            </el-input>
+            <!-- Categories list end -->
+
+            <!-- Search input -->
+            <div class="md:ml-4 mt-4 md:mt-0">
+              <el-input
+                v-model="query"
+                :placeholder="`${$t('blog.search')}`"
+                style="margin-bottom: 7px;"
+                @input="searchPosts"
+              >
+                <i
+                  slot="suffix"
+                  class="el-icon-search el-input__icon text-20 font-weight-700 text-black"
+                />
+              </el-input>
+            </div>
+            <!-- Search input end -->
           </div>
         </div>
       </div>
+      <!-- Nav end -->
+
       <div class="w-full flex justify-between mt-5">
         <h3 class="landing-font-28 text-black-800 font-bold mb-8">
           {{ $t('blog.most_recent') }}
         </h3>
       </div>
+
       <!-- Posts -->
       <div v-loading="postLoading" class="blog-container w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[30px] gap-y-[30px]">
-        <div v-for="(item, index) in posts" :key="index" class="">
+        <div v-for="(item, index) in posts" :key="index">
           <Post :post="item" type="blog" />
         </div>
       </div>
       <!-- Posts end -->
+
+      <!-- Load more -->
       <div class="w-full text-center" style="margin-top: 60px">
         <el-button class="landing-btn" :loading="loadingMore" :disabled="loadMoreDisabled" :style="loadMoreDisabled?'display: none !important': ''" @click="loadMore()">
           {{ $t('blog.read_more') }}
         </el-button>
       </div>
+      <!-- Load more end -->
     </section>
+    <!-- Body end -->
 
+    <!-- CTA -->
     <section class="md:mt-36 mt-24">
       <div
         class="w-full rounded py-[40px] px-[65px] flex justify-between align-middle md:flex-row flex-col"
@@ -203,7 +231,6 @@ export default {
 
   watch: {
     '$route.query.category' (newValue) {
-      console.log(newValue)
       const category = this.blog_categories.find(cate => cate.slug === newValue)
       if (category) {
         this.category = category.id
@@ -442,8 +469,14 @@ export default {
 
 .projects-catalog ul {
   white-space: nowrap;
-  overflow-x: hidden;
+  overflow-x: scroll;
   margin-bottom: 0px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.projects-catalog ul::-webkit-scrollbar {
+  display: none;
 }
 
 .projects-catalog li {
