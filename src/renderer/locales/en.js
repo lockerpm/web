@@ -3389,7 +3389,7 @@ module.exports = {
     most_popular: 'Phổ biến nhất',
     categories: [
       {
-        id: '8,13,18,54,25',
+        id: '8,13,18,54,25,280,281',
         label: 'All',
         slug: 'locker'
       },
@@ -3417,6 +3417,16 @@ module.exports = {
         id: '25',
         label: 'Tips and Advice',
         slug: 'tipsandadvice'
+      },
+      {
+        id: '280',
+        label: 'Password Manager',
+        slug: 'password-manager'
+      },
+      {
+        id: '281',
+        label: 'Secrets Manager',
+        slug: 'secret-manager'
       }
     ],
     post_on: 'Posted on',
