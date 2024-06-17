@@ -528,6 +528,15 @@ export default {
       @apply italic text-sm text-center;
     }
   }
+
+  table {
+    td {
+      border-width: 1px;
+      border-color: #E6E6E8 !important;
+      padding: 8px;
+    }
+    margin-bottom: 16px;
+  }
 }
 .post-content > ul {
   display: block;
