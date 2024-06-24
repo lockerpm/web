@@ -4477,7 +4477,11 @@ module.exports = {
       start: 'Dùng thử miễn phí',
       purchase_now: 'Mua ngay',
       trusted_by: 'Sự lựa chọn của các doanh nghiệp hàng đầu ',
-      img: 'bg-welcome.png'
+      img: 'bg-welcome.png',
+      datasheet: {
+        title: 'Tài liệu sản phẩm',
+        url: 'https://s.locker.io/resources/12075204/Locker-For-Business-2024.pdf'
+      }
     },
     top_priority: {
       title: 'Bảo mật là mối quan tâm hàng đầu của chúng tôi',
