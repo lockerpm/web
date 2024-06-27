@@ -5573,7 +5573,7 @@ module.exports = {
       popup: {
         desc1: 'Simply write reviews about us on App Store, Google Play or Capterra, then go to',
         link: 'Locker Rewards',
-        desc2: 'to snatch up to 20% off on any subscription... It\'s easy!'
+        desc2: 'to snatch up to 35% off on any subscription... It\'s easy!'
       }
     }
   },
