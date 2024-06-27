@@ -11,13 +11,13 @@
           <img
             v-if="locale === 'vi'"
             src="~assets/images/landing/lifetime/popup/reward-img-vi.png"
-            alt="Đánh giá và nhận mã giảm giá tới 20%"
+            alt="Đánh giá và nhận mã giảm giá tới 35%"
             class="w-full h-auto"
           >
           <img
             v-else
             src="~assets/images/landing/lifetime/popup/reward-img.png"
-            alt="Write reviews and get discount code up to 20%"
+            alt="Write reviews and get discount code up to 35%"
             class="w-full h-auto"
           >
         </div>

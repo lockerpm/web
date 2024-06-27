@@ -5419,7 +5419,7 @@ module.exports = {
       popup: {
         desc1: 'Chỉ cần đánh giá Locker trên App Store, Google Play hoặc Capterra, và truy cập trang',
         link: 'Phần thưởng',
-        desc2: 'để nhận giảm giá tới 20% cho bất kỳ gói đăng ký nào... Thật dễ dàng!'
+        desc2: 'để nhận giảm giá tới 35% cho bất kỳ gói đăng ký nào... Thật dễ dàng!'
       }
     }
   },
