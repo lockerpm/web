@@ -61,6 +61,7 @@ module.exports = {
     script: [
       { src: '/js/iframe.js' },
       { src: '/js/chatwoot.js' },
+      { src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6531683212744712', async: true, crossorigin: 'anonymous' },
       ...(process.env.NODE_ENV === 'production'
         ? [
           {
