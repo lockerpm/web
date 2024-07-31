@@ -193,6 +193,7 @@ export default {
         // lang: this.currentUser.language
       },
       title: 'Whitepaper - Locker Password Manager',
+      link: [{ rel: 'canonical', href: `https://locker.io${this.$route.path}` }],
       meta: [
         {
           hid: 'og:title',

@@ -77,7 +77,12 @@
 import PromoFooter from '~/components/landing/PromoFooter.vue'
 
 export default {
-  components: { PromoFooter }
+  components: { PromoFooter },
+  head () {
+    return {
+      link: [{ rel: 'canonical', href: `https://locker.io${this.$route.path}` }]
+    }
+  }
 }
 </script>
 

@@ -88,6 +88,7 @@ export default {
         // lang: this.currentUser.language
       },
       title: this.$t(`${this.mappings}.head_title`),
+      link: [{ rel: 'canonical', href: `https://locker.io${this.$route.path}` }],
       meta: [
         {
           hid: 'og:title',
