@@ -110,7 +110,8 @@ export default {
 
   head () {
     return {
-      script: [{ src: 'https://js.stripe.com/v3/' }]
+      script: [{ src: 'https://js.stripe.com/v3/' }],
+      link: [{ rel: 'canonical', href: `https://locker.io${this.$route.path}` }]
     }
   },
 

@@ -23,6 +23,11 @@ export default {
       externalContent: ''
     }
   },
+  head () {
+    return {
+      link: [{ rel: 'canonical', href: `https://locker.io${this.$route.path}` }]
+    }
+  },
   async mounted () {
     if (this.$store.state.isLoggedIn) {
       await this.$store.dispatch('LoadCurrentUser')
