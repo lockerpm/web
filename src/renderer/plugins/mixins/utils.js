@@ -59,6 +59,23 @@ Vue.mixin({
           domain
         )
       })
+    },
+
+    goToVault () {
+      let isIframe = false
+      try {
+        if (window) {
+          isIframe = !!window.sessionStorage.getItem('isIframe')
+        }
+      } catch (error) {
+        isIframe = this.$route.query.mode === 'iframe'
+      }
+      const vaultUrl = `https://passwords.locker.io?lang=${this.locale}`
+      if (isIframe) {
+        this.postIframeMessage('external', vaultUrl)
+      } else {
+        window.location = vaultUrl
+      }
     }
   }
 })
