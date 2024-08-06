@@ -293,8 +293,7 @@ export default {
     },
 
     goToLogin () {
-      // this.$router.push(this.localeRoute({ path: '/vault' }))
-      window.location = 'https://passwords.locker.io'
+      this.goToVault()
     },
 
     async handleAddCardDone ({ tokenId, country }) {

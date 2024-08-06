@@ -30,7 +30,7 @@
       <!-- Right actions -->
       <div class="hidden sm:flex lg:ml-16 lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
         <template v-if="showMyVaultBtn">
-          <a href="https://passwords.locker.io" class="landing-btn">My Vault</a>
+          <a href="#" class="landing-btn" @click.prevent="goToVault">My Vault</a>
         </template>
         <template v-else>
           <nuxt-link
@@ -87,7 +87,7 @@
           </div>
           <template v-if="showMyVaultBtn">
             <li class="sm:hidden">
-              <a href="https://passwords.locker.io" class="inline-block nav-item text-black landing-transition">My Vault</a>
+              <a href="#" class="inline-block nav-item text-black landing-transition" @click.prevent="goToVault">My Vault</a>
             </li>
           </template>
           <template v-else>
