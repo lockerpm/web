@@ -129,12 +129,11 @@
 .lds-lring .lring:nth-child(6) {
   animation-delay: -0.5s;
   border-color: white transparent transparent transparent;
-  border-width: 6px;
+  border-width: 8px;
   z-index: 6;
-  top: -0.5px;
-  left: -0.5px;
-  width: min(40vh, 80vw);
-  height: min(40vh, 80vw);
+  scale: 1.004;
+  width: min(40vh, 90vw);
+  height: min(40vh, 90vw);
 }
 @keyframes lds-lring {
   0% {
