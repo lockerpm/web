@@ -5501,6 +5501,7 @@ module.exports = {
       intro: {
         title: 'Redeem your {service} Code for Locker\'s Lifetime Package',
         desc: 'If you have already had an {service} Code for Locker Password Manager, use them to redeem for Locker\'s services now.',
+        desc_general: 'If you have already had a Lifetime Code for Locker Password Manager, use them to redeem for Locker\'s services now.',
         instructions: [
           'If you haven\'t had a Locker account, tick on the box below to create your account.',
           'Enter your Email used for Locker account and your {service} Code.',
