@@ -6,8 +6,7 @@
         <!-- Intro -->
         <div>
           <h1 class="font-medium text-[48px] leading-[58px] text-primary">
-            Redeem your <br>
-            PitchGround Code for <br>
+            Redeem your Code for <br>
           </h1>
 
           <div class="relative">
@@ -23,7 +22,7 @@
 
           <p class="font-semibold text-[20px] mb-4 mt-4">
             {{
-              $t('lifetime.redeem_page.intro.desc', { service: 'PitchGround' })
+              $t('lifetime.redeem_page.intro.desc_general')
             }}
           </p>
           <ol class="list-decimal ml-4 mb-4">
@@ -33,14 +32,14 @@
               )"
               :key="index"
             >
-              {{ item.replaceAll('{service}', 'PitchGround') }}
+              {{ item.replaceAll('{service}', 'Lifetime') }}
             </li>
           </ol>
         </div>
         <!-- Intro end -->
 
         <!-- Form -->
-        <RedeemForm :countries="countries" service="PitchGround" />
+        <RedeemForm :countries="countries" service="Lifetime" />
         <!-- Form end -->
       </div>
       <!-- Left end -->
