@@ -339,7 +339,7 @@ export default {
 
     choosePlan (alias) {
       if (alias === 'pm_free') {
-        this.$router.push(this.localeRoute({ path: '/register' }))
+        this.$router.push(this.localeRoute({ path: '/register', query: { isFree: 1 } }))
       } else {
         this.$router.push(
           this.localeRoute(

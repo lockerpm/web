@@ -5493,6 +5493,7 @@ module.exports = {
           invalid_code: 'Hmm! It seems the {service} Code you\'ve entered doesn\'t exist or expired :(',
           account_not_exist: 'Please create a new account with this email',
           only_individual: 'This {service} Code is applicable only for individual accounts. Use an individual account to apply the code, or return it at {service}.',
+          only_individual_general: 'This Lifetime Code is applicable only for individual accounts. Use an individual account to apply the code, or return it at your Marketplace.',
           only_individual_no_service: 'This plan is applicable only for individual accounts. Please use an individual account to buy this plan.',
           invalid_data: 'Invalid data',
           already_lifetime: 'Payment failed! This account has already been upgraded to Lifetime Premium.'
