@@ -10,6 +10,18 @@ export default {
   },
   layout: 'authenticate',
   asyncData ({ redirect, store, isDev, $ua, $cookies, route }) {
+    // Set/delete trial plan
+    if (route.query.isFree) {
+      $cookies.remove('trial_plan', {
+        domain: '.locker.io'
+      })
+    } else if (!$cookies.get('trial_plan')) {
+      // Auto set plan to premium
+      $cookies.set('trial_plan', 'pm_premium', {
+        domain: '.locker.io'
+      })
+    }
+
     // Generate URL for Locker ID
     const environment = isDev ? 'dev' : process.env.environment
     const query = `?SERVICE_URL=${
