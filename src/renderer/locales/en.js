@@ -3235,10 +3235,6 @@ module.exports = {
           category: 'Business',
           items: [
             {
-              name: 'Features',
-              link: 'business'
-            },
-            {
               name: 'Pricing',
               link: 'business/pricing'
             },
@@ -3393,7 +3389,7 @@ module.exports = {
     most_popular: 'Phổ biến nhất',
     categories: [
       {
-        id: '8,13,18,54,25',
+        id: '8,13,18,54,25,280,281',
         label: 'All',
         slug: 'locker'
       },
@@ -3421,6 +3417,16 @@ module.exports = {
         id: '25',
         label: 'Tips and Advice',
         slug: 'tipsandadvice'
+      },
+      {
+        id: '280',
+        label: 'Password Manager',
+        slug: 'password-manager'
+      },
+      {
+        id: '281',
+        label: 'Secrets Manager',
+        slug: 'secret-manager'
       }
     ],
     post_on: 'Posted on',
@@ -5487,6 +5493,7 @@ module.exports = {
           invalid_code: 'Hmm! It seems the {service} Code you\'ve entered doesn\'t exist or expired :(',
           account_not_exist: 'Please create a new account with this email',
           only_individual: 'This {service} Code is applicable only for individual accounts. Use an individual account to apply the code, or return it at {service}.',
+          only_individual_general: 'This Lifetime Code is applicable only for individual accounts. Use an individual account to apply the code, or return it at your Marketplace.',
           only_individual_no_service: 'This plan is applicable only for individual accounts. Please use an individual account to buy this plan.',
           invalid_data: 'Invalid data',
           already_lifetime: 'Payment failed! This account has already been upgraded to Lifetime Premium.'
@@ -5495,6 +5502,7 @@ module.exports = {
       intro: {
         title: 'Redeem your {service} Code for Locker\'s Lifetime Package',
         desc: 'If you have already had an {service} Code for Locker Password Manager, use them to redeem for Locker\'s services now.',
+        desc_general: 'If you have already had a Lifetime Code for Locker Password Manager, use them to redeem for Locker\'s services now.',
         instructions: [
           'If you haven\'t had a Locker account, tick on the box below to create your account.',
           'Enter your Email used for Locker account and your {service} Code.',
@@ -5567,7 +5575,7 @@ module.exports = {
       popup: {
         desc1: 'Simply write reviews about us on App Store, Google Play or Capterra, then go to',
         link: 'Locker Rewards',
-        desc2: 'to snatch up to 20% off on any subscription... It\'s easy!'
+        desc2: 'to snatch up to 35% off on any subscription... It\'s easy!'
       }
     }
   },

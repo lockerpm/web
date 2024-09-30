@@ -13,10 +13,24 @@
               {{ $t('business.welcome.title') }}
             </h1>
             <p
-              class="max-w-[476px] text-left font-normal text-black-600 landing-font-20 mb-8 mt-6"
+              class="max-w-[476px] text-left font-normal text-black-600 landing-font-20 mt-6"
               v-html="$t('business.welcome.desc')"
             />
-            <div class="max-w-xs mx-auto sm:max-w-none sm:flex">
+
+            <div
+              v-if="locale === 'vi'"
+              class="mt-4"
+            >
+              <a
+                :href="$t('business.welcome.datasheet.url')"
+                target="_blank"
+                class="landing-font-18 font-semibold text-primary"
+              >
+                {{ $t('business.welcome.datasheet.title') }}
+              </a>
+            </div>
+
+            <div class="max-w-xs mx-auto sm:max-w-none sm:flex mt-8">
               <div class="mb-4 sm:mb-0">
                 <nuxt-link :to="localePath('/business/register')" class="landing-btn w-full sm:w-auto mb-1">
                   {{ $t('business.welcome.start') }}

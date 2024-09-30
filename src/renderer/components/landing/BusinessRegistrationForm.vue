@@ -201,7 +201,7 @@ export default {
     InputText
   },
   data () {
-    const phoneNotRequiredValidator = (rule, value, callback) => {
+    const phoneNotRequiredValidator = (_, value, callback) => {
       for (const i in value) {
         if (isNaN(value[i])) {
           return callback(new Error('Please input digits'))
@@ -290,7 +290,7 @@ export default {
               this.$router.push(this.localePath(`/business/register?submitted=1&email=${this.newuser.email}`))
             }, 500)
           } catch (error) {
-            if (error.response && error.response.data && ['7103', '7015'].includes(error.response.data.code)) {
+            if (error.response && error.response.data && ['7013', '7015'].includes(error.response.data.code)) {
               this.notify(this.$t(`errors.${error.response.data.code}`, { email: this.newuser.email }), 'warning')
             } else if (error.response && error.response.data && error.response.data.code === '0004' && error.response.data.email) {
               this.$message({
@@ -337,9 +337,12 @@ export default {
         full_name: this.fullName,
         request_code: token
       })
-        .then(async response => {
+        .then(async () => {
           this.enterPasswordVisible = false
-          localStorage.setItem('trial_plan', 'pm_enterprise')
+          this.$cookies.set('trial_plan', 'pm_enterprise', {
+            domain: 'locker.io',
+            maxAge: 3600 * 24
+          })
           setTimeout(() => {
             this.$router.push(this.localePath(`/business/register?submitted=1&email=${this.newuser.email}`))
           }, 500)

@@ -42,10 +42,8 @@
           Open-source
         </a>
 
-        <template v-if="isLoggedIn">
-          <nuxt-link :to="localeRoute({ name: 'vault' })" class="landing-btn">
-            My Vault
-          </nuxt-link>
+        <template v-if="showMyVaultBtn">
+          <a href="#" class="landing-btn" @click.prevent="goToVault">My Vault</a>
         </template>
         <template v-else>
           <nuxt-link
@@ -135,14 +133,9 @@
               </a>
             </li>
 
-            <template v-if="isLoggedIn">
+            <template v-if="showMyVaultBtn">
               <li class="sm:hidden">
-                <nuxt-link
-                  :to="localeRoute({ name: 'vault' })"
-                  class="inline-block nav-item text-black landing-transition"
-                >
-                  My Vault
-                </nuxt-link>
+                <a href="#" class="inline-block nav-item text-black landing-transition" @click.prevent="goToVault">My Vault</a>
               </li>
             </template>
             <template v-else>
@@ -178,6 +171,9 @@ export default {
   computed: {
     language () {
       return this.$store.state.user.language
+    },
+    showMyVaultBtn () {
+      return this.isLoggedIn || !!this.$cookies.get('cs_locker_token')
     }
   },
 

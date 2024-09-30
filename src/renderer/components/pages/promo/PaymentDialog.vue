@@ -293,7 +293,7 @@ export default {
     },
 
     goToLogin () {
-      this.$router.push(this.localeRoute({ path: '/vault' }))
+      this.goToVault()
     },
 
     async handleAddCardDone ({ tokenId, country }) {

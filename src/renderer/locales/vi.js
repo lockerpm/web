@@ -3235,10 +3235,6 @@ module.exports = {
           category: 'Doanh nghiệp',
           items: [
             {
-              name: 'Tính năng',
-              link: 'business'
-            },
-            {
               name: 'Bảng giá',
               link: 'business/pricing'
             },
@@ -3393,7 +3389,7 @@ module.exports = {
     most_popular: 'Phổ biến nhất',
     categories: [
       {
-        id: '8,13,18,54,25',
+        id: '8,13,18,54,25,280,281',
         label: 'Tất cả',
         slug: 'locker'
       },
@@ -3421,6 +3417,16 @@ module.exports = {
         id: '25',
         label: 'Mẹo bảo mật',
         slug: 'tipsandadvice'
+      },
+      {
+        id: '280',
+        label: 'Password Manager',
+        slug: 'password-manager'
+      },
+      {
+        id: '281',
+        label: 'Secrets Manager',
+        slug: 'secret-manager'
       }
     ],
     post_on: 'Đăng vào',
@@ -4471,7 +4477,11 @@ module.exports = {
       start: 'Dùng thử miễn phí',
       purchase_now: 'Mua ngay',
       trusted_by: 'Sự lựa chọn của các doanh nghiệp hàng đầu ',
-      img: 'bg-welcome.png'
+      img: 'bg-welcome.png',
+      datasheet: {
+        title: 'Tài liệu sản phẩm',
+        url: 'https://s.locker.io/resources/12075204/Locker-For-Business-2024.pdf'
+      }
     },
     top_priority: {
       title: 'Bảo mật là mối quan tâm hàng đầu của chúng tôi',
@@ -5329,6 +5339,7 @@ module.exports = {
           invalid_code: 'Hmm! Có vẻ như mã {service} bạn vừa nhập không tồn tại hoặc đã hết hạn :(',
           account_not_exist: 'Vui lòng tạo một tài khoản với email này',
           only_individual: 'Mã {service} này chỉ áp dụng đối với tài khoản cá nhân. Sử dụng một tài khoản cá nhân để sử dụng mã, hoặc đổi trả tại {service}.',
+          only_individual_general: 'Mã Lifetime này chỉ áp dụng đối với tài khoản cá nhân. Sử dụng một tài khoản cá nhân để sử dụng mã, hoặc đổi trả tại kênh bạn mua mã.',
           only_individual_no_service: 'Gói này chỉ áp dụng đối với tài khoản cá nhân. Vui lòng sử dụng một tài khoản cá nhân để mua gói.',
           invalid_data: 'Thông tin không hợp lệ',
           already_lifetime: 'Thanh toán thất bại! Tài khoản này đã được nâng cấp lên gói Premium trọn đời trước đó.'
@@ -5337,6 +5348,7 @@ module.exports = {
       intro: {
         title: 'Sử dụng mã {service} của bạn cho Locker',
         desc: 'Nếu bạn đã có một mã {service} cho Trình quản lý mật khẩu Locker, hãy sử dụng để đăng ký dịch vụ Locker ngay bây giờ!',
+        desc_general: 'Nếu bạn đã có một mã Lifetime cho Trình quản lý mật khẩu Locker, hãy sử dụng để đăng ký dịch vụ Locker ngay bây giờ!',
         instructions: [
           'Nếu bạn chưa có tài khoản Locker, tích vào ô vuông bên dưới để tạo một tài khoản.',
           'Nhập email sử dụng Locker của bạn và mã {service}.',
@@ -5409,7 +5421,7 @@ module.exports = {
       popup: {
         desc1: 'Chỉ cần đánh giá Locker trên App Store, Google Play hoặc Capterra, và truy cập trang',
         link: 'Phần thưởng',
-        desc2: 'để nhận giảm giá tới 20% cho bất kỳ gói đăng ký nào... Thật dễ dàng!'
+        desc2: 'để nhận giảm giá tới 35% cho bất kỳ gói đăng ký nào... Thật dễ dàng!'
       }
     }
   },

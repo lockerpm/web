@@ -7,7 +7,7 @@
         </div>
       </div>
     </section>
-    
+
     <div class="bg-welcome bg-[#EDF4ED] full-width h-auto">
       <img src="~/assets/images/landing/promotion/logo.png" class="m-auto w-[137px] h-[38px] mt-[19px] max-w-full">
     </div>
@@ -110,8 +110,7 @@
             <div
               class="font-normal landing-font-16 mb-[24px]"
               v-html="$t('promotion_new.section1.step4.subtitle')"
-            >
-            </div>
+            />
             <a
               :href="linkClaimOffer"
               class="landing-btn"
@@ -132,7 +131,7 @@
         <div id="notes" class="landing-font-48 font-bold mb-6">
           {{ $t('promotion_new.section2.title') }}
         </div>
-      <img class="mx-auto" src="~/assets/images/landing/promotion/line-check.svg">
+        <img class="mx-auto" src="~/assets/images/landing/promotion/line-check.svg">
       </div>
       <div class="max-w-6xl mx-auto mt-[100px] mb-[140px] px-5">
         <div class="flex flex-col gap-9 items-center mb-[100px] md:flex-row md:justify-between lg:gap-[150px]">
@@ -164,10 +163,14 @@
         </div>
       </div>
       <div class="relative">
-        <img src="~/assets/images/landing/promotion-new/image-bg-1.svg"
-          class="absolute z-0 top-[110px]">
-        <img src="~/assets/images/landing/promotion-new/image-bg-2.svg"
-          class="absolute z-0 bottom-[-50px] right-0">
+        <img
+          src="~/assets/images/landing/promotion-new/image-bg-1.svg"
+          class="absolute z-0 top-[110px]"
+        >
+        <img
+          src="~/assets/images/landing/promotion-new/image-bg-2.svg"
+          class="absolute z-0 bottom-[-50px] right-0"
+        >
         <div class="max-w-6xl mx-auto mt-[100px] px-5">
           <div class="flex flex-col-reverse gap-9 items-center mb-[100px] relative z-10 md:flex-row md:justify-between lg:gap-[150px]">
             <div>
@@ -175,7 +178,7 @@
                 {{ $t('promotion_new.section2.detail2.title') }}
               </h2>
               <div class="landing-font-16 font-normal text-justify">
-                <span v-html="$t('promotion_new.section2.detail2.content')"/>
+                <span v-html="$t('promotion_new.section2.detail2.content')" />
                 <br>
                 <br>
                 <ul>
@@ -200,10 +203,11 @@
               class="max-w-[530px] w-2/3 md:w-1/2"
             >
           </div>
-        </div> 
+        </div>
       </div>
       <div class="mt-[160px] relative">
-        <img src="~/assets/images/landing/promotion-new/image-bg-3.svg"
+        <img
+          src="~/assets/images/landing/promotion-new/image-bg-3.svg"
           class="absolute top-[80px]"
         >
         <div class="max-w-6xl mx-auto mt-[100px] relative">
@@ -217,12 +221,10 @@
           <div class="mt-14 grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-6 mb-[100px] px-5">
             <div
               v-for="(item, index) in $t('promotion.leading.items')"
-              :to="localePath('/')"
               :key="index"
+              :to="localePath('/')"
               class="landing-transition px-[25px] py-[30px] bg-white rounded-lg shadow-lg"
-
             >
-
               <div>
                 <div class="h-[114px] w-[114px] mx-auto flex">
                   <img
@@ -238,7 +240,7 @@
                   {{ item.desc }}
                 </p>
               </div>
-<!-- 
+              <!--
               <nuxt-link
                 v-if="(item.static === false && item.link)"
                 :to="localePath(`${item.link}`)"
@@ -276,13 +278,12 @@
                   {{ item.desc }}
                 </p>
               </a> -->
-
             </div>
           </div>
         </div>
       </div>
     </section>
-    
+
     <section class="full-width py-[100px] bg-[#F8F9FA] mt-[37px]">
       <div class="max-w-6xl mx-auto px-6">
         <div class="grid md:grid-cols-2 grid-cols-1 md:gap-x-[116px] md:gap-y-0 gap-y-[40px] items-center">
@@ -528,7 +529,7 @@
 <script>
 export default {
   layout: 'white',
-  data() {
+  data () {
     return ({
       linkClaimOffer: 'https://buy.stripe.com/cN26s3gbefi1c92fYZ',
       videoId: 'uDXM-R-_MW8',
@@ -539,14 +540,16 @@ export default {
       body: ''
     })
   },
-  mounted() {
-    this.body = document.getElementsByTagName('body')[0]
-    console.log(this.body);
-  },
   methods: {
     choosePlan (alias) {
-      this.$cookies.set('trial_plan', alias)
-      this.$cookies.set('is_trial_promotion', true)
+      this.$cookies.set('trial_plan', alias, {
+        domain: 'locker.io',
+        maxAge: 3600 * 24
+      })
+      this.$cookies.set('is_trial_promotion', true, {
+        domain: 'locker.io',
+        maxAge: 3600 * 24
+      })
       if (this.$store.state.isLoggedIn) {
         this.$router.replace(this.localePath('/manage-plans'))
       } else {
@@ -556,18 +559,18 @@ export default {
     claimOffer () {
       window.open(process.env.stripePayment || 'https://buy.stripe.com/cN26s3gbefi1c92fYZ')
     },
-    toggleVideo() {
+    toggleVideo () {
       if (this.dialogVisible) {
         this.dialogVisible = false
       } else {
         this.dialogVisible = true
       }
-      if (this.body.classList.contains("stop-scrolling")) {
-        this.body.classList.remove("stop-scrolling")
+      if (this.body.classList.contains('stop-scrolling')) {
+        this.body.classList.remove('stop-scrolling')
       } else {
-        this.body.classList.add("stop-scrolling")
+        this.body.classList.add('stop-scrolling')
       }
-    },
+    }
 
   }
 }
@@ -681,7 +684,7 @@ export default {
   display: flex;
 }
 .modal {
-  display: inline-block; 
+  display: inline-block;
   position: fixed;
   z-index: 1000000;
   left: 0;

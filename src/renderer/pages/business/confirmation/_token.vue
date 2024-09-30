@@ -1,6 +1,11 @@
 <template>
   <div class="full-width bg-[#F4F5F7]">
+    <div v-if="loading" style="height: 100vh">
+      <BusyOverlay />
+    </div>
+
     <div
+      v-else
       class="max-w-6xl px-6 mx-auto h-screen flex items-center justify-center"
     >
       <div class="m-login__container markdown-body">
@@ -62,34 +67,39 @@
 </template>
 
 <script>
+import BusyOverlay from '@/components/BusyOverlay'
+
 export default {
-  layout: 'register',
-  asyncData ({ $axios, params }) {
-    return $axios
-      .$post('cystack_platform/pm/payments/trial/enterprise', {
-        token: params.token
-      })
-      .then(() => {
-        return {
-          token: { valid: true }
-        }
-      })
-      .catch(() => {
-        return {
-          token: { valid: false }
-        }
-      })
+  components: {
+    BusyOverlay
   },
+  layout: 'register',
   data () {
     return {
       token: {
         valid: null
       },
+      loading: true,
       seconds: 10,
       intervalTimer: null
     }
   },
-  mounted () {
+  async mounted () {
+    try {
+      const token = this.$route.params.token
+      if (token) {
+        await this.$axios.$post('cystack_platform/pm/payments/trial/enterprise', {
+          token
+        })
+        this.token.valid = true
+      } else {
+        this.token.valid = false
+      }
+    } catch (error) {
+      console.log(error)
+      this.token.valid = false
+    }
+    this.loading = false
     if (this.token.valid) {
       this.intervalTimer = setInterval(async () => {
         this.seconds--
@@ -102,7 +112,7 @@ export default {
   methods: {
     async goNext () {
       clearInterval(this.intervalTimer)
-      this.$router.push(this.localePath('/vault'))
+      this.goToVault()
     },
     backHome () {
       this.$router.push(this.localePath('/business/register'))

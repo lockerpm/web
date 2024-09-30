@@ -29,10 +29,8 @@
 
       <!-- Right actions -->
       <div class="hidden sm:flex lg:ml-16 lg:mr-0 ml-auto mr-6 lg:order-4 order-2">
-        <template v-if="isLoggedIn">
-          <nuxt-link :to="localeRoute({name: 'vault'})" class="landing-btn">
-            My Vault
-          </nuxt-link>
+        <template v-if="showMyVaultBtn">
+          <a href="#" class="landing-btn" @click.prevent="goToVault">My Vault</a>
         </template>
         <template v-else>
           <nuxt-link
@@ -87,11 +85,9 @@
               />
             </el-select>
           </div>
-          <template v-if="isLoggedIn">
+          <template v-if="showMyVaultBtn">
             <li class="sm:hidden">
-              <nuxt-link :to="localeRoute({name: 'vault'})" class="inline-block nav-item text-black landing-transition">
-                My Vault
-              </nuxt-link>
+              <a href="#" class="inline-block nav-item text-black landing-transition" @click.prevent="goToVault">My Vault</a>
             </li>
           </template>
           <template v-else>
@@ -130,6 +126,9 @@ export default {
   computed: {
     language () {
       return this.$store.state.user.language
+    },
+    showMyVaultBtn () {
+      return this.isLoggedIn || !!this.$cookies.get('cs_locker_token')
     }
   },
   mounted () {

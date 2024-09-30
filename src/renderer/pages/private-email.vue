@@ -295,7 +295,10 @@ export default {
   mounted () {},
   methods: {
     choosePlan (alias) {
-      localStorage.setItem('trial_plan', alias)
+      this.$cookies.set('trial_plan', alias, {
+        domain: 'locker.io',
+        maxAge: 3600 * 24
+      })
       this.$router.replace(this.localePath('/register'))
     }
   }

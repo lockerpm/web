@@ -207,7 +207,7 @@
           </nuxt-link>
         </template>
         <a
-          href="https://cystack.typeform.com/to/YTUaD1sL"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSe06XoHE5bVKLtHa9n3UlOFpgTZymugT03lLZP-D7NnQVMAmw/viewform"
           target="_blank"
           class="flex items-center py-2 px-5 hover:text-white hover:bg-white hover:bg-opacity-20 text-black-400 font-semibold hover:no-underline"
         >

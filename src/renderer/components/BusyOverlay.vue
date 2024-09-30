@@ -91,8 +91,8 @@
 .lds-lring {
   display: inline-block;
   position: relative;
-  width: min(40vh, 90vw);
-  height: min(40vh, 90vw);
+  width: min(40vh, 80vw);
+  height: min(40vh, 80vw);
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -101,8 +101,8 @@
   box-sizing: border-box;
   display: block;
   position: absolute;
-  width: calc(min(40vh, 90vw) - 1px);
-  height: calc(min(40vh, 90vw) - 1px);
+  width: calc(min(40vh, 80vw) - 1px);
+  height: calc(min(40vh, 80vw) - 1px);
   border: 5px solid currentColor;
   border-radius: 50%;
   animation: lds-lring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
@@ -129,10 +129,9 @@
 .lds-lring .lring:nth-child(6) {
   animation-delay: -0.5s;
   border-color: white transparent transparent transparent;
-  border-width: 6px;
+  border-width: 8px;
   z-index: 6;
-  top: -0.5px;
-  left: -0.5px;
+  scale: 1.004;
   width: min(40vh, 90vw);
   height: min(40vh, 90vw);
 }
@@ -149,7 +148,7 @@
 }
 
 .lds-lring .logo {
-  width: min(15vh, 36vw);
+  width: min(15vh, 30vw);
   position: relative;
   left: 50%;
   top: 50%;

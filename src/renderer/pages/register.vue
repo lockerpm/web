@@ -10,6 +10,18 @@ export default {
   },
   layout: 'authenticate',
   asyncData ({ redirect, store, isDev, $ua, $cookies, route }) {
+    // Set/delete trial plan
+    if (route.query.isFree) {
+      $cookies.remove('trial_plan', {
+        domain: '.locker.io'
+      })
+    } else if (!$cookies.get('trial_plan')) {
+      // Auto set plan to premium
+      $cookies.set('trial_plan', 'pm_premium', {
+        domain: '.locker.io'
+      })
+    }
+
     // Generate URL for Locker ID
     const environment = isDev ? 'dev' : process.env.environment
     const query = `?SERVICE_URL=${
@@ -47,8 +59,7 @@ export default {
       )}&isi=1586927301&ibi=com.cystack.lockerapp&ifl=${encodeURIComponent(
         url
       )}${utmSource ? '&utm_source=' + utmSource : ''}&efr=1`
-      redirect(302, dynamicLink)
-      return
+      url = dynamicLink
     }
 
     let isIframe = false
@@ -69,9 +80,25 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      isIframe: false,
+      url: '',
+      interval: null
+    }
+  },
   mounted () {
-    if (this.isIframe && this.url) {
-      this.postIframeMessage('external', this.url)
+    this.postMessage()
+    this.interval = setInterval(this.postMessage, 1000)
+  },
+  beforeDestroy () {
+    clearInterval(this.interval)
+  },
+  methods: {
+    postMessage () {
+      if (this.isIframe && this.url) {
+        this.postIframeMessage('external', this.url)
+      }
     }
   }
 }

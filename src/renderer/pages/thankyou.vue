@@ -93,11 +93,6 @@ export default {
   },
   beforeDestroy () {
     clearInterval(this.countdown)
-  },
-  methods: {
-    goToVault () {
-      this.$router.push(this.localeRoute('/vault'))
-    }
   }
 }
 </script>

@@ -141,12 +141,15 @@ export default {
       return (plan?.yearly_price?.usd || 0) / 12
     },
     startTrialPlan (alias) {
-      localStorage.setItem('trial_plan', alias)
+      this.$cookies.set('trial_plan', alias, {
+        domain: 'locker.io',
+        maxAge: 3600 * 24
+      })
       this.$router.push(this.localeRoute({ path: '/register' }))
     },
     choosePlan (alias) {
       if (alias === 'pm_free') {
-        this.$router.push(this.localeRoute({ path: '/register' }))
+        this.$router.push(this.localeRoute({ path: '/register', query: { isFree: 1 } }))
       } else {
         this.$router.push(this.localeRoute(`/payment?plan=${alias}`))
       }
