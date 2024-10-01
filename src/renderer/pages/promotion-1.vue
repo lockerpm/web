@@ -543,11 +543,13 @@ export default {
   methods: {
     choosePlan (alias) {
       this.$cookies.set('trial_plan', alias, {
-        domain: 'locker.io',
+        domain: '.locker.io',
+        path: '/',
         maxAge: 3600 * 24
       })
       this.$cookies.set('is_trial_promotion', true, {
-        domain: 'locker.io',
+        domain: '.locker.io',
+        path: '/',
         maxAge: 3600 * 24
       })
       if (this.$store.state.isLoggedIn) {

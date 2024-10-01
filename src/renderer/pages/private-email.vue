@@ -296,7 +296,8 @@ export default {
   methods: {
     choosePlan (alias) {
       this.$cookies.set('trial_plan', alias, {
-        domain: 'locker.io',
+        domain: '.locker.io',
+        path: '/',
         maxAge: 3600 * 24
       })
       this.$router.replace(this.localePath('/register'))
