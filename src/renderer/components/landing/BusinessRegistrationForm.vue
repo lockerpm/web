@@ -340,7 +340,8 @@ export default {
         .then(async () => {
           this.enterPasswordVisible = false
           this.$cookies.set('trial_plan', 'pm_enterprise', {
-            domain: 'locker.io',
+            domain: '.locker.io',
+            path: '/',
             maxAge: 3600 * 24
           })
           setTimeout(() => {

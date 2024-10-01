@@ -316,11 +316,13 @@ export default {
         })
         this.$cookies.remove('trial_plan')
         this.$cookies.remove('trial_plan', {
-          domain: '.locker.io'
+          domain: '.locker.io',
+          path: '/'
         })
         this.$cookies.remove('is_trial_promotion')
         this.$cookies.remove('is_trial_promotion', {
-          domain: '.locker.io'
+          domain: '.locker.io',
+          path: '/'
         })
         this.notify(this.$t('master_password.create_success'), 'success')
         this.$store.commit('UPDATE_USER_PW', {

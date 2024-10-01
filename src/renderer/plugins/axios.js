@@ -54,7 +54,7 @@ export default function ({
         path: '/',
         secure: !isDev,
         expires: expiredTime.toDate(),
-        domain: 'locker.io'
+        domain: '.locker.io'
       })
       $axios.setHeader('device-id', res.headers['device-id'])
     }
