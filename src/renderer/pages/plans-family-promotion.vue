@@ -375,6 +375,7 @@ export default {
       if (this.$store.state.isLoggedIn) {
         this.$router.replace(this.localePath('/manage-plans'))
       } else {
+        window.sessionStorage.setItem('keepTrialPlan', '1')
         this.$router.replace(
           this.localePath('/register?utm_source=plans-family-promotion')
         )

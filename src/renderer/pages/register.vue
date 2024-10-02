@@ -16,7 +16,10 @@ export default {
         domain: '.locker.io',
         path: '/'
       })
-    } else if (!$cookies.get('trial_plan')) {
+    } else if (window?.sessionStorage?.getItem('keepTrialPlan')) {
+      // Keep the trial plan if needed
+      window.sessionStorage.removeItem('keepTrialPlan')
+    } else {
       // Auto set plan to premium
       $cookies.set('trial_plan', 'pm_premium', {
         domain: '.locker.io',
@@ -84,6 +87,7 @@ export default {
       }
     }
   },
+
   data () {
     return {
       isIframe: false,
@@ -91,13 +95,16 @@ export default {
       interval: null
     }
   },
+
   mounted () {
     this.postMessage()
     this.interval = setInterval(this.postMessage, 1000)
   },
+
   beforeDestroy () {
     clearInterval(this.interval)
   },
+
   methods: {
     postMessage () {
       if (this.isIframe && this.url) {

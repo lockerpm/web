@@ -146,6 +146,7 @@ export default {
         path: '/',
         maxAge: 3600 * 24
       })
+      window.sessionStorage.setItem('keepTrialPlan', '1')
       this.$router.push(this.localeRoute({ path: '/register' }))
     },
     choosePlan (alias) {
