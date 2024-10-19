@@ -42,7 +42,7 @@ export default {
       const sections = []
       if (this.blockMap[this.language]) {
         Object.values(this.blockMap[this.language]).forEach(item => {
-          if (item.value.type === 'sub_header') {
+          if (item.value?.type === 'sub_header') {
             sections.push(item.value.properties.title[0][0])
           }
         })

@@ -13,12 +13,17 @@ export default {
     // Set/delete trial plan
     if (route.query.isFree) {
       $cookies.remove('trial_plan', {
-        domain: '.locker.io'
+        domain: '.locker.io',
+        path: '/'
       })
-    } else if (!$cookies.get('trial_plan')) {
+    } else if (window?.sessionStorage?.getItem('keepTrialPlan')) {
+      // Keep the trial plan if needed
+      window.sessionStorage.removeItem('keepTrialPlan')
+    } else {
       // Auto set plan to premium
       $cookies.set('trial_plan', 'pm_premium', {
-        domain: '.locker.io'
+        domain: '.locker.io',
+        path: '/'
       })
     }
 
@@ -39,10 +44,12 @@ export default {
       url = `${url}&utm_source=${queryUtmSource}`
       $cookies.set('utm_source', queryUtmSource, {
         domain: '.locker.io',
+        path: '/',
         maxAge: 3600 * 24 * 30
       })
       $cookies.set('utm_medium', route.query?.utm_medium || '', {
         domain: '.locker.io',
+        path: '/',
         maxAge: 3600 * 24 * 30
       })
     }
@@ -80,6 +87,7 @@ export default {
       }
     }
   },
+
   data () {
     return {
       isIframe: false,
@@ -87,17 +95,21 @@ export default {
       interval: null
     }
   },
+
   mounted () {
     this.postMessage()
     this.interval = setInterval(this.postMessage, 1000)
   },
+
   beforeDestroy () {
     clearInterval(this.interval)
   },
+
   methods: {
     postMessage () {
       if (this.isIframe && this.url) {
         this.postIframeMessage('external', this.url)
+        this.$router.back()
       }
     }
   }

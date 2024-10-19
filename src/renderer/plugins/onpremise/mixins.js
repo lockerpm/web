@@ -120,7 +120,7 @@ Vue.mixin({
         const expireTime = 50 * 365 * 24 * 3600
         this.$cookies.set('device_id', deviceIdentifier, {
           maxAge: expireTime,
-          domain: 'locker.io'
+          domain: '.locker.io'
         })
       }
       this.$socket.sendObj({

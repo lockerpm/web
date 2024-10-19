@@ -479,16 +479,19 @@ export default {
   methods: {
     choosePlan (alias) {
       this.$cookies.set('trial_plan', alias, {
-        domain: 'locker.io',
+        domain: '.locker.io',
+        path: '/',
         maxAge: 3600 * 24
       })
       this.$cookies.set('is_trial_promotion', true, {
-        domain: 'locker.io',
+        domain: '.locker.io',
+        path: '/',
         maxAge: 3600 * 24
       })
       if (this.$store.state.isLoggedIn) {
         this.$router.replace(this.localePath('/manage-plans'))
       } else {
+        window.sessionStorage.setItem('keepTrialPlan', '1')
         this.$router.replace(this.localePath('/register?utm_source=plans-promotion'))
       }
     },

@@ -115,7 +115,7 @@ export default {
       this.goToVault()
     },
     backHome () {
-      this.$router.push(this.localePath('/business/register'))
+      this.$router.push(this.localePath('/business'))
     }
   }
 }

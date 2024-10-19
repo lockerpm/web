@@ -230,7 +230,7 @@ Vue.mixin({
         const expireTime = 50 * 365 * 24 * 3600
         this.$cookies.set('device_id', deviceIdentifier, {
           maxAge: expireTime,
-          domain: 'locker.io'
+          domain: '.locker.io'
         })
       }
       try {
@@ -277,7 +277,7 @@ Vue.mixin({
           this.$axios.setToken(res.access_token, 'Bearer')
           await this.$cookies.set('cs_locker_token', res.access_token, {
             path: '/',
-            domain: 'locker.io',
+            domain: '.locker.io',
             ...(this.environment === '' ? { secure: true } : { secure: false })
           })
           this.$store.commit('UPDATE_IS_LOGGEDIN_ON_PREMISE', true)

@@ -427,7 +427,8 @@ export default {
           this.enterPasswordVisible = false
           this.submitted = true
           this.$cookies.set('trial_plan', 'pm_enterprise', {
-            domain: 'locker.io',
+            domain: '.locker.io',
+            path: '/',
             maxAge: 3600 * 24
           })
         })

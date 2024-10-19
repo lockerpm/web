@@ -64,6 +64,7 @@ export default {
     postMessage () {
       if (this.isIframe && this.url) {
         this.postIframeMessage('external', this.url)
+        this.$router.back()
       }
     }
   }
