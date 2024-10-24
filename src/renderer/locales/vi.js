@@ -2882,8 +2882,8 @@ module.exports = {
         {
           imgSrc: 'brave.svg',
           name: 'Brave',
-          active: false,
-          link: ''
+          active: true,
+          link: 'https://chromewebstore.google.com/detail/locker-password-manager/cmajindocfndlkpkjnmjpjoilibjgmgh'
         },
         {
           imgSrc: 'safari.svg',
