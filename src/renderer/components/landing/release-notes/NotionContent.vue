@@ -6,9 +6,9 @@
       style="align-self: flex-start;"
     >
       <div
-        style="overflow-y: scroll; max-height: calc(100vh - 119px); padding-right: 5px"
         v-for="(menu, index) in menus"
         :key="index"
+        style="overflow-y: scroll; max-height: calc(100vh - 119px); padding-right: 5px"
       >
         <a
           class="text-black-700 text-head-5 hover:text-primary font-bold hover:no-underline"
@@ -54,8 +54,8 @@ export default {
         title: item.value?.properties?.title[0][0] || '',
         index
       }))
-      const headers = allValues.filter(item => item.value.type === 'header').map((h, index) => ({ ...h, stt: index }))
-      const sections = allValues.filter(item => item.value.type === 'sub_header').map((s, index) => ({ ...s, stt: index }))
+      const headers = allValues.filter(item => item.value?.type === 'header').map((h, index) => ({ ...h, stt: index }))
+      const sections = allValues.filter(item => item.value?.type === 'sub_header').map((s, index) => ({ ...s, stt: index }))
       return headers.map((h, index) => {
         if (index < headers.length - 1) {
           return {
