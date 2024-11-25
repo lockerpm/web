@@ -87,6 +87,10 @@ export default {
           document.body.scrollHeight * 0.2 &&
         !this.reached
       ) {
+        // TODO: disable until Black Friday ends
+        if (Date.now() < 1733029200000) {
+          return
+        }
         this.reached = true
         this.dialogVisible = true
       }

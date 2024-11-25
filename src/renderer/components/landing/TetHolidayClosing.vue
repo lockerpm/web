@@ -46,7 +46,6 @@
 
 <script>
 export default {
-  name: 'TopBanner',
   data () {
     return {
       visible: true,

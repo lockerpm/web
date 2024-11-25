@@ -474,6 +474,10 @@ export default {
   },
 
   mounted () {
+    const { subscription } = this.$route.query
+    if (subscription === 'family') {
+      this.selectedPlan = 'pm_lifetime_family'
+    }
     this.$recaptcha.init()
     this.calcPrice()
   },
