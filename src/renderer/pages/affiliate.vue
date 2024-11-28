@@ -41,7 +41,7 @@
           >
             <img
               :src="
-                require(`~/assets/images/landing/affiliate/cover-img_${locale}.png`)
+                require(`~/assets/images/landing/affiliate/cover-img_${locale === 'vi' ? 'vi' : 'en'}.png`)
               "
               alt=""
               style="max-width: 120%; margin-left: 24px; max-height: 500px"
@@ -51,7 +51,7 @@
           <div class="w-full md:hidden order-2 mt-4">
             <img
               :src="
-                require(`~/assets/images/landing/affiliate/cover-img_${locale}.png`)
+                require(`~/assets/images/landing/affiliate/cover-img_${locale === 'vi' ? 'vi' : 'en'}.png`)
               "
               alt=""
             >
