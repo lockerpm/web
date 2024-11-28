@@ -22,14 +22,14 @@
           <!-- Right -->
           <div class="hidden md:block md:w-[48%] order-2 justify-self-end top-[173px] pr-0">
             <img
-              :src="require(`~/assets/images/landing/master-password/cover-img_${locale}.png`)"
+              :src="require(`~/assets/images/landing/master-password/cover-img_${locale === 'vi' ? 'vi' : 'en'}.png`)"
               alt=""
               style="max-width: 120%; margin-left: 24px; max-height: 500px;"
             >
           </div>
           <div class="w-full md:hidden order-2 mt-4">
             <img
-              :src="require(`~/assets/images/landing/master-password/cover-img_${locale}.png`)"
+              :src="require(`~/assets/images/landing/master-password/cover-img_${locale === 'vi' ? 'vi' : 'en'}.png`)"
               alt=""
             >
           </div>
@@ -47,8 +47,7 @@
           alt=""
           class="mx-auto"
         >
-        <div class="text-black landing-font-20 mt-8" v-html="$t('landing_master_password.what_is_mp.desc')">
-        </div>
+        <div class="text-black landing-font-20 mt-8" v-html="$t('landing_master_password.what_is_mp.desc')" />
       </div>
     </section>
     <section class="py-[120px]">
