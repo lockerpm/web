@@ -32,18 +32,9 @@ export default {
   },
 
   mounted () {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { eid, service } = this.$route.query
-    if (eid) {
-      this.$axios
-        .put('https://tracking.cystack.net/v1/email/subscription', {
-          eid,
-          service,
-          subscribed: false
-        })
-        .catch(() => {
-          //
-        })
-    }
+    // TODO: unsubscribe without CRM
   },
 
   methods: {
@@ -57,7 +48,7 @@ export default {
       this.isSubscribing = true
 
       try {
-        await this.handleEmailSubscription(eid, true, service)
+        await this.handleEmailSubscription(eid, service)
         this.notify(
           'Subscribe successfully! Thank you for signing up to receive news from us.',
           'success'
@@ -73,15 +64,9 @@ export default {
       this.isSubscribing = false
     },
 
-    handleEmailSubscription (eid, isSubscribed, service) {
-      return this.$axios.put(
-        'https://tracking.cystack.net/v1/email/subscription',
-        {
-          eid,
-          service,
-          subscribed: isSubscribed
-        }
-      )
+    handleEmailSubscription (_eid, _service) {
+      // TODO: subscribe without CRM
+      return Promise.resolve()
     }
   }
 }

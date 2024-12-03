@@ -76,6 +76,16 @@ Vue.mixin({
       } else {
         window.location = vaultUrl
       }
+    },
+
+    async getCountryByIp () {
+      try {
+        const res = await this.$axios.$get('https://api.cystack.net/v3/resources/lang/resources/lang')
+        return res.country_code
+      } catch (error) {
+        console.log('Cannot detect lang', error)
+        return null
+      }
     }
   }
 })
