@@ -396,19 +396,6 @@ Vue.mixin({
       }
     },
 
-    // Blog subscribe
-    subscribe (email) {
-      const payload = {
-        email,
-        subscribed: true,
-        service: 'locker-blog-subscribe'
-      }
-      return this.$axios.put(
-        'https://tracking.cystack.net/v2/email/subscription',
-        payload
-      )
-    },
-
     goToInstall (app) {
       switch (app) {
       case 'extension':

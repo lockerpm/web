@@ -337,8 +337,6 @@
 </template>
 
 <script>
-import { v1 as uuidv1 } from 'uuid'
-
 export default {
   layout: 'landing',
   data () {
@@ -419,39 +417,7 @@ export default {
       } finally {
         this.isLoading = false
       }
-
-      // Forward to CRM to forward to email
-      const formId = 'locker-affiliate'
-      const content = {
-        ...payload,
-        recaptcha_token: payload.request_code
-      }
-      delete content.request_code
-      let source
-      try {
-        source = window.location.href
-      } catch (e) {
-        source = 'https://locker.io' + this.$route.fullPath
-      }
-      const payload2 = {
-        form_id: formId,
-        source,
-        content,
-        customer_id: this.$cookies.get('customer_id') || uuidv1(),
-        language: this.locale,
-        utm_source: this.$cookies.get('utm_source'),
-        utm_medium: this.$cookies.get('utm_medium'),
-        utm_campaign: this.$cookies.get('utm_campaign'),
-        utm_term: this.$cookies.get('utm_term'),
-        utm_content: this.$cookies.get('utm_content')
-      }
-      this.$axios.post(
-        'https://tracking.cystack.net/v1/activities',
-        payload2
-      )
     }
   }
 }
 </script>
-
-<style></style>
