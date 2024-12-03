@@ -84,8 +84,6 @@
   </div>
 </template>
 <script>
-import { v1 as uuidv1 } from 'uuid'
-
 export default {
   data () {
     return {
@@ -141,38 +139,38 @@ export default {
           this.notify($t('sme.contact.form.message.invalid)_data'), 'warning')
           return
         }
-        const formId = 'locker-sme-contact'
-        const content = {
-          ...this.formData,
-          phone: `${this.phoneCode} ${this.formData.phone}`,
-          recaptcha_token: await this.$recaptcha.execute('homepage')
-        }
-        let source
-        try {
-          source = window.location.href
-        } catch (e) {
-          source = 'https://locker.io' + this.$route.fullPath
-        }
-        const payload = {
-          form_id: formId,
-          source,
-          content,
-          customer_id: this.$cookies.get('customer_id') || uuidv1(),
-          language: this.locale,
-          utm_source: this.$cookies.get('utm_source'),
-          utm_medium: this.$cookies.get('utm_medium'),
-          utm_campaign: this.$cookies.get('utm_campaign'),
-          utm_term: this.$cookies.get('utm_term'),
-          utm_content: this.$cookies.get('utm_content')
-        }
+
         this.loading = true
+
+        // Submit to portal
+        const payload = {
+          email: this.formData.email,
+          fullname: this.formData.fullname,
+          phone_number: `${this.phoneCode} ${this.formData.phone}`,
+          job_title: this.formData.job,
+          organization_name: this.formData.company,
+          country_code: this.countries.find(c => c.country_phone_code === this.phoneCode)?.country_code || 'VN',
+          products: [
+            'password_manager'
+          ],
+          message: this.formData.note,
+          source: 'landing_form',
+          source_link: 'https://locker.io/passwords/doanh-nghiep',
+          captcha_code: await this.$recaptcha.execute('homepage')
+        }
         await this.$axios.post(
-          'https://tracking.cystack.net/v1/activities',
+          'https://api.cystack.net/portal/v1/users/register',
           payload
         )
+
+        // Successfully submitted
         this.notify(this.$t('landing_contact.messages.request_has_been_sent'), 'success')
         this.$refs.smeForm.resetFields()
       } catch (error) {
+        this.$message({
+          message: this.$t('landing_contact.messages.error_occurred'),
+          type: 'error'
+        })
         console.log(error)
       } finally {
         this.loading = false

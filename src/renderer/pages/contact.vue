@@ -35,10 +35,34 @@
             >
               <el-input v-model="form.fullName" />
             </el-form-item>
+            <el-form-item :label="$t('landing_contact.email')" prop="email">
+              <el-input v-model="form.email" />
+            </el-form-item>
             <div class="w-full flex flex-nowrap">
               <div class="w-1/2">
-                <el-form-item :label="$t('landing_contact.email')" prop="email">
-                  <el-input v-model="form.email" />
+                <el-form-item :label="$t('common.country')" prop="country">
+                  <el-select
+                    v-model="form.country"
+                    placeholder=""
+                    filterable
+                    class="w-full"
+                    auto-complete="off"
+                  >
+                    <el-option
+                      v-for="country in countries"
+                      :key="country.country_code"
+                      :value="country.country_code"
+                      :label="country.country_name"
+                    >
+                      <span>
+                        <span
+                          :class="`flag flag-${country.country_code.toLowerCase()}`"
+                          class=""
+                        />
+                        {{ country.country_name }}
+                      </span>
+                    </el-option>
+                  </el-select>
                 </el-form-item>
               </div>
               <div class="w-1/2 ml-[10px]">
@@ -109,7 +133,6 @@
 </template>
 
 <script>
-import { v1 as uuidv1 } from 'uuid'
 export default {
   layout: 'landing',
   data () {
@@ -119,13 +142,15 @@ export default {
         topic: this.$t('landing_contact.options.topic'),
         urgency: this.$t('landing_contact.options.urgency')
       },
+      countries: [],
       form: {
         fullName: '',
         email: '',
         phone: '',
         topic: 'general',
         urgency: 'medium',
-        message: ''
+        message: '',
+        country: 'VN'
       },
       rules: {
         phone: [
@@ -151,20 +176,33 @@ export default {
       }
     }
   },
-  // fetch ({ redirect, store, isDev }) {
-  //   redirect(302, 'https://cystack.net/contact')
-  // },
+
   head: {
     title: 'Contact Us - Locker'
   },
+
   mounted () {
     this.$recaptcha.init()
+    this.getCountries()
+    this.getCountryByIp().then(code => {
+      if (code) {
+        this.form.country = code
+      }
+    })
   },
+
   methods: {
+    getCountries () {
+      this.$axios.$get('resources/countries').then(res => {
+        this.countries = res
+      })
+    },
+
     getLabelFromOptions (optionKey, value) {
       const item = this.options[optionKey].find(i => i.value === value)
       return item ? item.label : value
     },
+
     async submit () {
       if (this.$refs.inputForm) {
         const isValid = await this.$refs.inputForm.validate()
@@ -176,40 +214,32 @@ export default {
       }
 
       this.isLoading = true
-      const formId = 'locker-contact'
-      // const trackingQuery = 'form=contact'
 
       try {
+        // Submit to portal
         const payload = {
-          ...this.form,
-          topic: this.getLabelFromOptions('topic', this.form.topic),
-          urgency: this.getLabelFromOptions('urgency', this.form.urgency),
-          recaptcha_token: await this.$recaptcha.execute('homepage')
+          email: this.form.email,
+          fullname: this.form.fullName,
+          phone_number: this.form.phone,
+          country_code: this.form.country,
+          products: [
+            'password_manager'
+          ],
+          message: `Topic: ${this.getLabelFromOptions('topic', this.form.topic)}. Urgency: ${this.getLabelFromOptions('urgency', this.form.urgency)}. Message: ${this.form.message}`,
+          source: 'landing_form',
+          source_link: 'https://locker.io/contact',
+          captcha_code: await this.$recaptcha.execute('homepage')
         }
-        await this.submitForm(formId, payload)
+        await this.$axios.post(
+          'https://api.cystack.net/portal/v1/users/register',
+          payload
+        )
 
         // Successfully submitted
         this.$message({
           message: this.$t('landing_contact.messages.request_has_been_sent'),
           type: 'success'
         })
-
-        // Redirect to thankyou page
-        // if (data.data && data.data.status) {
-        //   switch (data.data.status) {
-        //   case 0:
-        //     this.$message({
-        //       message: this.$t('landing_contact.messages.error_occurred'),
-        //       type: 'error'
-        //     })
-        //     break
-        //   case 2:
-        //     this.$router.push(`/${this.locale}/thankyou?${trackingQuery}&status=successful`)
-        //     break
-        //   default:
-        //     this.$router.push(`/${this.locale}/thankyou?${trackingQuery}`)
-        //   }
-        // }
       } catch (e) {
         this.$message({
           message: this.$t('landing_contact.messages.error_occurred'),
@@ -218,31 +248,6 @@ export default {
       }
 
       this.isLoading = false
-    },
-    submitForm (formId, content) {
-      let source
-      try {
-        source = window.location.href
-      } catch (e) {
-        source = 'https://locker.io' + this.$route.fullPath
-      }
-      const payload = {
-        form_id: formId,
-        source,
-        content,
-        customer_id: this.$cookies.get('customer_id') || uuidv1(),
-        language: this.$store.state.user.language,
-        utm_source: this.$cookies.get('utm_source'),
-        utm_medium: this.$cookies.get('utm_medium'),
-        utm_campaign: this.$cookies.get('utm_campaign'),
-        utm_term: this.$cookies.get('utm_term'),
-        utm_content: this.$cookies.get('utm_content')
-      }
-
-      return this.$axios.post(
-        'https://tracking.cystack.net/v1/activities',
-        payload
-      )
     }
   }
 }
