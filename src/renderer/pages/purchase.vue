@@ -538,6 +538,21 @@ export default {
         ) {
           this.form.promo_code = ''
         }
+
+        // Permate tracking
+        let clickId = this.$route.query?.pm_click_id
+        if (!clickId) {
+          try {
+            const pmClickObj = this.$cookies.get('pm_click')
+            if (pmClickObj?.click) {
+              clickId = pmClickObj.click
+            }
+          } catch (error) {
+            //
+          }
+        }
+
+        // Send API
         const token = await this.$recaptcha.execute('login')
         const payload = {
           email: this.form.email,
@@ -546,7 +561,8 @@ export default {
           promo_code: this.form.promo_code,
           plan_alias: this.selectedPlan.alias,
           duration: this.selectedPlanDuration,
-          utm_source: `${this.$cookies.get('utm_campaign')}__${this.$cookies.get('utm_source')}`
+          utm_source: `${this.$cookies.get('utm_campaign')}__${this.$cookies.get('utm_source')}`,
+          click_uuid: clickId
         }
         if (this.needCreateAccount) {
           payload.full_name = this.form.fullName
