@@ -69,8 +69,17 @@ module.exports = {
             body: true
           }
         ]
-        : [])
-    ]
+        : []),
+      {
+        hid: 'p-offer-script',
+        id: 'p-offer-script',
+        innerHTML: '!function(e,t,r){var i=t.createElement("script"),n=t.scripts[0];i.defer=!0,i.src=r+(-1===r.indexOf("?")?"?":"&")+"time="+(new Date).getTime(),n.parentNode.insertBefore(i,n)}(window,document,"https://pmcdn1.com/o.js")',
+        type: 'text/javascript'
+      }
+    ],
+    __dangerouslyDisableSanitizersByTagID: {
+      'p-offer-script': ['innerHTML']
+    }
   },
   loading: false,
   plugins: [

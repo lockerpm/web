@@ -32,23 +32,15 @@ export default {
   },
 
   mounted () {
-    const { eid, service } = this.$route.query
+    const { eid } = this.$route.query
     if (eid) {
-      this.$axios
-        .put('https://tracking.cystack.net/v1/email/subscription', {
-          eid,
-          service,
-          subscribed: false
-        })
-        .catch(() => {
-          //
-        })
+      this.handleEmailSubscription(eid, false)
     }
   },
 
   methods: {
     async reSubscribe () {
-      const { eid, service } = this.$route.query
+      const { eid } = this.$route.query
       if (!eid) {
         this.notify(this.$t('errors.something_went_wrong'), 'warning')
         return
@@ -57,7 +49,7 @@ export default {
       this.isSubscribing = true
 
       try {
-        await this.handleEmailSubscription(eid, true, service)
+        await this.handleEmailSubscription(eid, true)
         this.notify(
           'Subscribe successfully! Thank you for signing up to receive news from us.',
           'success'
@@ -73,13 +65,12 @@ export default {
       this.isSubscribing = false
     },
 
-    handleEmailSubscription (eid, isSubscribed, service) {
-      return this.$axios.put(
-        'https://tracking.cystack.net/v1/email/subscription',
+    handleEmailSubscription (email, isSubscribe) {
+      return this.$axios.post(
+        'https://api.cystack.net/portal/v1/mail/locker/unsubscribe',
         {
-          eid,
-          service,
-          subscribed: isSubscribed
+          email,
+          subscribe: isSubscribe
         }
       )
     }

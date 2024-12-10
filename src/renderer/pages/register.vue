@@ -16,7 +16,7 @@ export default {
         domain: '.locker.io',
         path: '/'
       })
-    } else if (window?.sessionStorage?.getItem('keepTrialPlan')) {
+    } else if (process.client && window?.sessionStorage?.getItem('keepTrialPlan')) {
       // Keep the trial plan if needed
       window.sessionStorage.removeItem('keepTrialPlan')
     } else {
