@@ -543,9 +543,14 @@ export default {
         let clickId = this.$route.query?.pm_click_id
         if (!clickId) {
           try {
-            const pmClickObj = this.$cookies.get('pm_click')
-            if (pmClickObj?.click) {
-              clickId = pmClickObj.click
+            const pmClickObjCs = this.$cookies.get('pm_click_cs')
+            if (pmClickObjCs?.click) {
+              clickId = pmClickObjCs.click
+            } else {
+              const pmClickObj = this.$cookies.get('pm_click')
+              if (pmClickObj?.click) {
+                clickId = pmClickObj.click
+              }
             }
           } catch (error) {
             //
