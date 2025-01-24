@@ -2854,7 +2854,24 @@ module.exports = {
           note: '*Yêu cầu phiên bản macOS Ventura (arm64) 10.11 hoặc cao hơn',
           tag: 'mac-arm64'
         }
-      ]
+      ],
+      instructions: {
+        open: 'Mở',
+        navigate: 'Mở mục',
+        select: 'Chọn',
+        terminal: {
+          can_find_with: 'Bạn có thể mở bằng một trong các cách sau:',
+          in_the_dock: 'tại thanh menu Dock và tìm Terminal',
+          using_command: 'bằng cách gõ',
+          and_search: 'và tìm Terminal',
+          paste_and_enter: 'Dán câu lệnh này vào Terminal và bấm Enter:'
+        },
+        download: {
+          or_you_can: 'Hoặc bạn có thể trực tiếp tải xuống tệp cài đặt .pkg',
+          if_cant_open: 'Nếu bạn không thể mở tệp cài đặt, làm theo các bước sau:',
+          as_below: 'như hình bên dưới'
+        }
+      }
     },
     browser: {
       title: 'Cài đặt tiện ích Locker cho trình duyệt',

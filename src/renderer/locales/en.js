@@ -2854,7 +2854,24 @@ module.exports = {
           note: '*Requires macOS Ventura (arm64) 10.11 or later',
           tag: 'mac-arm64'
         }
-      ]
+      ],
+      instructions: {
+        open: 'Open',
+        navigate: 'Navigate to',
+        select: 'Select',
+        terminal: {
+          can_find_with: 'You can find it using one of the following methods:',
+          in_the_dock: 'in the Dock and search for Terminal',
+          using_command: 'using',
+          and_search: 'and search for Terminal',
+          paste_and_enter: 'Paste the following command into your Terminal and press Enter:'
+        },
+        download: {
+          or_you_can: 'Or you can download our .pkg installer directly',
+          if_cant_open: 'If you cannot open the installer, do the following steps:',
+          as_below: ''
+        }
+      }
     },
     browser: {
       title: 'Install the Locker browser extension',
