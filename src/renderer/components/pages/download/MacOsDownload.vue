@@ -3,28 +3,28 @@
     <!-- Terminal instructions -->
     <div>
       <p class="landing-font-16 text-black mb-2">
-        1. Open <span><img
+        1. {{ $t('download.macos.instructions.open') }} <span><img
           :src="require(`~/assets/images/landing/download/terminal.png`)"
           alt="Terminal"
           class="w-6 object-contain inline-block"
-        ></span> <strong>Terminal</strong>. You can find it using one of the following methods:
+        ></span> <strong>Terminal</strong>. {{ $t('download.macos.instructions.terminal.can_find_with') }}
       </p>
 
       <ul class="pl-7 list-disc">
         <li class="landing-font-16 text-black mb-2">
-          Open <span><img
-            :src="require(`~/assets/images/landing/download/launchpad.webp`)"
+          {{ $t('download.macos.instructions.open') }} <span><img
+            :src="require(`~/assets/images/landing/download/launchpad.png`)"
             alt="Launchpad"
             class="w-6 object-contain inline-block"
-          ></span> <strong>Launchpad</strong> in the Dock and search for Terminal
+          ></span> <strong>Launchpad</strong> {{ $t('download.macos.instructions.terminal.in_the_dock') }}
         </li>
         <li class="landing-font-16 text-black mb-2">
-          Open Spotlight using <strong>Command (⌘) + Space</strong> and search for Terminal
+          {{ $t('download.macos.instructions.open') }} <strong>Spotlight</strong> {{ $t('download.macos.instructions.terminal.using_command') }} <strong>Command (⌘) + Space</strong> {{ $t('download.macos.instructions.terminal.and_search') }}
         </li>
       </ul>
 
       <p class="landing-font-16 text-black mt-4 mb-2">
-        2. Paste the following command into your Terminal and press Enter:
+        2. {{ $t('download.macos.instructions.terminal.paste_and_enter') }}
       </p>
 
       <div class="flex flex-row">
@@ -45,7 +45,7 @@
         <el-collapse-item name="1">
           <template slot="title">
             <p class="landing-font-16 text-[#216AE2] font-normal" style="margin-left: -20px;">
-              Or you can download our .pkg installer directly
+              {{ $t('download.macos.instructions.download.or_you_can') }}
             </p>
           </template>
 
@@ -93,21 +93,21 @@
           <!-- How to fix -->
           <div>
             <p class="landing-font-16 text-black mt-4 mb-2">
-              If you cannot open the installer, do the following steps:
+              {{ $t('download.macos.instructions.download.if_cant_open') }}
             </p>
             <ul class="pl-7 list-disc">
               <li class="landing-font-16 text-black mb-2">
-                Open <span><img
+                {{ $t('download.macos.instructions.open') }} <span><img
                   :src="require(`~/assets/images/landing/download/settings.webp`)"
                   alt="Settings"
                   class="w-6 object-contain inline-block"
                 ></span> <strong>Settings</strong>
               </li>
               <li class="landing-font-16 text-black mb-2">
-                Navigate to <strong>Privacy & Security</strong>
+                {{ $t('download.macos.instructions.navigate') }} <strong>Privacy & Security</strong>
               </li>
               <li class="landing-font-16 text-black mb-2">
-                Select <strong>Open Anyway</strong>
+                {{ $t('download.macos.instructions.select') }} <strong>Open Anyway</strong> {{ $t('download.macos.instructions.download.as_below') }}
               </li>
             </ul>
             <img
