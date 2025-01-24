@@ -24,74 +24,78 @@
             >
               {{ item.data.subtitle }}
             </h2>
+
+            <MacOsDownload v-if="item.key === 'macos'" :links="links" />
+
             <div
+              v-else
               class="grid gap-x-3 items-center max-w-[1010px] mx-auto justify-items-center justify-center min-h-[380px] md:flex md:justify-between"
             >
-              <!-- Download buttons -->
               <div class="min-w-[310px] max-w-[310px] relative">
-                <div>
-                  <button v-if="item.data.button" class="button-download bg-tag1" @click="toggleList()">
-                    <span>
-                      {{ item.data.button }}
-                    </span>
-                    <i class="el-icon-arrow-down rotate-icon right" />
-                  </button>
+                <!-- Download collapse -->
+                <button v-if="item.data.button" class="button-download bg-tag1" @click="toggleList()">
+                  <span>
+                    {{ item.data.button }}
+                  </span>
+                  <i class="el-icon-arrow-down rotate-icon right" />
+                </button>
+                <!-- Download collapse end -->
 
-                  <div
-                    class="grid gap-y-[12px] dropdown"
-                    :class="{ 'show': listDownload || !item.data.button }"
+                <!-- Download buttons -->
+                <div
+                  class="grid gap-y-[12px] dropdown"
+                  :class="{ 'show': listDownload || !item.data.button }"
+                >
+                  <a
+                    v-for="(btn, id) in item.data.list"
+                    :key="id"
+                    :class="{
+                      'mt-[32px]': id === 0,
+                      'pointer-events-none': !btn.link
+                    }"
+                    target="_blank"
+                    :href="btn.link || '#'"
                   >
-                    <a
-                      v-for="(btn, id) in item.data.list"
-                      :key="id"
-                      :class="{
-                        'mt-[32px]': id === 0,
-                        'pointer-events-none': !btn.link
-                      }"
-                      target="_blank"
-                      :href="btn.link || '#'"
+                    <button
+                      :class="
+                        btn.link ? 'button-download bg-tag1' : 'button-disable'
+                      "
                     >
-                      <button
-                        :class="
-                          btn.link ? 'button-download bg-tag1' : 'button-disable'
-                        "
+                      <span>
+                        {{ btn.button }}
+                      </span>
+                      <img
+                        v-if="btn.link"
+                        src="~/assets/images/landing/download2/download.svg"
+                        alt=""
                       >
-                        <span>
-                          {{ btn.button }}
-                        </span>
-                        <img
-                          v-if="btn.link"
-                          src="~/assets/images/landing/download2/download.svg"
-                          alt=""
-                        >
-                        <img
-                          v-else
-                          src="~/assets/images/landing/download2/download-disable.svg"
-                          alt=""
-                        >
-                      </button>
-                      <p
-                        class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
+                      <img
+                        v-else
+                        src="~/assets/images/landing/download2/download-disable.svg"
+                        alt=""
                       >
-                        {{ btn.note }}
-                      </p>
-                    </a>
-                  </div>
-
-                  <!-- See what's new -->
-                  <div class="flex my-[32px]">
-                    <a
-                      href="https://locker.io/release-notes"
-                      class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
-                      target="_blank"
+                    </button>
+                    <p
+                      class="mt-[8px] text-[#617296] font-normal landing-font-14-2"
                     >
-                      {{ $t('download.see_what_new') }} <i class="el-icon-right" />
-                    </a>
-                  </div>
-                  <!-- See what's new end -->
+                      {{ btn.note }}
+                    </p>
+                  </a>
                 </div>
+                <!-- Download buttons end -->
+
+                <!-- See what's new -->
+                <div class="flex my-[32px]">
+                  <a
+                    href="https://locker.io/release-notes"
+                    class="text-[#216AE2] text-[15px] font-normal mr-[8px] hover:underline hover:text-[#216AE2] whitespace-nowrap"
+                    target="_blank"
+                  >
+                    {{ $t('download.see_what_new') }} <i class="el-icon-right" />
+                  </a>
+                </div>
+                <!-- See what's new end -->
               </div>
-              <!-- Download buttons end -->
 
               <!-- Image -->
               <img
@@ -107,53 +111,7 @@
         <!-- Not browser end -->
 
         <!-- Browser -->
-        <section v-if="chosen === 'web-browser'" id="web-browser" key="web-browser">
-          <h1
-            class="text-center font-bold text-black landing-font-42 mb-[12px]"
-          >
-            {{ $t('download.browser.title') }}
-          </h1>
-          <h2
-            class="text-center font-normal text-black-600 landing-font-20 mb-[10px]"
-          >
-            {{ $t('download.browser.subtitle') }}
-          </h2>
-          <div class="flex flex-wrap justify-center gap-x-3">
-            <div
-              v-for="item in $t('download.browser.list')"
-              :key="item.name"
-              class="w-[135px] mt-6 text-webkit"
-            >
-              <div class="h-[60px]">
-                <img
-                  :src="
-                    require(`~/assets/images/landing/download2/${item.imgSrc}`)
-                  "
-                  alt=""
-                >
-              </div>
-              <p class="mt-3 font-semibold text-[#121212]">{{ item.name }}</p>
-              <a v-if="item.active" :href="item.link" target="_blank">
-                <button
-                  class="mt-3 py-[3px] px-[20px] font-semibold text-[#FFFFFF] bg-[#62AD56] rounded-sm hover:bg-[#2D702C]"
-                >
-                  {{ $t('download.browser.install') }}
-                </button>
-              </a>
-              <button
-                v-else
-                class="mt-3 py-[3px] px-[20px] font-semibold text-[#606060] bg-[#EBEEF2] rounded-sm box-border border-[1px] border-[#DADEE3] cursor-auto"
-              >
-                {{ $t('download.coming') }}
-              </button>
-            </div>
-          </div>
-          <img
-            src="~/assets/images/landing/download2/section5.svg"
-            alt=""
-            class="max-w-[600px] mb-[-100px] w-[100%] mx-auto"
-          >
-        </section>
+        <ExtensionDownload v-if="chosen === 'web-browser'" />
         <!-- Browser end -->
       </transition>
 
@@ -197,7 +155,14 @@
 </template>
 
 <script>
+import ExtensionDownload from '../components/pages/download/ExtensionDownload.vue'
+import MacOsDownload from '../components/pages/download/MacOsDownload.vue'
+
 export default {
+  components: {
+    ExtensionDownload,
+    MacOsDownload
+  },
   layout: 'landing',
 
   data () {
@@ -248,6 +213,14 @@ export default {
           link: 'web-browser'
         }
       ]
+    },
+
+    links () {
+      const res = {}
+      this.notionData.forEach(item => {
+        res[item.Tag] = item.Link
+      })
+      return res
     },
 
     platforms () {
@@ -359,9 +332,7 @@ export default {
     0px 60px 36px rgba(0, 0, 0, 0.03), 0px 27px 27px rgba(0, 0, 0, 0.04),
     0px 7px 15px rgba(0, 0, 0, 0.05), 0px 0px 0px rgba(0, 0, 0, 0.05);
 }
-.center-webkit {
-  text-align: -webkit-center;
-}
+
 .w-fit {
   width: fit-content;
 }
@@ -389,36 +360,6 @@ export default {
 .bg-tag1 {
   background: linear-gradient(92.77deg, #f36cff -46.79%, #9781ff 106.78%);
 }
-.bg-tag2 {
-  background: linear-gradient(87.29deg, #34e98d -9.88%, #4c9aff 102.53%);
-}
-.bg-tag3 {
-  background: linear-gradient(
-    266.66deg,
-    #22a2ff -3.45%,
-    #2262ff 59.41%,
-    #2222ff 122.27%
-  );
-}
-.button-web-browser {
-  background: linear-gradient(
-    93.19deg,
-    #ff0844 -68.98%,
-    #ff5c6e 33.26%,
-    #ffb199 137.66%
-  );
-}
-.button-ios {
-  background: linear-gradient(92.51deg, #ffa53a -60.81%, #ff3e3e 146.04%);
-}
-.button-android {
-  background: linear-gradient(
-    273.87deg,
-    #62ad56 -72.83%,
-    #6fd065 48.37%,
-    #7af072 182.9%
-  );
-}
 .button-disable {
   width: 298px;
   display: flex;
@@ -431,36 +372,8 @@ export default {
   border-radius: 4px;
   align-items: center;
 }
-.button-disable-center {
-  width: 298px;
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  padding: 10px 24px;
-  color: #c2c4c7;
-  background: #ebeef2;
-  border: 1px solid #dadee3;
-  border-radius: 4px;
-  align-items: center;
-  cursor: auto;
-}
 .text-webkit {
   text-align: -webkit-center;
-}
-.width-comming-soon {
-  width: calc(25vw + 170px);
-  direction: rtl;
-  padding: 10px 25px;
-  border-radius: 75px;
-}
-.link-contain .hover-image {
-  display: none;
-}
-.link-contain:hover .hover-image {
-  display: block;
-}
-.link-contain:hover .normal-image {
-  display: none;
 }
 .fade-enter-active,
 .fade-leave-active {
