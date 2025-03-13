@@ -16,10 +16,7 @@ export default {
         domain: '.locker.io',
         path: '/'
       })
-    } else if (process.client && window?.sessionStorage?.getItem('keepTrialPlan')) {
-      // Keep the trial plan if needed
-      window.sessionStorage.removeItem('keepTrialPlan')
-    } else {
+    } else if (!route.query.hasPlan) {
       // Auto set plan to premium
       $cookies.set('trial_plan', 'pm_premium', {
         domain: '.locker.io',
